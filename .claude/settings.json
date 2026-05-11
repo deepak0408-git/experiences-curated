@@ -1,0 +1,53 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(node --experimental-strip-types scripts/seed-ao-experience.mjs)",
+      "Bash(node --experimental-strip-types scripts/_set-status.mjs)",
+      "Bash(rm scripts/_set-status.mjs)",
+      "Bash(curl -s -L \"https://upload.wikimedia.org/wikipedia/commons/f/fa/On_Henman_Hill.jpg\" -o \"Images/wimbledon-henman-hill.jpg\")",
+      "Bash(curl -s -L \"https://upload.wikimedia.org/wikipedia/commons/8/8d/Court_17_Wimbledon.JPG\" -o \"Images/wimbledon-court-17.jpg\")",
+      "Bash(curl -s -L \"https://upload.wikimedia.org/wikipedia/commons/0/0f/Wimbledon_High_Street.jpg\" -o \"Images/wimbledon-village-high-street.jpg\")",
+      "Bash(curl -s -L \"https://upload.wikimedia.org/wikipedia/commons/6/64/Wimbledon_Lawn_Tennis_Museum_%28485259229%29.jpg\" -o \"Images/wimbledon-lawn-tennis-museum.jpg\")",
+      "Bash(curl -s -L \"https://upload.wikimedia.org/wikipedia/commons/5/59/Court_14_at_Wimbledon.jpg\" -o \"Images/wimbledon-practice-court-14.jpg\")",
+      "Bash(node --experimental-strip-types scripts/seed-wimbledon-the-hill.mjs)",
+      "Bash(node --experimental-strip-types scripts/seed-wimbledon-outer-courts.mjs)",
+      "Bash(node --experimental-strip-types scripts/seed-wimbledon-village.mjs)",
+      "Bash(node --experimental-strip-types scripts/seed-wimbledon-museum.mjs)",
+      "Bash(node --experimental-strip-types scripts/seed-wimbledon-practice-courts.mjs)",
+      "WebSearch",
+      "WebFetch(domain:www.greenandpurple.com)",
+      "WebFetch(domain:ticket-compare.com)",
+      "WebFetch(domain:www.wimbledon.com)",
+      "WebFetch(domain:www.countryandtownhouse.com)",
+      "WebFetch(domain:acesandfaults.substack.com)",
+      "Bash(curl -L -A \"Mozilla/5.0 \\(compatible; ExperiencesCurated/1.0\\)\" \"https://upload.wikimedia.org/wikipedia/commons/5/59/Court_14_at_Wimbledon.jpg\" -o \"Images/wimbledon-practice-court-14.jpg\")",
+      "Bash(curl -L -A \"Mozilla/5.0 \\(compatible; ExperiencesCurated/1.0\\)\" \"https://upload.wikimedia.org/wikipedia/commons/6/64/Wimbledon_Lawn_Tennis_Museum_%28485259229%29.jpg\" -o \"Images/wimbledon-lawn-tennis-museum.jpg\")",
+      "Bash(node --experimental-strip-types scripts/sync-algolia.mjs)",
+      "WebFetch(domain:commons.wikimedia.org)",
+      "Bash(node --experimental-strip-types /tmp/update-titles.mjs)",
+      "Bash(node --experimental-strip-types scripts/update-centre-court-image.mjs)",
+      "Bash(curl -L -A \"Mozilla/5.0 ExperiencesCurated/1.0\" -o \"Images/wimbledon-no1-court.jpg\" \"https://upload.wikimedia.org/wikipedia/commons/3/32/Wimbledon_Day_1_-_2022_-i---i-_%2852180258654%29.jpg\")",
+      "Bash(curl -L -A \"Mozilla/5.0 ExperiencesCurated/1.0\" -o \"Images/wimbledon-rain-delay.jpg\" \"https://upload.wikimedia.org/wikipedia/commons/2/2e/Rain_Delay_Crew_Centre_Court.JPG\")",
+      "Bash(wait)",
+      "Bash(curl -s http://localhost:3000/event-pack/wimbledon-2026)",
+      "Bash(node -e \"let d=''; process.stdin.on\\('data',c=>d+=c\\); process.stdin.on\\('end',\\(\\)=>{ console.log\\('len:', d.length\\); const m = d.match\\(/Wimbledon|Championship|Fan Exp|Event Pack|What.s inside/gi\\); console.log\\('content matches:', m ? m.slice\\(0,5\\) : 'none'\\); if\\(d.includes\\('statusCode'\\)\\) console.log\\('ERROR PAGE - has statusCode'\\); }\\)\")",
+      "Skill(humanizer)",
+      "Skill(humanizer:*)",
+      "Bash(node --experimental-strip-types scripts/update-us-open-titles.mjs)",
+      "Bash(node --experimental-strip-types scripts/update-us-open-hero-images.mjs)",
+      "Bash(node --experimental-strip-types scripts/update-us-open-tips.mjs)",
+      "WebFetch(domain:images.pexels.com)",
+      "WebFetch(domain:www.pexels.com)",
+      "Bash(curl -s -o /tmp/pexels_33114815.jpg \"https://images.pexels.com/photos/33114815/pexels-photo-33114815.jpeg?w=400\")",
+      "Bash(curl -s -o /tmp/pexels_13710125.jpg \"https://images.pexels.com/photos/13710125/pexels-photo-13710125.jpeg?w=400\")",
+      "Bash(curl -s -o /tmp/pexels_29889417.jpg \"https://images.pexels.com/photos/29889417/pexels-photo-29889417.jpeg?w=400\")",
+      "Read(//tmp/**)",
+      "Read(//c/Users/HP/AppData/Local/Temp/**)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\HP\\.clone\\projects\\ExperienceCurator\\app\\trip-board",
+      "c:\\Users\\HP\\.claude\\projects\\ExperienceCurator\\app\\trip-board\\share"
+    ]
+  }
+}
