@@ -9,6 +9,7 @@ import PaddleCheckout from "./_components/PaddleCheckout";
 import PackView from "./_components/PackView";
 import { hasProSubscription } from "@/lib/pro";
 import HomepageNav from "@/app/_components/HomepageNav";
+import LocalCurrencyHint from "./_components/LocalCurrencyHint";
 
 export async function generateMetadata({
   params,
@@ -116,6 +117,28 @@ const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: strin
         "Transport strategy, the District line myth debunked, queue science, and what to bring",
     },
   ],
+  "india-in-england-cricket-2026": [
+    {
+      label: "Match Day",
+      description: "Edgbaston on India day, Lord's for the ODI — inside the grounds, in the stands, doing it properly",
+    },
+    {
+      label: "The Bharat Army",
+      description: "How to find the travelling India fan community, join the chants, and be inside the blue rather than watching it",
+    },
+    {
+      label: "Where to Eat & Drink",
+      description: "The Twelfth Man before Edgbaston, the Lord's Tavern inside the ground, Shababs for the Birmingham balti experience",
+    },
+    {
+      label: "Where to Stay",
+      description: "Edgbaston Park Hotel for Birmingham, The Landmark London for Lord's — and what to book near each ground",
+    },
+    {
+      label: "Getting There",
+      description: "Edgbaston from New Street, Lord's from St John's Wood tube — transport strategy for both grounds",
+    },
+  ],
   "us-open-2026": [
     {
       label: "Night Sessions",
@@ -165,6 +188,13 @@ const PACK_PRICING: Record<string, {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_US_OPEN_EARLY_BIRD_CUTOFF ?? "2026-08-01",
     earlyBirdDisplay: "$15",
     standardDisplay: "$25",
+  },
+  "india-in-england-cricket-2026": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_CRICKET_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_CRICKET_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_CRICKET_EARLY_BIRD_CUTOFF ?? "2026-06-15",
+    earlyBirdDisplay: "£9",
+    standardDisplay: "£15",
   },
 };
 
@@ -307,10 +337,10 @@ export default async function EventPackPage({
           <img
             src={event.heroImageUrl}
             alt={event.name}
-            className="w-full h-full object-cover opacity-75"
+            className="w-full h-full object-cover opacity-90"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 px-8 pb-8 max-w-5xl mx-auto">
           <span className="inline-block text-xs font-semibold tracking-widest uppercase text-white bg-black/50 px-3 py-1 rounded-full mb-3">
             {SPORT_LABELS[event.sport] ?? event.sport} · Event Pack
@@ -319,14 +349,13 @@ export default async function EventPackPage({
             {event.name}
           </h1>
           <p className="mt-1.5 text-white/70 text-sm">{dateRange}</p>
-          {(event.venueName || event.venueAddress) && (
-            <p className="mt-0.5 text-white/50 text-xs">
-              {event.venueName}
-              {event.venueAddress
-                ? ` · ${event.venueAddress.split(",").slice(2).join(",").trim()}`
-                : ""}
-            </p>
-          )}
+          <p className="mt-0.5 text-white/50 text-xs">
+            {slug === "india-in-england-cricket-2026"
+              ? "Birmingham · London · Nottingham · Manchester · more"
+              : event.venueName
+                ? `${event.venueName}${event.venueAddress ? ` · ${event.venueAddress.split(",").slice(2).join(",").trim()}` : ""}`
+                : null}
+          </p>
         </div>
       </div>
 
@@ -359,6 +388,7 @@ export default async function EventPackPage({
                 )}
                 <p className="text-3xl font-bold text-neutral-900 tracking-tight">
                   {priceDisplay}
+                  <LocalCurrencyHint gbpAmount={parseFloat(priceDisplay.replace(/[^0-9.]/g, ""))} />
                 </p>
                 {isEarlyBird && pricing.earlyBirdDisplay !== pricing.standardDisplay && (
                   <p className="mt-0.5 text-xs text-neutral-400 mb-4">

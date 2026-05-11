@@ -368,7 +368,7 @@ export default async function ExperiencePage({
                   <dt className="w-28 flex-shrink-0 text-sm font-medium text-neutral-500">Website</dt>
                   <dd>
                     <a
-                      href={practical.website}
+                      href={practical.website.match(/^https?:\/\//) ? practical.website : `https://${practical.website}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-neutral-900 underline hover:text-neutral-500 transition-colors"

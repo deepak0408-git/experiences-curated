@@ -109,11 +109,19 @@ const PRE_TRIP_BRIEF: Record<string, PreTripBrief> = {
   },
 };
 
+interface TourMatch {
+  date: string;
+  type: string;
+  venue: string;
+  city: string;
+}
+
 interface PackEditorial {
   brief: string;
   sectionIntros: Record<string, string>;
   localInfo: Array<{ label: string; value: string; href?: string; linkLabel?: string }>;
   experienceOrder: Record<string, string[]>;
+  tourItinerary?: TourMatch[];
 }
 
 const PACK_EDITORIAL: Record<string, PackEditorial> = {
@@ -173,6 +181,36 @@ const PACK_EDITORIAL: Record<string, PackEditorial> = {
     experienceOrder: {
       "On the grounds": ["Arthur Ashe", "Night Sessions", "Louis Armstrong", "Practice Facility", "Food Concourse", "When Play Stops"],
     },
+  },
+
+  "india-in-england-cricket-2026": {
+    brief:
+      "This is not a Test series. Five T20Is and three ODIs across three weeks in July — Birmingham, Nottingham, London, and back again. The format means big crowds, loud atmospheres, and India playing in front of what are effectively home crowds wherever they go. Edgbaston on 14 July is the centrepiece: the ground fills with blue shirts, the Bharat Army takes over entire stands, and a city with one of the largest British-Indian communities in the country treats an away fixture like a home one.\n\nLord's on 19 July is the other anchor. The ODI at cricket's most famous ground, the Grace Gates, the Long Room, the Lord's Tavern. It's a different kind of atmosphere — more reverent, more traditional — but equally worth doing if you can get tickets.\n\nThe pack is built around both grounds, with specific guidance on pre-match rituals, the fan community you can join rather than just watch, and where to eat and stay near each venue. The itinerary below gives you the full schedule so you can plan around the fixtures that matter most.",
+    sectionIntros: {
+      "Before you go": "Tickets for the India fixtures sell fast — the Edgbaston T20 and Lord's ODI in particular. Check the ECB website (ecb.co.uk/tickets) and set alerts. The Bharat Army (bharatarmy.com) also organises group travel and tickets for Indian fans. For Birmingham, New Street station is 15 minutes from the ground by taxi or 25 minutes on foot through Edgbaston. For Lord's, St John's Wood tube (Jubilee line) is a 10-minute walk to the Grace Gates.",
+      "On the grounds": "Both Edgbaston and Lord's are worth arriving early for. Edgbaston opens its gates 90 minutes before play — use that time at the Twelfth Man across the road before heading in. Lord's has the Long Room, the MCC Museum, and the Tavern inside the gates. Neither ground is somewhere to rush.",
+      "Where to stay": "For Edgbaston: the Edgbaston Park Hotel is closest and the most considered option. For Lord's: anywhere in St John's Wood or Marylebone puts you within walking distance. The Landmark London on Marylebone Road is the best of the nearby hotels.",
+      "Where to eat": "Birmingham's Balti Triangle is 10 minutes from Edgbaston and worth the trip regardless of cricket. Shababs on Ladypool Road is the standard-bearer. For Lord's, the Tavern itself handles pre-match well, and Soutine on St John's Wood High Street is the best sit-down option nearby.",
+      "The neighbourhood": "Moseley village — 20 minutes from Edgbaston — is where Birmingham actually lives. Victorian terraces, independent cafés, the farmers' market on the last Saturday of the month. St John's Wood around Lord's is quieter and more prosperous: the high street, the Abbey Road crossing, Regent's Park a 10-minute walk north.",
+    },
+    localInfo: [
+      { label: "Tickets", value: "ecb.co.uk/tickets/england", href: "https://www.ecb.co.uk/tickets/england", linkLabel: "ECB ticketing" },
+      { label: "Bharat Army", value: "bharatarmy.com — official India touring fan group", href: "https://www.bharatarmy.com", linkLabel: "Visit" },
+      { label: "Edgbaston transport", value: "Birmingham New Street → taxi 15 min or walk 25 min through Edgbaston village", href: "https://maps.google.com/?q=Edgbaston+Stadium,+Edgbaston+Road,+Birmingham+B5+7QU", linkLabel: "Open in Maps" },
+      { label: "Lord's transport", value: "St John's Wood (Jubilee line) → 10-min walk to Grace Gates", href: "https://maps.google.com/?q=Lord%27s+Cricket+Ground,+St+John%27s+Wood+Road,+London+NW8+8QN", linkLabel: "Open in Maps" },
+      { label: "Emergencies", value: "Emergency services: 999 · NHS urgent (non-emergency): 111 · Birmingham A&E: Queen Elizabeth Hospital, Mindelsohn Way, B15 2GW · London A&E: UCLH, 235 Euston Rd, NW1 2BU" },
+    ],
+    experienceOrder: {},
+    tourItinerary: [
+      { date: "1 Jul", type: "1st T20I", venue: "Riverside Ground", city: "Chester-le-Street" },
+      { date: "4 Jul", type: "2nd T20I", venue: "Old Trafford", city: "Manchester" },
+      { date: "7 Jul", type: "3rd T20I", venue: "Trent Bridge", city: "Nottingham" },
+      { date: "9 Jul", type: "4th T20I", venue: "County Ground", city: "Bristol" },
+      { date: "11 Jul", type: "5th T20I", venue: "Rose Bowl", city: "Southampton" },
+      { date: "14 Jul", type: "1st ODI", venue: "Edgbaston", city: "Birmingham" },
+      { date: "16 Jul", type: "2nd ODI", venue: "Sophia Gardens", city: "Cardiff" },
+      { date: "19 Jul", type: "3rd ODI", venue: "Lord's", city: "London" },
+    ],
   },
 };
 
@@ -421,10 +459,10 @@ export default async function PackView({
           <img
             src={heroImageUrl}
             alt={eventName}
-            className="w-full h-full object-cover opacity-70"
+            className="w-full h-full object-cover opacity-90"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
         {/* Event info — bottom */}
         <div className="absolute bottom-0 left-0 right-0 px-6 sm:px-8 pb-8">
@@ -436,6 +474,9 @@ export default async function PackView({
               {eventName}
             </h1>
             <p className="mt-1.5 text-white/70 text-sm">{dateRange}</p>
+            {eventSlug === "india-in-england-cricket-2026" && (
+              <p className="mt-0.5 text-white/50 text-xs">Birmingham · London · Nottingham · Manchester · more</p>
+            )}
           </div>
         </div>
       </div>
@@ -515,6 +556,7 @@ export default async function PackView({
         </div>
       )}
 
+      {/* Tour itinerary — cricket only */}
       {/* Section quick-jump nav */}
       {sections.length > 1 && (
         <div className="border-b border-neutral-100 overflow-x-auto">
@@ -579,6 +621,42 @@ export default async function PackView({
           </div>
         </div>
       )}
+
+      {/* Tour itinerary — cricket only */}
+      {editorial.tourItinerary && editorial.tourItinerary.length > 0 && (() => {
+        const t20s = editorial.tourItinerary!.filter(m => m.type.includes("T20"));
+        const odis = editorial.tourItinerary!.filter(m => m.type.includes("ODI"));
+        const MatchBlock = ({ matches, label, accent }: { matches: typeof t20s; label: string; accent: string }) => (
+          <div className={`rounded-xl border ${accent} overflow-hidden`}>
+            <div className={`px-4 py-2.5 border-b ${accent}`}>
+              <span className="text-xs font-semibold tracking-widest uppercase text-neutral-500">{label}</span>
+            </div>
+            <div className="divide-y divide-neutral-100">
+              {matches.map((match, i) => (
+                <div key={i} className="flex items-center gap-4 px-4 py-3">
+                  <span className="w-12 text-xs font-semibold text-neutral-400 shrink-0">{match.date}</span>
+                  <span className="w-20 text-xs font-medium text-neutral-500 shrink-0">{match.type}</span>
+                  <span className="flex-1 text-sm text-neutral-900">{match.venue}</span>
+                  <span className="text-sm text-neutral-500 text-right shrink-0">{match.city}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+        return (
+          <div className="border-b border-neutral-100">
+            <div className="max-w-5xl mx-auto px-6 sm:px-8 py-8">
+              <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-4">
+                Tour schedule
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                {t20s.length > 0 && <div className="flex-1"><MatchBlock matches={t20s} label="T20 Internationals" accent="border-neutral-200" /></div>}
+                {odis.length > 0 && <div className="flex-1"><MatchBlock matches={odis} label="One Day Internationals" accent="border-neutral-200" /></div>}
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Quick reference — useful local info */}
       <div className="border-b border-neutral-100">

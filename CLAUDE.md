@@ -24,8 +24,9 @@ node --experimental-strip-types scripts/seed-<name>.mjs
 
 ## Key IDs
 ```
-London destination:   75758888-28b9-4e09-82ba-f05681ecc904
-New York destination: fb782de2-bbe6-410f-b466-2a4e628cda10
+London destination:          75758888-28b9-4e09-82ba-f05681ecc904
+New York destination:        fb782de2-bbe6-410f-b466-2a4e628cda10
+India in England 2026 event: 2bab697d-9d2b-45ff-9b46-9fbfc3a0a40b
 ```
 
 ---
@@ -102,6 +103,10 @@ sport:          tennis | cricket | football | rugby | golf | formula_one | cycli
 - Tailwind dynamic classes in ternaries get purged by Turbopack — always use static JSX branches.
 - Magic links must redirect to `/auth/confirm?next=<path>` not `/auth/callback` (implicit hash-fragment flow).
 - `purchases` table: `userId` nullable, `email + sportingEventId` unique, webhook idempotent via `onConflictDoNothing`.
+- `PACK_PRICING`, `PACK_SECTIONS_BY_EVENT`, `INSIDER_TIPS`, `PACK_EDITORIAL`, `TOURNAMENT_RHYTHM` — all keyed by event slug. Add new event entries to all five when adding a pack.
+- **PackView large object edits:** always Read 10–15 lines around the insertion point to confirm brace depth before editing `INSIDER_TIPS` or `PACK_EDITORIAL`. Misplaced entries break the function definitions that follow.
+- `LocalCurrencyHint` — client component at `event-pack/[slug]/_components/LocalCurrencyHint.tsx`. Detects locale via `navigator.languages`, fetches rate via `/api/fx?currency=XXX` (proxied to frankfurter.app to avoid CORS in dev).
+- Hero image upload: `node --experimental-strip-types scripts/seed-<name>.mjs` or direct R2 upload + DB update. R2 key: `sporting-events/hero/<slug>.jpg`.
 
 **Purchase flow:** Paddle → `transaction.completed` webhook → purchases row + Supabase user → `/welcome` magic link → `/auth/confirm` → pack view.
 

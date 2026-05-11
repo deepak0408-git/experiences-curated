@@ -144,7 +144,7 @@ export function ExperienceForm({
   const watchedBody = watch("bodyContent") ?? "";
   const watchedWhy = watch("whyItsSpecial") ?? "";
   const watchedType = watch("experienceType") ?? "";
-  const isSportsType = ["sports_venue", "fan_experience"].includes(watchedType);
+  const isSportsType = true;
 
   function handleSaveDraft() {
     startTransition(async () => {

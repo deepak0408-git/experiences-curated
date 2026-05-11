@@ -61,6 +61,11 @@ const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: 
     early: "$15",
     standard: "$25",
   },
+  "india-in-england-cricket-2026": {
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_CRICKET_EARLY_BIRD_CUTOFF ?? "2026-06-15",
+    early: "£9",
+    standard: "£15",
+  },
 };
 
 const HOMEPAGE_PICKS_BY_EVENT: Record<string, string[]> = {
@@ -257,7 +262,9 @@ export default async function HomePage() {
               </h1>
               <p className="mt-2 text-white/60 text-sm">
                 {formatDateRange(hero.startDate, hero.endDate)}
-                {hero.venueName ? ` · ${hero.venueName}` : ""}
+                {hero.slug === "india-in-england-cricket-2026"
+                  ? " · Birmingham · London · Nottingham · more"
+                  : hero.venueName ? ` · ${hero.venueName}` : ""}
               </p>
 
               <div className="mt-7 flex items-center gap-4 flex-wrap">
@@ -431,9 +438,11 @@ export default async function HomePage() {
                         <p className="mt-1 text-xs text-neutral-500">
                           {formatDateRange(ev.startDate, ev.endDate)}
                         </p>
-                        {ev.venueName && (
+                        {(ev.venueName || ev.slug === "india-in-england-cricket-2026") && (
                           <p className="mt-0.5 text-xs text-neutral-400 truncate">
-                            {ev.venueName}
+                            {ev.slug === "india-in-england-cricket-2026"
+                              ? "Birmingham · London · Nottingham · more"
+                              : ev.venueName}
                           </p>
                         )}
                       </div>
