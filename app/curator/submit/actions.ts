@@ -23,6 +23,7 @@ export type ExperienceFormData = {
   hours: string;
   costRange: string;
   bookingMethod: string;
+  howToBook: string;
   reservationsRequired: boolean;
   website: string;
   gettingThere: string;
@@ -80,6 +81,7 @@ export async function saveDraft(data: ExperienceFormData) {
         hours: data.hours,
         costRange: data.costRange,
         bookingMethod: data.bookingMethod,
+        howToBook: data.howToBook || undefined,
         reservationsRequired: data.reservationsRequired,
         website: data.website,
       },
@@ -129,6 +131,7 @@ export async function updateDraft(id: string, data: ExperienceFormData) {
         hours: data.hours,
         costRange: data.costRange,
         bookingMethod: data.bookingMethod,
+        howToBook: data.howToBook || undefined,
         reservationsRequired: data.reservationsRequired,
         website: data.website,
       },

@@ -83,6 +83,7 @@ function toFormDefaults(exp: ExperienceForEdit): Partial<ExperienceFormData> {
     hours: p?.hours ?? "",
     costRange: p?.costRange ?? "",
     bookingMethod: p?.bookingMethod ?? "",
+    howToBook: (p as any)?.howToBook ?? "",
     reservationsRequired: p?.reservationsRequired ?? false,
     website: p?.website ?? "",
     gettingThere: exp.gettingThere ?? "",
@@ -355,6 +356,15 @@ export function ExperienceForm({
             />
           </Field>
         </div>
+
+        <Field label="How to Book — Pro (concierge detail)" hint="Booking contacts, lead times, and insider tips. Visible to Pro subscribers only inside the event pack.">
+          <textarea
+            {...register("howToBook")}
+            rows={3}
+            placeholder="e.g. Book direct at edgbastonparkhotel.com. For the 14 July ODI, book at least 6–8 weeks ahead. Free cancellation up to 48 hours on direct bookings."
+            className={textareaClass}
+          />
+        </Field>
 
         <div className="flex items-center gap-3">
           <input

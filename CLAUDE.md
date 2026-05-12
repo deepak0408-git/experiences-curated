@@ -2,7 +2,7 @@
 
 > **Next.js 16:** `params` is a `Promise` — always `await params` before accessing properties.
 > **Middleware:** Keep named `middleware.ts` — renaming breaks Turbopack cache. Wrap Supabase calls in try-catch.
-> **Content writing:** ALWAYS invoke the humanizer skill when writing any experience copy.
+> **Content writing:** ALWAYS invoke the humanizer skill when writing any experience copy. Always output each field as a clearly labelled, copyable block in this order: Title, Subtitle, Body, Why it's special, Practical info (address, website, how to get there), How to Book / Access (public, short), How to Book Pro (Pro-gated, tactical detail — lead times, contacts), Worth knowing tip 1, Worth knowing tip 2, Avoid 1, Avoid 2, Hero image suggestion.
 > **Brand name:** "Experiences | Curated" — never "ExperiencesCurated". Title template: `"%s — Experiences | Curated"`.
 > **Nav auth state:** HomepageNav is a server component — pass `email` as prop from the page. Never use `useEffect` to read auth in navs (bfcache freezes client components on back-navigation).
 > **Magic links:** always redirect to `/auth/confirm?next=<path>` — never `/auth/callback`.
