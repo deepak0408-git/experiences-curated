@@ -410,6 +410,7 @@ export default async function EventPackPage({
                     clientToken={process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN ?? ""}
                     successUrl={`${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
                     environment={paddleEnv}
+                    userEmail={user?.email ?? undefined}
                     buttonClassName="w-full inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
                   />
                 ) : (

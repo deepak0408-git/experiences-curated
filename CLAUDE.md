@@ -103,6 +103,7 @@ sport:          tennis | cricket | football | rugby | golf | formula_one | cycli
 - Tailwind dynamic classes in ternaries get purged by Turbopack — always use static JSX branches.
 - Magic links must redirect to `/auth/confirm?next=<path>` not `/auth/callback` (implicit hash-fragment flow).
 - `purchases` table: `userId` nullable, `email + sportingEventId` unique, webhook idempotent via `onConflictDoNothing`.
+- **Paddle checkout pre-fills user email** via `customer: { email: userEmail }` in `Paddle.Checkout.open()` — prevents wrong email on purchase. `userEmail` passed as prop to `PaddleCheckout` from the server page.
 - `PACK_PRICING`, `PACK_SECTIONS_BY_EVENT`, `INSIDER_TIPS`, `PACK_EDITORIAL`, `TOURNAMENT_RHYTHM` — all keyed by event slug. Add new event entries to all five when adding a pack.
 - **PackView large object edits:** always Read 10–15 lines around the insertion point to confirm brace depth before editing `INSIDER_TIPS` or `PACK_EDITORIAL`. Misplaced entries break the function definitions that follow.
 - `LocalCurrencyHint` — client component at `event-pack/[slug]/_components/LocalCurrencyHint.tsx`. Detects locale via `navigator.languages`, fetches rate via `/api/fx?currency=XXX` (proxied to frankfurter.app to avoid CORS in dev).
@@ -123,6 +124,8 @@ sport:          tennis | cricket | football | rugby | golf | formula_one | cycli
 
 ## Trip Board
 `trip_boards` + `saved_items.tripBoardId`. Default board auto-created + orphans backfilled via `getOrCreateDefaultBoard(userId)`. Active board via `?board=<id>`. Share URL includes `?board=<id>`. Clear board scoped to active board only. Card uses `overflow-visible` so Move-to dropdown isn't clipped; notes section uses `overflow-hidden rounded-b-xl`.
+
+**Empty board state:** queries `sporting_events` for upcoming events (`endDate >= today`) and renders them dynamically — no hardcoded event slugs. Add new events to the DB and they appear automatically.
 
 ---
 

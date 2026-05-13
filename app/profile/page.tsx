@@ -206,10 +206,10 @@ export default async function ProfilePage() {
                   )}
                 </div>
               ) : (
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-neutral-500 bg-neutral-100 rounded-full px-2.5 py-1">
-                  Free
-                  <Link href="/pro" className="font-semibold text-neutral-900 underline underline-offset-2 hover:text-neutral-600 transition-colors">Upgrade →</Link>
-                </span>
+                <div className="flex flex-col items-end gap-1">
+                  <span className="inline-flex items-center text-xs font-medium text-neutral-500 bg-neutral-100 rounded-full px-2.5 py-1">Free</span>
+                  <Link href="/pro" className="text-xs font-semibold text-neutral-900 underline underline-offset-2 hover:text-neutral-600 transition-colors">Upgrade →</Link>
+                </div>
               )}
             </div>
           </div>

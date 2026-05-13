@@ -1,13 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
 import { hasProSubscription } from "@/lib/pro";
 import { db } from "@/lib/db";
-import { savedItems, users, experiences, destinations } from "@/schema/database";
-import { eq, desc } from "drizzle-orm";
+import { savedItems, users, experiences, destinations, sportingEvents } from "@/schema/database";
+import { eq, desc, gte } from "drizzle-orm";
 import Link from "next/link";
 import type { Metadata } from "next";
 import TripBoardSignIn from "./_components/TripBoardSignIn";
 import TripBoardPlanner from "./_components/TripBoardPlanner";
-import type { PlannerItem } from "./_components/TripBoardPlanner";
+import type { PlannerItem, UpcomingEvent } from "./_components/TripBoardPlanner";
 import { getOrCreateDefaultBoard, getUserBoards } from "@/lib/trip-boards";
 
 export const metadata: Metadata = {
@@ -99,6 +99,28 @@ export default async function TripBoardPage({
     bookingLinks: r.bookingLinks as Array<{ platform: string; url: string }> | null,
   }));
 
+  const today = new Date().toISOString().slice(0, 10);
+  const upcomingEventRows = await db
+    .select({
+      slug: sportingEvents.slug,
+      name: sportingEvents.name,
+      sport: sportingEvents.sport,
+      heroImageUrl: sportingEvents.heroImageUrl,
+      startDate: sportingEvents.startDate,
+      endDate: sportingEvents.endDate,
+      venueName: sportingEvents.venueName,
+      destinationName: destinations.name,
+    })
+    .from(sportingEvents)
+    .leftJoin(destinations, eq(sportingEvents.destinationId, destinations.id))
+    .where(gte(sportingEvents.endDate, today))
+    .orderBy(sportingEvents.startDate);
+
+  const upcomingEvents: UpcomingEvent[] = upcomingEventRows.map((e) => ({
+    ...e,
+    destinationName: e.destinationName ?? null,
+  }));
+
   return (
     <TripBoardPlanner
       key={activeBoardId}
@@ -109,6 +131,7 @@ export default async function TripBoardPage({
       boards={allBoards.map((b) => ({ id: b.id, title: b.title }))}
       activeBoardId={activeBoardId}
       dbUserId={dbUser.id}
+      upcomingEvents={upcomingEvents}
     />
   );
 }

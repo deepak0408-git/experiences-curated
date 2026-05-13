@@ -16,6 +16,7 @@ interface PaddleCheckoutProps {
   clientToken: string;
   successUrl: string;
   environment: "sandbox" | "production";
+  userEmail?: string;
   buttonClassName?: string;
   label?: string;
 }
@@ -48,6 +49,7 @@ export default function PaddleCheckout({
   clientToken,
   successUrl,
   environment,
+  userEmail,
   buttonClassName,
   label = "Get the Pack",
 }: PaddleCheckoutProps) {
@@ -58,6 +60,7 @@ export default function PaddleCheckout({
     window.Paddle.Checkout.open({
       items: [{ priceId, quantity: 1 }],
       customData: { sporting_event_id: sportingEventId, price_tier: priceTier },
+      ...(userEmail ? { customer: { email: userEmail } } : {}),
     });
   };
 

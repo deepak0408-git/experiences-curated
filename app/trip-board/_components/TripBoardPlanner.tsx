@@ -45,6 +45,17 @@ const BUDGET_LABELS: Record<string, string> = {
   splurge: "Splurge", luxury: "Luxury",
 };
 
+export interface UpcomingEvent {
+  slug: string;
+  name: string;
+  sport: string;
+  heroImageUrl: string | null;
+  startDate: string;
+  endDate: string;
+  venueName: string | null;
+  destinationName: string | null;
+}
+
 interface Props {
   initialItems: PlannerItem[];
   userId: string;
@@ -53,9 +64,10 @@ interface Props {
   boards: { id: string; title: string }[];
   activeBoardId: string;
   dbUserId: string;
+  upcomingEvents: UpcomingEvent[];
 }
 
-export default function TripBoardPlanner({ initialItems, userId, userEmail, isPro, boards, activeBoardId }: Props) {
+export default function TripBoardPlanner({ initialItems, userId, userEmail, isPro, boards, activeBoardId, upcomingEvents }: Props) {
   const [items, setItems] = useState<PlannerItem[]>(initialItems);
   const [showNewBoard, setShowNewBoard] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -240,31 +252,29 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
           <div className="w-[60%] flex-shrink-0 space-y-3">
             {items.length === 0 && (
               <div className="py-12 text-center">
-                <p className="text-sm font-semibold text-neutral-900 mb-1">Your {boardTitle} board is empty</p>
+                <p className="text-sm font-semibold text-neutral-900 mb-1">Your Trip Board is empty</p>
                 <p className="text-xs text-neutral-400 mb-8">Save experiences as you browse to build your itinerary.</p>
                 <div className="mt-2 pt-8 border-t border-neutral-100 text-left">
                   <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-4 text-center">Upcoming event packs</p>
-                  <div className="grid grid-cols-2 gap-4">
-                    <Link href="/event-pack/wimbledon-2026" className="group rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors">
-                      <div className="h-32 overflow-hidden bg-neutral-100">
-                        <img src={`${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/sporting-events/hero/wimbledon-2026.jpg`} alt="Wimbledon 2026" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                      </div>
-                      <div className="p-4">
-                        <p className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400 mb-1">Tennis · London</p>
-                        <p className="text-sm font-bold text-neutral-900 group-hover:text-neutral-600 transition-colors mb-1">Wimbledon 2026</p>
-                        <p className="text-xs text-neutral-400">30 Jun – 13 Jul 2026</p>
-                      </div>
-                    </Link>
-                    <Link href="/event-pack/us-open-2026" className="group rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors">
-                      <div className="h-32 overflow-hidden bg-neutral-100">
-                        <img src={`${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/sporting-events/hero/us-open-2026.jpg`} alt="US Open 2026" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                      </div>
-                      <div className="p-4">
-                        <p className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400 mb-1">Tennis · New York</p>
-                        <p className="text-sm font-bold text-neutral-900 group-hover:text-neutral-600 transition-colors mb-1">US Open 2026</p>
-                        <p className="text-xs text-neutral-400">25 Aug – 7 Sep 2026</p>
-                      </div>
-                    </Link>
+                  <div className="grid grid-cols-3 gap-4">
+                    {upcomingEvents.map((ev) => (
+                      <Link key={ev.slug} href={`/event-pack/${ev.slug}`} className="group rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors">
+                        <div className="h-32 overflow-hidden bg-neutral-100">
+                          {ev.heroImageUrl && (
+                            <img src={ev.heroImageUrl} alt={ev.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                          )}
+                        </div>
+                        <div className="p-4">
+                          <p className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400 mb-1">
+                            {ev.sport.charAt(0).toUpperCase() + ev.sport.slice(1)}{ev.destinationName ? ` · ${ev.destinationName}` : ""}
+                          </p>
+                          <p className="text-sm font-bold text-neutral-900 group-hover:text-neutral-600 transition-colors mb-1">{ev.name}</p>
+                          <p className="text-xs text-neutral-400">
+                            {new Date(ev.startDate).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })} – {new Date(ev.endDate).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
                   </div>
                 </div>
               </div>
