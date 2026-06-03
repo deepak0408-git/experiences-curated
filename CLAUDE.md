@@ -55,7 +55,7 @@ app/_components/
   SignOutButton.tsx  # "use client" — only interactive piece of the nav
   SignInLink.tsx     # "use client" — reads pathname to build /sign-in?next=<path>
   SearchForm.tsx     # "use client" — uses router.push() not form submit (avoids bfcache)
-  SiteFooter.tsx     # Global footer — Privacy, Terms, Contact; max-w-5xl
+  SiteFooter.tsx     # Global footer — Privacy, Terms, Contact, affiliate disclosure; max-w-5xl
   CookieBanner.tsx   # Cookie consent
 
 lib/db.ts          # Drizzle singleton — always import from here
@@ -145,8 +145,17 @@ supabase.auth.admin.generateLink({
 
 ---
 
+## Security
+- `/curator/*` protected in `middleware.ts` — unauthenticated users redirected to `/sign-in?next=...`
+- `/api/upload/presign` requires authenticated Supabase session — returns 401 otherwise
+- HTTP security headers set in `next.config.ts` — X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
+- GDPR account deletion: `deleteAccount()` server action in `app/profile/actions.ts` — uses service role `admin.deleteUser()`
+- `npm run build` must pass clean before every deploy — last confirmed 3 Jun 2026
+
+---
+
 ## Image Uploads
-`ImageUploader`: JPEG/PNG/WebP/AVIF ≤15MB → GET `/api/upload/presign` → PUT to R2.
+`ImageUploader`: JPEG/PNG/WebP/AVIF ≤15MB → GET `/api/upload/presign` (requires auth session) → PUT to R2.
 R2 keys: `experiences/hero/<name>.jpg` · `sporting-events/hero/<name>.jpg`
 
 ---
