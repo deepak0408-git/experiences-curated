@@ -41,6 +41,14 @@ export async function middleware(request: NextRequest) {
       url.pathname = `/event-pack/${slug}`;
       return NextResponse.redirect(url);
     }
+
+    // Protect /curator/* — redirect unauthenticated users to sign-in
+    if (!user && request.nextUrl.pathname.startsWith("/curator")) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/sign-in";
+      url.searchParams.set("next", request.nextUrl.pathname);
+      return NextResponse.redirect(url);
+    }
   } catch {
     // Never let a Supabase error break page rendering
   }

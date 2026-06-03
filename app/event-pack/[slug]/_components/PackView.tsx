@@ -447,7 +447,7 @@ export default async function PackView({
   archetype,
 }: PackViewProps) {
   const editorial = PACK_EDITORIAL[eventSlug] ?? PACK_EDITORIAL["wimbledon-2026"];
-  const sectionOrder = (archetype && ARCHETYPE_SECTION_ORDER[archetype]) ?? SECTION_ORDER;
+  const sectionOrder = (archetype ? ARCHETYPE_SECTION_ORDER[archetype] : undefined) ?? SECTION_ORDER;
 
   const exps = await db
     .select({
