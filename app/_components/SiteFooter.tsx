@@ -22,6 +22,14 @@ export default function SiteFooter() {
           </a>
         </div>
       </div>
+      <div className="max-w-5xl mx-auto px-6 pb-5">
+        <p className="text-xs text-neutral-300">
+          Some booking links are affiliate links. We may earn a small commission at no extra cost to you.{" "}
+          <Link href="/terms" className="underline underline-offset-2 hover:text-neutral-400 transition-colors">
+            Learn more
+          </Link>
+        </p>
+      </div>
     </footer>
   );
 }
