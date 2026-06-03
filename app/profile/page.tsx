@@ -10,6 +10,7 @@ import SignOutButton from "@/app/event-pack/[slug]/_components/SignOutButton";
 import { hasProSubscription } from "@/lib/pro";
 import ManageSubscriptionButton from "./_components/ManageSubscriptionButton";
 import CookieSettingsButton from "./_components/CookieSettingsButton";
+import DeleteAccountButton from "./_components/DeleteAccountButton";
 
 export const metadata: Metadata = {
   title: "Profile — Experiences | Curated",
@@ -192,6 +193,10 @@ export default async function ProfilePage() {
             <div className="flex items-center justify-between">
               <p className="text-sm text-neutral-500">Cookie preferences</p>
               <CookieSettingsButton />
+            </div>
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-neutral-500">Delete account</p>
+              <DeleteAccountButton />
             </div>
             <div className="flex items-center justify-between">
               <p className="text-sm text-neutral-500">Status</p>
