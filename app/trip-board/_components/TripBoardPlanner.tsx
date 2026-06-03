@@ -364,6 +364,13 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
             })}
           </div>
 
+          {sortedItems.some((item) => item.bookingLinks?.[0]) && (
+            <p className="text-xs text-neutral-400 mt-2">
+              Booking links marked "Book →" may be affiliate links. We earn a small commission at no extra cost to you.{" "}
+              <a href="/terms" className="underline underline-offset-2 hover:text-neutral-600 transition-colors">Learn more</a>
+            </p>
+          )}
+
           {/* Right — sticky calendar timeline */}
           <div className="hidden lg:block flex-1 min-w-0">
             <div className="sticky top-6 max-h-[calc(100vh-6rem)] overflow-y-auto">
