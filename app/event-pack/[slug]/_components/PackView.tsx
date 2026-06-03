@@ -320,6 +320,37 @@ const INSIDER_TIPS: Record<string, Record<string, string[]>> = {
       "Morning tour + day session is the move — Queens at its quietest, then courts from 11am before the crowds build",
     ],
   },
+  "india-in-england-cricket-2026": {
+    "Edgbaston": [
+      "Gates open 90 minutes before play — arrive early enough to walk the concourse and pick a spot on the family-friendly Raglan Stand before it fills",
+      "The Hollies Stand is the loudest and most flag-heavy section — if you want the Bharat Army atmosphere, that's where it lives",
+      "Carry cash for the independent food stalls outside the ground; card-only inside",
+    ],
+    "Lord's": [
+      "The Grace Gates open 90 minutes before play — use the extra time to visit the MCC Museum and the Long Room before the match crowd arrives",
+      "The Tavern Stand and Mound Stand are the most atmosphere-heavy for India fixtures; the Warner Stand offers better sightlines but a quieter crowd",
+      "Tickets show which gate to use — Gate A (Grace Gates end) and Gate D (Wellington Road) are the main entry points; don't confuse them",
+    ],
+    "Trent Bridge": [
+      "Radcliffe Road End is where the touring fan sections tend to congregate for India fixtures — arrive early and check the allocation when you collect your ticket",
+      "The ground is compact and every seat has a decent view; upper tiers in the Larwood and Voce Stand put you above the sightscreen for a clean angle on the pitch",
+      "West Bridgford village — a 10-minute walk from the ground — has better pre-match food options than the immediate stadium area",
+    ],
+    "Bharat Army": [
+      "Membership isn't required to join sections on the day — introduce yourself, the community is genuinely welcoming",
+      "The organised group travel packages include ticket bundles; worth checking bharatarmy.com before buying tickets separately if you're travelling from India",
+      "Bring a blue India shirt — the fan sections have a clear dress code expectation even if it's not enforced",
+    ],
+    "Moseley": [
+      "The farmers' market runs on the last Saturday of each month — the Edgbaston T20 is on 14 July, so if you're in Birmingham that weekend, the market won't be on",
+      "St Mary's Row is the main strip; arrive before 9am if you want a table at the busier cafés on a match day",
+    ],
+    "London in a day": [
+      "Start from St John's Wood and walk south through Regent's Park to the Inner Circle — the café there opens at 8am and the park is at its quietest before 10am",
+      "Abbey Road crossing is busiest mid-morning; photographers queue for the shot, but the crossing itself takes seconds and the studio facade is worth seeing",
+      "If the Lord's match runs long, the day trip compresses naturally — Regent's Park and St John's Wood village alone fill a morning without rushing",
+    ],
+  },
 };
 
 function getInsiderTips(title: string, eventSlug: string): string[] | null {
