@@ -7,7 +7,7 @@ export default function HomepageNav({ email, showSearch = false }: { email: stri
   return (
     <nav className="border-b border-neutral-100">
       <div className="max-w-5xl mx-auto px-6 sm:px-8 py-4 flex items-center justify-between">
-        <Link href="/" className="text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors">
+        <Link href="/" className="text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors whitespace-nowrap">
           Experiences | Curated
         </Link>
         <div className="flex items-center gap-6">
@@ -33,7 +33,6 @@ export default function HomepageNav({ email, showSearch = false }: { email: stri
           {email ? (
             <>
               <span className="text-neutral-200">|</span>
-              <p className="text-xs text-neutral-400">{email}</p>
               <SignOutButton />
             </>
           ) : (

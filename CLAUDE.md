@@ -134,7 +134,12 @@ sport:          tennis | cricket | football | rugby | golf | formula_one | cycli
 
 ---
 
-## Auth — magic links without email
+## Email — magic links via Resend API
+Sign-in page POSTs to `/api/auth/magic-link` → generates link via Supabase admin → sends via Resend API.
+**Do not use `supabase.auth.signInWithOtp()` on the client** — Supabase free tier SMTP is rate-limited and unreliable.
+`RESEND_API_KEY` must be set in env. Sends from `hello@experiences-curated.com`.
+
+For scripts/admin use (generating links without triggering email):
 ```js
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 supabase.auth.admin.generateLink({
@@ -150,7 +155,7 @@ supabase.auth.admin.generateLink({
 - `/api/upload/presign` requires authenticated Supabase session — returns 401 otherwise
 - HTTP security headers set in `next.config.ts` — X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
 - GDPR account deletion: `deleteAccount()` server action in `app/profile/actions.ts` — uses service role `admin.deleteUser()`
-- `npm run build` must pass clean before every deploy — last confirmed 3 Jun 2026
+- `npm run build` must pass clean before every deploy — last confirmed 6 Jun 2026
 
 ---
 
