@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SiteFooter from "./_components/SiteFooter";
 import CookieBanner from "./_components/CookieBanner";
+import { PostHogProvider } from "./_components/PostHogProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,9 +38,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-          {children}
-          <SiteFooter />
-          <CookieBanner />
+          <PostHogProvider>
+            {children}
+            <SiteFooter />
+            <CookieBanner />
+          </PostHogProvider>
         </body>
     </html>
   );

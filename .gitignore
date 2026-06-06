@@ -45,3 +45,7 @@ Images/
 
 # drizzle migrations meta
 drizzle/
+
+# Sentry Config File
+.env.sentry-build-plugin
+.env.local
