@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ARCHETYPE_DETAILS, type Archetype } from "@/lib/quiz";
 
 const R2 = process.env.NEXT_PUBLIC_R2_PUBLIC_URL ?? "";
@@ -56,11 +57,13 @@ export default function ArchetypeReveal({ archetype }: Props) {
             href={`/event-pack/${pack.slug}`}
             className="group text-left rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors"
           >
-            <div className="h-32 overflow-hidden bg-neutral-100">
-              <img
+            <div className="relative h-32 overflow-hidden bg-neutral-100">
+              <Image
                 src={pack.heroImageUrl}
                 alt={pack.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                sizes="(max-width: 640px) 100vw, 33vw"
               />
             </div>
             <div className="p-4">

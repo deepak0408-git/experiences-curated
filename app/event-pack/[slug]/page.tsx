@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import PaddleCheckout from "./_components/PaddleCheckout";
 import PackView from "./_components/PackView";
 import { hasProSubscription } from "@/lib/pro";
@@ -334,10 +335,13 @@ export default async function EventPackPage({
       {/* Hero */}
       <div className="relative h-[38vh] min-h-[220px] overflow-hidden bg-neutral-900">
         {event.heroImageUrl && (
-          <img
+          <Image
             src={event.heroImageUrl}
             alt={event.name}
-            className="w-full h-full object-cover opacity-90"
+            fill
+            className="object-cover opacity-90"
+            sizes="100vw"
+            priority
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
@@ -460,10 +464,12 @@ export default async function EventPackPage({
                 >
                   <div className="relative h-40 overflow-hidden bg-neutral-100">
                     {exp.heroImageUrl ? (
-                      <img
+                      <Image
                         src={exp.heroImageUrl}
                         alt={exp.title}
-                        className="w-full h-full object-cover blur-sm scale-105"
+                        fill
+                        className="object-cover blur-sm scale-105"
+                        sizes="(max-width: 1024px) 33vw, 25vw"
                       />
                     ) : (
                       <div className="w-full h-full bg-neutral-200" />

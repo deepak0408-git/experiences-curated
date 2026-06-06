@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import SchedulePicker from "./SchedulePicker";
 import CalendarTimeline from "./CalendarTimeline";
@@ -259,9 +260,9 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                   <div className="grid grid-cols-3 gap-4">
                     {upcomingEvents.map((ev) => (
                       <Link key={ev.slug} href={`/event-pack/${ev.slug}`} className="group rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors">
-                        <div className="h-32 overflow-hidden bg-neutral-100">
+                        <div className="relative h-32 overflow-hidden bg-neutral-100">
                           {ev.heroImageUrl && (
-                            <img src={ev.heroImageUrl} alt={ev.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            <Image src={ev.heroImageUrl} alt={ev.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width: 1024px) 33vw, 25vw" />
                           )}
                         </div>
                         <div className="p-4">
@@ -285,12 +286,14 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                 <div key={item.savedItemId} className="rounded-xl border border-neutral-200 overflow-visible">
                   <div className="flex">
                     <Link href={`/experience/${item.slug}`} className="block flex-shrink-0">
-                      <div className="w-24 h-24 overflow-hidden bg-neutral-100">
+                      <div className="relative w-24 h-24 overflow-hidden bg-neutral-100">
                         {item.heroImageUrl ? (
-                          <img
+                          <Image
                             src={item.heroImageUrl}
                             alt={item.title}
-                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            fill
+                            className="object-cover hover:scale-105 transition-transform duration-300"
+                            sizes="96px"
                           />
                         ) : (
                           <div className="w-full h-full bg-neutral-200" />

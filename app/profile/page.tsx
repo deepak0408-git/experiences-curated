@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { users, userProfiles, travelLogs, purchases, sportingEvents, proSubscriptions } from "@/schema/database";
@@ -167,7 +168,7 @@ export default async function ProfilePage() {
                 >
                   <div className="w-16 h-16 flex-shrink-0 bg-neutral-100 overflow-hidden">
                     {pack.heroImageUrl && (
-                      <img src={pack.heroImageUrl} alt={pack.eventName} className="w-full h-full object-cover" />
+                      <Image src={pack.heroImageUrl} alt={pack.eventName} width={64} height={64} className="w-full h-full object-cover" />
                     )}
                   </div>
                   <div className="py-2 pr-4">

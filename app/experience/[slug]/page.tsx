@@ -1,6 +1,7 @@
 import { getExperienceBySlug, type ExperienceDetail } from "@/lib/queries/experiences";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import Image from "next/image";
 import { db } from "@/lib/db";
 import { experiences, savedItems, users, userProfiles, travelLogs } from "@/schema/database";
 import { and, eq, ne, inArray, count, sql } from "drizzle-orm";
@@ -202,10 +203,13 @@ export default async function ExperiencePage({
       {/* ── Hero ── */}
       {exp.heroImageUrl ? (
         <div className="relative h-[55vh] min-h-[380px] overflow-hidden bg-neutral-900">
-          <img
+          <Image
             src={exp.heroImageUrl}
             alt={exp.heroImageAlt ?? exp.title}
-            className="w-full h-full object-cover opacity-90"
+            fill
+            className="object-cover opacity-90"
+            sizes="100vw"
+            priority
           />
           {exp.heroImageCredit && (
             <p className="absolute bottom-3 right-4 text-xs text-white/60">
@@ -396,10 +400,12 @@ export default async function ExperiencePage({
         {exp.curatorName && (
           <div className="mt-12 pt-8 border-t border-neutral-100 flex items-start gap-4">
             {exp.curatorImage ? (
-              <img
+              <Image
                 src={exp.curatorImage}
                 alt={exp.curatorName}
-                className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                width={40}
+                height={40}
+                className="rounded-full object-cover flex-shrink-0"
               />
             ) : (
               <div className="w-10 h-10 rounded-full bg-neutral-200 flex items-center justify-center flex-shrink-0 text-sm font-medium text-neutral-600">
@@ -468,11 +474,13 @@ export default async function ExperiencePage({
                   className="group rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors bg-white"
                 >
                   {rel.heroImageUrl ? (
-                    <div className="h-32 overflow-hidden bg-neutral-100">
-                      <img
+                    <div className="relative h-32 overflow-hidden bg-neutral-100">
+                      <Image
                         src={rel.heroImageUrl}
                         alt={rel.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 640px) 100vw, 33vw"
                       />
                     </div>
                   ) : (

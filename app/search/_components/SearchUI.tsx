@@ -12,6 +12,7 @@ import {
 } from "react-instantsearch";
 import type { Hit } from "instantsearch.js";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
@@ -102,11 +103,13 @@ function HitCard({ hit }: { hit: ExperienceHit }) {
       className="group rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors block"
     >
       {hit.heroImageUrl ? (
-        <div className="h-40 overflow-hidden bg-neutral-100">
-          <img
+        <div className="relative h-40 overflow-hidden bg-neutral-100">
+          <Image
             src={hit.heroImageUrl}
             alt={hit.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         </div>
       ) : (

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { hasProSubscription } from "@/lib/pro";
@@ -110,8 +111,8 @@ export default async function ProPage() {
               <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-5">Upcoming event packs</p>
               <div className="grid sm:grid-cols-2 gap-4">
                 <Link href="/event-pack/wimbledon-2026" className="group text-left rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors">
-                  <div className="h-32 overflow-hidden bg-neutral-100">
-                    <img src={`${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/sporting-events/hero/wimbledon-2026.jpg`} alt="Wimbledon 2026" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  <div className="relative h-32 overflow-hidden bg-neutral-100">
+                    <Image src={`${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/sporting-events/hero/wimbledon-2026.jpg`} alt="Wimbledon 2026" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width: 640px) 100vw, 33vw" />
                   </div>
                   <div className="p-4">
                     <p className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400 mb-1">Tennis · London</p>
@@ -120,8 +121,8 @@ export default async function ProPage() {
                   </div>
                 </Link>
                 <Link href="/event-pack/us-open-2026" className="group text-left rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors">
-                  <div className="h-32 overflow-hidden bg-neutral-100">
-                    <img src={`${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/sporting-events/hero/us-open-2026.jpg`} alt="US Open 2026" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  <div className="relative h-32 overflow-hidden bg-neutral-100">
+                    <Image src={`${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/sporting-events/hero/us-open-2026.jpg`} alt="US Open 2026" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width: 640px) 100vw, 33vw" />
                   </div>
                   <div className="p-4">
                     <p className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400 mb-1">Tennis · New York</p>

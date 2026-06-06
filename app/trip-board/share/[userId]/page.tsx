@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { savedItems, users, experiences, destinations, tripBoards } from "@/schema/database";
 import { eq, desc, and } from "drizzle-orm";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
@@ -174,9 +175,9 @@ export default async function SharedTripBoardPage({
                 <div key={item.savedItemId} className="rounded-xl border border-neutral-200 overflow-hidden">
                   <div className="flex">
                     <Link href={`/experience/${item.slug}`} className="block flex-shrink-0">
-                      <div className="w-24 h-24 overflow-hidden bg-neutral-100">
+                      <div className="relative w-24 h-24 overflow-hidden bg-neutral-100">
                         {item.heroImageUrl ? (
-                          <img src={item.heroImageUrl} alt={item.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                          <Image src={item.heroImageUrl} alt={item.title} fill className="object-cover hover:scale-105 transition-transform duration-300" sizes="96px" />
                         ) : (
                           <div className="w-full h-full bg-neutral-200" />
                         )}

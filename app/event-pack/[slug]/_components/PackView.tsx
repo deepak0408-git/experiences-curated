@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { experiences } from "@/schema/database";
 import { eq, and } from "drizzle-orm";
 import Link from "next/link";
+import Image from "next/image";
 import SignOutButton from "./SignOutButton";
 import { AddAllToBoard, AddOneToBoard } from "./AddToBoard";
 import HowToBook from "./HowToBook";
@@ -487,10 +488,13 @@ export default async function PackView({
       {/* Masthead — hero image + event info */}
       <div className="relative h-[40vh] min-h-[260px] overflow-hidden bg-neutral-900">
         {heroImageUrl && (
-          <img
+          <Image
             src={heroImageUrl}
             alt={eventName}
-            className="w-full h-full object-cover opacity-90"
+            fill
+            className="object-cover opacity-90"
+            sizes="100vw"
+            priority
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
@@ -748,11 +752,13 @@ export default async function PackView({
                 className="group block rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors mb-5"
               >
                 {section.editorsPick.heroImageUrl && (
-                  <div className="h-60 overflow-hidden bg-neutral-100">
-                    <img
+                  <div className="relative h-60 overflow-hidden bg-neutral-100">
+                    <Image
                       src={section.editorsPick.heroImageUrl}
                       alt={section.editorsPick.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 1024px) 100vw, 66vw"
                     />
                   </div>
                 )}
@@ -831,12 +837,14 @@ export default async function PackView({
                     href={`/experience/${exp.slug}`}
                     className="group rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors"
                   >
-                    <div className="h-36 overflow-hidden bg-neutral-100">
+                    <div className="relative h-36 overflow-hidden bg-neutral-100">
                       {exp.heroImageUrl ? (
-                        <img
+                        <Image
                           src={exp.heroImageUrl}
                           alt={exp.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
                       ) : (
                         <div className="w-full h-full bg-neutral-200" />

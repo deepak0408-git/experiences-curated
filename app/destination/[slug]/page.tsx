@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import {
   getDestinationBySlug,
   getDestinationExperiences,
@@ -99,10 +100,13 @@ export default async function DestinationPage({
       {/* Hero */}
       {dest.heroImageUrl ? (
         <div className="relative h-[45vh] min-h-[300px] overflow-hidden bg-neutral-900">
-          <img
+          <Image
             src={dest.heroImageUrl}
             alt={dest.name}
-            className="w-full h-full object-cover opacity-85"
+            fill
+            className="object-cover opacity-85"
+            sizes="100vw"
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 px-8 pb-8 max-w-5xl mx-auto">
@@ -276,11 +280,13 @@ function ExperienceCard({ exp }: { exp: DestinationExperience }) {
       className="group rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors"
     >
       {exp.heroImageUrl ? (
-        <div className="h-40 overflow-hidden bg-neutral-100">
-          <img
+        <div className="relative h-40 overflow-hidden bg-neutral-100">
+          <Image
             src={exp.heroImageUrl}
             alt={exp.heroImageAlt ?? exp.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         </div>
       ) : (

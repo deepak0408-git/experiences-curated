@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { sportingEvents, experiences, userProfiles } from "@/schema/database";
 import { eq, and, gte, desc, asc, ne, sql } from "drizzle-orm";
 import Link from "next/link";
+import Image from "next/image";
 import HomepageTripBoardCTA from "./_components/HomepageTripBoardCTA";
 import HomepageNav from "./_components/HomepageNav";
 import { createClient } from "@/lib/supabase/server";
@@ -229,10 +230,13 @@ export default async function HomePage() {
       {hero && heroState && (
         <div className="relative h-[62vh] min-h-[420px] overflow-hidden bg-neutral-900">
           {hero.heroImageUrl && (
-            <img
+            <Image
               src={hero.heroImageUrl}
               alt={hero.name}
-              className="w-full h-full object-cover opacity-65"
+              fill
+              className="object-cover opacity-65"
+              sizes="100vw"
+              priority
             />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
@@ -329,12 +333,14 @@ export default async function HomePage() {
                 href={`/experience/${exp.slug}`}
                 className="group rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors"
               >
-                <div className="h-44 overflow-hidden bg-neutral-100">
+                <div className="relative h-44 overflow-hidden bg-neutral-100">
                   {exp.heroImageUrl ? (
-                    <img
+                    <Image
                       src={exp.heroImageUrl}
                       alt={exp.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                   ) : (
                     <div className="w-full h-full bg-neutral-200" />
@@ -402,12 +408,14 @@ export default async function HomePage() {
                     className="group flex rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors"
                   >
                     {/* Image */}
-                    <div className="w-48 sm:w-64 flex-shrink-0 overflow-hidden bg-neutral-100">
+                    <div className="relative w-48 sm:w-64 flex-shrink-0 overflow-hidden bg-neutral-100">
                       {ev.heroImageUrl ? (
-                        <img
+                        <Image
                           src={ev.heroImageUrl}
                           alt={ev.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          sizes="(max-width: 640px) 192px, 256px"
                         />
                       ) : (
                         <div className="w-full h-full bg-neutral-200" />

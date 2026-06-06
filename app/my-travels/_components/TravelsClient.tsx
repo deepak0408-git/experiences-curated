@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import LogVisitModal from "./LogVisitModal";
 import { deleteLog } from "../actions";
@@ -95,9 +96,9 @@ export default function TravelsClient({ logs, userEmail }: { logs: LogEntry[]; u
             {items.map((log) => (
               <div key={log.id} className="rounded-xl border border-neutral-200 overflow-hidden flex">
                 <Link href={`/experience/${log.slug}`} className="block flex-shrink-0">
-                  <div className="w-24 h-24 overflow-hidden bg-neutral-100">
+                  <div className="relative w-24 h-24 overflow-hidden bg-neutral-100">
                     {log.heroImageUrl ? (
-                      <img src={log.heroImageUrl} alt={log.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                      <Image src={log.heroImageUrl} alt={log.title} fill className="object-cover hover:scale-105 transition-transform duration-300" sizes="96px" />
                     ) : (
                       <div className="w-full h-full bg-neutral-200" />
                     )}
