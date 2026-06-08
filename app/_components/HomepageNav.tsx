@@ -18,7 +18,7 @@ export default function HomepageNav({ email, showSearch = false }: { email: stri
             </>
           )}
           <Link href="/trip-board" className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors whitespace-nowrap">
-            {email ? "My Trip Board" : "Trip Board"}
+            Trip Board
           </Link>
           {email && (
             <>
