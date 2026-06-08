@@ -9,11 +9,14 @@ import {
   Stats,
   Configure,
   useInstantSearch,
+  useClearRefinements,
+  useRefinementList,
 } from "react-instantsearch";
 import type { Hit } from "instantsearch.js";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 type ExperienceHit = Hit<{
@@ -162,6 +165,93 @@ const refinementClassNames = {
   selectedItem: "[&_span]:font-medium [&_span]:text-neutral-900",
 };
 
+function useActiveFilterCount() {
+  const dest = useRefinementList({ attribute: "destinationName" });
+  const type = useRefinementList({ attribute: "experienceType" });
+  const budget = useRefinementList({ attribute: "budgetTier" });
+  const pace = useRefinementList({ attribute: "pace" });
+  return (
+    dest.items.filter((i) => i.isRefined).length +
+    type.items.filter((i) => i.isRefined).length +
+    budget.items.filter((i) => i.isRefined).length +
+    pace.items.filter((i) => i.isRefined).length
+  );
+}
+
+function MobileFilterDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { refine: clearAll } = useClearRefinements();
+  const activeCount = useActiveFilterCount();
+
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 md:hidden">
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+      {/* Sheet */}
+      <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] flex flex-col">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-100">
+          <p className="text-sm font-semibold text-neutral-900">
+            Filters{activeCount > 0 ? ` · ${activeCount} active` : ""}
+          </p>
+          <div className="flex items-center gap-4">
+            {activeCount > 0 && (
+              <button
+                onClick={() => clearAll()}
+                className="text-xs text-neutral-400 hover:text-neutral-700 transition-colors underline underline-offset-2"
+              >
+                Clear all
+              </button>
+            )}
+            <button onClick={onClose} className="text-neutral-400 hover:text-neutral-700 transition-colors">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 20 20"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+        <div className="overflow-y-auto flex-1 px-5 py-5 space-y-7">
+          <FilterSection title="Destination">
+            <RefinementList attribute="destinationName" sortBy={["name:asc"]} classNames={refinementClassNames} />
+          </FilterSection>
+          <FilterSection title="Type">
+            <RefinementList attribute="experienceType" sortBy={["name:asc"]} transformItems={transformTypeItems as any} classNames={refinementClassNames} />
+          </FilterSection>
+          <FilterSection title="Budget">
+            <RefinementList attribute="budgetTier" sortBy={["name:asc"]} transformItems={transformBudgetItems as any} classNames={refinementClassNames} />
+          </FilterSection>
+          <FilterSection title="Pace">
+            <RefinementList attribute="pace" sortBy={["name:asc"]} transformItems={transformPaceItems as any} classNames={refinementClassNames} />
+          </FilterSection>
+        </div>
+        <div className="px-5 py-4 border-t border-neutral-100">
+          <button
+            onClick={onClose}
+            className="w-full py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
+          >
+            Show results
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MobileFilterButton({ onOpen }: { onOpen: () => void }) {
+  const activeCount = useActiveFilterCount();
+  return (
+    <button
+      onClick={onOpen}
+      className={`md:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-semibold transition-colors flex-shrink-0 ${
+        activeCount > 0
+          ? "border-neutral-900 bg-neutral-900 text-white"
+          : "border-neutral-300 text-neutral-600 hover:border-neutral-500"
+      }`}
+    >
+      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 16 16"><path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+      Filters{activeCount > 0 ? ` · ${activeCount}` : ""}
+    </button>
+  );
+}
+
 export function SearchUI({
   appId,
   searchKey,
@@ -193,6 +283,7 @@ export function SearchUI({
   })();
 
   const router = useRouter();
+  const [filterOpen, setFilterOpen] = useState(false);
   const signOut = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
@@ -209,12 +300,15 @@ export function SearchUI({
       <Configure hitsPerPage={50} {...(optionalFilters.length > 0 ? { optionalFilters } : {})} />
 
       <div className="min-h-screen bg-white">
+        {/* Mobile filter drawer */}
+        <MobileFilterDrawer open={filterOpen} onClose={() => setFilterOpen(false)} />
+
         {/* Header */}
         <div className="border-b border-neutral-100 bg-white sticky top-0 z-10">
           <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-6">
             <Link
               href="/"
-              className="text-sm font-semibold tracking-widest text-neutral-400 uppercase hover:text-neutral-600 transition-colors whitespace-nowrap flex-shrink-0"
+              className="text-xs sm:text-sm font-semibold tracking-widest text-neutral-400 uppercase hover:text-neutral-600 transition-colors whitespace-nowrap flex-shrink-0"
             >
               Experiences | Curated
             </Link>
@@ -240,6 +334,7 @@ export function SearchUI({
                   `${nbHits.toLocaleString()} result${nbHits !== 1 ? "s" : ""}`,
               }}
             />
+            <MobileFilterButton onOpen={() => setFilterOpen(true)} />
             <span className="text-xs text-neutral-400 whitespace-nowrap flex-shrink-0 hidden sm:flex items-center gap-1 ml-auto">
               Free users get 3 reads.{" "}
               <Link href="/pro" className="font-semibold underline underline-offset-2 text-neutral-600 hover:text-neutral-900 transition-colors">Pro</Link>{" "}
