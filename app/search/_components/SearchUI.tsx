@@ -89,7 +89,7 @@ function HitsOrEmpty() {
       hitComponent={HitCard}
       classNames={{
         root: "",
-        list: "grid sm:grid-cols-2 lg:grid-cols-3 gap-5",
+        list: "grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5",
         item: "",
       }}
     />
@@ -103,7 +103,7 @@ function HitCard({ hit }: { hit: ExperienceHit }) {
       className="group rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors block"
     >
       {hit.heroImageUrl ? (
-        <div className="relative h-40 overflow-hidden bg-neutral-100">
+        <div className="relative h-32 sm:h-40 overflow-hidden bg-neutral-100">
           <Image
             src={hit.heroImageUrl}
             alt={hit.title}
@@ -113,13 +113,13 @@ function HitCard({ hit }: { hit: ExperienceHit }) {
           />
         </div>
       ) : (
-        <div className="h-40 bg-neutral-100 flex items-center justify-center">
+        <div className="h-32 sm:h-40 bg-neutral-100 flex items-center justify-center">
           <span className="text-xs text-neutral-400 tracking-widest uppercase">
             {TYPE_LABELS[hit.experienceType] ?? hit.experienceType}
           </span>
         </div>
       )}
-      <div className="p-4">
+      <div className="p-3 sm:p-4">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-semibold tracking-widest uppercase text-neutral-400">
             {TYPE_LABELS[hit.experienceType] ?? hit.experienceType}
@@ -302,7 +302,7 @@ export function SearchUI({
 
         {/* Header */}
         <div className="border-b border-neutral-100 bg-white sticky top-0 z-10">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-4 sm:gap-6 min-w-0">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-2 sm:gap-6 min-w-0">
             <Link
               href="/"
               className="text-xs sm:text-sm font-semibold tracking-widest text-neutral-400 uppercase hover:text-neutral-600 transition-colors whitespace-nowrap flex-shrink-0"
@@ -331,6 +331,7 @@ export function SearchUI({
                   `${nbHits.toLocaleString()} result${nbHits !== 1 ? "s" : ""}`,
               }}
             />
+            <div className="flex-1 md:hidden" />
             <MobileFilterButton onOpen={() => setFilterOpen(true)} />
             <span className="text-xs text-neutral-400 whitespace-nowrap flex-shrink-0 hidden sm:flex items-center gap-1 ml-auto">
               Free users get 3 reads.{" "}
