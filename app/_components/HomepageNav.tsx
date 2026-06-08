@@ -14,7 +14,7 @@ export default function HomepageNav({ email, showSearch = false }: { email: stri
           {showSearch && (
             <>
               <SearchForm />
-              <span className="text-neutral-200">|</span>
+              <span className="hidden sm:inline text-neutral-200">|</span>
             </>
           )}
           <Link href="/trip-board" className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors whitespace-nowrap">
@@ -32,7 +32,7 @@ export default function HomepageNav({ email, showSearch = false }: { email: stri
           )}
           {email ? (
             <>
-              <span className="text-neutral-200">|</span>
+              <span className="hidden sm:inline text-neutral-200">|</span>
               <SignOutButton />
             </>
           ) : (
