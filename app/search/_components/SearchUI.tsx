@@ -178,13 +178,11 @@ function MobileFilterDrawer({ open, onClose }: { open: boolean; onClose: () => v
 
   return (
     <div className="fixed inset-0 z-50 md:hidden">
-      {/* Backdrop */}
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-      {/* Sheet */}
-      <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] flex flex-col">
+      <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[90vh] flex flex-col">
         <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-100">
           <p className="text-sm font-semibold text-neutral-900">
-            Filters{activeCount > 0 ? ` · ${activeCount} active` : ""}
+            Search & Filter{activeCount > 0 ? ` · ${activeCount} active` : ""}
           </p>
           <div className="flex items-center gap-4">
             {activeCount > 0 && (
@@ -201,6 +199,21 @@ function MobileFilterDrawer({ open, onClose }: { open: boolean; onClose: () => v
           </div>
         </div>
         <div className="overflow-y-auto flex-1 px-5 py-5 space-y-7">
+          {/* Search inside drawer on mobile */}
+          <SearchBox
+            placeholder="Search experiences, destinations…"
+            classNames={{
+              root: "",
+              form: "relative",
+              input: "w-full rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-2.5 pr-10 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent",
+              submit: "absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700",
+              submitIcon: "w-4 h-4",
+              reset: "absolute right-8 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700",
+              resetIcon: "w-3.5 h-3.5",
+              loadingIndicator: "absolute right-3 top-1/2 -translate-y-1/2",
+              loadingIcon: "w-4 h-4 animate-spin text-neutral-400",
+            }}
+          />
           <FilterSection title="Destination">
             <RefinementList attribute="destinationName" sortBy={["name:asc"]} classNames={refinementClassNames} />
           </FilterSection>
@@ -239,7 +252,7 @@ function MobileFilterButton({ onOpen }: { onOpen: () => void }) {
       }`}
     >
       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 16 16"><path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
-      Filters{activeCount > 0 ? ` · ${activeCount}` : ""}
+      Search & Filter{activeCount > 0 ? ` · ${activeCount}` : ""}
     </button>
   );
 }
@@ -307,7 +320,7 @@ export function SearchUI({
             <SearchBox
               placeholder="Search experiences, destinations…"
               classNames={{
-                root: "flex-1 max-w-md",
+                root: "hidden md:block flex-1 max-w-md",
                 form: "relative",
                 input:
                   "w-full rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-2.5 pr-10 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent",
