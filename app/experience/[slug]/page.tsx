@@ -390,7 +390,7 @@ export default async function ExperiencePage({
               )}
               {practical.website && (
                 <div className="flex gap-4">
-                  <dt className="w-28 flex-shrink-0 text-sm font-medium text-neutral-500">Website</dt>
+                  <dt className="w-1/4 flex-shrink-0 text-sm font-medium text-neutral-500 sm:w-28">Website</dt>
                   <dd className="min-w-0 break-all">
                     <a
                       href={practical.website.match(/^https?:\/\//) ? practical.website : `https://${practical.website}`}
@@ -621,7 +621,7 @@ function renderInline(text: string) {
 function PracticalRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex gap-4">
-      <dt className="w-28 flex-shrink-0 text-sm font-medium text-neutral-500">{label}</dt>
+      <dt className="w-1/4 flex-shrink-0 text-sm font-medium text-neutral-500 sm:w-28">{label}</dt>
       <dd className="text-sm text-neutral-800 leading-6 min-w-0 break-words">{value}</dd>
     </div>
   );
