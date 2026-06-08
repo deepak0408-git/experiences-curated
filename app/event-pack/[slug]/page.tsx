@@ -456,7 +456,7 @@ export default async function EventPackPage({
             <p className="text-neutral-500 text-sm mb-6">
               A few of the experiences waiting for you.
             </p>
-            <div className="grid grid-cols-3 gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-5">
               {teaserExps.map((exp) => (
                 <div
                   key={exp.id}
