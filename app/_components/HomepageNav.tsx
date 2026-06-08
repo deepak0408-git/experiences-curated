@@ -22,10 +22,10 @@ export default function HomepageNav({ email, showSearch = false }: { email: stri
           </Link>
           {email && (
             <>
-              <Link href="/my-travels" className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors">
+              <Link href="/my-travels" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">
                 My Travels
               </Link>
-              <Link href="/profile" className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors">
+              <Link href="/profile" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">
                 My Profile
               </Link>
             </>

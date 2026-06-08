@@ -50,15 +50,15 @@ export default function TravelsClient({ logs, userEmail }: { logs: LogEntry[]; u
     <div className="min-h-screen bg-white">
       <nav className="border-b border-neutral-100">
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-4 flex items-center justify-between">
-          <Link href="/" className="text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors">
+          <Link href="/" className="text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors whitespace-nowrap">
             Experiences | Curated
           </Link>
           <div className="flex items-center gap-6">
-            <Link href="/search" className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors">Browse experiences</Link>
-            <Link href="/trip-board" className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors">Trip Board</Link>
-            <Link href="/profile" className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors">My Profile</Link>
-            <span className="text-neutral-200">|</span>
-            <p className="text-xs text-neutral-400">{userEmail}</p>
+            <Link href="/search" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">Browse experiences</Link>
+            <Link href="/trip-board" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">Trip Board</Link>
+            <Link href="/profile" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">My Profile</Link>
+            <span className="hidden sm:block text-neutral-200">|</span>
+            <p className="hidden sm:block text-xs text-neutral-400">{userEmail}</p>
             <SignOutButton />
           </div>
         </div>

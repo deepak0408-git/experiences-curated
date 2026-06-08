@@ -548,10 +548,10 @@ export default async function EventPackPage({
               <p className="mt-4 text-xs text-neutral-400">
                 Questions?{" "}
                 <a
-                  href="mailto:hello@experiencescurated.com"
+                  href="mailto:hello@experiences-curated.com"
                   className="underline hover:text-neutral-600 transition-colors"
                 >
-                  hello@experiencescurated.com
+                  hello@experiences-curated.com
                 </a>
               </p>
             </div>

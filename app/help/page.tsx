@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Help & FAQ — Experiences | Curated",
-  description: "Answers to common questions about Experiences | Curated — event packs, accounts, Trip Board, and more.",
+  title: "Help & FAQ â€” Experiences | Curated",
+  description: "Answers to common questions about Experiences | Curated â€” event packs, accounts, Trip Board, and more.",
 };
 
 const faqs = [
@@ -12,7 +12,7 @@ const faqs = [
     questions: [
       {
         q: "What is an event pack?",
-        a: "An event pack is a curated guide built around a specific sporting event — Wimbledon, the US Open, and others. Each pack covers where to eat, stay, and spend time around the event, chosen by people who've actually been there. It's not a ticket — it's everything around the ticket.",
+        a: "An event pack is a curated guide built around a specific sporting event â€” Wimbledon, the US Open, and others. Each pack covers where to eat, stay, and spend time around the event, chosen by people who've actually been there. It's not a ticket â€” it's everything around the ticket.",
       },
       {
         q: "How do I access my pack after purchase?",
@@ -20,15 +20,15 @@ const faqs = [
       },
       {
         q: "I didn't receive the email after purchase. What should I do?",
-        a: "Check your spam folder first — magic links sometimes land there. If it's not there, go to the event pack page and use the sign-in form with your purchase email. Still stuck? Email us at hello@experiencescurated.com and we'll sort it out.",
+        a: "Check your spam folder first â€” magic links sometimes land there. If it's not there, go to the event pack page and use the sign-in form with your purchase email. Still stuck? Email us at hello@experiences-curated.com and we'll sort it out.",
       },
       {
         q: "Can I share my pack with someone else?",
-        a: "Access is tied to one account. If you want to plan together, share your Trip Board link instead — that's designed for sharing.",
+        a: "Access is tied to one account. If you want to plan together, share your Trip Board link instead â€” that's designed for sharing.",
       },
       {
         q: "Can I get a refund?",
-        a: "Event packs are digital products and access is immediate, so we don't offer refunds as a rule. If you think you were charged in error, email hello@experiencescurated.com within 14 days and we'll look into it.",
+        a: "Event packs are digital products and access is immediate, so we don't offer refunds as a rule. If you think you were charged in error, email hello@experiences-curated.com within 14 days and we'll look into it.",
       },
     ],
   },
@@ -37,15 +37,15 @@ const faqs = [
     questions: [
       {
         q: "How do I sign in?",
-        a: "We use magic links — you enter your email, we send you a link, you click it. No password to remember. The link expires after a few minutes, so use it when it arrives.",
+        a: "We use magic links â€” you enter your email, we send you a link, you click it. No password to remember. The link expires after a few minutes, so use it when it arrives.",
       },
       {
         q: "Can I change my email address?",
-        a: "Email us at hello@experiencescurated.com. Since your purchases and pack access are tied to your email, we handle these manually to make sure nothing gets lost.",
+        a: "Email us at hello@experiences-curated.com. Since your purchases and pack access are tied to your email, we handle these manually to make sure nothing gets lost.",
       },
       {
         q: "How do I delete my account?",
-        a: "Email hello@experiencescurated.com with the subject 'Delete my account'. We'll remove your personal data within 30 days. Purchase records are kept for 7 years as required by Indian tax law.",
+        a: "Email hello@experiences-curated.com with the subject 'Delete my account'. We'll remove your personal data within 30 days. Purchase records are kept for 7 years as required by Indian tax law.",
       },
     ],
   },
@@ -62,7 +62,7 @@ const faqs = [
       },
       {
         q: "I cancelled but still got charged. What do I do?",
-        a: "Email hello@experiencescurated.com with your purchase email and we'll investigate. Billing is handled by Paddle, but we'll get it resolved.",
+        a: "Email hello@experiences-curated.com with your purchase email and we'll investigate. Billing is handled by Paddle, but we'll get it resolved.",
       },
     ],
   },
@@ -75,7 +75,7 @@ const faqs = [
       },
       {
         q: "How do I share my Trip Board?",
-        a: "On your Trip Board page, click 'Share board'. It generates a link to the board you're currently viewing. Anyone with the link can see it — they don't need an account.",
+        a: "On your Trip Board page, click 'Share board'. It generates a link to the board you're currently viewing. Anyone with the link can see it â€” they don't need an account.",
       },
     ],
   },
@@ -88,11 +88,11 @@ const faqs = [
       },
       {
         q: "How often is the content updated?",
-        a: "We verify experiences before each event season. That said, venues change — opening hours shift, prices move, places occasionally close. Always confirm the details directly with the venue before you travel.",
+        a: "We verify experiences before each event season. That said, venues change â€” opening hours shift, prices move, places occasionally close. Always confirm the details directly with the venue before you travel.",
       },
       {
         q: "A venue in one of your guides is closed. What should I do?",
-        a: "Email hello@experiencescurated.com with the experience name and what you found. We'll investigate and update or remove it. We'd rather know.",
+        a: "Email hello@experiences-curated.com with the experience name and what you found. We'll investigate and update or remove it. We'd rather know.",
       },
     ],
   },
@@ -118,7 +118,7 @@ export default function HelpPage() {
           <h1 className="text-3xl font-bold text-neutral-900">Help & FAQ</h1>
           <p className="mt-3 text-sm text-neutral-500 leading-6">
             Can&apos;t find what you need?{" "}
-            <a href="mailto:hello@experiencescurated.com" className="underline underline-offset-2 hover:text-neutral-900 transition-colors">
+            <a href="mailto:hello@experiences-curated.com" className="underline underline-offset-2 hover:text-neutral-900 transition-colors">
               Email us
             </a>{" "}
             and we&apos;ll get back to you within one business day.
@@ -145,8 +145,8 @@ export default function HelpPage() {
           <p className="text-sm font-semibold text-neutral-900 mb-1">Still need help?</p>
           <p className="text-sm text-neutral-500 leading-6">
             Email{" "}
-            <a href="mailto:hello@experiencescurated.com" className="underline underline-offset-2 hover:text-neutral-900 transition-colors">
-              hello@experiencescurated.com
+            <a href="mailto:hello@experiences-curated.com" className="underline underline-offset-2 hover:text-neutral-900 transition-colors">
+              hello@experiences-curated.com
             </a>
             . We aim to respond within one business day.
           </p>

@@ -43,7 +43,9 @@
       "Bash(curl -s -o /tmp/pexels_13710125.jpg \"https://images.pexels.com/photos/13710125/pexels-photo-13710125.jpeg?w=400\")",
       "Bash(curl -s -o /tmp/pexels_29889417.jpg \"https://images.pexels.com/photos/29889417/pexels-photo-29889417.jpeg?w=400\")",
       "Read(//tmp/**)",
-      "Read(//c/Users/HP/AppData/Local/Temp/**)"
+      "Read(//c/Users/HP/AppData/Local/Temp/**)",
+      "Skill(experience-writer)",
+      "Skill(experience-writer:*)"
     ],
     "additionalDirectories": [
       "c:\\Users\\HP\\.clone\\projects\\ExperienceCurator\\app\\trip-board",

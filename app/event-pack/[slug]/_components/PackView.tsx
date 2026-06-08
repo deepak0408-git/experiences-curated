@@ -670,7 +670,6 @@ export default async function PackView({
               {matches.map((match, i) => (
                 <div key={i} className="flex items-center gap-4 px-4 py-3">
                   <span className="w-12 text-xs font-semibold text-neutral-400 shrink-0">{match.date}</span>
-                  <span className="w-20 text-xs font-medium text-neutral-500 shrink-0">{match.type}</span>
                   <span className="flex-1 text-sm text-neutral-900">{match.venue}</span>
                   <span className="text-sm text-neutral-500 text-right shrink-0">{match.city}</span>
                 </div>

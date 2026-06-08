@@ -140,10 +140,10 @@ export default async function SharedTripBoardPage({
     <div className="min-h-screen bg-white">
       <nav className="border-b border-neutral-100">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 py-4 flex items-center justify-between">
-          <Link href="/" className="text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors">
+          <Link href="/" className="text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors whitespace-nowrap">
             Experiences | Curated
           </Link>
-          <Link href="/search" className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors">
+          <Link href="/search" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">
             Browse experiences
           </Link>
         </div>
