@@ -150,7 +150,10 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
           {/* Left — title + board name */}
           <div>
             <p className="text-sm font-semibold tracking-widest uppercase text-neutral-400 mb-0.5">Trip Board</p>
-            <p className="text-xs text-neutral-400 mb-4">Build your itinerary</p>
+            <div className="flex items-center gap-3 mb-4">
+              <p className="text-xs text-neutral-400">Build your itinerary</p>
+              <Link href="/search" className="text-xs text-neutral-500 underline underline-offset-2 hover:text-neutral-900 transition-colors whitespace-nowrap">Browse experiences →</Link>
+            </div>
 
             {editingTitle ? (
               <input

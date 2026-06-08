@@ -289,11 +289,12 @@ export default async function HomePage() {
                     Explore the guide
                   </Link>
                 )}
-                {totalCount > 0 && (
-                  <span className="text-white/40 text-sm">
-                    {totalCount} curated experiences inside
-                  </span>
-                )}
+                <Link
+                  href="/search"
+                  className="inline-flex items-center px-5 py-2.5 rounded-full border border-white/30 text-white/80 text-sm font-medium hover:border-white/60 hover:text-white transition-colors"
+                >
+                  Browse experiences
+                </Link>
               </div>
 
               {/* Early-bird deadline nudge */}
