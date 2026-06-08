@@ -55,7 +55,6 @@ export default function TravelsClient({ logs, userEmail }: { logs: LogEntry[]; u
           <div className="flex items-center gap-6">
             <Link href="/search" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">Browse experiences</Link>
             <Link href="/trip-board" className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors whitespace-nowrap">Trip Board</Link>
-            <Link href="/profile" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">My Profile</Link>
             <span className="hidden sm:inline text-neutral-200">|</span>
             <Link
               href="/profile"

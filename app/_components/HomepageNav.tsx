@@ -1,5 +1,4 @@
 ﻿import Link from "next/link";
-import SignOutButton from "./SignOutButton";
 import SignInLink from "./SignInLink";
 import SearchForm from "./SearchForm";
 
@@ -24,9 +23,6 @@ export default function HomepageNav({ email, showSearch = false }: { email: stri
             <>
               <Link href="/my-travels" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">
                 My Travels
-              </Link>
-              <Link href="/profile" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">
-                My Profile
               </Link>
             </>
           )}
