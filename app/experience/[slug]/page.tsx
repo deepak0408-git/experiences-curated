@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import { db } from "@/lib/db";
-import { experiences, savedItems, users, userProfiles, travelLogs } from "@/schema/database";
+import { experiences, savedItems, users, userProfiles, travelLogs, purchases } from "@/schema/database";
 import { and, eq, ne, inArray, count, sql } from "drizzle-orm";
 import { createClient } from "@/lib/supabase/server";
 import { hasProSubscription } from "@/lib/pro";
@@ -142,6 +142,23 @@ export default async function ExperiencePage({
   const { data: { user: authUser } } = await supabase.auth.getUser();
   const isLoggedIn = !!authUser;
   const isPro = authUser?.email ? await hasProSubscription(authUser.email) : false;
+
+  // Pack purchasers get unlimited reads for experiences in their purchased event
+  let hasPurchasedPack = false;
+  if (authUser?.email && exp.sportingEventId) {
+    const [purchase] = await db
+      .select({ id: purchases.id })
+      .from(purchases)
+      .where(
+        and(
+          eq(purchases.email, authUser.email),
+          eq(purchases.sportingEventId, exp.sportingEventId),
+          eq(purchases.status, "active")
+        )
+      )
+      .limit(1);
+    hasPurchasedPack = !!purchase;
+  }
   let isSaved = false;
   let hasVisited = false;
   let visitRating: number | null = null;
@@ -195,6 +212,7 @@ export default async function ExperiencePage({
         eventPackName="Wimbledon 2026"
         priceDisplay={priceDisplay}
         isPro={isPro}
+        hasPurchasedPack={hasPurchasedPack}
       />
       <script
         type="application/ld+json"

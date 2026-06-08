@@ -28,17 +28,19 @@ export default function ExperienceViewGate({
   eventPackName,
   priceDisplay,
   isPro,
+  hasPurchasedPack,
 }: {
   slug: string;
   eventPackSlug: string;
   eventPackName: string;
   priceDisplay: string;
   isPro: boolean;
+  hasPurchasedPack: boolean;
 }) {
   const [showPaywall, setShowPaywall] = useState(false);
 
   useEffect(() => {
-    if (isPro) return;
+    if (isPro || hasPurchasedPack) return;
 
     const viewed = getViewedSlugs();
     const alreadySeen = viewed.includes(slug);
