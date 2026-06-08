@@ -155,7 +155,7 @@ supabase.auth.admin.generateLink({
 - `/api/upload/presign` requires authenticated Supabase session — returns 401 otherwise
 - HTTP security headers set in `next.config.ts` — X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
 - GDPR account deletion: `deleteAccount()` server action in `app/profile/actions.ts` — uses service role `admin.deleteUser()`
-- `npm run build` must pass clean before every deploy — last confirmed 6 Jun 2026
+- `npm run build` must pass clean before every deploy — last confirmed 8 Jun 2026
 
 ---
 
