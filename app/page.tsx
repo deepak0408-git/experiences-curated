@@ -289,12 +289,11 @@ export default async function HomePage() {
                     Explore the guide
                   </Link>
                 )}
-                <Link
-                  href="/search"
-                  className="inline-flex items-center px-5 py-2.5 rounded-full border border-white/30 text-white/80 text-sm font-medium hover:border-white/60 hover:text-white transition-colors"
-                >
-                  Browse experiences
-                </Link>
+                {totalCount > 0 && (
+                  <span className="text-white/40 text-sm">
+                    {totalCount} curated experiences inside
+                  </span>
+                )}
               </div>
 
               {/* Early-bird deadline nudge */}
@@ -317,6 +316,16 @@ export default async function HomePage() {
           </div>
         </div>
       )}
+
+      {/* Browse CTA */}
+      <div className="max-w-5xl mx-auto px-6 sm:px-8 pt-8 pb-0 flex justify-between items-center">
+        <Link
+          href="/search"
+          className="inline-flex items-center px-5 py-2.5 rounded-full border border-neutral-300 text-neutral-600 text-sm font-medium hover:border-neutral-500 hover:text-neutral-900 transition-colors"
+        >
+          Browse all experiences
+        </Link>
+      </div>
 
       {/* Experience teasers for hero event */}
       {teasers.length > 0 && hero && (
