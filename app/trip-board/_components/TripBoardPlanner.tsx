@@ -146,7 +146,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
 
       <div className="max-w-5xl mx-auto px-6 sm:px-8 py-8">
         {/* Header */}
-        <div className="flex items-start justify-between mb-6 pb-6 border-b border-neutral-100">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-6 pb-6 border-b border-neutral-100 gap-4">
           {/* Left — title + board name */}
           <div>
             <p className="text-sm font-semibold tracking-widest uppercase text-neutral-400 mb-0.5">Trip Board</p>
