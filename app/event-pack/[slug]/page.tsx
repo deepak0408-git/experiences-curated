@@ -509,7 +509,7 @@ export default async function EventPackPage({
               ))}
 
               {/* Always show the "+N more" card as the third column */}
-              <div className="rounded-xl border border-dashed border-neutral-300 p-5 flex flex-col items-center justify-center text-center bg-neutral-50">
+              <div className="col-span-2 sm:col-span-1 rounded-xl border border-dashed border-neutral-300 p-5 flex flex-col items-center justify-center text-center bg-neutral-50">
                 <p className="text-2xl font-bold text-neutral-900 mb-1">
                   +{totalCount - teaserExps.length}
                 </p>
