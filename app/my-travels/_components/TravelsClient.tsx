@@ -55,9 +55,9 @@ export default function TravelsClient({ logs, userEmail }: { logs: LogEntry[]; u
           </Link>
           <div className="flex items-center gap-6">
             <Link href="/search" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">Browse experiences</Link>
-            <Link href="/trip-board" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">Trip Board</Link>
+            <Link href="/trip-board" className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors whitespace-nowrap">Trip Board</Link>
             <Link href="/profile" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">My Profile</Link>
-            <span className="hidden sm:block text-neutral-200">|</span>
+            <span className="hidden sm:inline text-neutral-200">|</span>
             <p className="hidden sm:block text-xs text-neutral-400">{userEmail}</p>
             <SignOutButton />
           </div>
@@ -96,7 +96,7 @@ export default function TravelsClient({ logs, userEmail }: { logs: LogEntry[]; u
             {items.map((log) => (
               <div key={log.id} className="rounded-xl border border-neutral-200 overflow-hidden flex">
                 <Link href={`/experience/${log.slug}`} className="block flex-shrink-0">
-                  <div className="relative w-24 h-24 overflow-hidden bg-neutral-100">
+                  <div className="relative w-20 h-20 sm:w-24 sm:h-24 overflow-hidden bg-neutral-100">
                     {log.heroImageUrl ? (
                       <Image src={log.heroImageUrl} alt={log.title} fill className="object-cover hover:scale-105 transition-transform duration-300" sizes="96px" />
                     ) : (
@@ -104,37 +104,36 @@ export default function TravelsClient({ logs, userEmail }: { logs: LogEntry[]; u
                     )}
                   </div>
                 </Link>
-                <div className="flex-1 min-w-0 px-4 py-3 flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <span className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400">
-                      {TYPE_LABELS[log.experienceType] ?? log.experienceType}
-                    </span>
-                    <Link href={`/experience/${log.slug}`}>
-                      <h3 className="text-sm font-semibold text-neutral-900 hover:text-neutral-600 transition-colors mt-0.5 line-clamp-1">{log.title}</h3>
-                    </Link>
-                    <p className="text-xs text-neutral-400 mt-0.5">
-                      {new Date(log.visitedAt + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
-                    </p>
-                    {log.moodTags.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-1.5">
-                        {log.moodTags.map((tag) => (
-                          <span key={tag} className="px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-500 text-[10px] font-medium">{tag}</span>
-                        ))}
-                      </div>
-                    )}
+                <div className="flex-1 min-w-0 px-3 py-2.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <span className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400">
+                        {TYPE_LABELS[log.experienceType] ?? log.experienceType}
+                      </span>
+                      <Link href={`/experience/${log.slug}`}>
+                        <h3 className="text-sm font-semibold text-neutral-900 hover:text-neutral-600 transition-colors mt-0.5 line-clamp-1">{log.title}</h3>
+                      </Link>
+                      <p className="text-xs text-neutral-400 mt-0.5">
+                        {new Date(log.visitedAt + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => handleDelete(log.experienceId)}
+                      className="flex-shrink-0 text-neutral-300 hover:text-red-400 transition-colors mt-0.5"
+                      aria-label="Remove"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                    </button>
                   </div>
-                  <div className="flex items-center gap-3 flex-shrink-0">
+                  <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                     <div className="flex items-center gap-0.5">
                       {[1,2,3,4,5].map((s) => (
                         <span key={s} className={`text-sm ${s <= log.rating ? "text-amber-400" : "text-neutral-200"}`}>★</span>
                       ))}
                     </div>
-                    <button
-                      onClick={() => handleDelete(log.experienceId)}
-                      className="text-xs text-neutral-300 hover:text-red-400 transition-colors"
-                    >
-                      Remove
-                    </button>
+                    {log.moodTags.map((tag) => (
+                      <span key={tag} className="px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-500 text-[10px] font-medium">{tag}</span>
+                    ))}
                   </div>
                 </div>
               </div>
