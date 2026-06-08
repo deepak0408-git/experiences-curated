@@ -415,17 +415,17 @@ export default async function HomePage() {
                   <Link
                     key={ev.id}
                     href={`/event-pack/${ev.slug}`}
-                    className="group flex rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors"
+                    className="group flex flex-col sm:flex-row rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors"
                   >
                     {/* Image */}
-                    <div className="relative w-48 sm:w-64 flex-shrink-0 overflow-hidden bg-neutral-100">
+                    <div className="relative h-40 sm:h-auto sm:w-64 sm:flex-shrink-0 overflow-hidden bg-neutral-100">
                       {ev.heroImageUrl ? (
                         <Image
                           src={ev.heroImageUrl}
                           alt={ev.name}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          sizes="(max-width: 640px) 192px, 256px"
+                          sizes="(max-width: 640px) 100vw, 256px"
                         />
                       ) : (
                         <div className="w-full h-full bg-neutral-200" />
@@ -433,19 +433,19 @@ export default async function HomePage() {
                     </div>
 
                     {/* Details */}
-                    <div className="flex flex-col justify-between px-6 py-5 flex-1 min-w-0">
+                    <div className="flex flex-col justify-between px-5 py-4 flex-1 min-w-0">
                       <div>
                         <div className="flex items-center gap-2 mb-2">
                           <span className="text-xs font-semibold tracking-widest uppercase text-neutral-400">
                             {SPORT_LABELS[ev.sport] ?? ev.sport}
                           </span>
                           {es.state === "upcoming" && (
-                            <span className="text-xs text-neutral-400">
+                            <span className="text-xs text-neutral-400 whitespace-nowrap">
                               · {es.toStart} day{es.toStart !== 1 ? "s" : ""} away
                             </span>
                           )}
                           {es.state === "live" && (
-                            <span className="text-xs font-semibold text-emerald-600">
+                            <span className="text-xs font-semibold text-emerald-600 whitespace-nowrap">
                               · Underway
                             </span>
                           )}
@@ -466,7 +466,7 @@ export default async function HomePage() {
                       </div>
 
                       <div className="mt-4 flex items-center gap-3">
-                        <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-neutral-900 text-white text-xs font-semibold group-hover:bg-neutral-700 transition-colors">
+                        <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-neutral-900 text-white text-xs font-semibold group-hover:bg-neutral-700 transition-colors whitespace-nowrap">
                           Get the Pack
                           <span className="text-neutral-400 font-normal">{price}</span>
                         </span>
