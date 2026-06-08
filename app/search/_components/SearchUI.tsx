@@ -206,7 +206,7 @@ export function SearchUI({
       future={{ preserveSharedStateOnUnmount: true }}
       initialUiState={{ [indexName]: { query: initialQuery ?? "" } }}
     >
-      <Configure hitsPerPage={24} {...(optionalFilters.length > 0 ? { optionalFilters } : {})} />
+      <Configure hitsPerPage={50} {...(optionalFilters.length > 0 ? { optionalFilters } : {})} />
 
       <div className="min-h-screen bg-white">
         {/* Header */}
