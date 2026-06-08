@@ -16,7 +16,7 @@ import type { Hit } from "instantsearch.js";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 type ExperienceHit = Hit<{
@@ -267,9 +267,9 @@ export function SearchUI({
   archetype?: string | null;
   userEmail?: string | null;
 }) {
-  const searchClient = liteClient(appId, searchKey);
+  const searchClient = useMemo(() => liteClient(appId, searchKey), [appId, searchKey]);
 
-  const optionalFilters: string[] = (() => {
+  const optionalFilters = useMemo<string[]>(() => {
     if (archetype === "pilgrim" || archetype === "first_pilgrim") {
       return ["experienceType:sports_venue<score=2>", "experienceType:fan_experience<score=2>"];
     }
@@ -280,7 +280,7 @@ export function SearchUI({
       return ["experienceType:neighborhood<score=2>", "experienceType:dining<score=2>", "experienceType:activity<score=1>"];
     }
     return [];
-  })();
+  }, [archetype]);
 
   const router = useRouter();
   const [filterOpen, setFilterOpen] = useState(false);
