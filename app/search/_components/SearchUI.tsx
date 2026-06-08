@@ -296,13 +296,13 @@ export function SearchUI({
     >
       <Configure hitsPerPage={50} {...(optionalFilters.length > 0 ? { optionalFilters } : {})} />
 
-      <div className="min-h-screen bg-white overflow-x-hidden">
+      <div className="min-h-screen bg-white">
         {/* Mobile filter drawer */}
         <MobileFilterDrawer open={filterOpen} onClose={() => setFilterOpen(false)} />
 
         {/* Header */}
         <div className="border-b border-neutral-100 bg-white sticky top-0 z-10">
-          <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-6">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-4 sm:gap-6 min-w-0">
             <Link
               href="/"
               className="text-xs sm:text-sm font-semibold tracking-widest text-neutral-400 uppercase hover:text-neutral-600 transition-colors whitespace-nowrap flex-shrink-0"
@@ -350,7 +350,7 @@ export function SearchUI({
           </div>
         </div>
 
-        <div className="max-w-6xl mx-auto px-6 py-8 flex gap-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex gap-8 min-w-0">
           {/* Sidebar filters */}
           <aside className="w-52 flex-shrink-0 hidden md:block space-y-8">
             <FilterSection title="Destination">
