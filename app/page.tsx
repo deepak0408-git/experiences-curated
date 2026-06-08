@@ -317,8 +317,8 @@ export default async function HomePage() {
         </div>
       )}
 
-      {/* Browse CTA */}
-      <div className="max-w-5xl mx-auto px-6 sm:px-8 pt-8 pb-0 flex justify-between items-center">
+      {/* Browse CTA — mobile only (desktop has search bar in nav) */}
+      <div className="md:hidden max-w-5xl mx-auto px-4 pt-8 pb-0">
         <Link
           href="/search"
           className="inline-flex items-center px-5 py-2.5 rounded-full border border-neutral-300 text-neutral-600 text-sm font-medium hover:border-neutral-500 hover:text-neutral-900 transition-colors"
