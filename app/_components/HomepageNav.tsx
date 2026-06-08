@@ -33,11 +33,11 @@ export default function HomepageNav({ email, showSearch = false }: { email: stri
           {email ? (
             <>
               <span className="hidden sm:inline text-neutral-200">|</span>
-              <span className="hidden sm:block"><SignOutButton /></span>
               <Link
                 href="/profile"
-                className="sm:hidden flex items-center justify-center w-7 h-7 rounded-full bg-neutral-900 text-white text-xs font-bold uppercase flex-shrink-0"
+                className="flex items-center justify-center w-7 h-7 rounded-full bg-neutral-900 text-white text-xs font-bold uppercase flex-shrink-0"
                 aria-label="Profile"
+                title={email}
               >
                 {email[0]}
               </Link>

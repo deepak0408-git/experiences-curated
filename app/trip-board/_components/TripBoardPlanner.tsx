@@ -12,7 +12,6 @@ import RemoveSavedItem from "./RemoveSavedItem";
 import ClearBoardButton from "./ClearBoardButton";
 import ShareButton from "./ShareButton";
 import NewBoardModal from "./NewBoardModal";
-import SignOutButton from "@/app/_components/SignOutButton";
 import { renameBoard, deleteBoard } from "../actions";
 import MoveToBoard from "./MoveToBoard";
 
@@ -137,9 +136,15 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
             <Link href="/search" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">Browse experiences</Link>
             <Link href="/my-travels" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">My Travels</Link>
             <Link href="/profile" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">My Profile</Link>
-            <span className="hidden sm:block text-neutral-200">|</span>
-            <p className="hidden sm:block text-xs text-neutral-400">{userEmail}</p>
-            <SignOutButton />
+            <span className="hidden sm:inline text-neutral-200">|</span>
+            <Link
+              href="/profile"
+              className="flex items-center justify-center w-7 h-7 rounded-full bg-neutral-900 text-white text-xs font-bold uppercase flex-shrink-0"
+              aria-label="Profile"
+              title={userEmail}
+            >
+              {userEmail[0]}
+            </Link>
           </div>
         </div>
       </nav>

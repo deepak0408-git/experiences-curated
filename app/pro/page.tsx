@@ -8,7 +8,6 @@ import { userProfiles } from "@/schema/database";
 import { eq } from "drizzle-orm";
 import ProCheckout from "./_components/ProCheckout";
 import { ARCHETYPE_DETAILS } from "@/lib/quiz";
-import SignOutButton from "@/app/event-pack/[slug]/_components/SignOutButton";
 
 export const metadata: Metadata = {
   title: "Pro — Experiences | Curated",
@@ -52,12 +51,11 @@ export default async function ProPage() {
             {user?.email && (
               <>
                 <span className="hidden sm:inline text-neutral-200">|</span>
-                <p className="hidden sm:block text-xs text-neutral-400">{user.email}</p>
-                <span className="hidden sm:block"><SignOutButton /></span>
                 <Link
                   href="/profile"
-                  className="sm:hidden flex items-center justify-center w-7 h-7 rounded-full bg-neutral-900 text-white text-xs font-bold uppercase flex-shrink-0"
+                  className="flex items-center justify-center w-7 h-7 rounded-full bg-neutral-900 text-white text-xs font-bold uppercase flex-shrink-0"
                   aria-label="Profile"
+                  title={user.email}
                 >
                   {user.email[0]}
                 </Link>

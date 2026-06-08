@@ -14,9 +14,7 @@ import {
 import type { Hit } from "instantsearch.js";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState, useMemo } from "react";
-import { createClient } from "@/lib/supabase/client";
 
 type ExperienceHit = Hit<{
   title: string;
@@ -287,13 +285,7 @@ export function SearchUI({
     return [];
   }, [archetype]);
 
-  const router = useRouter();
   const [filterOpen, setFilterOpen] = useState(false);
-  const signOut = async () => {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    router.refresh();
-  };
 
   return (
     <InstantSearch
@@ -346,15 +338,14 @@ export function SearchUI({
               is unlimited.
             </span>
             {userEmail && (
-              <div className="hidden sm:flex items-center gap-3 flex-shrink-0">
-                <p className="text-xs text-neutral-400">{userEmail}</p>
-                <button
-                  onClick={signOut}
-                  className="text-xs text-neutral-400 hover:text-neutral-700 transition-colors underline underline-offset-2"
-                >
-                  Sign out
-                </button>
-              </div>
+              <Link
+                href="/profile"
+                className="flex items-center justify-center w-7 h-7 rounded-full bg-neutral-900 text-white text-xs font-bold uppercase flex-shrink-0"
+                aria-label="Profile"
+                title={userEmail}
+              >
+                {userEmail[0]}
+              </Link>
             )}
           </div>
         </div>
