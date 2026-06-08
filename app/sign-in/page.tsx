@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
@@ -78,7 +78,7 @@ export default function SignInPage() {
       <nav className="border-b border-neutral-100 px-6 py-4">
         <Link
           href="/"
-          className="text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors"
+          className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors"
         >
           Experiences | Curated
         </Link>

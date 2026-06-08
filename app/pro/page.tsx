@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
@@ -42,7 +42,7 @@ export default async function ProPage() {
     <div className="min-h-screen bg-white">
       <nav className="border-b border-neutral-100">
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-4 flex items-center justify-between">
-          <Link href="/" className="text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors whitespace-nowrap">
+          <Link href="/" className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors whitespace-nowrap">
             Experiences | Curated
           </Link>
           <div className="flex items-center gap-4">

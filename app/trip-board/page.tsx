@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+﻿import { createClient } from "@/lib/supabase/server";
 import { hasProSubscription } from "@/lib/pro";
 import { db } from "@/lib/db";
 import { savedItems, users, experiences, destinations, sportingEvents } from "@/schema/database";
@@ -27,7 +27,7 @@ export default async function TripBoardPage({
       <div className="min-h-screen bg-white">
         <nav className="border-b border-neutral-100">
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-4">
-            <Link href="/" className="text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors">
+            <Link href="/" className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors">
               Experiences | Curated
             </Link>
           </div>

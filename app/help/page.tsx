@@ -105,7 +105,7 @@ export default function HelpPage() {
         <div className="max-w-3xl mx-auto px-6 py-4">
           <Link
             href="/"
-            className="text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors"
+            className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors"
           >
             Experiences | Curated
           </Link>
