@@ -486,7 +486,7 @@ export default async function EventPackPage({
                         {TYPE_LABELS[exp.experienceType] ?? exp.experienceType}
                       </span>
                       {exp.budgetTier && (
-                        <span className="text-xs text-neutral-400">
+                        <span className="hidden sm:block text-xs text-neutral-400">
                           {BUDGET_LABELS[exp.budgetTier] ?? exp.budgetTier}
                         </span>
                       )}
