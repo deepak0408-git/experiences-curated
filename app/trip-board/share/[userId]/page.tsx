@@ -167,7 +167,7 @@ export default async function SharedTripBoardPage({
         ) : (
           <div className="flex gap-8 items-start">
             {/* Left — experience cards */}
-            <div className="w-[60%] flex-shrink-0 space-y-3">
+            <div className="w-full lg:w-[60%] lg:flex-shrink-0 space-y-3">
               <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400 mb-4">
                 Saved experiences
               </p>
@@ -186,7 +186,7 @@ export default async function SharedTripBoardPage({
                     <div className="flex-1 min-w-0 px-3 py-2.5">
                       <span className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400">
                         {TYPE_LABELS[item.experienceType] ?? item.experienceType}
-                        {item.budgetTier ? ` · ${BUDGET_LABELS[item.budgetTier]}` : ""}
+                        <span className="hidden sm:inline">{item.budgetTier ? ` · ${BUDGET_LABELS[item.budgetTier]}` : ""}</span>
                       </span>
                       <Link href={`/experience/${item.slug}`}>
                         <h3 className="text-sm font-semibold text-neutral-900 leading-snug line-clamp-1 hover:text-neutral-600 transition-colors mt-0.5">
