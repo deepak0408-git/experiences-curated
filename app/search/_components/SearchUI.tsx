@@ -296,7 +296,7 @@ export function SearchUI({
     >
       <Configure hitsPerPage={50} {...(optionalFilters.length > 0 ? { optionalFilters } : {})} />
 
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white overflow-x-hidden">
         {/* Mobile filter drawer */}
         <MobileFilterDrawer open={filterOpen} onClose={() => setFilterOpen(false)} />
 
@@ -325,7 +325,7 @@ export function SearchUI({
               }}
             />
             <Stats
-              classNames={{ root: "text-xs text-neutral-400 whitespace-nowrap" }}
+              classNames={{ root: "hidden md:block text-xs text-neutral-400 whitespace-nowrap" }}
               translations={{
                 rootElementText: ({ nbHits }) =>
                   `${nbHits.toLocaleString()} result${nbHits !== 1 ? "s" : ""}`,
