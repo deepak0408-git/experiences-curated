@@ -10,7 +10,6 @@ import {
   Configure,
   useInstantSearch,
   useClearRefinements,
-  useRefinementList,
 } from "react-instantsearch";
 import type { Hit } from "instantsearch.js";
 import Link from "next/link";
@@ -166,16 +165,9 @@ const refinementClassNames = {
 };
 
 function useActiveFilterCount() {
-  const dest = useRefinementList({ attribute: "destinationName" });
-  const type = useRefinementList({ attribute: "experienceType" });
-  const budget = useRefinementList({ attribute: "budgetTier" });
-  const pace = useRefinementList({ attribute: "pace" });
-  return (
-    dest.items.filter((i) => i.isRefined).length +
-    type.items.filter((i) => i.isRefined).length +
-    budget.items.filter((i) => i.isRefined).length +
-    pace.items.filter((i) => i.isRefined).length
-  );
+  const { indexUiState } = useInstantSearch();
+  const refinements = indexUiState.refinementList ?? {};
+  return Object.values(refinements).reduce((sum, vals) => sum + (vals?.length ?? 0), 0);
 }
 
 function MobileFilterDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
