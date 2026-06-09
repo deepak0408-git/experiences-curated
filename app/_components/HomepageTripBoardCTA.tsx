@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
 
 export default function HomepageTripBoardCTA({ isSignedIn }: { isSignedIn: boolean }) {
   const [email, setEmail] = useState("");
@@ -14,16 +13,15 @@ export default function HomepageTripBoardCTA({ isSignedIn }: { isSignedIn: boole
     setStatus("loading");
     setErrorMessage(null);
 
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOtp({
-      email: email.trim(),
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/confirm?next=/`,
-      },
+    const res = await fetch("/api/auth/magic-link", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email.trim(), next: "/" }),
     });
 
-    if (error) {
-      setErrorMessage(error.message);
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setErrorMessage(data.error ?? "Something went wrong. Please try again.");
       setStatus("error");
     } else {
       setStatus("sent");
