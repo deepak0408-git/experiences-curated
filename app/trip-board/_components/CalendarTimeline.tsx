@@ -104,11 +104,11 @@ export default function CalendarTimeline({ items }: { items: PlannerItem[] }) {
           <p className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">
             Not yet scheduled ({unscheduled.length})
           </p>
-          <div className="flex flex-wrap gap-1.5">
+          <div className="grid grid-cols-2 gap-1.5">
             {unscheduled.map((item) => (
               <span
                 key={item.savedItemId}
-                className="px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-500 text-xs font-medium truncate max-w-[160px]"
+                className="px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-500 text-xs font-medium truncate"
                 title={item.title}
               >
                 {item.title}
