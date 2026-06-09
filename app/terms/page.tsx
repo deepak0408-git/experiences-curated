@@ -57,19 +57,22 @@ export default function TermsPage() {
           <p className="text-sm text-neutral-700 leading-7">
             Event packs are digital products sold as one-time purchases. All transactions are processed by Paddle as Merchant of Record. Once purchased, access is tied to your account email and is non-transferable.
           </p>
-          <p className="text-sm text-neutral-700 leading-7">
-            <strong>Refunds.</strong> Because event packs are digital products with immediate access upon purchase, we do not offer refunds except where required by applicable law. If you believe you were charged in error, contact us at{" "}
-            <a href="mailto:hello@experiences-curated.com" className="underline underline-offset-2 hover:text-neutral-900 transition-colors">
+          <p className=”text-sm text-neutral-700 leading-7”>
+            <strong>Refunds.</strong> Event packs are non-refundable once the pack has been accessed. If you have not yet opened your pack, you may request a cancellation within 24 hours of purchase by emailing{“ “}
+            <a href=”mailto:hello@experiences-curated.com” className=”underline underline-offset-2 hover:text-neutral-900 transition-colors”>
               hello@experiences-curated.com
-            </a>{" "}
-            within 14 days of purchase and we will review your case.
+            </a>
+            . Cancellations are not accepted within 7 days of the event start date, regardless of whether the pack has been opened. If you were charged in error or experienced a technical failure preventing access, contact us and we will resolve it. Approved refunds are returned to the original payment method within 5–7 business days.
           </p>
         </section>
 
-        <section className="space-y-3">
-          <h2 className="text-base font-semibold text-neutral-900">4. Pro subscription</h2>
-          <p className="text-sm text-neutral-700 leading-7">
-            Pro is a recurring subscription billed monthly or annually. You can cancel at any time via your profile page â€” access continues until the end of the current billing period. No partial refunds are issued for unused time. Subscriptions are managed by Paddle; Paddle&apos;s own terms apply to billing.
+        <section className=”space-y-3”>
+          <h2 className=”text-base font-semibold text-neutral-900”>4. Pro subscription</h2>
+          <p className=”text-sm text-neutral-700 leading-7”>
+            Pro is a recurring subscription billed monthly or annually. You can cancel at any time via your profile page — access continues until the end of the current billing period. No partial refunds are issued for unused days on monthly plans.
+          </p>
+          <p className=”text-sm text-neutral-700 leading-7”>
+            Annual plans may be cancelled within 14 days of purchase for a full refund, provided no Pro-gated content has been accessed. After 14 days, the subscription is non-refundable for that billing period. Subscriptions are managed by Paddle; Paddle&apos;s own terms apply to billing.
           </p>
         </section>
 
