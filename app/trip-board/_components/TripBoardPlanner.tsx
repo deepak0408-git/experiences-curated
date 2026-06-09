@@ -157,7 +157,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
             <p className="text-sm font-semibold tracking-widest uppercase text-neutral-400 mb-0.5">Trip Board</p>
             <div className="flex items-center gap-3 mb-4">
               <p className="text-xs text-neutral-400">Build your itinerary</p>
-              <Link href="/search" className="text-xs text-neutral-500 underline underline-offset-2 hover:text-neutral-900 transition-colors whitespace-nowrap">Browse experiences →</Link>
+              <Link href="/search" className="sm:hidden text-xs text-neutral-500 underline underline-offset-2 hover:text-neutral-900 transition-colors whitespace-nowrap">Browse experiences →</Link>
             </div>
 
             {editingTitle ? (
@@ -174,55 +174,19 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                 autoFocus
               />
             ) : (
-              <div className="flex items-center gap-3 group relative">
+              <div className="flex items-center gap-3 relative">
                 <h1 className="text-2xl font-bold text-neutral-900">{boardTitle}</h1>
 
-                {/* Desktop hover controls */}
-                <button
-                  onClick={handleRenameStart}
-                  className="hidden sm:inline text-xs text-neutral-300 hover:text-neutral-500 transition-colors opacity-0 group-hover:opacity-100"
-                >
-                  Rename
-                </button>
-                {boards.length > 1 && (
-                  confirmDelete ? (
-                    <span className="hidden sm:inline-flex items-center gap-1.5">
-                      <button
-                        onClick={async () => {
-                          await deleteBoard(activeBoardId);
-                          router.push("/trip-board");
-                        }}
-                        className="text-xs text-red-500 hover:text-red-700 transition-colors"
-                      >
-                        Confirm delete
-                      </button>
-                      <button
-                        onClick={() => setConfirmDelete(false)}
-                        className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors"
-                      >
-                        Cancel
-                      </button>
-                    </span>
-                  ) : (
-                    <button
-                      onClick={() => setConfirmDelete(true)}
-                      className="hidden sm:inline text-xs text-neutral-300 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100"
-                    >
-                      Delete
-                    </button>
-                  )
-                )}
-
-                {/* Mobile ⋯ menu */}
+                {/* ⋯ menu — all screen sizes */}
                 <button
                   onClick={() => { setShowMobileMenu((v) => !v); setConfirmDelete(false); }}
-                  className="sm:hidden text-neutral-400 hover:text-neutral-600 transition-colors px-1 py-0.5 rounded"
+                  className="text-neutral-400 hover:text-neutral-600 transition-colors px-1 py-0.5 rounded"
                   aria-label="Board options"
                 >
                   &#8943;
                 </button>
                 {showMobileMenu && (
-                  <div className="sm:hidden absolute top-full left-0 mt-1 z-20 bg-white border border-neutral-200 rounded-lg shadow-md py-1 min-w-[140px]">
+                  <div className="absolute top-full left-0 mt-1 z-20 bg-white border border-neutral-200 rounded-lg shadow-md py-1 min-w-[140px]">
                     <button
                       onClick={() => { setShowMobileMenu(false); handleRenameStart(); }}
                       className="w-full text-left px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
