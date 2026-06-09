@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import { getDestinations } from "./actions";
 import { ExperienceForm } from "./_components/ExperienceForm";

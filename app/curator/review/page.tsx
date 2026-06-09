@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import { getAllExperiencesForReview } from "./actions";
 import { ReviewActions } from "./_components/ReviewActions";
