@@ -22,6 +22,7 @@ function buildIcs(items: PlannerItem[]) {
     const location = [item.neighborhood, item.destinationName].filter(Boolean).join(", ");
     const description = [
       item.subtitle,
+      item.notes ? `Notes: ${item.notes}` : null,
       `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/experience/${item.slug}`,
     ]
       .filter(Boolean)
