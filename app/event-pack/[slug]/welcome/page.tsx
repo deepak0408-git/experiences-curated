@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
 import { useParams } from "next/navigation";
 
 export default function WelcomePage() {
@@ -19,17 +18,16 @@ export default function WelcomePage() {
     setLoading(true);
     setError(null);
 
-    const supabase = createClient();
-    const { error: otpError } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=/event-pack/${slug}`,
-      },
+    const res = await fetch("/api/auth/magic-link", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, next: `/event-pack/${slug}` }),
     });
 
     setLoading(false);
-    if (otpError) {
-      setError(otpError.message);
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setError(data.error ?? "Failed to send link. Please try again.");
     } else {
       setSent(true);
     }
