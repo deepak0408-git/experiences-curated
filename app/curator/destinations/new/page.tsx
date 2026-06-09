@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { createDestination } from "../actions";
 
 export const metadata = { title: "Add Destination" };

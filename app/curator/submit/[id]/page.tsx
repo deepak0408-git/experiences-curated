@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { notFound } from "next/navigation";
 import { getExperienceForEdit } from "@/lib/queries/experiences";
 import { getDestinations } from "../actions";
