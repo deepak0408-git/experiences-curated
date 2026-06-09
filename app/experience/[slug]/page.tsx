@@ -382,6 +382,24 @@ export default async function ExperiencePage({
               {practical.bookingMethod && (
                 <PracticalRow label="Access" value={practical.bookingMethod} />
               )}
+              {exp.bookingLinks && (exp.bookingLinks as Array<{ platform: string; url: string }>).length > 0 && (
+                <div className="flex gap-4">
+                  <dt className="w-1/4 flex-shrink-0 text-sm font-medium text-neutral-500 sm:w-28">Book</dt>
+                  <dd className="flex flex-wrap gap-2">
+                    {(exp.bookingLinks as Array<{ platform: string; url: string }>).map((link) => (
+                      <a
+                        key={link.platform}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block text-sm text-neutral-900 underline underline-offset-2 hover:text-neutral-500 transition-colors"
+                      >
+                        {link.platform}
+                      </a>
+                    ))}
+                  </dd>
+                </div>
+              )}
               {exp.gettingThere && (
                 <PracticalRow label="Getting there" value={exp.gettingThere} />
               )}
