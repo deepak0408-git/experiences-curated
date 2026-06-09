@@ -15,6 +15,7 @@ interface PaddleCheckoutProps {
   priceTier: "early_bird" | "standard";
   clientToken: string;
   successUrl: string;
+  redirectDelay?: number;
   environment: "sandbox" | "production";
   userEmail?: string;
   buttonClassName?: string;
@@ -24,6 +25,7 @@ interface PaddleCheckoutProps {
 // Module-level guards — survive re-renders, reset on hard refresh.
 let paddleInitialised = false;
 let pendingSuccessUrl: string | null = null;
+let pendingRedirectDelay = 2500;
 
 function ensurePaddleReady(clientToken: string, environment: "sandbox" | "production") {
   if (!window.Paddle || paddleInitialised) return;
@@ -31,11 +33,12 @@ function ensurePaddleReady(clientToken: string, environment: "sandbox" | "produc
   window.Paddle.Initialize({
     token: clientToken,
     eventCallback: (event: { name: string; data?: unknown }) => {
-      // Let Paddle show its own success screen, then redirect after a short pause.
       if (event.name === "checkout.completed" && pendingSuccessUrl) {
         const url = pendingSuccessUrl;
+        const delay = pendingRedirectDelay;
         pendingSuccessUrl = null;
-        setTimeout(() => { window.location.href = url; }, 2500);
+        pendingRedirectDelay = 2500;
+        setTimeout(() => { window.location.href = url; }, delay);
       }
     },
   });
@@ -48,6 +51,7 @@ export default function PaddleCheckout({
   priceTier,
   clientToken,
   successUrl,
+  redirectDelay = 2500,
   environment,
   userEmail,
   buttonClassName,
@@ -57,6 +61,7 @@ export default function PaddleCheckout({
     ensurePaddleReady(clientToken, environment);
     if (!window.Paddle) return;
     pendingSuccessUrl = successUrl;
+    pendingRedirectDelay = redirectDelay;
     window.Paddle.Checkout.open({
       items: [{ priceId, quantity: 1 }],
       customData: { sporting_event_id: sportingEventId, price_tier: priceTier },

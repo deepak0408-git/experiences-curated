@@ -412,7 +412,10 @@ export default async function EventPackPage({
                     sportingEventId={event.id}
                     priceTier={isEarlyBird ? "early_bird" : "standard"}
                     clientToken={process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN ?? ""}
-                    successUrl={`${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
+                    successUrl={user?.email
+                      ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}`
+                      : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
+                    redirectDelay={user?.email ? 4000 : 2500}
                     environment={paddleEnv}
                     userEmail={user?.email ?? undefined}
                     buttonClassName="w-full inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
@@ -536,7 +539,10 @@ export default async function EventPackPage({
                   sportingEventId={event.id}
                   priceTier={isEarlyBird ? "early_bird" : "standard"}
                   clientToken={process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN ?? ""}
-                  successUrl={`${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
+                  successUrl={user?.email
+                    ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}`
+                    : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
+                  redirectDelay={user?.email ? 4000 : 2500}
                   environment={paddleEnv}
                 />
               ) : (
