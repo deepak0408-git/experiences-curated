@@ -618,11 +618,22 @@ function renderInline(text: string) {
   });
 }
 
+function linkifyText(text: string) {
+  const parts = text.split(/(https?:\/\/[^\s]+)/g);
+  return parts.map((part, i) =>
+    part.startsWith("http") ? (
+      <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-neutral-600 break-all">
+        {part}
+      </a>
+    ) : part
+  );
+}
+
 function PracticalRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex gap-4">
       <dt className="w-1/4 flex-shrink-0 text-sm font-medium text-neutral-500 sm:w-28">{label}</dt>
-      <dd className="text-sm text-neutral-800 leading-6 min-w-0 break-words">{value}</dd>
+      <dd className="text-sm text-neutral-800 leading-6 min-w-0 break-words">{linkifyText(value)}</dd>
     </div>
   );
 }
