@@ -100,6 +100,12 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
     setItems((prev) => prev.filter((i) => i.savedItemId !== savedItemId));
   };
 
+  const handleNotesUpdate = (savedItemId: string, notes: string) => {
+    setItems((prev) =>
+      prev.map((i) => i.savedItemId === savedItemId ? { ...i, notes } : i)
+    );
+  };
+
   const handleRenameStart = () => {
     setDraftTitle(boardTitle);
     setEditingTitle(true);
@@ -393,7 +399,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                   </div>
 
                   <div className="border-t border-neutral-100 px-3 py-2 rounded-b-xl overflow-hidden">
-                    <NotesEditor savedItemId={item.savedItemId} initialNotes={item.notes} />
+                    <NotesEditor savedItemId={item.savedItemId} initialNotes={item.notes} onSave={handleNotesUpdate} />
                   </div>
                 </div>
               );

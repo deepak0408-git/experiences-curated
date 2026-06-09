@@ -6,9 +6,11 @@ import { updateSavedItemNotes } from "../actions";
 export default function NotesEditor({
   savedItemId,
   initialNotes,
+  onSave,
 }: {
   savedItemId: string;
   initialNotes: string | null;
+  onSave?: (savedItemId: string, notes: string) => void;
 }) {
   const [editing, setEditing] = useState(false);
   const [value, setValue] = useState(initialNotes ?? "");
@@ -16,6 +18,7 @@ export default function NotesEditor({
 
   const save = () => {
     setEditing(false);
+    onSave?.(savedItemId, value);
     startTransition(() => updateSavedItemNotes(savedItemId, value));
   };
 
