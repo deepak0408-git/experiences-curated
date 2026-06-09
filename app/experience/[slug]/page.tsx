@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getExperienceBySlug, type ExperienceDetail } from "@/lib/queries/experiences";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
