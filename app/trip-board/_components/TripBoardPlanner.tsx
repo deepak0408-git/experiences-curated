@@ -72,6 +72,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
   const [showNewBoard, setShowNewBoard] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showItinerary, setShowItinerary] = useState(false);
   const [boardTitle, setBoardTitle] = useState(boards.find((b) => b.id === activeBoardId)?.title ?? "My Trip Board");
   const [editingTitle, setEditingTitle] = useState(false);
   const [draftTitle, setDraftTitle] = useState(boardTitle);
@@ -389,7 +390,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
             })}
           </div>
 
-          {/* Right — sticky calendar timeline */}
+          {/* Right — sticky calendar timeline (desktop) */}
           <div className="hidden lg:block flex-1 min-w-0">
             <div className="sticky top-6 max-h-[calc(100vh-6rem)] overflow-y-auto">
               <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400 mb-4">
@@ -400,6 +401,43 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
           </div>
         </div>
       </div>
+
+      {/* Mobile itinerary drawer — only when at least 1 item is scheduled */}
+      {scheduledCount > 0 && (
+        <div className="lg:hidden">
+          {/* Sticky banner pinned below the site nav */}
+          <div className="fixed top-[57px] left-0 right-0 z-30 bg-white border-b border-neutral-100 px-4 py-2.5 shadow-sm">
+            <button
+              onClick={() => setShowItinerary(true)}
+              className="w-full flex items-center justify-between text-sm"
+            >
+              <span className="font-semibold text-neutral-900">View itinerary</span>
+              <span className="text-xs text-neutral-400">{scheduledCount} scheduled ↓</span>
+            </button>
+          </div>
+
+          {/* Drawer overlay */}
+          {showItinerary && (
+            <div className="fixed inset-0 z-40 flex flex-col justify-end">
+              <div className="absolute inset-0 bg-black/40" onClick={() => setShowItinerary(false)} />
+              <div className="relative bg-white rounded-t-2xl max-h-[80vh] flex flex-col">
+                <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-100">
+                  <p className="text-sm font-semibold text-neutral-900">Itinerary</p>
+                  <button
+                    onClick={() => setShowItinerary(false)}
+                    className="text-neutral-400 hover:text-neutral-600 transition-colors text-lg leading-none"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div className="overflow-y-auto px-5 py-4">
+                  <CalendarTimeline items={items} />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {showNewBoard && <NewBoardModal onClose={() => setShowNewBoard(false)} />}
     </div>
