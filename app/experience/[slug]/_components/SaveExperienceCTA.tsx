@@ -2,7 +2,6 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
 import { saveExperience, unsaveExperience } from "../actions";
 
 export default function SaveExperienceCTA({
@@ -40,14 +39,12 @@ export default function SaveExperienceCTA({
     e.preventDefault();
     if (!email.trim()) return;
     setOtpStatus("loading");
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOtp({
-      email: email.trim(),
-      options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/experience/${slug}`,
-      },
+    const res = await fetch("/api/auth/magic-link", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email.trim(), next: `/experience/${slug}` }),
     });
-    setOtpStatus(error ? "error" : "sent");
+    setOtpStatus(res.ok ? "sent" : "error");
   };
 
   if (isLoggedIn) {
