@@ -228,9 +228,19 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
               </div>
             )}
 
-            <p className="mt-1.5 text-sm text-neutral-500">
-              {items.length} saved · {scheduledCount} scheduled
-            </p>
+            <div className="flex items-center gap-3 mt-1.5 flex-wrap">
+              <p className="text-sm text-neutral-500">
+                {items.length} saved · {scheduledCount} scheduled
+              </p>
+              {scheduledCount > 0 && (
+                <button
+                  onClick={() => setShowItinerary(true)}
+                  className="lg:hidden text-xs font-medium text-neutral-900 underline underline-offset-2 hover:text-neutral-500 transition-colors"
+                >
+                  View itinerary →
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Right — actions */}
@@ -402,40 +412,24 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
         </div>
       </div>
 
-      {/* Mobile itinerary drawer — only when at least 1 item is scheduled */}
-      {scheduledCount > 0 && (
-        <div className="lg:hidden">
-          {/* Sticky banner pinned below the site nav */}
-          <div className="fixed top-[57px] left-0 right-0 z-30 bg-white border-b border-neutral-100 px-4 py-2.5 shadow-sm">
-            <button
-              onClick={() => setShowItinerary(true)}
-              className="w-full flex items-center justify-between text-sm"
-            >
-              <span className="font-semibold text-neutral-900">View itinerary</span>
-              <span className="text-xs text-neutral-400">{scheduledCount} scheduled ↓</span>
-            </button>
-          </div>
-
-          {/* Drawer overlay */}
-          {showItinerary && (
-            <div className="fixed inset-0 z-40 flex flex-col justify-end">
-              <div className="absolute inset-0 bg-black/40" onClick={() => setShowItinerary(false)} />
-              <div className="relative bg-white rounded-t-2xl max-h-[80vh] flex flex-col">
-                <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-100">
-                  <p className="text-sm font-semibold text-neutral-900">Itinerary</p>
-                  <button
-                    onClick={() => setShowItinerary(false)}
-                    className="text-neutral-400 hover:text-neutral-600 transition-colors text-lg leading-none"
-                  >
-                    ✕
-                  </button>
-                </div>
-                <div className="overflow-y-auto px-5 py-4">
-                  <CalendarTimeline items={items} />
-                </div>
-              </div>
+      {/* Mobile itinerary drawer overlay */}
+      {showItinerary && (
+        <div className="lg:hidden fixed inset-0 z-40 flex flex-col justify-end">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setShowItinerary(false)} />
+          <div className="relative bg-white rounded-t-2xl max-h-[80vh] flex flex-col">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-100">
+              <p className="text-sm font-semibold text-neutral-900">Itinerary</p>
+              <button
+                onClick={() => setShowItinerary(false)}
+                className="text-neutral-400 hover:text-neutral-600 transition-colors text-lg leading-none"
+              >
+                ✕
+              </button>
             </div>
-          )}
+            <div className="overflow-y-auto px-5 py-4">
+              <CalendarTimeline items={items} />
+            </div>
+          </div>
         </div>
       )}
 
