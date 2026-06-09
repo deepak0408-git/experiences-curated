@@ -2,7 +2,7 @@
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Terms of Use â€” Experiences | Curated",
+  title: "Terms of Use — Experiences | Curated",
 };
 
 export default function TermsPage() {
@@ -35,7 +35,7 @@ export default function TermsPage() {
         <section className="space-y-3">
           <h2 className="text-base font-semibold text-neutral-900">1. What the Service is</h2>
           <p className="text-sm text-neutral-700 leading-7">
-            Experiences | Curated is an editorially curated travel discovery platform. We research and publish guides to handpicked experiences â€” restaurants, venues, neighbourhoods, sports events, and more. We are not a booking platform, a travel agent, or a ticketing service. Where booking links appear, they are affiliate links to independent third-party services. We have no control over those services and are not party to any booking you make through them.
+            Experiences | Curated is an editorially curated travel discovery platform. We research and publish guides to handpicked experiences &mdash; restaurants, venues, neighbourhoods, sports events, and more. We are not a booking platform, a travel agent, or a ticketing service. Where booking links appear, they are affiliate links to independent third-party services. We have no control over those services and are not party to any booking you make through them.
           </p>
         </section>
 
@@ -45,7 +45,7 @@ export default function TermsPage() {
             You must be at least 18 years old to create an account or make a purchase. By registering, you confirm that you meet this requirement.
           </p>
           <p className="text-sm text-neutral-700 leading-7">
-            You need an account to save experiences, use the Trip Board, or access event packs. We use magic-link email authentication â€” we never ask for a password. You are responsible for keeping access to your email account secure.
+            You need an account to save experiences, use the Trip Board, or access event packs. We use magic-link email authentication &mdash; we never ask for a password. You are responsible for keeping access to your email account secure.
           </p>
           <p className="text-sm text-neutral-700 leading-7">
             We reserve the right to suspend or terminate your account without notice if you breach these terms, misuse the Service, or engage in fraudulent activity.
@@ -57,18 +57,18 @@ export default function TermsPage() {
           <p className="text-sm text-neutral-700 leading-7">
             Event packs are digital products sold as one-time purchases. All transactions are processed by Paddle as Merchant of Record. Once purchased, access is tied to your account email and is non-transferable.
           </p>
-          <p className=”text-sm text-neutral-700 leading-7”>
-            <strong>Refunds.</strong> Because event packs are digital products with immediate access upon purchase, all sales are final and non-refundable, except where required by applicable law. If you believe you were charged in error or experienced a technical failure preventing access, contact us at{“ “}
-            <a href=”mailto:hello@experiences-curated.com” className=”underline underline-offset-2 hover:text-neutral-900 transition-colors”>
+          <p className="text-sm text-neutral-700 leading-7">
+            <strong>Refunds.</strong> Because event packs are digital products with immediate access upon purchase, all sales are final and non-refundable, except where required by applicable law. If you believe you were charged in error or experienced a technical failure preventing access, contact us at{" "}
+            <a href="mailto:hello@experiences-curated.com" className="underline underline-offset-2 hover:text-neutral-900 transition-colors">
               hello@experiences-curated.com
-            </a>{“ “}
+            </a>{" "}
             and we will review your case.
           </p>
         </section>
 
-        <section className=”space-y-3”>
-          <h2 className=”text-base font-semibold text-neutral-900”>4. Pro subscription</h2>
-          <p className=”text-sm text-neutral-700 leading-7”>
+        <section className="space-y-3">
+          <h2 className="text-base font-semibold text-neutral-900">4. Pro subscription</h2>
+          <p className="text-sm text-neutral-700 leading-7">
             Pro is a recurring subscription billed monthly or annually. You can cancel at any time via your profile page — access continues until the end of the current billing period. All subscription payments are non-refundable; no partial refunds are issued for unused time. Subscriptions are managed by Paddle; Paddle&apos;s own terms apply to billing.
           </p>
         </section>
