@@ -167,6 +167,7 @@ export default async function ProPage() {
                 monthlyDisplay="£9.99"
                 annualDisplay="£83.88"
                 annualMonthlyEquiv="£6.99"
+                userEmail={user?.email}
               />
               <p className="text-center text-xs text-neutral-400 mt-4">
                 Cancel any time. No lock-in.

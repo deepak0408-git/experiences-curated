@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Script from "next/script";
+import LocalCurrencyHint from "@/app/event-pack/[slug]/_components/LocalCurrencyHint";
 
 let paddleInitialised = false;
 
@@ -13,6 +14,7 @@ interface Props {
   monthlyDisplay: string;
   annualDisplay: string;
   annualMonthlyEquiv: string;
+  userEmail?: string | null;
 }
 
 export default function ProCheckout({
@@ -23,6 +25,7 @@ export default function ProCheckout({
   monthlyDisplay,
   annualDisplay,
   annualMonthlyEquiv,
+  userEmail,
 }: Props) {
   const [cycle, setCycle] = useState<"monthly" | "annual">("annual");
 
@@ -46,6 +49,7 @@ export default function ProCheckout({
     const priceId = cycle === "annual" ? annualPriceId : monthlyPriceId;
     window.Paddle.Checkout.open({
       items: [{ priceId, quantity: 1 }],
+      ...(userEmail ? { customer: { email: userEmail } } : {}),
     });
   };
 
@@ -86,6 +90,7 @@ export default function ProCheckout({
         <p className="text-4xl font-bold text-neutral-900 tracking-tight">
           {cycle === "annual" ? annualMonthlyEquiv : monthlyDisplay}
           <span className="text-base font-normal text-neutral-400 ml-1">/month</span>
+          <LocalCurrencyHint gbpAmount={cycle === "annual" ? 6.99 : 9.99} />
         </p>
         <p className="text-sm text-neutral-400 mt-1">
           {cycle === "annual"
