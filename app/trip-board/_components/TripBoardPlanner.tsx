@@ -71,6 +71,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
   const [items, setItems] = useState<PlannerItem[]>(initialItems);
   const [showNewBoard, setShowNewBoard] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [boardTitle, setBoardTitle] = useState(boards.find((b) => b.id === activeBoardId)?.title ?? "My Trip Board");
   const [editingTitle, setEditingTitle] = useState(false);
   const [draftTitle, setDraftTitle] = useState(boardTitle);
@@ -173,17 +174,19 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                 autoFocus
               />
             ) : (
-              <div className="flex items-center gap-3 group">
+              <div className="flex items-center gap-3 group relative">
                 <h1 className="text-2xl font-bold text-neutral-900">{boardTitle}</h1>
+
+                {/* Desktop hover controls */}
                 <button
                   onClick={handleRenameStart}
-                  className="text-xs text-neutral-300 hover:text-neutral-500 transition-colors opacity-0 group-hover:opacity-100"
+                  className="hidden sm:inline text-xs text-neutral-300 hover:text-neutral-500 transition-colors opacity-0 group-hover:opacity-100"
                 >
                   Rename
                 </button>
                 {boards.length > 1 && (
                   confirmDelete ? (
-                    <span className="flex items-center gap-1.5">
+                    <span className="hidden sm:inline-flex items-center gap-1.5">
                       <button
                         onClick={async () => {
                           await deleteBoard(activeBoardId);
@@ -203,11 +206,59 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                   ) : (
                     <button
                       onClick={() => setConfirmDelete(true)}
-                      className="text-xs text-neutral-300 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100"
+                      className="hidden sm:inline text-xs text-neutral-300 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100"
                     >
                       Delete
                     </button>
                   )
+                )}
+
+                {/* Mobile ⋯ menu */}
+                <button
+                  onClick={() => { setShowMobileMenu((v) => !v); setConfirmDelete(false); }}
+                  className="sm:hidden text-neutral-400 hover:text-neutral-600 transition-colors px-1 py-0.5 rounded"
+                  aria-label="Board options"
+                >
+                  &#8943;
+                </button>
+                {showMobileMenu && (
+                  <div className="sm:hidden absolute top-full left-0 mt-1 z-20 bg-white border border-neutral-200 rounded-lg shadow-md py-1 min-w-[140px]">
+                    <button
+                      onClick={() => { setShowMobileMenu(false); handleRenameStart(); }}
+                      className="w-full text-left px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
+                    >
+                      Rename
+                    </button>
+                    {boards.length > 1 && (
+                      confirmDelete ? (
+                        <div className="px-4 py-2 space-y-1">
+                          <button
+                            onClick={async () => {
+                              setShowMobileMenu(false);
+                              await deleteBoard(activeBoardId);
+                              router.push("/trip-board");
+                            }}
+                            className="w-full text-left text-sm text-red-500 hover:text-red-700"
+                          >
+                            Confirm delete
+                          </button>
+                          <button
+                            onClick={() => setConfirmDelete(false)}
+                            className="w-full text-left text-sm text-neutral-400 hover:text-neutral-600"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => setConfirmDelete(true)}
+                          className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-neutral-50"
+                        >
+                          Delete board
+                        </button>
+                      )
+                    )}
+                  </div>
                 )}
               </div>
             )}
