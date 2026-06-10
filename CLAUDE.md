@@ -165,8 +165,9 @@ supabase.auth.admin.generateLink({
 - `/curator/*` protected in `middleware.ts` — unauthenticated users redirected to `/sign-in?next=...`
 - `/api/upload/presign` requires authenticated Supabase session — returns 401 otherwise
 - HTTP security headers set in `next.config.ts` — X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
-- GDPR account deletion: `deleteAccount()` server action in `app/profile/actions.ts` — uses service role `admin.deleteUser()`
-- `npm run build` must pass clean before every deploy — last confirmed 8 Jun 2026
+- GDPR account deletion: `deleteAccount()` server action in `app/profile/actions.ts` — deletes all user artefacts in FK-safe order (saved_items → trip_boards → travel_logs → community_flags → taste_profiles → user_profiles → pro_subscriptions → public.users → auth.deleteUser), then anonymises purchases by email (`[deleted]` + NULL customer ID). Purchases matched by email not userId — covers users who bought without ever signing in.
+- Dodo webhook creates `public.users` row on purchase — ensures all buyers are counted as users and included in GDPR deletion flow.
+- `npm run build` must pass clean before every deploy — last confirmed 10 Jun 2026
 
 ---
 
