@@ -49,6 +49,9 @@ app/
   curator/submit/             # New + edit experience form
   auth/callback / confirm     # PKCE + implicit auth flows
   api/webhooks/paddle         # Purchase webhook → purchases row + Supabase user
+  api/webhooks/dodo           # Dodo webhook → purchases / pro_subscriptions + Supabase user
+  api/checkout/dodo           # Server-side Dodo checkout session creation (event packs)
+  api/checkout/dodo-pro       # Server-side Dodo checkout session creation (Pro subscription)
 
 app/_components/
   HomepageNav.tsx   # Server component — email passed as prop; SignOutButton + SignInLink are client
@@ -109,7 +112,15 @@ sport:          tennis | cricket | football | rugby | golf | formula_one | cycli
 - `LocalCurrencyHint` — client component at `event-pack/[slug]/_components/LocalCurrencyHint.tsx`. Detects locale via `navigator.languages`, fetches rate via `/api/fx?currency=XXX` (proxied to frankfurter.app to avoid CORS in dev).
 - Hero image upload: `node --experimental-strip-types scripts/seed-<name>.mjs` or direct R2 upload + DB update. R2 key: `sporting-events/hero/<slug>.jpg`.
 
-**Purchase flow:** Paddle → `transaction.completed` webhook → purchases row + Supabase user → `/welcome` magic link → `/auth/confirm` → pack view.
+**Purchase flow (Paddle):** Paddle → `transaction.completed` webhook → purchases row + Supabase user → `/welcome` magic link → `/auth/confirm` → pack view.
+
+**Purchase flow (Dodo):** Dodo checkout session created server-side → overlay opens client-side → `payment.succeeded` webhook → purchases row + Supabase user → redirect to `return_url` (pack view).
+
+**Payment provider switch:** `NEXT_PUBLIC_PAYMENT_PROVIDER=dodo|paddle` — single env var controls which checkout renders on event pack pages and Pro page. Both integrations coexist in codebase. Dodo is current default; flip to paddle if Paddle KYB clears.
+
+**Dodo checkout:** `app/api/checkout/dodo/route.ts` creates session server-side. Pass `customer: { email }` (no `name` — Dodo rejects empty string as fraud signal). Client opens overlay via `DodoPayments.Checkout.open({ checkoutUrl })`. SDK: `dodopayments@2.36.0` (server) + `dodopayments-checkout@1.9.4` (client).
+
+**Dodo environments:** `NEXT_PUBLIC_DODO_MODE=test_mode|live_mode`. Test mode product IDs are separate from live — both sets in `.env.local` (live commented out). Webhook secret differs between test and live.
 
 ---
 
