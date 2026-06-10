@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
   try {
     const session = await client.checkoutSessions.create({
       product_cart: [{ product_id: productId, quantity: 1 }],
-      ...(user?.email ? { customer: { email: user.email, name: "" } } : {}),
+      ...(user?.email ? { customer: { email: user.email } } : {}),
       return_url: successUrl ?? `${process.env.NEXT_PUBLIC_SITE_URL}/pro/onboarding`,
     });
 
