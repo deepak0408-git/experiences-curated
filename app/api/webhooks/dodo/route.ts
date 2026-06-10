@@ -118,12 +118,14 @@ export async function POST(request: NextRequest) {
 
   const payment = event.data as {
     payment_id: string;
-    product_id: string;
+    product_cart: { product_id: string; quantity: number }[];
     currency: string;
     total_amount: number;
     customer: { customer_id: string; email: string };
     metadata?: { sporting_event_id?: string; price_tier?: string };
   };
+
+  const productId = payment.product_cart?.[0]?.product_id ?? null;
 
   const email = payment.customer?.email;
   if (!email) {
@@ -131,8 +133,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Missing email" }, { status: 400 });
   }
 
+  if (!productId) {
+    console.error("[dodo webhook] missing product_id in product_cart, payment:", payment.payment_id);
+    return NextResponse.json({ error: "Missing product_id" }, { status: 400 });
+  }
+
   // Skip pro transactions — handled by subscription events
-  if (PRO_PRODUCT_IDS.includes(payment.product_id)) {
+  if (PRO_PRODUCT_IDS.includes(productId)) {
     console.log("[dodo webhook] Pro payment — handled by subscription events, skipping");
     return NextResponse.json({ received: true });
   }
@@ -172,7 +179,7 @@ export async function POST(request: NextRequest) {
         sportingEventId,
         paddleOrderId: payment.payment_id,
         paddleCustomerId: payment.customer.customer_id,
-        paddlePriceId: payment.product_id,
+        paddlePriceId: productId,
         priceTier,
         pricePaid,
         currency,
