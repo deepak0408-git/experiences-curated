@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { userProfiles } from "@/schema/database";
 import { eq } from "drizzle-orm";
 import ProCheckout from "./_components/ProCheckout";
+import DodoProCheckout from "./_components/DodoProCheckout";
 import { ARCHETYPE_DETAILS } from "@/lib/quiz";
 
 export const metadata: Metadata = {
@@ -36,6 +37,9 @@ export default async function ProPage() {
   const clientToken = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN ?? "";
   const monthlyPriceId = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_PRO_MONTHLY ?? "";
   const annualPriceId = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_PRO_ANNUAL ?? "";
+  const paymentProvider = process.env.NEXT_PUBLIC_PAYMENT_PROVIDER ?? "paddle";
+  const dodoMonthlyProductId = process.env.NEXT_PUBLIC_DODO_PRICE_ID_PRO_MONTHLY ?? "";
+  const dodoAnnualProductId = process.env.NEXT_PUBLIC_DODO_PRICE_ID_PRO_ANNUAL ?? "";
 
   return (
     <div className="min-h-screen bg-white">
@@ -159,16 +163,26 @@ export default async function ProPage() {
 
             {/* Pricing card */}
             <div className="rounded-2xl border border-neutral-200 p-7 lg:sticky lg:top-6">
-              <ProCheckout
-                monthlyPriceId={monthlyPriceId}
-                annualPriceId={annualPriceId}
-                clientToken={clientToken}
-                environment={(process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT as "sandbox" | "production") ?? "sandbox"}
-                monthlyDisplay="£9.99"
-                annualDisplay="£83.88"
-                annualMonthlyEquiv="£6.99"
-                userEmail={user?.email}
-              />
+              {paymentProvider === "dodo" ? (
+                <DodoProCheckout
+                  monthlyProductId={dodoMonthlyProductId}
+                  annualProductId={dodoAnnualProductId}
+                  monthlyDisplay="£9"
+                  annualDisplay="£89"
+                  annualMonthlyEquiv="£7.42"
+                />
+              ) : (
+                <ProCheckout
+                  monthlyPriceId={monthlyPriceId}
+                  annualPriceId={annualPriceId}
+                  clientToken={clientToken}
+                  environment={(process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT as "sandbox" | "production") ?? "sandbox"}
+                  monthlyDisplay="£9.99"
+                  annualDisplay="£83.88"
+                  annualMonthlyEquiv="£6.99"
+                  userEmail={user?.email}
+                />
+              )}
               <p className="text-center text-xs text-neutral-400 mt-4">
                 Cancel any time. No lock-in.
               </p>
