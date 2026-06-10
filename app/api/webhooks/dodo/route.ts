@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { db } from "@/lib/db";
-import { purchases, sportingEvents, proSubscriptions } from "@/schema/database";
+import { purchases, sportingEvents, proSubscriptions, users } from "@/schema/database";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -201,9 +201,16 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { error } = await supabaseAdmin.auth.admin.createUser({ email, email_confirm: true });
+    const { data: authData, error } = await supabaseAdmin.auth.admin.createUser({ email, email_confirm: true });
     if (error && !error.message.includes("already been registered")) {
       console.error("[dodo webhook] failed to create Supabase user:", error.message);
+    }
+    // Ensure public.users row exists — needed for user count and GDPR deletion
+    const authId = authData?.user?.id;
+    if (authId) {
+      await db.insert(users)
+        .values({ email, authId })
+        .onConflictDoNothing();
     }
   } catch (err) {
     console.error("[dodo webhook] Supabase user provisioning error:", err);
