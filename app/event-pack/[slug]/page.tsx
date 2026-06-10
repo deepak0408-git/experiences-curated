@@ -7,6 +7,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import PaddleCheckout from "./_components/PaddleCheckout";
+import DodoCheckout from "./_components/DodoCheckout";
 import PackView from "./_components/PackView";
 import { hasProSubscription } from "@/lib/pro";
 import HomepageNav from "@/app/_components/HomepageNav";
@@ -327,6 +328,28 @@ export default async function EventPackPage({
     (process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT as "sandbox" | "production") ??
     "sandbox";
 
+  const paymentProvider = process.env.NEXT_PUBLIC_PAYMENT_PROVIDER ?? "paddle";
+
+  const DODO_PRICING: Record<string, { earlyBirdPriceId: string; standardPriceId: string; earlyBirdCutoff: string }> = {
+    "wimbledon-2026": {
+      earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_EARLY_BIRD ?? "",
+      standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_STANDARD ?? "",
+      earlyBirdCutoff: process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01",
+    },
+    "us-open-2026": {
+      earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_US_OPEN_EARLY_BIRD ?? "",
+      standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_US_OPEN_STANDARD ?? "",
+      earlyBirdCutoff: process.env.NEXT_PUBLIC_US_OPEN_EARLY_BIRD_CUTOFF ?? "2026-08-01",
+    },
+    "india-in-england-cricket-2026": {
+      earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_CRICKET_EARLY_BIRD ?? "",
+      standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_CRICKET_STANDARD ?? "",
+      earlyBirdCutoff: process.env.NEXT_PUBLIC_CRICKET_EARLY_BIRD_CUTOFF ?? "2026-06-15",
+    },
+  };
+  const dodoPricing = DODO_PRICING[slug] ?? DODO_PRICING["wimbledon-2026"];
+  const dodoProductId = isEarlyBird ? dodoPricing.earlyBirdPriceId : dodoPricing.standardPriceId;
+
   const dateRange = formatDateRange(event.startDate, event.endDate);
 
   return (
@@ -406,7 +429,21 @@ export default async function EventPackPage({
                 <p className="text-xs text-neutral-500 mb-4 mt-1">
                   {totalCount > 0 ? `${totalCount} experiences` : "Curated experiences"} · one-time purchase
                 </p>
-                {priceId ? (
+                {paymentProvider === "dodo" ? (
+                  dodoProductId ? (
+                    <DodoCheckout
+                      productId={dodoProductId}
+                      sportingEventId={event.id}
+                      priceTier={isEarlyBird ? "early_bird" : "standard"}
+                      successUrl={user?.email
+                        ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}`
+                        : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
+                      buttonClassName="w-full inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
+                    />
+                  ) : (
+                    <p className="text-xs text-neutral-400">Checkout coming soon.</p>
+                  )
+                ) : priceId ? (
                   <PaddleCheckout
                     priceId={priceId}
                     sportingEventId={event.id}
@@ -533,7 +570,20 @@ export default async function EventPackPage({
               <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-5">
                 Ready to go?
               </p>
-              {priceId ? (
+              {paymentProvider === "dodo" ? (
+                dodoProductId ? (
+                  <DodoCheckout
+                    productId={dodoProductId}
+                    sportingEventId={event.id}
+                    priceTier={isEarlyBird ? "early_bird" : "standard"}
+                    successUrl={user?.email
+                      ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}`
+                      : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
+                  />
+                ) : (
+                  <p className="text-xs text-neutral-400">Checkout coming soon.</p>
+                )
+              ) : priceId ? (
                 <PaddleCheckout
                   priceId={priceId}
                   sportingEventId={event.id}
