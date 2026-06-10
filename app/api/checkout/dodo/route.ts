@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
   try {
     const session = await client.checkoutSessions.create({
       product_cart: [{ product_id: productId, quantity: 1 }],
-      ...(user?.email ? { customer: { email: user.email, name: "" } } : {}),
+      ...(user?.email ? { customer: { email: user.email } } : {}),
       metadata: {
         sporting_event_id: sportingEventId,
         price_tier: priceTier ?? "standard",
