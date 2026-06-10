@@ -82,10 +82,10 @@ export default function PrivacyPage() {
           <p className="text-sm text-neutral-700 leading-7">We do not sell your data. We do not share it with advertisers.</p>
         </section>
 
-        <section className=”space-y-3”>
-          <h2 className=”text-base font-semibold text-neutral-900”>5. Data retention</h2>
-          <p className=”text-sm text-neutral-700 leading-7”>We keep different categories of data for different periods:</p>
-          <ul className=”space-y-2 text-sm text-neutral-700 leading-7 list-disc list-inside”>
+        <section className="space-y-3">
+          <h2 className="text-base font-semibold text-neutral-900">5. Data retention</h2>
+          <p className="text-sm text-neutral-700 leading-7">We keep different categories of data for different periods:</p>
+          <ul className="space-y-2 text-sm text-neutral-700 leading-7 list-disc list-inside">
             <li><strong>Account and profile data</strong> &mdash; for the duration of your account. Deleted immediately on account closure.</li>
             <li><strong>Travel logs, Trip Boards, and saved items</strong> &mdash; for the duration of your account. Deleted immediately with your account.</li>
             <li><strong>Purchase records</strong> &mdash; retained for 7 years from the date of purchase as required by Indian tax and commercial law. On account deletion, all personal identifiers (email address, customer ID) are permanently removed from these records. The anonymised transaction record (amount, date, product) is retained solely for legal compliance and cannot be linked back to you.</li>
@@ -93,31 +93,31 @@ export default function PrivacyPage() {
           </ul>
         </section>
 
-        <section className=”space-y-3”>
-          <h2 className=”text-base font-semibold text-neutral-900”>6. Account deletion</h2>
-          <p className=”text-sm text-neutral-700 leading-7”>
-            You can delete your account at any time from your{“ “}
-            <a href=”/profile” className=”underline underline-offset-2 hover:text-neutral-900 transition-colors”>Profile page</a>.
+        <section className="space-y-3">
+          <h2 className="text-base font-semibold text-neutral-900">6. Account deletion</h2>
+          <p className="text-sm text-neutral-700 leading-7">
+            You can delete your account at any time from your{" "}
+            <a href="/profile" className="underline underline-offset-2 hover:text-neutral-900 transition-colors">Profile page</a>.
             Deletion is immediate and permanent. The following data is deleted:
           </p>
-          <ul className=”space-y-2 text-sm text-neutral-700 leading-7 list-disc list-inside”>
+          <ul className="space-y-2 text-sm text-neutral-700 leading-7 list-disc list-inside">
             <li>Your account and sign-in credentials</li>
             <li>Your traveller archetype and quiz responses</li>
             <li>Your Trip Boards and all saved experiences</li>
             <li>Your travel log, ratings, and mood tags</li>
             <li>Your Pro subscription record</li>
           </ul>
-          <p className=”text-sm text-neutral-700 leading-7”>
+          <p className="text-sm text-neutral-700 leading-7">
             Purchase transaction records (amount paid, date, product purchased) are anonymised rather than deleted, as we are legally required to retain financial records for 7 years. All personal identifiers are permanently stripped from these records &mdash; they cannot be linked back to you. This is compliant with GDPR right to erasure under Article 17(3)(b), which permits retention of anonymised records where there is a legal obligation to do so.
           </p>
         </section>
 
-        <section className=”space-y-3”>
-          <h2 className=”text-base font-semibold text-neutral-900”>7. Your rights</h2>
-          <p className=”text-sm text-neutral-700 leading-7”>
+        <section className="space-y-3">
+          <h2 className="text-base font-semibold text-neutral-900">7. Your rights</h2>
+          <p className="text-sm text-neutral-700 leading-7">
             Under the DPDPA and, where applicable, UK GDPR and EU GDPR, you have the following rights:
           </p>
-          <ul className=”space-y-2 text-sm text-neutral-700 leading-7 list-disc list-inside”>
+          <ul className="space-y-2 text-sm text-neutral-700 leading-7 list-disc list-inside">
             <li><strong>Access</strong> &mdash; request a copy of the personal data we hold about you.</li>
             <li><strong>Correction</strong> &mdash; ask us to correct inaccurate or incomplete data.</li>
             <li><strong>Erasure</strong> &mdash; ask us to delete your data where there is no compelling reason to continue processing it. See section 6 (Account deletion) for how we handle this, including the financial records exemption.</li>
@@ -126,9 +126,9 @@ export default function PrivacyPage() {
             <li><strong>Object</strong> &mdash; object to processing based on legitimate interests. We will stop unless we can demonstrate compelling legitimate grounds.</li>
             <li><strong>Withdraw consent</strong> &mdash; where processing is based on consent (e.g. analytics cookies), withdraw it at any time without affecting prior processing.</li>
           </ul>
-          <p className=”text-sm text-neutral-700 leading-7”>
-            To exercise any of these rights, email{“ “}
-            <a href=”mailto:hello@experiences-curated.com” className=”underline underline-offset-2 hover:text-neutral-900 transition-colors”>
+          <p className="text-sm text-neutral-700 leading-7">
+            To exercise any of these rights, email{" "}
+            <a href="mailto:hello@experiences-curated.com" className="underline underline-offset-2 hover:text-neutral-900 transition-colors">
               hello@experiences-curated.com
             </a>
             . We will respond within 30 days.
