@@ -30,15 +30,23 @@ and margin — sent to hello@experiences-curated.com via Resend.
 ```json
 {
   "crons": [
-    { "path": "/api/cron/weekly-report", "schedule": "0 7 * * 1" }
+    { "path": "/api/cron/weekly-report", "schedule": "30 2 * * 6" }
   ]
 }
 ```
+Schedule: Saturday 08:00 IST = 02:30 UTC (`30 2 * * 6`)
 
 ### 3. Environment variables required
-- `CRON_SECRET` — shared secret to authenticate cron calls
+- `CRON_SECRET` — shared secret to authenticate cron calls (set in Vercel + .env.local)
 - `RESEND_API_KEY` — already set
 - `DATABASE_URL` — already set
+
+### 4. Email details
+- **To:** experiencescurated@gmail.com
+- **From:** Experiences | Curated &lt;hello@experiences-curated.com&gt;
+- **Subject:** `Experiences Curated Weekly Sales Report — 4 Jun – 11 Jun 2026` (dates dynamic)
+- **Currency:** Each transaction shown in its original currency (GBP/USD/EUR) + INR equivalent. All totals in INR. Live FX rates via frankfurter.app; fallback rates if API down (£1=₹107, $1=₹84, €1=₹91).
+- **Sections:** Pack sales by event · Pro subscriptions + MRR · YTD totals · Monthly fixed costs in USD + INR · Payout validation box
 
 ### 4. Fixed costs (hardcoded in report, update when plans change)
 | Service | Monthly cost |
@@ -67,8 +75,8 @@ Payment provider fees: ~5% of gross revenue (Dodo/Paddle variable).
 ---
 
 ## Status
-- [ ] Route built: `app/api/cron/weekly-report/route.ts`
-- [ ] `vercel.json` crons entry added
-- [ ] `CRON_SECRET` added to Vercel env vars
-- [ ] Tested manually (GET with Bearer token)
-- [ ] First Monday email received and validated
+- [x] Route built: `app/api/cron/weekly-report/route.ts`
+- [x] `vercel.json` crons entry added (`30 2 * * 6` — Saturday 08:00 IST)
+- [x] `CRON_SECRET` added to `.env.local` — **add to Vercel env vars before next Saturday**
+- [x] Tested manually 11 Jun 2026 — email received, INR totals correct, live FX rates confirmed
+- [ ] First Saturday production email received and validated against Dodo payout

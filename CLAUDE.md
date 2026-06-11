@@ -101,7 +101,7 @@ sport:          tennis | cricket | football | rugby | golf | formula_one | cycli
 ## Event Pack
 `/event-pack/[slug]` — dual-state. Public landing for non-purchasers; pack view (`PackView.tsx`) for authenticated purchasers.
 
-- `PRE_TRIP_BRIEF` — set `live: true` + fresh `lines` ~1 week before event, redeploy. `live: false` = grey placeholder.
+- **Pre-trip brief** — DB-driven (not hardcoded). Content in `sporting_events.pre_trip_brief_lines` (text[]); goes live when `pre_trip_brief_live_at` is stamped. Daily cron (`/api/cron/pre-trip-brief-reminder`) fires ≤10 days before event → approval email → one-click activate (`/api/pre-trip-brief/activate`) → buyers notified. No redeploy needed. Grey placeholder shows until activated. Use `pre-trip-brief` skill to write content (3 lines: Weather → Transport → One innovation).
 - `ARCHETYPE_SECTION_ORDER` — reorders the 5 pack sections per archetype (Connoisseur: stays+dining first; Immersionist: neighbourhood+dining first).
 - Tailwind dynamic classes in ternaries get purged by Turbopack — always use static JSX branches.
 - Magic links must redirect to `/auth/confirm?next=<path>` not `/auth/callback` (implicit hash-fragment flow).
