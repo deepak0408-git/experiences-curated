@@ -312,6 +312,8 @@ export default async function EventPackPage({
         isPro={isPro}
         archetype={archetype}
         preTripBriefLiveAt={event.preTripBriefLiveAt ?? null}
+        preTripBriefLines={event.preTripBriefLines ?? null}
+        preTripBriefUpdatedAt={event.preTripBriefUpdatedAt ?? null}
       />
     );
   }
