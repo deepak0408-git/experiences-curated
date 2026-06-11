@@ -87,28 +87,6 @@ const BUDGET_LABELS: Record<string, string> = {
   luxury: "Luxury",
 };
 
-interface PreTripBrief {
-  updatedAt: string;
-  live: boolean;
-  lines: string[];
-}
-
-const PRE_TRIP_BRIEF: Record<string, PreTripBrief> = {
-  "wimbledon-2026": {
-    updatedAt: "2026-05-01",
-    live: true,
-    lines: [
-      "This brief will be updated in the week before the tournament opens — check back from 22 June for transport news, weather, and any last-minute tips.",
-    ],
-  },
-  "us-open-2026": {
-    updatedAt: "2026-08-23",
-    live: true,
-    lines: [
-      "This brief will be updated in the week before the tournament opens — check back from 23 August for transport news, weather, and any last-minute tips.",
-    ],
-  },
-};
 
 interface TourMatch {
   date: string;
@@ -434,6 +412,8 @@ interface PackViewProps {
   isPro: boolean;
   archetype?: string | null;
   preTripBriefLiveAt: Date | null;
+  preTripBriefLines: string[] | null;
+  preTripBriefUpdatedAt: Date | null;
 }
 
 export default async function PackView({
@@ -448,6 +428,8 @@ export default async function PackView({
   isPro,
   archetype,
   preTripBriefLiveAt,
+  preTripBriefLines,
+  preTripBriefUpdatedAt,
 }: PackViewProps) {
   const editorial = PACK_EDITORIAL[eventSlug] ?? PACK_EDITORIAL["wimbledon-2026"];
   const sectionOrder = (archetype ? ARCHETYPE_SECTION_ORDER[archetype] : undefined) ?? SECTION_ORDER;
@@ -529,7 +511,7 @@ export default async function PackView({
       </div>
 
       {/* Pre-trip brief */}
-      {PRE_TRIP_BRIEF[eventSlug] &&
+      {preTripBriefLines && preTripBriefLines.length > 0 &&
         (preTripBriefLiveAt ? (
           <div className="border-b border-amber-200 bg-amber-50">
             <div className="max-w-5xl mx-auto px-6 sm:px-8 py-5">
@@ -537,13 +519,15 @@ export default async function PackView({
                 <p className="text-xs font-semibold tracking-widest uppercase text-amber-600">
                   Pre-trip brief
                 </p>
-                <p className="text-xs text-amber-400">
-                  Updated{" "}
-                  {new Date(PRE_TRIP_BRIEF[eventSlug].updatedAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
-                </p>
+                {preTripBriefUpdatedAt && (
+                  <p className="text-xs text-amber-400">
+                    Updated{" "}
+                    {preTripBriefUpdatedAt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+                  </p>
+                )}
               </div>
               <ul className="space-y-2">
-                {PRE_TRIP_BRIEF[eventSlug].lines.map((line, i) => (
+                {preTripBriefLines.map((line, i) => (
                   <li key={i} className="flex gap-2.5 text-sm text-amber-900 leading-6">
                     <span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-amber-400" />
                     <span>{line}</span>
@@ -559,13 +543,15 @@ export default async function PackView({
                 <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400">
                   Pre-trip brief
                 </p>
-                <p className="text-xs text-neutral-400">
-                  Updated{" "}
-                  {new Date(PRE_TRIP_BRIEF[eventSlug].updatedAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
-                </p>
+                {preTripBriefUpdatedAt && (
+                  <p className="text-xs text-neutral-400">
+                    Updated{" "}
+                    {preTripBriefUpdatedAt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+                  </p>
+                )}
               </div>
               <ul className="space-y-2">
-                {PRE_TRIP_BRIEF[eventSlug].lines.map((line, i) => (
+                {preTripBriefLines.map((line, i) => (
                   <li key={i} className="flex gap-2.5 text-sm text-neutral-500 leading-6">
                     <span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-neutral-300" />
                     <span>{line}</span>
