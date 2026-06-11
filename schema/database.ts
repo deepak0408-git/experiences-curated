@@ -192,6 +192,8 @@ export const sportingEvents = pgTable("sporting_events", {
   ticketingUrl: text("ticketing_url"),
   heroImageUrl: text("hero_image_url"),
   editorialOverview: text("editorial_overview"),
+  preTripBriefLiveAt: timestamp("pre_trip_brief_live_at"),
+  preTripBriefApprovalToken: varchar("pre_trip_brief_approval_token", { length: 64 }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 }, (t) => [
