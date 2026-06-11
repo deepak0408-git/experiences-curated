@@ -13,7 +13,8 @@ const supabaseAdmin = createClient(
   { auth: { autoRefreshToken: false, persistSession: false } }
 );
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://experiences-curated.com";
+// Always use production URL — magic links in emails must match Supabase Site URL
+const SITE_URL = "https://www.experiences-curated.com";
 
 export async function GET(request: NextRequest) {
   const auth = request.headers.get("authorization");

@@ -7,7 +7,7 @@ import crypto from "crypto";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 // Always use production URL — this email is sent to an external inbox
-const SITE_URL = "https://experiences-curated.com";
+const SITE_URL = "https://www.experiences-curated.com";
 const REPORT_TO = "experiencescurated@gmail.com";
 
 export async function GET(request: NextRequest) {

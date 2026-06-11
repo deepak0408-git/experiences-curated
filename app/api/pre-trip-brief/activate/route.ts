@@ -13,7 +13,7 @@ const supabaseAdmin = createClient(
 );
 
 // Always use production URL for pack links — this route is triggered from email
-const PRODUCTION_URL = "https://experiences-curated.com";
+const PRODUCTION_URL = "https://www.experiences-curated.com";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
