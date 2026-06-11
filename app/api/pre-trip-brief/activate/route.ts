@@ -3,7 +3,8 @@ import { and, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { sportingEvents } from "@/schema/database";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://experiences-curated.com";
+// Always use production URL for pack links — this route is triggered from email
+const PRODUCTION_URL = "https://experiences-curated.com";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -27,21 +28,21 @@ export async function GET(request: NextRequest) {
   if (!event) {
     // Token invalid or already used
     return new NextResponse(
-      `<html><body style="font-family:sans-serif;max-width:480px;margin:80px auto;padding:0 24px">
+      `<html><head><meta charset="utf-8"></head><body style="font-family:sans-serif;max-width:480px;margin:80px auto;padding:0 24px">
         <h2>Link expired or already used</h2>
         <p>This activation link is no longer valid. A new reminder will be sent tomorrow if the brief hasn't been activated yet.</p>
       </body></html>`,
-      { status: 400, headers: { "Content-Type": "text/html" } }
+      { status: 400, headers: { "Content-Type": "text/html; charset=utf-8" } }
     );
   }
 
   if (event.preTripBriefLiveAt) {
     return new NextResponse(
-      `<html><body style="font-family:sans-serif;max-width:480px;margin:80px auto;padding:0 24px">
+      `<html><head><meta charset="utf-8"></head><body style="font-family:sans-serif;max-width:480px;margin:80px auto;padding:0 24px">
         <h2>Already activated</h2>
         <p>The pre-trip brief for <strong>${event.name}</strong> is already live.</p>
       </body></html>`,
-      { status: 200, headers: { "Content-Type": "text/html" } }
+      { status: 200, headers: { "Content-Type": "text/html; charset=utf-8" } }
     );
   }
 
@@ -58,14 +59,14 @@ export async function GET(request: NextRequest) {
   console.log(`[pre-trip-brief] ✓ activated for ${event.name}`);
 
   return new NextResponse(
-    `<html><body style="font-family:sans-serif;max-width:480px;margin:80px auto;padding:0 24px;color:#171717">
+    `<html><head><meta charset="utf-8"></head><body style="font-family:sans-serif;max-width:480px;margin:80px auto;padding:0 24px;color:#171717">
       <p style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#a3a3a3;margin-bottom:32px">Experiences | Curated</p>
-      <h2 style="font-size:22px;font-weight:700;margin-bottom:16px">Brief activated ✓</h2>
+      <h2 style="font-size:22px;font-weight:700;margin-bottom:16px">Pre-Trip Brief activated &#10003;</h2>
       <p style="font-size:14px;color:#525252;line-height:1.6">
         The pre-trip brief for <strong>${event.name}</strong> is now live for all pack holders.
       </p>
-      <p style="margin-top:24px"><a href="${SITE_URL}/event-pack/${slug}" style="color:#171717">View pack →</a></p>
+      <p style="margin-top:24px"><a href="${PRODUCTION_URL}/event-pack/${slug}" style="color:#171717">View pack &#8594;</a></p>
     </body></html>`,
-    { status: 200, headers: { "Content-Type": "text/html" } }
+    { status: 200, headers: { "Content-Type": "text/html; charset=utf-8" } }
   );
 }
