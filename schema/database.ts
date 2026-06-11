@@ -429,6 +429,7 @@ export const purchases = pgTable("purchases", {
   pricePaid: numeric("price_paid", { precision: 10, scale: 2 }).notNull(),
   currency: varchar("currency", { length: 3 }).notNull(),
   status: purchaseStatusEnum("status").notNull().default("active"),
+  rescueSentAt: timestamp("rescue_sent_at"),
   purchasedAt: timestamp("purchased_at").notNull().defaultNow(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 }, (t) => [
