@@ -311,6 +311,7 @@ export default async function EventPackPage({
         sportLabel={SPORT_LABELS[event.sport] ?? event.sport}
         isPro={isPro}
         archetype={archetype}
+        preTripBriefLiveAt={event.preTripBriefLiveAt ?? null}
       />
     );
   }

@@ -7,6 +7,10 @@
     {
       "path": "/api/cron/stuck-buyer-rescue",
       "schedule": "30 3 * * *"
+    },
+    {
+      "path": "/api/cron/pre-trip-brief-reminder",
+      "schedule": "30 3 * * *"
     }
   ]
 }

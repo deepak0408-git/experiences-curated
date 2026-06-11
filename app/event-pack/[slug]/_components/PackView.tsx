@@ -433,6 +433,7 @@ interface PackViewProps {
   sportLabel: string;
   isPro: boolean;
   archetype?: string | null;
+  preTripBriefLiveAt: Date | null;
 }
 
 export default async function PackView({
@@ -446,6 +447,7 @@ export default async function PackView({
   sportLabel,
   isPro,
   archetype,
+  preTripBriefLiveAt,
 }: PackViewProps) {
   const editorial = PACK_EDITORIAL[eventSlug] ?? PACK_EDITORIAL["wimbledon-2026"];
   const sectionOrder = (archetype ? ARCHETYPE_SECTION_ORDER[archetype] : undefined) ?? SECTION_ORDER;
@@ -528,7 +530,7 @@ export default async function PackView({
 
       {/* Pre-trip brief */}
       {PRE_TRIP_BRIEF[eventSlug] &&
-        (PRE_TRIP_BRIEF[eventSlug].live ? (
+        (preTripBriefLiveAt ? (
           <div className="border-b border-amber-200 bg-amber-50">
             <div className="max-w-5xl mx-auto px-6 sm:px-8 py-5">
               <div className="flex items-center justify-between mb-3">
