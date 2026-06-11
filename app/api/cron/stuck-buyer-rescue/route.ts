@@ -57,13 +57,12 @@ export async function GET(request: NextRequest) {
     const { data: { users: authUsers } } = await supabaseAdmin.auth.admin.listUsers();
     const authUser = authUsers.find(u => u.email === purchase.email);
 
-    // Skip if they've already signed in
-    if (authUser?.last_sign_in_at) {
+    // Skip if they signed in AFTER this purchase (they successfully accessed the pack)
+    if (authUser?.last_sign_in_at && new Date(authUser.last_sign_in_at) > new Date(purchase.purchasedAt)) {
       skipped++;
       continue;
     }
 
-    const packUrl = `${SITE_URL}/event-pack/${purchase.eventSlug}`;
     const eventName = purchase.eventName ?? "your event";
 
     // Generate a fresh magic link (24hr expiry)
