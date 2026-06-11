@@ -113,7 +113,7 @@ export async function GET(request: NextRequest) {
   const proAnnualCount = parseInt(proAnnualResult[0]?.count ?? "0");
   const activeProCount = proMonthlyCount + proAnnualCount;
   const PRO_MONTHLY_GBP = 9;
-  const PRO_ANNUAL_GBP = 69;
+  const PRO_ANNUAL_GBP = 89;
   const mrrGbp = (proMonthlyCount * PRO_MONTHLY_GBP) + (proAnnualCount * (PRO_ANNUAL_GBP / 12));
   const mrrInr = toINR(mrrGbp, "GBP");
 
@@ -203,7 +203,7 @@ export async function GET(request: NextRequest) {
           <td style="padding:5px 0;text-align:right;color:#525252">${proMonthlyCount}</td>
         </tr>
         <tr>
-          <td style="padding:5px 0;color:#525252">Annual (£69/yr)</td>
+          <td style="padding:5px 0;color:#525252">Annual (£89/yr)</td>
           <td style="padding:5px 0;text-align:right;color:#525252">${proAnnualCount}</td>
         </tr>
         <tr style="border-top:1px solid #e5e5e5">
