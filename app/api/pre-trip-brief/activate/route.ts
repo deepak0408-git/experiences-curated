@@ -1,16 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { and, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { purchases, sportingEvents } from "@/schema/database";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  { auth: { autoRefreshToken: false, persistSession: false } }
-);
 
 // Always use production URL for pack links — this route is triggered from email
 const PRODUCTION_URL = "https://www.experiences-curated.com";
@@ -76,17 +70,11 @@ export async function GET(request: NextRequest) {
       eq(purchases.status, "active"),
     ));
 
+  const packUrl = `${PRODUCTION_URL}/event-pack/${slug}`;
+
   let notified = 0;
   for (const buyer of buyers) {
     try {
-      // Generate a fresh magic link so they land straight in the pack
-      const { data: linkData } = await supabaseAdmin.auth.admin.generateLink({
-        type: "magiclink",
-        email: buyer.email,
-        options: { redirectTo: `${PRODUCTION_URL}/auth/confirm?next=/event-pack/${slug}` },
-      });
-      const magicLink = linkData?.properties?.action_link ?? `${PRODUCTION_URL}/event-pack/${slug}`;
-
       await resend.emails.send({
         from: "Experiences | Curated <hello@experiences-curated.com>",
         to: buyer.email,
@@ -98,7 +86,7 @@ export async function GET(request: NextRequest) {
             <p style="font-size:14px;color:#525252;line-height:1.6;margin-bottom:32px">
               We've added a pre-trip brief to your <strong>${event.name}</strong> pack — the latest on transport, weather, and what's new this year. Worth a read before you travel.
             </p>
-            <a href="${magicLink}"
+            <a href="${packUrl}"
                style="display:inline-block;background:#171717;color:#fff;text-decoration:none;padding:14px 28px;border-radius:10px;font-size:14px;font-weight:600;margin-bottom:32px">
               Read the brief
             </a>
