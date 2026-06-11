@@ -528,8 +528,8 @@ export default async function PackView({
               </div>
               <ul className="space-y-2">
                 {preTripBriefLines.map((line, i) => (
-                  <li key={i} className="flex gap-2.5 text-sm text-amber-900 leading-6">
-                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-amber-400" />
+                  <li key={i} className="flex gap-2.5 text-base text-amber-950 leading-7">
+                    <span className="mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-amber-500" />
                     <span>{line}</span>
                   </li>
                 ))}
@@ -552,8 +552,8 @@ export default async function PackView({
               </div>
               <ul className="space-y-2">
                 {preTripBriefLines.map((line, i) => (
-                  <li key={i} className="flex gap-2.5 text-sm text-neutral-500 leading-6">
-                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-neutral-300" />
+                  <li key={i} className="flex gap-2.5 text-base text-neutral-700 leading-7">
+                    <span className="mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-neutral-400" />
                     <span>{line}</span>
                   </li>
                 ))}
