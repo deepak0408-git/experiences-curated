@@ -14,6 +14,17 @@ function PackFeedbackThanks() {
   const [consent, setConsent] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [autoFired, setAutoFired] = useState(false);
+
+  // For sub-4 ratings, auto-fire the comment POST silently on mount
+  if (rating > 0 && rating < 4 && !autoFired) {
+    setAutoFired(true);
+    fetch("/api/pack-feedback/comment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, eventId, comment: null, displayConsent: false }),
+    }).catch(() => {});
+  }
 
   const handleSubmit = () => {
     startTransition(async () => {

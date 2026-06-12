@@ -46,29 +46,6 @@ export async function GET(request: NextRequest) {
       set: { rating, comment: null, displayConsent: false, updatedAt: new Date() },
     });
 
-  // Notify curator
-  try {
-    await resend.emails.send({
-      from: "Experiences | Curated <hello@experiences-curated.com>",
-      to: NOTIFY_TO,
-      subject: `Pack feedback: ${STAR_LABELS[rating]} (${rating}/5) — ${event.name}`,
-      html: `
-        <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;color:#171717">
-          <p style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#a3a3a3;margin-bottom:32px">Experiences | Curated — Feedback</p>
-          <h1 style="font-size:20px;font-weight:700;margin-bottom:16px">New pack feedback received</h1>
-          <table style="width:100%;border-collapse:collapse;margin-bottom:24px">
-            <tr><td style="padding:8px 0;font-size:13px;color:#a3a3a3;width:120px">Event</td><td style="padding:8px 0;font-size:13px;font-weight:600;color:#171717">${event.name}</td></tr>
-            <tr><td style="padding:8px 0;font-size:13px;color:#a3a3a3">Email</td><td style="padding:8px 0;font-size:13px;color:#171717">${email}</td></tr>
-            <tr><td style="padding:8px 0;font-size:13px;color:#a3a3a3">Rating</td><td style="padding:8px 0;font-size:13px;font-weight:600;color:#171717">${"★".repeat(rating)}${"☆".repeat(5 - rating)} (${rating}/5 — ${STAR_LABELS[rating]})</td></tr>
-          </table>
-          <p style="font-size:12px;color:#a3a3a3">Comment and consent (if provided) will arrive in a follow-up notification.</p>
-        </div>
-      `,
-    });
-  } catch (err) {
-    console.error("[pack-feedback] failed to send notification", err);
-  }
-
   const thanksUrl = `${SITE_URL}/pack-feedback/thanks?eventId=${eventId}&rating=${rating}&email=${encodeURIComponent(email)}`;
   return NextResponse.redirect(thanksUrl);
 }
