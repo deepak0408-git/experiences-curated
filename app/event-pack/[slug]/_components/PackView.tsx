@@ -692,7 +692,7 @@ export default async function PackView({
                 key={row.label}
                 className="flex gap-4 px-5 py-4 sm:items-start"
               >
-                <dt className="w-32 flex-shrink-0 text-xs font-semibold text-neutral-500 pt-0.5">
+                <dt className="w-[30%] sm:w-32 flex-shrink-0 text-xs font-semibold text-neutral-500 pt-0.5">
                   {row.label}
                 </dt>
                 <dd className="text-sm text-neutral-700 leading-6 flex-1">
