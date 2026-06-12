@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 interface Props {
@@ -16,6 +18,7 @@ function linkifyText(text: string) {
         target="_blank"
         rel="noopener noreferrer"
         className="underline text-neutral-500 hover:text-neutral-800 transition-colors break-all"
+        onClick={(e) => e.stopPropagation()}
       >
         {part}
       </a>
