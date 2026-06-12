@@ -46,6 +46,7 @@ export default async function MyTravelsPage(props: { searchParams: Promise<{ eve
   let promptEvent: {
     eventName: string;
     eventId: string;
+    eventEndDate: string;
     experiences: { id: string; title: string; heroImageUrl: string | null; experienceType: string; slug: string }[];
   } | null = null;
 
