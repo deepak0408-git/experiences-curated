@@ -47,22 +47,22 @@ export async function POST(request: NextRequest) {
     )
     .limit(1);
 
-  if (row?.comment) {
+  if (row) {
     try {
       await resend.emails.send({
         from: "Experiences | Curated <hello@experiences-curated.com>",
         to: NOTIFY_TO,
-        subject: `Pack feedback comment — ${row.eventName}`,
+        subject: `Pack feedback: ${"★".repeat(row.rating)} (${row.rating}/5) — ${row.eventName}`,
         html: `
           <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;color:#171717">
             <p style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#a3a3a3;margin-bottom:32px">Experiences | Curated — Feedback</p>
-            <h1 style="font-size:20px;font-weight:700;margin-bottom:16px">Pack feedback comment received</h1>
+            <h1 style="font-size:20px;font-weight:700;margin-bottom:16px">New pack feedback received</h1>
             <table style="width:100%;border-collapse:collapse;margin-bottom:24px">
               <tr><td style="padding:8px 0;font-size:13px;color:#a3a3a3;width:120px">Event</td><td style="padding:8px 0;font-size:13px;font-weight:600;color:#171717">${row.eventName}</td></tr>
               <tr><td style="padding:8px 0;font-size:13px;color:#a3a3a3">Email</td><td style="padding:8px 0;font-size:13px;color:#171717">${email}</td></tr>
               <tr><td style="padding:8px 0;font-size:13px;color:#a3a3a3">Rating</td><td style="padding:8px 0;font-size:13px;font-weight:600;color:#171717">${"★".repeat(row.rating)}${"☆".repeat(5 - row.rating)} (${row.rating}/5)</td></tr>
-              <tr><td style="padding:8px 0;font-size:13px;color:#a3a3a3;vertical-align:top">Comment</td><td style="padding:8px 0;font-size:13px;color:#171717;font-style:italic">"${row.comment}"</td></tr>
-              <tr><td style="padding:8px 0;font-size:13px;color:#a3a3a3">Can share?</td><td style="padding:8px 0;font-size:13px;font-weight:600;color:${row.displayConsent ? "#16a34a" : "#dc2626"}">${row.displayConsent ? "Yes — approved for display" : "No"}</td></tr>
+              ${row.comment ? `<tr><td style="padding:8px 0;font-size:13px;color:#a3a3a3;vertical-align:top">Comment</td><td style="padding:8px 0;font-size:13px;color:#171717;font-style:italic">"${row.comment}"</td></tr>` : ""}
+              ${row.comment ? `<tr><td style="padding:8px 0;font-size:13px;color:#a3a3a3">Can share?</td><td style="padding:8px 0;font-size:13px;font-weight:600;color:${row.displayConsent ? "#16a34a" : "#dc2626"}">${row.displayConsent ? "Yes — approved for display" : "No"}</td></tr>` : ""}
             </table>
           </div>
         `,
