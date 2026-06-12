@@ -27,6 +27,8 @@ node --experimental-strip-types scripts/seed-<name>.mjs
 London destination:          75758888-28b9-4e09-82ba-f05681ecc904
 New York destination:        fb782de2-bbe6-410f-b466-2a4e628cda10
 India in England 2026 event: 2bab697d-9d2b-45ff-9b46-9fbfc3a0a40b
+Wimbledon 2026 event:        8bb7090e-1ec7-4c3f-b4e2-7fd6bf9942cf
+US Open 2026 event:          91f298a3-ca22-49c3-9c8e-5a200f0026c9
 ```
 
 ---
@@ -52,6 +54,10 @@ app/
   api/webhooks/dodo           # Dodo webhook → purchases / pro_subscriptions + Supabase user
   api/checkout/dodo           # Server-side Dodo checkout session creation (event packs)
   api/checkout/dodo-pro       # Server-side Dodo checkout session creation (Pro subscription)
+  api/pack-feedback           # GET: saves pack star rating, redirects to /pack-feedback/thanks
+  api/pack-feedback/comment   # POST: saves comment + consent, sends single curator notification
+  api/cron/post-trip-feedback # Daily 04:30 UTC — fires 2 days after event endDate; magic link + pack rating email
+  pack-feedback/thanks        # Thank-you page — comment box + consent toggle for 4-5 star ratings
 
 app/_components/
   HomepageNav.tsx   # Server component — email passed as prop; SignOutButton + SignInLink are client
@@ -139,6 +145,13 @@ sport:          tennis | cricket | football | rugby | golf | formula_one | cycli
 **Empty board state:** queries `sporting_events` for upcoming events (`endDate >= today`) and renders them dynamically — no hardcoded event slugs. Add new events to the DB and they appear automatically.
 
 ---
+
+## Post-trip Feedback
+`event_pack_feedback` table — `(email, sportingEventId)` unique. `rating` (1–5), `comment`, `displayConsent`. Populated via in-email star link → `/api/pack-feedback` → `/pack-feedback/thanks`. Single curator notification email fires from `/api/pack-feedback/comment` (always — sub-4 ratings auto-fire silently from thanks page). Future: display consented testimonials on pack landing pages (Operations #18).
+
+`sporting_event_experiences` join table — links experiences to events with `packRank` (integer, nullable). Top-10 ranked experiences shown in My Travels post-event prompt (`/my-travels?event=<id>`). Ranks set via SQL; curator UI deferred (Operations #20). Backfilled from `experiences.sportingEventId` — that FK kept for compatibility.
+
+**Travel log limitation:** `travel_logs` unique on `(userId, experienceId)` — returning pilgrims can't re-rate same experience for a new event edition. Fix before Wimbledon 2027: add `sportingEventId` to unique constraint (Operations #19).
 
 ## My Travels Log
 `travel_logs` table — `(userId, experienceId)` unique. `visitedAt` (date), `rating` (1–5), `moodTags` (text[], max 3). `logVisit` returns saved entry for optimistic UI. Public avg rating shown on experience pages when `ratingCount >= 3`. "You've been here" badge takes priority over archetype badge.
