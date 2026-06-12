@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import LogVisitModal from "./LogVisitModal";
+import PostEventPrompt from "./PostEventPrompt";
 import { deleteLog } from "../actions";
 
 const TYPE_LABELS: Record<string, string> = {
@@ -27,7 +28,14 @@ interface LogEntry {
   experienceType: string;
 }
 
-export default function TravelsClient({ logs, userEmail }: { logs: LogEntry[]; userEmail: string }) {
+interface PromptEvent {
+  eventName: string;
+  eventId: string;
+  eventEndDate: string;
+  experiences: { id: string; title: string; heroImageUrl: string | null; experienceType: string; slug: string }[];
+}
+
+export default function TravelsClient({ logs, userEmail, promptEvent }: { logs: LogEntry[]; userEmail: string; promptEvent?: PromptEvent | null }) {
   const [showModal, setShowModal] = useState(false);
   const [items, setItems] = useState(logs);
   const router = useRouter();
@@ -38,6 +46,13 @@ export default function TravelsClient({ logs, userEmail }: { logs: LogEntry[]; u
       return [entry, ...without];
     });
     router.refresh();
+  };
+
+  const handlePromptLogged = (entry: LogEntry) => {
+    setItems((prev) => {
+      const without = prev.filter((l) => l.experienceId !== entry.experienceId);
+      return [entry, ...without];
+    });
   };
 
   const handleDelete = async (experienceId: string) => {
@@ -83,6 +98,16 @@ export default function TravelsClient({ logs, userEmail }: { logs: LogEntry[]; u
             + Log a visit
           </button>
         </div>
+
+        {promptEvent && (
+          <PostEventPrompt
+            eventName={promptEvent.eventName}
+            eventId={promptEvent.eventId}
+            eventEndDate={promptEvent.eventEndDate}
+            experiences={promptEvent.experiences}
+            onLogged={handlePromptLogged}
+          />
+        )}
 
         {items.length === 0 ? (
           <div className="text-center py-24">

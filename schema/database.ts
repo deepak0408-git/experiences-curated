@@ -490,6 +490,21 @@ export const travelLogs = pgTable("travel_logs", {
   index("travel_logs_experience_idx").on(t.experienceId),
 ]);
 
+// ─── Sporting Event Experiences (join table) ──────────────────────────────────
+
+export const sportingEventExperiences = pgTable("sporting_event_experiences", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sportingEventId: uuid("sporting_event_id").notNull().references(() => sportingEvents.id, { onDelete: "cascade" }),
+  experienceId: uuid("experience_id").notNull().references(() => experiences.id, { onDelete: "cascade" }),
+  packRank: integer("pack_rank"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+}, (t) => [
+  uniqueIndex("see_event_experience_unique").on(t.sportingEventId, t.experienceId),
+  index("see_event_idx").on(t.sportingEventId),
+  index("see_experience_idx").on(t.experienceId),
+  index("see_rank_idx").on(t.sportingEventId, t.packRank),
+]);
+
 // ─── Relations ────────────────────────────────────────────────────────────────
 
 export const experiencesRelations = relations(experiences, ({ one, many }) => ({
@@ -505,6 +520,7 @@ export const experiencesRelations = relations(experiences, ({ one, many }) => ({
     fields: [experiences.sportingEventId],
     references: [sportingEvents.id],
   }),
+  eventExperiences: many(sportingEventExperiences),
   savedItems: many(savedItems),
   flags: many(communityFlags),
 }));
@@ -520,8 +536,20 @@ export const sportingEventsRelations = relations(sportingEvents, ({ one, many })
     references: [destinations.id],
   }),
   experiences: many(experiences),
+  eventExperiences: many(sportingEventExperiences),
   tripBoards: many(tripBoards),
   purchases: many(purchases),
+}));
+
+export const sportingEventExperiencesRelations = relations(sportingEventExperiences, ({ one }) => ({
+  sportingEvent: one(sportingEvents, {
+    fields: [sportingEventExperiences.sportingEventId],
+    references: [sportingEvents.id],
+  }),
+  experience: one(experiences, {
+    fields: [sportingEventExperiences.experienceId],
+    references: [experiences.id],
+  }),
 }));
 
 export const usersRelations = relations(users, ({ one, many }) => ({
