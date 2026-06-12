@@ -6,7 +6,26 @@ interface Props {
   eventSlug: string;
 }
 
-export default function HowToBook({ howToBook, isPro, eventSlug }: Props) {
+function linkifyText(text: string) {
+  const parts = text.split(/(https?:\/\/[^\s]+)/g);
+  return parts.map((part, i) =>
+    /^https?:\/\//.test(part) ? (
+      <a
+        key={i}
+        href={part}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline text-neutral-500 hover:text-neutral-800 transition-colors break-all"
+      >
+        {part}
+      </a>
+    ) : (
+      part
+    )
+  );
+}
+
+export default function HowToBook({ howToBook, isPro }: Props) {
   if (!isPro) {
     return (
       <div className="mt-4 pt-3 border-t border-neutral-100">
@@ -33,7 +52,7 @@ export default function HowToBook({ howToBook, isPro, eventSlug }: Props) {
       <p className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">
         How to book
       </p>
-      <p className="text-xs text-neutral-700 leading-5">{howToBook}</p>
+      <p className="text-xs text-neutral-700 leading-5">{linkifyText(howToBook)}</p>
     </div>
   );
 }
