@@ -67,6 +67,11 @@ export async function GET(request: NextRequest) {
 
     const magicLink = linkData.properties.action_link;
     const eventName = purchase.eventName;
+    const encodedEmail = encodeURIComponent(purchase.email);
+
+    const starLinks = [1, 2, 3, 4, 5].map((n) =>
+      `<a href="${SITE_URL}/api/pack-feedback?rating=${n}&eventId=${purchase.sportingEventId}&email=${encodedEmail}" style="display:inline-block;width:36px;height:36px;line-height:36px;text-align:center;font-size:22px;text-decoration:none;">${"★"}</a>`
+    ).join("");
 
     try {
       await resend.emails.send({
@@ -90,6 +95,10 @@ export async function GET(request: NextRequest) {
             <p style="font-size:13px;color:#a3a3a3;line-height:1.6;margin-bottom:32px">
               This link signs you straight in — no password needed. Valid for 24 hours.
             </p>
+            <hr style="border:none;border-top:1px solid #e5e5e5;margin:24px 0">
+            <p style="font-size:14px;font-weight:600;color:#171717;margin-bottom:8px">How was the Experiences | Curated pack overall?</p>
+            <p style="font-size:13px;color:#525252;line-height:1.6;margin-bottom:16px">One tap — it helps us make the pack better.</p>
+            <div style="margin-bottom:32px;color:#d4a017;">${starLinks}</div>
             <hr style="border:none;border-top:1px solid #e5e5e5;margin-bottom:24px">
             <p style="font-size:12px;color:#a3a3a3;line-height:1.6">
               Sent to ${purchase.email}.<br>
