@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-export default function PackFeedbackThanksPage() {
+function PackFeedbackThanks() {
   const searchParams = useSearchParams();
   const rating = parseInt(searchParams.get("rating") ?? "0", 10);
   const eventId = searchParams.get("eventId") ?? "";
@@ -93,5 +93,13 @@ export default function PackFeedbackThanksPage() {
         </Link>
       </div>
     </div>
+  );
+}
+
+export default function PackFeedbackThanksPage() {
+  return (
+    <Suspense>
+      <PackFeedbackThanks />
+    </Suspense>
   );
 }
