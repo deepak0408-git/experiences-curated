@@ -491,6 +491,23 @@ export const travelLogs = pgTable("travel_logs", {
   index("travel_logs_experience_idx").on(t.experienceId),
 ]);
 
+// ─── Event Pack Feedback ──────────────────────────────────────────────────────
+
+export const eventPackFeedback = pgTable("event_pack_feedback", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: varchar("email", { length: 255 }).notNull(),
+  sportingEventId: uuid("sporting_event_id").notNull().references(() => sportingEvents.id),
+  rating: smallint("rating").notNull(),
+  comment: text("comment"),
+  displayConsent: boolean("display_consent").notNull().default(false),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+}, (t) => [
+  uniqueIndex("event_pack_feedback_email_event_unique").on(t.email, t.sportingEventId),
+  index("event_pack_feedback_event_idx").on(t.sportingEventId),
+  index("event_pack_feedback_rating_idx").on(t.rating),
+]);
+
 // ─── Sporting Event Experiences (join table) ──────────────────────────────────
 
 export const sportingEventExperiences = pgTable("sporting_event_experiences", {
