@@ -401,7 +401,7 @@ export default async function EventPackPage({
         {/* Past-event notice — shown at top when event has ended */}
         {isEventPast && (
           <div className="pt-10 pb-8 border-b border-neutral-100">
-            <div className="max-w-lg">
+            <div>
               <span className="inline-block px-3 py-1 rounded-full bg-neutral-100 text-neutral-500 text-xs font-semibold tracking-widest uppercase mb-5">
                 Event ended
               </span>
