@@ -321,6 +321,7 @@ export default async function EventPackPage({
         preTripBriefLiveAt={event.preTripBriefLiveAt ?? null}
         preTripBriefLines={event.preTripBriefLines ?? null}
         preTripBriefUpdatedAt={event.preTripBriefUpdatedAt ?? null}
+        endDate={event.endDate}
       />
     );
   }
@@ -623,10 +624,35 @@ export default async function EventPackPage({
             </div>
           </div>
         ) : (
-          <div className="py-16 text-center">
-            <p className="text-neutral-400 text-sm">
-              This event has ended. The pack is no longer available for purchase.
-            </p>
+          <div className="py-14 border-t border-neutral-100">
+            <div className="max-w-lg">
+              <span className="inline-block px-3 py-1 rounded-full bg-neutral-100 text-neutral-500 text-xs font-semibold tracking-widest uppercase mb-5">
+                Event ended
+              </span>
+              <h2 className="text-xl font-bold text-neutral-900 mb-3">
+                This event has now passed
+              </h2>
+              <p className="text-sm text-neutral-500 leading-6 mb-8">
+                The pack for {event.name} is no longer available to purchase. If you already
+                bought access, sign in to read your pack.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                {!user && (
+                  <Link
+                    href={`/sign-in?next=/event-pack/${slug}`}
+                    className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
+                  >
+                    Sign in to access your pack
+                  </Link>
+                )}
+                <Link
+                  href="/search"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-neutral-300 text-neutral-700 text-sm font-semibold hover:bg-neutral-50 transition-colors"
+                >
+                  Browse upcoming events
+                </Link>
+              </div>
+            </div>
           </div>
         )}
       </div>
