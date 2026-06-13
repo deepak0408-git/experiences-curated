@@ -409,7 +409,7 @@ export default async function EventPackPage({
                 This event has now passed
               </h2>
               <p className="text-sm text-neutral-500 leading-6 mb-8">
-                The pack for {event.name} is no longer available to purchase.
+                This pack is no longer available to purchase.
                 {!user && " If you already bought access, sign in to read your pack."}
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
