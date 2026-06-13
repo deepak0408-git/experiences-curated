@@ -25,6 +25,12 @@ export default function CuratorLayout({
                 Review
               </Link>
               <Link
+                href="/curator/ranker"
+                className="px-3 py-1.5 rounded-md text-sm text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 transition-colors"
+              >
+                Ranker
+              </Link>
+              <Link
                 href="/curator/destinations"
                 className="px-3 py-1.5 rounded-md text-sm text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 transition-colors"
               >
