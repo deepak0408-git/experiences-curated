@@ -230,7 +230,7 @@ export default async function ExperiencePage({
             src={exp.heroImageUrl}
             alt={exp.heroImageAlt ?? exp.title}
             fill
-            className={`object-cover opacity-90 ${slug === "wimbledon-centre-court-mq4whguq" ? "object-top" : ""}`}
+            className={`object-cover opacity-90 ${slug === "wimbledon-centre-court-mq4whguq" ? "object-bottom" : ""}`}
             sizes="100vw"
             priority
           />
