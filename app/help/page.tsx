@@ -8,6 +8,73 @@ export const metadata: Metadata = {
 
 const faqs = [
   {
+    section: "Accounts",
+    questions: [
+      {
+        q: "How do I sign in?",
+        a: "We use magic links — you enter your email, we send you a link, you click it. No password to remember. The link expires after a few minutes, so use it when it arrives.",
+      },
+      {
+        q: "My magic link expired. What do I do?",
+        a: "Go back to the sign-in page and request a new one. Each link is single-use and expires after a few minutes — just enter your email again and you'll get a fresh link.",
+      },
+      {
+        q: "Can I change my email address?",
+        a: "Email us at hello@experiences-curated.com. Since your purchases and pack access are tied to your email, we handle these manually to make sure nothing gets lost.",
+      },
+      {
+        q: "How do I delete my account?",
+        a: "Go to My Profile and scroll to the bottom — there's a 'Delete account' option that removes your data immediately. Purchase records are kept for 7 years as required by tax law, but your personal details are anonymised.",
+      },
+      {
+        q: "What personal data do you hold and how is it used?",
+        a: <>Our <Link href="/privacy" className="underline underline-offset-2 hover:text-neutral-900 transition-colors">Privacy Policy</Link> covers this in full. In short: we hold your email address, purchase history, and any travel log entries or Trip Board content you create. We don't sell your data to third parties. We use it only to run the service — sending magic links, giving you access to your purchases, and improving the product.</>,
+      },
+    ],
+  },
+  {
+    section: "Pro subscription",
+    questions: [
+      {
+        q: "What does Pro include?",
+        a: "Pro removes the 3-read limit on experience pages, unlocks detailed booking contacts on concierge picks, and gives you unlimited Trip Boards. Free accounts get one board and 3 experience reads.",
+      },
+      {
+        q: "What is a travel archetype?",
+        a: "When you sign up for Pro, you take a short quiz that identifies how you travel — whether you're a Connoisseur, Immersionist, Pilgrim, or First Pilgrim. Your archetype reorders the experiences in each pack to surface what's most relevant to you first. You can retake the quiz any time from your profile.",
+      },
+      {
+        q: "How do I cancel my Pro subscription?",
+        a: "Go to My Profile and click 'Manage subscription'. That opens the billing portal where you can cancel. Your Pro access continues until the end of the current billing period.",
+      },
+      {
+        q: "I cancelled but still got charged. What do I do?",
+        a: "Email hello@experiences-curated.com with your purchase email and we'll investigate and resolve it.",
+      },
+    ],
+  },
+  {
+    section: "Content and curation",
+    questions: [
+      {
+        q: "Who writes the guides?",
+        a: "Each experience is written and verified by a curator who has been there. We don't aggregate from other sites or generate content automatically.",
+      },
+      {
+        q: "Are your recommendations paid for or sponsored?",
+        a: "No. Curators choose experiences on merit — no venue pays to be included. Some booking links are affiliate links, which means we may earn a small commission if you book through them. This never influences which experiences we recommend or what we write about them.",
+      },
+      {
+        q: "How often is the content updated?",
+        a: "We verify experiences before each event season. That said, venues change — opening hours shift, prices move, places occasionally close. Always confirm the details directly with the venue before you travel.",
+      },
+      {
+        q: "A venue in one of your guides is closed. What should I do?",
+        a: "Email hello@experiences-curated.com with the experience name and what you found. We'll investigate and update or remove it. We'd rather know.",
+      },
+    ],
+  },
+  {
     section: "Event packs",
     questions: [
       {
@@ -41,48 +108,6 @@ const faqs = [
     ],
   },
   {
-    section: "Accounts",
-    questions: [
-      {
-        q: "How do I sign in?",
-        a: "We use magic links — you enter your email, we send you a link, you click it. No password to remember. The link expires after a few minutes, so use it when it arrives.",
-      },
-      {
-        q: "My magic link expired. What do I do?",
-        a: "Go back to the sign-in page and request a new one. Each link is single-use and expires after a few minutes — just enter your email again and you'll get a fresh link.",
-      },
-      {
-        q: "Can I change my email address?",
-        a: "Email us at hello@experiences-curated.com. Since your purchases and pack access are tied to your email, we handle these manually to make sure nothing gets lost.",
-      },
-      {
-        q: "How do I delete my account?",
-        a: "Go to My Profile and scroll to the bottom — there's a 'Delete account' option that removes your data immediately. Purchase records are kept for 7 years as required by tax law, but your personal details are anonymised.",
-      },
-    ],
-  },
-  {
-    section: "Pro subscription",
-    questions: [
-      {
-        q: "What does Pro include?",
-        a: "Pro removes the 3-read limit on experience pages, unlocks detailed booking contacts on concierge picks, and gives you unlimited Trip Boards. Free accounts get one board and 3 experience reads.",
-      },
-      {
-        q: "What is a travel archetype?",
-        a: "When you sign up for Pro, you take a short quiz that identifies how you travel — whether you're a Connoisseur, Immersionist, Pilgrim, or First Pilgrim. Your archetype reorders the experiences in each pack to surface what's most relevant to you first. You can retake the quiz any time from your profile.",
-      },
-      {
-        q: "How do I cancel my Pro subscription?",
-        a: "Go to My Profile and click 'Manage subscription'. That opens the billing portal where you can cancel. Your Pro access continues until the end of the current billing period.",
-      },
-      {
-        q: "I cancelled but still got charged. What do I do?",
-        a: "Email hello@experiences-curated.com with your purchase email and we'll investigate and resolve it.",
-      },
-    ],
-  },
-  {
     section: "Trip Board",
     questions: [
       {
@@ -105,23 +130,6 @@ const faqs = [
       {
         q: "I received a feedback email after the event. What is it?",
         a: "Two days after an event ends, we send a short email asking how it went. It links to My Travels where you can rate the experiences from your pack, and includes a one-click rating for the pack itself. It takes two minutes and genuinely helps us improve the next edition.",
-      },
-    ],
-  },
-  {
-    section: "Content and curation",
-    questions: [
-      {
-        q: "Who writes the guides?",
-        a: "Each experience is written and verified by a curator who has been there. We don't aggregate from other sites or generate content automatically. The curator's name appears at the bottom of each experience page.",
-      },
-      {
-        q: "How often is the content updated?",
-        a: "We verify experiences before each event season. That said, venues change — opening hours shift, prices move, places occasionally close. Always confirm the details directly with the venue before you travel.",
-      },
-      {
-        q: "A venue in one of your guides is closed. What should I do?",
-        a: "Email hello@experiences-curated.com with the experience name and what you found. We'll investigate and update or remove it. We'd rather know.",
       },
     ],
   },
@@ -163,7 +171,7 @@ export default function HelpPage() {
               {section.questions.map((item) => (
                 <div key={item.q}>
                   <p className="text-sm font-semibold text-neutral-900 mb-2">{item.q}</p>
-                  <p className="text-sm text-neutral-600 leading-7">{item.a}</p>
+                  <div className="text-sm text-neutral-600 leading-7">{item.a}</div>
                 </div>
               ))}
             </div>
