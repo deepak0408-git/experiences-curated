@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
-import { sportingEvents, experiences, userProfiles } from "@/schema/database";
-import { eq, and, gte, desc, asc, ne, sql } from "drizzle-orm";
+import { sportingEvents, experiences, sportingEventExperiences } from "@/schema/database";
+import { eq, and, gte, desc, asc, ne, sql, isNotNull } from "drizzle-orm";
 import Link from "next/link";
 import Image from "next/image";
 import HomepageTripBoardCTA from "./_components/HomepageTripBoardCTA";
@@ -69,17 +69,6 @@ const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: 
   },
 };
 
-const HOMEPAGE_PICKS_BY_EVENT: Record<string, string[]> = {
-  "wimbledon-2026": ["Centre Court", "Eating", "Practice Courts"],
-  "us-open-2026": ["Arthur Ashe", "Night Sessions", "Golden Mall"],
-};
-
-const ARCHETYPE_PREFERRED_TYPES: Record<string, string[]> = {
-  pilgrim:       ["sports_venue", "fan_experience", "event"],
-  first_pilgrim: ["sports_venue", "fan_experience", "transit"],
-  connoisseur:   ["accommodation", "dining", "fan_experience"],
-  immersionist:  ["neighborhood", "dining", "activity"],
-};
 
 function daysUntil(dateStr: string): number {
   return Math.ceil((new Date(dateStr).getTime() - Date.now()) / 86_400_000);
@@ -121,15 +110,6 @@ export default async function HomePage() {
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  let archetype: string | null = null;
-  if (user?.email) {
-    const [profile] = await db
-      .select({ archetype: userProfiles.archetype })
-      .from(userProfiles)
-      .where(eq(userProfiles.email, user.email))
-      .limit(1);
-    archetype = profile?.archetype ?? null;
-  }
 
   // All events not yet ended, ordered by start date
   const allUpcoming = await db
@@ -182,7 +162,7 @@ export default async function HomePage() {
       );
     totalCount = Number(countRow?.count ?? 0);
 
-    const allPublished = await db
+    teasers = await db
       .select({
         id: experiences.id,
         title: experiences.title,
@@ -194,28 +174,22 @@ export default async function HomePage() {
         neighborhood: experiences.neighborhood,
       })
       .from(experiences)
+      .innerJoin(
+        sportingEventExperiences,
+        and(
+          eq(sportingEventExperiences.experienceId, experiences.id),
+          eq(sportingEventExperiences.sportingEventId, hero.id)
+        )
+      )
       .where(
         and(
-          eq(experiences.sportingEventId, hero.id),
           eq(experiences.status, "published"),
-          ne(experiences.experienceType, "transit")
+          ne(experiences.experienceType, "transit"),
+          isNotNull(sportingEventExperiences.packRank)
         )
-      );
-
-    if (archetype && ARCHETYPE_PREFERRED_TYPES[archetype]) {
-      const preferredTypes = ARCHETYPE_PREFERRED_TYPES[archetype];
-      const preferred = preferredTypes
-        .flatMap((type) => allPublished.filter((e) => e.experienceType === type))
-        .filter((e, i, arr) => arr.findIndex((x) => x.id === e.id) === i);
-      const remaining = allPublished.filter((e) => !preferred.some((p) => p.id === e.id));
-      teasers = [...preferred, ...remaining].slice(0, 3);
-    } else {
-      const picks = (HOMEPAGE_PICKS_BY_EVENT[hero.slug] ?? [])
-        .map((kw) => allPublished.find((e) => e.title.toLowerCase().includes(kw.toLowerCase())))
-        .filter((e): e is NonNullable<typeof e> => e != null);
-      const remaining = allPublished.filter((e) => !picks.some((p) => p.id === e.id));
-      teasers = [...picks, ...remaining].slice(0, 3);
-    }
+      )
+      .orderBy(asc(sportingEventExperiences.packRank))
+      .limit(3);
   }
 
   const heroState = hero ? eventState(hero.startDate, hero.endDate) : null;

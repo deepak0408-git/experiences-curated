@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import { experiences } from "@/schema/database";
-import { eq, and } from "drizzle-orm";
+import { experiences, sportingEventExperiences } from "@/schema/database";
+import { eq, and, asc } from "drizzle-orm";
 import Link from "next/link";
 import Image from "next/image";
 import SignOutButton from "./SignOutButton";
@@ -193,23 +193,13 @@ const PACK_EDITORIAL: Record<string, PackEditorial> = {
   },
 };
 
-function orderItems<T extends { title: string; curationTier: string }>(
-  items: T[],
-  sectionName: string,
-  eventSlug: string
-): T[] {
-  const order = PACK_EDITORIAL[eventSlug]?.experienceOrder[sectionName];
-  if (order) {
-    return [...items].sort((a, b) => {
-      const ai = order.findIndex((kw) => a.title.includes(kw));
-      const bi = order.findIndex((kw) => b.title.includes(kw));
-      return (ai === -1 ? order.length : ai) - (bi === -1 ? order.length : bi);
-    });
-  }
-  return [
-    ...items.filter((e) => e.curationTier === "editorial"),
-    ...items.filter((e) => e.curationTier !== "editorial"),
-  ];
+function orderItems<T extends { packRank: number | null }>(items: T[]): T[] {
+  return [...items].sort((a, b) => {
+    if (a.packRank === null && b.packRank === null) return 0;
+    if (a.packRank === null) return 1;
+    if (b.packRank === null) return -1;
+    return a.packRank - b.packRank;
+  });
 }
 
 const INSIDER_TIPS: Record<string, Record<string, string[]>> = {
@@ -447,18 +437,22 @@ export default async function PackView({
       curationTier: experiences.curationTier,
       whyItsSpecial: experiences.whyItsSpecial,
       practicalInfo: experiences.practicalInfo,
+      packRank: sportingEventExperiences.packRank,
     })
     .from(experiences)
-    .where(
+    .innerJoin(
+      sportingEventExperiences,
       and(
-        eq(experiences.sportingEventId, eventId),
-        eq(experiences.status, "published")
+        eq(sportingEventExperiences.experienceId, experiences.id),
+        eq(sportingEventExperiences.sportingEventId, eventId)
       )
-    );
+    )
+    .where(eq(experiences.status, "published"))
+    .orderBy(asc(sportingEventExperiences.packRank));
 
   const sections = sectionOrder.map((name) => {
     const raw = exps.filter((e) => SECTION_MAP[e.experienceType] === name);
-    const ordered = orderItems(raw, name, eventSlug);
+    const ordered = orderItems(raw);
     const editorsPick = ordered[0] ?? null;
     const rest = ordered.slice(1);
     return { name, editorsPick, rest };
