@@ -14,6 +14,9 @@ export default function SiteFooter() {
           <Link href="/terms" className="text-xs text-neutral-400 hover:text-neutral-700 transition-colors">
             Terms
           </Link>
+          <Link href="/help" className="text-xs text-neutral-400 hover:text-neutral-700 transition-colors">
+            Support
+          </Link>
           <a
             href="mailto:hello@experiences-curated.com"
             className="text-xs text-neutral-400 hover:text-neutral-700 transition-colors"
