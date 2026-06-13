@@ -215,6 +215,17 @@ export default async function HomePage() {
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
 
+          {/* Logo — centred in hero */}
+          <div className="absolute top-0 left-0 right-0 flex justify-center pt-8 pointer-events-none">
+            <Image
+              src="/round-logo.png"
+              alt="Experiences | Curated"
+              width={72}
+              height={72}
+              className="opacity-90"
+            />
+          </div>
+
           <div className="absolute bottom-0 left-0 right-0 px-6 sm:px-8 pb-10">
             <div className="max-w-5xl mx-auto">
               <div className="mb-3">
