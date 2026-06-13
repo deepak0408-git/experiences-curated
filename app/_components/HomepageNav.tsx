@@ -1,5 +1,4 @@
 ﻿import Link from "next/link";
-import Image from "next/image";
 import SignInLink from "./SignInLink";
 import SearchForm from "./SearchForm";
 
@@ -7,16 +6,8 @@ export default function HomepageNav({ email, showSearch = false }: { email: stri
   return (
     <nav className="border-b border-neutral-100">
       <div className="max-w-5xl mx-auto px-6 sm:px-8 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-          <Image
-            src="/round-logo.png"
-            alt="Experiences | Curated"
-            width={44}
-            height={44}
-          />
-          <span className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-neutral-400 whitespace-nowrap">
-            Experiences | Curated
-          </span>
+        <Link href="/" className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors whitespace-nowrap">
+          Experiences | Curated
         </Link>
         <div className="flex items-center gap-6">
           {showSearch && (
