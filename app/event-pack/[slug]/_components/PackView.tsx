@@ -404,6 +404,7 @@ interface PackViewProps {
   preTripBriefLiveAt: Date | null;
   preTripBriefLines: string[] | null;
   preTripBriefUpdatedAt: Date | null;
+  endDate: string;
 }
 
 export default async function PackView({
@@ -420,7 +421,9 @@ export default async function PackView({
   preTripBriefLiveAt,
   preTripBriefLines,
   preTripBriefUpdatedAt,
+  endDate,
 }: PackViewProps) {
+  const isEventPast = new Date() > new Date(endDate);
   const editorial = PACK_EDITORIAL[eventSlug] ?? PACK_EDITORIAL["wimbledon-2026"];
   const sectionOrder = (archetype ? ARCHETYPE_SECTION_ORDER[archetype] : undefined) ?? SECTION_ORDER;
 
@@ -503,6 +506,20 @@ export default async function PackView({
           <AddAllToBoard experienceIds={exps.map((e) => e.id)} />
         </div>
       </div>
+
+      {/* Post-event banner */}
+      {isEventPast && (
+        <div className="border-b border-neutral-200 bg-neutral-50">
+          <div className="max-w-5xl mx-auto px-6 sm:px-8 py-4 flex items-center gap-3">
+            <span className="inline-block px-2.5 py-0.5 rounded-full bg-neutral-200 text-neutral-600 text-xs font-semibold tracking-widest uppercase">
+              Event ended
+            </span>
+            <p className="text-sm text-neutral-500">
+              This event has now passed — your pack is still here for reference.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Pre-trip brief */}
       {preTripBriefLines && preTripBriefLines.length > 0 &&
