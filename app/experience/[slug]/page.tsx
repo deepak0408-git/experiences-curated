@@ -225,12 +225,12 @@ export default async function ExperiencePage({
       />
       {/* ── Hero ── */}
       {exp.heroImageUrl ? (
-        <div className={`relative overflow-hidden bg-neutral-900 ${slug === "wimbledon-centre-court-mq4whguq" ? "h-[38vh] min-h-[260px]" : "h-[55vh] min-h-[380px]"}`}>
+        <div className="relative h-[55vh] min-h-[380px] overflow-hidden bg-neutral-900">
           <Image
             src={exp.heroImageUrl}
             alt={exp.heroImageAlt ?? exp.title}
             fill
-            className="object-cover opacity-90"
+            className={`object-cover opacity-90 ${slug === "wimbledon-centre-court-mq4whguq" ? "object-[center_65%]" : ""}`}
             sizes="100vw"
             priority
           />
