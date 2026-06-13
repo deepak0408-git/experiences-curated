@@ -337,27 +337,27 @@ interface RhythmEntry {
 const TOURNAMENT_RHYTHM: Record<string, RhythmEntry[]> = {
   "wimbledon-2026": [
     {
-      label: "Opening Monday",
+      label: "Opening Monday (29 Jun)",
       body: "The day the grounds feel genuinely electric — and genuinely overwhelming. Top seeds are on Centre Court and No. 1 Court from day one, but the outer courts are where the draw opens up — players ranked 60 to 120 on courts you can walk right up to. Get in before 11am. The gates flood. Roam and watch breadth.",
     },
     {
-      label: "Early-round weekdays (Tue–Thu, Week 1)",
+      label: "Early-round weekdays (Tue–Thu, 30 Jun–2 Jul)",
       body: "Quietly the best days to be there. The corporate groups clear out, the proper fans stay, and a grounds pass covers everything that matters. Wednesday and Thursday especially — fewer people, more access, and you can drop in and out of four matches in an afternoon without jostling for standing room.",
     },
     {
-      label: "Middle Saturday (4 July)",
+      label: "Middle Saturday (4 Jul)",
       body: "Every local knows this one. Third round done, 32 players left, and the tennis quality has genuinely jumped. The grounds are full but the energy earns it. Centre Court tickets are essentially gone unless you planned months ahead; Henman Hill and the outer courts on this day are a better story anyway.",
     },
     {
-      label: "Week 2 weekdays (Mon–Thu)",
+      label: "Week 2 weekdays (Mon–Thu, 6–9 Jul)",
       body: "The draw thins to 16, then 8. Outer courts go quiet — fewer matches, bigger gaps in the schedule. What you get instead is actual seats, actual calm, and the best tennis of the tournament. Different kind of day. Not worse, just different.",
     },
     {
-      label: "Semi-finals (Thu–Fri)",
+      label: "Semi-finals (Thu–Fri, 9–10 Jul)",
       body: "Thursday is the Ladies' semis, Friday the Men's. The formality of the place tightens noticeably. Most of the crowd watches from pubs while the grounds go quiet. If you want pure tennis with no distraction, these are your days. If you came for the full Wimbledon feeling, it peaked around the quarterfinals.",
     },
     {
-      label: "Finals Weekend (11–12 July)",
+      label: "Finals Weekend (11–12 Jul)",
       body: "Saturday is the Ladies' Singles final and Men's Doubles. Sunday is the Men's Singles final and Ladies' Doubles. The trophy presentations are part of the event. Worth doing once — but it's also the most formal, least spontaneous version of Wimbledon. The tournament worth travelling for is the one with roaming outer courts and unexpected results. That ended a few days earlier.",
     },
   ],
