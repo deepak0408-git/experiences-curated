@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { sportingEvents, experiences, purchases, userProfiles } from "@/schema/database";
 import { eq, and, sql } from "drizzle-orm";
 import { createClient } from "@/lib/supabase/server";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -208,10 +208,13 @@ function formatDateRange(startDate: string, endDate: string) {
 
 export default async function EventPackPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ status?: string }>;
 }) {
   const { slug } = await params;
+  const { status } = await searchParams;
 
   const [event] = await db
     .select()
@@ -269,6 +272,10 @@ export default async function EventPackPage({
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  if (!user && status === "succeeded") {
+    redirect(`/event-pack/${slug}/welcome`);
+  }
 
   let hasPurchased = false;
   if (user?.email) {
