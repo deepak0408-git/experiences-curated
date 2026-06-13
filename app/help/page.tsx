@@ -1,9 +1,9 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Help & FAQ â€” Experiences | Curated",
-  description: "Answers to common questions about Experiences | Curated â€” event packs, accounts, Trip Board, and more.",
+  title: "Help & FAQ — Experiences | Curated",
+  description: "Answers to common questions about Experiences | Curated — event packs, accounts, Trip Board, Pro subscription, and more.",
 };
 
 const faqs = [
@@ -12,19 +12,27 @@ const faqs = [
     questions: [
       {
         q: "What is an event pack?",
-        a: "An event pack is a curated guide built around a specific sporting event â€” Wimbledon, the US Open, and others. Each pack covers where to eat, stay, and spend time around the event, chosen by people who've actually been there. It's not a ticket â€” it's everything around the ticket.",
+        a: "An event pack is a curated guide built around a specific sporting event — Wimbledon, the US Open, and others. Each pack covers where to eat, stay, and spend time around the event, chosen by people who've actually been there. It's not a ticket — it's everything around the ticket.",
       },
       {
         q: "How do I access my pack after purchase?",
-        a: "After payment, you'll get an email with a magic link. Click it and you're in. Your pack is tied to the email address you used at checkout, so you can always get back in by signing in with that email at the top of any event pack page.",
+        a: "After payment, you'll get an email with a magic link. Click it and you're in. Your pack is tied to the email address you used at checkout, so you can always get back in by signing in with that email on the event pack page.",
       },
       {
         q: "I didn't receive the email after purchase. What should I do?",
-        a: "Check your spam folder first â€” magic links sometimes land there. If it's not there, go to the event pack page and use the sign-in form with your purchase email. Still stuck? Email us at hello@experiences-curated.com and we'll sort it out.",
+        a: "Check your spam folder first — magic links sometimes land there. If it's not there, go to the event pack page and use the sign-in form with your purchase email. Still stuck? Email us at hello@experiences-curated.com and we'll sort it out.",
+      },
+      {
+        q: "I bought a pack last year. Do I need to buy again?",
+        a: "Yes — each pack is a new edition for a specific event year. The venues, recommendations, and pre-trip brief are updated for that season, so last year's pack is a different product. We don't currently offer returning-buyer discounts, but the price stays the same year to year.",
+      },
+      {
+        q: "What is the pre-trip brief?",
+        a: "A few days before the event, your pack gets a short live update — transport conditions, weather outlook, and one thing worth knowing right now. It goes live automatically once we've verified the information. You'll get an email when it's ready.",
       },
       {
         q: "Can I share my pack with someone else?",
-        a: "Access is tied to one account. If you want to plan together, share your Trip Board link instead â€” that's designed for sharing.",
+        a: "Access is tied to one account. If you want to plan together, share your Trip Board link instead — that's designed for sharing.",
       },
       {
         q: "Can I get a refund?",
@@ -37,7 +45,11 @@ const faqs = [
     questions: [
       {
         q: "How do I sign in?",
-        a: "We use magic links â€” you enter your email, we send you a link, you click it. No password to remember. The link expires after a few minutes, so use it when it arrives.",
+        a: "We use magic links — you enter your email, we send you a link, you click it. No password to remember. The link expires after a few minutes, so use it when it arrives.",
+      },
+      {
+        q: "My magic link expired. What do I do?",
+        a: "Go back to the sign-in page and request a new one. Each link is single-use and expires after a few minutes — just enter your email again and you'll get a fresh link.",
       },
       {
         q: "Can I change my email address?",
@@ -45,7 +57,7 @@ const faqs = [
       },
       {
         q: "How do I delete my account?",
-        a: "Email hello@experiences-curated.com with the subject 'Delete my account'. We'll remove your personal data within 30 days. Purchase records are kept for 7 years as required by Indian tax law.",
+        a: "Go to My Profile and scroll to the bottom — there's a 'Delete account' option that removes your data immediately. Purchase records are kept for 7 years as required by tax law, but your personal details are anonymised.",
       },
     ],
   },
@@ -54,15 +66,19 @@ const faqs = [
     questions: [
       {
         q: "What does Pro include?",
-        a: "Pro removes the 3-read limit on experience pages, unlocks booking contacts on concierge picks, and gives you unlimited Trip Boards. Free accounts get one board and 3 experience reads.",
+        a: "Pro removes the 3-read limit on experience pages, unlocks detailed booking contacts on concierge picks, and gives you unlimited Trip Boards. Free accounts get one board and 3 experience reads.",
+      },
+      {
+        q: "What is a travel archetype?",
+        a: "When you sign up for Pro, you take a short quiz that identifies how you travel — whether you're a Connoisseur, Immersionist, Pilgrim, or First Pilgrim. Your archetype reorders the experiences in each pack to surface what's most relevant to you first. You can retake the quiz any time from your profile.",
       },
       {
         q: "How do I cancel my Pro subscription?",
-        a: "Go to My Profile and click 'Manage subscription'. That opens the Paddle billing portal where you can cancel. Your Pro access continues until the end of the current billing period.",
+        a: "Go to My Profile and click 'Manage subscription'. That opens the billing portal where you can cancel. Your Pro access continues until the end of the current billing period.",
       },
       {
         q: "I cancelled but still got charged. What do I do?",
-        a: "Email hello@experiences-curated.com with your purchase email and we'll investigate. Billing is handled by Paddle, but we'll get it resolved.",
+        a: "Email hello@experiences-curated.com with your purchase email and we'll investigate and resolve it.",
       },
     ],
   },
@@ -75,7 +91,20 @@ const faqs = [
       },
       {
         q: "How do I share my Trip Board?",
-        a: "On your Trip Board page, click 'Share board'. It generates a link to the board you're currently viewing. Anyone with the link can see it â€” they don't need an account.",
+        a: "On your Trip Board page, click 'Share board'. It generates a link to the board you're currently viewing. Anyone with the link can see it — they don't need an account.",
+      },
+    ],
+  },
+  {
+    section: "My Travels",
+    questions: [
+      {
+        q: "What is My Travels?",
+        a: "My Travels is your personal log of experiences you've done. After you attend an event, you can rate each experience (1–5 stars), add mood tags, and build up a record of your travels over time. Ratings feed into the site's community averages, which are shown on each experience page once enough people have reviewed it.",
+      },
+      {
+        q: "I received a feedback email after the event. What is it?",
+        a: "Two days after an event ends, we send a short email asking how it went. It links to My Travels where you can rate the experiences from your pack, and includes a one-click rating for the pack itself. It takes two minutes and genuinely helps us improve the next edition.",
       },
     ],
   },
@@ -84,11 +113,11 @@ const faqs = [
     questions: [
       {
         q: "Who writes the guides?",
-        a: "Each experience is written and verified by a named curator who has been there. We don't aggregate from other sites or generate content automatically. The curator's name appears at the bottom of each experience page.",
+        a: "Each experience is written and verified by a curator who has been there. We don't aggregate from other sites or generate content automatically. The curator's name appears at the bottom of each experience page.",
       },
       {
         q: "How often is the content updated?",
-        a: "We verify experiences before each event season. That said, venues change â€” opening hours shift, prices move, places occasionally close. Always confirm the details directly with the venue before you travel.",
+        a: "We verify experiences before each event season. That said, venues change — opening hours shift, prices move, places occasionally close. Always confirm the details directly with the venue before you travel.",
       },
       {
         q: "A venue in one of your guides is closed. What should I do?",
