@@ -36,12 +36,6 @@ export default function CuratorLayout({
               >
                 Destinations
               </Link>
-              <Link
-                href="/curator/submit"
-                className="px-3 py-1.5 rounded-md text-sm text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 transition-colors"
-              >
-                + New Experience
-              </Link>
             </nav>
           </div>
         </div>

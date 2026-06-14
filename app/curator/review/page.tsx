@@ -64,9 +64,10 @@ export default async function ReviewQueuePage() {
         </div>
         <Link
           href="/curator/submit"
-          className="px-4 py-2.5 rounded-lg bg-neutral-900 text-sm font-medium text-white hover:bg-neutral-700 transition-colors"
+          className="px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg bg-neutral-900 text-xs sm:text-sm font-medium text-white hover:bg-neutral-700 transition-colors"
         >
-          + New Experience
+          <span className="sm:hidden">+ New</span>
+          <span className="hidden sm:inline">+ New Experience</span>
         </Link>
       </div>
 
