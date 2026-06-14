@@ -439,12 +439,12 @@ const TOURNAMENT_RHYTHM: Record<string, RhythmEntry[]> = {
 
   "belgian-gp-2026": [
     {
-      label: "Friday (17 Jul) — Practice 1 & 2",
-      body: "The best day to roam. Two practice sessions — FP1 at 13:30, FP2 at 17:00 local time — and the circuit is at its most accessible. Use FP1 to walk the full 7 kilometres and find your spots for the rest of the weekend: the Kemmel mound, the Pouhon bank, the angle from Blanchimont. The Fan Zone at Raidillon runs its quietest queues of the weekend on Friday morning. Engineers are still tuning setups, which means you see real variation between cars on the same corner — more technically interesting than most people expect.",
+      label: "Friday (17 Jul) — Practice 1",
+      body: "The best day to roam — 2026 is a sprint weekend, so Friday has only one practice session (FP1, ~13:30 local). That makes it the quietest day on circuit and the right time to walk the full 7 kilometres and find your spots for the rest of the weekend: the Kemmel mound, the Pouhon bank, the angle from Blanchimont. Fan Zone queues are shortest on Friday morning. Engineers are still tuning setups, which means you see real variation between cars at the same corner — more technically interesting than most people expect.",
     },
     {
-      label: "Saturday (18 Jul) — Practice 3 & Qualifying",
-      body: "The day most experienced Spa visitors consider the best of the weekend. FP3 in the morning, then qualifying at 15:00. Pick your position before qualifying and commit to it early — the circuit banks and standing areas lock in once the pitlane opens. Qualifying at Spa is singular: individual laps, no traffic, and the corner differences between drivers are visible in a way that race conditions obscure. The 10–15 minutes between the end of Q3 and the track going quiet is when the circuit atmosphere peaks. The Fan Zone stage runs driver interviews mid-morning; check the Belgian GP app the evening before for exact timings.",
+      label: "Saturday (18 Jul) — Sprint Qualifying, Sprint Race & Grand Prix Qualifying",
+      body: "The busiest day of the weekend. Sprint Qualifying in the morning sets the grid for the Sprint Race; the Sprint Race itself runs mid-afternoon (100km, no pitstops mandatory); then Grand Prix Qualifying in the evening determines the Sunday grid. Three separate sessions, each with a different character. Pick one position and stay — moving between grandstands during changeovers is possible but the circuit fills fast. Grand Prix Qualifying at Spa is the session to prioritise: single laps, the full Spa atmosphere, and the corner differences between drivers are starkly visible.",
     },
     {
       label: "Sunday (19 Jul) — Race Day",
