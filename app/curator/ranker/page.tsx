@@ -1,6 +1,5 @@
 export const dynamic = "force-dynamic";
 
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getEventsForRanker, getExperiencesForEvent } from "./actions";
 import RankerForm from "./_components/RankerForm";
@@ -64,7 +63,7 @@ export default async function RankerPage({
       )}
 
       {selectedEvent && experiences.length > 0 && (
-        <RankerForm eventId={selectedEvent.id} experiences={experiences} />
+        <RankerForm key={selectedEvent.id} eventId={selectedEvent.id} experiences={experiences} />
       )}
     </div>
   );
