@@ -214,7 +214,7 @@ const PACK_EDITORIAL: Record<string, PackEditorial> = {
       { label: "Shuttles", value: "From Spa town (13km), Stavelot (5km), Malmedy (6km), Liège (50km) — approx. €65 one way per day. Book via spagrandprix.com.", href: "https://www.spagrandprix.com/en/tickets-city-shuttle", linkLabel: "Book shuttles" },
       { label: "Circuit opens", value: "Gates from 07:00 each race day. Fan Zone and grandstands accessible throughout all sessions." },
       { label: "What to bring", value: "Waterproof jacket (non-negotiable — July Ardennes weather changes fast). Fold-up chair if GA. Ear defenders. Sunscreen. The circuit has no cover outside the paid grandstands." },
-      { label: "Weather", value: "Unpredictable. July highs 18–28°C, with sudden downpours common. The Ardennes micro-climate means it can be dry at La Source and raining at Pouhon.", href: "https://www.accuweather.com/en/be/spa/8-27673_poi/weather-forecast/8-27673_poi", linkLabel: "AccuWeather forecast" },
+      { label: "Weather", value: "Unpredictable. July highs 18–28°C, with sudden downpours common. The Ardennes micro-climate means it can be dry at La Source and raining at Pouhon.", href: "https://www.accuweather.com/en/be/spa/29281/weather-forecast/29281?type=locality&city=spa", linkLabel: "AccuWeather forecast" },
       { label: "Emergencies", value: "Emergency services: 112 · Police non-emergency: 101 · Nearest hospital: CHR de Verviers, Rue du Palais 211, 4800 Verviers" },
     ],
     experienceOrder: {
