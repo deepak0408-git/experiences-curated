@@ -6,7 +6,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { eq } from "drizzle-orm";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { experiences, sportingEvents } from "../schema/database.ts";
+import { experiences, sportingEvents, sportingEventExperiences } from "../schema/database.ts";
 
 const r2 = new S3Client({
   region: "auto",
@@ -154,12 +154,19 @@ try {
     })
     .returning({ id: experiences.id, slug: experiences.slug, title: experiences.title, status: experiences.status });
 
+  await client`
+    INSERT INTO sporting_event_experiences (sporting_event_id, experience_id)
+    VALUES (${belgianGpEventId}, ${result.id})
+    ON CONFLICT DO NOTHING
+  `;
+
   console.log("\n✓ Experience created successfully");
   console.log("  Title: ", result.title);
   console.log("  ID:    ", result.id);
   console.log("  Slug:  ", result.slug);
   console.log("  Status:", result.status);
   console.log("  Belgian GP Event ID:", belgianGpEventId);
+  console.log("  → Join row inserted into sporting_event_experiences");
   console.log("\n→ Ready to review at: http://localhost:3000/curator/review");
 } catch (e) {
   console.error("Error:", e.message);
