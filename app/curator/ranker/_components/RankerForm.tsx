@@ -44,11 +44,13 @@ export default function RankerForm({
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [ranks, setRanks] = useState<Record<string, string>>(() =>
-    Object.fromEntries(
-      experiences.map((e) => [e.id, e.packRank != null ? String(e.packRank) : ""])
-    )
-  );
+  const [ranks, setRanks] = useState<Record<string, string>>(() => {
+    const init: Record<string, string> = {};
+    for (const e of experiences) {
+      init[e.id] = e.packRank !== null && e.packRank !== undefined ? String(e.packRank) : "";
+    }
+    return init;
+  });
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
 
