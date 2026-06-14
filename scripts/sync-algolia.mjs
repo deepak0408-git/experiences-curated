@@ -45,6 +45,7 @@ const rows = await db
     lat: experiences.lat,
     lng: experiences.lng,
     heroImageUrl: experiences.heroImageUrl,
+    sport: experiences.sport,
     moodTags: experiences.moodTags,
     interestCategories: experiences.interestCategories,
     pace: experiences.pace,
@@ -99,6 +100,7 @@ const objects = rows.map((row) => {
     neighborhood: row.neighborhood,
     ...(lat !== undefined && lng !== undefined ? { _geoloc: { lat, lng } } : {}),
     heroImageUrl: row.heroImageUrl,
+    sport: row.sport ?? [],
     moodTags: row.moodTags ?? [],
     interestCategories: row.interestCategories ?? [],
     pace: row.pace,
@@ -122,6 +124,26 @@ const objects = rows.map((row) => {
 });
 
 await algolia.saveObjects({ indexName: INDEX, objects });
+
+// Ensure sport is registered as a facet
+await algolia.setSettings({
+  indexName: INDEX,
+  indexSettings: {
+    attributesForFaceting: [
+      "destinationName",
+      "destinationId",
+      "experienceType",
+      "budgetTier",
+      "pace",
+      "moodTags",
+      "interestCategories",
+      "bestSeasons",
+      "availability",
+      "curationTier",
+      "sport",
+    ],
+  },
+});
 
 console.log(`\n✓ ${rows.length} experience${rows.length !== 1 ? "s" : ""} synced to Algolia index "${INDEX}".`);
 await client.end();

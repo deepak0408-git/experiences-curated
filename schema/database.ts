@@ -245,6 +245,7 @@ export const experiences = pgTable("experiences", {
   bestFor: text("best_for").array(),
 
   // Discovery
+  sport: text("sport").array(),
   moodTags: text("mood_tags").array(),
   interestCategories: text("interest_categories").array(),
   pace: paceEnum("pace"),

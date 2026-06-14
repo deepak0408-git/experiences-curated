@@ -59,6 +59,22 @@ const PACE_LABELS: Record<string, string> = {
   intense: "Intense",
 };
 
+const SPORT_LABELS: Record<string, string> = {
+  formula_one: "Formula 1",
+  tennis: "Tennis",
+  cricket: "Cricket",
+  football: "Football",
+  rugby: "Rugby",
+  golf: "Golf",
+  cycling: "Cycling",
+  athletics: "Athletics",
+  other: "Other",
+};
+
+function transformSportItems(items: { label: string; value: string; count: number; isRefined: boolean }[]) {
+  return items.map((item) => ({ ...item, label: SPORT_LABELS[item.label] ?? item.label }));
+}
+
 function transformTypeItems(items: { label: string; value: string; count: number; isRefined: boolean }[]) {
   return items.map((item) => ({ ...item, label: TYPE_LABELS[item.label] ?? item.label }));
 }
@@ -212,6 +228,9 @@ function MobileFilterDrawer({ open, onClose }: { open: boolean; onClose: () => v
               loadingIcon: "w-4 h-4 animate-spin text-neutral-400",
             }}
           />
+          <FilterSection title="Sport">
+            <RefinementList attribute="sport" sortBy={["name:asc"]} transformItems={transformSportItems as any} classNames={refinementClassNames} />
+          </FilterSection>
           <FilterSection title="Destination">
             <RefinementList attribute="destinationName" sortBy={["name:asc"]} classNames={refinementClassNames} />
           </FilterSection>
@@ -354,6 +373,15 @@ export function SearchUI({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex gap-8 min-w-0">
           {/* Sidebar filters */}
           <aside className="w-52 flex-shrink-0 hidden md:block space-y-8">
+            <FilterSection title="Sport">
+              <RefinementList
+                attribute="sport"
+                sortBy={["name:asc"]}
+                transformItems={transformSportItems as any}
+                classNames={refinementClassNames}
+              />
+            </FilterSection>
+
             <FilterSection title="Destination">
               <RefinementList
                 attribute="destinationName"
