@@ -34,7 +34,7 @@ export function ReviewActions({
   }
 
   return (
-    <div className="flex flex-col items-end gap-2">
+    <div className="flex flex-col items-start sm:items-end gap-2">
       <div className="flex items-center gap-2">
         <a
           href={`/experience/${slug}`}
