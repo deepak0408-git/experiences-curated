@@ -209,9 +209,9 @@ const PACK_EDITORIAL: Record<string, PackEditorial> = {
     },
     localInfo: [
       { label: "Address", value: "Route du Circuit 55, 4970 Stavelot, Belgium", href: "https://maps.google.com/?q=Circuit+de+Spa-Francorchamps+Route+du+Circuit+55+Stavelot+Belgium", linkLabel: "Open in Maps" },
-      { label: "Official site", value: "belgium.gp", href: "https://www.belgium.gp", linkLabel: "Visit" },
-      { label: "Ticketing", value: "Official tickets via belgium.gp — Gold 3 sells out first (autumn the year before). Bronze GA widely available but buy early to unlock circuit shuttle reservations.", href: "https://tickets.formula1.com/en/f1-3286-belgium", linkLabel: "Buy tickets" },
-      { label: "Shuttles", value: "From Spa town (13km), Stavelot (5km), Malmedy (6km), Liège (50km) — approx. €60–105 return per day. Book via belgium.gp when you buy tickets." },
+      { label: "Official site", value: "formula1.com/en/racing/2026/belgium", href: "https://www.formula1.com/en/racing/2026/belgium", linkLabel: "Visit" },
+      { label: "Ticketing", value: "Official tickets via Formula 1 — Gold 3 sells out first (autumn the year before). Bronze GA widely available but buy early to unlock circuit shuttle reservations.", href: "https://tickets.formula1.com/en/f1-3286-belgium", linkLabel: "Buy tickets" },
+      { label: "Shuttles", value: "From Spa town (13km), Stavelot (5km), Malmedy (6km), Liège (50km) — approx. €65 one way per day. Book via spagrandprix.com.", href: "https://www.spagrandprix.com/en/tickets-city-shuttle", linkLabel: "Book shuttles" },
       { label: "Circuit opens", value: "Gates from 07:00 each race day. Fan Zone and grandstands accessible throughout all sessions." },
       { label: "What to bring", value: "Waterproof jacket (non-negotiable — July Ardennes weather changes fast). Fold-up chair if GA. Ear defenders. Sunscreen. The circuit has no cover outside the paid grandstands." },
       { label: "Weather", value: "Unpredictable. July highs 18–28°C, with sudden downpours common. The Ardennes micro-climate means it can be dry at La Source and raining at Pouhon.", href: "https://www.accuweather.com/en/be/spa/8-27673_poi/weather-forecast/8-27673_poi", linkLabel: "AccuWeather forecast" },
