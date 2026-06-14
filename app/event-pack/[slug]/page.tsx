@@ -141,6 +141,33 @@ const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: strin
       description: "Edgbaston from New Street, Lord's from St John's Wood tube — transport strategy for both grounds",
     },
   ],
+  "belgian-gp-2026": [
+    {
+      label: "At the Circuit",
+      description:
+        "How to move between Eau Rouge, Kemmel, Pouhon, and the Fan Zone — and what each section of Spa actually gives you",
+    },
+    {
+      label: "Race Weekend",
+      description:
+        "Friday practice, Saturday qualifying, Sunday race — what to prioritise at each session and where to be for the moments that matter",
+    },
+    {
+      label: "The Ardennes",
+      description:
+        "Francorchamps village, the forest roads, and what to do when you have a rest afternoon in one of Europe's quieter corners",
+    },
+    {
+      label: "Where to Eat & Drink",
+      description:
+        "Belgian classics near the circuit, the Fan Zone food offer, and where to find a proper meal after qualifying",
+    },
+    {
+      label: "Where to Stay",
+      description:
+        "Francorchamps hotels 2km from the gates, Malmedy and Spa-town options, and what fills fastest for race weekend",
+    },
+  ],
   "us-open-2026": [
     {
       label: "Night Sessions",
@@ -197,6 +224,13 @@ const PACK_PRICING: Record<string, {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_CRICKET_EARLY_BIRD_CUTOFF ?? "2026-06-15",
     earlyBirdDisplay: "£9",
     standardDisplay: "£15",
+  },
+  "belgian-gp-2026": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-01",
+    earlyBirdDisplay: "€15",
+    standardDisplay: "€25",
   },
 };
 

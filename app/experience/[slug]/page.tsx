@@ -233,6 +233,7 @@ export default async function ExperiencePage({
             className={`object-cover opacity-90 ${
               slug === "wimbledon-centre-court-mq4whguq" ? "object-[center_65%]" :
               slug.startsWith("pouhon-corner-silver3-") ? "object-[center_70%]" :
+              slug.startsWith("fan-zone-raidillon-") ? "object-[center_80%]" :
               ""
             }`}
             sizes="100vw"
