@@ -10,7 +10,7 @@ export default function CuratorLayout({
       <header className="bg-white border-b border-neutral-200 px-6 py-4">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <div>
+            <div className="hidden sm:block">
               <Link href="/" className="text-sm font-semibold tracking-widest text-neutral-400 uppercase hover:text-neutral-600 transition-colors">
                 Experiences | Curated
               </Link>

@@ -105,7 +105,7 @@ export default async function ReviewQueuePage() {
                         key={exp.id}
                         className={`px-6 py-4 ${cfg.row}`}
                       >
-                        <div className="flex items-start justify-between gap-4">
+                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                           {/* Left: title + meta */}
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2 flex-wrap">
