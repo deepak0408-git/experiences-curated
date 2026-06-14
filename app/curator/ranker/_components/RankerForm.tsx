@@ -35,6 +35,39 @@ const TYPE_COLORS: Record<string, string> = {
   event: "bg-red-100 text-red-700",
 };
 
+function RankRow({
+  exp,
+  value,
+  onChange,
+  onBlur,
+}: {
+  exp: RankerExperience;
+  value: string;
+  onChange: (id: string, value: string) => void;
+  onBlur: (id: string) => void;
+}) {
+  return (
+    <div className="flex items-center gap-4 py-3 border-b border-neutral-100 last:border-0">
+      <input
+        type="number"
+        min={1}
+        max={99}
+        value={value}
+        onChange={(e) => onChange(exp.id, e.target.value)}
+        onBlur={() => onBlur(exp.id)}
+        placeholder="—"
+        className="w-16 text-center rounded-md border border-neutral-200 px-2 py-1.5 text-sm font-semibold text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent"
+      />
+      <span
+        className={`hidden sm:inline-block text-xs font-medium px-2 py-0.5 rounded-full ${TYPE_COLORS[exp.experienceType] ?? "bg-neutral-100 text-neutral-600"}`}
+      >
+        {TYPE_LABELS[exp.experienceType] ?? exp.experienceType}
+      </span>
+      <span className="text-sm text-neutral-900 flex-1">{exp.title}</span>
+    </div>
+  );
+}
+
 export default function RankerForm({
   eventId,
   experiences,
@@ -89,27 +122,6 @@ export default function RankerForm({
     });
   }
 
-  const RankRow = ({ exp }: { exp: RankerExperience }) => (
-    <div className="flex items-center gap-4 py-3 border-b border-neutral-100 last:border-0">
-      <input
-        type="number"
-        min={1}
-        max={99}
-        value={ranks[exp.id] ?? ""}
-        onChange={(e) => handleChange(exp.id, e.target.value)}
-        onBlur={() => handleBlur(exp.id)}
-        placeholder="—"
-        className="w-16 text-center rounded-md border border-neutral-200 px-2 py-1.5 text-sm font-semibold text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent"
-      />
-      <span
-        className={`hidden sm:inline-block text-xs font-medium px-2 py-0.5 rounded-full ${TYPE_COLORS[exp.experienceType] ?? "bg-neutral-100 text-neutral-600"}`}
-      >
-        {TYPE_LABELS[exp.experienceType] ?? exp.experienceType}
-      </span>
-      <span className="text-sm text-neutral-900 flex-1">{exp.title}</span>
-    </div>
-  );
-
   return (
     <form onSubmit={handleSubmit}>
       {ranked.length > 0 && (
@@ -119,7 +131,13 @@ export default function RankerForm({
           </p>
           <div className="rounded-xl border border-neutral-200 bg-white px-5">
             {ranked.map((exp) => (
-              <RankRow key={exp.id} exp={exp} />
+              <RankRow
+                key={exp.id}
+                exp={exp}
+                value={ranks[exp.id] ?? ""}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
             ))}
           </div>
         </div>
@@ -132,7 +150,13 @@ export default function RankerForm({
           </p>
           <div className="rounded-xl border border-dashed border-neutral-300 bg-white px-5">
             {unranked.map((exp) => (
-              <RankRow key={exp.id} exp={exp} />
+              <RankRow
+                key={exp.id}
+                exp={exp}
+                value={ranks[exp.id] ?? ""}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
             ))}
           </div>
         </div>
