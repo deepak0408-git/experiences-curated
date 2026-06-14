@@ -26,9 +26,12 @@ node --experimental-strip-types scripts/seed-<name>.mjs
 ```
 London destination:          75758888-28b9-4e09-82ba-f05681ecc904
 New York destination:        fb782de2-bbe6-410f-b466-2a4e628cda10
+Belgian Ardennes destination: 101b815a-ba64-4484-aad6-63721a44ed85
+Liverpool destination:       2bd85c65-fbf9-4888-a081-a6be0b48a225
 India in England 2026 event: 2bab697d-9d2b-45ff-9b46-9fbfc3a0a40b
 Wimbledon 2026 event:        8bb7090e-1ec7-4c3f-b4e2-7fd6bf9942cf
 US Open 2026 event:          91f298a3-ca22-49c3-9c8e-5a200f0026c9
+Belgian GP 2026 event:       b1816396-6d71-4693-a53f-05bccb2d8a8e
 ```
 
 ---

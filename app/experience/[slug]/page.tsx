@@ -230,7 +230,11 @@ export default async function ExperiencePage({
             src={exp.heroImageUrl}
             alt={exp.heroImageAlt ?? exp.title}
             fill
-            className={`object-cover opacity-90 ${slug === "wimbledon-centre-court-mq4whguq" ? "object-[center_65%]" : ""}`}
+            className={`object-cover opacity-90 ${
+              slug === "wimbledon-centre-court-mq4whguq" ? "object-[center_65%]" :
+              slug.startsWith("pouhon-corner-silver3-") ? "object-[center_70%]" :
+              ""
+            }`}
             sizes="100vw"
             priority
           />
@@ -386,7 +390,7 @@ export default async function ExperiencePage({
               )}
               {exp.bookingLinks && (exp.bookingLinks as Array<{ platform: string; url: string }>).length > 0 && (
                 <div className="flex gap-4">
-                  <dt className="w-1/4 flex-shrink-0 text-sm font-medium text-neutral-500 sm:w-28">Book</dt>
+                  <dt className="w-[30%] flex-shrink-0 text-sm font-medium text-neutral-500">Book</dt>
                   <dd className="flex flex-wrap gap-2">
                     {(exp.bookingLinks as Array<{ platform: string; url: string }>).map((link) => (
                       <a
@@ -410,7 +414,7 @@ export default async function ExperiencePage({
               )}
               {practical.website && (
                 <div className="flex gap-4">
-                  <dt className="w-1/4 flex-shrink-0 text-sm font-medium text-neutral-500 sm:w-28">Website</dt>
+                  <dt className="w-[30%] flex-shrink-0 text-sm font-medium text-neutral-500">Website</dt>
                   <dd className="min-w-0 break-all">
                     <a
                       href={practical.website.match(/^https?:\/\//) ? practical.website : `https://${practical.website}`}
