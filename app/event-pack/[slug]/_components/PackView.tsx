@@ -191,6 +191,36 @@ const PACK_EDITORIAL: Record<string, PackEditorial> = {
       { date: "19 Jul", type: "3rd ODI", venue: "Lord's", city: "London" },
     ],
   },
+
+  "belgian-gp-2026": {
+    brief:
+      "The Belgian Grand Prix is three days in the Ardennes forest, and the forest is the point. Circuit de Spa-Francorchamps is 7 kilometres of road that climbs and drops through trees, with corners named after the villages they pass through and a weather system that changes within the hour. It is the circuit most F1 drivers cite as their favourite, and after a lap in a road car you understand why — the elevation changes alone are unlike anything else on the calendar.\n\nThis pack is built around one idea: Spa is not a single experience. It is a circuit you roam. A Bronze general admission ticket unlocks most of it — the Kemmel Straight bank, the Pouhon mound, the Fan Zone at the base of Raidillon, and 7 kilometres of forest trackside. Grandstand tickets — Gold 3 at Raidillon, Silver 3 at Pouhon — give you a fixed seat and cover. The choice between them shapes what kind of weekend this is.\n\nA few things worth knowing before you arrive. July in the Ardennes is unpredictable — the same afternoon can run 28 degrees and then a downpour within the hour, and it matters when you're standing on a grassy bank. The circuit runs a shuttle system from Spa, Stavelot, Malmedy, and Liège; parking on-site on race Sunday takes two hours to clear. Plan your exit before race day. The sections here follow the shape of the weekend — what to do on each day, where to watch from, and how to make the most of a circuit that rewards movement over sitting still.",
+    sectionIntros: {
+      "Before you go":
+        "Tickets are the first thing to sort and the thing most people leave too late. Gold 3 at Raidillon — the covered grandstand at the top of Eau Rouge — is the first to sell out, typically in the autumn the year before. Silver 3 at Pouhon goes next. Bronze general admission is the last to go but the circuit shuttle booking fills before the tickets do — buy early to unlock the shuttle reservation. For transport: the official shuttles run from Spa town (13km), Stavelot (5km), Malmedy (6km), and Liège (50km). On-site parking is available but Sunday exit queues run two hours — most regulars take the shuttle. Download the official Belgian GP app before you arrive; it carries the stage schedule, session updates, and circuit maps.",
+      "On the grounds":
+        "The circuit is 7 kilometres long and a Bronze ticket covers most of it. The strategic question is whether to pick a position and commit or spend the weekend roaming. Most experienced Spa visitors do both: Friday roaming to find their preferred spots, Saturday qualifying from a fixed position — grandstand or bankside — and Sunday race at the spot that worked best on Friday. The experiences here cover the main decision points: Gold 3 at Raidillon for the most famous corner sequence on the calendar, the Kemmel Straight for flat-out speed, Pouhon for sustained lateral load, and the Fan Zone for the social side of the weekend.",
+      "Where to stay":
+        "Three honest options: Spa town (13km from circuit, good restaurants and hotels, shuttle access), Stavelot (5km, smaller, quieter, closest to circuit entrances), and Malmedy (6km, mid-size, better accommodation range than Stavelot). Liège is 50km but has the best hotel selection and a direct shuttle. Camping on the circuit itself is the fourth option — the camping areas fill with a regulars community that treats the weekend as a festival rather than a race visit. Most first-timers stay in Spa or Malmedy and wish they'd camped.",
+      "Where to eat":
+        "The Fan Zone at Raidillon has the best food at the circuit — Belgian frites, stoofvlees, proper bar areas. Quality is better than most F1 circuits manage. Off-circuit, Spa town has a good range: brasseries, Belgian gastropubs, and the kind of places that stay open late on qualifying Saturday. Stavelot's main square has two or three restaurants worth the 10-minute detour. Book anything in Spa town for Saturday evening — the town fills on qualifying weekend and walk-ins become unreliable by 8pm.",
+      "The neighbourhood":
+        "The Belgian Ardennes is worth time beyond the circuit. The Ardennes is a forested plateau that runs across southeastern Belgium and into Luxembourg and Germany — river valleys, medieval towns, and the kind of landscape that feels genuinely different from the rest of Western Europe. La Roche-en-Ardenne is 30 minutes from Spa and worth a Friday morning if you arrive the day before. The Cave de Han (Han-sur-Lesse) — natural caves in a river gorge — is 50 minutes away and one of the more extraordinary natural sites in Belgium. Durbuy, 40 minutes north, bills itself as the smallest city in the world and earns that description.",
+    },
+    localInfo: [
+      { label: "Address", value: "Route du Circuit 55, 4970 Stavelot, Belgium", href: "https://maps.google.com/?q=Circuit+de+Spa-Francorchamps+Route+du+Circuit+55+Stavelot+Belgium", linkLabel: "Open in Maps" },
+      { label: "Official site", value: "belgium.gp", href: "https://www.belgium.gp", linkLabel: "Visit" },
+      { label: "Ticketing", value: "Official tickets via belgium.gp — Gold 3 sells out first (autumn the year before). Bronze GA widely available but buy early to unlock circuit shuttle reservations.", href: "https://tickets.formula1.com/en/f1-3286-belgium", linkLabel: "Buy tickets" },
+      { label: "Shuttles", value: "From Spa town (13km), Stavelot (5km), Malmedy (6km), Liège (50km) — approx. €60–105 return per day. Book via belgium.gp when you buy tickets." },
+      { label: "Circuit opens", value: "Gates from 07:00 each race day. Fan Zone and grandstands accessible throughout all sessions." },
+      { label: "What to bring", value: "Waterproof jacket (non-negotiable — July Ardennes weather changes fast). Fold-up chair if GA. Ear defenders. Sunscreen. The circuit has no cover outside the paid grandstands." },
+      { label: "Weather", value: "Unpredictable. July highs 18–28°C, with sudden downpours common. The Ardennes micro-climate means it can be dry at La Source and raining at Pouhon.", href: "https://www.accuweather.com/en/be/spa/8-27673_poi/weather-forecast/8-27673_poi", linkLabel: "AccuWeather forecast" },
+      { label: "Emergencies", value: "Emergency services: 112 · Police non-emergency: 101 · Nearest hospital: CHR de Verviers, Rue du Palais 211, 4800 Verviers" },
+    ],
+    experienceOrder: {
+      "On the grounds": ["Eau Rouge", "Kemmel", "Pouhon", "Fan Zone"],
+    },
+  },
 };
 
 function orderItems<T extends { packRank: number | null }>(items: T[]): T[] {
@@ -320,6 +350,28 @@ const INSIDER_TIPS: Record<string, Record<string, string[]>> = {
       "If the Lord's match runs long, the day trip compresses naturally — Regent's Park and St John's Wood village alone fill a morning without rushing",
     ],
   },
+  "belgian-gp-2026": {
+    "Eau Rouge": [
+      "Blocks B or C, rows 18–22 — fully under the roof, best angle down Raidillon, with a partial sightline to the Bus Stop Chicane across the circuit",
+      "Saturday qualifying is the session most Spa regulars choose for Gold 3: single-lap effort, no race traffic, and the corner differences between drivers are starkly visible",
+      "Gold 3 sells out faster than any other grandstand — monitor belgium.gp from September the year before and sign up for the newsletter for the release date",
+    ],
+    "Kemmel Straight": [
+      "Mid-straight on the mound, roughly level with the two large screens, is the sweet spot — high enough to see over the barrier, close enough to both ends to watch DRS battles develop before Les Combes",
+      "Arrive before 07:00 on race Sunday for any fence-side position; by 09:30 the entire bank is full and you'll be standing behind other people for the rest of the day",
+      "Spend Friday roaming the full circuit — Bronze gives you access almost everywhere, and you'll find your preferred spots before committing on Saturday qualifying",
+    ],
+    "Pouhon Corner": [
+      "Sections A or B, rows 10–15 — directly opposite the first apex, high enough to see over the fence, with a clear view of both the entry commitment and exit load",
+      "Saturday qualifying is the session that justifies this grandstand: each car attacks Pouhon individually and the differences between drivers through the double-left are stark without race traffic masking them",
+      "Silver 3 is the last Silver grandstand to sell out — if Gold 3 is gone, check Silver 3 before giving up on assigned seating entirely",
+    ],
+    "Fan Zone": [
+      "Check the stage schedule on the Belgian GP app the evening before each day — driver interview times shift based on session overruns and the confirmed slot appears there before it's posted anywhere else",
+      "Friday morning is the best time for simulators and the pit stop challenge — queues are 10–20 minutes versus 45–60 minutes on race Sunday",
+      "Eat before 11:00 or after 14:30 on race Sunday — the food queue at peak mid-morning runs 20+ minutes and frites sell out at two of the three stalls by early afternoon",
+    ],
+  },
 };
 
 function getInsiderTips(title: string, eventSlug: string): string[] | null {
@@ -382,6 +434,21 @@ const TOURNAMENT_RHYTHM: Record<string, RhythmEntry[]> = {
     {
       label: "Finals weekend (Sat–Sun, Sep 12–13)",
       body: "Women's Final on Saturday Sep 12, Men's Final on Sunday Sep 13. The grounds become a proper street festival — Fan Fest, big screens, DJs in the secondary stadiums. Finals tickets are expensive and scarce; watching on screens in the park with 20,000 other people has its own thing going on. After the Men's trophy presentation, the tournament ends like a light switch. No gradual wind-down.",
+    },
+  ],
+
+  "belgian-gp-2026": [
+    {
+      label: "Friday (17 Jul) — Practice 1 & 2",
+      body: "The best day to roam. Two practice sessions — FP1 at 13:30, FP2 at 17:00 local time — and the circuit is at its most accessible. Use FP1 to walk the full 7 kilometres and find your spots for the rest of the weekend: the Kemmel mound, the Pouhon bank, the angle from Blanchimont. The Fan Zone at Raidillon runs its quietest queues of the weekend on Friday morning. Engineers are still tuning setups, which means you see real variation between cars on the same corner — more technically interesting than most people expect.",
+    },
+    {
+      label: "Saturday (18 Jul) — Practice 3 & Qualifying",
+      body: "The day most experienced Spa visitors consider the best of the weekend. FP3 in the morning, then qualifying at 15:00. Pick your position before qualifying and commit to it early — the circuit banks and standing areas lock in once the pitlane opens. Qualifying at Spa is singular: individual laps, no traffic, and the corner differences between drivers are visible in a way that race conditions obscure. The 10–15 minutes between the end of Q3 and the track going quiet is when the circuit atmosphere peaks. The Fan Zone stage runs driver interviews mid-morning; check the Belgian GP app the evening before for exact timings.",
+    },
+    {
+      label: "Sunday (19 Jul) — Race Day",
+      body: "Race start is 14:00 local time. The circuit fills from 07:00 and fence-side positions on the Kemmel Straight are gone by 09:30. If you have a grandstand ticket, arrive with time to spare — the forest paths are slower on race morning than any other day. The opening lap through Eau Rouge and Raidillon is 44 seconds into the race and worth the entire trip. The DRS zone on the Kemmel Straight produces the most overtaking moves of the weekend. After the podium ceremony — worth staying for — plan your exit before the crowd clears: the single-carriageway roads around the circuit take two hours to clear on Sunday evening. Take the shuttle, or walk to Stavelot and let it pass.",
     },
   ],
 };
