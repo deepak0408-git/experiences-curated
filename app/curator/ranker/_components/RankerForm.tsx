@@ -51,18 +51,23 @@ export default function RankerForm({
     }
     return init;
   });
+  const [committedRanks, setCommittedRanks] = useState(ranks);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
 
   const ranked = experiences
-    .filter((e) => ranks[e.id] !== "")
-    .sort((a, b) => parseInt(ranks[a.id]) - parseInt(ranks[b.id]));
-  const unranked = experiences.filter((e) => ranks[e.id] === "");
+    .filter((e) => committedRanks[e.id] !== "")
+    .sort((a, b) => parseInt(committedRanks[a.id]) - parseInt(committedRanks[b.id]));
+  const unranked = experiences.filter((e) => committedRanks[e.id] === "");
 
   function handleChange(id: string, value: string) {
     setError(null);
     setSaved(false);
     setRanks((prev) => ({ ...prev, [id]: value }));
+  }
+
+  function handleBlur(id: string) {
+    setCommittedRanks((prev) => ({ ...prev, [id]: ranks[id] }));
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -92,6 +97,7 @@ export default function RankerForm({
         max={99}
         value={ranks[exp.id] ?? ""}
         onChange={(e) => handleChange(exp.id, e.target.value)}
+        onBlur={() => handleBlur(exp.id)}
         placeholder="—"
         className="w-16 text-center rounded-md border border-neutral-200 px-2 py-1.5 text-sm font-semibold text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent"
       />
