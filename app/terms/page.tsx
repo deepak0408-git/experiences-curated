@@ -23,7 +23,7 @@ export default function TermsPage() {
         <div>
           <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-1">Legal</p>
           <h1 className="text-3xl font-bold text-neutral-900">Terms of Use</h1>
-          <p className="mt-3 text-sm text-neutral-400">Last updated: 7 May 2026</p>
+          <p className="mt-3 text-sm text-neutral-400">Last updated: 14 Jun 2026</p>
         </div>
 
         <section className="space-y-4 text-sm text-neutral-700 leading-7">
@@ -55,7 +55,7 @@ export default function TermsPage() {
         <section className="space-y-3">
           <h2 className="text-base font-semibold text-neutral-900">3. Event packs and purchases</h2>
           <p className="text-sm text-neutral-700 leading-7">
-            Event packs are digital products sold as one-time purchases. All transactions are processed by Paddle as Merchant of Record. Once purchased, access is tied to your account email and is non-transferable.
+            Event packs are digital products sold as one-time purchases. All transactions are processed by Dodo Payments as Merchant of Record. Once purchased, access is tied to your account email and is non-transferable.
           </p>
           <p className="text-sm text-neutral-700 leading-7">
             <strong>Refunds.</strong> Because event packs are digital products with immediate access upon purchase, all sales are final and non-refundable, except where required by applicable law. If you believe you were charged in error or experienced a technical failure preventing access, contact us at{" "}
@@ -69,7 +69,7 @@ export default function TermsPage() {
         <section className="space-y-3">
           <h2 className="text-base font-semibold text-neutral-900">4. Pro subscription</h2>
           <p className="text-sm text-neutral-700 leading-7">
-            Pro is a recurring subscription billed monthly or annually. You can cancel at any time via your profile page — access continues until the end of the current billing period. All subscription payments are non-refundable; no partial refunds are issued for unused time. Subscriptions are managed by Paddle; Paddle&apos;s own terms apply to billing.
+            Pro is a recurring subscription billed monthly or annually. You can cancel at any time via your profile page — access continues until the end of the current billing period. All subscription payments are non-refundable; no partial refunds are issued for unused time. Subscriptions are managed by Dodo Payments; Dodo Payments&apos; own terms apply to billing.
           </p>
         </section>
 

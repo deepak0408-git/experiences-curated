@@ -23,7 +23,7 @@ export default function PrivacyPage() {
         <div>
           <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-1">Legal</p>
           <h1 className="text-3xl font-bold text-neutral-900">Privacy Policy</h1>
-          <p className="mt-3 text-sm text-neutral-400">Last updated: 10 Jun 2026</p>
+          <p className="mt-3 text-sm text-neutral-400">Last updated: 14 Jun 2026</p>
         </div>
 
         <section className="space-y-4 text-sm text-neutral-700 leading-7">
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
             <li><strong>Usage data</strong> &mdash; pages you visit, experiences you view, searches you run, and items you save to your Trip Board.</li>
             <li><strong>Travel log data</strong> &mdash; experiences you mark as visited, ratings, and mood tags you add. These are private by default; only your aggregate rating contributes to the public average.</li>
             <li><strong>Personalisation data</strong> &mdash; your traveller archetype, as determined by the onboarding quiz. This is used to personalise the order of content and search results.</li>
-            <li><strong>Purchase data</strong> &mdash; transaction records for event pack purchases, processed by Paddle as Merchant of Record. We do not store card details.</li>
+            <li><strong>Purchase data</strong> &mdash; transaction records for event pack purchases, processed by Dodo Payments as Merchant of Record. We do not store card details.</li>
             <li><strong>Cookies</strong> &mdash; we use cookies to maintain your session, remember your free-view count, and (if you consent) to measure search performance via Algolia.</li>
           </ul>
         </section>
@@ -74,7 +74,7 @@ export default function PrivacyPage() {
         <section className="space-y-3">
           <h2 className="text-base font-semibold text-neutral-900">4. Who we share it with</h2>
           <ul className="space-y-2 text-sm text-neutral-700 leading-7 list-disc list-inside">
-            <li><strong>Paddle</strong> &mdash; payment processing and subscription management. Paddle is Merchant of Record for all transactions and has its own <a href="https://www.paddle.com/legal/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-neutral-900 transition-colors">privacy policy</a>. Data is processed in the US and UK under Standard Contractual Clauses.</li>
+            <li><strong>Dodo Payments</strong> &mdash; payment processing and subscription management. Dodo Payments is Merchant of Record for all transactions and has its own <a href="https://dodopayments.com/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-neutral-900 transition-colors">privacy policy</a>. Data is processed under Standard Contractual Clauses.</li>
             <li><strong>Supabase</strong> &mdash; authentication and database hosting. We use the EU (West) region. Supabase is GDPR-compliant and processes data under Standard Contractual Clauses.</li>
             <li><strong>Algolia</strong> &mdash; search queries are sent to Algolia to return results. Algolia processes data in the EU and does not link query data to individual users. See <a href="https://www.algolia.com/policies/privacy/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-neutral-900 transition-colors">Algolia&apos;s privacy policy</a>.</li>
             <li><strong>Cloudflare</strong> &mdash; image and asset delivery via R2 and CDN. Data is cached globally; Cloudflare processes data under Standard Contractual Clauses.</li>
