@@ -121,11 +121,9 @@ try {
     })
     .returning({ id: experiences.id, slug: experiences.slug, title: experiences.title, status: experiences.status });
 
-  await client`
-    INSERT INTO sporting_event_experiences (sporting_event_id, experience_id)
-    VALUES (${BELGIAN_GP_EVENT_ID}, ${result.id})
-    ON CONFLICT DO NOTHING
-  `;
+  await db.insert(sportingEventExperiences)
+    .values({ experienceId: result.id, sportingEventId: BELGIAN_GP_EVENT_ID })
+    .onConflictDoNothing();
 
   console.log("\n✓ Experience created successfully");
   console.log("  Title: ", result.title);
