@@ -225,11 +225,11 @@ export default function HeroCarousel({
               </div>
             )}
 
-            {/* Calendar hint — only when no dot indicators (single event) */}
-            {events.length === 1 && calendarHint && (
+            {/* Calendar hint — always shown when there are non-featured upcoming events */}
+            {calendarHint && (
               <a
                 href="#on-the-calendar"
-                className="mt-5 inline-block text-xs font-semibold tracking-widest uppercase text-white bg-black/50 px-3 py-1 rounded-full hover:bg-black/70 transition-colors"
+                className="mt-3 inline-block text-xs font-semibold tracking-widest uppercase text-white bg-black/50 px-3 py-1 rounded-full hover:bg-black/70 transition-colors"
               >
                 Also coming up · {calendarHint} ↓
               </a>
