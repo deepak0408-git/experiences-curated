@@ -234,6 +234,7 @@ export default async function ExperiencePage({
               slug === "wimbledon-centre-court-mq4whguq" ? "object-[center_65%]" :
               slug.startsWith("pouhon-corner-silver3-") ? "object-[center_70%]" :
               slug.startsWith("fan-zone-raidillon-") ? "object-[center_80%]" :
+              slug.startsWith("spa-francorchamps-track-experiences-") ? "object-[center_92%]" :
               ""
             }`}
             sizes="100vw"

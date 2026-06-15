@@ -194,10 +194,10 @@ const PACK_EDITORIAL: Record<string, PackEditorial> = {
 
   "belgian-gp-2026": {
     brief:
-      "The Belgian Grand Prix is three days in the Ardennes forest, and the forest is the point. Circuit de Spa-Francorchamps is 7 kilometres of road that climbs and drops through trees, with corners named after the villages they pass through and a weather system that changes within the hour. It is the circuit most F1 drivers cite as their favourite, and after a lap in a road car you understand why — the elevation changes alone are unlike anything else on the calendar.\n\nThis pack is built around one idea: Spa is not a single experience. It is a circuit you roam. A Bronze general admission ticket unlocks most of it — the Kemmel Straight bank, the Pouhon mound, the Fan Zone at the base of Raidillon, and 7 kilometres of forest trackside. Grandstand tickets — Gold 3 at Raidillon, Silver 3 at Pouhon — give you a fixed seat and cover. The choice between them shapes what kind of weekend this is.\n\nA few things worth knowing before you arrive. July in the Ardennes is unpredictable — the same afternoon can run 28 degrees and then a downpour within the hour, and it matters when you're standing on a grassy bank. The circuit runs a shuttle system from Spa, Stavelot, Malmedy, and Liège; parking on-site on race Sunday takes two hours to clear. Plan your exit before race day. The sections here follow the shape of the weekend — what to do on each day, where to watch from, and how to make the most of a circuit that rewards movement over sitting still.",
+      "The Belgian Grand Prix is three days in the Ardennes forest, and the forest is the point. Circuit de Spa-Francorchamps is 7 kilometres of road that climbs and drops through trees, with corners named after the villages they pass through and a weather system that changes within the hour. It is the circuit most F1 drivers cite as their favourite, and after a lap in a road car you understand why — the elevation changes alone are unlike anything else on the calendar.\n\nThis pack is built around one idea: Spa is not a single experience. It is a circuit you roam. A Bronze general admission ticket unlocks most of it — the Kemmel Straight bank, the Pouhon mound, the Fan Zone at the base of Raidillon, and 7 kilometres of forest trackside. Grandstand tickets — Gold 3 at Raidillon, Silver 3 at Pouhon — give you a fixed seat and cover. The choice between them shapes what kind of weekend this is.\n\nA few things worth knowing before you arrive. July in the Ardennes is unpredictable — the same afternoon can run 28 degrees and then a downpour within the hour, and it matters when you're standing on a grassy bank. Day return shuttles run from 14 cities across Belgium and the Netherlands — sales close 26 June, so book early. Parking on-site on race Sunday takes two hours to clear. Plan your exit before race day. The sections here follow the shape of the weekend — what to do on each day, where to watch from, and how to make the most of a circuit that rewards movement over sitting still.",
     sectionIntros: {
       "Before you go":
-        "Tickets are the first thing to sort and the thing most people leave too late. Gold 3 at Raidillon — the covered grandstand at the top of Eau Rouge — is the first to sell out, typically in the autumn the year before. Silver 3 at Pouhon goes next. Bronze general admission is the last to go but the circuit shuttle booking fills before the tickets do — buy early to unlock the shuttle reservation. For transport: the official shuttles run from Spa town (13km), Stavelot (5km), Malmedy (6km), and Liège (50km). On-site parking is available but Sunday exit queues run two hours — most regulars take the shuttle. Download the official Belgian GP app before you arrive; it carries the stage schedule, session updates, and circuit maps.",
+        "Tickets are the first thing to sort and the thing most people leave too late. Gold 3 at Raidillon — the covered grandstand at the top of Eau Rouge — is the first to sell out, typically in the autumn the year before. Silver 3 at Pouhon goes next. Bronze general admission is the last to go but the circuit shuttle booking fills before the tickets do — buy early to unlock the shuttle reservation. For transport: day return shuttles run from 14 cities including Brussels, Liège, Namur and Antwerp — sales close 26 June, book early. On-site parking is pre-booked only and Sunday exit queues run two hours — most regulars take the shuttle. Download the official Belgian GP app before you arrive; it carries the stage schedule, session updates, and circuit maps.",
       "On the grounds":
         "The circuit is 7 kilometres long and a Bronze ticket covers most of it. The strategic question is whether to pick a position and commit or spend the weekend roaming. Most experienced Spa visitors do both: Friday roaming to find their preferred spots, Saturday qualifying from a fixed position — grandstand or bankside — and Sunday race at the spot that worked best on Friday. The experiences here cover the main decision points: Gold 3 at Raidillon for the most famous corner sequence on the calendar, the Kemmel Straight for flat-out speed, Pouhon for sustained lateral load, and the Fan Zone for the social side of the weekend.",
       "Where to stay":
@@ -211,8 +211,8 @@ const PACK_EDITORIAL: Record<string, PackEditorial> = {
       { label: "Address", value: "Route du Circuit 55, 4970 Stavelot, Belgium", href: "https://maps.google.com/?q=Circuit+de+Spa-Francorchamps+Route+du+Circuit+55+Stavelot+Belgium", linkLabel: "Open in Maps" },
       { label: "Official site", value: "formula1.com/en/racing/2026/belgium", href: "https://www.formula1.com/en/racing/2026/belgium", linkLabel: "Visit" },
       { label: "Ticketing", value: "Official tickets via Formula 1 — Gold 3 sells out first (autumn the year before). Bronze GA widely available but buy early to unlock circuit shuttle reservations.", href: "https://tickets.formula1.com/en/f1-3286-belgium", linkLabel: "Buy tickets" },
-      { label: "Shuttles", value: "From Spa town (13km), Stavelot (5km), Malmedy (6km), Liège (50km) — approx. €65 one way per day. Book via spagrandprix.com.", href: "https://www.spagrandprix.com/en/tickets-city-shuttle", linkLabel: "Book shuttles" },
-      { label: "Circuit opens", value: "Gates from 07:00 each race day. Fan Zone and grandstands accessible throughout all sessions." },
+      { label: "Shuttles", value: "Day return coaches from 14 cities including Brussels, Liège, Namur and Antwerp — approx. €65–75 per day. Sales close 26 Jun. Book via spagrandprix.com.", href: "https://www.spagrandprix.com/en/tickets-city-shuttle", linkLabel: "Book shuttles" },
+      { label: "Circuit opens", value: "Gates from 06:00 each race day. Fan Zone and grandstands accessible throughout all sessions. Check the Belgian GP app for confirmed daily timings." },
       { label: "What to bring", value: "Waterproof jacket (non-negotiable — July Ardennes weather changes fast). Fold-up chair if GA. Ear defenders. Sunscreen. The circuit has no cover outside the paid grandstands." },
       { label: "Weather", value: "Unpredictable. July highs 18–28°C, with sudden downpours common. The Ardennes micro-climate means it can be dry at La Source and raining at Pouhon.", href: "https://www.accuweather.com/en/be/spa/29281/weather-forecast/29281?type=locality&city=spa", linkLabel: "AccuWeather forecast" },
       { label: "Emergencies", value: "Emergency services: 112 · Police non-emergency: 101 · Nearest hospital: CHR de Verviers, Rue du Palais 211, 4800 Verviers" },
@@ -704,12 +704,12 @@ export default async function PackView({
         </div>
       </div>
 
-      {/* How the tournament unfolds — rhythm guide */}
+      {/* How the event unfolds — rhythm guide */}
       {TOURNAMENT_RHYTHM[eventSlug] && (
         <div id="how-it-unfolds" className="border-b border-neutral-100">
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12">
             <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-6">
-              How the tournament unfolds
+              How the event unfolds
             </p>
             <div className="max-w-2xl space-y-6">
               {TOURNAMENT_RHYTHM[eventSlug].map((entry) => (
@@ -773,7 +773,7 @@ export default async function PackView({
                 <dt className="w-[30%] sm:w-32 flex-shrink-0 text-xs font-semibold text-neutral-500 pt-0.5">
                   {row.label}
                 </dt>
-                <dd className="text-sm text-neutral-700 leading-6 flex-1">
+                <dd className="text-sm text-neutral-700 leading-6 flex-1 break-words min-w-0">
                   {row.value}
                   {row.href && (
                     <a
