@@ -185,6 +185,9 @@ supabase.auth.admin.generateLink({
 - GDPR account deletion: `deleteAccount()` server action in `app/profile/actions.ts` — deletes all user artefacts in FK-safe order (saved_items → trip_boards → travel_logs → community_flags → taste_profiles → user_profiles → pro_subscriptions → public.users → auth.deleteUser), then anonymises purchases by email (`[deleted]` + NULL customer ID). Purchases matched by email not userId — covers users who bought without ever signing in.
 - Dodo webhook creates `public.users` row on purchase — ensures all buyers are counted as users and included in GDPR deletion flow.
 - `npm run build` must pass clean before every deploy — last confirmed 10 Jun 2026
+- **Hero images — 3 options required:** Always present 3 CC-licensed image options before seeding. Never present fewer. Download to `Images/` folder with descriptive filename before running seed script.
+- **Radisson Blu Palace Hotel Spa → rebranded:** Now trades as Van der Valk Hotel Spa (Place Royale 39, Spa) from May 2024. Always verify hotel/venue trading name before writing.
+- **Belgian GP experiences:** 13 of 15 seeded (in_review). Remaining: #10 Romantik Hotel Le Val d'Amblève + #16 The Ardennes Beyond the Circuit. Hero images missing on Van der Valk Hotel Spa and Fan Zone at Raidillon.
 
 ---
 

@@ -228,7 +228,7 @@ const PACK_PRICING: Record<string, {
   "belgian-gp-2026": {
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_STANDARD ?? "",
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-01",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-10",
     earlyBirdDisplay: "€15",
     standardDisplay: "€25",
   },
@@ -390,6 +390,11 @@ export default async function EventPackPage({
       earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_CRICKET_EARLY_BIRD ?? "",
       standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_CRICKET_STANDARD ?? "",
       earlyBirdCutoff: process.env.NEXT_PUBLIC_CRICKET_EARLY_BIRD_CUTOFF ?? "2026-06-15",
+    },
+    "belgian-gp-2026": {
+      earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_EARLY_BIRD ?? "",
+      standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_STANDARD ?? "",
+      earlyBirdCutoff: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-10",
     },
   };
   const dodoPricing = DODO_PRICING[slug] ?? DODO_PRICING["wimbledon-2026"];
