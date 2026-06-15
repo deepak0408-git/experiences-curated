@@ -114,8 +114,8 @@ export default function HeroCarousel({
       {/* Hero */}
       <div
         className="relative h-[62vh] min-h-[420px] overflow-hidden bg-neutral-900"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
+        onPointerEnter={(e) => { if (e.pointerType === "mouse") setPaused(true); }}
+        onPointerLeave={(e) => { if (e.pointerType === "mouse") setPaused(false); }}
       >
         {/* Background image — swap without transition to avoid bfcache issues */}
         {ev.heroImageUrl && (
