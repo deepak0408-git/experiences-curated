@@ -68,6 +68,7 @@ app/_components/
   SignOutButton.tsx  # "use client" — only interactive piece of the nav
   SignInLink.tsx     # "use client" — reads pathname to build /sign-in?next=<path>
   SearchForm.tsx     # "use client" — uses router.push() not form submit (avoids bfcache)
+  HeroCarousel.tsx  # "use client" — 2-slide rotating carousel; pill top-8, title top-[15%], CTA/dots/hint bottom; pointer-events guard for mobile pause
   SiteFooter.tsx     # Global footer — Privacy, Terms, Contact, affiliate disclosure; max-w-5xl
   CookieBanner.tsx   # Cookie consent
 
@@ -187,7 +188,8 @@ supabase.auth.admin.generateLink({
 - `npm run build` must pass clean before every deploy — last confirmed 10 Jun 2026
 - **Hero images — 3 options required:** Always present 3 CC-licensed image options before seeding. Never present fewer. Download to `Images/` folder with descriptive filename before running seed script.
 - **Radisson Blu Palace Hotel Spa → rebranded:** Now trades as Van der Valk Hotel Spa (Place Royale 39, Spa) from May 2024. Always verify hotel/venue trading name before writing.
-- **Belgian GP experiences:** 13 of 15 seeded (in_review). Remaining: #10 Romantik Hotel Le Val d'Amblève + #16 The Ardennes Beyond the Circuit. Hero images missing on Van der Valk Hotel Spa and Fan Zone at Raidillon.
+- **Belgian GP experiences:** All 15 published and packRanks set as of 15 Jun 2026. Hero images missing: Van der Valk Hotel Spa (email reception@valkspa.be), Fan Zone at Raidillon (f1media@f1.com or capture at race). Le Val d'Amblève hero image sourced by user — needs uploading to R2 and DB update.
+- **Homepage carousel:** 2-slide rotating HeroCarousel (`app/_components/HeroCarousel.tsx`). Featured events controlled via `/curator/events` (radio Slot 1/2). `homepage_slot` column on `sporting_events`. Pill pinned `top-8`, title `top-[15%]`, CTA/dots/hint `bottom-0`. Dot indicators: `flex-1 sm:flex-none` for 50-50 mobile / natural desktop split.
 
 ---
 
