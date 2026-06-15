@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
 import { sportingEvents, experiences, sportingEventExperiences } from "@/schema/database";
-import { eq, and, gte, asc, ne, sql, isNotNull, inArray } from "drizzle-orm";
+import { eq, and, gte, asc, ne, sql, isNotNull } from "drizzle-orm";
 import Link from "next/link";
 import Image from "next/image";
 import HomepageTripBoardCTA from "./_components/HomepageTripBoardCTA";
@@ -52,12 +52,6 @@ const BUDGET_LABELS: Record<string, string> = {
   luxury: "Luxury",
 };
 
-// ── Edit these two slugs to control which events appear in the homepage carousel ──
-// Order matters: first slug = first slide. Max 2.
-const FEATURED_EVENTS = [
-  "wimbledon-2026",
-  "belgian-gp-2026",
-];
 
 const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: string; standard: string }> = {
   "wimbledon-2026": {
@@ -124,16 +118,15 @@ export default async function HomePage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Fetch the two featured events by slug (in FEATURED_EVENTS order)
+  // Fetch featured events from DB by homepageSlot (set via /curator/events)
   const featuredRows = await db
     .select()
     .from(sportingEvents)
-    .where(inArray(sportingEvents.slug, FEATURED_EVENTS));
+    .where(isNotNull(sportingEvents.homepageSlot))
+    .orderBy(asc(sportingEvents.homepageSlot));
 
-  // Preserve FEATURED_EVENTS order and filter out missing slugs
-  const featuredSorted = FEATURED_EVENTS
-    .map((slug) => featuredRows.find((e) => e.slug === slug))
-    .filter(Boolean) as typeof featuredRows;
+  const featuredSorted = featuredRows.slice(0, 2);
+  const featuredIds = new Set(featuredSorted.map((e) => e.id));
 
   // All upcoming events not in the featured set — for "On the calendar"
   const allUpcoming = await db
@@ -143,7 +136,7 @@ export default async function HomePage() {
     .orderBy(asc(sportingEvents.startDate));
 
   const calendarEvents = allUpcoming
-    .filter((e) => !FEATURED_EVENTS.includes(e.slug) && e.startDate <= in120Days);
+    .filter((e) => !featuredIds.has(e.id) && e.startDate <= in120Days);
 
   // Build HeroEvent data for each featured event
   async function buildHeroEvent(ev: typeof featuredRows[number]): Promise<HeroEvent> {
