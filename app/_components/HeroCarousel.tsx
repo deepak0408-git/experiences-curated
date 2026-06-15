@@ -113,7 +113,7 @@ export default function HeroCarousel({
     <>
       {/* Hero */}
       <div
-        className="relative h-[62vh] min-h-[420px] overflow-hidden bg-neutral-900"
+        className="relative h-[62vh] min-h-[480px] overflow-hidden bg-neutral-900"
         onPointerEnter={(e) => { if (e.pointerType === "mouse") setPaused(true); }}
         onPointerLeave={(e) => { if (e.pointerType === "mouse") setPaused(false); }}
       >
@@ -153,7 +153,7 @@ export default function HeroCarousel({
             </div>
 
             <h1
-              className={`text-4xl sm:text-5xl font-bold text-white leading-tight tracking-tight max-w-2xl transition-opacity duration-200 ${transitioning ? "opacity-0" : "opacity-100"}`}
+              className={`text-3xl sm:text-5xl font-bold text-white leading-tight tracking-tight max-w-2xl transition-opacity duration-200 ${transitioning ? "opacity-0" : "opacity-100"}`}
             >
               {ev.name}
             </h1>
