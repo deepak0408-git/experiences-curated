@@ -223,7 +223,7 @@ export default async function HomePage() {
               On the calendar
             </p>
             <p className="text-sm text-neutral-500 mb-8">
-              More events coming up — packs available now.
+              More event packs available now.
             </p>
             <div className="flex flex-col gap-4">
               {calendarEvents.map((ev) => {

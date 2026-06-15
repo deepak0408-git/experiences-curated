@@ -204,12 +204,12 @@ export default function HeroCarousel({
             )}
 
             {events.length > 1 && (
-              <div className="mt-5 flex items-center">
+              <div className="mt-5 flex items-center sm:gap-4">
                 {events.map((e, i) => (
                   <button
                     key={e.slug}
                     onClick={() => { setPaused(true); goTo(i); }}
-                    className="flex-1 flex items-center gap-2 group"
+                    className="flex-1 sm:flex-none flex items-center gap-2 group"
                     aria-label={`Show ${e.name}`}
                   >
                     <span
