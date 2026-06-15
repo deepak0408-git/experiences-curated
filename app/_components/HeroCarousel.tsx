@@ -131,27 +131,30 @@ export default function HeroCarousel({
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
 
-        <div className="absolute bottom-0 left-0 right-0 px-6 sm:px-8 pb-10">
-          <div className="max-w-5xl mx-auto">
-            {/* State pill */}
-            <div className="mb-3">
-              {ev.state === "upcoming" && (
-                <span className="inline-block text-xs font-semibold tracking-widest uppercase text-white bg-black/50 px-3 py-1 rounded-full">
-                  {SPORT_LABELS[ev.sport] ?? ev.sport} · Starts in {ev.toStart} day{ev.toStart !== 1 ? "s" : ""}
-                </span>
-              )}
-              {ev.state === "live" && (
-                <span className="inline-block text-xs font-semibold tracking-widest uppercase text-emerald-400 bg-black/50 px-3 py-1 rounded-full">
-                  {SPORT_LABELS[ev.sport] ?? ev.sport} · Underway · {ev.toEnd} day{ev.toEnd !== 1 ? "s" : ""} remaining
-                </span>
-              )}
-              {ev.state === "past" && (
-                <span className="inline-block text-xs font-semibold tracking-widest uppercase text-white/80 bg-black/50 px-3 py-1 rounded-full">
-                  {SPORT_LABELS[ev.sport] ?? ev.sport} · The guide
-                </span>
-              )}
-            </div>
+        {/* Pill — pinned top */}
+        <div className="absolute top-8 left-0 right-0 px-6 sm:px-8 pointer-events-none">
+          <div className="max-w-5xl mx-auto pointer-events-auto">
+            {ev.state === "upcoming" && (
+              <span className="inline-block text-xs font-semibold tracking-widest uppercase text-white bg-black/50 px-3 py-1 rounded-full">
+                {SPORT_LABELS[ev.sport] ?? ev.sport} · Starts in {ev.toStart} day{ev.toStart !== 1 ? "s" : ""}
+              </span>
+            )}
+            {ev.state === "live" && (
+              <span className="inline-block text-xs font-semibold tracking-widest uppercase text-emerald-400 bg-black/50 px-3 py-1 rounded-full">
+                {SPORT_LABELS[ev.sport] ?? ev.sport} · Underway · {ev.toEnd} day{ev.toEnd !== 1 ? "s" : ""} remaining
+              </span>
+            )}
+            {ev.state === "past" && (
+              <span className="inline-block text-xs font-semibold tracking-widest uppercase text-white/80 bg-black/50 px-3 py-1 rounded-full">
+                {SPORT_LABELS[ev.sport] ?? ev.sport} · The guide
+              </span>
+            )}
+          </div>
+        </div>
 
+        {/* Title + date — pinned to a fixed position from top so they start at the same row */}
+        <div className="absolute top-[15%] left-0 right-0 px-6 sm:px-8 pointer-events-none">
+          <div className="max-w-5xl mx-auto pointer-events-auto">
             <h1
               className={`text-3xl sm:text-5xl font-bold text-white leading-tight tracking-tight max-w-2xl transition-opacity duration-200 ${transitioning ? "opacity-0" : "opacity-100"}`}
             >
@@ -163,8 +166,13 @@ export default function HeroCarousel({
                 ? " · Birmingham · London · Nottingham · more"
                 : ev.venueName ? ` · ${ev.venueName}` : ""}
             </p>
+          </div>
+        </div>
 
-            <div className={`mt-7 flex items-center gap-4 flex-wrap transition-opacity duration-200 ${transitioning ? "opacity-0" : "opacity-100"}`}>
+        {/* CTA / dots / hint — pinned bottom */}
+        <div className="absolute bottom-0 left-0 right-0 px-6 sm:px-8 pb-10 pointer-events-none">
+          <div className="max-w-5xl mx-auto pointer-events-auto">
+            <div className={`flex items-center gap-4 flex-wrap transition-opacity duration-200 ${transitioning ? "opacity-0" : "opacity-100"}`}>
               {(ev.state === "upcoming" || ev.state === "live") && (
                 <Link
                   href={`/event-pack/${ev.slug}`}
@@ -182,21 +190,19 @@ export default function HeroCarousel({
                   Explore the guide
                 </Link>
               )}
-              {ev.totalCount > 0 && (
-                <span className="text-white/40 text-sm">
-                  {ev.totalCount} curated experiences inside
-                </span>
+              {ev.earlyBird.show && ev.state === "upcoming" && (
+                <p className="text-xs text-white/50">
+                  Early-bird price — rises to {ev.earlyBird.standardPrice} after {ev.earlyBird.cutoffLabel}
+                </p>
               )}
             </div>
 
-            {/* Early-bird nudge */}
-            {ev.earlyBird.show && ev.state === "upcoming" && (
-              <p className={`mt-3 text-xs text-white/50 transition-opacity duration-200 ${transitioning ? "opacity-0" : "opacity-100"}`}>
-                Early-bird price — rises to {ev.earlyBird.standardPrice} after {ev.earlyBird.cutoffLabel}
+            {ev.totalCount > 0 && (
+              <p className={`mt-2 text-sm text-white/40 transition-opacity duration-200 ${transitioning ? "opacity-0" : "opacity-100"}`}>
+                {ev.totalCount} curated experiences inside
               </p>
             )}
 
-            {/* Dot indicators — only shown when 2 events */}
             {events.length > 1 && (
               <div className="mt-5 flex items-center gap-4">
                 {events.map((e, i) => (
@@ -225,13 +231,12 @@ export default function HeroCarousel({
               </div>
             )}
 
-            {/* Calendar hint — always shown when there are non-featured upcoming events */}
             {calendarHint && (
               <a
                 href="#on-the-calendar"
                 className="mt-3 inline-block text-xs font-semibold tracking-widest uppercase text-white bg-black/50 px-3 py-1 rounded-full hover:bg-black/70 transition-colors"
               >
-                Also coming up · {calendarHint} ↓
+                Also available · {calendarHint} ↓
               </a>
             )}
           </div>
