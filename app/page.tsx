@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
 import { sportingEvents, experiences, sportingEventExperiences } from "@/schema/database";
-import { eq, and, gte, desc, asc, ne, sql, isNotNull } from "drizzle-orm";
+import { eq, and, gte, asc, ne, sql, isNotNull, inArray } from "drizzle-orm";
 import Link from "next/link";
 import Image from "next/image";
 import HomepageTripBoardCTA from "./_components/HomepageTripBoardCTA";
 import HomepageNav from "./_components/HomepageNav";
+import HeroCarousel, { type HeroEvent } from "./_components/HeroCarousel";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -51,11 +52,23 @@ const BUDGET_LABELS: Record<string, string> = {
   luxury: "Luxury",
 };
 
+// ── Edit these two slugs to control which events appear in the homepage carousel ──
+// Order matters: first slug = first slide. Max 2.
+const FEATURED_EVENTS = [
+  "wimbledon-2026",
+  "belgian-gp-2026",
+];
+
 const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: string; standard: string }> = {
   "wimbledon-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01",
     early: process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "£15",
     standard: process.env.NEXT_PUBLIC_STANDARD_PRICE_DISPLAY ?? "£25",
+  },
+  "belgian-gp-2026": {
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-10",
+    early: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_PRICE_DISPLAY ?? "£15",
+    standard: process.env.NEXT_PUBLIC_BELGIAN_GP_STANDARD_PRICE_DISPLAY ?? "£25",
   },
   "us-open-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_US_OPEN_EARLY_BIRD_CUTOFF ?? "2026-08-01",
@@ -111,58 +124,36 @@ export default async function HomePage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  // All events not yet ended, ordered by start date
+  // Fetch the two featured events by slug (in FEATURED_EVENTS order)
+  const featuredRows = await db
+    .select()
+    .from(sportingEvents)
+    .where(inArray(sportingEvents.slug, FEATURED_EVENTS));
+
+  // Preserve FEATURED_EVENTS order and filter out missing slugs
+  const featuredSorted = FEATURED_EVENTS
+    .map((slug) => featuredRows.find((e) => e.slug === slug))
+    .filter(Boolean) as typeof featuredRows;
+
+  // All upcoming events not in the featured set — for "On the calendar"
   const allUpcoming = await db
     .select()
     .from(sportingEvents)
     .where(gte(sportingEvents.endDate, today))
     .orderBy(asc(sportingEvents.startDate));
 
-  // Featured = soonest; calendar = rest within 120 days of start
-  const featured = allUpcoming[0] ?? null;
   const calendarEvents = allUpcoming
-    .slice(1)
-    .filter((e) => e.startDate <= in120Days);
+    .filter((e) => !FEATURED_EVENTS.includes(e.slug) && e.startDate <= in120Days);
 
-  // Fallback: if no upcoming events, show most recent past
-  let fallbackFeatured = null;
-  if (!featured) {
-    const [past] = await db
-      .select()
-      .from(sportingEvents)
-      .orderBy(desc(sportingEvents.endDate))
-      .limit(1);
-    fallbackFeatured = past ?? null;
-  }
-
-  const hero = featured ?? fallbackFeatured;
-
-  // Experience count + teasers for hero event
-  let totalCount = 0;
-  let teasers: {
-    id: string;
-    title: string;
-    subtitle: string | null;
-    slug: string;
-    heroImageUrl: string | null;
-    experienceType: string;
-    budgetTier: string | null;
-    neighborhood: string | null;
-  }[] = [];
-
-  if (hero) {
+  // Build HeroEvent data for each featured event
+  async function buildHeroEvent(ev: typeof featuredRows[number]): Promise<HeroEvent> {
     const [countRow] = await db
       .select({ count: sql<number>`count(*)` })
       .from(experiences)
-      .where(
-        and(
-          eq(experiences.sportingEventId, hero.id),
-          eq(experiences.status, "published")
-        )
-      );
-    totalCount = Number(countRow?.count ?? 0);
+      .where(and(eq(experiences.sportingEventId, ev.id), eq(experiences.status, "published")));
+    const totalCount = Number(countRow?.count ?? 0);
 
-    teasers = await db
+    const teasers = await db
       .select({
         id: experiences.id,
         title: experiences.title,
@@ -178,7 +169,7 @@ export default async function HomePage() {
         sportingEventExperiences,
         and(
           eq(sportingEventExperiences.experienceId, experiences.id),
-          eq(sportingEventExperiences.sportingEventId, hero.id)
+          eq(sportingEventExperiences.sportingEventId, ev.id)
         )
       )
       .where(
@@ -190,106 +181,36 @@ export default async function HomePage() {
       )
       .orderBy(asc(sportingEventExperiences.packRank))
       .limit(3);
+
+    const es = eventState(ev.startDate, ev.endDate);
+    return {
+      id: ev.id,
+      slug: ev.slug,
+      name: ev.name,
+      sport: ev.sport,
+      startDate: ev.startDate,
+      endDate: ev.endDate,
+      venueName: ev.venueName ?? null,
+      heroImageUrl: ev.heroImageUrl ?? null,
+      state: es.state,
+      toStart: es.toStart,
+      toEnd: es.toEnd,
+      priceDisplay: eventPriceDisplay(ev.slug),
+      earlyBird: earlyBirdNudge(ev.slug),
+      totalCount,
+      teasers,
+    };
   }
 
-  const heroState = hero ? eventState(hero.startDate, hero.endDate) : null;
-  const priceDisplay = hero ? eventPriceDisplay(hero.slug) : "";
-  const earlyBird = hero ? earlyBirdNudge(hero.slug) : { show: false, cutoffLabel: "", standardPrice: "" };
+  const heroEvents = await Promise.all(featuredSorted.map(buildHeroEvent));
+
+  const calendarHint = calendarEvents.map((e) => e.name).join(" · ");
 
   return (
     <main className="min-h-screen bg-white">
       <HomepageNav email={user?.email ?? null} showSearch />
 
-      {/* Hero — featured event */}
-      {hero && heroState && (
-        <div className="relative h-[62vh] min-h-[420px] overflow-hidden bg-neutral-900">
-          {hero.heroImageUrl && (
-            <Image
-              src={hero.heroImageUrl}
-              alt={hero.name}
-              fill
-              className="object-cover opacity-65"
-              sizes="100vw"
-              priority
-            />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
-
-          <div className="absolute bottom-0 left-0 right-0 px-6 sm:px-8 pb-10">
-            <div className="max-w-5xl mx-auto">
-              <div className="mb-3">
-                {heroState.state === "upcoming" && (
-                  <span className="inline-block text-xs font-semibold tracking-widest uppercase text-white bg-black/50 px-3 py-1 rounded-full">
-                    {SPORT_LABELS[hero.sport] ?? hero.sport} · Starts in {heroState.toStart} day{heroState.toStart !== 1 ? "s" : ""}
-                  </span>
-                )}
-                {heroState.state === "live" && (
-                  <span className="inline-block text-xs font-semibold tracking-widest uppercase text-emerald-400 bg-black/50 px-3 py-1 rounded-full">
-                    {SPORT_LABELS[hero.sport] ?? hero.sport} · Underway · {heroState.toEnd} day{heroState.toEnd !== 1 ? "s" : ""} remaining
-                  </span>
-                )}
-                {heroState.state === "past" && (
-                  <span className="inline-block text-xs font-semibold tracking-widest uppercase text-white/80 bg-black/50 px-3 py-1 rounded-full">
-                    {SPORT_LABELS[hero.sport] ?? hero.sport} · The guide
-                  </span>
-                )}
-              </div>
-
-              <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight tracking-tight max-w-2xl">
-                {hero.name}
-              </h1>
-              <p className="mt-2 text-white/60 text-sm">
-                {formatDateRange(hero.startDate, hero.endDate)}
-                {hero.slug === "india-in-england-cricket-2026"
-                  ? " · Birmingham · London · Nottingham · more"
-                  : hero.venueName ? ` · ${hero.venueName}` : ""}
-              </p>
-
-              <div className="mt-7 flex items-center gap-4 flex-wrap">
-                {(heroState.state === "upcoming" || heroState.state === "live") && (
-                  <Link
-                    href={`/event-pack/${hero.slug}`}
-                    className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-white text-neutral-900 text-sm font-semibold hover:bg-neutral-100 transition-colors"
-                  >
-                    Get the Event Pack
-                    <span className="text-neutral-400 font-normal">{priceDisplay}</span>
-                  </Link>
-                )}
-                {heroState.state === "past" && (
-                  <Link
-                    href={`/event-pack/${hero.slug}`}
-                    className="inline-flex items-center px-6 py-3 rounded-full bg-white text-neutral-900 text-sm font-semibold hover:bg-neutral-100 transition-colors"
-                  >
-                    Explore the guide
-                  </Link>
-                )}
-                {totalCount > 0 && (
-                  <span className="text-white/40 text-sm">
-                    {totalCount} curated experiences inside
-                  </span>
-                )}
-              </div>
-
-              {/* Early-bird deadline nudge */}
-              {earlyBird.show && heroState?.state === "upcoming" && (
-                <p className="mt-3 text-xs text-white/50">
-                  Early-bird price — rises to {earlyBird.standardPrice} after {earlyBird.cutoffLabel}
-                </p>
-              )}
-
-              {/* Calendar hint — only shown when there are other upcoming events */}
-              {calendarEvents.length > 0 && (
-                <a
-                  href="#on-the-calendar"
-                  className="mt-5 inline-block text-xs font-semibold tracking-widest uppercase text-white bg-black/50 px-3 py-1 rounded-full hover:bg-black/70 transition-colors"
-                >
-                  Also coming up · {calendarEvents.map((e) => e.name).join(" · ")} ↓
-                </a>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      <HeroCarousel events={heroEvents} calendarHint={calendarHint} />
 
       {/* Browse CTA — mobile only (desktop has search bar in nav) */}
       <div className="md:hidden max-w-5xl mx-auto px-4 pt-8 pb-0">
@@ -301,77 +222,7 @@ export default async function HomePage() {
         </Link>
       </div>
 
-      {/* Experience teasers for hero event */}
-      {teasers.length > 0 && hero && (
-        <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14">
-          <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-1">
-            A glimpse inside
-          </p>
-          <p className="text-sm text-neutral-500 mb-8">
-            A few of the experiences in the pack.
-          </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {teasers.map((exp) => (
-              <Link
-                key={exp.id}
-                href={`/experience/${exp.slug}`}
-                className="group rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors"
-              >
-                <div className="relative h-44 overflow-hidden bg-neutral-100">
-                  {exp.heroImageUrl ? (
-                    <Image
-                      src={exp.heroImageUrl}
-                      alt={exp.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-neutral-200" />
-                  )}
-                </div>
-                <div className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-semibold tracking-widest uppercase text-neutral-400">
-                      {TYPE_LABELS[exp.experienceType] ?? exp.experienceType}
-                    </span>
-                    {exp.budgetTier && (
-                      <span className="text-xs text-neutral-400">
-                        {BUDGET_LABELS[exp.budgetTier] ?? exp.budgetTier}
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="text-sm font-semibold text-neutral-900 leading-snug group-hover:text-neutral-600 transition-colors">
-                    {exp.title}
-                  </h3>
-                  {exp.subtitle && (
-                    <p className="mt-1 text-xs text-neutral-500 line-clamp-2 leading-5">
-                      {exp.subtitle}
-                    </p>
-                  )}
-                  {exp.neighborhood && (
-                    <p className="mt-2 text-xs text-neutral-400">
-                      {exp.neighborhood}
-                    </p>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
-          {totalCount > teasers.length && (
-            <div className="mt-6 text-center">
-              <Link
-                href={`/event-pack/${hero.slug}`}
-                className="text-sm text-neutral-400 hover:text-neutral-900 transition-colors underline underline-offset-2"
-              >
-                +{totalCount - teasers.length} more experiences in the full pack
-              </Link>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* On the calendar — other upcoming events within 120 days */}
+      {/* On the calendar — upcoming events not in the featured carousel */}
       {calendarEvents.length > 0 && (
         <div id="on-the-calendar" className="border-t border-neutral-100">
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14">
