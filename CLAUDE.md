@@ -3,7 +3,7 @@
 > **Next.js 16:** `params` is a `Promise` — always `await params` before accessing properties.
 > **Middleware:** Keep named `middleware.ts` — renaming breaks Turbopack cache. Wrap Supabase calls in try-catch.
 > **Experience lists:** Every event pack has a confirmed experience list saved in memory (`project_belgian_gp_experiences.md` etc.). At the start of any content session, read the relevant memory file and work strictly from that list — never propose, add, or swap experiences without user confirmation. If no memory file exists for an event, ask the user to confirm the full list before writing anything, then save it immediately.
-> **Content writing:** ALWAYS invoke the humanizer skill when writing any experience copy. Always output each field as a clearly labelled, copyable block in this order: Title, Subtitle, Body, Why it's special, Practical info (address, website, how to get there), How to Book / Access (public, short), How to Book Pro (Pro-gated, tactical detail — lead times, contacts), Worth knowing tip 1, Worth knowing tip 2, Avoid 1, Avoid 2, Hero image suggestion.
+> **Content writing:** Use the `experience-researcher` skill to research, write, humanize, and present experience copy; use `experience-seeder` to seed to DB. Always output each field as a clearly labelled, copyable block in this order: Title, Subtitle, Body, Why it's special, Practical info (address, website, how to get there), How to Book / Access (public, short), How to Book Pro (Pro-gated, tactical detail — lead times, contacts), Worth knowing tip 1, Worth knowing tip 2, Avoid 1, Avoid 2, Hero image (3 options — user chooses before seeding).
 > **Brand name:** "Experiences | Curated" — never "ExperiencesCurated". Title template: `"%s — Experiences | Curated"`.
 > **Nav auth state:** HomepageNav is a server component — pass `email` as prop from the page. Never use `useEffect` to read auth in navs (bfcache freezes client components on back-navigation).
 > **Magic links:** always redirect to `/auth/confirm?next=<path>` — never `/auth/callback`.
@@ -29,6 +29,8 @@ London destination:          75758888-28b9-4e09-82ba-f05681ecc904
 New York destination:        fb782de2-bbe6-410f-b466-2a4e628cda10
 Belgian Ardennes destination: 101b815a-ba64-4484-aad6-63721a44ed85
 Liverpool destination:       2bd85c65-fbf9-4888-a081-a6be0b48a225
+Liverpool, England dest:     263faaad-ceed-4355-acb7-9f2073cb1028
+Open Championship 2026 event: ccb585a6-3cdb-40ce-999e-a1d455854301
 India in England 2026 event: 2bab697d-9d2b-45ff-9b46-9fbfc3a0a40b
 Wimbledon 2026 event:        8bb7090e-1ec7-4c3f-b4e2-7fd6bf9942cf
 US Open 2026 event:          91f298a3-ca22-49c3-9c8e-5a200f0026c9
@@ -189,6 +191,9 @@ supabase.auth.admin.generateLink({
 - **Hero images — 3 options required:** Always present 3 CC-licensed image options before seeding. Never present fewer. Download to `Images/` folder with descriptive filename before running seed script.
 - **Radisson Blu Palace Hotel Spa → rebranded:** Now trades as Van der Valk Hotel Spa (Place Royale 39, Spa) from May 2024. Always verify hotel/venue trading name before writing.
 - **Belgian GP experiences:** All 15 published and packRanks set as of 15 Jun 2026. Hero images missing: Van der Valk Hotel Spa (email reception@valkspa.be), Fan Zone at Raidillon (f1media@f1.com or capture at race). Le Val d'Amblève hero image sourced by user — needs uploading to R2 and DB update.
+- **Open Championship experiences:** 9 of 15 seeded in_review as of 17 Jun 2026. Destination: Liverpool, England (263faaad-ceed-4355-acb7-9f2073cb1028). Event ID: ccb585a6-3cdb-40ce-999e-a1d455854301. Remaining: #10 The Vincent Hotel, #11 The Scarisbrick Hotel, #12 Bistrot Vérité, #13 The Pub Walk, #14 Lord Street & Southport Town, #15 Liverpool — 40 Minutes from Birkdale. Hero images outstanding: Hillside GC, The Links, The Dunes — email media@randa.org. PackView/page.tsx content blocks not yet wired. Dodo test price IDs in .env.local; live IDs (early bird pdt_0NhBDTdJDrNX32NMvvo0t, standard pdt_0NhBDN4jP7TDTnT8CElua) go into Vercel on go-live.
+- **R&A media contact:** media@randa.org (confirmed from theopen.com/media-centre). Use for Open Championship hero image requests (The Links, The Dunes, Hillside GC, Signature Hospitality, event pack hero). Do NOT use mediaenquiries@randa.org — that address was unverified.
+- **Hillside Golf Club green fees (2026):** £300 midweek / £335 weekends (summer). Third-party sites show outdated figures — always use official hillside-golfclub.co.uk.
 - **Homepage carousel:** 2-slide rotating HeroCarousel (`app/_components/HeroCarousel.tsx`). Featured events controlled via `/curator/events` (radio Slot 1/2). `homepage_slot` column on `sporting_events`. Pill pinned `top-8`, title `top-[15%]`, CTA/dots/hint `bottom-0`. Dot indicators: `flex-1 sm:flex-none` for 50-50 mobile / natural desktop split.
 
 ---

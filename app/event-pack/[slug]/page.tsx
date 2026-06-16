@@ -141,6 +141,28 @@ const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: strin
       description: "Edgbaston from New Street, Lord's from St John's Wood tube — transport strategy for both grounds",
     },
   ],
+  "open-championship-2026": [
+    {
+      label: "On the Course",
+      description: "The 18th grandstand, the dunes, The Links private zone, and the hospitality tiers — what each gives you at Royal Birkdale",
+    },
+    {
+      label: "Championship Week",
+      description: "Practice days through the final round — when to go, what changes each day, and how to make the most of a sold-out week",
+    },
+    {
+      label: "Where to Stay",
+      description: "Southport's Lord Street hotels, Birkdale village, and Liverpool for those who prefer a city base with the train connection",
+    },
+    {
+      label: "Where to Eat",
+      description: "Bistrot Vérité and the Birkdale village high street, plus the pub walk and Lord Street for post-match dinner",
+    },
+    {
+      label: "Getting There & Beyond",
+      description: "Merseyrail from Liverpool Central, the Southport connection, and Liverpool as a day trip 40 minutes from the gates",
+    },
+  ],
   "belgian-gp-2026": [
     {
       label: "At the Circuit",
@@ -232,6 +254,13 @@ const PACK_PRICING: Record<string, {
     earlyBirdDisplay: "€15",
     standardDisplay: "€25",
   },
+  "open-championship-2026": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_OPEN_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_OPEN_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_OPEN_EARLY_BIRD_CUTOFF ?? "2026-07-06",
+    earlyBirdDisplay: "£15",
+    standardDisplay: "£25",
+  },
 };
 
 function formatDateRange(startDate: string, endDate: string) {
@@ -261,6 +290,7 @@ export default async function EventPackPage({
   const PACK_TEASER_PICKS: Record<string, string[]> = {
     "wimbledon-2026": ["Centre Court", "Eating"],
     "us-open-2026": ["Night Sessions", "Arthur Ashe"],
+    "open-championship-2026": ["18th at Royal Birkdale", "Practice Day"],
   };
 
   // Teaser cards for the landing page — ordered by per-event picks
@@ -395,6 +425,11 @@ export default async function EventPackPage({
       earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_EARLY_BIRD ?? "",
       standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_STANDARD ?? "",
       earlyBirdCutoff: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-10",
+    },
+    "open-championship-2026": {
+      earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_OPEN_EARLY_BIRD ?? "",
+      standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_OPEN_STANDARD ?? "",
+      earlyBirdCutoff: process.env.NEXT_PUBLIC_OPEN_EARLY_BIRD_CUTOFF ?? "2026-07-06",
     },
   };
   const dodoPricing = DODO_PRICING[slug] ?? DODO_PRICING["wimbledon-2026"];
