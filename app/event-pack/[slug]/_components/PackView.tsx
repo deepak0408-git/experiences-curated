@@ -192,6 +192,36 @@ const PACK_EDITORIAL: Record<string, PackEditorial> = {
     ],
   },
 
+  "open-championship-2026": {
+    brief:
+      "The Open is four days in July on a links course in Southport that is simultaneously the most famous golf tournament in the world and one of the most accessible major sports events on the UK calendar. The championship field is the best in golf. The course is public. The dunes are free to climb. If you go once and do it right, it is one of the most purely enjoyable days in sport.\n\nThe event runs Thursday 16 to Sunday 19 July 2026 at Royal Birkdale Golf Club. The full sequence starts Sunday 12 July with the first practice day and builds across a week — Last-Chance Qualifier on Monday, the full field on Tuesday, the Heroes Classic on Wednesday, and then four championship days. General admission is the foundation: it unlocks the whole course, the Spectator Village, and everything in the dunes. The hospitality tiers — Ticket Plus at £270–300, Platinum from £1,632, Signature from £2,574 — layer on top for those who want a fixed base and a reserved seat.\n\nA few things to sort before you arrive. General admission championship days are sold out. Practice day tickets (Sunday through Wednesday, from £30) still have availability as of mid-June 2026. Transport is simple: Merseyrail Northern Line to Birkdale station, 40 minutes from Liverpool Central, 8 minutes' walk to the gates. Do not drive on championship days — road closures around Royal Birkdale are extensive and parking is hospitality-only. The sections here follow the shape of the trip: how to get there, what to do on the course, where to stay in Southport, where to eat in Birkdale village, and how the wider area fits a longer trip.",
+    sectionIntros: {
+      "Before you go":
+        "General admission championship day tickets are sold out across all four days. Practice day tickets remain — Sunday 12 July from £30, Wednesday 15 July around £75. Ticket Plus (£270–300) adds a private zone near the 4th green and a covered grandstand platform; it sells fast for Saturday and Sunday. Platinum and Signature hospitality (from £1,632) are available for Wednesday and selected championship days. Transport: Merseyrail Northern Line, Liverpool Central to Birkdale, 40 minutes, then an 8-minute walk. Book at theopen.com. The R&A Experience Team on +44 (0)1334 460090 can advise on availability not visible online.",
+      "On the grounds":
+        "Royal Birkdale runs in a figure-of-eight through sandhills. Each hole sits in its own dune corridor — self-contained, navigable, quieter than the grandstands suggest. The strategic question is whether to follow a group or commit to a specific hole. Most experienced Birkdale spectators do both: follow on the first walk, then settle at the 11th dune or the 18th grandstand once they've found their spots. General admission covers the whole course. The Links zone near the 4th is Ticket Plus only. Grandstands at the 2nd, 9th, and 18th are included in general admission; the 18th on Sunday fills early.",
+      "Where to stay":
+        "Southport is 2 miles from Royal Birkdale and the right base for the week. Lord Street — Southport's covered Victorian shopping street — has the town's best hotels within walking distance of cafés and restaurants. Birkdale village is quieter and closer to the gates. Liverpool is 40 minutes by train and worth considering if you want a city base and the commute is no inconvenience.",
+      "Where to eat":
+        "Birkdale village has the best eating in the immediate area. Bistrot Vérité is the standard-bearer — a neighbourhood bistro that punches well above its postcode. The village pubs handle the pre- and post-match crowd reliably during Open week. Lord Street in Southport town is the wider option for a sit-down dinner away from the tournament crowd.",
+      "The neighbourhood":
+        "Southport is a Victorian seaside town with a serious main street, a wide beach, and a pace that makes it a genuine rest-day destination. Liverpool is 40 minutes away and worth at least a day: the docks, the two cathedrals, Albert Dock, the food scene. The contrast between a morning in Liverpool and an afternoon at the world's oldest major is one of the stranger and better things you can do in British sport.",
+    },
+    localInfo: [
+      { label: "Address", value: "Waterloo Road, Southport PR8 2LX", href: "https://maps.google.com/?q=Royal+Birkdale+Golf+Club+Waterloo+Road+Southport+PR8+2LX", linkLabel: "Open in Maps" },
+      { label: "Official site", value: "theopen.com", href: "https://www.theopen.com", linkLabel: "Visit" },
+      { label: "Tickets", value: "Practice days still available from £30. Championship days sold out; hospitality via R&A Experience Team.", href: "https://www.theopen.com/tickets-and-hospitality/2026", linkLabel: "Book tickets" },
+      { label: "Best transport", value: "Merseyrail Northern Line, Liverpool Central → Birkdale (40 min). 8-min walk to gates. No driving on championship days.", href: "https://www.merseyrail.org/plan-your-journey/", linkLabel: "Plan journey" },
+      { label: "Gates open", value: "Championship days: 2 hrs before first tee. Practice days Sun 12–Wed 15 Jul from approx. 7:30am. Cashless payments only." },
+      { label: "What to bring", value: "Layers (14–24°C in July). Waterproof. Good walking shoes. Card only — no cash on site. No glass." },
+      { label: "Weather", value: "Mild to warm with sea breeze. Rain possible on any day.", href: "https://www.accuweather.com/en/gb/southport/pr8-5/weather-forecast/330516?type=locality", linkLabel: "AccuWeather forecast" },
+      { label: "Emergencies", value: "Emergency services: 999 · NHS urgent: 111 · Nearest A&E: Southport & Ormskirk Hospital, Town Lane, Southport PR8 6PN" },
+    ],
+    experienceOrder: {
+      "On the grounds": ["18th at Royal Birkdale", "Links", "Practice Day", "Dunes", "Signature", "Royal Birkdale Golf Club"],
+    },
+  },
+
   "belgian-gp-2026": {
     brief:
       "The Belgian Grand Prix is three days in the Ardennes forest, and the forest is the point. Circuit de Spa-Francorchamps is 7 kilometres of road that climbs and drops through trees, with corners named after the villages they pass through and a weather system that changes within the hour. It is the circuit most F1 drivers cite as their favourite, and after a lap in a road car you understand why — the elevation changes alone are unlike anything else on the calendar.\n\nThis pack is built around one idea: Spa is not a single experience. It is a circuit you roam. A Bronze general admission ticket unlocks most of it — the Kemmel Straight bank, the Pouhon mound, the Fan Zone at the base of Raidillon, and 7 kilometres of forest trackside. Grandstand tickets — Gold 3 at Raidillon, Silver 3 at Pouhon — give you a fixed seat and cover. The choice between them shapes what kind of weekend this is.\n\nA few things worth knowing before you arrive. July in the Ardennes is unpredictable — the same afternoon can run 28 degrees and then a downpour within the hour, and it matters when you're standing on a grassy bank. Day return shuttles run from 14 cities across Belgium and the Netherlands — sales close 26 June, so book early. Parking on-site on race Sunday takes two hours to clear. Plan your exit before race day. The sections here follow the shape of the weekend — what to do on each day, where to watch from, and how to make the most of a circuit that rewards movement over sitting still.",
@@ -350,6 +380,38 @@ const INSIDER_TIPS: Record<string, Record<string, string[]>> = {
       "If the Lord's match runs long, the day trip compresses naturally — Regent's Park and St John's Wood village alone fill a morning without rushing",
     ],
   },
+  "open-championship-2026": {
+    "18th at Royal Birkdale": [
+      "The grandstand at 18 fills from mid-morning on championship days — arrive at gate open if you want a front-row position without a reserved hospitality seat",
+      "The hole plays differently in the wind: a following breeze makes it reachable in two for the long hitters, a headwind makes it a genuine three-shot hole — ask the stewards which way it's playing when you arrive",
+      "Sunday afternoon: the crowd starts gathering at the 18th from around 1pm regardless of where the leaders are — if you want the atmosphere of the closing holes without being crushed, position yourself by 2pm at the latest",
+    ],
+    "Links — Festival Hub": [
+      "The Links zone is Ticket Plus only — your wristband is checked at the entrance near the 4th green; the grandstand platform inside gives you a fixed seat with a clear view of approach shots",
+      "The food trucks inside The Links are a separate offering from the main Spectator Village — worth using as your lunch base rather than queuing at the main village stalls",
+      "The covered grandstand platform at the 4th is the best shelter on the course if the weather turns — a useful fallback position on a wet championship day",
+    ],
+    "Practice Day": [
+      "The Last-Chance Qualifier on Monday 13 July: pick up the pairings sheet at the gate, choose a group near the bubble line, and follow them for the back nine — the tension on individual holes is unlike anything in the main championship",
+      "Tuesday's Heroes Classic runs alongside normal practice — check the R&A timetable on the day, as the Champions play a short stretch of holes and the schedule shifts around regular practice groups",
+      "Arrive at gates open on any practice day and walk straight to the 18th grandstand — you will have free choice of seating and a clear view of groups coming in; by mid-morning the good spots are gone",
+    ],
+    "Dunes — Walking": [
+      "The 11th hole dune gives a bird's-eye view of the green that no grandstand at Royal Birkdale matches — head there before the 10am groups arrive for the best position",
+      "Pick one group and follow it for nine holes rather than hopping between holes — you see the strategy develop across a stretch of the course, and on a busy day it's far less stressful than fighting through crowds at each hole",
+      "The 6th tee box gives simultaneous sightlines to the 5th green and the 6th tee — you can watch a hole finish and the next begin without moving; useful on a crowded afternoon when moving between holes is slow",
+    ],
+    "Signature Hospitality": [
+      "The Retreat at the 7th is best in the morning — by afternoon, Signature guests cluster at Clarets for the back-nine drama; use the morning to claim the best position at the 7th green before it fills",
+      "Your parking pass is valid from gates-open time — arriving two hours before first tee means easy parking and first choice of tables at breakfast in Dunes House",
+    ],
+    "Royal Birkdale Golf Club — Play": [
+      "Tee times book out months ahead — contact the club directly on +44 (0)1704 567920 or via royalbirkdale.com for the earliest available slots, as third-party tee time sites rarely have access to the full allocation",
+      "The course plays significantly differently from the spectator experience — the dune corridors that look wide from the dune tops are tight driving tests from the tee; ask the caddie master for a yardage book on arrival",
+      "If you're playing around Open week, the club hosts a ballot for non-member tee times in the weeks surrounding the championship — check royalbirkdale.com for the application window, which opens in the autumn before",
+    ],
+  },
+
   "belgian-gp-2026": {
     "Eau Rouge": [
       "Blocks B or C, rows 18–22 — fully under the roof, best angle down Raidillon, with a partial sightline to the Bus Stop Chicane across the circuit",
@@ -434,6 +496,41 @@ const TOURNAMENT_RHYTHM: Record<string, RhythmEntry[]> = {
     {
       label: "Finals weekend (Sat–Sun, Sep 12–13)",
       body: "Women's Final on Saturday Sep 12, Men's Final on Sunday Sep 13. The grounds become a proper street festival — Fan Fest, big screens, DJs in the secondary stadiums. Finals tickets are expensive and scarce; watching on screens in the park with 20,000 other people has its own thing going on. After the Men's trophy presentation, the tournament ends like a light switch. No gradual wind-down.",
+    },
+  ],
+
+  "open-championship-2026": [
+    {
+      label: "Sunday 12 Jul — First practice day",
+      body: "The quietest of the eight days. The Spectator Village opens, the course is free to roam, and the field hasn't arrived yet. Right for people who want to walk Royal Birkdale without a crowd — all 18 holes, at your own pace, with the infrastructure running but the pressure off. Wimbledon broadcasts on the big screens.",
+    },
+    {
+      label: "Monday 13 Jul — Last-Chance Qualifier",
+      body: "12 players compete for the final Open spot in a full-day strokeplay event. These are not household names, but the stakes are everything — one bad hole and it's over. Less well-known than the championship days and genuinely compelling. Follow a group from hole to hole; you can be front-row on any dune.",
+    },
+    {
+      label: "Tuesday 14 Jul — Full field + Heroes Classic",
+      body: "The busiest practice day and the one to book if you want maximum player access. The full 156-man field is on the course working pre-championship routines. The Heroes Classic runs simultaneously — past Champion Golfers in a fun-format challenge, relaxed and unguarded in a way you won't see during the tournament.",
+    },
+    {
+      label: "Wednesday 15 Jul — The Eve",
+      body: "Last session before the championship. Players are tighter, focused, working specific holes and specific shots. The warmth of Monday and Tuesday is gone; what you get instead is concentration. Best day for serious golf watchers who want to see how the field is approaching the course.",
+    },
+    {
+      label: "Thursday 16 Jul — Round 1",
+      body: "The best value championship day for course walkers. The dunes are quieter than Friday and Saturday, the full 156-man field is playing, and you can follow a group for nine holes without fighting through crowds at each hole. General admission is sold out but Ticket Plus may still have availability.",
+    },
+    {
+      label: "Friday 17 Jul — Round 2 (cut day)",
+      body: "The full field plays in the morning; the cut falls in the afternoon and the field thins. If you're inside the gates when the cut falls, you'll see the emotional range of the tournament in a single session — players making the cut celebrating, others walking off the 18th for the last time. The afternoon quiets considerably.",
+    },
+    {
+      label: "Saturday 18 Jul — Round 3",
+      body: "The busiest and loudest day of the championship. 70 players, real leaderboard drama, the grandstands full. The 18th fills early — if you don't have a reserved seat, commit to your dune position by mid-morning. The Signature grandstand seat earns its price on Saturday.",
+    },
+    {
+      label: "Sunday 19 Jul — Final round",
+      body: "The closing round. The 18th grandstand is claimed hours before the leaders arrive — standing positions go by early afternoon, reserved Signature seats are the only guarantee. The rest of the course empties relative to Saturday as everyone migrates toward the closing stretch. If you want to watch golf rather than a crowd, the 11th dune on Sunday morning is one of the better places to be.",
     },
   ],
 
