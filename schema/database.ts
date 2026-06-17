@@ -197,6 +197,7 @@ export const sportingEvents = pgTable("sporting_events", {
   preTripBriefLines: text("pre_trip_brief_lines").array(),
   preTripBriefUpdatedAt: timestamp("pre_trip_brief_updated_at"),
   homepageSlot: smallint("homepage_slot"),
+  isHidden: boolean("is_hidden").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 }, (t) => [

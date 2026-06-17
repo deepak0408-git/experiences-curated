@@ -122,7 +122,7 @@ export default async function HomePage() {
   const featuredRows = await db
     .select()
     .from(sportingEvents)
-    .where(isNotNull(sportingEvents.homepageSlot))
+    .where(and(isNotNull(sportingEvents.homepageSlot), eq(sportingEvents.isHidden, false)))
     .orderBy(asc(sportingEvents.homepageSlot));
 
   const featuredSorted = featuredRows.slice(0, 2);
