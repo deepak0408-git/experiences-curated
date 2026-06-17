@@ -235,6 +235,7 @@ export default async function ExperiencePage({
               slug.startsWith("pouhon-corner-silver3-") ? "object-[center_70%]" :
               slug.startsWith("fan-zone-raidillon-") ? "object-[center_80%]" :
               slug.startsWith("spa-francorchamps-track-experiences-") ? "object-[center_92%]" :
+              slug.startsWith("open-bold-hotel-") ? "object-top" :
               ""
             }`}
             sizes="100vw"
