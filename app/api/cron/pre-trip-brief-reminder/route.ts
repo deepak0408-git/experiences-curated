@@ -17,9 +17,9 @@ export async function GET(request: NextRequest) {
   }
 
   const now = new Date();
-  const tenDaysFromNow = new Date(now.getTime() + 10 * 24 * 60 * 60 * 1000);
+  const tenDaysFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
-  // Find events starting within 10 days that don't have a brief live yet
+  // Find events starting within 7 days that don't have a brief live yet
   // and haven't already had an approval token sent today
   const candidates = await db
     .select({
