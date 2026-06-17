@@ -239,6 +239,7 @@ export default async function ExperiencePage({
               slug.startsWith("open-pub-walk-birkdale-") ? "object-[center_60%]" :
               slug.startsWith("open-lord-street-southport-") ? "object-[center_70%]" :
               slug.startsWith("open-liverpool-day-trip-") ? "object-[center_35%]" :
+              slug.startsWith("open-vincent-hotel-") ? "object-[center_70%]" :
               ""
             }`}
             sizes="100vw"
