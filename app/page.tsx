@@ -136,7 +136,7 @@ export default async function HomePage() {
     .orderBy(asc(sportingEvents.startDate));
 
   const calendarEvents = allUpcoming
-    .filter((e) => !featuredIds.has(e.id) && e.startDate <= in120Days);
+    .filter((e) => !featuredIds.has(e.id) && e.startDate <= in120Days && !e.isHidden);
 
   // Build HeroEvent data for each featured event
   async function buildHeroEvent(ev: typeof featuredRows[number]): Promise<HeroEvent> {

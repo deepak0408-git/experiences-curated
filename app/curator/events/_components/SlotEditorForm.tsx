@@ -101,7 +101,7 @@ export default function SlotEditorForm({ events }: { events: Event[] }) {
               <th className="text-left px-4 py-3 text-xs font-semibold tracking-widest uppercase text-neutral-400">Event</th>
               <th className="text-left px-4 py-3 text-xs font-semibold tracking-widest uppercase text-neutral-400">Sport</th>
               <th className="text-left px-4 py-3 text-xs font-semibold tracking-widest uppercase text-neutral-400">Dates</th>
-              <th className="text-center px-4 py-3 text-xs font-semibold tracking-widest uppercase text-neutral-400">Homepage slot</th>
+              <th className="text-center px-4 py-3 text-xs font-semibold tracking-widest uppercase text-neutral-400 w-40">Homepage slot</th>
               <th className="text-center px-4 py-3 text-xs font-semibold tracking-widest uppercase text-neutral-400">Deactivate</th>
             </tr>
           </thead>
@@ -133,7 +133,7 @@ export default function SlotEditorForm({ events }: { events: Event[] }) {
                           className="accent-neutral-900"
                         />
                         <span className="text-xs text-neutral-600">
-                          {val === "" ? "—" : `Slot ${val}`}
+                          {val === "" ? "—" : val}
                         </span>
                       </label>
                     ))}
