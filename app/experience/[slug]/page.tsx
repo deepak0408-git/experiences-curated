@@ -236,6 +236,8 @@ export default async function ExperiencePage({
               slug.startsWith("fan-zone-raidillon-") ? "object-[center_80%]" :
               slug.startsWith("spa-francorchamps-track-experiences-") ? "object-[center_92%]" :
               slug.startsWith("open-bold-hotel-") ? "object-[center_40%]" :
+              slug.startsWith("open-pub-walk-birkdale-") ? "object-[center_60%]" :
+              slug.startsWith("open-lord-street-southport-") ? "object-[center_70%]" :
               ""
             }`}
             sizes="100vw"
@@ -418,15 +420,22 @@ export default async function ExperiencePage({
               {practical.website && (
                 <div className="flex gap-4">
                   <dt className="w-[30%] flex-shrink-0 text-sm font-medium text-neutral-500">Website</dt>
-                  <dd className="min-w-0 break-all">
-                    <a
-                      href={practical.website.match(/^https?:\/\//) ? practical.website : `https://${practical.website}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-neutral-900 underline hover:text-neutral-500 transition-colors"
-                    >
-                      {practical.website.replace(/^https?:\/\//, "")}
-                    </a>
+                  <dd className="min-w-0 break-all flex flex-col gap-1">
+                    {practical.website.split(",").map((url) => {
+                      const trimmed = url.trim();
+                      const href = trimmed.match(/^https?:\/\//) ? trimmed : `https://${trimmed}`;
+                      return (
+                        <a
+                          key={trimmed}
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-neutral-900 underline hover:text-neutral-500 transition-colors"
+                        >
+                          {trimmed.replace(/^https?:\/\//, "")}
+                        </a>
+                      );
+                    })}
                   </dd>
                 </div>
               )}
