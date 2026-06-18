@@ -85,7 +85,9 @@ export default function ExperienceViewGate({
           href={`/event-pack/${eventPackSlug}`}
           className="block w-full text-center px-6 py-3.5 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors mb-3"
         >
-          Get the full pack — {priceDisplay}
+          {priceDisplay === "Free"
+            ? "Get the full pack for free"
+            : `Get the full pack — ${priceDisplay}`}
         </Link>
 
         <Link
