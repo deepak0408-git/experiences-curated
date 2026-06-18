@@ -1081,7 +1081,7 @@ export default async function PackView({
       </div>
 
       {/* Pro upsell — non-Pro users only */}
-      {!isPro && (
+      {!isPro && !hideProCtas && (
         <div className="border-t border-neutral-100 bg-neutral-50">
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12">
             <div className="max-w-xl">
