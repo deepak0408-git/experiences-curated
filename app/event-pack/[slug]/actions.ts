@@ -11,10 +11,10 @@ export async function grantFreeAccess(email: string): Promise<void> {
     .values({
       email,
       sportingEventId: WIMBLEDON_EVENT_ID,
-      paddleOrderId: `FREE-${email}`,
+      paddleOrderId: `free-${email}`,
       paddleCustomerId: "free_access",
       paddlePriceId: "free",
-      priceTier: "standard",
+      priceTier: "early_bird",
       pricePaid: "0",
       currency: "GBP",
       status: "active",
