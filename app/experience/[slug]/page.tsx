@@ -115,9 +115,12 @@ export default async function ExperiencePage({
   const jsonLd = buildJsonLd(exp, ratingCount >= 3 ? { avgRating, ratingCount } : null);
 
   const isEarlyBird = new Date() < new Date(process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01");
-  const priceDisplay = isEarlyBird
-    ? (process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "£15")
-    : (process.env.NEXT_PUBLIC_STANDARD_PRICE_DISPLAY ?? "£25");
+  const wimbledonFree = process.env.WIMBLEDON_FREE_ACCESS === "true";
+  const priceDisplay = wimbledonFree
+    ? "Free"
+    : isEarlyBird
+      ? (process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "£15")
+      : (process.env.NEXT_PUBLIC_STANDARD_PRICE_DISPLAY ?? "£25");
 
   // Related experiences — same sporting event, or same destination as fallback
   const related = await db
