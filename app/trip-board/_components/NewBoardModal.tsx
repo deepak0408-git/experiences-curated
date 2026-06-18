@@ -7,9 +7,10 @@ import { createNewBoard } from "../actions";
 
 interface Props {
   onClose: () => void;
+  hideProCtas?: boolean;
 }
 
-export default function NewBoardModal({ onClose }: Props) {
+export default function NewBoardModal({ onClose, hideProCtas = false }: Props) {
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -50,7 +51,7 @@ export default function NewBoardModal({ onClose }: Props) {
           {error && (
             <div className="rounded-xl bg-neutral-50 border border-neutral-200 p-4">
               <p className="text-xs text-neutral-600 leading-5">{error}</p>
-              {error.includes("Pro") && (
+              {error.includes("Pro") && !hideProCtas && (
                 <Link href="/pro" className="mt-2 inline-block text-xs font-semibold text-neutral-900 underline underline-offset-2 hover:text-neutral-600 transition-colors">
                   See Pro plans →
                 </Link>

@@ -9,6 +9,8 @@ import { eq } from "drizzle-orm";
 import ProCheckout from "./_components/ProCheckout";
 import DodoProCheckout from "./_components/DodoProCheckout";
 import { ARCHETYPE_DETAILS } from "@/lib/quiz";
+import ProComingSoon from "./_components/ProComingSoon";
+import HomepageNav from "@/app/_components/HomepageNav";
 
 export const metadata: Metadata = {
   title: "Pro — Experiences | Curated",
@@ -27,6 +29,15 @@ const PRO_FEATURES = [
 export default async function ProPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+
+  if (process.env.HIDE_PRO === "true") {
+    return (
+      <>
+        <HomepageNav email={user?.email ?? null} />
+        <ProComingSoon userEmail={user?.email} />
+      </>
+    );
+  }
 
   const isPro = user?.email ? await hasProSubscription(user.email) : false;
 

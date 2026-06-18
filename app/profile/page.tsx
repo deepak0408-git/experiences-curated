@@ -214,7 +214,9 @@ export default async function ProfilePage() {
               ) : (
                 <div className="flex flex-col items-end gap-1">
                   <span className="inline-flex items-center text-xs font-medium text-neutral-500 bg-neutral-100 rounded-full px-2.5 py-1">Free</span>
-                  <Link href="/pro" className="text-xs font-semibold text-neutral-900 underline underline-offset-2 hover:text-neutral-600 transition-colors">Upgrade →</Link>
+                  {process.env.HIDE_PRO !== "true" && (
+                    <Link href="/pro" className="text-xs font-semibold text-neutral-900 underline underline-offset-2 hover:text-neutral-600 transition-colors">Upgrade →</Link>
+                  )}
                 </div>
               )}
             </div>
