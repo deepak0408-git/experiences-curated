@@ -12,6 +12,7 @@ import PackView from "./_components/PackView";
 import { hasProSubscription } from "@/lib/pro";
 import HomepageNav from "@/app/_components/HomepageNav";
 import LocalCurrencyHint from "./_components/LocalCurrencyHint";
+import { grantFreeAccess } from "./actions";
 
 export async function generateMetadata({
   params,
@@ -357,6 +358,13 @@ export default async function EventPackPage({
     hasPurchased = !!purchase;
   }
 
+  // Auto-grant free access for Wimbledon when WIMBLEDON_FREE_ACCESS=true
+  const freeAccessEnabled = process.env.WIMBLEDON_FREE_ACCESS === "true";
+  if (!hasPurchased && freeAccessEnabled && slug === "wimbledon-2026" && user?.email) {
+    await grantFreeAccess(user.email);
+    hasPurchased = true;
+  }
+
   const isPro = user?.email ? await hasProSubscription(user.email) : false;
 
   let archetype: string | null = null;
@@ -526,60 +534,83 @@ export default async function EventPackPage({
 
           {!isEventPast && (
             <aside className="mt-8 lg:mt-0">
-              <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-5 lg:sticky lg:top-6">
-                {isEarlyBird && pricing.earlyBirdDisplay !== pricing.standardDisplay && (
-                  <span className="inline-block px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold mb-3">
-                    Early bird
+              {freeAccessEnabled && slug === "wimbledon-2026" ? (
+                <div className="rounded-xl border border-green-200 bg-green-50 p-5 lg:sticky lg:top-6">
+                  <span className="inline-block px-2.5 py-0.5 rounded-full bg-green-100 text-green-800 text-xs font-semibold mb-3">
+                    Free until 24 June
                   </span>
-                )}
-                <p className="text-3xl font-bold text-neutral-900 tracking-tight">
-                  {priceDisplay}
-                  <LocalCurrencyHint gbpAmount={parseFloat(priceDisplay.replace(/[^0-9.]/g, ""))} />
-                </p>
-                {isEarlyBird && pricing.earlyBirdDisplay !== pricing.standardDisplay && (
-                  <p className="mt-0.5 text-xs text-neutral-400 mb-4">
-                    Rises to {pricing.standardDisplay} after{" "}
-                    {new Date(earlyBirdCutoff).toLocaleDateString("en-GB", {
-                      day: "numeric",
-                      month: "long",
-                    })}
+                  <p className="text-3xl font-bold text-neutral-900 tracking-tight mb-1">
+                    £0
                   </p>
-                )}
-                <p className="text-xs text-neutral-500 mb-4 mt-1">
-                  {totalCount > 0 ? `${totalCount} experiences` : "Curated experiences"} · one-time purchase
-                </p>
-                {paymentProvider === "dodo" ? (
-                  dodoProductId ? (
-                    <DodoCheckout
-                      productId={dodoProductId}
+                  <p className="text-xs text-neutral-500 mb-4">
+                    {totalCount > 0 ? `${totalCount} experiences` : "Curated experiences"} · free access, no card needed
+                  </p>
+                  <Link
+                    href={`/sign-in?next=/event-pack/${slug}`}
+                    className="w-full inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
+                  >
+                    Sign in for free access
+                  </Link>
+                  <p className="mt-3 text-xs text-neutral-400 text-center">
+                    Free access ends 24 June — no card required
+                  </p>
+                </div>
+              ) : (
+                <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-5 lg:sticky lg:top-6">
+                  {isEarlyBird && pricing.earlyBirdDisplay !== pricing.standardDisplay && (
+                    <span className="inline-block px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold mb-3">
+                      Early bird
+                    </span>
+                  )}
+                  <p className="text-3xl font-bold text-neutral-900 tracking-tight">
+                    {priceDisplay}
+                    <LocalCurrencyHint gbpAmount={parseFloat(priceDisplay.replace(/[^0-9.]/g, ""))} />
+                  </p>
+                  {isEarlyBird && pricing.earlyBirdDisplay !== pricing.standardDisplay && (
+                    <p className="mt-0.5 text-xs text-neutral-400 mb-4">
+                      Rises to {pricing.standardDisplay} after{" "}
+                      {new Date(earlyBirdCutoff).toLocaleDateString("en-GB", {
+                        day: "numeric",
+                        month: "long",
+                      })}
+                    </p>
+                  )}
+                  <p className="text-xs text-neutral-500 mb-4 mt-1">
+                    {totalCount > 0 ? `${totalCount} experiences` : "Curated experiences"} · one-time purchase
+                  </p>
+                  {paymentProvider === "dodo" ? (
+                    dodoProductId ? (
+                      <DodoCheckout
+                        productId={dodoProductId}
+                        sportingEventId={event.id}
+                        priceTier={isEarlyBird ? "early_bird" : "standard"}
+                        successUrl={user?.email
+                          ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}`
+                          : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
+                        buttonClassName="w-full inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
+                      />
+                    ) : (
+                      <p className="text-xs text-neutral-400">Checkout coming soon.</p>
+                    )
+                  ) : priceId ? (
+                    <PaddleCheckout
+                      priceId={priceId}
                       sportingEventId={event.id}
                       priceTier={isEarlyBird ? "early_bird" : "standard"}
+                      clientToken={process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN ?? ""}
                       successUrl={user?.email
                         ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}`
                         : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
+                      redirectDelay={user?.email ? 4000 : 2500}
+                      environment={paddleEnv}
+                      userEmail={user?.email ?? undefined}
                       buttonClassName="w-full inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
                     />
                   ) : (
                     <p className="text-xs text-neutral-400">Checkout coming soon.</p>
-                  )
-                ) : priceId ? (
-                  <PaddleCheckout
-                    priceId={priceId}
-                    sportingEventId={event.id}
-                    priceTier={isEarlyBird ? "early_bird" : "standard"}
-                    clientToken={process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN ?? ""}
-                    successUrl={user?.email
-                      ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}`
-                      : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
-                    redirectDelay={user?.email ? 4000 : 2500}
-                    environment={paddleEnv}
-                    userEmail={user?.email ?? undefined}
-                    buttonClassName="w-full inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
-                  />
-                ) : (
-                  <p className="text-xs text-neutral-400">Checkout coming soon.</p>
-                )}
-              </div>
+                  )}
+                </div>
+              )}
             </aside>
           )}
         </div>
@@ -689,7 +720,19 @@ export default async function EventPackPage({
               <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-5">
                 Ready to go?
               </p>
-              {paymentProvider === "dodo" ? (
+              {freeAccessEnabled && slug === "wimbledon-2026" ? (
+                <>
+                  <Link
+                    href={`/sign-in?next=/event-pack/${slug}`}
+                    className="w-full inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
+                  >
+                    Sign in for free access
+                  </Link>
+                  <p className="mt-5 text-xs text-neutral-400">
+                    Free until 24 June · no card required · instant access
+                  </p>
+                </>
+              ) : paymentProvider === "dodo" ? (
                 dodoProductId ? (
                   <DodoCheckout
                     productId={dodoProductId}
@@ -717,9 +760,11 @@ export default async function EventPackPage({
               ) : (
                 <p className="text-xs text-neutral-400">Checkout coming soon.</p>
               )}
-              <p className="mt-5 text-xs text-neutral-400">
-                {priceDisplay} · one-time · instant access
-              </p>
+              {!(freeAccessEnabled && slug === "wimbledon-2026") && (
+                <p className="mt-5 text-xs text-neutral-400">
+                  {priceDisplay} · one-time · instant access
+                </p>
+              )}
               <p className="mt-4 text-xs text-neutral-400">
                 Questions?{" "}
                 <a
