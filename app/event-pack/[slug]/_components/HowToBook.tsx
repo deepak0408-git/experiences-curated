@@ -31,6 +31,7 @@ function linkifyText(text: string) {
 
 export default function HowToBook({ howToBook, isPro, hideProCtas = false }: Props) {
   if (!isPro) {
+    if (hideProCtas) return null;
     return (
       <div className="mt-4 pt-3 border-t border-neutral-100">
         <p className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">
@@ -40,14 +41,12 @@ export default function HowToBook({ howToBook, isPro, hideProCtas = false }: Pro
           <p className="text-xs text-neutral-400 leading-5">
             Booking contacts and lead times for Pro subscribers.
           </p>
-          {!hideProCtas && (
-            <Link
-              href="/pro"
-              className="flex-shrink-0 px-3 py-1.5 rounded-full bg-neutral-900 text-white text-xs font-semibold hover:bg-neutral-700 transition-colors"
-            >
-              Unlock
-            </Link>
-          )}
+          <Link
+            href="/pro"
+            className="flex-shrink-0 px-3 py-1.5 rounded-full bg-neutral-900 text-white text-xs font-semibold hover:bg-neutral-700 transition-colors"
+          >
+            Unlock
+          </Link>
         </div>
       </div>
     );
