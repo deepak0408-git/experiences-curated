@@ -44,6 +44,7 @@ export default async function SearchPage({
       archetype={archetype}
       userEmail={user?.email ?? null}
       hideProCtas={process.env.HIDE_PRO === "true"}
+      wimbledonOnly={process.env.WIMBLEDON_FREE_ACCESS === "true"}
     />
   );
 }

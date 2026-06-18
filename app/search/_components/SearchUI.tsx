@@ -282,6 +282,7 @@ export function SearchUI({
   archetype,
   userEmail,
   hideProCtas = false,
+  wimbledonOnly = false,
 }: {
   appId: string;
   searchKey: string;
@@ -290,6 +291,7 @@ export function SearchUI({
   archetype?: string | null;
   userEmail?: string | null;
   hideProCtas?: boolean;
+  wimbledonOnly?: boolean;
 }) {
   const searchClient = useMemo(() => liteClient(appId, searchKey), [appId, searchKey]);
 
@@ -315,7 +317,11 @@ export function SearchUI({
       future={{ preserveSharedStateOnUnmount: true }}
       initialUiState={{ [indexName]: { query: initialQuery ?? "" } }}
     >
-      <Configure hitsPerPage={50} {...(optionalFilters.length > 0 ? { optionalFilters } : {})} />
+      <Configure
+        hitsPerPage={50}
+        {...(optionalFilters.length > 0 ? { optionalFilters } : {})}
+        {...(wimbledonOnly ? { filters: 'sport:"tennis" AND destinationId:"75758888-28b9-4e09-82ba-f05681ecc904"' } : {})}
+      />
 
       <div className="min-h-screen bg-white">
         {/* Mobile filter drawer */}
