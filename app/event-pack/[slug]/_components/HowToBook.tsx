@@ -6,6 +6,7 @@ interface Props {
   howToBook: string;
   isPro: boolean;
   eventSlug: string;
+  hideProCtas?: boolean;
 }
 
 function linkifyText(text: string) {
@@ -28,7 +29,7 @@ function linkifyText(text: string) {
   );
 }
 
-export default function HowToBook({ howToBook, isPro }: Props) {
+export default function HowToBook({ howToBook, isPro, hideProCtas = false }: Props) {
   if (!isPro) {
     return (
       <div className="mt-4 pt-3 border-t border-neutral-100">
@@ -39,12 +40,14 @@ export default function HowToBook({ howToBook, isPro }: Props) {
           <p className="text-xs text-neutral-400 leading-5">
             Booking contacts and lead times for Pro subscribers.
           </p>
-          <Link
-            href="/pro"
-            className="flex-shrink-0 px-3 py-1.5 rounded-full bg-neutral-900 text-white text-xs font-semibold hover:bg-neutral-700 transition-colors"
-          >
-            Unlock
-          </Link>
+          {!hideProCtas && (
+            <Link
+              href="/pro"
+              className="flex-shrink-0 px-3 py-1.5 rounded-full bg-neutral-900 text-white text-xs font-semibold hover:bg-neutral-700 transition-colors"
+            >
+              Unlock
+            </Link>
+          )}
         </div>
       </div>
     );

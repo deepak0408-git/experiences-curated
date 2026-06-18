@@ -588,6 +588,7 @@ export default async function PackView({
   endDate,
 }: PackViewProps) {
   const isEventPast = new Date() > new Date(endDate);
+  const hideProCtas = process.env.HIDE_PRO === "true";
   const editorial = PACK_EDITORIAL[eventSlug] ?? PACK_EDITORIAL["wimbledon-2026"];
   const sectionOrder = (archetype ? ARCHETYPE_SECTION_ORDER[archetype] : undefined) ?? SECTION_ORDER;
 
@@ -981,6 +982,7 @@ export default async function PackView({
                       howToBook={(section.editorsPick.practicalInfo as { howToBook: string }).howToBook}
                       isPro={isPro}
                       eventSlug={eventSlug}
+                      hideProCtas={hideProCtas}
                     />
                   )}
                   <div className="mt-4 pt-3 border-t border-neutral-100">
@@ -1063,6 +1065,7 @@ export default async function PackView({
                           howToBook={(exp.practicalInfo as { howToBook: string }).howToBook}
                           isPro={isPro}
                           eventSlug={eventSlug}
+                          hideProCtas={hideProCtas}
                         />
                       )}
                       <div className="mt-3 pt-2 border-t border-neutral-100">
@@ -1123,12 +1126,14 @@ export default async function PackView({
                   </div>
                 </div>
               </div>
-              <Link
-                href="/pro"
-                className="inline-flex items-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
-              >
-                Upgrade to Pro
-              </Link>
+              {!hideProCtas && (
+                <Link
+                  href="/pro"
+                  className="inline-flex items-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
+                >
+                  Upgrade to Pro
+                </Link>
+              )}
             </div>
           </div>
         </div>

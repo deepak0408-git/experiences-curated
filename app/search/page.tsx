@@ -43,6 +43,7 @@ export default async function SearchPage({
       initialQuery={q ?? ""}
       archetype={archetype}
       userEmail={user?.email ?? null}
+      hideProCtas={process.env.HIDE_PRO === "true"}
     />
   );
 }

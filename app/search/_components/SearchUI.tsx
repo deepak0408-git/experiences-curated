@@ -281,6 +281,7 @@ export function SearchUI({
   initialQuery = "",
   archetype,
   userEmail,
+  hideProCtas = false,
 }: {
   appId: string;
   searchKey: string;
@@ -288,6 +289,7 @@ export function SearchUI({
   initialQuery?: string;
   archetype?: string | null;
   userEmail?: string | null;
+  hideProCtas?: boolean;
 }) {
   const searchClient = useMemo(() => liteClient(appId, searchKey), [appId, searchKey]);
 
@@ -352,11 +354,13 @@ export function SearchUI({
             />
             <div className="flex-1 md:hidden" />
             <MobileFilterButton onOpen={() => setFilterOpen(true)} />
-            <span className="text-xs text-neutral-400 whitespace-nowrap flex-shrink-0 hidden sm:flex items-center gap-1 ml-auto">
-              Free users get 3 reads.{" "}
-              <Link href="/pro" className="font-semibold underline underline-offset-2 text-neutral-600 hover:text-neutral-900 transition-colors">Pro</Link>{" "}
-              is unlimited.
-            </span>
+            {!hideProCtas && (
+              <span className="text-xs text-neutral-400 whitespace-nowrap flex-shrink-0 hidden sm:flex items-center gap-1 ml-auto">
+                Free users get 3 reads.{" "}
+                <Link href="/pro" className="font-semibold underline underline-offset-2 text-neutral-600 hover:text-neutral-900 transition-colors">Pro</Link>{" "}
+                is unlimited.
+              </span>
+            )}
             {userEmail && (
               <Link
                 href="/profile"
@@ -421,13 +425,15 @@ export function SearchUI({
           {/* Results */}
           <main className="flex-1 min-w-0">
             <HitsOrEmpty />
-            <div className="mt-12 pt-8 border-t border-neutral-100">
-              <p className="text-xs text-neutral-400 leading-6">
-                Free accounts include 3 experience reads.{" "}
-                <Link href="/pro" className="font-semibold text-neutral-600 hover:text-neutral-900 transition-colors underline underline-offset-2">Pro</Link>{" "}
-                unlocks unlimited reads, plus booking contacts for concierge picks and sell-out reminders.
-              </p>
-            </div>
+            {!hideProCtas && (
+              <div className="mt-12 pt-8 border-t border-neutral-100">
+                <p className="text-xs text-neutral-400 leading-6">
+                  Free accounts include 3 experience reads.{" "}
+                  <Link href="/pro" className="font-semibold text-neutral-600 hover:text-neutral-900 transition-colors underline underline-offset-2">Pro</Link>{" "}
+                  unlocks unlimited reads, plus booking contacts for concierge picks and sell-out reminders.
+                </p>
+              </div>
+            )}
           </main>
         </div>
       </div>

@@ -65,9 +65,10 @@ interface Props {
   activeBoardId: string;
   dbUserId: string;
   upcomingEvents: UpcomingEvent[];
+  hideProCtas?: boolean;
 }
 
-export default function TripBoardPlanner({ initialItems, userId, userEmail, isPro, boards, activeBoardId, upcomingEvents }: Props) {
+export default function TripBoardPlanner({ initialItems, userId, userEmail, isPro, boards, activeBoardId, upcomingEvents, hideProCtas = false }: Props) {
   const [items, setItems] = useState<PlannerItem[]>(initialItems);
   const [showNewBoard, setShowNewBoard] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -439,7 +440,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
         </div>
       )}
 
-      {showNewBoard && <NewBoardModal onClose={() => setShowNewBoard(false)} />}
+      {showNewBoard && <NewBoardModal onClose={() => setShowNewBoard(false)} hideProCtas={hideProCtas} />}
     </div>
   );
 }

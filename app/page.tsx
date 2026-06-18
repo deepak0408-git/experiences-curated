@@ -351,12 +351,14 @@ export default async function HomePage() {
                 </li>
               ))}
             </ul>
-            <p className="mt-6 text-xs text-neutral-400">
-              Want booking contacts and unlimited Trip Boards?{" "}
-              <Link href="/pro" className="underline underline-offset-2 hover:text-neutral-700 transition-colors">
-                See Pro →
-              </Link>
-            </p>
+            {process.env.HIDE_PRO !== "true" && (
+              <p className="mt-6 text-xs text-neutral-400">
+                Want booking contacts and unlimited Trip Boards?{" "}
+                <Link href="/pro" className="underline underline-offset-2 hover:text-neutral-700 transition-colors">
+                  See Pro →
+                </Link>
+              </p>
+            )}
           </div>
           <div className="mt-10 lg:mt-0">
             <HomepageTripBoardCTA isSignedIn={!!user} />

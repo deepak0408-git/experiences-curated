@@ -132,6 +132,7 @@ export default async function TripBoardPage({
       activeBoardId={activeBoardId}
       dbUserId={dbUser.id}
       upcomingEvents={upcomingEvents}
+      hideProCtas={process.env.HIDE_PRO === "true"}
     />
   );
 }

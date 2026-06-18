@@ -76,18 +76,20 @@ export default function WelcomePage() {
               </button>
             </form>
 
-            <div className="mt-8 pt-7 border-t border-neutral-100 text-left">
-              <p className="text-xs font-semibold text-neutral-500 mb-1">Get more from your pack</p>
-              <p className="text-xs text-neutral-400 leading-5 mb-3">
-                Pro adds booking contacts for the concierge picks, sell-out reminders, and unlimited trip boards.
-              </p>
-              <a
-                href="/pro"
-                className="inline-block text-xs font-semibold text-neutral-900 underline underline-offset-2 hover:text-neutral-600 transition-colors"
-              >
-                See what's in Pro →
-              </a>
-            </div>
+            {process.env.HIDE_PRO !== "true" && (
+              <div className="mt-8 pt-7 border-t border-neutral-100 text-left">
+                <p className="text-xs font-semibold text-neutral-500 mb-1">Get more from your pack</p>
+                <p className="text-xs text-neutral-400 leading-5 mb-3">
+                  Pro adds booking contacts for the concierge picks, sell-out reminders, and unlimited trip boards.
+                </p>
+                <a
+                  href="/pro"
+                  className="inline-block text-xs font-semibold text-neutral-900 underline underline-offset-2 hover:text-neutral-600 transition-colors"
+                >
+                  See what's in Pro →
+                </a>
+              </div>
+            )}
 
             <p className="mt-6 text-xs text-neutral-400">
               Questions?{" "}
