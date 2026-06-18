@@ -178,8 +178,8 @@ export default function HeroCarousel({
                   href={`/event-pack/${ev.slug}`}
                   className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-white text-neutral-900 text-sm font-semibold hover:bg-neutral-100 transition-colors"
                 >
-                  Get the Event Pack
-                  <span className="text-neutral-400 font-normal">{ev.priceDisplay}</span>
+                  {ev.priceDisplay === "Free" ? "Get free access" : "Get the Event Pack"}
+                  {ev.priceDisplay !== "Free" && <span className="text-neutral-400 font-normal">{ev.priceDisplay}</span>}
                 </Link>
               )}
               {ev.state === "past" && (
@@ -190,7 +190,7 @@ export default function HeroCarousel({
                   Explore the guide
                 </Link>
               )}
-              {ev.earlyBird.show && ev.state === "upcoming" && (
+              {ev.earlyBird.show && ev.state === "upcoming" && ev.priceDisplay !== "Free" && (
                 <p className="text-xs text-white/50">
                   Early-bird price — rises to {ev.earlyBird.standardPrice} after {ev.earlyBird.cutoffLabel}
                 </p>
