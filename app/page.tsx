@@ -181,7 +181,7 @@ export default async function HomePage() {
       <div className="md:hidden max-w-5xl mx-auto px-4 pt-8 pb-0">
         <Link
           href="/search"
-          className="inline-flex items-center px-5 py-2.5 rounded-full border border-violet-300 text-violet-700 text-sm font-medium hover:border-violet-500 hover:bg-violet-50 transition-colors"
+          className="inline-flex items-center px-5 py-2.5 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-sm font-black tracking-wide hover:bg-[#AAFF00] hover:text-black transition-colors"
         >
           Browse all experiences
         </Link>
@@ -189,12 +189,12 @@ export default async function HomePage() {
 
       {/* Zone 3 — On the calendar */}
       {calendarEvents.length > 0 && (
-        <div id="on-the-calendar" className="border-t border-neutral-100">
+        <div id="on-the-calendar" className="border-t border-[#2A2A2A] bg-[#0A0A0A]">
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14">
-            <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-1">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-1">
               On the calendar
             </p>
-            <p className="text-sm text-neutral-500 mb-8">
+            <p className="text-sm text-[#A3A3A3] mb-8">
               Event packs available now — buy once, keep forever.
             </p>
             <div className="flex flex-col gap-6">
@@ -211,10 +211,10 @@ export default async function HomePage() {
                   <Link
                     key={ev.id}
                     href={`/event-pack/${ev.slug}`}
-                    className="group relative flex flex-col sm:flex-row rounded-2xl overflow-hidden border border-neutral-200 hover:border-violet-400 hover:shadow-lg hover:shadow-violet-100 transition-all duration-200"
+                    className="group relative flex flex-col sm:flex-row rounded-sm overflow-hidden border border-[#2A2A2A] bg-[#141414] hover:border-[#AAFF00] transition-all duration-200"
                   >
                     {/* Image — taller, more dominant */}
-                    <div className="relative h-52 sm:h-auto sm:w-80 sm:flex-shrink-0 overflow-hidden bg-neutral-100">
+                    <div className="relative h-52 sm:h-auto sm:w-80 sm:flex-shrink-0 overflow-hidden bg-[#1A1A1A]">
                       {ev.heroImageUrl ? (
                         <Image
                           src={ev.heroImageUrl}
@@ -228,8 +228,8 @@ export default async function HomePage() {
                       )}
                       {/* Live badge over image */}
                       {es.state === "live" && (
-                        <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-emerald-500 text-white text-xs font-semibold">
-                          Live now
+                        <span className="absolute top-3 left-3 px-2.5 py-1 rounded-sm bg-[#AAFF00] text-black text-xs font-black tracking-wide">
+                          LIVE NOW
                         </span>
                       )}
                     </div>
@@ -239,37 +239,37 @@ export default async function HomePage() {
                       <div>
                         {/* Sport + countdown */}
                         <div className="flex items-center gap-2 mb-3">
-                          <span className="text-xs font-bold tracking-widest uppercase text-neutral-400">
+                          <span className="text-xs font-black tracking-widest uppercase text-[#AAFF00]">
                             {SPORT_LABELS[ev.sport] ?? ev.sport}
                           </span>
                           {es.state === "upcoming" && (
-                            <span className="text-xs text-neutral-400">
+                            <span className="text-xs text-[#A3A3A3]">
                               · {es.toStart} day{es.toStart !== 1 ? "s" : ""} away
                             </span>
                           )}
                         </div>
 
                         {/* Event name */}
-                        <h3 className="text-xl font-bold text-neutral-900 leading-snug group-hover:text-neutral-600 transition-colors">
+                        <h3 className="text-xl font-black text-white leading-snug group-hover:text-[#AAFF00] transition-colors">
                           {ev.name}
                         </h3>
 
                         {/* Date + venue */}
-                        <p className="mt-1.5 text-sm text-neutral-500">
+                        <p className="mt-1.5 text-sm text-[#A3A3A3]">
                           {formatDateRange(ev.startDate, ev.endDate)}
-                          {venue && <span className="text-neutral-400"> · {venue}</span>}
+                          {venue && <span className="text-[#6A6A6A]"> · {venue}</span>}
                         </p>
 
                         {/* Experience count */}
                         {expCount > 0 && (
-                          <p className="mt-3 text-xs text-neutral-400">
-                            <span className="text-neutral-700 font-semibold">{expCount} hand-researched experiences</span> inside this pack
+                          <p className="mt-3 text-xs text-[#A3A3A3]">
+                            <span className="text-white font-black">{expCount} hand-researched experiences</span> inside this pack
                           </p>
                         )}
 
                         {/* Early bird nudge */}
                         {nudge.show && (
-                          <p className="mt-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-full inline-block px-3 py-1">
+                          <p className="mt-2 text-xs text-[#AAFF00] border border-[#AAFF00]/30 rounded-sm inline-block px-3 py-1 font-mono">
                             Early bird {price} — rises to {nudge.standardPrice} after {nudge.cutoffLabel}
                           </p>
                         )}
@@ -277,21 +277,21 @@ export default async function HomePage() {
 
                       {/* CTA */}
                       <div className="mt-5">
-                        <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-violet-600 text-white text-sm font-semibold group-hover:bg-violet-500 transition-colors whitespace-nowrap">
+                        <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm bg-[#AAFF00] text-black text-sm font-black tracking-wide group-hover:bg-[#BBFF33] transition-colors whitespace-nowrap">
                           Get the pack
-                          <span className="text-violet-200 font-normal">{price}</span>
+                          <span className="text-black/50 font-black">{price}</span>
                         </span>
                       </div>
 
                       {/* Glimpse — text-only panel */}
                       {glimpse.length > 0 && (
-                        <div className="mt-5 pt-4 border-t border-violet-100 bg-violet-50 rounded-lg px-4 py-3">
-                          <p className="text-xs font-semibold text-violet-400 uppercase tracking-widest leading-tight">A taste of what&apos;s inside</p>
+                        <div className="mt-5 pt-4 border-t border-[#2A2A2A] bg-[#1A1A1A] rounded-sm px-4 py-3">
+                          <p className="text-xs font-black text-[#AAFF00] uppercase tracking-widest leading-tight font-mono">A taste of what&apos;s inside</p>
                           <ul className="mt-2 space-y-1.5">
                             {glimpse.map((exp) => (
                               <li key={exp.id} className="flex items-start gap-1.5 min-w-0">
-                                <span className="text-violet-300 text-xs mt-0.5 flex-shrink-0">✦</span>
-                                <span className="text-xs leading-tight truncate text-neutral-600">
+                                <span className="text-[#AAFF00] text-xs mt-0.5 flex-shrink-0">›</span>
+                                <span className="text-xs leading-tight truncate text-[#A3A3A3]">
                                   {exp.title}
                                 </span>
                               </li>
@@ -311,13 +311,13 @@ export default async function HomePage() {
       <SportNavigator />
 
       {/* Editorial statement — Why us */}
-      <div className="border-t border-violet-100 bg-violet-50 scroll-fade">
+      <div className="border-t border-[#2A2A2A] bg-[#141414] scroll-fade">
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14 lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
           <div>
-            <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-4">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-4">
               Why Experiences | Curated
             </p>
-            <p className="text-2xl font-bold text-neutral-900 leading-snug">
+            <p className="text-2xl font-black text-white leading-snug">
               An expert guide. Not a search engine. Not a booking platform.
             </p>
             <div className="mt-8 space-y-4">
@@ -339,18 +339,18 @@ export default async function HomePage() {
                 },
               ].map((item) => (
                 <div key={item.heading} className="flex gap-4">
-                  <span className="text-violet-500 mt-0.5 flex-shrink-0 text-lg leading-none">{item.icon}</span>
+                  <span className="text-[#AAFF00] mt-0.5 flex-shrink-0 text-lg leading-none">{item.icon}</span>
                   <div>
-                    <p className="text-sm font-semibold text-neutral-900">{item.heading}</p>
-                    <p className="mt-1 text-sm text-neutral-600 leading-6">{item.body}</p>
+                    <p className="text-sm font-black text-white">{item.heading}</p>
+                    <p className="mt-1 text-sm text-[#A3A3A3] leading-6">{item.body}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
           <div className="mt-10 lg:mt-0 lg:pl-8">
-            <div className="rounded-2xl bg-white border border-neutral-200 p-6 shadow-sm">
-              <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-3">
+            <div className="rounded-sm bg-[#1A1A1A] border border-[#2A2A2A] p-6">
+              <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3 font-mono">
                 What&apos;s in an event pack
               </p>
               {[
@@ -361,9 +361,9 @@ export default async function HomePage() {
                 "Getting there — shuttles, parking, timing",
                 "Pre-trip brief sent 7 days before kick-off",
               ].map((point) => (
-                <div key={point} className="flex items-start gap-2.5 py-2 border-b border-neutral-100 last:border-0">
-                  <span className="w-4 h-4 rounded-full bg-violet-100 text-violet-700 text-xs flex items-center justify-center flex-shrink-0 mt-0.5 font-bold">✓</span>
-                  <span className="text-sm text-neutral-700">{point}</span>
+                <div key={point} className="flex items-start gap-2.5 py-2 border-b border-[#2A2A2A] last:border-0">
+                  <span className="text-[#AAFF00] text-sm flex-shrink-0 mt-0.5 font-black">✓</span>
+                  <span className="text-sm text-[#A3A3A3]">{point}</span>
                 </div>
               ))}
             </div>
@@ -372,16 +372,16 @@ export default async function HomePage() {
       </div>
 
       {/* Trip board CTA */}
-      <div id="get-started" className="border-t border-neutral-100 scroll-fade">
+      <div id="get-started" className="border-t border-[#2A2A2A] bg-[#0A0A0A] scroll-fade">
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14 lg:grid lg:grid-cols-2 lg:gap-16 lg:items-start">
           <div>
-            <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-4">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-4">
               Your trip, your way
             </p>
-            <h2 className="text-2xl font-bold text-neutral-900 leading-snug">
+            <h2 className="text-2xl font-black text-white leading-snug">
               Save what catches your eye. Build a Trip Board. Show up ready.
             </h2>
-            <p className="mt-4 text-sm text-neutral-600 leading-7">
+            <p className="mt-4 text-sm text-[#A3A3A3] leading-7">
               Browse an event pack, save the experiences that fit your trip,
               and arrange them into a day-by-day itinerary. Share it with
               anyone travelling with you — no app download needed.
@@ -392,16 +392,16 @@ export default async function HomePage() {
                 "Arrange into days — morning, afternoon, evening",
                 "Share your board with travel companions",
               ].map((point) => (
-                <li key={point} className="flex items-center gap-2.5 text-sm text-neutral-600">
-                  <span className="w-1.5 h-1.5 rounded-full bg-violet-400 flex-shrink-0" />
+                <li key={point} className="flex items-center gap-2.5 text-sm text-[#A3A3A3]">
+                  <span className="text-[#AAFF00] font-black flex-shrink-0">›</span>
                   {point}
                 </li>
               ))}
             </ul>
             {process.env.HIDE_PRO !== "true" && (
-              <p className="mt-6 text-xs text-neutral-400">
+              <p className="mt-6 text-xs text-[#6A6A6A]">
                 Want booking contacts and unlimited Trip Boards?{" "}
-                <Link href="/pro" className="underline underline-offset-2 text-violet-600 hover:text-violet-800 transition-colors">
+                <Link href="/pro" className="text-[#AAFF00] hover:underline underline-offset-2 transition-colors">
                   See Pro →
                 </Link>
               </p>
