@@ -81,29 +81,29 @@ export default function BrandHero({
       ))}
 
       {/* Dark overlay — heavier at bottom-left for text legibility */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
-      <div className="absolute inset-0 bg-gradient-to-r from-violet-900/60 via-black/20 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/20 to-transparent" />
 
-      {/* Content — bottom-left, exactly like Headout */}
+      {/* Content — bottom-left */}
       <div className="absolute bottom-0 left-0 right-0 px-6 sm:px-10 pb-14 sm:pb-16">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-4xl sm:text-6xl font-bold text-white leading-tight tracking-tight max-w-2xl">
+          <h1 className="text-4xl sm:text-6xl font-black text-white leading-tight tracking-tight max-w-2xl">
             Insider travel guides for the world&apos;s greatest sporting events
           </h1>
-          <p className="mt-4 text-base sm:text-lg text-white/70 max-w-xl leading-relaxed">
+          <p className="mt-4 text-base sm:text-lg text-white/60 max-w-xl leading-relaxed font-light">
             Guides built around the event, not just the city. Save and plan what fits your trip. Show up ready.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
               href={`/event-pack/${primaryEventSlug}`}
-              className="inline-flex items-center px-7 py-3.5 rounded-full bg-violet-600 text-white text-sm font-semibold hover:bg-violet-500 transition-colors"
+              className="inline-flex items-center px-7 py-3.5 rounded-sm bg-[#AAFF00] text-black text-sm font-black tracking-wide hover:bg-[#BBFF33] transition-colors"
             >
               {primaryEventFree ? `Get free access — ${primaryEventName} pack` : `Explore — ${primaryEventName}`} →
             </Link>
             <a
               href={hasCalendarEvents ? "#on-the-calendar" : "/search"}
-              className="text-sm text-white/70 hover:text-white transition-colors underline underline-offset-4"
+              className="text-sm text-white/50 hover:text-[#AAFF00] transition-colors"
             >
               See all events ↓
             </a>

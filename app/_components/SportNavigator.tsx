@@ -41,12 +41,12 @@ const SPORTS = [
 
 export default function SportNavigator() {
   return (
-    <section className="border-t border-neutral-100">
+    <section className="border-t border-[#2A2A2A] bg-[#0A0A0A]">
       <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14">
-        <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-1">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-1">
           Browse by sport
         </p>
-        <p className="text-sm text-neutral-500 mb-8">
+        <p className="text-sm text-[#A3A3A3] mb-8">
           Find experiences for the events you follow.
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
@@ -54,7 +54,7 @@ export default function SportNavigator() {
             <Link
               key={sport.label}
               href={sport.href}
-              className="group relative overflow-hidden rounded-xl aspect-[3/4] sm:aspect-square block"
+              className="group relative overflow-hidden rounded-sm aspect-[3/4] sm:aspect-square block border border-[#2A2A2A] hover:border-[#AAFF00] transition-colors duration-300"
             >
               <div className="absolute inset-0 overflow-hidden">
                 <Image
@@ -66,9 +66,9 @@ export default function SportNavigator() {
                 />
               </div>
               {/* Dark gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-violet-900/80 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
               {/* Label */}
-              <span className="absolute bottom-3 left-3 right-3 text-white text-sm font-semibold leading-tight">
+              <span className="absolute bottom-3 left-3 right-3 text-[#AAFF00] text-sm font-black tracking-wide leading-tight group-hover:text-white transition-colors">
                 {sport.label}
               </span>
             </Link>
