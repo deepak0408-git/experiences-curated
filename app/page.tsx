@@ -117,7 +117,7 @@ export default async function HomePage() {
     .orderBy(asc(sportingEvents.startDate));
 
   const calendarEvents = allUpcoming
-    .filter((e) => !featuredIds.has(e.id) && e.startDate <= in120Days && !e.isHidden);
+    .filter((e) => e.startDate <= in120Days && !e.isHidden);
 
   // Experience counts per event for calendar cards
   const expCounts = await db
