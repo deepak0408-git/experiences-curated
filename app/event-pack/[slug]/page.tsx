@@ -531,7 +531,10 @@ export default async function EventPackPage({
               </p>
             )}
             <p className="mt-4 text-sm text-neutral-500 leading-7">
-              Think of it as your insider briefing for the event. Read the guide, save the experiences that suit you, and arrive knowing exactly what you&apos;re doing and when.
+              Every experience in this pack has been researched by someone who has attended the event — fan experiences at the venue, where to stay, where to eat, how to get there, and insider tips you won&apos;t find on a search engine. No filler, no paid placements — just the picks that are genuinely worth your time.
+            </p>
+            <p className="mt-3 text-sm text-neutral-500 leading-7">
+              Think of this pack as your insider briefing for the event. Read the guide, save the experiences that suit you, and arrive knowing exactly what you&apos;re doing and when.
             </p>
           </div>
 
