@@ -30,13 +30,6 @@ const SPORTS = [
       "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sports/cricket-v2.jpg",
     kenburns: "kenburns-1",
   },
-  {
-    label: "Cycling",
-    href: "/search?sport=cycling",
-    imageUrl:
-      "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sports/cycling-v2.jpg",
-    kenburns: "kenburns-2",
-  },
 ];
 
 export default function SportNavigator() {
