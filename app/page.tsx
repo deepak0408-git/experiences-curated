@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
-import { sportingEvents, experiences, sportingEventExperiences } from "@/schema/database";
-import { eq, and, gte, asc, ne, sql, isNotNull } from "drizzle-orm";
+import { sportingEvents } from "@/schema/database";
+import { eq, and, gte, asc, isNotNull } from "drizzle-orm";
 import Link from "next/link";
 import Image from "next/image";
 import HomepageTripBoardCTA from "./_components/HomepageTripBoardCTA";
 import HomepageNav from "./_components/HomepageNav";
-import HeroCarousel, { type HeroEvent } from "./_components/HeroCarousel";
 import IdentityStrip from "./_components/IdentityStrip";
 import SportNavigator from "./_components/SportNavigator";
 import ScrollFadeInit from "./_components/ScrollFadeInit";
@@ -31,29 +30,6 @@ const SPORT_LABELS: Record<string, string> = {
   cycling: "Cycling",
   athletics: "Athletics",
   other: "Sport",
-};
-
-const TYPE_LABELS: Record<string, string> = {
-  fan_experience: "Fan experience",
-  accommodation: "Stay",
-  dining: "Dining",
-  activity: "Activity",
-  cultural_site: "Cultural site",
-  transit: "Getting there",
-  sports_venue: "Venue",
-  neighborhood: "Neighbourhood",
-  day_trip: "Day trip",
-  multi_day: "Multi-day",
-  natural_wonder: "Nature",
-  event: "Event",
-};
-
-const BUDGET_LABELS: Record<string, string> = {
-  free: "Free",
-  budget: "Budget",
-  moderate: "Mid-range",
-  splurge: "Splurge",
-  luxury: "Luxury",
 };
 
 
@@ -143,66 +119,6 @@ export default async function HomePage() {
   const calendarEvents = allUpcoming
     .filter((e) => !featuredIds.has(e.id) && e.startDate <= in120Days && !e.isHidden);
 
-  // Build HeroEvent data for each featured event
-  async function buildHeroEvent(ev: typeof featuredRows[number]): Promise<HeroEvent> {
-    const [countRow] = await db
-      .select({ count: sql<number>`count(*)` })
-      .from(experiences)
-      .where(and(eq(experiences.sportingEventId, ev.id), eq(experiences.status, "published")));
-    const totalCount = Number(countRow?.count ?? 0);
-
-    const teasers = await db
-      .select({
-        id: experiences.id,
-        title: experiences.title,
-        subtitle: experiences.subtitle,
-        slug: experiences.slug,
-        heroImageUrl: experiences.heroImageUrl,
-        experienceType: experiences.experienceType,
-        budgetTier: experiences.budgetTier,
-        neighborhood: experiences.neighborhood,
-      })
-      .from(experiences)
-      .innerJoin(
-        sportingEventExperiences,
-        and(
-          eq(sportingEventExperiences.experienceId, experiences.id),
-          eq(sportingEventExperiences.sportingEventId, ev.id)
-        )
-      )
-      .where(
-        and(
-          eq(experiences.status, "published"),
-          ne(experiences.experienceType, "transit"),
-          isNotNull(sportingEventExperiences.packRank)
-        )
-      )
-      .orderBy(asc(sportingEventExperiences.packRank))
-      .limit(3);
-
-    const es = eventState(ev.startDate, ev.endDate);
-    return {
-      id: ev.id,
-      slug: ev.slug,
-      name: ev.name,
-      sport: ev.sport,
-      startDate: ev.startDate,
-      endDate: ev.endDate,
-      venueName: ev.venueName ?? null,
-      heroImageUrl: ev.heroImageUrl ?? null,
-      state: es.state,
-      toStart: es.toStart,
-      toEnd: es.toEnd,
-      priceDisplay: eventPriceDisplay(ev.slug),
-      earlyBird: earlyBirdNudge(ev.slug),
-      totalCount,
-      teasers,
-    };
-  }
-
-  const heroEvents = await Promise.all(featuredSorted.map(buildHeroEvent));
-
-  const calendarHint = calendarEvents.map((e) => e.name).join(" · ");
 
   return (
     <main className="min-h-screen bg-white">
@@ -210,11 +126,12 @@ export default async function HomePage() {
 
       {/* Zone 1 — Nav overlaid on hero + crossfading brand hero */}
       <div className="relative">
-        <HomepageNav email={user?.email ?? null} showSearch={false} overlay={true} />
+        <HomepageNav email={user?.email ?? null} showSearch={true} overlay={true} />
         <BrandHero
           primaryEventSlug={featuredSorted[0]?.slug ?? "wimbledon-2026"}
           primaryEventName={featuredSorted[0]?.name ?? "Wimbledon 2026"}
           primaryEventFree={eventPriceDisplay(featuredSorted[0]?.slug ?? "") === "Free"}
+          hasCalendarEvents={calendarEvents.length > 0}
         />
       </div>
 
