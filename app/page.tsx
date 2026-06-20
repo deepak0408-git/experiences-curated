@@ -156,7 +156,7 @@ export default async function HomePage() {
   for (const row of glimpseRows) {
     if (!row.eventId) continue;
     if (!glimpseMap[row.eventId]) glimpseMap[row.eventId] = [];
-    if (glimpseMap[row.eventId].length < 3) {
+    if (glimpseMap[row.eventId].length < 5) {
       glimpseMap[row.eventId].push({ id: row.id, title: row.title, heroImageUrl: row.heroImageUrl });
     }
   }
@@ -285,32 +285,38 @@ export default async function HomePage() {
                         </span>
                       </div>
 
-                      {/* Glimpse thumbnails — non-clickable */}
+                      {/* Glimpse — top experience, wide single image with title overlay */}
                       {glimpse.length > 0 && (
                         <div className="mt-5 pt-4 border-t border-neutral-100">
                           <p className="text-xs text-neutral-400 mb-2.5">A taste of what&apos;s inside</p>
-                          <div className="flex gap-2">
-                            {glimpse.map((exp) => (
-                              <div key={exp.id} className="flex-1 rounded-lg overflow-hidden">
-                                <div className="relative h-16 bg-neutral-100">
-                                  {exp.heroImageUrl ? (
-                                    <Image
-                                      src={exp.heroImageUrl}
-                                      alt={exp.title}
-                                      fill
-                                      className="object-cover"
-                                      sizes="120px"
-                                    />
-                                  ) : (
-                                    <div className="w-full h-full bg-neutral-200" />
-                                  )}
-                                </div>
-                                <p className="mt-1 text-xs text-neutral-500 leading-tight line-clamp-1 px-0.5">
-                                  {exp.title}
-                                </p>
-                              </div>
-                            ))}
+                          <div className="relative h-32 rounded-lg overflow-hidden bg-neutral-100">
+                            {glimpse[0].heroImageUrl ? (
+                              <Image
+                                src={glimpse[0].heroImageUrl}
+                                alt={glimpse[0].title}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 640px) 100vw, 560px"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-neutral-200" />
+                            )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                            <div className="absolute bottom-0 left-0 right-0 px-3 pb-3">
+                              <p className="text-white text-sm font-semibold leading-snug">
+                                {glimpse[0].title}
+                              </p>
+                            </div>
                           </div>
+                          {glimpse.length > 1 && (
+                            <div className="mt-2 flex flex-wrap gap-1.5">
+                              {glimpse.slice(1).map((exp) => (
+                                <span key={exp.id} className="px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-600 text-xs">
+                                  {exp.title}
+                                </span>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
