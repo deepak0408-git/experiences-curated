@@ -160,7 +160,7 @@ export default async function HomePage() {
   }
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[#0A0A0A]">
       <ScrollFadeInit />
 
       {/* Zone 1 — Nav overlaid on hero + crossfading brand hero */}
