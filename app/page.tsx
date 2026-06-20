@@ -284,39 +284,37 @@ export default async function HomePage() {
                         </span>
                       </div>
 
-                      {/* Glimpse — top experience, wide single image with title overlay */}
+                      {/* Glimpse — 60% image left, experience list right */}
                       {glimpse.length > 0 && (
-                        <div className="mt-5 pt-4 border-t border-neutral-100">
-                          <p className="text-xs text-neutral-400 mb-2.5">A taste of what&apos;s inside</p>
-                          <div className="relative h-32 rounded-lg overflow-hidden bg-neutral-100">
+                        <div className="mt-5 pt-4 border-t border-neutral-100 flex gap-0 rounded-lg overflow-hidden h-36">
+                          {/* Image — 60% width */}
+                          <div className="relative w-[60%] flex-shrink-0">
                             {glimpse[0].heroImageUrl ? (
                               <Image
                                 src={glimpse[0].heroImageUrl}
                                 alt={glimpse[0].title}
                                 fill
-                                className="object-cover object-bottom"
-                                sizes="(max-width: 640px) 100vw, 560px"
+                                className="object-cover object-center"
+                                sizes="(max-width: 640px) 60vw, 340px"
                               />
                             ) : (
                               <div className="w-full h-full bg-neutral-200" />
                             )}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                            <div className="absolute bottom-0 left-0 right-0 px-3 pb-3">
-                              <p className="text-white text-sm font-semibold leading-snug">
-                                {glimpse[0].title}
-                              </p>
-                            </div>
                           </div>
-                          {glimpse.length > 1 && (
-                            <div className="mt-2 flex flex-wrap items-center gap-1.5">
-                              <span className="text-xs text-neutral-400">Also:</span>
-                              {glimpse.slice(1).map((exp) => (
-                                <span key={exp.id} className="px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-600 text-xs">
-                                  {exp.title}
-                                </span>
+                          {/* Right — label + experience list */}
+                          <div className="flex-1 bg-neutral-50 px-4 py-3 flex flex-col justify-between min-w-0">
+                            <p className="text-xs font-semibold text-neutral-400 uppercase tracking-widest leading-tight">A taste of what&apos;s inside</p>
+                            <ul className="mt-2 space-y-1.5">
+                              {glimpse.map((exp, i) => (
+                                <li key={exp.id} className="flex items-start gap-1.5 min-w-0">
+                                  <span className="text-neutral-300 text-xs mt-0.5 flex-shrink-0">✦</span>
+                                  <span className={`text-xs leading-tight truncate ${i === 0 ? "text-neutral-800 font-semibold" : "text-neutral-500"}`}>
+                                    {exp.title}
+                                  </span>
+                                </li>
                               ))}
-                            </div>
-                          )}
+                            </ul>
+                          </div>
                         </div>
                       )}
                     </div>
