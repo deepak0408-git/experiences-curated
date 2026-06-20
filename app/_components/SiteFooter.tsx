@@ -2,7 +2,7 @@
 
 export default function SiteFooter() {
   return (
-    <footer className="mt-auto border-t border-[#2A2A2A] bg-[#0A0A0A]">
+    <footer className="mt-auto bg-[#0A0A0A]">
       <div className="max-w-5xl mx-auto px-6 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <span className="text-xs text-[#6A6A6A]">
           &copy; {new Date().getFullYear()} Experiences | Curated
