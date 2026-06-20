@@ -39,10 +39,12 @@ export default function BrandHero({
   primaryEventSlug,
   primaryEventName,
   primaryEventFree,
+  hasCalendarEvents,
 }: {
   primaryEventSlug: string;
   primaryEventName: string;
   primaryEventFree: boolean;
+  hasCalendarEvents: boolean;
 }) {
   const [active, setActive] = useState(0);
 
@@ -85,10 +87,10 @@ export default function BrandHero({
       <div className="absolute bottom-0 left-0 right-0 px-6 sm:px-10 pb-14 sm:pb-16">
         <div className="max-w-5xl mx-auto">
           <h1 className="text-4xl sm:text-6xl font-bold text-white leading-tight tracking-tight max-w-2xl">
-            Insider guides for the world&apos;s greatest sporting events.
+            Insider travel guides for the world&apos;s greatest sporting events
           </h1>
           <p className="mt-4 text-base sm:text-lg text-white/70 max-w-xl leading-relaxed">
-            Hand-researched experience packs for Tennis Grand Slams, Formula&nbsp;1 GPs,
+            Hand-picked and researched experiences for Tennis Grand Slams, Formula&nbsp;1 GPs,
             Cricket Series, Golf Tour events and beyond.
           </p>
 
@@ -99,12 +101,12 @@ export default function BrandHero({
             >
               {primaryEventFree ? "Get free access" : "Explore"} — {primaryEventName} →
             </Link>
-            <Link
-              href="/search"
+            <a
+              href={hasCalendarEvents ? "#on-the-calendar" : "/search"}
               className="text-sm text-white/70 hover:text-white transition-colors underline underline-offset-4"
             >
               See all events ↓
-            </Link>
+            </a>
           </div>
         </div>
       </div>

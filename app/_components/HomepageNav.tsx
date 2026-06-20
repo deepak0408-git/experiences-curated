@@ -10,10 +10,10 @@ export default function HomepageNav({ email, showSearch = false, overlay = false
           Experiences | Curated
         </Link>
         <div className="flex items-center gap-6">
-          {showSearch && !overlay && (
+          {showSearch && (
             <>
-              <SearchForm />
-              <span className="hidden sm:inline text-neutral-200">|</span>
+              <SearchForm overlay={overlay} />
+              <span className={`hidden sm:inline ${overlay ? "text-white/20" : "text-neutral-200"}`}>|</span>
             </>
           )}
           <Link href="/trip-board" className={`text-sm transition-colors whitespace-nowrap ${overlay ? "text-white/80 hover:text-white" : "text-neutral-500 hover:text-neutral-900"}`}>

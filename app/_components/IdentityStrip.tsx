@@ -9,8 +9,8 @@ export default function IdentityStrip() {
       body: "We don't sell tickets. We tell you what's worth your time and how to get it.",
     },
     {
-      heading: "BUILT FOR SPORT",
-      body: "Wimbledon. The Open. Belgian GP. US Open. Cricket. More coming.",
+      heading: "SPORT ONLY",
+      body: "Wimbledon. The Open Championships. Belgian GP. US Open. World Cup Cricket. More coming.",
     },
   ];
 
