@@ -10,6 +10,7 @@ import HeroCarousel, { type HeroEvent } from "./_components/HeroCarousel";
 import IdentityStrip from "./_components/IdentityStrip";
 import SportNavigator from "./_components/SportNavigator";
 import ScrollFadeInit from "./_components/ScrollFadeInit";
+import BrandHero from "./_components/BrandHero";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -208,9 +209,20 @@ export default async function HomePage() {
       <ScrollFadeInit />
       <HomepageNav email={user?.email ?? null} showSearch />
 
-      <HeroCarousel events={heroEvents} calendarHint={calendarHint} />
+      {/* Zone 1 — Brand hero: 5-sport crossfading full-viewport */}
+      <BrandHero
+        primaryEventSlug={featuredSorted[0]?.slug ?? "wimbledon-2026"}
+        primaryEventName={featuredSorted[0]?.name ?? "Wimbledon 2026"}
+        primaryEventFree={eventPriceDisplay(featuredSorted[0]?.slug ?? "") === "Free"}
+      />
 
+      {/* Zone 2 — Identity strip */}
       <IdentityStrip />
+
+      {/* Zone 3 — Featured event card with teasers */}
+      {heroEvents.length > 0 && (
+        <HeroCarousel events={heroEvents} calendarHint={calendarHint} />
+      )}
 
       {/* Browse CTA — mobile only (desktop has search bar in nav) */}
       <div className="md:hidden max-w-5xl mx-auto px-4 pt-8 pb-0">
