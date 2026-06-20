@@ -530,6 +530,9 @@ export default async function EventPackPage({
                 {event.editorialOverview}
               </p>
             )}
+            <p className="mt-4 text-sm text-neutral-500 leading-7">
+              Think of it as your insider briefing for the event. Read the guide, save the experiences that suit you, and arrive knowing exactly what you&apos;re doing and when.
+            </p>
           </div>
 
           {!isEventPast && (
