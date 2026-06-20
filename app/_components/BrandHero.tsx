@@ -99,7 +99,7 @@ export default function BrandHero({
               href={`/event-pack/${primaryEventSlug}`}
               className="inline-flex items-center px-7 py-3.5 rounded-full bg-white text-neutral-900 text-sm font-semibold hover:bg-neutral-100 transition-colors"
             >
-              {primaryEventFree ? "Get free access" : "Explore"} — {primaryEventName} →
+              {primaryEventFree ? `Get free access — ${primaryEventName} pack` : `Explore — ${primaryEventName}`} →
             </Link>
             <a
               href={hasCalendarEvents ? "#on-the-calendar" : "/search"}

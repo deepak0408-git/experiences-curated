@@ -241,7 +241,7 @@ export default async function HomePage() {
               Why Experiences | Curated
             </p>
             <p className="text-2xl font-bold text-neutral-900 leading-snug">
-              Not a search engine. Not a booking platform. An expert guide.
+              An expert guide. Not a search engine. Not a booking platform.
             </p>
             <div className="mt-8 space-y-4">
               {[
@@ -274,7 +274,7 @@ export default async function HomePage() {
           <div className="mt-10 lg:mt-0 lg:pl-8">
             <div className="rounded-2xl bg-white border border-neutral-200 p-6 shadow-sm">
               <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-3">
-                What&apos;s in a pack
+                What&apos;s in an event pack
               </p>
               {[
                 "Ranked fan experiences at the venue",
