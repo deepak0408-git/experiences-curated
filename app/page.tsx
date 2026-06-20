@@ -131,6 +131,35 @@ export default async function HomePage() {
 
   const expCountMap = Object.fromEntries(expCounts.map((r) => [r.eventId, r.cnt]));
 
+  // Top 3 experiences per calendar event for glimpse thumbnails
+  const calendarEventIds = calendarEvents.map((e) => e.id);
+  const glimpseRows = calendarEventIds.length > 0
+    ? await db
+        .select({
+          eventId: sportingEventExperiences.sportingEventId,
+          id: experiences.id,
+          title: experiences.title,
+          heroImageUrl: experiences.heroImageUrl,
+          packRank: sportingEventExperiences.packRank,
+        })
+        .from(sportingEventExperiences)
+        .innerJoin(experiences, eq(experiences.id, sportingEventExperiences.experienceId))
+        .where(and(
+          eq(experiences.status, "published"),
+          isNotNull(sportingEventExperiences.packRank)
+        ))
+        .orderBy(asc(sportingEventExperiences.packRank))
+    : [];
+
+  // Group by eventId, keep top 3 per event
+  const glimpseMap: Record<string, { id: string; title: string; heroImageUrl: string | null }[]> = {};
+  for (const row of glimpseRows) {
+    if (!row.eventId) continue;
+    if (!glimpseMap[row.eventId]) glimpseMap[row.eventId] = [];
+    if (glimpseMap[row.eventId].length < 3) {
+      glimpseMap[row.eventId].push({ id: row.id, title: row.title, heroImageUrl: row.heroImageUrl });
+    }
+  }
 
   return (
     <main className="min-h-screen bg-white">
@@ -176,6 +205,7 @@ export default async function HomePage() {
                 const price = eventPriceDisplay(ev.slug);
                 const nudge = earlyBirdNudge(ev.slug);
                 const expCount = expCountMap[ev.id] ?? 0;
+                const glimpse = glimpseMap[ev.id] ?? [];
                 const venue = ev.slug === "india-in-england-cricket-2026"
                   ? "Birmingham · London · Nottingham · more"
                   : ev.venueName;
@@ -254,6 +284,35 @@ export default async function HomePage() {
                           <span className="text-neutral-400 font-normal">{price}</span>
                         </span>
                       </div>
+
+                      {/* Glimpse thumbnails — non-clickable */}
+                      {glimpse.length > 0 && (
+                        <div className="mt-5 pt-4 border-t border-neutral-100">
+                          <p className="text-xs text-neutral-400 mb-2.5">A taste of what&apos;s inside</p>
+                          <div className="flex gap-2">
+                            {glimpse.map((exp) => (
+                              <div key={exp.id} className="flex-1 rounded-lg overflow-hidden">
+                                <div className="relative h-16 bg-neutral-100">
+                                  {exp.heroImageUrl ? (
+                                    <Image
+                                      src={exp.heroImageUrl}
+                                      alt={exp.title}
+                                      fill
+                                      className="object-cover"
+                                      sizes="120px"
+                                    />
+                                  ) : (
+                                    <div className="w-full h-full bg-neutral-200" />
+                                  )}
+                                </div>
+                                <p className="mt-1 text-xs text-neutral-500 leading-tight line-clamp-1 px-0.5">
+                                  {exp.title}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </Link>
                 );
