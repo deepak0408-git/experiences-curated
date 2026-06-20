@@ -4,7 +4,7 @@ import SearchForm from "./SearchForm";
 
 export default function HomepageNav({ email, showSearch = false, overlay = false }: { email: string | null; showSearch?: boolean; overlay?: boolean }) {
   return (
-    <nav className={overlay ? "absolute top-0 left-0 right-0 z-20 bg-gradient-to-b from-black/50 to-transparent" : "border-b border-neutral-100"}>
+    <nav className={overlay ? "absolute top-0 left-0 right-0 z-20 bg-black/40 backdrop-blur-sm" : "border-b border-neutral-100"}>
       <div className={`max-w-5xl mx-auto px-6 sm:px-8 py-4 flex items-center justify-between ${overlay ? "" : ""}`}>
         <Link href="/" className={`text-xs sm:text-sm font-semibold tracking-widest uppercase transition-colors whitespace-nowrap ${overlay ? "text-white/90 hover:text-white" : "text-neutral-400 hover:text-neutral-600"}`}>
           Experiences | Curated
