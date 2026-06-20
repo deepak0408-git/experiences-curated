@@ -66,7 +66,7 @@ export default function SportNavigator() {
                 />
               </div>
               {/* Dark gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-violet-900/80 via-black/20 to-transparent" />
               {/* Label */}
               <span className="absolute bottom-3 left-3 right-3 text-white text-sm font-semibold leading-tight">
                 {sport.label}
