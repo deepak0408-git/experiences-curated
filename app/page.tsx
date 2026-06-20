@@ -189,7 +189,7 @@ export default async function HomePage() {
 
       {/* Zone 3 — On the calendar */}
       {calendarEvents.length > 0 && (
-        <div id="on-the-calendar" className="border-t border-[#2A2A2A] bg-[#0A0A0A]">
+        <div id="on-the-calendar" className="bg-[#0A0A0A]">
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14">
             <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-1">
               On the calendar
@@ -311,7 +311,7 @@ export default async function HomePage() {
       <SportNavigator />
 
       {/* Editorial statement — Why us */}
-      <div className="border-t border-[#2A2A2A] bg-[#141414] scroll-fade">
+      <div className="bg-[#141414] scroll-fade">
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14 lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
           <div>
             <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-4">
@@ -372,7 +372,7 @@ export default async function HomePage() {
       </div>
 
       {/* Trip board CTA */}
-      <div id="get-started" className="border-t border-[#2A2A2A] bg-[#0A0A0A] scroll-fade">
+      <div id="get-started" className="bg-[#0A0A0A] scroll-fade">
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14 lg:grid lg:grid-cols-2 lg:gap-16 lg:items-start">
           <div>
             <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-4">

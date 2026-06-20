@@ -15,7 +15,7 @@ export default function IdentityStrip() {
   ];
 
   return (
-    <div className="bg-[#141414] border-y border-[#2A2A2A]">
+    <div className="bg-[#141414]">
       <div className="max-w-5xl mx-auto px-6 sm:px-8 py-10 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12">
         {pillars.map((p) => (
           <div key={p.heading}>

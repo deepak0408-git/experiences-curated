@@ -41,7 +41,7 @@ const SPORTS = [
 
 export default function SportNavigator() {
   return (
-    <section className="border-t border-[#2A2A2A] bg-[#0A0A0A]">
+    <section className="bg-[#0A0A0A]">
       <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14">
         <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-1">
           Browse by sport
