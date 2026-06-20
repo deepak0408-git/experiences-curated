@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
-import { sportingEvents } from "@/schema/database";
-import { eq, and, gte, asc, isNotNull } from "drizzle-orm";
+import { sportingEvents, sportingEventExperiences, experiences } from "@/schema/database";
+import { eq, and, gte, asc, isNotNull, count } from "drizzle-orm";
 import Link from "next/link";
 import Image from "next/image";
 import HomepageTripBoardCTA from "./_components/HomepageTripBoardCTA";
@@ -119,6 +119,18 @@ export default async function HomePage() {
   const calendarEvents = allUpcoming
     .filter((e) => !featuredIds.has(e.id) && e.startDate <= in120Days && !e.isHidden);
 
+  // Experience counts per event for calendar cards
+  const expCounts = await db
+    .select({ eventId: sportingEventExperiences.sportingEventId, cnt: count() })
+    .from(sportingEventExperiences)
+    .innerJoin(experiences, and(
+      eq(experiences.id, sportingEventExperiences.experienceId),
+      eq(experiences.status, "published")
+    ))
+    .groupBy(sportingEventExperiences.sportingEventId);
+
+  const expCountMap = Object.fromEntries(expCounts.map((r) => [r.eventId, r.cnt]));
+
 
   return (
     <main className="min-h-screen bg-white">
@@ -148,7 +160,7 @@ export default async function HomePage() {
         </Link>
       </div>
 
-      {/* On the calendar — upcoming events not in the featured carousel */}
+      {/* Zone 3 — On the calendar */}
       {calendarEvents.length > 0 && (
         <div id="on-the-calendar" className="border-t border-neutral-100">
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14">
@@ -156,69 +168,89 @@ export default async function HomePage() {
               On the calendar
             </p>
             <p className="text-sm text-neutral-500 mb-8">
-              More event packs available now.
+              Event packs available now — buy once, keep forever.
             </p>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-6">
               {calendarEvents.map((ev) => {
                 const es = eventState(ev.startDate, ev.endDate);
                 const price = eventPriceDisplay(ev.slug);
+                const nudge = earlyBirdNudge(ev.slug);
+                const expCount = expCountMap[ev.id] ?? 0;
+                const venue = ev.slug === "india-in-england-cricket-2026"
+                  ? "Birmingham · London · Nottingham · more"
+                  : ev.venueName;
                 return (
                   <Link
                     key={ev.id}
                     href={`/event-pack/${ev.slug}`}
-                    className="group flex flex-col sm:flex-row rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors"
+                    className="group relative flex flex-col sm:flex-row rounded-2xl overflow-hidden border border-neutral-200 hover:border-neutral-400 hover:shadow-md transition-all duration-200"
                   >
-                    {/* Image */}
-                    <div className="relative h-40 sm:h-auto sm:w-64 sm:flex-shrink-0 overflow-hidden bg-neutral-100">
+                    {/* Image — taller, more dominant */}
+                    <div className="relative h-52 sm:h-auto sm:w-80 sm:flex-shrink-0 overflow-hidden bg-neutral-100">
                       {ev.heroImageUrl ? (
                         <Image
                           src={ev.heroImageUrl}
                           alt={ev.name}
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          sizes="(max-width: 640px) 100vw, 256px"
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 640px) 100vw, 320px"
                         />
                       ) : (
                         <div className="w-full h-full bg-neutral-200" />
                       )}
+                      {/* Live badge over image */}
+                      {es.state === "live" && (
+                        <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-emerald-500 text-white text-xs font-semibold">
+                          Live now
+                        </span>
+                      )}
                     </div>
 
                     {/* Details */}
-                    <div className="flex flex-col justify-between px-5 py-4 flex-1 min-w-0">
+                    <div className="flex flex-col justify-between px-6 py-5 flex-1 min-w-0">
                       <div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-xs font-semibold tracking-widest uppercase text-neutral-400">
+                        {/* Sport + countdown */}
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="text-xs font-bold tracking-widest uppercase text-neutral-400">
                             {SPORT_LABELS[ev.sport] ?? ev.sport}
                           </span>
                           {es.state === "upcoming" && (
-                            <span className="text-xs text-neutral-400 whitespace-nowrap">
+                            <span className="text-xs text-neutral-400">
                               · {es.toStart} day{es.toStart !== 1 ? "s" : ""} away
                             </span>
                           )}
-                          {es.state === "live" && (
-                            <span className="text-xs font-semibold text-emerald-600 whitespace-nowrap">
-                              · Underway
-                            </span>
-                          )}
                         </div>
-                        <h3 className="text-base font-bold text-neutral-900 leading-snug group-hover:text-neutral-600 transition-colors">
+
+                        {/* Event name */}
+                        <h3 className="text-xl font-bold text-neutral-900 leading-snug group-hover:text-neutral-600 transition-colors">
                           {ev.name}
                         </h3>
-                        <p className="mt-1 text-xs text-neutral-500">
+
+                        {/* Date + venue */}
+                        <p className="mt-1.5 text-sm text-neutral-500">
                           {formatDateRange(ev.startDate, ev.endDate)}
+                          {venue && <span className="text-neutral-400"> · {venue}</span>}
                         </p>
-                        {(ev.venueName || ev.slug === "india-in-england-cricket-2026") && (
-                          <p className="mt-0.5 text-xs text-neutral-400 truncate">
-                            {ev.slug === "india-in-england-cricket-2026"
-                              ? "Birmingham · London · Nottingham · more"
-                              : ev.venueName}
+
+                        {/* Experience count */}
+                        {expCount > 0 && (
+                          <p className="mt-3 text-xs text-neutral-400">
+                            <span className="text-neutral-700 font-semibold">{expCount} hand-researched experiences</span> inside this pack
+                          </p>
+                        )}
+
+                        {/* Early bird nudge */}
+                        {nudge.show && (
+                          <p className="mt-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-full inline-block px-3 py-1">
+                            Early bird {price} — rises to {nudge.standardPrice} after {nudge.cutoffLabel}
                           </p>
                         )}
                       </div>
 
-                      <div className="mt-4 flex items-center gap-3">
-                        <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-neutral-900 text-white text-xs font-semibold group-hover:bg-neutral-700 transition-colors whitespace-nowrap">
-                          Get the Pack
+                      {/* CTA */}
+                      <div className="mt-5">
+                        <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neutral-900 text-white text-sm font-semibold group-hover:bg-neutral-700 transition-colors whitespace-nowrap">
+                          Get the pack
                           <span className="text-neutral-400 font-normal">{price}</span>
                         </span>
                       </div>
