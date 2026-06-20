@@ -20,7 +20,7 @@ const SPORTS = [
     label: "Formula 1",
     href: "/search?sport=formula_one",
     imageUrl:
-      "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/experiences/hero/Circuit%20de%20Spa-Francorchamps%20Track%20Experiences%20and%20Driving%20Days.jpg",
+      "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sports/formula1-v2.jpg",
     kenburns: "kenburns-3",
   },
   {
@@ -34,7 +34,7 @@ const SPORTS = [
     label: "Cycling",
     href: "/search?sport=cycling",
     imageUrl:
-      "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sports/cycling.jpg",
+      "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sports/cycling-v2.jpg",
     kenburns: "kenburns-2",
   },
 ];
