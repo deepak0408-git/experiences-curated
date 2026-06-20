@@ -82,7 +82,7 @@ export default function BrandHero({
 
       {/* Dark overlay — heavier at bottom-left for text legibility */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-violet-900/60 via-black/20 to-transparent" />
 
       {/* Content — bottom-left, exactly like Headout */}
       <div className="absolute bottom-0 left-0 right-0 px-6 sm:px-10 pb-14 sm:pb-16">
@@ -97,7 +97,7 @@ export default function BrandHero({
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
               href={`/event-pack/${primaryEventSlug}`}
-              className="inline-flex items-center px-7 py-3.5 rounded-full bg-white text-neutral-900 text-sm font-semibold hover:bg-neutral-100 transition-colors"
+              className="inline-flex items-center px-7 py-3.5 rounded-full bg-violet-600 text-white text-sm font-semibold hover:bg-violet-500 transition-colors"
             >
               {primaryEventFree ? `Get free access — ${primaryEventName} pack` : `Explore — ${primaryEventName}`} →
             </Link>

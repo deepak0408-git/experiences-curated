@@ -181,7 +181,7 @@ export default async function HomePage() {
       <div className="md:hidden max-w-5xl mx-auto px-4 pt-8 pb-0">
         <Link
           href="/search"
-          className="inline-flex items-center px-5 py-2.5 rounded-full border border-neutral-300 text-neutral-600 text-sm font-medium hover:border-neutral-500 hover:text-neutral-900 transition-colors"
+          className="inline-flex items-center px-5 py-2.5 rounded-full border border-violet-300 text-violet-700 text-sm font-medium hover:border-violet-500 hover:bg-violet-50 transition-colors"
         >
           Browse all experiences
         </Link>
@@ -211,7 +211,7 @@ export default async function HomePage() {
                   <Link
                     key={ev.id}
                     href={`/event-pack/${ev.slug}`}
-                    className="group relative flex flex-col sm:flex-row rounded-2xl overflow-hidden border border-neutral-200 hover:border-neutral-400 hover:shadow-md transition-all duration-200"
+                    className="group relative flex flex-col sm:flex-row rounded-2xl overflow-hidden border border-neutral-200 hover:border-violet-400 hover:shadow-lg hover:shadow-violet-100 transition-all duration-200"
                   >
                     {/* Image — taller, more dominant */}
                     <div className="relative h-52 sm:h-auto sm:w-80 sm:flex-shrink-0 overflow-hidden bg-neutral-100">
@@ -277,20 +277,20 @@ export default async function HomePage() {
 
                       {/* CTA */}
                       <div className="mt-5">
-                        <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neutral-900 text-white text-sm font-semibold group-hover:bg-neutral-700 transition-colors whitespace-nowrap">
+                        <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-violet-600 text-white text-sm font-semibold group-hover:bg-violet-500 transition-colors whitespace-nowrap">
                           Get the pack
-                          <span className="text-neutral-400 font-normal">{price}</span>
+                          <span className="text-violet-200 font-normal">{price}</span>
                         </span>
                       </div>
 
                       {/* Glimpse — text-only panel */}
                       {glimpse.length > 0 && (
-                        <div className="mt-5 pt-4 border-t border-neutral-100 bg-neutral-50 rounded-lg px-4 py-3">
-                          <p className="text-xs font-semibold text-neutral-400 uppercase tracking-widest leading-tight">A taste of what&apos;s inside</p>
+                        <div className="mt-5 pt-4 border-t border-violet-100 bg-violet-50 rounded-lg px-4 py-3">
+                          <p className="text-xs font-semibold text-violet-400 uppercase tracking-widest leading-tight">A taste of what&apos;s inside</p>
                           <ul className="mt-2 space-y-1.5">
-                            {glimpse.map((exp, i) => (
+                            {glimpse.map((exp) => (
                               <li key={exp.id} className="flex items-start gap-1.5 min-w-0">
-                                <span className="text-neutral-300 text-xs mt-0.5 flex-shrink-0">✦</span>
+                                <span className="text-violet-300 text-xs mt-0.5 flex-shrink-0">✦</span>
                                 <span className="text-xs leading-tight truncate text-neutral-600">
                                   {exp.title}
                                 </span>
@@ -311,7 +311,7 @@ export default async function HomePage() {
       <SportNavigator />
 
       {/* Editorial statement — Why us */}
-      <div className="border-t border-neutral-100 bg-slate-50 scroll-fade">
+      <div className="border-t border-violet-100 bg-violet-50 scroll-fade">
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14 lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
           <div>
             <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-4">
@@ -339,7 +339,7 @@ export default async function HomePage() {
                 },
               ].map((item) => (
                 <div key={item.heading} className="flex gap-4">
-                  <span className="text-amber-500 mt-0.5 flex-shrink-0 text-lg leading-none">{item.icon}</span>
+                  <span className="text-violet-500 mt-0.5 flex-shrink-0 text-lg leading-none">{item.icon}</span>
                   <div>
                     <p className="text-sm font-semibold text-neutral-900">{item.heading}</p>
                     <p className="mt-1 text-sm text-neutral-600 leading-6">{item.body}</p>
@@ -362,7 +362,7 @@ export default async function HomePage() {
                 "Pre-trip brief sent 7 days before kick-off",
               ].map((point) => (
                 <div key={point} className="flex items-start gap-2.5 py-2 border-b border-neutral-100 last:border-0">
-                  <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 text-xs flex items-center justify-center flex-shrink-0 mt-0.5 font-bold">✓</span>
+                  <span className="w-4 h-4 rounded-full bg-violet-100 text-violet-700 text-xs flex items-center justify-center flex-shrink-0 mt-0.5 font-bold">✓</span>
                   <span className="text-sm text-neutral-700">{point}</span>
                 </div>
               ))}
@@ -393,7 +393,7 @@ export default async function HomePage() {
                 "Share your board with travel companions",
               ].map((point) => (
                 <li key={point} className="flex items-center gap-2.5 text-sm text-neutral-600">
-                  <span className="w-1.5 h-1.5 rounded-full bg-neutral-300 flex-shrink-0" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-violet-400 flex-shrink-0" />
                   {point}
                 </li>
               ))}
@@ -401,7 +401,7 @@ export default async function HomePage() {
             {process.env.HIDE_PRO !== "true" && (
               <p className="mt-6 text-xs text-neutral-400">
                 Want booking contacts and unlimited Trip Boards?{" "}
-                <Link href="/pro" className="underline underline-offset-2 hover:text-neutral-700 transition-colors">
+                <Link href="/pro" className="underline underline-offset-2 text-violet-600 hover:text-violet-800 transition-colors">
                   See Pro →
                 </Link>
               </p>
