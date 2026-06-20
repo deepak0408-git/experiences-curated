@@ -178,7 +178,7 @@ export default async function HomePage() {
       <IdentityStrip />
 
       {/* Browse CTA — mobile only */}
-      <div className="md:hidden max-w-5xl mx-auto px-4 pt-8 pb-0">
+      <div className="md:hidden bg-[#0A0A0A] px-4 pt-8 pb-0">
         <Link
           href="/search"
           className="inline-flex items-center px-5 py-2.5 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-sm font-black tracking-wide hover:bg-[#AAFF00] hover:text-black transition-colors"
