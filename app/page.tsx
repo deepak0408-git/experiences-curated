@@ -107,7 +107,6 @@ export default async function HomePage() {
     .orderBy(asc(sportingEvents.homepageSlot));
 
   const featuredSorted = featuredRows.slice(0, 2);
-  const featuredIds = new Set(featuredSorted.map((e) => e.id));
 
   // All upcoming events not in the featured set — for "On the calendar"
   const allUpcoming = await db
@@ -295,7 +294,7 @@ export default async function HomePage() {
                                 src={glimpse[0].heroImageUrl}
                                 alt={glimpse[0].title}
                                 fill
-                                className="object-cover"
+                                className="object-cover object-bottom"
                                 sizes="(max-width: 640px) 100vw, 560px"
                               />
                             ) : (
@@ -309,7 +308,8 @@ export default async function HomePage() {
                             </div>
                           </div>
                           {glimpse.length > 1 && (
-                            <div className="mt-2 flex flex-wrap gap-1.5">
+                            <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                              <span className="text-xs text-neutral-400">Also:</span>
                               {glimpse.slice(1).map((exp) => (
                                 <span key={exp.id} className="px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-600 text-xs">
                                   {exp.title}
