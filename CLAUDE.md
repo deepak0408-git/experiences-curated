@@ -8,6 +8,37 @@
 > **Nav auth state:** HomepageNav is a server component — pass `email` as prop from the page. Never use `useEffect` to read auth in navs (bfcache freezes client components on back-navigation).
 > **Magic links:** always redirect to `/auth/confirm?next=<path>` — never `/auth/callback`.
 > **Internal links:** always use Next.js `<Link>` — never plain `<a href>` for internal paths. Plain anchors cause full page loads, making pages bfcache-eligible and breaking back-navigation.
+> **Design system:** Dark canvas + fluorescent green. Branch `redesign/homepage` (latest commit 9afb270, 20 Jun 2026). Rollback: `git reset --hard homepage-v1-baseline`. Full token set in memory `project_design_system.md`. Full-site overhaul not yet started — 13 files, 3 tiers.
+
+---
+
+## Design System — Dark Canvas + Fluorescent Green
+
+Established Jun 2026 on `redesign/homepage`. Applied to homepage; full-site overhaul pending.
+
+### Colour tokens
+| Token | Hex | Usage |
+|---|---|---|
+| Background | `#0A0A0A` | Page base, receding sections |
+| Surface | `#141414` | Cards, raised sections |
+| Surface-2 | `#1A1A1A` | Nested panels, inputs |
+| Border | `#2A2A2A` | All borders and dividers |
+| Muted | `#A3A3A3` | Body copy, secondary text |
+| Foreground | `#FFFFFF` | Headings, primary text |
+| Accent | `#AAFF00` | CTAs, labels, bullets, hover — NEVER large bg fill |
+| Accent hover | `#BBFF33` | Hover on filled accent buttons |
+| Dim text | `#6A6A6A` | Nav/footer links (non-overlay) |
+
+### Rules
+- `rounded-sm` everywhere — no pill shapes
+- Zone separation via background shade only — never `border-t`/`border-b` between zones (causes visible lines)
+- `font-black` for all headings; `font-mono font-black` for category tags and pack headers
+- Tailwind dynamic classes in ternaries get purged by Turbopack — always use static JSX branches
+
+### Nav dual-context pattern
+HomepageNav and SignInLink accept `overlay` prop:
+- `overlay=true` (over hero): `text-white/80 hover:text-[#AAFF00]`, `bg-black/40 backdrop-blur-sm`
+- `overlay=false` (solid bg): `text-[#6A6A6A] hover:text-[#AAFF00]`, `bg-[#0A0A0A] border-b border-[#2A2A2A]`
 
 ---
 

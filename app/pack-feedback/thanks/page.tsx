@@ -40,7 +40,7 @@ function PackFeedbackThanks() {
   return (
     <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center px-6">
       <div className="max-w-md w-full">
-        <p className="text-[10px] font-black tracking-widest uppercase text-[#6A6A6A] mb-8">
+        <p className="text-sm font-black tracking-widest uppercase text-[#6A6A6A] mb-8">
           Experiences | Curated
         </p>
 
