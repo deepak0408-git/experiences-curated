@@ -28,7 +28,7 @@ const faqs = [
       },
       {
         q: "What personal data do you hold and how is it used?",
-        a: <>Our <Link href="/privacy" className="underline underline-offset-2 hover:text-neutral-900 transition-colors">Privacy Policy</Link> covers this in full. In short: we hold your email address, purchase history, and any travel log entries or Trip Board content you create. We don't sell your data to third parties. We use it only to run the service — sending magic links, giving you access to your purchases, and improving the product.</>,
+        a: <>Our <Link href="/privacy" className="underline underline-offset-2 hover:text-[#AAFF00] transition-colors">Privacy Policy</Link> covers this in full. In short: we hold your email address, purchase history, and any travel log entries or Trip Board content you create. We don't sell your data to third parties. We use it only to run the service — sending magic links, giving you access to your purchases, and improving the product.</>,
       },
     ],
   },
@@ -137,12 +137,12 @@ const faqs = [
 
 export default function HelpPage() {
   return (
-    <div className="min-h-screen bg-white">
-      <nav className="border-b border-neutral-100">
+    <div className="min-h-screen bg-[#0A0A0A]">
+      <nav className="border-b border-[#2A2A2A] bg-[#0A0A0A]">
         <div className="max-w-3xl mx-auto px-6 py-4">
           <Link
             href="/"
-            className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors"
+            className="text-xs sm:text-sm font-black tracking-widest uppercase text-[#6A6A6A] hover:text-[#AAFF00] transition-colors"
           >
             Experiences | Curated
           </Link>
@@ -151,11 +151,11 @@ export default function HelpPage() {
 
       <div className="max-w-3xl mx-auto px-6 py-14 space-y-12">
         <div>
-          <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-1">Support</p>
-          <h1 className="text-3xl font-bold text-neutral-900">Help & FAQ</h1>
-          <p className="mt-3 text-sm text-neutral-500 leading-6">
+          <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-1">Support</p>
+          <h1 className="text-3xl font-black text-white">Help & FAQ</h1>
+          <p className="mt-3 text-sm text-[#A3A3A3] leading-6">
             Can&apos;t find what you need?{" "}
-            <a href="mailto:hello@experiences-curated.com" className="underline underline-offset-2 hover:text-neutral-900 transition-colors">
+            <a href="mailto:hello@experiences-curated.com" className="underline underline-offset-2 hover:text-[#AAFF00] transition-colors">
               Email us
             </a>{" "}
             and we&apos;ll get back to you within one business day.
@@ -164,25 +164,25 @@ export default function HelpPage() {
 
         {faqs.map((section) => (
           <div key={section.section}>
-            <h2 className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-6">
+            <h2 className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-6">
               {section.section}
             </h2>
             <div className="space-y-8">
               {section.questions.map((item) => (
                 <div key={item.q}>
-                  <p className="text-sm font-semibold text-neutral-900 mb-2">{item.q}</p>
-                  <div className="text-sm text-neutral-600 leading-7">{item.a}</div>
+                  <p className="text-sm font-black text-white mb-2">{item.q}</p>
+                  <div className="text-sm text-[#A3A3A3] leading-7">{item.a}</div>
                 </div>
               ))}
             </div>
           </div>
         ))}
 
-        <div className="rounded-xl border border-neutral-200 p-6">
-          <p className="text-sm font-semibold text-neutral-900 mb-1">Still need help?</p>
-          <p className="text-sm text-neutral-500 leading-6">
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-6">
+          <p className="text-sm font-black text-white mb-1">Still need help?</p>
+          <p className="text-sm text-[#A3A3A3] leading-6">
             Email{" "}
-            <a href="mailto:hello@experiences-curated.com" className="underline underline-offset-2 hover:text-neutral-900 transition-colors">
+            <a href="mailto:hello@experiences-curated.com" className="underline underline-offset-2 hover:text-[#AAFF00] transition-colors">
               hello@experiences-curated.com
             </a>
             . We aim to respond within one business day.
