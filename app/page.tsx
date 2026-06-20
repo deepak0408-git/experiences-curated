@@ -7,6 +7,9 @@ import Image from "next/image";
 import HomepageTripBoardCTA from "./_components/HomepageTripBoardCTA";
 import HomepageNav from "./_components/HomepageNav";
 import HeroCarousel, { type HeroEvent } from "./_components/HeroCarousel";
+import IdentityStrip from "./_components/IdentityStrip";
+import SportNavigator from "./_components/SportNavigator";
+import ScrollFadeInit from "./_components/ScrollFadeInit";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -202,9 +205,12 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen bg-white">
+      <ScrollFadeInit />
       <HomepageNav email={user?.email ?? null} showSearch />
 
       <HeroCarousel events={heroEvents} calendarHint={calendarHint} />
+
+      <IdentityStrip />
 
       {/* Browse CTA — mobile only (desktop has search bar in nav) */}
       <div className="md:hidden max-w-5xl mx-auto px-4 pt-8 pb-0">
@@ -299,52 +305,89 @@ export default async function HomePage() {
         </div>
       )}
 
-      {/* Editorial statement */}
-      <div className="border-t border-neutral-100">
+      <SportNavigator />
+
+      {/* Editorial statement — Why us */}
+      <div className="border-t border-neutral-100 bg-slate-50 scroll-fade">
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14 lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
           <div>
             <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-4">
               Why Experiences | Curated
             </p>
             <p className="text-2xl font-bold text-neutral-900 leading-snug">
-              Not aggregated. Not ranked by popularity. Handpicked.
+              Not a search engine. Not a booking platform. An expert guide.
             </p>
+            <div className="mt-8 space-y-4">
+              {[
+                {
+                  icon: "✦",
+                  heading: "Written by fans, not algorithms",
+                  body: "Every experience is researched and written by someone who has been there — on the ground, at the event, with specific knowledge of what is actually worth your time.",
+                },
+                {
+                  icon: "✦",
+                  heading: "Packed for the event, not just the destination",
+                  body: "We tell you what matters for this specific event — the ticket you should buy, the section of the ground to stand in, the restaurant that stays open on race Sunday.",
+                },
+                {
+                  icon: "✦",
+                  heading: "One pack. Everything you need.",
+                  body: "Buy an Event Pack and get the full picture: venues, transport, stays, dining, and insider tips — sorted and ready for your trip.",
+                },
+              ].map((item) => (
+                <div key={item.heading} className="flex gap-4">
+                  <span className="text-amber-500 mt-0.5 flex-shrink-0 text-lg leading-none">{item.icon}</span>
+                  <div>
+                    <p className="text-sm font-semibold text-neutral-900">{item.heading}</p>
+                    <p className="mt-1 text-sm text-neutral-600 leading-6">{item.body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="mt-6 lg:mt-0">
-            <p className="text-sm text-neutral-600 leading-7">
-              Every experience here was written by someone who&apos;s actually been.
-              They know the difference between the queue everyone joins and the one
-              that moves, between the restaurant that&apos;s traded on location for
-              a decade and the one that actually deserves to be there. The picks
-              are specific because the knowledge is specific.
-            </p>
-            <p className="mt-4 text-sm text-neutral-600 leading-7">
-              We don&apos;t publish everything. We publish what&apos;s worth your time.
-            </p>
+          <div className="mt-10 lg:mt-0 lg:pl-8">
+            <div className="rounded-2xl bg-white border border-neutral-200 p-6 shadow-sm">
+              <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-3">
+                What&apos;s in a pack
+              </p>
+              {[
+                "Ranked fan experiences at the venue",
+                "Ticketing guide — what to buy and when",
+                "Stays near the action, verified by our team",
+                "Dining picks open on event days",
+                "Getting there — shuttles, parking, timing",
+                "Pre-trip brief sent 7 days before kick-off",
+              ].map((point) => (
+                <div key={point} className="flex items-start gap-2.5 py-2 border-b border-neutral-100 last:border-0">
+                  <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 text-xs flex items-center justify-center flex-shrink-0 mt-0.5 font-bold">✓</span>
+                  <span className="text-sm text-neutral-700">{point}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Trip board CTA */}
-      <div id="get-started" className="border-t border-neutral-100">
+      <div id="get-started" className="border-t border-neutral-100 scroll-fade">
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14 lg:grid lg:grid-cols-2 lg:gap-16 lg:items-start">
           <div>
             <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-4">
-              Plan your trip
+              Your trip, your way
             </p>
             <h2 className="text-2xl font-bold text-neutral-900 leading-snug">
-              Save experiences. Build your Trip Board. Travel with a plan.
+              Save what catches your eye. Build a Trip Board. Show up ready.
             </h2>
             <p className="mt-4 text-sm text-neutral-600 leading-7">
-              Save the experiences that fit your trip, organise them into a
-              day-by-day Trip Board, and share your itinerary with anyone
-              travelling with you.
+              Browse an event pack, save the experiences that fit your trip,
+              and arrange them into a day-by-day itinerary. Share it with
+              anyone travelling with you — no app download needed.
             </p>
             <ul className="mt-5 space-y-2.5">
               {[
-                "Save experiences across events",
-                "Build day-by-day trip boards",
-                "Access your pack on any device",
+                "Save experiences from any event pack",
+                "Arrange into days — morning, afternoon, evening",
+                "Share your board with travel companions",
               ].map((point) => (
                 <li key={point} className="flex items-center gap-2.5 text-sm text-neutral-600">
                   <span className="w-1.5 h-1.5 rounded-full bg-neutral-300 flex-shrink-0" />
