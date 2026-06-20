@@ -134,20 +134,20 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
   });
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#0A0A0A]">
       {/* Nav */}
-      <nav className="border-b border-neutral-100">
+      <nav className="border-b border-[#2A2A2A] bg-[#0A0A0A]">
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors whitespace-nowrap">
+          <Link href="/" className="text-xs sm:text-sm font-black tracking-widest uppercase text-[#6A6A6A] hover:text-[#AAFF00] transition-colors whitespace-nowrap">
             Experiences | Curated
           </Link>
           <div className="flex items-center gap-6">
-            <Link href="/search" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">Browse experiences</Link>
-            <Link href="/my-travels" className="hidden sm:block text-sm text-neutral-500 hover:text-neutral-900 transition-colors">My Travels</Link>
-            <span className="hidden sm:inline text-neutral-200">|</span>
+            <Link href="/search" className="hidden sm:block text-sm text-[#6A6A6A] hover:text-white transition-colors">Browse experiences</Link>
+            <Link href="/my-travels" className="hidden sm:block text-sm text-[#6A6A6A] hover:text-white transition-colors">My Travels</Link>
+            <span className="hidden sm:inline text-[#2A2A2A]">|</span>
             <Link
               href="/profile"
-              className="flex items-center justify-center w-7 h-7 rounded-full bg-neutral-900 text-white text-xs font-bold uppercase flex-shrink-0"
+              className="flex items-center justify-center w-7 h-7 rounded-sm bg-[#2A2A2A] text-white text-xs font-black uppercase flex-shrink-0 hover:bg-[#AAFF00] hover:text-black transition-colors"
               aria-label="Profile"
               title={userEmail}
             >
@@ -159,13 +159,13 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
 
       <div className="max-w-5xl mx-auto px-6 sm:px-8 py-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-6 pb-6 border-b border-neutral-100 gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-6 pb-6 border-b border-[#2A2A2A] gap-4">
           {/* Left — title + board name */}
           <div>
-            <p className="text-sm font-semibold tracking-widest uppercase text-neutral-400 mb-0.5">Trip Board</p>
+            <p className="text-sm font-semibold tracking-widest uppercase text-[#AAFF00] mb-0.5">Trip Board</p>
             <div className="flex items-center gap-3 mb-4">
-              <p className="text-xs text-neutral-400">Build your itinerary</p>
-              <Link href="/search" className="sm:hidden ml-auto text-xs font-medium text-neutral-900 underline underline-offset-2 hover:text-neutral-500 transition-colors whitespace-nowrap">Browse experiences →</Link>
+              <p className="text-xs text-[#6A6A6A]">Build your itinerary</p>
+              <Link href="/search" className="sm:hidden ml-auto text-xs font-medium text-[#AAFF00] underline underline-offset-2 hover:text-white transition-colors whitespace-nowrap">Browse experiences →</Link>
             </div>
 
             {editingTitle ? (
@@ -178,26 +178,26 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                   if (e.key === "Enter") handleRenameCommit();
                   if (e.key === "Escape") setEditingTitle(false);
                 }}
-                className="text-2xl font-bold text-neutral-900 bg-transparent border-b border-neutral-400 outline-none w-64"
+                className="text-2xl font-black text-white bg-transparent border-b border-[#AAFF00] outline-none w-64"
                 autoFocus
               />
             ) : (
               <div className="flex items-center gap-3 relative">
-                <h1 className="text-2xl font-bold text-neutral-900">{boardTitle}</h1>
+                <h1 className="text-2xl font-black text-white">{boardTitle}</h1>
 
                 {/* ⋯ menu — all screen sizes */}
                 <button
                   onClick={() => { setShowMobileMenu((v) => !v); setConfirmDelete(false); }}
-                  className="text-neutral-400 hover:text-neutral-600 transition-colors px-1 py-0.5 rounded"
+                  className="text-[#6A6A6A] hover:text-white transition-colors px-1 py-0.5 rounded"
                   aria-label="Board options"
                 >
                   &#8943;
                 </button>
                 {showMobileMenu && (
-                  <div className="absolute top-full left-0 mt-1 z-20 bg-white border border-neutral-200 rounded-lg shadow-md py-1 min-w-[140px]">
+                  <div className="absolute top-full left-0 mt-1 z-20 bg-[#141414] border border-[#2A2A2A] rounded-sm shadow-xl py-1 min-w-[140px]">
                     <button
                       onClick={() => { setShowMobileMenu(false); handleRenameStart(); }}
-                      className="w-full text-left px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
+                      className="w-full text-left px-4 py-2 text-sm text-[#A3A3A3] hover:text-white hover:bg-[#1A1A1A]"
                     >
                       Rename
                     </button>
@@ -210,13 +210,13 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                               await deleteBoard(activeBoardId);
                               router.push("/trip-board");
                             }}
-                            className="w-full text-left text-sm text-red-500 hover:text-red-700"
+                            className="w-full text-left text-sm text-red-400 hover:text-red-300"
                           >
                             Confirm delete
                           </button>
                           <button
                             onClick={() => setConfirmDelete(false)}
-                            className="w-full text-left text-sm text-neutral-400 hover:text-neutral-600"
+                            className="w-full text-left text-sm text-[#6A6A6A] hover:text-white"
                           >
                             Cancel
                           </button>
@@ -224,7 +224,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                       ) : (
                         <button
                           onClick={() => setConfirmDelete(true)}
-                          className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-neutral-50"
+                          className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-[#1A1A1A]"
                         >
                           Delete board
                         </button>
@@ -236,13 +236,13 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
             )}
 
             <div className="flex items-center gap-3 mt-1.5 flex-wrap">
-              <p className="text-sm text-neutral-500">
+              <p className="text-sm text-[#A3A3A3]">
                 {items.length} saved · {scheduledCount} scheduled
               </p>
               {scheduledCount > 0 && (
                 <button
                   onClick={() => setShowItinerary(true)}
-                  className="lg:hidden ml-auto text-xs font-medium text-neutral-900 underline underline-offset-2 hover:text-neutral-500 transition-colors"
+                  className="lg:hidden ml-auto text-xs font-medium text-[#AAFF00] underline underline-offset-2 hover:text-white transition-colors"
                 >
                   View itinerary →
                 </button>
@@ -267,10 +267,10 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
               <button
                 key={board.id}
                 onClick={() => router.push(`/trip-board?board=${board.id}`)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                className={`px-3 py-1.5 rounded-sm text-xs font-medium transition-colors ${
                   board.id === activeBoardId
-                    ? "bg-neutral-900 text-white"
-                    : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200"
+                    ? "bg-[#AAFF00] text-black"
+                    : "bg-[#1A1A1A] text-[#6A6A6A] hover:bg-[#2A2A2A] hover:text-white"
                 }`}
               >
                 {board.id === activeBoardId ? boardTitle : board.title}
@@ -279,7 +279,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
             {isPro && (
               <button
                 onClick={() => setShowNewBoard(true)}
-                className="px-3 py-1.5 rounded-full text-xs font-medium bg-neutral-100 text-neutral-500 hover:bg-neutral-200 transition-colors"
+                className="px-3 py-1.5 rounded-sm text-xs font-medium bg-[#1A1A1A] text-[#6A6A6A] hover:bg-[#2A2A2A] hover:text-white transition-colors"
               >
                 + New board
               </button>
@@ -293,24 +293,24 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
           <div className="w-full lg:w-[60%] lg:flex-shrink-0 space-y-3">
             {items.length === 0 && (
               <div className="py-12 text-center">
-                <p className="text-sm font-semibold text-neutral-900 mb-1">Your Trip Board is empty</p>
-                <p className="text-xs text-neutral-400 mb-8">Save experiences as you browse to build your itinerary.</p>
-                <div className="mt-2 pt-8 border-t border-neutral-100 text-left">
-                  <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-4 text-center">Upcoming event packs</p>
+                <p className="text-sm font-black text-white mb-1">Your Trip Board is empty</p>
+                <p className="text-xs text-[#6A6A6A] mb-8">Save experiences as you browse to build your itinerary.</p>
+                <div className="mt-2 pt-8 border-t border-[#2A2A2A] text-left">
+                  <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-4 text-center">Upcoming event packs</p>
                   <div className="grid grid-cols-3 gap-4">
                     {upcomingEvents.map((ev) => (
-                      <Link key={ev.slug} href={`/event-pack/${ev.slug}`} className="group rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors">
-                        <div className="relative h-32 overflow-hidden bg-neutral-100">
+                      <Link key={ev.slug} href={`/event-pack/${ev.slug}`} className="group rounded-sm border border-[#2A2A2A] overflow-hidden hover:border-[#AAFF00] transition-colors">
+                        <div className="relative h-32 overflow-hidden bg-[#1A1A1A]">
                           {ev.heroImageUrl && (
                             <Image src={ev.heroImageUrl} alt={ev.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width: 1024px) 33vw, 25vw" />
                           )}
                         </div>
                         <div className="p-4">
-                          <p className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400 mb-1">
+                          <p className="text-[10px] font-semibold tracking-widest uppercase text-[#6A6A6A] mb-1">
                             {ev.sport.charAt(0).toUpperCase() + ev.sport.slice(1)}{ev.destinationName ? ` · ${ev.destinationName}` : ""}
                           </p>
-                          <p className="text-sm font-bold text-neutral-900 group-hover:text-neutral-600 transition-colors mb-1">{ev.name}</p>
-                          <p className="text-xs text-neutral-400">
+                          <p className="text-sm font-black text-white group-hover:text-[#AAFF00] transition-colors mb-1">{ev.name}</p>
+                          <p className="text-xs text-[#6A6A6A]">
                             {new Date(ev.startDate).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })} – {new Date(ev.endDate).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
                           </p>
                         </div>
@@ -323,10 +323,10 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
             {sortedItems.map((item) => {
               const firstBookingLink = item.bookingLinks?.[0];
               return (
-                <div key={item.savedItemId} className="rounded-xl border border-neutral-200 overflow-visible">
+                <div key={item.savedItemId} className="rounded-sm border border-[#2A2A2A] bg-[#141414] overflow-visible">
                   <div className="flex">
                     <Link href={`/experience/${item.slug}`} className="block flex-shrink-0">
-                      <div className="relative w-24 h-24 overflow-hidden bg-neutral-100">
+                      <div className="relative w-24 h-24 overflow-hidden bg-[#1A1A1A]">
                         {item.heroImageUrl ? (
                           <Image
                             src={item.heroImageUrl}
@@ -336,7 +336,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                             sizes="96px"
                           />
                         ) : (
-                          <div className="w-full h-full bg-neutral-200" />
+                          <div className="w-full h-full bg-[#2A2A2A]" />
                         )}
                       </div>
                     </Link>
@@ -344,16 +344,16 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                     <div className="flex-1 min-w-0 px-3 py-2.5">
                       <div className="flex items-start justify-between gap-2 mb-1">
                         <div className="min-w-0">
-                          <span className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400">
+                          <span className="text-[10px] font-semibold tracking-widest uppercase text-[#6A6A6A]">
                             {TYPE_LABELS[item.experienceType] ?? item.experienceType}
                             {item.budgetTier ? ` · ${BUDGET_LABELS[item.budgetTier]}` : ""}
                           </span>
                           <Link href={`/experience/${item.slug}`}>
-                            <h3 className="text-sm font-semibold text-neutral-900 leading-snug line-clamp-1 hover:text-neutral-600 transition-colors mt-0.5">
+                            <h3 className="text-sm font-black text-white leading-snug line-clamp-1 hover:text-[#AAFF00] transition-colors mt-0.5">
                               {item.title}
                             </h3>
                           </Link>
-                          <p className="text-xs text-neutral-400 mt-0.5">
+                          <p className="text-xs text-[#6A6A6A] mt-0.5">
                             {item.destinationName}{item.neighborhood ? ` · ${item.neighborhood}` : ""}
                           </p>
                         </div>
@@ -379,7 +379,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                         {item.scheduledAt && (
                           <button
                             onClick={() => handleScheduleRemove(item.savedItemId)}
-                            className="px-2.5 py-1 rounded-full text-xs font-medium bg-neutral-100 text-neutral-400 hover:bg-red-50 hover:text-red-500 transition-colors"
+                            className="px-2.5 py-1 rounded-sm text-xs font-medium bg-[#1A1A1A] text-[#6A6A6A] hover:bg-red-900/30 hover:text-red-400 transition-colors"
                           >
                             − Unschedule
                           </button>
@@ -390,7 +390,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                             href={firstBookingLink.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="ml-auto text-xs font-medium text-neutral-900 underline underline-offset-2 hover:text-neutral-500 transition-colors"
+                            className="ml-auto text-xs font-medium text-[#AAFF00] underline underline-offset-2 hover:text-white transition-colors"
                           >
                             Book →
                           </a>
@@ -399,7 +399,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                     </div>
                   </div>
 
-                  <div className="border-t border-neutral-100 px-3 py-2 rounded-b-xl overflow-hidden">
+                  <div className="border-t border-[#2A2A2A] px-3 py-2 rounded-b-sm overflow-hidden">
                     <NotesEditor savedItemId={item.savedItemId} initialNotes={item.notes} onSave={handleNotesUpdate} />
                   </div>
                 </div>
@@ -410,7 +410,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
           {/* Right — sticky calendar timeline (desktop) */}
           <div className="hidden lg:block flex-1 min-w-0">
             <div className="sticky top-6 max-h-[calc(100vh-6rem)] overflow-y-auto">
-              <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400 mb-4">
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#AAFF00] mb-4">
                 Itinerary
               </p>
               <CalendarTimeline items={items} />
@@ -422,13 +422,13 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
       {/* Mobile itinerary drawer overlay */}
       {showItinerary && (
         <div className="lg:hidden fixed inset-0 z-40 flex flex-col justify-end">
-          <div className="absolute inset-0 bg-black/40" onClick={() => setShowItinerary(false)} />
-          <div className="relative bg-white rounded-t-2xl max-h-[80vh] flex flex-col">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-100">
-              <p className="text-sm font-semibold text-neutral-900">Itinerary</p>
+          <div className="absolute inset-0 bg-black/60" onClick={() => setShowItinerary(false)} />
+          <div className="relative bg-[#141414] rounded-t-sm max-h-[80vh] flex flex-col">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-[#2A2A2A]">
+              <p className="text-sm font-black text-white">Itinerary</p>
               <button
                 onClick={() => setShowItinerary(false)}
-                className="text-neutral-400 hover:text-neutral-600 transition-colors text-lg leading-none"
+                className="text-[#6A6A6A] hover:text-white transition-colors text-lg leading-none"
               >
                 ✕
               </button>

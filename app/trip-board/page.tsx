@@ -24,18 +24,18 @@ export default async function TripBoardPage({
 
   if (!authUser) {
     return (
-      <div className="min-h-screen bg-white">
-        <nav className="border-b border-neutral-100">
+      <div className="min-h-screen bg-[#0A0A0A]">
+        <nav className="border-b border-[#2A2A2A] bg-[#0A0A0A]">
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-4">
-            <Link href="/" className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-600 transition-colors">
+            <Link href="/" className="text-xs sm:text-sm font-black tracking-widest uppercase text-[#6A6A6A] hover:text-[#AAFF00] transition-colors">
               Experiences | Curated
             </Link>
           </div>
         </nav>
         <div className="max-w-sm mx-auto px-6 py-24 text-center">
-          <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-4">Trip Board</p>
-          <h1 className="text-2xl font-bold text-neutral-900 mb-3">Sign in to see your board</h1>
-          <p className="text-sm text-neutral-500 leading-6 mb-8">
+          <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-4">Trip Board</p>
+          <h1 className="text-2xl font-black text-white mb-3">Sign in to see your board</h1>
+          <p className="text-sm text-[#A3A3A3] leading-6 mb-8">
             Enter your email and we&apos;ll send you a sign-in link. No password needed.
           </p>
           <TripBoardSignIn />
