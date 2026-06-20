@@ -1,10 +1,31 @@
 export default function IdentityStrip() {
+  const pillars = [
+    {
+      heading: "HANDPICKED",
+      body: "Every experience researched and written by someone who's been there.",
+    },
+    {
+      heading: "NOT A BOOKING SITE",
+      body: "We don't sell tickets. We tell you what's worth your time and how to get it.",
+    },
+    {
+      heading: "BUILT FOR SPORT",
+      body: "Wimbledon. The Open. Belgian GP. US Open. Cricket. More coming.",
+    },
+  ];
+
   return (
-    <div className="bg-slate-900 text-white py-3 px-4">
-      <p className="max-w-5xl mx-auto text-center text-sm sm:text-base font-medium tracking-wide">
-        Expert guides for sports fans who want more than a seat —{" "}
-        <span className="text-amber-400">cricket, tennis, golf, Formula 1 &amp; cycling</span>
-      </p>
+    <div className="border-b border-neutral-100 bg-white">
+      <div className="max-w-5xl mx-auto px-6 sm:px-8 py-10 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12">
+        {pillars.map((p) => (
+          <div key={p.heading}>
+            <p className="text-xs font-bold tracking-widest uppercase text-neutral-900 mb-2">
+              {p.heading}
+            </p>
+            <p className="text-sm text-neutral-500 leading-6">{p.body}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

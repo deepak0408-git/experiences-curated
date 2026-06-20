@@ -3,31 +3,31 @@ import Image from "next/image";
 
 const SPORTS = [
   {
-    label: "Cricket",
-    href: "/search?sport=cricket",
-    imageUrl:
-      "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sports/cricket.jpg",
-    kenburns: "kenburns-1",
-  },
-  {
     label: "Tennis",
     href: "/search?sport=tennis",
     imageUrl:
       "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sports/tennis.jpg",
-    kenburns: "kenburns-2",
+    kenburns: "kenburns-1",
   },
   {
     label: "Golf",
     href: "/search?sport=golf",
     imageUrl:
       "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/experiences/hero/Practice-Day-at-Royal-Birkdale.jpg",
-    kenburns: "kenburns-3",
+    kenburns: "kenburns-2",
   },
   {
     label: "Formula 1",
     href: "/search?sport=formula_one",
     imageUrl:
       "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/experiences/hero/Circuit%20de%20Spa-Francorchamps%20Track%20Experiences%20and%20Driving%20Days.jpg",
+    kenburns: "kenburns-3",
+  },
+  {
+    label: "Cricket",
+    href: "/search?sport=cricket",
+    imageUrl:
+      "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sports/cricket.jpg",
     kenburns: "kenburns-1",
   },
   {

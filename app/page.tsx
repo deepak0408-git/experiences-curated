@@ -207,24 +207,21 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen bg-white">
       <ScrollFadeInit />
-      <HomepageNav email={user?.email ?? null} showSearch />
 
-      {/* Zone 1 — Brand hero: 5-sport crossfading full-viewport */}
-      <BrandHero
-        primaryEventSlug={featuredSorted[0]?.slug ?? "wimbledon-2026"}
-        primaryEventName={featuredSorted[0]?.name ?? "Wimbledon 2026"}
-        primaryEventFree={eventPriceDisplay(featuredSorted[0]?.slug ?? "") === "Free"}
-      />
+      {/* Zone 1 — Nav overlaid on hero + crossfading brand hero */}
+      <div className="relative">
+        <HomepageNav email={user?.email ?? null} showSearch={false} overlay={true} />
+        <BrandHero
+          primaryEventSlug={featuredSorted[0]?.slug ?? "wimbledon-2026"}
+          primaryEventName={featuredSorted[0]?.name ?? "Wimbledon 2026"}
+          primaryEventFree={eventPriceDisplay(featuredSorted[0]?.slug ?? "") === "Free"}
+        />
+      </div>
 
       {/* Zone 2 — Identity strip */}
       <IdentityStrip />
 
-      {/* Zone 3 — Featured event card with teasers */}
-      {heroEvents.length > 0 && (
-        <HeroCarousel events={heroEvents} calendarHint={calendarHint} />
-      )}
-
-      {/* Browse CTA — mobile only (desktop has search bar in nav) */}
+      {/* Browse CTA — mobile only */}
       <div className="md:hidden max-w-5xl mx-auto px-4 pt-8 pb-0">
         <Link
           href="/search"
