@@ -291,7 +291,7 @@ export default async function HomePage() {
                             {glimpse.map((exp, i) => (
                               <li key={exp.id} className="flex items-start gap-1.5 min-w-0">
                                 <span className="text-neutral-300 text-xs mt-0.5 flex-shrink-0">✦</span>
-                                <span className={`text-xs leading-tight truncate ${i === 0 ? "text-neutral-800 font-semibold" : "text-neutral-500"}`}>
+                                <span className="text-xs leading-tight truncate text-neutral-600">
                                   {exp.title}
                                 </span>
                               </li>
