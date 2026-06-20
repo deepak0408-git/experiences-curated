@@ -84,15 +84,12 @@ export default function BrandHero({
       {/* Content — bottom-left, exactly like Headout */}
       <div className="absolute bottom-0 left-0 right-0 px-6 sm:px-10 pb-14 sm:pb-16">
         <div className="max-w-5xl mx-auto">
-          <p className="text-xs font-semibold tracking-widest uppercase text-white/60 mb-4">
-            Experiences | Curated
-          </p>
           <h1 className="text-4xl sm:text-6xl font-bold text-white leading-tight tracking-tight max-w-2xl">
             Insider guides for the world&apos;s greatest sporting events.
           </h1>
           <p className="mt-4 text-base sm:text-lg text-white/70 max-w-xl leading-relaxed">
-            Hand-researched experience packs for Wimbledon, The Open,
-            Formula&nbsp;1, and beyond.
+            Hand-researched experience packs for Tennis Grand Slams, Formula&nbsp;1 GPs,
+            Cricket Series, Golf Tour events and beyond.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -102,33 +99,12 @@ export default function BrandHero({
             >
               {primaryEventFree ? "Get free access" : "Explore"} — {primaryEventName} →
             </Link>
-            <a
-              href="#on-the-calendar"
+            <Link
+              href="/search"
               className="text-sm text-white/70 hover:text-white transition-colors underline underline-offset-4"
             >
               See all events ↓
-            </a>
-          </div>
-
-          {/* Dot indicators */}
-          <div className="mt-8 flex items-center gap-2">
-            {SLIDES.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setActive(i)}
-                aria-label={`Show slide ${i + 1}`}
-                className="p-1 group"
-              >
-                <span
-                  className="block rounded-full transition-all duration-300"
-                  style={{
-                    width: i === active ? "20px" : "6px",
-                    height: "6px",
-                    backgroundColor: i === active ? "white" : "rgba(255,255,255,0.4)",
-                  }}
-                />
-              </button>
-            ))}
+            </Link>
           </div>
         </div>
       </div>
