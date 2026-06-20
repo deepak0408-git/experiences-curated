@@ -94,8 +94,8 @@ function HitsOrEmpty() {
   if (noResults) {
     return (
       <div className="py-20 text-center">
-        <p className="text-neutral-700 font-medium mb-1">No results for &ldquo;{results.query}&rdquo;</p>
-        <p className="text-neutral-400 text-sm">Try a different search or remove filters.</p>
+        <p className="text-white font-black mb-1">No results for &ldquo;{results.query}&rdquo;</p>
+        <p className="text-[#6A6A6A] text-sm">Try a different search or remove filters.</p>
       </div>
     );
   }
@@ -116,10 +116,10 @@ function HitCard({ hit }: { hit: ExperienceHit }) {
   return (
     <Link
       href={`/experience/${hit.slug}`}
-      className="group rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors block"
+      className="group rounded-sm border border-[#2A2A2A] bg-[#141414] overflow-hidden hover:border-[#AAFF00] transition-colors block"
     >
       {hit.heroImageUrl ? (
-        <div className="relative h-32 sm:h-40 overflow-hidden bg-neutral-100">
+        <div className="relative h-32 sm:h-40 overflow-hidden bg-[#1A1A1A]">
           <Image
             src={hit.heroImageUrl}
             alt={hit.title}
@@ -129,28 +129,28 @@ function HitCard({ hit }: { hit: ExperienceHit }) {
           />
         </div>
       ) : (
-        <div className="h-32 sm:h-40 bg-neutral-100 flex items-center justify-center">
-          <span className="text-xs text-neutral-400 tracking-widest uppercase">
+        <div className="h-32 sm:h-40 bg-[#1A1A1A] flex items-center justify-center">
+          <span className="text-xs text-[#6A6A6A] tracking-widest uppercase">
             {TYPE_LABELS[hit.experienceType] ?? hit.experienceType}
           </span>
         </div>
       )}
       <div className="p-3 sm:p-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-semibold tracking-widest uppercase text-neutral-400">
+          <span className="text-xs font-semibold tracking-widest uppercase text-[#6A6A6A]">
             {TYPE_LABELS[hit.experienceType] ?? hit.experienceType}
           </span>
           {hit.budgetTier && (
-            <span className="text-xs text-neutral-400">{BUDGET_LABELS[hit.budgetTier] ?? hit.budgetTier}</span>
+            <span className="text-xs text-[#6A6A6A]">{BUDGET_LABELS[hit.budgetTier] ?? hit.budgetTier}</span>
           )}
         </div>
-        <h3 className="text-sm font-semibold text-neutral-900 leading-snug group-hover:text-neutral-600 transition-colors truncate">
+        <h3 className="text-sm font-black text-white leading-snug group-hover:text-[#AAFF00] transition-colors truncate">
           {hit.title}
         </h3>
         {hit.subtitle && (
-          <p className="mt-1 text-xs text-neutral-500 line-clamp-2 leading-5">{hit.subtitle}</p>
+          <p className="mt-1 text-xs text-[#A3A3A3] line-clamp-2 leading-5">{hit.subtitle}</p>
         )}
-        <p className="mt-2 text-xs text-neutral-400">
+        <p className="mt-2 text-xs text-[#6A6A6A]">
           {hit.destinationName}
           {hit.neighborhood ? ` · ${hit.neighborhood}` : ""}
         </p>
@@ -162,7 +162,7 @@ function HitCard({ hit }: { hit: ExperienceHit }) {
 function FilterSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-3">{title}</p>
+      <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-3">{title}</p>
       {children}
     </div>
   );
@@ -172,10 +172,10 @@ const refinementClassNames = {
   list: "space-y-1.5",
   item: "",
   label: "flex items-center gap-2 cursor-pointer group/label",
-  checkbox: "rounded border-neutral-300 text-neutral-900 focus:ring-neutral-900 cursor-pointer",
-  labelText: "text-sm text-neutral-700 group-hover/label:text-neutral-900 transition-colors flex-1",
-  count: "text-xs text-neutral-400 tabular-nums",
-  selectedItem: "[&_span]:font-medium [&_span]:text-neutral-900",
+  checkbox: "rounded-sm border-[#3A3A3A] text-[#AAFF00] focus:ring-[#AAFF00] cursor-pointer bg-[#1A1A1A]",
+  labelText: "text-sm text-[#A3A3A3] group-hover/label:text-white transition-colors flex-1",
+  count: "text-xs text-[#6A6A6A] tabular-nums",
+  selectedItem: "[&_span]:font-black [&_span]:text-white",
 };
 
 function useActiveFilterCount() {
@@ -192,22 +192,22 @@ function MobileFilterDrawer({ open, onClose }: { open: boolean; onClose: () => v
 
   return (
     <div className="fixed inset-0 z-50 md:hidden">
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-      <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[90vh] flex flex-col">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-100">
-          <p className="text-sm font-semibold text-neutral-900">
+      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
+      <div className="absolute bottom-0 left-0 right-0 bg-[#141414] rounded-t-sm max-h-[90vh] flex flex-col">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#2A2A2A]">
+          <p className="text-sm font-black text-white">
             Search & Filter{activeCount > 0 ? ` · ${activeCount} active` : ""}
           </p>
           <div className="flex items-center gap-4">
             {activeCount > 0 && (
               <button
                 onClick={() => clearAll()}
-                className="text-xs text-neutral-400 hover:text-neutral-700 transition-colors underline underline-offset-2"
+                className="text-xs text-[#6A6A6A] hover:text-[#AAFF00] transition-colors underline underline-offset-2"
               >
                 Clear all
               </button>
             )}
-            <button onClick={onClose} className="text-neutral-400 hover:text-neutral-700 transition-colors">
+            <button onClick={onClose} className="text-[#6A6A6A] hover:text-white transition-colors">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 20 20"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
             </button>
           </div>
@@ -219,13 +219,13 @@ function MobileFilterDrawer({ open, onClose }: { open: boolean; onClose: () => v
             classNames={{
               root: "",
               form: "relative",
-              input: "w-full rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-2.5 pr-10 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent",
-              submit: "absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700",
+              input: "w-full rounded-sm border border-[#2A2A2A] bg-[#0A0A0A] px-4 py-2.5 pr-10 text-sm text-white placeholder:text-[#3A3A3A] focus:outline-none focus:border-[#AAFF00]",
+              submit: "absolute right-3 top-1/2 -translate-y-1/2 text-[#6A6A6A] hover:text-[#AAFF00]",
               submitIcon: "w-4 h-4",
-              reset: "absolute right-8 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700",
+              reset: "absolute right-8 top-1/2 -translate-y-1/2 text-[#6A6A6A] hover:text-white",
               resetIcon: "w-3.5 h-3.5",
               loadingIndicator: "absolute right-3 top-1/2 -translate-y-1/2",
-              loadingIcon: "w-4 h-4 animate-spin text-neutral-400",
+              loadingIcon: "w-4 h-4 animate-spin text-[#6A6A6A]",
             }}
           />
           <FilterSection title="Sport">
@@ -244,10 +244,10 @@ function MobileFilterDrawer({ open, onClose }: { open: boolean; onClose: () => v
             <RefinementList attribute="pace" sortBy={["name:asc"]} transformItems={transformPaceItems as any} classNames={refinementClassNames} />
           </FilterSection>
         </div>
-        <div className="px-5 py-4 border-t border-neutral-100">
+        <div className="px-5 py-4 border-t border-[#2A2A2A]">
           <button
             onClick={onClose}
-            className="w-full py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
+            className="w-full py-3 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors"
           >
             Show results
           </button>
@@ -262,10 +262,10 @@ function MobileFilterButton({ onOpen }: { onOpen: () => void }) {
   return (
     <button
       onClick={onOpen}
-      className={`md:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-semibold transition-colors flex-shrink-0 ${
+      className={`md:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm border text-xs font-semibold transition-colors flex-shrink-0 ${
         activeCount > 0
-          ? "border-neutral-900 bg-neutral-900 text-white"
-          : "border-neutral-300 text-neutral-600 hover:border-neutral-500"
+          ? "border-[#AAFF00] bg-[#AAFF00] text-black"
+          : "border-[#2A2A2A] text-[#6A6A6A] hover:border-[#AAFF00] hover:text-white"
       }`}
     >
       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 16 16"><path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
@@ -323,16 +323,16 @@ export function SearchUI({
         {...(wimbledonOnly ? { filters: 'sport:"tennis" AND destinationId:"75758888-28b9-4e09-82ba-f05681ecc904"' } : {})}
       />
 
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-[#0A0A0A]">
         {/* Mobile filter drawer */}
         <MobileFilterDrawer open={filterOpen} onClose={() => setFilterOpen(false)} />
 
         {/* Header */}
-        <div className="border-b border-neutral-100 bg-white sticky top-0 z-10">
+        <div className="border-b border-[#2A2A2A] bg-[#0A0A0A] sticky top-0 z-10">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-2 sm:gap-6 min-w-0">
             <Link
               href="/"
-              className="text-xs sm:text-sm font-semibold tracking-widest text-neutral-400 uppercase hover:text-neutral-600 transition-colors whitespace-nowrap flex-shrink-0"
+              className="text-xs sm:text-sm font-black tracking-widest text-[#6A6A6A] uppercase hover:text-[#AAFF00] transition-colors whitespace-nowrap flex-shrink-0"
             >
               Experiences | Curated
             </Link>
@@ -342,17 +342,17 @@ export function SearchUI({
                 root: "hidden md:block flex-1 max-w-md",
                 form: "relative",
                 input:
-                  "w-full rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-2.5 pr-10 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent",
-                submit: "absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700",
+                  "w-full rounded-sm border border-[#2A2A2A] bg-[#141414] px-4 py-2.5 pr-10 text-sm text-white placeholder:text-[#3A3A3A] focus:outline-none focus:border-[#AAFF00]",
+                submit: "absolute right-3 top-1/2 -translate-y-1/2 text-[#6A6A6A] hover:text-[#AAFF00]",
                 submitIcon: "w-4 h-4",
-                reset: "absolute right-8 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700",
+                reset: "absolute right-8 top-1/2 -translate-y-1/2 text-[#6A6A6A] hover:text-white",
                 resetIcon: "w-3.5 h-3.5",
                 loadingIndicator: "absolute right-3 top-1/2 -translate-y-1/2",
-                loadingIcon: "w-4 h-4 animate-spin text-neutral-400",
+                loadingIcon: "w-4 h-4 animate-spin text-[#6A6A6A]",
               }}
             />
             <Stats
-              classNames={{ root: "hidden md:block text-xs text-neutral-400 whitespace-nowrap" }}
+              classNames={{ root: "hidden md:block text-xs text-[#6A6A6A] whitespace-nowrap" }}
               translations={{
                 rootElementText: ({ nbHits }) =>
                   `${nbHits.toLocaleString()} result${nbHits !== 1 ? "s" : ""}`,
@@ -361,16 +361,16 @@ export function SearchUI({
             <div className="flex-1 md:hidden" />
             <MobileFilterButton onOpen={() => setFilterOpen(true)} />
             {!hideProCtas && (
-              <span className="text-xs text-neutral-400 whitespace-nowrap flex-shrink-0 hidden sm:flex items-center gap-1 ml-auto">
+              <span className="text-xs text-[#6A6A6A] whitespace-nowrap flex-shrink-0 hidden sm:flex items-center gap-1 ml-auto">
                 Free users get 3 reads.{" "}
-                <Link href="/pro" className="font-semibold underline underline-offset-2 text-neutral-600 hover:text-neutral-900 transition-colors">Pro</Link>{" "}
+                <Link href="/pro" className="font-semibold underline underline-offset-2 text-[#AAFF00] hover:text-white transition-colors">Pro</Link>{" "}
                 is unlimited.
               </span>
             )}
             {userEmail && (
               <Link
                 href="/profile"
-                className="flex items-center justify-center w-7 h-7 rounded-full bg-neutral-900 text-white text-xs font-bold uppercase flex-shrink-0"
+                className="flex items-center justify-center w-7 h-7 rounded-sm bg-[#2A2A2A] text-white text-xs font-black uppercase flex-shrink-0 hover:bg-[#AAFF00] hover:text-black transition-colors"
                 aria-label="Profile"
                 title={userEmail}
               >
@@ -432,10 +432,10 @@ export function SearchUI({
           <main className="flex-1 min-w-0">
             <HitsOrEmpty />
             {!hideProCtas && (
-              <div className="mt-12 pt-8 border-t border-neutral-100">
-                <p className="text-xs text-neutral-400 leading-6">
+              <div className="mt-12 pt-8 border-t border-[#2A2A2A]">
+                <p className="text-xs text-[#6A6A6A] leading-6">
                   Free accounts include 3 experience reads.{" "}
-                  <Link href="/pro" className="font-semibold text-neutral-600 hover:text-neutral-900 transition-colors underline underline-offset-2">Pro</Link>{" "}
+                  <Link href="/pro" className="font-semibold text-[#AAFF00] hover:text-white transition-colors underline underline-offset-2">Pro</Link>{" "}
                   unlocks unlimited reads, plus booking contacts for concierge picks and sell-out reminders.
                 </p>
               </div>
