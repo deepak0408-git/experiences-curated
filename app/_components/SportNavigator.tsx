@@ -6,7 +6,7 @@ const SPORTS = [
     label: "Tennis",
     href: "/search?sport=tennis",
     imageUrl:
-      "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sports/tennis.jpg",
+      "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sports/tennis-v2.jpg",
     kenburns: "kenburns-1",
   },
   {
@@ -27,7 +27,7 @@ const SPORTS = [
     label: "Cricket",
     href: "/search?sport=cricket",
     imageUrl:
-      "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sports/cricket.jpg",
+      "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sports/cricket-v2.jpg",
     kenburns: "kenburns-1",
   },
   {
