@@ -138,7 +138,6 @@ export default async function HomePage() {
           eventId: sportingEventExperiences.sportingEventId,
           id: experiences.id,
           title: experiences.title,
-          heroImageUrl: experiences.heroImageUrl,
           packRank: sportingEventExperiences.packRank,
         })
         .from(sportingEventExperiences)
@@ -151,12 +150,12 @@ export default async function HomePage() {
     : [];
 
   // Group by eventId, keep top 3 per event
-  const glimpseMap: Record<string, { id: string; title: string; heroImageUrl: string | null }[]> = {};
+  const glimpseMap: Record<string, { id: string; title: string }[]> = {};
   for (const row of glimpseRows) {
     if (!row.eventId) continue;
     if (!glimpseMap[row.eventId]) glimpseMap[row.eventId] = [];
     if (glimpseMap[row.eventId].length < 5) {
-      glimpseMap[row.eventId].push({ id: row.id, title: row.title, heroImageUrl: row.heroImageUrl });
+      glimpseMap[row.eventId].push({ id: row.id, title: row.title });
     }
   }
 
@@ -284,37 +283,20 @@ export default async function HomePage() {
                         </span>
                       </div>
 
-                      {/* Glimpse — 60% image left, experience list right */}
+                      {/* Glimpse — text-only panel */}
                       {glimpse.length > 0 && (
-                        <div className="mt-5 pt-4 border-t border-neutral-100 flex gap-0 rounded-lg overflow-hidden h-36">
-                          {/* Image — 60% width */}
-                          <div className="relative w-[60%] flex-shrink-0">
-                            {glimpse[0].heroImageUrl ? (
-                              <Image
-                                src={glimpse[0].heroImageUrl}
-                                alt={glimpse[0].title}
-                                fill
-                                className="object-cover object-center"
-                                sizes="(max-width: 640px) 60vw, 340px"
-                              />
-                            ) : (
-                              <div className="w-full h-full bg-neutral-200" />
-                            )}
-                          </div>
-                          {/* Right — label + experience list */}
-                          <div className="flex-1 bg-neutral-50 px-4 py-3 flex flex-col justify-between min-w-0">
-                            <p className="text-xs font-semibold text-neutral-400 uppercase tracking-widest leading-tight">A taste of what&apos;s inside</p>
-                            <ul className="mt-2 space-y-1.5">
-                              {glimpse.map((exp, i) => (
-                                <li key={exp.id} className="flex items-start gap-1.5 min-w-0">
-                                  <span className="text-neutral-300 text-xs mt-0.5 flex-shrink-0">✦</span>
-                                  <span className={`text-xs leading-tight truncate ${i === 0 ? "text-neutral-800 font-semibold" : "text-neutral-500"}`}>
-                                    {exp.title}
-                                  </span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
+                        <div className="mt-5 pt-4 border-t border-neutral-100 bg-neutral-50 rounded-lg px-4 py-3">
+                          <p className="text-xs font-semibold text-neutral-400 uppercase tracking-widest leading-tight">A taste of what&apos;s inside</p>
+                          <ul className="mt-2 space-y-1.5">
+                            {glimpse.map((exp, i) => (
+                              <li key={exp.id} className="flex items-start gap-1.5 min-w-0">
+                                <span className="text-neutral-300 text-xs mt-0.5 flex-shrink-0">✦</span>
+                                <span className={`text-xs leading-tight truncate ${i === 0 ? "text-neutral-800 font-semibold" : "text-neutral-500"}`}>
+                                  {exp.title}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
                       )}
                     </div>
