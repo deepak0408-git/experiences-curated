@@ -25,11 +25,6 @@ const SLIDES = [
     alt: "Formula 1 at Circuit de Spa",
     position: "object-center",
   },
-  {
-    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sports/cycling.jpg",
-    alt: "Tour de France cycling",
-    position: "object-center",
-  },
 ];
 
 const INTERVAL = 4000;
