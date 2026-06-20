@@ -5,12 +5,12 @@ export default function IdentityStrip() {
       body: "Every experience researched and written by someone who's been there.",
     },
     {
-      heading: "NOT A BOOKING SITE",
-      body: "We don't sell tickets. We tell you what's worth your time and how to get it.",
+      heading: "BUILT FOR SPORT",
+      body: "Wimbledon. The Open Championships. Belgian GP. World Cup Cricket. And more.",
     },
     {
-      heading: "SPORT ONLY",
-      body: "Wimbledon. The Open Championships. Belgian GP. US Open. World Cup Cricket. More coming.",
+      heading: "TRIP-READY",
+      body: "Save experiences, arrange by day, share with whoever's coming.",
     },
   ];
 

@@ -75,6 +75,7 @@ export default function BrandHero({
             className={`object-cover ${slide.position}`}
             sizes="100vw"
             priority={i === 0}
+            style={{ filter: "saturate(1.4) brightness(1.05)" }}
           />
         </div>
       ))}
@@ -90,8 +91,7 @@ export default function BrandHero({
             Insider travel guides for the world&apos;s greatest sporting events
           </h1>
           <p className="mt-4 text-base sm:text-lg text-white/70 max-w-xl leading-relaxed">
-            Hand-picked and researched experiences for Tennis Grand Slams, Formula&nbsp;1 GPs,
-            Cricket Series, Golf Tour events and beyond.
+            Guides built around the event, not just the city. Save and plan what fits your trip. Show up ready.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
