@@ -62,6 +62,7 @@ const rows = await db
     destinationId: destinations.id,
     destinationName: destinations.name,
     destinationCountry: destinations.countryCode,
+    sportingEventId: experiences.sportingEventId,
     eventStartDate: sportingEvents.startDate,
     eventEndDate: sportingEvents.endDate,
   })
@@ -115,6 +116,7 @@ const objects = rows.map((row) => {
     hasHeroImage,
     lastVerifiedTimestamp,
     eventBoost,
+    sportingEventId: row.sportingEventId ?? null,
     saveCount: row.saveCount,
     publishedAt: row.publishedAt ? Math.floor(row.publishedAt.getTime() / 1000) : null,
     destinationId: row.destinationId,
