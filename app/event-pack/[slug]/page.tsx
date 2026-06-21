@@ -559,10 +559,10 @@ export default async function EventPackPage({
 
           {!isEventPast && (
             <aside className="mt-8 lg:mt-0">
-              {freeAccessEnabled && slug === "wimbledon-2026" ? (
+              {freeAccessEnabled && FREE_EVENT_SLUGS.includes(slug) ? (
                 <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 lg:sticky lg:top-6">
                   <span className="inline-block px-2.5 py-0.5 rounded-sm bg-[#AAFF00]/10 text-[#AAFF00] border border-[#AAFF00]/30 text-xs font-semibold mb-3">
-                    Free until 24 June
+                    Free until 29 June
                   </span>
                   <p className="text-3xl font-black text-white tracking-tight mb-1">
                     £0
@@ -577,7 +577,7 @@ export default async function EventPackPage({
                     Sign in for free access
                   </Link>
                   <p className="mt-3 text-xs text-[#6A6A6A] text-center">
-                    Free access ends 24 June — no card required
+                    Free access ends 29 June — no card required
                   </p>
                 </div>
               ) : (
@@ -745,7 +745,7 @@ export default async function EventPackPage({
               <p className="text-xs font-semibold tracking-widest uppercase text-[#6A6A6A] mb-5">
                 Ready to go?
               </p>
-              {freeAccessEnabled && slug === "wimbledon-2026" ? (
+              {freeAccessEnabled && FREE_EVENT_SLUGS.includes(slug) ? (
                 <>
                   <Link
                     href={`/sign-in?next=/event-pack/${slug}`}
@@ -754,7 +754,7 @@ export default async function EventPackPage({
                     Sign in for free access
                   </Link>
                   <p className="mt-5 text-xs text-[#6A6A6A]">
-                    Free until 24 June · no card required · instant access
+                    Free until 29 June · no card required · instant access
                   </p>
                 </>
               ) : paymentProvider === "dodo" ? (
@@ -785,7 +785,7 @@ export default async function EventPackPage({
               ) : (
                 <p className="text-xs text-[#6A6A6A]">Checkout coming soon.</p>
               )}
-              {!(freeAccessEnabled && slug === "wimbledon-2026") && (
+              {!(freeAccessEnabled && FREE_EVENT_SLUGS.includes(slug)) && (
                 <p className="mt-5 text-xs text-[#6A6A6A]">
                   {priceDisplay} · one-time · instant access
                 </p>
