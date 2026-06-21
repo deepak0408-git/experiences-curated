@@ -30,12 +30,12 @@ export function TagSelector({
             type="button"
             onClick={() => toggle(opt.value)}
             disabled={disabled}
-            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded-sm text-sm font-medium transition-colors ${
               active
-                ? "bg-neutral-900 text-white"
+                ? "bg-[#AAFF00] text-black font-black"
                 : disabled
-                ? "bg-neutral-100 text-neutral-300 cursor-not-allowed"
-                : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
+                ? "bg-[#1A1A1A] border border-[#2A2A2A] text-[#6A6A6A] cursor-not-allowed opacity-40"
+                : "bg-[#1A1A1A] border border-[#2A2A2A] text-[#A3A3A3] hover:border-[#AAFF00] hover:text-[#AAFF00]"
             }`}
           >
             {opt.label}

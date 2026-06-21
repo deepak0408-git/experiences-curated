@@ -10,11 +10,11 @@ export function FormSection({
   children: React.ReactNode;
 }) {
   return (
-    <section className="bg-white rounded-xl border border-neutral-200 p-8">
+    <section className="bg-[#141414] rounded-sm border border-[#2A2A2A] p-8">
       <div className="mb-6">
-        <h2 className="text-lg font-semibold text-neutral-900">{title}</h2>
+        <h2 className="text-lg font-black text-[#AAFF00]">{title}</h2>
         {description && (
-          <p className="mt-1 text-sm text-neutral-500">{description}</p>
+          <p className="mt-1 text-sm text-[#6A6A6A]">{description}</p>
         )}
       </div>
       <div className="space-y-6">{children}</div>
@@ -37,13 +37,13 @@ export function Field({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-neutral-700 mb-1">
+      <label className="block text-sm font-medium text-[#A3A3A3] mb-1">
         {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
+        {required && <span className="text-red-400 ml-1">*</span>}
       </label>
-      {hint && <p className="text-xs text-neutral-400 mb-2">{hint}</p>}
+      {hint && <p className="text-xs text-[#6A6A6A] mb-2">{hint}</p>}
       {children}
-      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+      {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
     </div>
   );
 }
@@ -63,10 +63,10 @@ export function CharCount({
     <span
       className={`text-xs tabular-nums ${
         isOver
-          ? "text-red-500"
+          ? "text-red-400"
           : isUnder && current > 0
-          ? "text-amber-500"
-          : "text-neutral-400"
+          ? "text-amber-400"
+          : "text-[#6A6A6A]"
       }`}
     >
       {current}/{max}

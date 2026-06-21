@@ -11,14 +11,14 @@ export default async function EventsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-neutral-900">Events</h1>
-        <p className="mt-1 text-sm text-neutral-500">
+        <h1 className="text-2xl font-black text-[#AAFF00]">Events</h1>
+        <p className="mt-1 text-sm text-[#6A6A6A]">
           Set which events appear in the homepage carousel. Slot 1 = first slide, Slot 2 = second slide. Max 2.
         </p>
       </div>
 
       {events.length === 0 ? (
-        <p className="text-sm text-neutral-400">No live or upcoming events in the next 3 months.</p>
+        <p className="text-sm text-[#6A6A6A]">No live or upcoming events in the next 3 months.</p>
       ) : (
         <SlotEditorForm events={events} />
       )}

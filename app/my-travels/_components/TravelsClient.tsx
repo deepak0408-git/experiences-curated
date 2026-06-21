@@ -68,8 +68,8 @@ export default function TravelsClient({ logs, userEmail, promptEvent }: { logs: 
             Experiences | Curated
           </Link>
           <div className="flex items-center gap-6">
-            <Link href="/search" className="hidden sm:block text-sm text-[#6A6A6A] hover:text-white transition-colors">Browse experiences</Link>
-            <Link href="/trip-board" className="text-sm text-[#6A6A6A] hover:text-white transition-colors whitespace-nowrap">Trip Board</Link>
+            <Link href="/search" className="hidden sm:block text-sm text-[#6A6A6A] hover:text-[#AAFF00] transition-colors">Browse experiences</Link>
+            <Link href="/trip-board" className="text-sm text-[#6A6A6A] hover:text-[#AAFF00] transition-colors whitespace-nowrap">Trip Board</Link>
             <span className="hidden sm:inline text-[#2A2A2A]">|</span>
             <Link
               href="/profile"

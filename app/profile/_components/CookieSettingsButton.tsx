@@ -9,7 +9,7 @@ export default function CookieSettingsButton() {
   return (
     <button
       onClick={reset}
-      className="text-xs text-neutral-400 hover:text-neutral-700 transition-colors underline underline-offset-2"
+      className="text-xs text-[#6A6A6A] hover:text-[#AAFF00] transition-colors underline underline-offset-2"
     >
       Cookie settings
     </button>

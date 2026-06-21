@@ -18,10 +18,10 @@ function linkifyText(text: string) {
         href={part}
         target="_blank"
         rel="noopener noreferrer"
-        className="underline text-neutral-500 hover:text-neutral-800 transition-colors break-all"
+        className="underline text-[#AAFF00] hover:text-white transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
-        {part}
+        Link
       </a>
     ) : (
       part
@@ -33,17 +33,17 @@ export default function HowToBook({ howToBook, isPro, hideProCtas = false }: Pro
   if (!isPro) {
     if (hideProCtas) return null;
     return (
-      <div className="mt-4 pt-3 border-t border-neutral-100">
-        <p className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">
+      <div className="mt-4 pt-3 border-t border-[#2A2A2A]">
+        <p className="text-[10px] font-semibold tracking-widest uppercase text-[#6A6A6A] mb-2">
           How to book
         </p>
-        <div className="rounded-lg bg-neutral-50 border border-neutral-200 px-3 py-2.5 flex items-center justify-between gap-3">
-          <p className="text-xs text-neutral-400 leading-5">
+        <div className="rounded-sm bg-[#1A1A1A] border border-[#2A2A2A] px-3 py-2.5 flex items-center justify-between gap-3">
+          <p className="text-xs text-[#6A6A6A] leading-5">
             Booking contacts and lead times for Pro subscribers.
           </p>
           <Link
             href="/pro"
-            className="flex-shrink-0 px-3 py-1.5 rounded-full bg-neutral-900 text-white text-xs font-semibold hover:bg-neutral-700 transition-colors"
+            className="flex-shrink-0 px-3 py-1.5 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
           >
             Unlock
           </Link>
@@ -53,11 +53,11 @@ export default function HowToBook({ howToBook, isPro, hideProCtas = false }: Pro
   }
 
   return (
-    <div className="mt-4 pt-3 border-t border-neutral-100">
-      <p className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">
+    <div className="mt-4 pt-3 border-t border-[#2A2A2A]">
+      <p className="text-[10px] font-semibold tracking-widest uppercase text-[#AAFF00] mb-2">
         How to book
       </p>
-      <p className="text-xs text-neutral-700 leading-5">{linkifyText(howToBook)}</p>
+      <p className="text-xs text-[#A3A3A3] leading-5">{linkifyText(howToBook)}</p>
     </div>
   );
 }

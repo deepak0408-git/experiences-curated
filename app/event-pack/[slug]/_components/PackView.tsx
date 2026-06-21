@@ -3,7 +3,6 @@ import { experiences, sportingEventExperiences } from "@/schema/database";
 import { eq, and, asc } from "drizzle-orm";
 import Link from "next/link";
 import Image from "next/image";
-import SignOutButton from "./SignOutButton";
 import { AddAllToBoard, AddOneToBoard } from "./AddToBoard";
 import HowToBook from "./HowToBook";
 import HomepageNav from "@/app/_components/HomepageNav";
@@ -627,12 +626,12 @@ export default async function PackView({
   }).filter((s) => s.editorsPick !== null);
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[#0A0A0A]">
       {/* Nav */}
       <HomepageNav email={userEmail} />
 
       {/* Masthead — hero image + event info */}
-      <div className="relative h-[40vh] min-h-[260px] overflow-hidden bg-neutral-900">
+      <div className="relative h-[40vh] min-h-[260px] overflow-hidden bg-[#141414]">
         {heroImageUrl && (
           <Image
             src={heroImageUrl}
@@ -648,10 +647,10 @@ export default async function PackView({
         {/* Event info — bottom */}
         <div className="absolute bottom-0 left-0 right-0 px-6 sm:px-8 pb-8">
           <div className="max-w-5xl mx-auto">
-            <span className="inline-block text-xs font-semibold tracking-widest uppercase text-white bg-black/50 px-3 py-1 rounded-full mb-3">
+            <span className="inline-block text-xs font-black tracking-widest uppercase text-black bg-[#AAFF00] px-3 py-1 rounded-sm mb-3">
               {sportLabel} · Event Pack
             </span>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight">
+            <h1 className="text-3xl sm:text-4xl font-black text-white leading-tight">
               {eventName}
             </h1>
             <p className="mt-1.5 text-white/70 text-sm">{dateRange}</p>
@@ -663,9 +662,9 @@ export default async function PackView({
       </div>
 
       {/* Pack bar — experience count + add all to board */}
-      <div className="border-b border-neutral-100">
+      <div>
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-4 flex items-center gap-4">
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-[#6A6A6A]">
             {exps.length} experience{exps.length !== 1 ? "s" : ""}
           </p>
           <AddAllToBoard experienceIds={exps.map((e) => e.id)} />
@@ -674,12 +673,12 @@ export default async function PackView({
 
       {/* Post-event banner */}
       {isEventPast && (
-        <div className="border-b border-neutral-200 bg-neutral-50">
+        <div className="bg-[#141414]">
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-4 flex items-center gap-3">
-            <span className="inline-block px-2.5 py-0.5 rounded-full bg-neutral-200 text-neutral-600 text-xs font-semibold tracking-widest uppercase">
+            <span className="inline-block px-2.5 py-0.5 rounded-sm bg-[#2A2A2A] text-[#6A6A6A] text-xs font-semibold tracking-widest uppercase">
               Event ended
             </span>
-            <p className="text-sm text-neutral-500">
+            <p className="text-sm text-[#6A6A6A]">
               This event has now passed — your pack is still here for reference.
             </p>
           </div>
@@ -689,14 +688,14 @@ export default async function PackView({
       {/* Pre-trip brief */}
       {preTripBriefLines && preTripBriefLines.length > 0 &&
         (preTripBriefLiveAt ? (
-          <div className="border-b border-amber-200 bg-amber-50">
+          <div className="bg-amber-400/5">
             <div className="max-w-5xl mx-auto px-6 sm:px-8 py-5">
               <div className="flex items-center justify-between mb-3">
-                <p className="text-xs font-semibold tracking-widest uppercase text-amber-600">
+                <p className="text-xs font-semibold tracking-widest uppercase text-amber-400">
                   Pre-trip brief
                 </p>
                 {preTripBriefUpdatedAt && (
-                  <p className="text-xs text-amber-400">
+                  <p className="text-xs text-amber-400/60">
                     Updated{" "}
                     {preTripBriefUpdatedAt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
                   </p>
@@ -704,8 +703,8 @@ export default async function PackView({
               </div>
               <ul className="space-y-2">
                 {preTripBriefLines.map((line, i) => (
-                  <li key={i} className="flex gap-2.5 text-[15px] text-amber-950 leading-8">
-                    <span className="mt-2.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-amber-500" />
+                  <li key={i} className="flex gap-2.5 text-[15px] text-amber-200 leading-8">
+                    <span className="mt-2.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-amber-400" />
                     <span>{line}</span>
                   </li>
                 ))}
@@ -713,14 +712,14 @@ export default async function PackView({
             </div>
           </div>
         ) : (
-          <div className="border-b border-neutral-100 bg-neutral-50">
+          <div className="bg-[#141414]">
             <div className="max-w-5xl mx-auto px-6 sm:px-8 py-5">
               <div className="flex items-center justify-between mb-3">
-                <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400">
+                <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00]">
                   Pre-trip brief
                 </p>
                 {preTripBriefUpdatedAt && (
-                  <p className="text-xs text-neutral-400">
+                  <p className="text-xs text-[#6A6A6A]">
                     Updated{" "}
                     {preTripBriefUpdatedAt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
                   </p>
@@ -728,8 +727,8 @@ export default async function PackView({
               </div>
               <ul className="space-y-2">
                 {preTripBriefLines.map((line, i) => (
-                  <li key={i} className="flex gap-2.5 text-[15px] text-neutral-700 leading-8">
-                    <span className="mt-2.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-neutral-400" />
+                  <li key={i} className="flex gap-2.5 text-[15px] text-[#A3A3A3] leading-8">
+                    <span className="mt-2.5 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-[#6A6A6A]" />
                     <span>{line}</span>
                   </li>
                 ))}
@@ -740,15 +739,15 @@ export default async function PackView({
 
       {/* Editorial overview (from event record) */}
       {editorialOverview && (
-        <div className="border-b border-neutral-100">
+        <div>
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-8">
-            <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-3">
+            <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-3">
               The Pack
             </p>
-            <p className="text-base font-semibold text-neutral-900 leading-snug mb-3">
+            <p className="text-base font-black text-white leading-snug mb-3">
               {exps.length} curated experiences — hand-picked by local experts
             </p>
-            <p className="text-sm text-neutral-600 leading-7 max-w-2xl">
+            <p className="text-sm text-[#A3A3A3] leading-7 max-w-2xl">
               {editorialOverview}
             </p>
           </div>
@@ -758,13 +757,13 @@ export default async function PackView({
       {/* Tour itinerary — cricket only */}
       {/* Section quick-jump nav */}
       {sections.length > 1 && (
-        <div className="border-b border-neutral-100 overflow-x-auto">
+        <div className="overflow-x-auto">
           <div className="max-w-5xl mx-auto px-6 sm:px-8">
             <div className="flex gap-6 py-3">
               {TOURNAMENT_RHYTHM[eventSlug] && (
                 <a
                   href="#how-it-unfolds"
-                  className="text-xs font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-900 transition-colors whitespace-nowrap"
+                  className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] hover:text-white transition-colors whitespace-nowrap"
                 >
                   How it unfolds
                 </a>
@@ -773,7 +772,7 @@ export default async function PackView({
                 <a
                   key={s.name}
                   href={`#${toAnchor(s.name)}`}
-                  className="text-xs font-semibold tracking-widest uppercase text-neutral-400 hover:text-neutral-900 transition-colors whitespace-nowrap"
+                  className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] hover:text-white transition-colors whitespace-nowrap"
                 >
                   {s.name}
                 </a>
@@ -784,16 +783,16 @@ export default async function PackView({
       )}
 
       {/* The Brief — editorial pack opener */}
-      <div className="border-b border-neutral-100">
+      <div>
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12">
-          <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-6">
+          <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-6">
             The Brief
           </p>
           <div className="max-w-2xl">
             {editorial.brief.split("\n\n").map((para: string, i: number) => (
               <p
                 key={i}
-                className="text-neutral-700 leading-8 text-[15px] mb-5 last:mb-0"
+                className="text-[#A3A3A3] leading-8 text-[15px] mb-5 last:mb-0"
               >
                 {para}
               </p>
@@ -804,16 +803,16 @@ export default async function PackView({
 
       {/* How the event unfolds — rhythm guide */}
       {TOURNAMENT_RHYTHM[eventSlug] && (
-        <div id="how-it-unfolds" className="border-b border-neutral-100">
+        <div id="how-it-unfolds">
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12">
-            <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-6">
+            <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-6">
               How the event unfolds
             </p>
             <div className="max-w-2xl space-y-6">
               {TOURNAMENT_RHYTHM[eventSlug].map((entry) => (
                 <div key={entry.label}>
-                  <p className="text-sm font-semibold text-neutral-900 mb-1.5">{entry.label}</p>
-                  <p className="text-[15px] text-neutral-600 leading-7">{entry.body}</p>
+                  <p className="text-sm font-black text-white mb-1.5">{entry.label}</p>
+                  <p className="text-[15px] text-[#A3A3A3] leading-7">{entry.body}</p>
                 </div>
               ))}
             </div>
@@ -825,31 +824,31 @@ export default async function PackView({
       {editorial.tourItinerary && editorial.tourItinerary.length > 0 && (() => {
         const t20s = editorial.tourItinerary!.filter(m => m.type.includes("T20"));
         const odis = editorial.tourItinerary!.filter(m => m.type.includes("ODI"));
-        const MatchBlock = ({ matches, label, accent }: { matches: typeof t20s; label: string; accent: string }) => (
-          <div className={`rounded-xl border ${accent} overflow-hidden`}>
-            <div className={`px-4 py-2.5 border-b ${accent}`}>
-              <span className="text-xs font-semibold tracking-widest uppercase text-neutral-500">{label}</span>
+        const MatchBlock = ({ matches, label }: { matches: typeof t20s; label: string }) => (
+          <div className="rounded-sm border border-[#2A2A2A] overflow-hidden">
+            <div className="px-4 py-2.5 border-b border-[#2A2A2A] bg-[#141414]">
+              <span className="text-xs font-semibold tracking-widest uppercase text-[#6A6A6A]">{label}</span>
             </div>
-            <div className="divide-y divide-neutral-100">
+            <div className="divide-y divide-[#2A2A2A]">
               {matches.map((match, i) => (
-                <div key={i} className="flex items-center gap-4 px-4 py-3">
-                  <span className="w-12 text-xs font-semibold text-neutral-400 shrink-0">{match.date}</span>
-                  <span className="flex-1 text-sm text-neutral-900">{match.venue}</span>
-                  <span className="text-sm text-neutral-500 text-right shrink-0">{match.city}</span>
+                <div key={i} className="flex items-center gap-4 px-4 py-3 bg-[#0A0A0A]">
+                  <span className="w-12 text-xs font-semibold text-[#6A6A6A] shrink-0">{match.date}</span>
+                  <span className="flex-1 text-sm text-white">{match.venue}</span>
+                  <span className="text-sm text-[#6A6A6A] text-right shrink-0">{match.city}</span>
                 </div>
               ))}
             </div>
           </div>
         );
         return (
-          <div className="border-b border-neutral-100">
+          <div>
             <div className="max-w-5xl mx-auto px-6 sm:px-8 py-8">
-              <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-4">
+              <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-4">
                 Tour schedule
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                {t20s.length > 0 && <div className="flex-1"><MatchBlock matches={t20s} label="T20 Internationals" accent="border-neutral-200" /></div>}
-                {odis.length > 0 && <div className="flex-1"><MatchBlock matches={odis} label="One Day Internationals" accent="border-neutral-200" /></div>}
+                {t20s.length > 0 && <div className="flex-1"><MatchBlock matches={t20s} label="T20 Internationals" /></div>}
+                {odis.length > 0 && <div className="flex-1"><MatchBlock matches={odis} label="One Day Internationals" /></div>}
               </div>
             </div>
           </div>
@@ -857,28 +856,28 @@ export default async function PackView({
       })()}
 
       {/* Quick reference — useful local info */}
-      <div className="border-b border-neutral-100">
+      <div>
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-10">
-          <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-6">
+          <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-6">
             Quick reference
           </p>
-          <div className="rounded-xl border border-neutral-200 divide-y divide-neutral-100">
+          <div className="rounded-sm border border-[#2A2A2A] divide-y divide-[#2A2A2A]">
             {editorial.localInfo.map((row) => (
               <div
                 key={row.label}
                 className="flex gap-4 px-5 py-4 sm:items-start"
               >
-                <dt className="w-[30%] sm:w-32 flex-shrink-0 text-xs font-semibold text-neutral-500 pt-0.5">
+                <dt className="w-[30%] sm:w-32 flex-shrink-0 text-xs font-semibold text-[#6A6A6A] pt-0.5">
                   {row.label}
                 </dt>
-                <dd className="text-sm text-neutral-700 leading-6 flex-1 break-words min-w-0">
+                <dd className="text-sm text-[#A3A3A3] leading-6 flex-1 break-words min-w-0">
                   {row.value}
                   {row.href && (
                     <a
                       href={row.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="ml-2 text-xs text-neutral-400 underline hover:text-neutral-700 transition-colors"
+                      className="ml-2 text-xs text-[#AAFF00] underline hover:text-white transition-colors"
                     >
                       {row.linkLabel} ↗
                     </a>
@@ -891,7 +890,7 @@ export default async function PackView({
       </div>
 
       {/* Journey-stage sections */}
-      <div className="divide-y divide-neutral-100">
+      <div>
         {sections.map((section) => (
           <div
             key={section.name}
@@ -899,11 +898,11 @@ export default async function PackView({
             className="max-w-5xl mx-auto px-6 sm:px-8 py-14"
           >
             {/* Section heading + intro */}
-            <h2 className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-4">
+            <h2 className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-4">
               {section.name}
             </h2>
             {editorial.sectionIntros[section.name] && (
-              <p className="text-neutral-600 text-[15px] leading-8 max-w-2xl mb-10">
+              <p className="text-[#A3A3A3] text-[15px] leading-8 max-w-2xl mb-10">
                 {editorial.sectionIntros[section.name]}
               </p>
             )}
@@ -912,10 +911,10 @@ export default async function PackView({
             {section.editorsPick && (
               <Link
                 href={`/experience/${section.editorsPick.slug}`}
-                className="group block rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors mb-5"
+                className="group block rounded-sm border border-[#2A2A2A] bg-[#141414] overflow-hidden hover:border-[#AAFF00] transition-colors mb-5"
               >
                 {section.editorsPick.heroImageUrl && (
-                  <div className="relative h-60 overflow-hidden bg-neutral-100">
+                  <div className="relative h-60 overflow-hidden bg-[#1A1A1A]">
                     <Image
                       src={section.editorsPick.heroImageUrl}
                       alt={section.editorsPick.title}
@@ -928,48 +927,48 @@ export default async function PackView({
                 <div className="p-6">
                   <div className="flex items-center gap-3 mb-3">
                     {(section.editorsPick.practicalInfo as { howToBook?: string } | null)?.howToBook ? (
-                      <span className="text-xs font-semibold uppercase tracking-widest text-amber-600">
+                      <span className="text-xs font-semibold uppercase tracking-widest text-amber-400">
                         Concierge pick
                       </span>
                     ) : (
-                      <span className="text-xs font-semibold uppercase tracking-widest bg-neutral-900 text-white px-2.5 py-1 rounded-full">
+                      <span className="text-xs font-black uppercase tracking-widest bg-[#AAFF00] text-black px-2.5 py-1 rounded-sm">
                         Editor&apos;s pick
                       </span>
                     )}
                     {section.editorsPick.budgetTier && (
-                      <span className="text-xs text-neutral-400">
+                      <span className="text-xs text-[#6A6A6A]">
                         {BUDGET_LABELS[section.editorsPick.budgetTier] ??
                           section.editorsPick.budgetTier}
                       </span>
                     )}
                   </div>
-                  <h3 className="text-lg font-bold text-neutral-900 leading-snug group-hover:text-neutral-600 transition-colors">
+                  <h3 className="text-lg font-black text-white leading-snug group-hover:text-[#AAFF00] transition-colors">
                     {section.editorsPick.title}
                   </h3>
                   {section.editorsPick.subtitle && (
-                    <p className="mt-1.5 text-sm text-neutral-600 leading-6">
+                    <p className="mt-1.5 text-sm text-[#A3A3A3] leading-6">
                       {section.editorsPick.subtitle}
                     </p>
                   )}
                   {section.editorsPick.whyItsSpecial && (
-                    <p className="mt-3 text-sm text-neutral-500 italic leading-6 line-clamp-2">
+                    <p className="mt-3 text-sm text-[#6A6A6A] italic leading-6 line-clamp-2">
                       {section.editorsPick.whyItsSpecial.split("\n\n")[0]}
                     </p>
                   )}
                   {section.editorsPick.neighborhood && (
-                    <p className="mt-3 text-xs text-neutral-400">
+                    <p className="mt-3 text-xs text-[#6A6A6A]">
                       {section.editorsPick.neighborhood}
                     </p>
                   )}
                   {(() => {
                     const tips = getInsiderTips(section.editorsPick.title, eventSlug);
                     return tips ? (
-                      <div className="mt-4 pt-3 border-t border-neutral-100">
-                        <p className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Worth knowing</p>
+                      <div className="mt-4 pt-3 border-t border-[#2A2A2A]">
+                        <p className="text-[10px] font-semibold tracking-widest uppercase text-[#AAFF00] mb-2">Worth knowing</p>
                         <ul className="space-y-1">
                           {tips.map((tip, i) => (
-                            <li key={i} className="flex gap-2 text-xs text-neutral-600 leading-5">
-                              <span className="text-neutral-300 flex-shrink-0">—</span>
+                            <li key={i} className="flex gap-2 text-xs text-[#A3A3A3] leading-5">
+                              <span className="text-[#AAFF00] flex-shrink-0">—</span>
                               <span>{tip}</span>
                             </li>
                           ))}
@@ -985,7 +984,7 @@ export default async function PackView({
                       hideProCtas={hideProCtas}
                     />
                   )}
-                  <div className="mt-4 pt-3 border-t border-neutral-100">
+                  <div className="mt-4 pt-3 border-t border-[#2A2A2A]">
                     <AddOneToBoard experienceId={section.editorsPick.id} />
                   </div>
                 </div>
@@ -996,63 +995,66 @@ export default async function PackView({
             {section.rest.length > 0 && (
               <div className="grid sm:grid-cols-2 gap-4">
                 {section.rest.map((exp) => (
-                  <Link
+                  <div
                     key={exp.id}
-                    href={`/experience/${exp.slug}`}
-                    className="group rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors"
+                    className="group rounded-sm border border-[#2A2A2A] bg-[#141414] overflow-hidden hover:border-[#AAFF00] transition-colors"
                   >
-                    <div className="relative h-36 overflow-hidden bg-neutral-100">
-                      {exp.heroImageUrl ? (
-                        <Image
-                          src={exp.heroImageUrl}
-                          alt={exp.title}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-neutral-200" />
-                      )}
-                    </div>
+                    <Link href={`/experience/${exp.slug}`} className="block">
+                      <div className="relative h-36 overflow-hidden bg-[#1A1A1A]">
+                        {exp.heroImageUrl ? (
+                          <Image
+                            src={exp.heroImageUrl}
+                            alt={exp.title}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-[#2A2A2A]" />
+                        )}
+                      </div>
+                    </Link>
                     <div className="p-4">
                       <div className="flex items-center justify-between mb-2">
                         {(exp.practicalInfo as { howToBook?: string } | null)?.howToBook ? (
-                          <span className="text-xs font-semibold tracking-widest uppercase text-amber-600">
+                          <span className="text-xs font-semibold tracking-widest uppercase text-amber-400">
                             Concierge pick
                           </span>
                         ) : (
-                          <span className="text-xs font-semibold tracking-widest uppercase text-neutral-400">
+                          <span className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00]">
                             {TYPE_LABELS[exp.experienceType] ?? exp.experienceType}
                           </span>
                         )}
                         {exp.budgetTier && (
-                          <span className="text-xs text-neutral-400">
+                          <span className="text-xs text-[#6A6A6A]">
                             {BUDGET_LABELS[exp.budgetTier] ?? exp.budgetTier}
                           </span>
                         )}
                       </div>
-                      <h3 className="text-sm font-semibold text-neutral-900 leading-snug group-hover:text-neutral-600 transition-colors">
-                        {exp.title}
-                      </h3>
+                      <Link href={`/experience/${exp.slug}`}>
+                        <h3 className="text-sm font-black text-white leading-snug group-hover:text-[#AAFF00] transition-colors">
+                          {exp.title}
+                        </h3>
+                      </Link>
                       {exp.subtitle && (
-                        <p className="mt-1 text-xs text-neutral-500 line-clamp-2 leading-5">
+                        <p className="mt-1 text-xs text-[#6A6A6A] line-clamp-2 leading-5">
                           {exp.subtitle}
                         </p>
                       )}
                       {exp.neighborhood && (
-                        <p className="mt-2 text-xs text-neutral-400">
+                        <p className="mt-2 text-xs text-[#6A6A6A]">
                           {exp.neighborhood}
                         </p>
                       )}
                       {(() => {
                         const tips = getInsiderTips(exp.title, eventSlug);
                         return tips ? (
-                          <div className="mt-3 pt-2 border-t border-neutral-100">
-                            <p className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400 mb-2">Worth knowing</p>
+                          <div className="mt-3 pt-2 border-t border-[#2A2A2A]">
+                            <p className="text-[10px] font-semibold tracking-widest uppercase text-[#AAFF00] mb-2">Worth knowing</p>
                             <ul className="space-y-1">
                               {tips.map((tip, i) => (
-                                <li key={i} className="flex gap-2 text-xs text-neutral-600 leading-5">
-                                  <span className="text-neutral-300 flex-shrink-0">—</span>
+                                <li key={i} className="flex gap-2 text-xs text-[#A3A3A3] leading-5">
+                                  <span className="text-[#AAFF00] flex-shrink-0">—</span>
                                   <span>{tip}</span>
                                 </li>
                               ))}
@@ -1068,11 +1070,11 @@ export default async function PackView({
                           hideProCtas={hideProCtas}
                         />
                       )}
-                      <div className="mt-3 pt-2 border-t border-neutral-100">
+                      <div className="mt-3 pt-2 border-t border-[#2A2A2A]">
                         <AddOneToBoard experienceId={exp.id} />
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 ))}
               </div>
             )}
@@ -1082,54 +1084,54 @@ export default async function PackView({
 
       {/* Pro upsell — non-Pro users only */}
       {!isPro && !hideProCtas && (
-        <div className="border-t border-neutral-100 bg-neutral-50">
+        <div className="bg-[#141414]">
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12">
             <div className="max-w-xl">
-              <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-3">
+              <p className="text-xs font-semibold tracking-widest uppercase text-[#6A6A6A] mb-3">
                 Pro
               </p>
-              <h2 className="text-lg font-bold text-neutral-900 mb-6">
+              <h2 className="text-lg font-black text-white mb-6">
                 Go deeper with this pack
               </h2>
               <div className="space-y-4 mb-8">
                 <div className="flex gap-3">
-                  <span className="mt-0.5 w-4 h-4 rounded-full bg-neutral-900 flex-shrink-0 flex items-center justify-center">
-                    <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 10 8">
+                  <span className="mt-0.5 w-4 h-4 rounded-sm bg-[#AAFF00] flex-shrink-0 flex items-center justify-center">
+                    <svg className="w-2.5 h-2.5 text-black" fill="none" viewBox="0 0 10 8">
                       <path d="M1 4l3 3 5-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </span>
                   <div>
-                    <p className="text-sm font-semibold text-neutral-900">How to book the concierge picks</p>
-                    <p className="text-xs text-neutral-500 mt-0.5 leading-5">Specific operator contacts, lead times, and exactly what to ask — not just a name and a link.</p>
+                    <p className="text-sm font-semibold text-white">How to book the concierge picks</p>
+                    <p className="text-xs text-[#6A6A6A] mt-0.5 leading-5">Specific operator contacts, lead times, and exactly what to ask — not just a name and a link.</p>
                   </div>
                 </div>
                 <div className="flex gap-3">
-                  <span className="mt-0.5 w-4 h-4 rounded-full bg-neutral-900 flex-shrink-0 flex items-center justify-center">
-                    <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 10 8">
+                  <span className="mt-0.5 w-4 h-4 rounded-sm bg-[#AAFF00] flex-shrink-0 flex items-center justify-center">
+                    <svg className="w-2.5 h-2.5 text-black" fill="none" viewBox="0 0 10 8">
                       <path d="M1 4l3 3 5-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </span>
                   <div>
-                    <p className="text-sm font-semibold text-neutral-900">Sell-out reminders</p>
-                    <p className="text-xs text-neutral-500 mt-0.5 leading-5">Timed alerts before the high-demand experiences in this pack close their books.</p>
+                    <p className="text-sm font-semibold text-white">Sell-out reminders</p>
+                    <p className="text-xs text-[#6A6A6A] mt-0.5 leading-5">Timed alerts before the high-demand experiences in this pack close their books.</p>
                   </div>
                 </div>
                 <div className="flex gap-3">
-                  <span className="mt-0.5 w-4 h-4 rounded-full bg-neutral-900 flex-shrink-0 flex items-center justify-center">
-                    <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 10 8">
+                  <span className="mt-0.5 w-4 h-4 rounded-sm bg-[#AAFF00] flex-shrink-0 flex items-center justify-center">
+                    <svg className="w-2.5 h-2.5 text-black" fill="none" viewBox="0 0 10 8">
                       <path d="M1 4l3 3 5-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </span>
                   <div>
-                    <p className="text-sm font-semibold text-neutral-900">Unlimited Trip Boards</p>
-                    <p className="text-xs text-neutral-500 mt-0.5 leading-5">Plan and save across as many trips as you like — not just this one.</p>
+                    <p className="text-sm font-semibold text-white">Unlimited Trip Boards</p>
+                    <p className="text-xs text-[#6A6A6A] mt-0.5 leading-5">Plan and save across as many trips as you like — not just this one.</p>
                   </div>
                 </div>
               </div>
               {!hideProCtas && (
                 <Link
                   href="/pro"
-                  className="inline-flex items-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
+                  className="inline-flex items-center px-6 py-3 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors"
                 >
                   Upgrade to Pro
                 </Link>

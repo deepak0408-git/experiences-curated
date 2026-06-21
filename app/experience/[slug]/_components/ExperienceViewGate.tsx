@@ -68,14 +68,14 @@ export default function ExperienceViewGate({
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
 
       {/* Modal */}
-      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 z-10">
-        <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-3">
+      <div className="relative w-full max-w-md bg-[#141414] border border-[#2A2A2A] rounded-sm shadow-2xl p-8 z-10">
+        <p className="text-xs font-semibold tracking-widest uppercase text-[#6A6A6A] mb-3">
           You&apos;ve read {FREE_VIEWS} free experiences
         </p>
-        <h2 className="text-2xl font-bold text-neutral-900 leading-snug mb-3">
+        <h2 className="text-2xl font-black text-white leading-snug mb-3">
           Enjoying the guide?
         </h2>
-        <p className="text-sm text-neutral-600 leading-6 mb-6">
+        <p className="text-sm text-[#A3A3A3] leading-6 mb-6">
           The full {eventPackName} pack has everything you need — where to eat,
           where to stay, how to get there, and the insider moves that make the difference.
           Hand-picked, not aggregated.
@@ -83,7 +83,7 @@ export default function ExperienceViewGate({
 
         <Link
           href={`/event-pack/${eventPackSlug}`}
-          className="block w-full text-center px-6 py-3.5 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors mb-3"
+          className="block w-full text-center px-6 py-3.5 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors mb-3"
         >
           {priceDisplay === "Free"
             ? "Get the full pack for free"
@@ -92,7 +92,7 @@ export default function ExperienceViewGate({
 
         <Link
           href="/"
-          className="block w-full text-center text-xs text-neutral-400 hover:text-neutral-700 transition-colors py-2"
+          className="block w-full text-center text-xs text-[#6A6A6A] hover:text-[#AAFF00] transition-colors py-2"
         >
           Go home
         </Link>

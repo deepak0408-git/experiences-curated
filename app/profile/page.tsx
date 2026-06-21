@@ -83,9 +83,9 @@ export default async function ProfilePage() {
             Experiences | Curated
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/search" className="hidden sm:block text-sm text-[#6A6A6A] hover:text-white transition-colors">Browse experiences</Link>
-            <Link href="/trip-board" className="text-sm text-[#6A6A6A] hover:text-white transition-colors">Trip Board</Link>
-            <Link href="/my-travels" className="hidden sm:block text-sm text-[#6A6A6A] hover:text-white transition-colors">My Travels</Link>
+            <Link href="/search" className="hidden sm:block text-sm text-[#6A6A6A] hover:text-[#AAFF00] transition-colors">Browse experiences</Link>
+            <Link href="/trip-board" className="text-sm text-[#6A6A6A] hover:text-[#AAFF00] transition-colors">Trip Board</Link>
+            <Link href="/my-travels" className="hidden sm:block text-sm text-[#6A6A6A] hover:text-[#AAFF00] transition-colors">My Travels</Link>
           </div>
         </div>
       </nav>

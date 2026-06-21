@@ -213,7 +213,7 @@ export default async function ExperiencePage({
     (ARCHETYPE_PREFERRED_TYPES[archetype] ?? []).includes(exp.experienceType);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#0A0A0A]">
       <ExperienceViewGate
         slug={slug}
         eventPackSlug="wimbledon-2026"
@@ -228,7 +228,7 @@ export default async function ExperiencePage({
       />
       {/* ── Hero ── */}
       {exp.heroImageUrl ? (
-        <div className="relative h-[55vh] min-h-[380px] overflow-hidden bg-neutral-900">
+        <div className="relative h-[55vh] min-h-[380px] overflow-hidden bg-[#0A0A0A]">
           <Image
             src={exp.heroImageUrl}
             alt={exp.heroImageAlt ?? exp.title}
@@ -249,21 +249,21 @@ export default async function ExperiencePage({
             priority
           />
           {exp.heroImageCredit && (
-            <p className="absolute bottom-3 right-4 text-xs text-white/60">
+            <p className="absolute bottom-3 right-4 text-xs text-white/50">
               {exp.heroImageCredit}
             </p>
           )}
         </div>
       ) : (
-        <div className="h-2 bg-neutral-900" />
+        <div className="h-2 bg-[#141414]" />
       )}
 
       {/* ── Content ── */}
       <div className="max-w-3xl mx-auto px-6 py-12">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-xs text-neutral-400 mb-6">
-          <Link href="/" className="hover:text-neutral-900 transition-colors">Home</Link>
+        <nav className="flex items-center gap-2 text-xs text-[#6A6A6A] mb-6">
+          <Link href="/" className="hover:text-[#AAFF00] transition-colors">Home</Link>
           <span>·</span>
           <span>{exp.destinationName}, {exp.destinationCountry.toUpperCase()}</span>
           {exp.neighborhood && (
@@ -276,28 +276,28 @@ export default async function ExperiencePage({
 
         {/* Type badge */}
         <div className="mb-4 flex items-center gap-3">
-          <span className="inline-block text-xs font-semibold tracking-widest uppercase text-neutral-400">
+          <span className="inline-block text-xs font-semibold tracking-widest uppercase text-[#6A6A6A]">
             {TYPE_LABELS[exp.experienceType] ?? exp.experienceType}
           </span>
           {hasVisited && (
-            <span className="inline-flex items-center gap-1 text-[10px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5">
+            <span className="inline-flex items-center gap-1 text-[10px] font-medium text-[#AAFF00] bg-[#AAFF00]/10 border border-[#AAFF00]/30 rounded-sm px-2 py-0.5">
               ✓ You{`'`}ve been here{visitRating ? ` · ${visitRating}/5` : ""}
             </span>
           )}
           {!hasVisited && isArchetypeMatch && (
-            <span className="inline-block text-[10px] font-medium text-neutral-400 border border-neutral-200 rounded-full px-2 py-0.5">
+            <span className="inline-block text-[10px] font-medium text-[#6A6A6A] border border-[#2A2A2A] rounded-sm px-2 py-0.5">
               Picked for your profile
             </span>
           )}
         </div>
 
         {/* Title */}
-        <h1 className="text-3xl sm:text-4xl font-bold text-neutral-900 leading-tight tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-black text-[#AAFF00] leading-tight tracking-tight">
           {exp.title}
         </h1>
 
         {exp.subtitle && (
-          <p className="mt-3 text-lg text-neutral-500 leading-relaxed">
+          <p className="mt-3 text-lg text-[#A3A3A3] leading-relaxed">
             {exp.subtitle}
           </p>
         )}
@@ -306,16 +306,16 @@ export default async function ExperiencePage({
           <div className="mt-3 flex items-center gap-1.5">
             <div className="flex items-center gap-0.5">
               {[1,2,3,4,5].map((s) => (
-                <span key={s} className={`text-sm ${s <= Math.round(Number(avgRating)) ? "text-amber-400" : "text-neutral-200"}`}>★</span>
+                <span key={s} className={`text-sm ${s <= Math.round(Number(avgRating)) ? "text-amber-400" : "text-[#2A2A2A]"}`}>★</span>
               ))}
             </div>
-            <span className="text-xs font-medium text-neutral-600">{Number(avgRating).toFixed(1)}</span>
-            <span className="text-xs text-neutral-400">· {ratingCount} traveller{ratingCount !== 1 ? "s" : ""}</span>
+            <span className="text-xs font-medium text-[#A3A3A3]">{Number(avgRating).toFixed(1)}</span>
+            <span className="text-xs text-[#6A6A6A]">· {ratingCount} traveller{ratingCount !== 1 ? "s" : ""}</span>
           </div>
         )}
 
         {/* Meta row */}
-        <div className="flex flex-wrap items-center gap-3 mt-6 pt-6 border-t border-neutral-100">
+        <div className="flex flex-wrap items-center gap-3 mt-6 pt-6 border-t border-[#2A2A2A]">
           {exp.budgetTier && (
             <MetaBadge label={BUDGET_LABELS[exp.budgetTier]} />
           )}
@@ -340,9 +340,9 @@ export default async function ExperiencePage({
 
         {/* Body */}
         {exp.bodyContent && (
-          <div className="mt-10 prose prose-neutral prose-lg max-w-none">
+          <div className="mt-10 max-w-none">
             {exp.bodyContent.split("\n\n").map((para, i) => (
-              <p key={i} className="text-neutral-800 leading-8 mb-5">
+              <p key={i} className="text-[#A3A3A3] leading-8 mb-5">
                 {renderInline(para)}
               </p>
             ))}
@@ -351,12 +351,12 @@ export default async function ExperiencePage({
 
         {/* Why It's Special */}
         {exp.whyItsSpecial && (
-          <div className="mt-12 border-l-4 border-neutral-900 pl-6 py-2">
-            <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-3">
-              Why it's special
+          <div className="mt-12 border-l-4 border-[#AAFF00] pl-6 py-2">
+            <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-3">
+              Why it&apos;s special
             </p>
             {exp.whyItsSpecial.split("\n\n").map((para, i) => (
-              <p key={i} className="text-neutral-700 leading-8 mb-4 italic">
+              <p key={i} className="text-[#A3A3A3] leading-8 mb-4 italic">
                 {para}
               </p>
             ))}
@@ -366,16 +366,16 @@ export default async function ExperiencePage({
         {/* Insider Tips */}
         {exp.insiderTips && exp.insiderTips.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-5">
+            <h2 className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-5">
               Insider tips
             </h2>
             <ol className="space-y-4">
               {exp.insiderTips.filter(Boolean).map((tip, i) => (
                 <li key={i} className="flex gap-4">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-neutral-900 text-white text-xs font-bold flex items-center justify-center mt-0.5">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-sm bg-[#AAFF00] text-black text-xs font-black flex items-center justify-center mt-0.5">
                     {i + 1}
                   </span>
-                  <p className="text-neutral-700 leading-7 text-[15px]">{tip}</p>
+                  <p className="text-[#A3A3A3] leading-7 text-[15px]">{tip}</p>
                 </li>
               ))}
             </ol>
@@ -384,8 +384,8 @@ export default async function ExperiencePage({
 
         {/* Practical Info */}
         {practical && (
-          <div className="mt-12 rounded-xl bg-neutral-50 border border-neutral-200 p-6">
-            <h2 className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-5">
+          <div className="mt-12 rounded-sm bg-[#141414] border border-[#2A2A2A] p-6">
+            <h2 className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-5">
               Practical info
             </h2>
             <dl className="space-y-3">
@@ -400,7 +400,7 @@ export default async function ExperiencePage({
               )}
               {exp.bookingLinks && (exp.bookingLinks as Array<{ platform: string; url: string }>).length > 0 && (
                 <div className="flex gap-4">
-                  <dt className="w-[30%] flex-shrink-0 text-sm font-medium text-neutral-500">Book</dt>
+                  <dt className="w-[30%] flex-shrink-0 text-sm font-medium text-[#6A6A6A]">Book</dt>
                   <dd className="flex flex-wrap gap-2">
                     {(exp.bookingLinks as Array<{ platform: string; url: string }>).map((link) => (
                       <a
@@ -408,7 +408,7 @@ export default async function ExperiencePage({
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-block text-sm text-neutral-900 underline underline-offset-2 hover:text-neutral-500 transition-colors"
+                        className="inline-block text-sm text-[#AAFF00] underline underline-offset-2 hover:text-white transition-colors"
                       >
                         {link.platform}
                       </a>
@@ -424,7 +424,7 @@ export default async function ExperiencePage({
               )}
               {practical.website && (
                 <div className="flex gap-4">
-                  <dt className="w-[30%] flex-shrink-0 text-sm font-medium text-neutral-500">Website</dt>
+                  <dt className="w-[30%] flex-shrink-0 text-sm font-medium text-[#6A6A6A]">Website</dt>
                   <dd className="min-w-0 break-all flex flex-col gap-1">
                     {practical.website.split(",").map((url) => {
                       const trimmed = url.trim();
@@ -435,7 +435,7 @@ export default async function ExperiencePage({
                           href={href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm text-neutral-900 underline hover:text-neutral-500 transition-colors"
+                          className="text-sm text-[#AAFF00] underline hover:text-white transition-colors"
                         >
                           {trimmed.replace(/^https?:\/\//, "")}
                         </a>
@@ -450,44 +450,44 @@ export default async function ExperiencePage({
 
         {/* What to Avoid */}
         {exp.whatToAvoid && (
-          <div className="mt-8 rounded-xl bg-amber-50 border border-amber-200 p-6">
-            <h2 className="text-xs font-semibold tracking-widest uppercase text-amber-700 mb-3">
+          <div className="mt-8 rounded-sm bg-[#141414] border border-[#2A2A2A] p-6">
+            <h2 className="text-xs font-semibold tracking-widest uppercase text-amber-400 mb-3">
               What to avoid
             </h2>
-            <p className="text-neutral-700 text-sm leading-7">{exp.whatToAvoid}</p>
+            <p className="text-[#A3A3A3] text-sm leading-7">{exp.whatToAvoid}</p>
           </div>
         )}
 
         {/* Curator attribution — only shown when a named curator is assigned */}
         {exp.curatorName && (
-          <div className="mt-12 pt-8 border-t border-neutral-100 flex items-start gap-4">
+          <div className="mt-12 pt-8 border-t border-[#2A2A2A] flex items-start gap-4">
             {exp.curatorImage ? (
               <Image
                 src={exp.curatorImage}
                 alt={exp.curatorName}
                 width={40}
                 height={40}
-                className="rounded-full object-cover flex-shrink-0"
+                className="rounded-sm object-cover flex-shrink-0"
               />
             ) : (
-              <div className="w-10 h-10 rounded-full bg-neutral-200 flex items-center justify-center flex-shrink-0 text-sm font-medium text-neutral-600">
+              <div className="w-10 h-10 rounded-sm bg-[#1A1A1A] border border-[#2A2A2A] flex items-center justify-center flex-shrink-0 text-sm font-black text-[#AAFF00]">
                 {exp.curatorName[0]}
               </div>
             )}
             <div>
-              <p className="text-sm font-medium text-neutral-900">{exp.curatorName}</p>
-              <p className="text-xs text-neutral-400 mt-0.5">Curator</p>
+              <p className="text-sm font-medium text-white">{exp.curatorName}</p>
+              <p className="text-xs text-[#6A6A6A] mt-0.5">Curator</p>
             </div>
           </div>
         )}
 
         {/* Tags */}
         {exp.moodTags && exp.moodTags.length > 0 && (
-          <div className="mt-10 pt-8 border-t border-neutral-100 flex flex-wrap gap-2">
+          <div className="mt-10 pt-8 border-t border-[#2A2A2A] flex flex-wrap gap-2">
             {exp.moodTags.map((tag) => (
               <span
                 key={tag}
-                className="px-3 py-1 rounded-full bg-neutral-100 text-xs text-neutral-500 capitalize"
+                className="px-3 py-1 rounded-sm bg-[#141414] border border-[#2A2A2A] text-xs text-[#6A6A6A] capitalize"
               >
                 {tag}
               </span>
@@ -495,7 +495,7 @@ export default async function ExperiencePage({
             {exp.interestCategories?.map((cat) => (
               <span
                 key={cat}
-                className="px-3 py-1 rounded-full bg-neutral-100 text-xs text-neutral-500 capitalize"
+                className="px-3 py-1 rounded-sm bg-[#141414] border border-[#2A2A2A] text-xs text-[#6A6A6A] capitalize"
               >
                 {cat}
               </span>
@@ -505,13 +505,13 @@ export default async function ExperiencePage({
 
         {/* Draft watermark */}
         {exp.status === "draft" && (
-          <div className="mt-10 text-center text-xs text-neutral-300 font-medium tracking-widest uppercase">
+          <div className="mt-10 text-center text-xs text-[#2A2A2A] font-medium tracking-widest uppercase">
             Draft — not published
           </div>
         )}
 
         {/* Save CTA */}
-        <div className="mt-12 pt-8 border-t border-neutral-100">
+        <div className="mt-12 pt-8 border-t border-[#2A2A2A]">
           <SaveExperienceCTA
             experienceId={exp.id}
             slug={slug}
@@ -523,9 +523,9 @@ export default async function ExperiencePage({
 
       {/* Related experiences */}
       {related.length > 0 && (
-        <div className="border-t border-neutral-100 bg-neutral-50">
+        <div className="border-t border-[#2A2A2A] bg-[#141414]">
           <div className="max-w-3xl mx-auto px-6 py-12">
-            <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-6">
+            <p className="text-xs font-semibold tracking-widest uppercase text-[#6A6A6A] mb-6">
               More from this guide
             </p>
             <div className="grid sm:grid-cols-3 gap-5">
@@ -533,10 +533,10 @@ export default async function ExperiencePage({
                 <Link
                   key={rel.id}
                   href={`/experience/${rel.slug}`}
-                  className="group rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors bg-white"
+                  className="group rounded-sm border border-[#2A2A2A] overflow-hidden hover:border-[#AAFF00] transition-colors bg-[#0A0A0A]"
                 >
                   {rel.heroImageUrl ? (
-                    <div className="relative h-32 overflow-hidden bg-neutral-100">
+                    <div className="relative h-32 overflow-hidden bg-[#1A1A1A]">
                       <Image
                         src={rel.heroImageUrl}
                         alt={rel.title}
@@ -546,17 +546,17 @@ export default async function ExperiencePage({
                       />
                     </div>
                   ) : (
-                    <div className="h-32 bg-neutral-100" />
+                    <div className="h-32 bg-[#1A1A1A]" />
                   )}
                   <div className="p-4">
-                    <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-1.5">
+                    <p className="text-xs font-semibold tracking-widest uppercase text-[#6A6A6A] mb-1.5">
                       {TYPE_LABELS[rel.experienceType] ?? rel.experienceType}
                     </p>
-                    <h3 className="text-sm font-semibold text-neutral-900 leading-snug group-hover:text-neutral-600 transition-colors line-clamp-2">
+                    <h3 className="text-sm font-black text-white leading-snug group-hover:text-[#AAFF00] transition-colors line-clamp-2">
                       {rel.title}
                     </h3>
                     {rel.neighborhood && (
-                      <p className="mt-1.5 text-xs text-neutral-400">{rel.neighborhood}</p>
+                      <p className="mt-1.5 text-xs text-[#6A6A6A]">{rel.neighborhood}</p>
                     )}
                   </div>
                 </Link>
@@ -624,10 +624,10 @@ function MetaBadge({
   return (
     <span
       className={cn(
-        "px-3 py-1 rounded-full text-xs font-medium",
+        "px-3 py-1 rounded-sm text-xs font-medium",
         highlight
-          ? "bg-amber-100 text-amber-800"
-          : "bg-neutral-100 text-neutral-600"
+          ? "bg-[#AAFF00]/10 text-[#AAFF00] border border-[#AAFF00]/30"
+          : "bg-[#141414] text-[#6A6A6A] border border-[#2A2A2A]"
       )}
     >
       {label}
@@ -649,7 +649,7 @@ function renderInline(text: string) {
           href={link[2]}
           target="_blank"
           rel="noopener noreferrer"
-          className="underline underline-offset-2 text-neutral-900 hover:text-neutral-500 transition-colors"
+          className="underline underline-offset-2 text-[#AAFF00] hover:text-white transition-colors"
         >
           {link[1]}
         </a>
@@ -663,7 +663,7 @@ function linkifyText(text: string) {
   const parts = text.split(/(https?:\/\/[^\s]+)/g);
   return parts.map((part, i) =>
     part.startsWith("http") ? (
-      <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-neutral-600 break-all">
+      <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 text-[#AAFF00] hover:text-white break-all transition-colors">
         {part}
       </a>
     ) : part
@@ -673,8 +673,8 @@ function linkifyText(text: string) {
 function PracticalRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex gap-4">
-      <dt className="w-[30%] flex-shrink-0 text-sm font-medium text-neutral-500">{label}</dt>
-      <dd className="text-sm text-neutral-800 leading-6 min-w-0 break-words">{linkifyText(value)}</dd>
+      <dt className="w-[30%] flex-shrink-0 text-sm font-medium text-[#6A6A6A]">{label}</dt>
+      <dd className="text-sm text-[#A3A3A3] leading-6 min-w-0 break-words">{linkifyText(value)}</dd>
     </div>
   );
 }

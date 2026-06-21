@@ -52,14 +52,14 @@ export default function SaveExperienceCTA({
       <div className="flex items-center gap-3">
         {isSaved ? (
           <>
-            <span className="text-sm text-neutral-900 font-medium">✓ Saved to your Trip Board</span>
-            <Link href="/trip-board" className="text-xs text-neutral-500 hover:text-neutral-900 transition-colors underline underline-offset-2">
+            <span className="text-sm text-[#AAFF00] font-medium">✓ Saved to your Trip Board</span>
+            <Link href="/trip-board" className="text-xs text-[#6A6A6A] hover:text-[#AAFF00] transition-colors underline underline-offset-2">
               View board
             </Link>
             <button
               onClick={handleUnsave}
               disabled={isPending}
-              className="text-xs text-neutral-400 hover:text-neutral-700 transition-colors underline underline-offset-2"
+              className="text-xs text-[#6A6A6A] hover:text-[#AAFF00] transition-colors underline underline-offset-2"
             >
               Remove
             </button>
@@ -68,7 +68,7 @@ export default function SaveExperienceCTA({
           <button
             onClick={handleSave}
             disabled={isPending}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-neutral-300 text-sm font-medium text-neutral-700 hover:border-neutral-900 hover:text-neutral-900 transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm border border-[#2A2A2A] text-sm font-medium text-[#6A6A6A] hover:border-[#AAFF00] hover:text-[#AAFF00] transition-colors disabled:opacity-50"
           >
             <span>+</span> Save to Trip Board
           </button>
@@ -79,8 +79,8 @@ export default function SaveExperienceCTA({
 
   if (otpStatus === "sent") {
     return (
-      <p className="text-sm text-neutral-500">
-        Magic link sent to <span className="text-neutral-900 font-medium">{email}</span>. Check your inbox.
+      <p className="text-sm text-[#A3A3A3]">
+        Magic link sent to <span className="text-white font-medium">{email}</span>. Check your inbox.
       </p>
     );
   }
@@ -94,17 +94,17 @@ export default function SaveExperienceCTA({
           onChange={(e) => setEmail(e.target.value)}
           placeholder="your@email.com"
           required
-          className="flex-1 min-w-[200px] px-4 py-2.5 rounded-lg border border-neutral-200 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-400 transition-colors"
+          className="flex-1 min-w-[200px] px-4 py-2.5 rounded-sm border border-[#2A2A2A] bg-[#1A1A1A] text-sm text-white placeholder:text-[#6A6A6A] focus:outline-none focus:border-[#AAFF00] transition-colors"
         />
         <button
           type="submit"
           disabled={otpStatus === "loading"}
-          className="px-5 py-2.5 rounded-lg bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors disabled:opacity-50 whitespace-nowrap"
+          className="px-5 py-2.5 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors disabled:opacity-50 whitespace-nowrap"
         >
           {otpStatus === "loading" ? "Sending…" : "Send sign-in link"}
         </button>
         {otpStatus === "error" && (
-          <p className="w-full text-xs text-red-500">Something went wrong. Please try again.</p>
+          <p className="w-full text-xs text-red-400">Something went wrong. Please try again.</p>
         )}
       </form>
     );
@@ -113,7 +113,7 @@ export default function SaveExperienceCTA({
   return (
     <button
       onClick={() => setShowSignIn(true)}
-      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-neutral-300 text-sm font-medium text-neutral-700 hover:border-neutral-900 hover:text-neutral-900 transition-colors"
+      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm border border-[#2A2A2A] text-sm font-medium text-[#6A6A6A] hover:border-[#AAFF00] hover:text-[#AAFF00] transition-colors"
     >
       <span>+</span> Save to your Trip Board
     </button>

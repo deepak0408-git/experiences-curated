@@ -21,18 +21,18 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 const TYPE_COLORS: Record<string, string> = {
-  fan_experience: "bg-purple-100 text-purple-700",
-  accommodation: "bg-blue-100 text-blue-700",
-  dining: "bg-orange-100 text-orange-700",
-  transit: "bg-neutral-100 text-neutral-600",
-  sports_venue: "bg-green-100 text-green-700",
-  neighborhood: "bg-teal-100 text-teal-700",
-  day_trip: "bg-teal-100 text-teal-700",
-  activity: "bg-yellow-100 text-yellow-700",
-  cultural_site: "bg-pink-100 text-pink-700",
-  multi_day: "bg-indigo-100 text-indigo-700",
-  natural_wonder: "bg-emerald-100 text-emerald-700",
-  event: "bg-red-100 text-red-700",
+  fan_experience: "bg-[#1A1A1A] text-[#AAFF00]",
+  accommodation: "bg-[#1A1A1A] text-[#AAFF00]",
+  dining: "bg-[#1A1A1A] text-[#AAFF00]",
+  transit: "bg-[#1A1A1A] text-[#AAFF00]",
+  sports_venue: "bg-[#1A1A1A] text-[#AAFF00]",
+  neighborhood: "bg-[#1A1A1A] text-[#AAFF00]",
+  day_trip: "bg-[#1A1A1A] text-[#AAFF00]",
+  activity: "bg-[#1A1A1A] text-[#AAFF00]",
+  cultural_site: "bg-[#1A1A1A] text-[#AAFF00]",
+  multi_day: "bg-[#1A1A1A] text-[#AAFF00]",
+  natural_wonder: "bg-[#1A1A1A] text-[#AAFF00]",
+  event: "bg-[#1A1A1A] text-[#AAFF00]",
 };
 
 function RankRow({
@@ -47,7 +47,7 @@ function RankRow({
   onBlur: (id: string) => void;
 }) {
   return (
-    <div className="flex items-center gap-4 py-3 border-b border-neutral-100 last:border-0">
+    <div className="flex items-center gap-4 py-3 border-b border-[#2A2A2A] last:border-0">
       <input
         type="number"
         min={1}
@@ -56,14 +56,14 @@ function RankRow({
         onChange={(e) => onChange(exp.id, e.target.value)}
         onBlur={() => onBlur(exp.id)}
         placeholder="—"
-        className="w-16 text-center rounded-md border border-neutral-200 px-2 py-1.5 text-sm font-semibold text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent"
+        className="w-16 text-center rounded-sm border border-[#2A2A2A] bg-[#1A1A1A] px-2 py-1.5 text-sm font-semibold text-white focus:outline-none focus:ring-1 focus:ring-[#AAFF00] focus:border-[#AAFF00]"
       />
       <span
-        className={`hidden sm:inline-block text-xs font-medium px-2 py-0.5 rounded-full ${TYPE_COLORS[exp.experienceType] ?? "bg-neutral-100 text-neutral-600"}`}
+        className={`hidden sm:inline-block text-xs font-medium px-2 py-0.5 rounded-sm ${TYPE_COLORS[exp.experienceType] ?? "bg-[#1A1A1A] text-[#AAFF00]"}`}
       >
         {TYPE_LABELS[exp.experienceType] ?? exp.experienceType}
       </span>
-      <span className="text-sm text-neutral-900 flex-1">{exp.title}</span>
+      <span className="text-sm text-[#A3A3A3] flex-1">{exp.title}</span>
     </div>
   );
 }
@@ -126,10 +126,10 @@ export default function RankerForm({
     <form onSubmit={handleSubmit}>
       {ranked.length > 0 && (
         <div className="mb-8">
-          <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-3">
+          <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-3">
             Ranked — {ranked.length}
           </p>
-          <div className="rounded-xl border border-neutral-200 bg-white px-5">
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] px-5">
             {ranked.map((exp) => (
               <RankRow
                 key={exp.id}
@@ -145,10 +145,10 @@ export default function RankerForm({
 
       {unranked.length > 0 && (
         <div className="mb-8">
-          <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-3">
+          <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-3">
             Unranked — {unranked.length}
           </p>
-          <div className="rounded-xl border border-dashed border-neutral-300 bg-white px-5">
+          <div className="rounded-sm border border-dashed border-[#2A2A2A] bg-[#141414] px-5">
             {unranked.map((exp) => (
               <RankRow
                 key={exp.id}
@@ -163,13 +163,13 @@ export default function RankerForm({
       )}
 
       {error && (
-        <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <div className="mb-4 rounded-sm border border-red-900 bg-red-950 px-4 py-3 text-sm text-red-400">
           {error}
         </div>
       )}
 
       {saved && (
-        <div className="mb-4 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+        <div className="mb-4 rounded-sm border border-[#2A2A2A] bg-[#141414] px-4 py-3 text-sm text-[#AAFF00]">
           Ranks saved.
         </div>
       )}
@@ -177,7 +177,7 @@ export default function RankerForm({
       <button
         type="submit"
         disabled={isPending}
-        className="px-6 py-2.5 rounded-lg bg-neutral-900 text-sm font-medium text-white hover:bg-neutral-700 transition-colors disabled:opacity-50"
+        className="px-6 py-2.5 rounded-sm bg-[#AAFF00] text-sm font-black text-black hover:bg-[#BBFF33] transition-colors disabled:opacity-50"
       >
         {isPending ? "Saving…" : "Save ranks"}
       </button>

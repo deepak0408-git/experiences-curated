@@ -68,7 +68,7 @@ export default function ExportCalendar({ items }: { items: PlannerItem[] }) {
   return (
     <button
       onClick={download}
-      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-900 text-white text-xs font-semibold hover:bg-neutral-700 transition-colors"
+      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-sm border border-[#2A2A2A] text-xs font-medium text-[#6A6A6A] hover:border-[#AAFF00] hover:text-[#AAFF00] transition-colors"
     >
       Export itinerary
       <span className="opacity-60">({scheduledCount})</span>

@@ -22,8 +22,8 @@ export default async function RankerPage({
     <div>
       <div className="flex items-start justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-neutral-900">Pack Ranker</h1>
-          <p className="mt-1 text-sm text-neutral-500">
+          <h1 className="text-2xl font-black text-[#AAFF00]">Pack Ranker</h1>
+          <p className="mt-1 text-sm text-[#6A6A6A]">
             Set the display order for experiences inside each event pack.
           </p>
         </div>
@@ -31,7 +31,7 @@ export default async function RankerPage({
 
       {/* Event picker */}
       <div className="mb-8">
-        <label className="block text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-2">
+        <label className="block text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-2">
           Select event
         </label>
         <div className="flex gap-2 flex-wrap">
@@ -39,10 +39,10 @@ export default async function RankerPage({
             <Link
               key={event.id}
               href={`/curator/ranker?event=${event.id}`}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              className={`px-4 py-2 rounded-sm text-sm font-medium transition-colors ${
                 selectedEvent?.id === event.id
-                  ? "bg-neutral-900 text-white"
-                  : "bg-white border border-neutral-200 text-neutral-600 hover:border-neutral-400"
+                  ? "bg-[#AAFF00] text-black font-black"
+                  : "border border-[#2A2A2A] text-[#6A6A6A] hover:border-[#AAFF00] hover:text-[#AAFF00]"
               }`}
             >
               {event.name}
@@ -53,11 +53,11 @@ export default async function RankerPage({
 
       {/* Ranker */}
       {!selectedEvent && (
-        <p className="text-sm text-neutral-400">Select an event above to start ranking.</p>
+        <p className="text-sm text-[#6A6A6A]">Select an event above to start ranking.</p>
       )}
 
       {selectedEvent && experiences.length === 0 && (
-        <p className="text-sm text-neutral-400">
+        <p className="text-sm text-[#6A6A6A]">
           No experiences linked to {selectedEvent.name} yet.
         </p>
       )}
