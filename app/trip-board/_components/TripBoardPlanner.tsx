@@ -344,10 +344,14 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                     <div className="flex-1 min-w-0 px-3 py-2.5">
                       <div className="flex items-start justify-between gap-2 mb-1">
                         <div className="min-w-0">
-                          <span className="text-[10px] font-semibold tracking-widest uppercase text-[#6A6A6A]">
+                          <span className="text-[10px] font-black tracking-widest uppercase text-[#AAFF00]">
                             {TYPE_LABELS[item.experienceType] ?? item.experienceType}
-                            {item.budgetTier ? ` · ${BUDGET_LABELS[item.budgetTier]}` : ""}
                           </span>
+                          {item.budgetTier && (
+                            <span className="text-[10px] font-semibold tracking-widest uppercase text-[#6A6A6A]">
+                              {` · ${BUDGET_LABELS[item.budgetTier]}`}
+                            </span>
+                          )}
                           <Link href={`/experience/${item.slug}`}>
                             <h3 className="text-sm font-black text-white leading-snug line-clamp-1 hover:text-[#AAFF00] transition-colors mt-0.5">
                               {item.title}
@@ -379,7 +383,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                         {item.scheduledAt && (
                           <button
                             onClick={() => handleScheduleRemove(item.savedItemId)}
-                            className="px-2.5 py-1 rounded-sm text-xs font-medium bg-[#1A1A1A] text-[#6A6A6A] hover:bg-red-900/30 hover:text-red-400 transition-colors"
+                            className="px-2.5 py-1 rounded-sm text-xs font-medium bg-[#1A1A1A] text-[#6A6A6A] hover:text-red-400 transition-colors"
                           >
                             − Unschedule
                           </button>
