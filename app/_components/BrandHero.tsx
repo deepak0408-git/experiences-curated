@@ -135,7 +135,7 @@ export default function BrandHero({
             {/* Featured event rows */}
             <div className="flex flex-col gap-2.5 mb-4">
               {featuredEvents.map((ev) => (
-                <div key={ev.slug} className="flex items-center gap-4 flex-wrap">
+                <div key={ev.slug} className="grid items-center gap-4" style={{ gridTemplateColumns: "380px auto" }}>
                   <div className="flex items-center gap-2 min-w-0">
                     <span className="text-xs font-black text-[#AAFF00] flex-shrink-0">
                       {SPORT_LABELS[ev.sport] ?? ev.sport}
@@ -143,13 +143,13 @@ export default function BrandHero({
                     <span className="text-white/80 text-sm font-medium">
                       {shortEventName(ev.name, ev.slug)}
                     </span>
-                    <span className="text-white/40 text-sm">
+                    <span className="text-white/40 text-sm whitespace-nowrap">
                       · {formatShortDateRange(ev.startDate, ev.endDate)}
                     </span>
                   </div>
                   <Link
                     href={`/event-pack/${ev.slug}`}
-                    className="flex-shrink-0 inline-flex items-center justify-center w-52 py-1.5 rounded-sm bg-[#AAFF00] text-black text-xs font-black tracking-wide hover:bg-[#BBFF33] transition-colors"
+                    className="inline-flex items-center justify-center w-52 py-1.5 rounded-sm bg-[#AAFF00] text-black text-xs font-black tracking-wide hover:bg-[#BBFF33] transition-colors"
                   >
                     {ev.isFree ? "Get the free event pack →" : "Get the event pack →"}
                   </Link>
