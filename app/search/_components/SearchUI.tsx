@@ -94,7 +94,7 @@ function HitsOrEmpty() {
   if (noResults) {
     return (
       <div className="py-20 text-center">
-        <p className="text-white font-black mb-1">No results for &ldquo;{results.query}&rdquo;</p>
+        <p className="text-white font-black mb-1">{results.query ? <>No results for &ldquo;{results.query}&rdquo;</> : "No results"}</p>
         <p className="text-[#6A6A6A] text-sm">Try a different search or remove filters.</p>
       </div>
     );
@@ -322,7 +322,7 @@ export function SearchUI({
       <Configure
         hitsPerPage={50}
         {...(optionalFilters.length > 0 ? { optionalFilters } : {})}
-        {...(wimbledonOnly ? { filters: 'destinationId:"75758888-28b9-4e09-82ba-f05681ecc904"' } : {})}
+        {...(wimbledonOnly ? { filters: 'sport:"tennis" AND destinationId:"75758888-28b9-4e09-82ba-f05681ecc904"' } : {})}
       />
 
       <div className="min-h-screen bg-[#0A0A0A]">
