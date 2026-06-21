@@ -68,7 +68,8 @@ function formatDateRange(start: string, end: string) {
 }
 
 function eventPriceDisplay(slug: string): string {
-  if (slug === "wimbledon-2026" && process.env.WIMBLEDON_FREE_ACCESS === "true") return "Free";
+  const FREE_EVENT_SLUGS = ["wimbledon-2026", "india-in-england-cricket-2026"];
+  if (FREE_EVENT_SLUGS.includes(slug) && process.env.WIMBLEDON_FREE_ACCESS === "true") return "Free";
   const pricing = HOMEPAGE_PRICE_BY_EVENT[slug] ?? HOMEPAGE_PRICE_BY_EVENT["wimbledon-2026"];
   const isEarlyBird = new Date() < new Date(pricing.earlyBirdCutoff);
   return isEarlyBird ? pricing.early : pricing.standard;
