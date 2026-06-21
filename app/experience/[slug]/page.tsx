@@ -117,7 +117,7 @@ export default async function ExperiencePage({
   const isEarlyBird = new Date() < new Date(process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01");
 
   // Look up the sporting event slug so we can resolve the correct pack slug/name and price
-  const FREE_EVENT_SLUGS = ["wimbledon-2026", "india-in-england-cricket-2026"];
+  const FREE_EVENT_SLUGS = (process.env.FREE_EVENT_SLUGS ?? "").split(",").filter(Boolean);
   let eventPackSlug = "wimbledon-2026";
   let eventPackName = "Wimbledon 2026";
   if (exp.sportingEventId) {

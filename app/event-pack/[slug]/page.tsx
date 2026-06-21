@@ -376,10 +376,10 @@ export default async function EventPackPage({
     hasPurchased = !!purchase;
   }
 
-  // Auto-grant free access for designated free events
-  const FREE_EVENT_SLUGS = ["wimbledon-2026", "india-in-england-cricket-2026"];
-  const freeAccessEnabled = process.env.WIMBLEDON_FREE_ACCESS === "true";
-  if (!hasPurchased && freeAccessEnabled && FREE_EVENT_SLUGS.includes(slug) && user?.email) {
+  // Auto-grant free access for designated free events (controlled via FREE_EVENT_SLUGS env var)
+  const FREE_EVENT_SLUGS = (process.env.FREE_EVENT_SLUGS ?? "").split(",").filter(Boolean);
+  const freeAccessEnabled = FREE_EVENT_SLUGS.includes(slug);
+  if (!hasPurchased && freeAccessEnabled && user?.email) {
     await grantFreeAccess(user.email);
     hasPurchased = true;
   }
@@ -422,7 +422,7 @@ export default async function EventPackPage({
 
   const pricing = PACK_PRICING[slug] ?? PACK_PRICING["wimbledon-2026"];
   const isEarlyBird = new Date() < new Date(pricing.earlyBirdCutoff);
-  const priceDisplay = isEarlyBird ? pricing.earlyBirdDisplay : pricing.standardDisplay;
+  const priceDisplay = freeAccessEnabled ? "Free" : isEarlyBird ? pricing.earlyBirdDisplay : pricing.standardDisplay;
   const priceId = isEarlyBird ? pricing.earlyBirdPriceId : pricing.standardPriceId;
   const earlyBirdCutoff = pricing.earlyBirdCutoff;
 
@@ -559,7 +559,7 @@ export default async function EventPackPage({
 
           {!isEventPast && (
             <aside className="mt-8 lg:mt-0">
-              {freeAccessEnabled && FREE_EVENT_SLUGS.includes(slug) ? (
+              {freeAccessEnabled ? (
                 <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 lg:sticky lg:top-6">
                   <span className="inline-block px-2.5 py-0.5 rounded-sm bg-[#AAFF00]/10 text-[#AAFF00] border border-[#AAFF00]/30 text-xs font-semibold mb-3">
                     Free until 29 June
@@ -745,7 +745,7 @@ export default async function EventPackPage({
               <p className="text-xs font-semibold tracking-widest uppercase text-[#6A6A6A] mb-5">
                 Ready to go?
               </p>
-              {freeAccessEnabled && FREE_EVENT_SLUGS.includes(slug) ? (
+              {freeAccessEnabled ? (
                 <>
                   <Link
                     href={`/sign-in?next=/event-pack/${slug}`}
@@ -785,7 +785,7 @@ export default async function EventPackPage({
               ) : (
                 <p className="text-xs text-[#6A6A6A]">Checkout coming soon.</p>
               )}
-              {!(freeAccessEnabled && FREE_EVENT_SLUGS.includes(slug)) && (
+              {!freeAccessEnabled && (
                 <p className="mt-5 text-xs text-[#6A6A6A]">
                   {priceDisplay} · one-time · instant access
                 </p>
