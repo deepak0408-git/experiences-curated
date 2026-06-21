@@ -291,7 +291,7 @@ export default async function HomePage() {
                       {/* Glimpse — text-only panel */}
                       {glimpse.length > 0 && (
                         <div className="mt-5 pt-4 border-t border-[#2A2A2A] bg-[#1A1A1A] rounded-sm px-4 py-3">
-                          <p className="text-xs font-black text-[#AAFF00] uppercase tracking-widest leading-tight font-mono">A taste of what&apos;s inside</p>
+                          <p className="text-xs font-black text-[#AAFF00] leading-tight">A taste of what&apos;s inside</p>
                           <ul className="mt-2 space-y-1.5">
                             {glimpse.map((exp) => (
                               <li key={exp.id} className="flex items-start gap-1.5 min-w-0">

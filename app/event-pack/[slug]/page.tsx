@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import { sportingEvents, experiences, purchases, userProfiles } from "@/schema/database";
-import { eq, and, sql } from "drizzle-orm";
+import { sportingEvents, experiences, purchases, userProfiles, sportingEventExperiences } from "@/schema/database";
+import { eq, and, sql, asc, isNotNull } from "drizzle-orm";
 import { createClient } from "@/lib/supabase/server";
 import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
@@ -288,14 +288,8 @@ export default async function EventPackPage({
 
   if (!event) notFound();
 
-  const PACK_TEASER_PICKS: Record<string, string[]> = {
-    "wimbledon-2026": ["Centre Court", "Eating"],
-    "us-open-2026": ["Night Sessions", "Arthur Ashe"],
-    "open-championship-2026": ["18th at Royal Birkdale", "Practice Day"],
-  };
-
-  // Teaser cards for the landing page — ordered by per-event picks
-  const allTeaserCandidates = await db
+  // Teaser cards — top 2 by packRank, fall back to unranked published experiences
+  const rankedTeasers = await db
     .select({
       id: experiences.id,
       title: experiences.title,
@@ -304,21 +298,45 @@ export default async function EventPackPage({
       experienceType: experiences.experienceType,
       budgetTier: experiences.budgetTier,
       neighborhood: experiences.neighborhood,
+      packRank: sportingEventExperiences.packRank,
     })
-    .from(experiences)
+    .from(sportingEventExperiences)
+    .innerJoin(experiences, eq(experiences.id, sportingEventExperiences.experienceId))
     .where(
       and(
-        eq(experiences.sportingEventId, event.id),
-        eq(experiences.status, "published")
+        eq(sportingEventExperiences.sportingEventId, event.id),
+        eq(experiences.status, "published"),
+        isNotNull(sportingEventExperiences.packRank)
       )
-    );
+    )
+    .orderBy(asc(sportingEventExperiences.packRank))
+    .limit(2);
 
-  const teaserKeywords = PACK_TEASER_PICKS[slug] ?? [];
-  const teaserPicks = teaserKeywords
-    .map(kw => allTeaserCandidates.find(e => e.title.toLowerCase().includes(kw.toLowerCase())))
-    .filter((e): e is NonNullable<typeof e> => e != null);
-  const teaserRest = allTeaserCandidates.filter(e => !teaserPicks.some(p => p.id === e.id));
-  const teaserExps = [...teaserPicks, ...teaserRest].slice(0, 2);
+  let teaserExps = rankedTeasers;
+  if (teaserExps.length < 2) {
+    const ranked_ids = teaserExps.map(e => e.id);
+    const fallback = await db
+      .select({
+        id: experiences.id,
+        title: experiences.title,
+        subtitle: experiences.subtitle,
+        heroImageUrl: experiences.heroImageUrl,
+        experienceType: experiences.experienceType,
+        budgetTier: experiences.budgetTier,
+        neighborhood: experiences.neighborhood,
+        packRank: sql<number | null>`null`,
+      })
+      .from(experiences)
+      .where(
+        and(
+          eq(experiences.sportingEventId, event.id),
+          eq(experiences.status, "published")
+        )
+      )
+      .limit(4);
+    const extra = fallback.filter(e => !ranked_ids.includes(e.id));
+    teaserExps = [...teaserExps, ...extra].slice(0, 2);
+  }
 
   // Total published experience count
   const [countRow] = await db
@@ -646,7 +664,7 @@ export default async function EventPackPage({
         {/* Teaser experiences — 2 cards + "+N more" always in one row */}
         {teaserExps.length > 0 && (
           <div className="py-10 border-b border-[#2A2A2A]">
-            <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-1">
+            <p className="text-xs font-black text-[#AAFF00] mb-1">
               A glimpse inside
             </p>
             <p className="text-[#A3A3A3] text-sm mb-6">
