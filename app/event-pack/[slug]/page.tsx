@@ -376,9 +376,10 @@ export default async function EventPackPage({
     hasPurchased = !!purchase;
   }
 
-  // Auto-grant free access for Wimbledon when WIMBLEDON_FREE_ACCESS=true
+  // Auto-grant free access for designated free events
+  const FREE_EVENT_SLUGS = ["wimbledon-2026", "india-in-england-cricket-2026"];
   const freeAccessEnabled = process.env.WIMBLEDON_FREE_ACCESS === "true";
-  if (!hasPurchased && freeAccessEnabled && slug === "wimbledon-2026" && user?.email) {
+  if (!hasPurchased && freeAccessEnabled && FREE_EVENT_SLUGS.includes(slug) && user?.email) {
     await grantFreeAccess(user.email);
     hasPurchased = true;
   }

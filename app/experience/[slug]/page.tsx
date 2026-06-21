@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import { db } from "@/lib/db";
-import { experiences, savedItems, users, userProfiles, travelLogs, purchases } from "@/schema/database";
+import { experiences, savedItems, users, userProfiles, travelLogs, purchases, sportingEvents } from "@/schema/database";
 import { and, eq, ne, inArray, count, sql } from "drizzle-orm";
 import { createClient } from "@/lib/supabase/server";
 import { hasProSubscription } from "@/lib/pro";
@@ -115,8 +115,20 @@ export default async function ExperiencePage({
   const jsonLd = buildJsonLd(exp, ratingCount >= 3 ? { avgRating, ratingCount } : null);
 
   const isEarlyBird = new Date() < new Date(process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01");
-  const wimbledonFree = process.env.WIMBLEDON_FREE_ACCESS === "true";
-  const priceDisplay = wimbledonFree
+
+  // Look up the sporting event slug so we can resolve the correct pack slug/name and price
+  const FREE_EVENT_SLUGS = ["wimbledon-2026", "india-in-england-cricket-2026"];
+  let eventPackSlug = "wimbledon-2026";
+  let eventPackName = "Wimbledon 2026";
+  if (exp.sportingEventId) {
+    const [ev] = await db
+      .select({ slug: sportingEvents.slug, name: sportingEvents.name })
+      .from(sportingEvents)
+      .where(eq(sportingEvents.id, exp.sportingEventId))
+      .limit(1);
+    if (ev) { eventPackSlug = ev.slug; eventPackName = ev.name; }
+  }
+  const priceDisplay = FREE_EVENT_SLUGS.includes(eventPackSlug)
     ? "Free"
     : isEarlyBird
       ? (process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "£15")
@@ -216,8 +228,8 @@ export default async function ExperiencePage({
     <div className="min-h-screen bg-[#0A0A0A]">
       <ExperienceViewGate
         slug={slug}
-        eventPackSlug="wimbledon-2026"
-        eventPackName="Wimbledon 2026"
+        eventPackSlug={eventPackSlug}
+        eventPackName={eventPackName}
         priceDisplay={priceDisplay}
         isPro={isPro}
         hasPurchasedPack={hasPurchasedPack}
