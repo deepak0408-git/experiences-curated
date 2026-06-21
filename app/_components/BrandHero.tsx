@@ -119,16 +119,16 @@ export default function BrandHero({
       {/* Content — bottom-left */}
       <div className="absolute bottom-0 left-0 right-0 px-6 sm:px-10 pb-14 sm:pb-16">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-4xl sm:text-6xl font-black text-white leading-tight tracking-tight max-w-2xl">
+          <h1 className="text-3xl sm:text-5xl font-black text-white leading-tight tracking-tight max-w-2xl">
             Insider travel guides for the world&apos;s greatest sporting events
           </h1>
-          <p className="mt-4 text-base sm:text-lg text-white/60 max-w-xl leading-relaxed font-light">
+          <p className="mt-4 text-sm sm:text-base text-white/60 leading-relaxed font-light whitespace-nowrap">
             Guides built around the event, not just the city. Save and plan what fits your trip. Show up ready.
           </p>
 
           <div className="mt-8">
             {/* NOW FEATURED label */}
-            <p className="text-[10px] font-black tracking-widest uppercase text-[#AAFF00] font-mono mb-3">
+            <p className="text-xs font-black text-[#AAFF00] mb-3">
               Now featured
             </p>
 
@@ -137,7 +137,7 @@ export default function BrandHero({
               {featuredEvents.map((ev) => (
                 <div key={ev.slug} className="flex items-center gap-4 flex-wrap">
                   <div className="flex items-center gap-2 min-w-0">
-                    <span className="text-[10px] font-black tracking-widest uppercase text-[#AAFF00] font-mono flex-shrink-0">
+                    <span className="text-xs font-black text-[#AAFF00] flex-shrink-0">
                       {SPORT_LABELS[ev.sport] ?? ev.sport}
                     </span>
                     <span className="text-white/80 text-sm font-medium">
