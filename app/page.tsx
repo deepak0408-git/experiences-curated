@@ -355,7 +355,7 @@ export default async function HomePage() {
           </div>
           <div className="mt-10 lg:mt-0 lg:pl-8">
             <div className="rounded-sm bg-[#1A1A1A] border border-[#2A2A2A] p-6">
-              <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3 font-mono">
+              <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">
                 What&apos;s in an event pack
               </p>
               {[
