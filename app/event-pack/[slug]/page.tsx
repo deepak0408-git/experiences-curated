@@ -664,7 +664,7 @@ export default async function EventPackPage({
         {/* Teaser experiences — 2 cards + "+N more" always in one row */}
         {teaserExps.length > 0 && (
           <div className="py-10 border-b border-[#2A2A2A]">
-            <p className="text-xs font-black text-[#AAFF00] mb-1">
+            <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-1">
               A glimpse inside
             </p>
             <p className="text-[#A3A3A3] text-sm mb-6">
