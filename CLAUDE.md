@@ -8,7 +8,7 @@
 > **Nav auth state:** HomepageNav is a server component — pass `email` as prop from the page. Never use `useEffect` to read auth in navs (bfcache freezes client components on back-navigation).
 > **Magic links:** always redirect to `/auth/confirm?next=<path>` — never `/auth/callback`.
 > **Internal links:** always use Next.js `<Link>` — never plain `<a href>` for internal paths. Plain anchors cause full page loads, making pages bfcache-eligible and breaking back-navigation.
-> **Design system:** Dark canvas + fluorescent green. Branch `redesign/homepage` (latest commit 9afb270, 20 Jun 2026). Rollback: `git reset --hard homepage-v1-baseline`. Full token set in memory `project_design_system.md`. Full-site overhaul not yet started — 13 files, 3 tiers.
+> **Design system:** Dark canvas + fluorescent green. Merged to `main` 21 Jun 2026 (commit 135bec7 = validated baseline). Rollback: `git reset --hard 135bec7`. Full token set in memory `project_design_system.md`. Full-site overhaul not yet started — Tier 3 (experience detail, event-pack, curator) pending.
 
 ---
 
@@ -226,7 +226,9 @@ supabase.auth.admin.generateLink({
 - **R&A media contact:** media@randa.org (confirmed from theopen.com/media-centre). Use for Open Championship hero image requests. Do NOT use mediaenquiries@randa.org — that address was unverified.
 - **Hillside Golf Club green fees (2026):** £300 midweek / £335 weekends (summer). Third-party sites show outdated figures — always use official hillside-golfclub.co.uk.
 - **Homepage carousel:** 2-slide rotating HeroCarousel (`app/_components/HeroCarousel.tsx`). Featured events controlled via `/curator/events` (radio Slot 1/2 + Deactivate checkbox). `homepage_slot` + `is_hidden` columns on `sporting_events`. Deactivated events hidden from carousel and calendar section. Active events sort first in curator table. Pill pinned `top-8`, title `top-[15%]`, CTA/dots/hint `bottom-0`. Dot indicators: `flex-1 sm:flex-none` for 50-50 mobile / natural desktop split.
-- **Pre-trip brief cron window:** fires ≤7 days before event startDate (changed from 10 days, 17 Jun 2026). Open brief dormant (NULL live_at) — cron fires ~9 Jul. Belgian GP brief not yet written — cron fires ~10 Jul.
+- **Pre-trip brief cron window:** fires ≤7 days before event startDate (changed from 10 days, 17 Jun 2026). Open brief dormant (NULL live_at) — cron fires ~9 Jul. Belgian GP brief not yet written — cron fires ~10 Jul. Cricket brief written and activated (live_at = NOW()) 21 Jun 2026.
+- **Free event access:** Controlled via `FREE_EVENT_SLUGS` env var (comma-separated slugs) in Vercel. Replaces old `WIMBLEDON_FREE_ACCESS=true` boolean (changed 21 Jun 2026). Add a slug = free; empty = paid. Currently: `wimbledon-2026,india-in-england-cricket-2026`. Free period ends 29 Jun — set to empty string in Vercel. No code change needed.
+- **Algolia search:** `searchableAttributes` explicitly set in sync-algolia.mjs — includes `sport`, `neighborhood`. `sportingEventId` registered as facet — required for `freeEventIds` filter in SearchUI. After any neighborhood/sport DB update on a published experience, run sync-algolia.mjs.
 
 ---
 
