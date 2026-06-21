@@ -283,7 +283,7 @@ export function SearchUI({
   archetype,
   userEmail,
   hideProCtas = false,
-  wimbledonOnly = false,
+  freeEventsOnly = false,
 }: {
   appId: string;
   searchKey: string;
@@ -293,7 +293,7 @@ export function SearchUI({
   archetype?: string | null;
   userEmail?: string | null;
   hideProCtas?: boolean;
-  wimbledonOnly?: boolean;
+  freeEventsOnly?: boolean;
 }) {
   const searchClient = useMemo(() => liteClient(appId, searchKey), [appId, searchKey]);
 
@@ -322,7 +322,7 @@ export function SearchUI({
       <Configure
         hitsPerPage={50}
         {...(optionalFilters.length > 0 ? { optionalFilters } : {})}
-        {...(wimbledonOnly ? { filters: 'sport:"tennis" AND destinationId:"75758888-28b9-4e09-82ba-f05681ecc904"' } : {})}
+        {...(freeEventsOnly ? { filters: 'sportingEventId:"8bb7090e-1ec7-4c3f-b4e2-7fd6bf9942cf" OR sportingEventId:"2bab697d-9d2b-45ff-9b46-9fbfc3a0a40b"' } : {})}
       />
 
       <div className="min-h-screen bg-[#0A0A0A]">
