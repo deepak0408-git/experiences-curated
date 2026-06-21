@@ -167,9 +167,14 @@ export default async function HomePage() {
       <div className="relative">
         <HomepageNav email={user?.email ?? null} showSearch={true} overlay={true} />
         <BrandHero
-          primaryEventSlug={featuredSorted[0]?.slug ?? "wimbledon-2026"}
-          primaryEventName={featuredSorted[0]?.name ?? "Wimbledon 2026"}
-          primaryEventFree={eventPriceDisplay(featuredSorted[0]?.slug ?? "") === "Free"}
+          featuredEvents={featuredSorted.map((ev) => ({
+            slug: ev.slug,
+            name: ev.name,
+            sport: ev.sport,
+            startDate: ev.startDate,
+            endDate: ev.endDate,
+            isFree: eventPriceDisplay(ev.slug) === "Free",
+          }))}
           hasCalendarEvents={calendarEvents.length > 0}
         />
       </div>
