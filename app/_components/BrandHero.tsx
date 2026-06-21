@@ -27,18 +27,55 @@ const SLIDES = [
   },
 ];
 
+const SPORT_LABELS: Record<string, string> = {
+  tennis: "Tennis",
+  cricket: "Cricket",
+  football: "Football",
+  rugby: "Rugby",
+  golf: "Golf",
+  formula_one: "Formula 1",
+  cycling: "Cycling",
+  athletics: "Athletics",
+  other: "Sport",
+};
+
 const INTERVAL = 4000;
 const FADE_DURATION = 1200;
 
+function formatShortDateRange(start: string, end: string) {
+  const s = new Date(start);
+  const e = new Date(end);
+  const startStr = s.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  const endStr = e.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  return `${startStr} – ${endStr}`;
+}
+
+function shortEventName(name: string, slug: string): string {
+  // Derive a short display name from the slug — more reliable than string-stripping
+  const SHORT_NAMES: Record<string, string> = {
+    "wimbledon-2026": "Wimbledon 2026",
+    "india-in-england-cricket-2026": "India in England 2026",
+    "the-open-championship-2026": "The Open 2026",
+    "belgian-gp-2026": "Belgian GP 2026",
+    "us-open-2026": "US Open 2026",
+  };
+  return SHORT_NAMES[slug] ?? name;
+}
+
+type FeaturedEvent = {
+  slug: string;
+  name: string;
+  sport: string;
+  startDate: string;
+  endDate: string;
+  isFree: boolean;
+};
+
 export default function BrandHero({
-  primaryEventSlug,
-  primaryEventName,
-  primaryEventFree,
+  featuredEvents,
   hasCalendarEvents,
 }: {
-  primaryEventSlug: string;
-  primaryEventName: string;
-  primaryEventFree: boolean;
+  featuredEvents: FeaturedEvent[];
   hasCalendarEvents: boolean;
 }) {
   const [active, setActive] = useState(0);
@@ -52,7 +89,7 @@ export default function BrandHero({
 
   return (
     <div className="relative w-full h-[100svh] min-h-[560px] max-h-[900px] overflow-hidden bg-neutral-900">
-      {/* Crossfading background images — all stacked, opacity toggles */}
+      {/* Crossfading background images */}
       {SLIDES.map((slide, i) => (
         <div
           key={slide.url}
@@ -75,7 +112,7 @@ export default function BrandHero({
         </div>
       ))}
 
-      {/* Dark overlay — heavier at bottom-left for text legibility */}
+      {/* Dark overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/20 to-transparent" />
 
@@ -89,13 +126,38 @@ export default function BrandHero({
             Guides built around the event, not just the city. Save and plan what fits your trip. Show up ready.
           </p>
 
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Link
-              href={`/event-pack/${primaryEventSlug}`}
-              className="inline-flex items-center px-7 py-3.5 rounded-sm bg-[#AAFF00] text-black text-sm font-black tracking-wide hover:bg-[#BBFF33] transition-colors"
-            >
-              {primaryEventFree ? `Get free access — ${primaryEventName} pack` : `Explore — ${primaryEventName}`} →
-            </Link>
+          <div className="mt-8">
+            {/* NOW FEATURED label */}
+            <p className="text-[10px] font-black tracking-widest uppercase text-[#AAFF00] font-mono mb-3">
+              Now featured
+            </p>
+
+            {/* Featured event rows */}
+            <div className="flex flex-col gap-2.5 mb-4">
+              {featuredEvents.map((ev) => (
+                <div key={ev.slug} className="flex items-center gap-4 flex-wrap">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-[10px] font-black tracking-widest uppercase text-[#AAFF00] font-mono flex-shrink-0">
+                      {SPORT_LABELS[ev.sport] ?? ev.sport}
+                    </span>
+                    <span className="text-white/80 text-sm font-medium">
+                      {shortEventName(ev.name, ev.slug)}
+                    </span>
+                    <span className="text-white/40 text-sm">
+                      · {formatShortDateRange(ev.startDate, ev.endDate)}
+                    </span>
+                  </div>
+                  <Link
+                    href={`/event-pack/${ev.slug}`}
+                    className="flex-shrink-0 inline-flex items-center px-4 py-1.5 rounded-sm bg-[#AAFF00] text-black text-xs font-black tracking-wide hover:bg-[#BBFF33] transition-colors"
+                  >
+                    {ev.isFree ? "Get the free event pack →" : "Get the event pack →"}
+                  </Link>
+                </div>
+              ))}
+            </div>
+
+            {/* See all events */}
             <a
               href={hasCalendarEvents ? "#on-the-calendar" : "/search"}
               className="text-sm text-white/50 hover:text-[#AAFF00] transition-colors"
