@@ -23,7 +23,7 @@ export default function RemoveSavedItem({
     <button
       onClick={handleRemove}
       disabled={isPending}
-      className="px-2.5 py-1 rounded-full text-xs font-medium bg-neutral-100 text-neutral-400 hover:bg-red-50 hover:text-red-500 transition-colors disabled:opacity-50"
+      className="px-2.5 py-1 rounded-sm text-xs font-medium bg-[#1A1A1A] text-[#6A6A6A] hover:text-red-400 transition-colors disabled:opacity-50"
     >
       {isPending ? "Removing…" : "− Remove"}
     </button>

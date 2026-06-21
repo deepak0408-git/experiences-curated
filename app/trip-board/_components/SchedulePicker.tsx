@@ -11,7 +11,6 @@ const DURATIONS = [
   { label: "Full day", value: 480 },
 ];
 
-// Smart defaults by experience type
 function defaultsForType(experienceType: string): { time: string; duration: number } {
   switch (experienceType) {
     case "accommodation": return { time: "22:00", duration: 480 };
@@ -38,7 +37,6 @@ export default function SchedulePicker({
   const defaults = defaultsForType(experienceType);
   const [open, setOpen] = useState(false);
 
-  // Parse existing schedule or use defaults
   const existingDate = scheduledAt ? new Date(scheduledAt) : null;
   const [date, setDate] = useState(
     existingDate
@@ -98,39 +96,38 @@ export default function SchedulePicker({
 
   return (
     <div>
-      {/* Trigger */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className={`px-2.5 py-1 rounded-full text-xs font-medium transition-colors ${
+        className={`px-2.5 py-1 rounded-sm text-xs font-medium transition-colors ${
           isScheduled
-            ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-200"
-            : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200"
+            ? "bg-[#AAFF00]/10 text-[#AAFF00] hover:bg-[#AAFF00]/20"
+            : "bg-[#1A1A1A] text-[#6A6A6A] hover:bg-[#2A2A2A] hover:text-white"
         }`}
       >
         {isScheduled ? `📅 ${scheduledLabel()}` : "+ Schedule"}
       </button>
 
       {open && (
-        <div className="mt-2 p-3 bg-neutral-50 border border-neutral-200 rounded-xl space-y-2.5">
+        <div className="mt-2 p-3 bg-[#141414] border border-[#2A2A2A] rounded-sm space-y-2.5">
           {/* Date */}
           <div>
-            <label className="block text-[10px] font-semibold uppercase tracking-widest text-neutral-400 mb-1">Date</label>
+            <label className="block text-[10px] font-semibold uppercase tracking-widest text-[#6A6A6A] mb-1">Date</label>
             <input
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full text-xs border border-neutral-200 rounded-lg px-2.5 py-1.5 text-neutral-900 bg-white focus:outline-none focus:border-neutral-400"
+              className="w-full text-xs border border-[#2A2A2A] rounded-sm px-2.5 py-1.5 text-white bg-[#1A1A1A] focus:outline-none focus:border-[#AAFF00] [color-scheme:dark]"
             />
           </div>
 
           {/* Time */}
           <div>
-            <label className="block text-[10px] font-semibold uppercase tracking-widest text-neutral-400 mb-1">Start time</label>
+            <label className="block text-[10px] font-semibold uppercase tracking-widest text-[#6A6A6A] mb-1">Start time</label>
             <div className="grid gap-[20%]" style={{ gridTemplateColumns: "40% 40%" }}>
               <select
                 value={hour}
                 onChange={(e) => setHour(e.target.value)}
-                className="text-xs border border-neutral-200 rounded-lg px-2.5 py-1.5 text-neutral-900 bg-white focus:outline-none focus:border-neutral-400"
+                className="text-xs border border-[#2A2A2A] rounded-sm px-2.5 py-1.5 text-white bg-[#1A1A1A] focus:outline-none focus:border-[#AAFF00]"
               >
                 {Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0")).map((h) => (
                   <option key={h} value={h}>{h}:00</option>
@@ -139,7 +136,7 @@ export default function SchedulePicker({
               <select
                 value={minute}
                 onChange={(e) => setMinute(e.target.value)}
-                className="text-xs border border-neutral-200 rounded-lg px-2.5 py-1.5 text-neutral-900 bg-white focus:outline-none focus:border-neutral-400"
+                className="text-xs border border-[#2A2A2A] rounded-sm px-2.5 py-1.5 text-white bg-[#1A1A1A] focus:outline-none focus:border-[#AAFF00]"
               >
                 {["00", "15", "30", "45"].map((m) => (
                   <option key={m} value={m}>:{m}</option>
@@ -150,16 +147,16 @@ export default function SchedulePicker({
 
           {/* Duration */}
           <div>
-            <label className="block text-[10px] font-semibold uppercase tracking-widest text-neutral-400 mb-1">Duration</label>
+            <label className="block text-[10px] font-semibold uppercase tracking-widest text-[#6A6A6A] mb-1">Duration</label>
             <div className="flex flex-wrap gap-1.5">
               {DURATIONS.map((d) => (
                 <button
                   key={d.value}
                   onClick={() => setDuration(d.value)}
-                  className={`px-2.5 py-1 rounded-full text-xs font-medium transition-colors ${
+                  className={`px-2.5 py-1 rounded-sm text-xs font-medium transition-colors ${
                     duration === d.value
-                      ? "bg-neutral-900 text-white"
-                      : "bg-white border border-neutral-200 text-neutral-600 hover:border-neutral-400"
+                      ? "bg-[#AAFF00] text-black"
+                      : "bg-[#1A1A1A] border border-[#2A2A2A] text-[#A3A3A3] hover:border-[#AAFF00] hover:text-white"
                   }`}
                 >
                   {d.label}
@@ -173,14 +170,14 @@ export default function SchedulePicker({
             <button
               onClick={handleSave}
               disabled={!date || saving}
-              className="flex-1 text-xs font-semibold px-3 py-1.5 rounded-lg bg-neutral-900 text-white hover:bg-neutral-700 transition-colors disabled:opacity-40"
+              className="flex-1 text-xs font-black px-3 py-1.5 rounded-sm bg-[#AAFF00] text-black hover:bg-[#BBFF33] transition-colors disabled:opacity-40"
             >
               {saving ? "Saving…" : isScheduled ? "Update" : "Add to itinerary"}
             </button>
             {isScheduled && (
               <button
                 onClick={handleRemove}
-                className="text-xs font-medium px-3 py-1.5 rounded-lg border border-neutral-200 text-neutral-500 hover:border-red-300 hover:text-red-500 transition-colors"
+                className="text-xs font-medium px-3 py-1.5 rounded-sm border border-[#2A2A2A] text-[#6A6A6A] hover:border-red-800 hover:text-red-400 transition-colors"
               >
                 Remove
               </button>
