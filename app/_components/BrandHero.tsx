@@ -143,7 +143,7 @@ export default function BrandHero({
                     <span className="text-white/80 text-sm font-medium">
                       {shortEventName(ev.name, ev.slug)}
                     </span>
-                    <span className="text-white/40 text-sm whitespace-nowrap">
+                    <span className="text-white/40 text-sm font-medium whitespace-nowrap">
                       · {formatShortDateRange(ev.startDate, ev.endDate)}
                     </span>
                   </div>
