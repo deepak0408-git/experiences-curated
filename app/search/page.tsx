@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { SearchUI } from "./_components/SearchUI";
 import { createClient } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
-import { userProfiles } from "@/schema/database";
-import { eq } from "drizzle-orm";
+import { userProfiles, sportingEvents } from "@/schema/database";
+import { eq, inArray } from "drizzle-orm";
 import { unstable_noStore as noStore } from "next/cache";
 
 export const dynamic = "force-dynamic";
@@ -35,6 +35,15 @@ export default async function SearchPage({
     archetype = profile?.archetype ?? null;
   }
 
+  const freeEventSlugs = (process.env.FREE_EVENT_SLUGS ?? "").split(",").filter(Boolean);
+  let freeEventIds: string[] = [];
+  if (freeEventSlugs.length > 0) {
+    const rows = await db.select({ id: sportingEvents.id })
+      .from(sportingEvents)
+      .where(inArray(sportingEvents.slug, freeEventSlugs));
+    freeEventIds = rows.map(r => r.id);
+  }
+
   return (
     <SearchUI
       appId={process.env.NEXT_PUBLIC_ALGOLIA_APP_ID!}
@@ -45,7 +54,7 @@ export default async function SearchPage({
       archetype={archetype}
       userEmail={user?.email ?? null}
       hideProCtas={process.env.HIDE_PRO === "true"}
-      freeEventsOnly={process.env.WIMBLEDON_FREE_ACCESS === "true"}
+      freeEventIds={freeEventIds}
     />
   );
 }

@@ -127,10 +127,20 @@ const objects = rows.map((row) => {
 
 await algolia.saveObjects({ indexName: INDEX, objects });
 
-// Ensure sport is registered as a facet
+// Ensure searchable attributes and facets are configured
 await algolia.setSettings({
   indexName: INDEX,
   indexSettings: {
+    searchableAttributes: [
+      "title",
+      "subtitle",
+      "destinationName",
+      "neighborhood",
+      "sport",
+      "moodTags",
+      "interestCategories",
+      "experienceType",
+    ],
     attributesForFaceting: [
       "destinationName",
       "destinationId",
@@ -143,6 +153,7 @@ await algolia.setSettings({
       "availability",
       "curationTier",
       "sport",
+      "sportingEventId",
     ],
   },
 });

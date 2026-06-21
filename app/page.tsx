@@ -68,8 +68,8 @@ function formatDateRange(start: string, end: string) {
 }
 
 function eventPriceDisplay(slug: string): string {
-  const FREE_EVENT_SLUGS = ["wimbledon-2026", "india-in-england-cricket-2026"];
-  if (FREE_EVENT_SLUGS.includes(slug) && process.env.WIMBLEDON_FREE_ACCESS === "true") return "Free";
+  const FREE_EVENT_SLUGS = (process.env.FREE_EVENT_SLUGS ?? "").split(",").filter(Boolean);
+  if (FREE_EVENT_SLUGS.includes(slug)) return "Free";
   const pricing = HOMEPAGE_PRICE_BY_EVENT[slug] ?? HOMEPAGE_PRICE_BY_EVENT["wimbledon-2026"];
   const isEarlyBird = new Date() < new Date(pricing.earlyBirdCutoff);
   return isEarlyBird ? pricing.early : pricing.standard;
@@ -284,8 +284,7 @@ export default async function HomePage() {
                       {/* CTA */}
                       <div className="mt-5">
                         <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm bg-[#AAFF00] text-black text-sm font-black tracking-wide group-hover:bg-[#BBFF33] transition-colors whitespace-nowrap">
-                          Get the pack
-                          <span className="text-black/50 font-black">{price}</span>
+                          {price === "Free" ? "Get the free pack" : <>Get the pack <span className="text-black/50 font-black">{price}</span></>}
                         </span>
                       </div>
 
