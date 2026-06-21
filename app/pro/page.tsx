@@ -4,8 +4,8 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { hasProSubscription } from "@/lib/pro";
 import { db } from "@/lib/db";
-import { userProfiles } from "@/schema/database";
-import { eq } from "drizzle-orm";
+import { userProfiles, sportingEvents } from "@/schema/database";
+import { eq, gte, and } from "drizzle-orm";
 import ProCheckout from "./_components/ProCheckout";
 import DodoProCheckout from "./_components/DodoProCheckout";
 import { ARCHETYPE_DETAILS } from "@/lib/quiz";
@@ -45,6 +45,13 @@ export default async function ProPage() {
     ? await db.select({ archetype: userProfiles.archetype }).from(userProfiles).where(eq(userProfiles.email, user.email)).limit(1)
     : [null];
 
+  const today = new Date().toISOString().slice(0, 10);
+  const upcomingEvents = await db
+    .select({ slug: sportingEvents.slug, name: sportingEvents.name, sport: sportingEvents.sport, heroImageUrl: sportingEvents.heroImageUrl, startDate: sportingEvents.startDate, endDate: sportingEvents.endDate })
+    .from(sportingEvents)
+    .where(and(gte(sportingEvents.endDate, today), eq(sportingEvents.isHidden, false)))
+    .orderBy(sportingEvents.startDate);
+
   const clientToken = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN ?? "";
   const monthlyPriceId = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_PRO_MONTHLY ?? "";
   const annualPriceId = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_PRO_ANNUAL ?? "";
@@ -60,7 +67,7 @@ export default async function ProPage() {
             Experiences | Curated
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/search" className="hidden sm:block text-sm text-[#6A6A6A] hover:text-white transition-colors">
+            <Link href="/search" className="hidden sm:block text-sm text-[#6A6A6A] hover:text-[#AAFF00] transition-colors">
               Browse experiences
             </Link>
             {user?.email && (
@@ -127,31 +134,31 @@ export default async function ProPage() {
             </div>
 
             {/* Event packs */}
-            <div>
-              <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-5">Upcoming event packs</p>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <Link href="/event-pack/wimbledon-2026" className="group text-left rounded-sm border border-[#2A2A2A] overflow-hidden hover:border-[#AAFF00] transition-colors">
-                  <div className="relative h-32 overflow-hidden bg-[#1A1A1A]">
-                    <Image src={`${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/sporting-events/hero/wimbledon-2026.jpg`} alt="Wimbledon 2026" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width: 640px) 100vw, 33vw" />
-                  </div>
-                  <div className="p-4">
-                    <p className="text-[10px] font-semibold tracking-widest uppercase text-[#6A6A6A] mb-1">Tennis · London</p>
-                    <p className="text-sm font-black text-white group-hover:text-[#AAFF00] transition-colors mb-1">Wimbledon 2026</p>
-                    <p className="text-xs text-[#6A6A6A]">30 Jun – 13 Jul 2026</p>
-                  </div>
-                </Link>
-                <Link href="/event-pack/us-open-2026" className="group text-left rounded-sm border border-[#2A2A2A] overflow-hidden hover:border-[#AAFF00] transition-colors">
-                  <div className="relative h-32 overflow-hidden bg-[#1A1A1A]">
-                    <Image src={`${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/sporting-events/hero/us-open-2026.jpg`} alt="US Open 2026" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width: 640px) 100vw, 33vw" />
-                  </div>
-                  <div className="p-4">
-                    <p className="text-[10px] font-semibold tracking-widest uppercase text-[#6A6A6A] mb-1">Tennis · New York</p>
-                    <p className="text-sm font-black text-white group-hover:text-[#AAFF00] transition-colors mb-1">US Open 2026</p>
-                    <p className="text-xs text-[#6A6A6A]">25 Aug – 7 Sep 2026</p>
-                  </div>
-                </Link>
+            {upcomingEvents.length > 0 && (
+              <div>
+                <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-5">Upcoming event packs</p>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {upcomingEvents.map((ev) => (
+                    <Link key={ev.slug} href={`/event-pack/${ev.slug}`} className="group text-left rounded-sm border border-[#2A2A2A] overflow-hidden hover:border-[#AAFF00] transition-colors">
+                      <div className="relative h-32 overflow-hidden bg-[#1A1A1A]">
+                        {ev.heroImageUrl && (
+                          <Image src={ev.heroImageUrl} alt={ev.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width: 640px) 100vw, 33vw" />
+                        )}
+                      </div>
+                      <div className="p-4">
+                        <p className="text-[10px] font-semibold tracking-widest uppercase text-[#6A6A6A] mb-1">
+                          {ev.sport.charAt(0).toUpperCase() + ev.sport.slice(1)}
+                        </p>
+                        <p className="text-sm font-black text-white group-hover:text-[#AAFF00] transition-colors mb-1">{ev.name}</p>
+                        <p className="text-xs text-[#6A6A6A]">
+                          {new Date(ev.startDate).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })} – {new Date(ev.endDate).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         ) : (
           <div className="grid lg:grid-cols-2 gap-12 items-start">

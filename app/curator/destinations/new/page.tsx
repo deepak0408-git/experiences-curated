@@ -80,25 +80,28 @@ const TIMEZONES = [
 ];
 
 const inputClass =
-  "w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent";
+  "w-full rounded-sm border border-[#2A2A2A] bg-[#1A1A1A] px-3 py-2 text-sm text-white placeholder:text-[#6A6A6A] focus:outline-none focus:ring-1 focus:ring-[#AAFF00] focus:border-[#AAFF00]";
+
+const selectClass =
+  "w-full rounded-sm border border-[#2A2A2A] bg-[#1A1A1A] px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#AAFF00] focus:border-[#AAFF00]";
 
 export default function NewDestinationPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-neutral-900">Add Destination</h1>
-        <p className="mt-1 text-sm text-neutral-500">
+        <h1 className="text-2xl font-black text-[#AAFF00]">Add Destination</h1>
+        <p className="mt-1 text-sm text-[#6A6A6A]">
           Destinations are the parent cities or regions that experiences belong to.
         </p>
       </div>
 
       <form action={createDestination} className="space-y-6">
-        <div className="bg-white rounded-xl border border-neutral-200 p-8 space-y-6">
+        <div className="bg-[#141414] rounded-sm border border-[#2A2A2A] p-8 space-y-6">
 
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
-                City / Region Name <span className="text-red-500">*</span>
+              <label className="block text-sm font-medium text-[#A3A3A3] mb-1">
+                City / Region Name <span className="text-red-400">*</span>
               </label>
               <input
                 name="name"
@@ -108,8 +111,8 @@ export default function NewDestinationPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
-                Country Code <span className="text-red-500">*</span>
+              <label className="block text-sm font-medium text-[#A3A3A3] mb-1">
+                Country Code <span className="text-red-400">*</span>
               </label>
               <input
                 name="countryCode"
@@ -118,13 +121,13 @@ export default function NewDestinationPage() {
                 maxLength={2}
                 className={`${inputClass} uppercase`}
               />
-              <p className="mt-1 text-xs text-neutral-400">2-letter ISO code</p>
+              <p className="mt-1 text-xs text-[#6A6A6A]">2-letter ISO code</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
+              <label className="block text-sm font-medium text-[#A3A3A3] mb-1">
                 Region / State
               </label>
               <input
@@ -134,10 +137,10 @@ export default function NewDestinationPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
+              <label className="block text-sm font-medium text-[#A3A3A3] mb-1">
                 Type
               </label>
-              <select name="destinationType" className={inputClass}>
+              <select name="destinationType" className={selectClass}>
                 <option value="city">City</option>
                 <option value="region">Region</option>
                 <option value="island">Island</option>
@@ -149,7 +152,7 @@ export default function NewDestinationPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
+              <label className="block text-sm font-medium text-[#A3A3A3] mb-1">
                 Currency
               </label>
               <input
@@ -160,7 +163,7 @@ export default function NewDestinationPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
+              <label className="block text-sm font-medium text-[#A3A3A3] mb-1">
                 Primary Language
               </label>
               <input
@@ -172,10 +175,10 @@ export default function NewDestinationPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-1">
+            <label className="block text-sm font-medium text-[#A3A3A3] mb-1">
               Timezone
             </label>
-            <select name="timezone" className={inputClass}>
+            <select name="timezone" className={selectClass}>
               <option value="">— select timezone —</option>
               {TIMEZONES.map((group) => (
                 <optgroup key={group.group} label={group.group}>
@@ -188,17 +191,17 @@ export default function NewDestinationPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-1">
+            <label className="block text-sm font-medium text-[#A3A3A3] mb-1">
               Editorial Overview
             </label>
-            <p className="text-xs text-neutral-400 mb-2">
+            <p className="text-xs text-[#6A6A6A] mb-2">
               Optional — a short description of the destination's character. You can fill this in later.
             </p>
             <textarea
               name="editorialOverview"
               rows={4}
               placeholder="e.g. London is a city of neighbourhoods, each with its own distinct personality. From the grand museums of South Kensington to the street food markets of Borough, it rewards the traveller who slows down."
-              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent resize-none"
+              className="w-full rounded-sm border border-[#2A2A2A] bg-[#1A1A1A] px-3 py-2 text-sm text-white placeholder:text-[#6A6A6A] focus:outline-none focus:ring-1 focus:ring-[#AAFF00] focus:border-[#AAFF00] resize-none"
             />
           </div>
         </div>
@@ -206,13 +209,13 @@ export default function NewDestinationPage() {
         <div className="flex items-center justify-between">
           <a
             href="/curator/destinations"
-            className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors"
+            className="text-sm text-[#6A6A6A] hover:text-[#AAFF00] transition-colors"
           >
             ← Back to destinations
           </a>
           <button
             type="submit"
-            className="px-6 py-2.5 rounded-lg bg-neutral-900 text-sm font-medium text-white hover:bg-neutral-700 transition-colors"
+            className="px-6 py-2.5 rounded-sm bg-[#AAFF00] text-sm font-black text-black hover:bg-[#BBFF33] transition-colors"
           >
             Save Destination
           </button>

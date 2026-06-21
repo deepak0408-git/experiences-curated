@@ -59,10 +59,10 @@ const SEASONS = [
 ];
 
 const inputClass =
-  "w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent";
+  "w-full rounded-sm border border-[#2A2A2A] bg-[#1A1A1A] px-3 py-2 text-sm text-white placeholder:text-[#6A6A6A] focus:outline-none focus:ring-1 focus:ring-[#AAFF00] focus:border-[#AAFF00]";
 
 const textareaClass =
-  "w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent resize-none";
+  "w-full rounded-sm border border-[#2A2A2A] bg-[#1A1A1A] px-3 py-2 text-sm text-white placeholder:text-[#6A6A6A] focus:outline-none focus:ring-1 focus:ring-[#AAFF00] focus:border-[#AAFF00] resize-none";
 
 type Destination = { id: string; name: string; countryCode: string };
 
@@ -255,7 +255,7 @@ export function ExperienceForm({
               className={textareaClass}
             />
             <div className="flex justify-between mt-1">
-              <span className="text-xs text-neutral-400">Target: 500–1500 words</span>
+              <span className="text-xs text-[#6A6A6A]">Target: 500–1500 words</span>
               <CharCount current={watchedBody.split(/\s+/).filter(Boolean).length} max={1500} min={500} />
             </div>
           </div>
@@ -274,7 +274,7 @@ export function ExperienceForm({
               className={textareaClass}
             />
             <div className="flex justify-between mt-1">
-              <span className="text-xs text-neutral-400">Target: 200–300 words</span>
+              <span className="text-xs text-[#6A6A6A]">Target: 200–300 words</span>
               <CharCount current={watchedWhy.split(/\s+/).filter(Boolean).length} max={300} min={200} />
             </div>
           </div>
@@ -371,9 +371,9 @@ export function ExperienceForm({
             type="checkbox"
             id="reservations"
             {...register("reservationsRequired")}
-            className="w-4 h-4 rounded border-neutral-300"
+            className="w-4 h-4 rounded-sm border-[#2A2A2A] accent-[#AAFF00]"
           />
-          <label htmlFor="reservations" className="text-sm text-neutral-700">
+          <label htmlFor="reservations" className="text-sm text-[#A3A3A3]">
             Reservations / advance booking required
           </label>
         </div>
@@ -465,9 +465,9 @@ export function ExperienceForm({
             type="checkbox"
             id="advanceBooking"
             {...register("advanceBookingRequired")}
-            className="w-4 h-4 rounded border-neutral-300"
+            className="w-4 h-4 rounded-sm border-[#2A2A2A] accent-[#AAFF00]"
           />
-          <label htmlFor="advanceBooking" className="text-sm text-neutral-700">
+          <label htmlFor="advanceBooking" className="text-sm text-[#A3A3A3]">
             Must be booked in advance
           </label>
           {watch("advanceBookingRequired") && (
@@ -475,7 +475,7 @@ export function ExperienceForm({
               {...register("advanceBookingDays")}
               type="number"
               placeholder="days ahead"
-              className="w-28 rounded-lg border border-neutral-300 px-3 py-1.5 text-sm"
+              className="w-28 rounded-sm border border-[#2A2A2A] bg-[#1A1A1A] px-3 py-1.5 text-sm text-white placeholder:text-[#6A6A6A] focus:outline-none focus:ring-1 focus:ring-[#AAFF00]"
             />
           )}
         </div>
@@ -526,9 +526,9 @@ export function ExperienceForm({
       </FormSection>
 
       {/* ── Actions ── */}
-      <div className="bg-white rounded-xl border border-neutral-200 p-6">
+      <div className="bg-[#141414] rounded-sm border border-[#2A2A2A] p-6">
         {status !== "idle" && (
-          <p className="text-sm text-neutral-500 mb-4 text-center">
+          <p className="text-sm text-[#AAFF00] mb-4 text-center">
             {status === "saved" && (isEditing ? "✓ Changes saved" : "✓ Draft saved")}
             {status === "submitted" && "✓ Submitted for editorial review"}
           </p>
@@ -537,7 +537,7 @@ export function ExperienceForm({
           {isEditing ? (
             <a
               href="/curator/review"
-              className="px-5 py-2.5 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition-colors"
+              className="px-5 py-2.5 rounded-sm border border-[#2A2A2A] text-sm font-medium text-[#6A6A6A] hover:border-[#AAFF00] hover:text-[#AAFF00] transition-colors"
             >
               ← Back to Review Queue
             </a>
@@ -549,7 +549,7 @@ export function ExperienceForm({
               type="button"
               onClick={handleSaveDraft}
               disabled={isPending}
-              className="px-5 py-2.5 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50 transition-colors"
+              className="px-5 py-2.5 rounded-sm border border-[#2A2A2A] text-sm font-medium text-[#6A6A6A] hover:border-[#AAFF00] hover:text-[#AAFF00] disabled:opacity-50 transition-colors"
             >
               {isPending ? "Saving…" : isEditing ? "Save Changes" : "Save Draft"}
             </button>
@@ -558,7 +558,7 @@ export function ExperienceForm({
                 type="button"
                 onClick={handleSubmitForReview}
                 disabled={isPending || !savedId}
-                className="px-5 py-2.5 rounded-lg bg-neutral-900 text-sm font-medium text-white hover:bg-neutral-700 disabled:opacity-50 transition-colors"
+                className="px-5 py-2.5 rounded-sm bg-[#AAFF00] text-sm font-black text-black hover:bg-[#BBFF33] disabled:opacity-50 transition-colors"
               >
                 Submit for Review
               </button>

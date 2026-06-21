@@ -66,7 +66,7 @@ export default function DodoCheckout({
   };
 
   const defaultClass =
-    "w-full sm:w-auto inline-flex items-center justify-center px-10 py-4 rounded-full bg-neutral-900 text-white text-sm font-semibold tracking-wide hover:bg-neutral-700 transition-colors disabled:opacity-60";
+    "w-full inline-flex items-center justify-center px-6 py-3 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors disabled:opacity-60";
 
   return (
     <button

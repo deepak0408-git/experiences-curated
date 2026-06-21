@@ -10,11 +10,11 @@ const STATUS_CONFIG: Record<
   string,
   { label: string; dot: string; row: string }
 > = {
-  draft:     { label: "Draft",      dot: "bg-neutral-300", row: "" },
-  in_review: { label: "In Review",  dot: "bg-blue-400",    row: "bg-blue-50/40" },
-  published: { label: "Published",  dot: "bg-green-500",   row: "bg-green-50/30" },
-  archived:  { label: "Archived",   dot: "bg-neutral-200", row: "opacity-50" },
-  flagged:   { label: "Flagged",    dot: "bg-red-400",     row: "bg-red-50/30" },
+  draft:     { label: "Draft",      dot: "bg-[#6A6A6A]",  row: "" },
+  in_review: { label: "In Review",  dot: "bg-blue-400",   row: "bg-blue-400/5" },
+  published: { label: "Published",  dot: "bg-[#AAFF00]",  row: "bg-[#AAFF00]/5" },
+  archived:  { label: "Archived",   dot: "bg-[#2A2A2A]",  row: "opacity-40" },
+  flagged:   { label: "Flagged",    dot: "bg-red-400",    row: "bg-red-400/5" },
 };
 
 const TYPE_LABELS: Record<string, string> = {
@@ -57,25 +57,25 @@ export default async function ReviewQueuePage() {
       {/* Header */}
       <div className="flex items-start justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-neutral-900">Review Queue</h1>
-          <p className="mt-1 text-sm text-neutral-500">
+          <h1 className="text-2xl font-black text-white">Review Queue</h1>
+          <p className="mt-1 text-sm text-[#6A6A6A]">
             {totalPublished} published · {totalDraft} in progress
           </p>
         </div>
         <Link
           href="/curator/submit"
-          className="px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg bg-neutral-900 text-xs sm:text-sm font-medium text-white hover:bg-neutral-700 transition-colors"
+          className="px-3 py-2 sm:px-4 sm:py-2.5 rounded-sm bg-[#AAFF00] text-xs sm:text-sm font-black text-black hover:bg-[#BBFF33] transition-colors"
         >
           + Experience
         </Link>
       </div>
 
       {all.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-neutral-300 p-12 text-center">
-          <p className="text-neutral-400 text-sm">No experiences yet.</p>
+        <div className="rounded-sm border border-dashed border-[#2A2A2A] p-12 text-center">
+          <p className="text-[#6A6A6A] text-sm">No experiences yet.</p>
           <Link
             href="/curator/submit"
-            className="mt-3 inline-block text-sm font-medium text-neutral-900 underline"
+            className="mt-3 inline-block text-sm font-medium text-[#AAFF00] underline"
           >
             Write your first experience
           </Link>
@@ -91,15 +91,15 @@ export default async function ReviewQueuePage() {
                 <section key={status}>
                   <div className="flex items-center gap-2 mb-3">
                     <span className={`w-2 h-2 rounded-full ${cfg.dot}`} />
-                    <h2 className="text-sm font-semibold text-neutral-600">
+                    <h2 className="text-sm font-semibold text-[#A3A3A3]">
                       {cfg.label}
                     </h2>
-                    <span className="text-xs text-neutral-400">
+                    <span className="text-xs text-[#6A6A6A]">
                       ({items.length})
                     </span>
                   </div>
 
-                  <div className="bg-white rounded-xl border border-neutral-200 divide-y divide-neutral-100 overflow-hidden">
+                  <div className="bg-[#141414] rounded-sm border border-[#2A2A2A] divide-y divide-[#2A2A2A] overflow-hidden">
                     {items.map((exp) => (
                       <div
                         key={exp.id}
@@ -109,34 +109,34 @@ export default async function ReviewQueuePage() {
                           {/* Left: title + meta */}
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <p className="text-sm font-semibold text-neutral-900 truncate">
+                              <p className="text-sm font-semibold text-white truncate">
                                 {exp.title}
                               </p>
                             </div>
                             <div className="flex items-center gap-3 mt-1 flex-wrap">
-                              <span className="text-xs text-neutral-400 capitalize">
+                              <span className="text-xs text-[#6A6A6A] capitalize">
                                 {TYPE_LABELS[exp.experienceType] ?? exp.experienceType}
                               </span>
-                              <span className="text-neutral-200">·</span>
-                              <span className="text-xs text-neutral-400">
+                              <span className="text-[#2A2A2A]">·</span>
+                              <span className="text-xs text-[#6A6A6A]">
                                 {wordCount(exp.bodyContent)} words
                               </span>
                               {exp.whyItsSpecial && (
                                 <>
-                                  <span className="text-neutral-200">·</span>
-                                  <span className="text-xs text-green-600">
-                                    ✓ Why it's special
+                                  <span className="text-[#2A2A2A]">·</span>
+                                  <span className="text-xs text-[#AAFF00]">
+                                    ✓ Why it&apos;s special
                                   </span>
                                 </>
                               )}
-                              <span className="text-neutral-200">·</span>
-                              <span className="text-xs text-neutral-400">
+                              <span className="text-[#2A2A2A]">·</span>
+                              <span className="text-xs text-[#6A6A6A]">
                                 {timeAgo(exp.updatedAt)}
                               </span>
                               {exp.publishedAt && (
                                 <>
-                                  <span className="text-neutral-200">·</span>
-                                  <span className="text-xs text-neutral-400">
+                                  <span className="text-[#2A2A2A]">·</span>
+                                  <span className="text-xs text-[#6A6A6A]">
                                     Published {timeAgo(exp.publishedAt)}
                                   </span>
                                 </>
@@ -145,11 +145,11 @@ export default async function ReviewQueuePage() {
 
                             {/* Reviewer feedback — shown on draft experiences returned with notes */}
                             {exp.status === "draft" && exp.reviewNotes && (
-                              <div className="mt-3 flex items-start gap-2 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2.5">
-                                <span className="text-amber-500 mt-0.5 flex-shrink-0">↩</span>
+                              <div className="mt-3 flex items-start gap-2 rounded-sm bg-amber-400/10 border border-amber-400/30 px-3 py-2.5">
+                                <span className="text-amber-400 mt-0.5 flex-shrink-0">↩</span>
                                 <div>
-                                  <p className="text-xs font-semibold text-amber-800 mb-0.5">Reviewer feedback</p>
-                                  <p className="text-xs text-amber-700 leading-5">{exp.reviewNotes}</p>
+                                  <p className="text-xs font-semibold text-amber-400 mb-0.5">Reviewer feedback</p>
+                                  <p className="text-xs text-amber-400/80 leading-5">{exp.reviewNotes}</p>
                                 </div>
                               </div>
                             )}

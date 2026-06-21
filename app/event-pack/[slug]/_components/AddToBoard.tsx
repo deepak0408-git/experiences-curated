@@ -17,7 +17,7 @@ export function AddAllToBoard({ experienceIds }: { experienceIds: string[] }) {
 
   if (done) {
     return (
-      <span className="text-sm text-emerald-600 font-medium">
+      <span className="text-sm text-[#AAFF00] font-medium">
         ✓ {experienceIds.length} experiences added to your Trip Board
       </span>
     );
@@ -27,7 +27,7 @@ export function AddAllToBoard({ experienceIds }: { experienceIds: string[] }) {
     <button
       onClick={handle}
       disabled={isPending}
-      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-neutral-300 text-sm font-medium text-neutral-700 hover:border-neutral-900 hover:text-neutral-900 transition-colors disabled:opacity-50"
+      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors disabled:opacity-50"
     >
       {isPending ? "Adding…" : `+ Add all ${experienceIds.length} to Trip Board`}
     </button>
@@ -62,10 +62,10 @@ export function AddOneToBoard({ experienceId }: { experienceId: string }) {
         className="flex items-center gap-2 flex-wrap"
         onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
       >
-        <span className="text-xs text-emerald-600 font-medium">✓ Saved to your Trip Board</span>
+        <span className="text-xs text-[#AAFF00] font-medium">✓ Saved to your Trip Board</span>
         <Link
           href="/trip-board"
-          className="text-xs text-neutral-500 hover:text-neutral-900 transition-colors underline underline-offset-2"
+          className="text-xs text-[#6A6A6A] hover:text-[#AAFF00] transition-colors underline underline-offset-2"
           onClick={(e) => e.stopPropagation()}
         >
           View Board
@@ -73,7 +73,7 @@ export function AddOneToBoard({ experienceId }: { experienceId: string }) {
         <button
           onClick={handleRemove}
           disabled={isPending}
-          className="text-xs text-neutral-400 hover:text-neutral-700 transition-colors underline underline-offset-2 disabled:opacity-50"
+          className="text-xs text-[#6A6A6A] hover:text-white transition-colors underline underline-offset-2 disabled:opacity-50"
         >
           Remove
         </button>
@@ -85,7 +85,7 @@ export function AddOneToBoard({ experienceId }: { experienceId: string }) {
     <button
       onClick={handleSave}
       disabled={isPending}
-      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-neutral-300 text-xs font-medium text-neutral-700 hover:border-neutral-900 hover:text-neutral-900 transition-colors disabled:opacity-50"
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm border border-[#2A2A2A] text-xs font-medium text-[#6A6A6A] hover:border-[#AAFF00] hover:text-[#AAFF00] transition-colors disabled:opacity-50"
     >
       {isPending ? "Saving…" : "Save to Trip Board"}
     </button>

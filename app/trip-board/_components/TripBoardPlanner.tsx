@@ -142,8 +142,8 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
             Experiences | Curated
           </Link>
           <div className="flex items-center gap-6">
-            <Link href="/search" className="hidden sm:block text-sm text-[#6A6A6A] hover:text-white transition-colors">Browse experiences</Link>
-            <Link href="/my-travels" className="hidden sm:block text-sm text-[#6A6A6A] hover:text-white transition-colors">My Travels</Link>
+            <Link href="/search" className="hidden sm:block text-sm text-[#6A6A6A] hover:text-[#AAFF00] transition-colors">Browse experiences</Link>
+            <Link href="/my-travels" className="hidden sm:block text-sm text-[#6A6A6A] hover:text-[#AAFF00] transition-colors">My Travels</Link>
             <span className="hidden sm:inline text-[#2A2A2A]">|</span>
             <Link
               href="/profile"
@@ -279,7 +279,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
             {isPro && (
               <button
                 onClick={() => setShowNewBoard(true)}
-                className="px-3 py-1.5 rounded-sm text-xs font-medium bg-[#1A1A1A] text-[#6A6A6A] hover:bg-[#2A2A2A] hover:text-white transition-colors"
+                className="px-3 py-1.5 rounded-sm text-xs font-medium bg-[#1A1A1A] text-[#AAFF00] hover:bg-[#AAFF00] hover:text-black transition-colors"
               >
                 + New board
               </button>

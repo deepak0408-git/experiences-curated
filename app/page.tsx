@@ -311,7 +311,7 @@ export default async function HomePage() {
       <SportNavigator />
 
       {/* Editorial statement — Why us */}
-      <div className="bg-[#141414] scroll-fade">
+      <div className="bg-[#0A0A0A]">
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14 lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
           <div>
             <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-4">

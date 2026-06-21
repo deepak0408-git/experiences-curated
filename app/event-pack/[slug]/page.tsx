@@ -446,10 +446,10 @@ export default async function EventPackPage({
   const dateRange = formatDateRange(event.startDate, event.endDate);
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[#0A0A0A]">
       <HomepageNav email={user?.email ?? null} />
       {/* Hero */}
-      <div className="relative h-[38vh] min-h-[220px] overflow-hidden bg-neutral-900">
+      <div className="relative h-[38vh] min-h-[220px] overflow-hidden bg-[#0A0A0A]">
         {event.heroImageUrl && (
           <Image
             src={event.heroImageUrl}
@@ -462,10 +462,10 @@ export default async function EventPackPage({
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 px-8 pb-8 max-w-5xl mx-auto">
-          <span className="inline-block text-xs font-semibold tracking-widest uppercase text-white bg-black/50 px-3 py-1 rounded-full mb-3">
+          <span className="inline-block text-xs font-black tracking-widest uppercase text-black bg-[#AAFF00] px-3 py-1 rounded-sm mb-3">
             {SPORT_LABELS[event.sport] ?? event.sport} · Event Pack
           </span>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight tracking-tight max-w-2xl">
+          <h1 className="text-3xl sm:text-4xl font-black text-white leading-tight tracking-tight max-w-2xl">
             {event.name}
           </h1>
           <p className="mt-1.5 text-white/70 text-sm">{dateRange}</p>
@@ -482,15 +482,15 @@ export default async function EventPackPage({
       <div className="max-w-5xl mx-auto px-6 sm:px-8">
         {/* Past-event notice — shown at top when event has ended */}
         {isEventPast && (
-          <div className="pt-10 pb-8 border-b border-neutral-100">
+          <div className="pt-10 pb-8 border-b border-[#2A2A2A]">
             <div>
-              <span className="inline-block px-3 py-1 rounded-full bg-neutral-100 text-neutral-500 text-xs font-semibold tracking-widest uppercase mb-5">
+              <span className="inline-block px-3 py-1 rounded-sm bg-[#141414] border border-[#2A2A2A] text-[#6A6A6A] text-xs font-semibold tracking-widest uppercase mb-5">
                 Event ended
               </span>
-              <h2 className="text-xl font-bold text-neutral-900 mb-3">
+              <h2 className="text-xl font-black text-white mb-3">
                 This event has now passed
               </h2>
-              <p className="text-sm text-neutral-500 leading-6 mb-8">
+              <p className="text-sm text-[#A3A3A3] leading-6 mb-8">
                 This pack is no longer available to purchase.
                 {!user && " If you already bought access, sign in to read your pack."}
               </p>
@@ -498,14 +498,14 @@ export default async function EventPackPage({
                 {!user && (
                   <Link
                     href={`/sign-in?next=/event-pack/${slug}`}
-                    className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
+                    className="inline-flex items-center justify-center px-6 py-3 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors"
                   >
                     Sign in to access your pack
                   </Link>
                 )}
                 <Link
                   href="/"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-neutral-300 text-neutral-700 text-sm font-semibold hover:bg-neutral-50 transition-colors"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-sm border border-[#2A2A2A] text-[#6A6A6A] text-sm font-semibold hover:border-[#AAFF00] hover:text-[#AAFF00] transition-colors"
                 >
                   Browse upcoming events
                 </Link>
@@ -515,25 +515,25 @@ export default async function EventPackPage({
         )}
 
         {/* Intro */}
-        <div className="pt-10 pb-8 border-b border-neutral-100 lg:grid lg:grid-cols-3 lg:gap-12">
+        <div className="pt-10 pb-8 border-b border-[#2A2A2A] lg:grid lg:grid-cols-3 lg:gap-12">
           <div className="lg:col-span-2">
-            <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-3">
+            <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-3">
               The Pack
             </p>
-            <p className="text-base font-semibold text-neutral-900 leading-snug">
+            <p className="text-base font-black text-white leading-snug">
               {totalCount > 0
                 ? `${totalCount} curated experiences — hand-picked by local experts`
                 : "A curated guide to experiencing the event like a local"}
             </p>
             {event.editorialOverview && (
-              <p className="mt-3 text-sm text-neutral-600 leading-7">
+              <p className="mt-3 text-sm text-[#A3A3A3] leading-7">
                 {event.editorialOverview}
               </p>
             )}
-            <p className="mt-4 text-sm text-neutral-500 leading-7">
+            <p className="mt-4 text-sm text-[#A3A3A3] leading-7">
               Every experience in this pack has been researched by someone who has attended the event — fan experiences at the venue, where to stay, where to eat, how to get there, and insider tips you won&apos;t find on a search engine. No filler, no paid placements — just the picks that are genuinely worth your time.
             </p>
-            <p className="mt-3 text-sm text-neutral-500 leading-7">
+            <p className="mt-3 text-sm text-[#A3A3A3] leading-7">
               Think of this pack as your insider briefing for the event. Read the guide, save the experiences that suit you, and arrive knowing exactly what you&apos;re doing and when.
             </p>
           </div>
@@ -541,39 +541,39 @@ export default async function EventPackPage({
           {!isEventPast && (
             <aside className="mt-8 lg:mt-0">
               {freeAccessEnabled && slug === "wimbledon-2026" ? (
-                <div className="rounded-xl border border-green-200 bg-green-50 p-5 lg:sticky lg:top-6">
-                  <span className="inline-block px-2.5 py-0.5 rounded-full bg-green-100 text-green-800 text-xs font-semibold mb-3">
+                <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 lg:sticky lg:top-6">
+                  <span className="inline-block px-2.5 py-0.5 rounded-sm bg-[#AAFF00]/10 text-[#AAFF00] border border-[#AAFF00]/30 text-xs font-semibold mb-3">
                     Free until 24 June
                   </span>
-                  <p className="text-3xl font-bold text-neutral-900 tracking-tight mb-1">
+                  <p className="text-3xl font-black text-white tracking-tight mb-1">
                     £0
                   </p>
-                  <p className="text-xs text-neutral-500 mb-4">
+                  <p className="text-xs text-[#6A6A6A] mb-4">
                     {totalCount > 0 ? `${totalCount} experiences` : "Curated experiences"} · free access, no card needed
                   </p>
                   <Link
                     href={`/sign-in?next=/event-pack/${slug}`}
-                    className="w-full inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
+                    className="w-full inline-flex items-center justify-center px-6 py-3 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors"
                   >
                     Sign in for free access
                   </Link>
-                  <p className="mt-3 text-xs text-neutral-400 text-center">
+                  <p className="mt-3 text-xs text-[#6A6A6A] text-center">
                     Free access ends 24 June — no card required
                   </p>
                 </div>
               ) : (
-                <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-5 lg:sticky lg:top-6">
+                <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 lg:sticky lg:top-6">
                   {isEarlyBird && pricing.earlyBirdDisplay !== pricing.standardDisplay && (
-                    <span className="inline-block px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold mb-3">
+                    <span className="inline-block px-2.5 py-0.5 rounded-sm bg-amber-400/10 text-amber-400 border border-amber-400/30 text-xs font-semibold mb-3">
                       Early bird
                     </span>
                   )}
-                  <p className="text-3xl font-bold text-neutral-900 tracking-tight">
+                  <p className="text-3xl font-black text-white tracking-tight">
                     {priceDisplay}
                     <LocalCurrencyHint gbpAmount={parseFloat(priceDisplay.replace(/[^0-9.]/g, ""))} />
                   </p>
                   {isEarlyBird && pricing.earlyBirdDisplay !== pricing.standardDisplay && (
-                    <p className="mt-0.5 text-xs text-neutral-400 mb-4">
+                    <p className="mt-0.5 text-xs text-[#6A6A6A] mb-4">
                       Rises to {pricing.standardDisplay} after{" "}
                       {new Date(earlyBirdCutoff).toLocaleDateString("en-GB", {
                         day: "numeric",
@@ -581,7 +581,7 @@ export default async function EventPackPage({
                       })}
                     </p>
                   )}
-                  <p className="text-xs text-neutral-500 mb-4 mt-1">
+                  <p className="text-xs text-[#6A6A6A] mb-4 mt-1">
                     {totalCount > 0 ? `${totalCount} experiences` : "Curated experiences"} · one-time purchase
                   </p>
                   {paymentProvider === "dodo" ? (
@@ -593,10 +593,10 @@ export default async function EventPackPage({
                         successUrl={user?.email
                           ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}`
                           : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
-                        buttonClassName="w-full inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
+                        buttonClassName="w-full inline-flex items-center justify-center px-6 py-3 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors"
                       />
                     ) : (
-                      <p className="text-xs text-neutral-400">Checkout coming soon.</p>
+                      <p className="text-xs text-[#6A6A6A]">Checkout coming soon.</p>
                     )
                   ) : priceId ? (
                     <PaddleCheckout
@@ -610,10 +610,10 @@ export default async function EventPackPage({
                       redirectDelay={user?.email ? 4000 : 2500}
                       environment={paddleEnv}
                       userEmail={user?.email ?? undefined}
-                      buttonClassName="w-full inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
+                      buttonClassName="w-full inline-flex items-center justify-center px-6 py-3 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors"
                     />
                   ) : (
-                    <p className="text-xs text-neutral-400">Checkout coming soon.</p>
+                    <p className="text-xs text-[#6A6A6A]">Checkout coming soon.</p>
                   )}
                 </div>
               )}
@@ -622,20 +622,20 @@ export default async function EventPackPage({
         </div>
 
         {/* What's inside */}
-        <div className="py-10 border-b border-neutral-100">
-          <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-6">
+        <div className="py-10 border-b border-[#2A2A2A]">
+          <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-6">
             What&apos;s inside
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {(PACK_SECTIONS_BY_EVENT[slug] ?? PACK_SECTIONS_BY_EVENT["wimbledon-2026"]).map((section) => (
               <div
                 key={section.label}
-                className="rounded-xl border border-neutral-200 p-5"
+                className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 hover:border-[#AAFF00] transition-colors"
               >
-                <p className="text-sm font-semibold text-neutral-900 mb-1">
+                <p className="text-sm font-black text-white mb-1">
                   {section.label}
                 </p>
-                <p className="text-xs text-neutral-500 leading-5 line-clamp-2 min-h-[2.5rem]">
+                <p className="text-xs text-[#6A6A6A] leading-5 line-clamp-2 min-h-[2.5rem]">
                   {section.description}
                 </p>
               </div>
@@ -645,20 +645,20 @@ export default async function EventPackPage({
 
         {/* Teaser experiences — 2 cards + "+N more" always in one row */}
         {teaserExps.length > 0 && (
-          <div className="py-10 border-b border-neutral-100">
-            <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-1">
+          <div className="py-10 border-b border-[#2A2A2A]">
+            <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-1">
               A glimpse inside
             </p>
-            <p className="text-neutral-500 text-sm mb-6">
+            <p className="text-[#A3A3A3] text-sm mb-6">
               A few of the experiences waiting for you.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-5">
               {teaserExps.map((exp) => (
                 <div
                   key={exp.id}
-                  className="rounded-xl border border-neutral-200 overflow-hidden"
+                  className="rounded-sm border border-[#2A2A2A] overflow-hidden bg-[#141414]"
                 >
-                  <div className="relative h-40 overflow-hidden bg-neutral-100">
+                  <div className="relative h-40 overflow-hidden bg-[#1A1A1A]">
                     {exp.heroImageUrl ? (
                       <Image
                         src={exp.heroImageUrl}
@@ -668,35 +668,35 @@ export default async function EventPackPage({
                         sizes="(max-width: 1024px) 33vw, 25vw"
                       />
                     ) : (
-                      <div className="w-full h-full bg-neutral-200" />
+                      <div className="w-full h-full bg-[#1A1A1A]" />
                     )}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                      <span className="text-white text-xs font-semibold tracking-widest uppercase">
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                      <span className="text-[#AAFF00] text-xs font-black tracking-widest uppercase">
                         Pack exclusive
                       </span>
                     </div>
                   </div>
                   <div className="p-4">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-semibold tracking-widest uppercase text-neutral-400">
+                      <span className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00]">
                         {TYPE_LABELS[exp.experienceType] ?? exp.experienceType}
                       </span>
                       {exp.budgetTier && (
-                        <span className="hidden sm:block text-xs text-neutral-400">
+                        <span className="hidden sm:block text-xs text-[#6A6A6A]">
                           {BUDGET_LABELS[exp.budgetTier] ?? exp.budgetTier}
                         </span>
                       )}
                     </div>
-                    <h3 className="text-sm font-semibold text-neutral-900 leading-snug">
+                    <h3 className="text-sm font-black text-white leading-snug">
                       {exp.title}
                     </h3>
                     {exp.subtitle && (
-                      <p className="mt-1 text-xs text-neutral-500 line-clamp-2 leading-5">
+                      <p className="mt-1 text-xs text-[#6A6A6A] line-clamp-2 leading-5">
                         {exp.subtitle}
                       </p>
                     )}
                     {exp.neighborhood && (
-                      <p className="mt-2 text-xs text-neutral-400">
+                      <p className="mt-2 text-xs text-[#6A6A6A]">
                         {exp.neighborhood}
                       </p>
                     )}
@@ -705,11 +705,11 @@ export default async function EventPackPage({
               ))}
 
               {/* Always show the "+N more" card as the third column */}
-              <div className="col-span-2 sm:col-span-1 rounded-xl border border-dashed border-neutral-300 p-5 flex flex-col items-center justify-center text-center bg-neutral-50">
-                <p className="text-2xl font-bold text-neutral-900 mb-1">
+              <div className="col-span-2 sm:col-span-1 rounded-sm border border-dashed border-[#2A2A2A] p-5 flex flex-col items-center justify-center text-center bg-[#141414]">
+                <p className="text-2xl font-black text-[#AAFF00] mb-1">
                   +{totalCount - teaserExps.length}
                 </p>
-                <p className="text-xs text-neutral-500 leading-5">
+                <p className="text-xs text-[#6A6A6A] leading-5">
                   more experiences
                   <br />
                   in the full pack
@@ -721,20 +721,20 @@ export default async function EventPackPage({
 
         {/* Bottom CTA — for visitors who read through before deciding */}
         {!isEventPast && (
-          <div className="py-14 border-t border-neutral-100">
+          <div className="py-14">
             <div className="max-w-sm mx-auto text-center">
-              <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-5">
+              <p className="text-xs font-semibold tracking-widest uppercase text-[#6A6A6A] mb-5">
                 Ready to go?
               </p>
               {freeAccessEnabled && slug === "wimbledon-2026" ? (
                 <>
                   <Link
                     href={`/sign-in?next=/event-pack/${slug}`}
-                    className="w-full inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors"
+                    className="w-full inline-flex items-center justify-center px-6 py-3 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors"
                   >
                     Sign in for free access
                   </Link>
-                  <p className="mt-5 text-xs text-neutral-400">
+                  <p className="mt-5 text-xs text-[#6A6A6A]">
                     Free until 24 June · no card required · instant access
                   </p>
                 </>
@@ -749,7 +749,7 @@ export default async function EventPackPage({
                       : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
                   />
                 ) : (
-                  <p className="text-xs text-neutral-400">Checkout coming soon.</p>
+                  <p className="text-xs text-[#6A6A6A]">Checkout coming soon.</p>
                 )
               ) : priceId ? (
                 <PaddleCheckout
@@ -764,18 +764,18 @@ export default async function EventPackPage({
                   environment={paddleEnv}
                 />
               ) : (
-                <p className="text-xs text-neutral-400">Checkout coming soon.</p>
+                <p className="text-xs text-[#6A6A6A]">Checkout coming soon.</p>
               )}
               {!(freeAccessEnabled && slug === "wimbledon-2026") && (
-                <p className="mt-5 text-xs text-neutral-400">
+                <p className="mt-5 text-xs text-[#6A6A6A]">
                   {priceDisplay} · one-time · instant access
                 </p>
               )}
-              <p className="mt-4 text-xs text-neutral-400">
+              <p className="mt-4 text-xs text-[#6A6A6A]">
                 Questions?{" "}
                 <a
                   href="mailto:hello@experiences-curated.com"
-                  className="underline hover:text-neutral-600 transition-colors"
+                  className="underline hover:text-[#AAFF00] transition-colors"
                 >
                   hello@experiences-curated.com
                 </a>

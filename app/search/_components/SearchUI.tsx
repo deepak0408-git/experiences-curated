@@ -265,7 +265,7 @@ function MobileFilterButton({ onOpen }: { onOpen: () => void }) {
       className={`md:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm border text-xs font-semibold transition-colors flex-shrink-0 ${
         activeCount > 0
           ? "border-[#AAFF00] bg-[#AAFF00] text-black"
-          : "border-[#2A2A2A] text-[#6A6A6A] hover:border-[#AAFF00] hover:text-white"
+          : "border-[#2A2A2A] text-[#6A6A6A] hover:border-[#AAFF00] hover:text-[#AAFF00]"
       }`}
     >
       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 16 16"><path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>

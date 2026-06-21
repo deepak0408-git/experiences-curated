@@ -10,10 +10,10 @@ export default function DeleteAccountButton() {
   if (confirming) {
     return (
       <div className="flex items-center gap-2">
-        <span className="text-xs text-neutral-500">Are you sure?</span>
+        <span className="text-xs text-[#6A6A6A]">Are you sure?</span>
         <button
           onClick={() => setConfirming(false)}
-          className="text-xs text-neutral-500 underline underline-offset-2 hover:text-neutral-900 transition-colors"
+          className="text-xs text-[#6A6A6A] underline underline-offset-2 hover:text-white transition-colors"
         >
           Cancel
         </button>
@@ -34,7 +34,7 @@ export default function DeleteAccountButton() {
   return (
     <button
       onClick={() => setConfirming(true)}
-      className="text-xs text-neutral-400 underline underline-offset-2 hover:text-red-600 transition-colors"
+      className="text-xs text-[#6A6A6A] underline underline-offset-2 hover:text-red-400 transition-colors"
     >
       Delete account
     </button>
