@@ -16,11 +16,11 @@ export const metadata: Metadata = {
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; sport?: string }>;
 }) {
   noStore();
 
-  const { q } = await searchParams;
+  const { q, sport } = await searchParams;
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -41,6 +41,7 @@ export default async function SearchPage({
       searchKey={process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY!}
       indexName={process.env.ALGOLIA_EXPERIENCES_INDEX!}
       initialQuery={q ?? ""}
+      initialSport={sport ?? ""}
       archetype={archetype}
       userEmail={user?.email ?? null}
       hideProCtas={process.env.HIDE_PRO === "true"}

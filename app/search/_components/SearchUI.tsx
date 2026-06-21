@@ -279,6 +279,7 @@ export function SearchUI({
   searchKey,
   indexName,
   initialQuery = "",
+  initialSport = "",
   archetype,
   userEmail,
   hideProCtas = false,
@@ -288,6 +289,7 @@ export function SearchUI({
   searchKey: string;
   indexName: string;
   initialQuery?: string;
+  initialSport?: string;
   archetype?: string | null;
   userEmail?: string | null;
   hideProCtas?: boolean;
@@ -315,12 +317,12 @@ export function SearchUI({
       searchClient={searchClient}
       indexName={indexName}
       future={{ preserveSharedStateOnUnmount: true }}
-      initialUiState={{ [indexName]: { query: initialQuery ?? "" } }}
+      initialUiState={{ [indexName]: { query: initialQuery ?? "", ...(initialSport ? { refinementList: { sport: [initialSport] } } : {}) } }}
     >
       <Configure
         hitsPerPage={50}
         {...(optionalFilters.length > 0 ? { optionalFilters } : {})}
-        {...(wimbledonOnly ? { filters: 'sport:"tennis" AND destinationId:"75758888-28b9-4e09-82ba-f05681ecc904"' } : {})}
+        {...(wimbledonOnly ? { filters: 'destinationId:"75758888-28b9-4e09-82ba-f05681ecc904"' } : {})}
       />
 
       <div className="min-h-screen bg-[#0A0A0A]">
