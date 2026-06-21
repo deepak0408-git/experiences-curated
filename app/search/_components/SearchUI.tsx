@@ -137,7 +137,7 @@ function HitCard({ hit }: { hit: ExperienceHit }) {
       )}
       <div className="p-3 sm:p-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-semibold tracking-widest uppercase text-[#6A6A6A]">
+          <span className="text-xs font-black tracking-widest uppercase text-[#AAFF00]">
             {TYPE_LABELS[hit.experienceType] ?? hit.experienceType}
           </span>
           {hit.budgetTier && (
@@ -372,7 +372,7 @@ export function SearchUI({
             {userEmail && (
               <Link
                 href="/profile"
-                className="flex items-center justify-center w-7 h-7 rounded-sm bg-[#2A2A2A] text-white text-xs font-black uppercase flex-shrink-0 hover:bg-[#AAFF00] hover:text-black transition-colors"
+                className="flex items-center justify-center w-7 h-7 rounded-sm bg-[#AAFF00] text-black text-xs font-black uppercase flex-shrink-0 hover:bg-[#BBFF33] transition-colors"
                 aria-label="Profile"
                 title={userEmail}
               >
