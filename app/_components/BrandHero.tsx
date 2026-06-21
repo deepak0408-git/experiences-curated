@@ -122,7 +122,7 @@ export default function BrandHero({
           <h1 className="text-3xl sm:text-5xl font-black text-white leading-tight tracking-tight max-w-2xl">
             Insider travel guides for the world&apos;s greatest sporting events
           </h1>
-          <p className="mt-4 text-sm sm:text-base text-white/60 leading-relaxed font-light whitespace-nowrap">
+          <p className="mt-4 text-sm sm:text-base text-white/60 leading-relaxed font-light sm:whitespace-nowrap">
             Guides built around the event, not just the city. Save and plan what fits your trip. Show up ready.
           </p>
 
@@ -135,7 +135,7 @@ export default function BrandHero({
             {/* Featured event rows */}
             <div className="flex flex-col gap-2.5 mb-4">
               {featuredEvents.map((ev) => (
-                <div key={ev.slug} className="grid items-center gap-4" style={{ gridTemplateColumns: "380px auto" }}>
+                <div key={ev.slug} className="flex flex-col sm:grid sm:items-center gap-2 sm:gap-4" style={{ gridTemplateColumns: "320px auto" }}>
                   <div className="flex items-center gap-2 min-w-0">
                     <span className="text-xs font-black text-[#AAFF00] flex-shrink-0">
                       {SPORT_LABELS[ev.sport] ?? ev.sport}
