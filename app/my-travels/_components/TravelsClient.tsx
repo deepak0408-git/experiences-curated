@@ -136,7 +136,7 @@ export default function TravelsClient({ logs, userEmail, promptEvent }: { logs: 
                 <div className="flex-1 min-w-0 px-3 py-2.5">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
-                      <span className="text-[10px] font-semibold tracking-widest uppercase text-[#6A6A6A]">
+                      <span className="text-[10px] font-black tracking-widest uppercase text-[#AAFF00]">
                         {TYPE_LABELS[log.experienceType] ?? log.experienceType}
                       </span>
                       <Link href={`/experience/${log.slug}`}>
