@@ -73,7 +73,7 @@ export default function TravelsClient({ logs, userEmail, promptEvent }: { logs: 
             <span className="hidden sm:inline text-[#2A2A2A]">|</span>
             <Link
               href="/profile"
-              className="flex items-center justify-center w-7 h-7 rounded-sm bg-[#2A2A2A] text-white text-xs font-black uppercase flex-shrink-0 hover:bg-[#AAFF00] hover:text-black transition-colors"
+              className="flex items-center justify-center w-7 h-7 rounded-sm bg-[#AAFF00] text-black text-xs font-black uppercase flex-shrink-0 hover:bg-[#BBFF33] transition-colors"
               aria-label="Profile"
               title={userEmail}
             >
