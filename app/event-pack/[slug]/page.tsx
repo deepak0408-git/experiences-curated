@@ -9,7 +9,7 @@ import Image from "next/image";
 import PaddleCheckout from "./_components/PaddleCheckout";
 import DodoCheckout from "./_components/DodoCheckout";
 import PackView from "./_components/PackView";
-import { hasProSubscription } from "@/lib/pro";
+import { getProDetails } from "@/lib/pro";
 import HomepageNav from "@/app/_components/HomepageNav";
 import LocalCurrencyHint from "./_components/LocalCurrencyHint";
 import { grantFreeAccess } from "./actions";
@@ -384,7 +384,15 @@ export default async function EventPackPage({
     hasPurchased = true;
   }
 
-  const isPro = user?.email ? await hasProSubscription(user.email) : false;
+  const { isPro, isAnnual, currentPeriodEnd } = user?.email
+    ? await getProDetails(user.email)
+    : { isPro: false, isAnnual: false, currentPeriodEnd: null };
+
+  // Annual Pro subscribers get free access to all event packs during their subscription period
+  const isAnnualProActive = isAnnual && currentPeriodEnd != null && currentPeriodEnd > new Date();
+  if (!hasPurchased && isAnnualProActive && user?.email) {
+    hasPurchased = true;
+  }
 
   let archetype: string | null = null;
   if (user?.email) {

@@ -1,4 +1,5 @@
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import type { LocalInfoRow, RhythmEntry } from "@/lib/pack-content";
 
 const BUDGET_LABELS: Record<string, string> = {
   free: "Free",
@@ -9,6 +10,38 @@ const BUDGET_LABELS: Record<string, string> = {
 };
 
 const styles = StyleSheet.create({
+  localInfoRow: {
+    flexDirection: "row",
+    paddingVertical: 5,
+    borderBottom: "1 solid #F0F0F0",
+  },
+  localInfoLabel: {
+    fontSize: 9,
+    fontFamily: "Helvetica-Bold",
+    color: "#525252",
+    width: 110,
+    flexShrink: 0,
+  },
+  localInfoValue: {
+    fontSize: 9,
+    color: "#525252",
+    lineHeight: 1.5,
+    flex: 1,
+  },
+  rhythmEntry: {
+    marginBottom: 10,
+  },
+  rhythmLabel: {
+    fontSize: 10,
+    fontFamily: "Helvetica-Bold",
+    color: "#171717",
+    marginBottom: 3,
+  },
+  rhythmBody: {
+    fontSize: 10,
+    color: "#525252",
+    lineHeight: 1.6,
+  },
   page: {
     fontFamily: "Helvetica",
     backgroundColor: "#FFFFFF",
@@ -113,11 +146,6 @@ const styles = StyleSheet.create({
   },
 });
 
-function truncate(str: string | null | undefined, max: number): string {
-  if (!str) return "";
-  return str.length > max ? str.slice(0, max) + "…" : str;
-}
-
 function splitParas(text: string | null | undefined): string[] {
   if (!text) return [];
   return text.split(/\n+/).filter(Boolean);
@@ -147,6 +175,8 @@ type Props = {
   isBrief: boolean;
   userEmail: string;
   dateStr: string;
+  localInfo: LocalInfoRow[];
+  rhythmEntries: RhythmEntry[];
 };
 
 export function PackPdfDocument({
@@ -158,6 +188,8 @@ export function PackPdfDocument({
   isBrief,
   userEmail,
   dateStr,
+  localInfo,
+  rhythmEntries,
 }: Props) {
   return (
     <Document
@@ -188,6 +220,32 @@ export function PackPdfDocument({
           </View>
         ) : null}
 
+        {localInfo.length > 0 ? (
+          <View style={{ marginBottom: 24 }}>
+            <Text style={styles.sectionHeading}>Quick Reference</Text>
+            {localInfo
+              .filter((row) => !["Best transport", "Weather"].includes(row.label))
+              .map((row, i) => (
+                <View key={i} style={styles.localInfoRow}>
+                  <Text style={styles.localInfoLabel}>{row.label}</Text>
+                  <Text style={styles.localInfoValue}>{row.value}</Text>
+                </View>
+              ))}
+          </View>
+        ) : null}
+
+        {!isBrief && rhythmEntries.length > 0 ? (
+          <View style={{ marginBottom: 24 }}>
+            <Text style={styles.sectionHeading}>How It Unfolds</Text>
+            {rhythmEntries.map((entry, i) => (
+              <View key={i} style={styles.rhythmEntry}>
+                <Text style={styles.rhythmLabel}>{entry.label}</Text>
+                <Text style={styles.rhythmBody}>{entry.body}</Text>
+              </View>
+            ))}
+          </View>
+        ) : null}
+
         {sections.map((section) => (
           <View key={section.name}>
             <Text style={[styles.sectionHeading, { marginTop: 20 }]}>{section.name}</Text>
@@ -206,13 +264,10 @@ export function PackPdfDocument({
                         <Text key={i} style={styles.expBody}>{para}</Text>
                       ))
                     : null}
-                  {isBrief && exp.whyItsSpecial
-                    ? <Text style={styles.expBody}>{truncate(exp.whyItsSpecial, 280)}</Text>
-                    : null}
                   {tips.length > 0 ? (
                     <View style={{ marginTop: 4 }}>
                       <Text style={styles.tipLabel}>Worth knowing</Text>
-                      {tips.slice(0, isBrief ? 1 : 3).map((tip, i) => (
+                      {tips.map((tip, i) => (
                         <Text key={i} style={styles.tipText}>· {tip}</Text>
                       ))}
                     </View>

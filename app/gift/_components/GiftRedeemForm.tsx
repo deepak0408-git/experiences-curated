@@ -15,9 +15,11 @@ type Event = {
 export default function GiftRedeemForm({
   events,
   isSignedIn,
+  ownedEventIds,
 }: {
   events: Event[];
   isSignedIn: boolean;
+  ownedEventIds: string[];
 }) {
   const router = useRouter();
   const [code, setCode] = useState("");
@@ -106,31 +108,39 @@ export default function GiftRedeemForm({
           Choose your event pack
         </label>
         <div className="space-y-2">
-          {events.map((event) => (
-            <button
-              key={event.id}
-              type="button"
-              onClick={() => setSelectedEventId(event.id)}
-              className={`w-full text-left flex items-center gap-4 rounded-sm border px-4 py-3 transition-colors ${
-                selectedEventId === event.id
-                  ? "border-[#AAFF00] bg-[#141414]"
-                  : "border-[#2A2A2A] bg-[#141414] hover:border-[#3A3A3A]"
-              }`}
-            >
-              {selectedEventId === event.id && (
-                <span className="w-3 h-3 rounded-full bg-[#AAFF00] flex-shrink-0" />
-              )}
-              {selectedEventId !== event.id && (
-                <span className="w-3 h-3 rounded-full border border-[#3A3A3A] flex-shrink-0" />
-              )}
-              <div>
-                <p className="text-sm font-black text-white">{event.name}</p>
-                <p className="text-xs text-[#6A6A6A] mt-0.5">
-                  {new Date(event.startDate).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
-                </p>
-              </div>
-            </button>
-          ))}
+          {events.map((event) => {
+            const owned = ownedEventIds.includes(event.id);
+            const selected = selectedEventId === event.id;
+            return (
+              <button
+                key={event.id}
+                type="button"
+                onClick={() => !owned && setSelectedEventId(event.id)}
+                disabled={owned}
+                className={`w-full text-left flex items-center gap-4 rounded-sm border px-4 py-3 transition-colors ${
+                  owned
+                    ? "border-[#2A2A2A] bg-[#141414] opacity-40 cursor-not-allowed"
+                    : selected
+                    ? "border-[#AAFF00] bg-[#141414]"
+                    : "border-[#2A2A2A] bg-[#141414] hover:border-[#3A3A3A]"
+                }`}
+              >
+                {selected
+                  ? <span className="w-3 h-3 rounded-full bg-[#AAFF00] flex-shrink-0" />
+                  : <span className="w-3 h-3 rounded-full border border-[#3A3A3A] flex-shrink-0" />
+                }
+                <div>
+                  <p className="text-sm font-black text-white">{event.name}</p>
+                  <p className="text-xs text-[#6A6A6A] mt-0.5">
+                    {owned
+                      ? "Already in your library"
+                      : new Date(event.startDate).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })
+                    }
+                  </p>
+                </div>
+              </button>
+            );
+          })}
           {events.length === 0 && (
             <p className="text-sm text-[#6A6A6A]">No upcoming events available right now.</p>
           )}

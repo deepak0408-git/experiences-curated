@@ -911,10 +911,8 @@ export default async function PackView({
 
             {/* Editor's Pick — feature card */}
             {section.editorsPick && (
-              <Link
-                href={`/experience/${section.editorsPick.slug}`}
-                className="group block rounded-sm border border-[#2A2A2A] bg-[#141414] overflow-hidden hover:border-[#AAFF00] transition-colors mb-5"
-              >
+              <div className="group rounded-sm border border-[#2A2A2A] bg-[#141414] overflow-hidden hover:border-[#AAFF00] transition-colors mb-5">
+                <Link href={`/experience/${section.editorsPick.slug}`} className="block">
                 {section.editorsPick.heroImageUrl && (
                   <div className="relative h-60 overflow-hidden bg-[#1A1A1A]">
                     <Image
@@ -926,7 +924,7 @@ export default async function PackView({
                     />
                   </div>
                 )}
-                <div className="p-6">
+                <div className="p-6 pb-0">
                   <div className="flex items-center gap-3 mb-3">
                     {(section.editorsPick.practicalInfo as { howToBook?: string } | null)?.howToBook ? (
                       <span className="text-xs font-semibold uppercase tracking-widest text-amber-400">
@@ -978,19 +976,22 @@ export default async function PackView({
                       </div>
                     ) : null;
                   })()}
-                  {(section.editorsPick.practicalInfo as { howToBook?: string } | null)?.howToBook && (
-                    <HowToBook
-                      howToBook={(section.editorsPick.practicalInfo as { howToBook: string }).howToBook}
-                      isPro={isPro}
-                      eventSlug={eventSlug}
-                      hideProCtas={hideProCtas}
-                    />
-                  )}
-                  <div className="mt-4 pt-3 border-t border-[#2A2A2A]">
-                    <AddOneToBoard experienceId={section.editorsPick.id} />
-                  </div>
                 </div>
               </Link>
+              <div className="px-6 pb-6">
+                {(section.editorsPick.practicalInfo as { howToBook?: string } | null)?.howToBook && (
+                  <HowToBook
+                    howToBook={(section.editorsPick.practicalInfo as { howToBook: string }).howToBook}
+                    isPro={isPro}
+                    eventSlug={eventSlug}
+                    hideProCtas={hideProCtas}
+                  />
+                )}
+                <div className="mt-4 pt-3 border-t border-[#2A2A2A]">
+                  <AddOneToBoard experienceId={section.editorsPick.id} />
+                </div>
+              </div>
+            </div>
             )}
 
             {/* Remaining picks — 2-column grid */}
@@ -1085,13 +1086,13 @@ export default async function PackView({
       </div>
 
       {/* Pro-only features — Download + Ask the Curator */}
-      {isPro && (
-        <div className="bg-[#141414]">
+      {isPro && !hideProCtas && (
+        <div className="bg-[#0A0A0A] border-t border-[#2A2A2A]">
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12 space-y-12">
 
             {/* Download */}
             <div className="max-w-xl">
-              <p className="text-xs font-mono font-black tracking-widest uppercase text-[#AAFF00] mb-3">
+              <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-3">
                 Pro
               </p>
               <h2 className="text-lg font-black text-white mb-2">
@@ -1123,7 +1124,7 @@ export default async function PackView({
 
       {/* Pro upsell — non-Pro users only */}
       {!isPro && !hideProCtas && (
-        <div className="bg-[#141414]">
+        <div className="bg-[#0A0A0A] border-t border-[#2A2A2A]">
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12">
             <div className="max-w-xl">
               <p className="text-xs font-semibold tracking-widest uppercase text-[#6A6A6A] mb-3">

@@ -17,16 +17,58 @@ export const metadata: Metadata = {
   description: "Unlock concierge picks, insider booking guidance, and exclusive experiences with a Pro subscription.",
 };
 
-const PRO_FEATURES = [
-  { label: "Everything in Event Packs", detail: "All curated experiences, Worth knowing tips, tournament rhythm guides" },
-  { label: "Concierge picks", detail: "Exclusive luxury experiences with private booking guidance — not available in the free tier" },
-  { label: "How to book", detail: "Specific operator contacts, lead times, and what to ask for — not just a link" },
-  { label: "Booking reminders", detail: "Timed alerts before sell-out deadlines for high-demand experiences" },
-  { label: "Unlimited Trip Boards", detail: "Save and plan across as many trips as you like" },
-  { label: "Offline event packs", detail: "Download your pack before you travel — no signal needed on the ground" },
-  { label: "Ask the curator", detail: "Ask anything about a venue, experience, or logistics — a human reply within 48 hours" },
-  { label: "Gift a pack", detail: "One free gift code per year — your recipient claims any live event pack" },
-  { label: "Trip Planner", detail: "Day-by-day itinerary builder — drag experiences onto your schedule", comingSoon: true },
+const PRO_FEATURES: { label: string; detail: string; annualOnly?: boolean; comingSoon?: boolean }[] = [
+  {
+    label: "Unlimited experience reads",
+    detail: "Browse every experience in every pack — no 3-read cap",
+    annualOnly: false,
+  },
+  {
+    label: "All event packs, free",
+    detail: "Includes every pack published while your subscription is active — buy once, read everything",
+    annualOnly: true,
+  },
+  {
+    label: "Concierge picks",
+    detail: "Exclusive luxury experiences with private booking guidance — not in the free tier",
+    annualOnly: false,
+  },
+  {
+    label: "How to book",
+    detail: "Specific operator contacts, lead times, and what to ask for — not just a link",
+    annualOnly: false,
+  },
+  {
+    label: "Booking reminders",
+    detail: "Timed alerts before sell-out deadlines for high-demand experiences",
+    annualOnly: false,
+  },
+  {
+    label: "Unlimited Trip Boards",
+    detail: "Save and plan across as many trips as you like",
+    annualOnly: false,
+  },
+  {
+    label: "Offline event packs",
+    detail: "Download your pack before you travel — no signal needed on the ground",
+    annualOnly: false,
+  },
+  {
+    label: "Ask the curator",
+    detail: "Ask anything about a venue, experience, or logistics — a human reply within 48 hours",
+    annualOnly: false,
+  },
+  {
+    label: "Gift a pack",
+    detail: "One free gift code per year — your recipient claims any live event pack",
+    annualOnly: true,
+  },
+  {
+    label: "Trip Planner",
+    detail: "Day-by-day itinerary builder — drag experiences onto your schedule",
+    annualOnly: false,
+    comingSoon: true,
+  },
 ];
 
 export default async function ProPage() {
@@ -175,9 +217,12 @@ export default async function ProPage() {
                     </svg>
                   </span>
                   <div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <p className="text-sm font-black text-white">{f.label}</p>
-                      {"comingSoon" in f && f.comingSoon && (
+                      {f.annualOnly && (
+                        <span className="text-[10px] font-black tracking-widest uppercase text-[#AAFF00] border border-[#AAFF00]/30 rounded-sm px-1.5 py-0.5">Annual</span>
+                      )}
+                      {f.comingSoon && (
                         <span className="text-[10px] font-black tracking-widest uppercase text-[#6A6A6A] border border-[#2A2A2A] rounded-sm px-1.5 py-0.5">Soon</span>
                       )}
                     </div>

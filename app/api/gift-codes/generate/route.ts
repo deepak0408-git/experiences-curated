@@ -3,7 +3,7 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { hasProSubscription } from "@/lib/pro";
 import { db } from "@/lib/db";
-import { giftCodes } from "@/schema/database";
+import { giftCodes, proSubscriptions } from "@/schema/database";
 import { eq, and, gte } from "drizzle-orm";
 
 function generateCode(): string {
@@ -31,6 +31,17 @@ export async function POST() {
   const isPro = await hasProSubscription(user.email);
   if (!isPro) {
     return NextResponse.json({ error: "Pro required" }, { status: 403 });
+  }
+
+  // Gift code is annual-only perk — monthly subscribers are not eligible
+  const [sub] = await db
+    .select({ billingCycle: proSubscriptions.billingCycle })
+    .from(proSubscriptions)
+    .where(and(eq(proSubscriptions.email, user.email), eq(proSubscriptions.status, "active")))
+    .limit(1);
+
+  if (!sub || sub.billingCycle !== "annual") {
+    return NextResponse.json({ error: "Annual plan required" }, { status: 403 });
   }
 
   // One gift code per calendar year — check for existing unexpired code this year
@@ -64,8 +75,9 @@ export async function POST() {
     attempts++;
   }
 
-  // Expires 31 Dec this year
-  const expiresAt = new Date(new Date().getFullYear(), 11, 31, 23, 59, 59);
+  // Expires 1 year from today
+  const expiresAt = new Date();
+  expiresAt.setFullYear(expiresAt.getFullYear() + 1);
 
   const [created] = await db
     .insert(giftCodes)

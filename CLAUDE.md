@@ -169,7 +169,18 @@ sport:          tennis | cricket | football | rugby | golf | formula_one | cycli
 ---
 
 ## Pro Subscription
-`pro_subscriptions` table. Check via `hasProSubscription(email)`. Gates: experience reads (3 free / unlimited Pro), PackView HowToBook, Trip Board (1 board free / unlimited Pro + Move to).
+`pro_subscriptions` table. Check via `hasProSubscription(email)` (boolean) or `getProDetails(email)` (returns `{ isPro, isAnnual, currentPeriodEnd }`) in `lib/pro.ts`. Use `getProDetails` on event pack pages — it returns billing cycle in one query. Gates: experience reads (3 free / unlimited Pro), PackView HowToBook, Trip Board (1 board free / unlimited Pro + Move to).
+
+**Annual vs Monthly (27 Jun 2026):**
+- Annual Pro: free access to all event packs while `currentPeriodEnd > now` — no purchase needed. Pack page gate: `hasPurchased OR freeEvent OR isAnnualProActive`.
+- Monthly Pro: unlimited reads, trip boards, PDF downloads, ask curator, concierge picks — but must buy each event pack individually.
+- Gift codes: annual-only (`billingCycle = "annual"` check in `/api/gift-codes/generate/route.ts`).
+- New pack notifications (fire from `curator/events/actions.ts` when event is reactivated): annual gets "in your library" email; monthly gets "buy it or upgrade" dual-CTA email.
+
+**Pending Pro upgrades (next session):**
+- Homepage "Why Pro?" strip above footer — annual pack-included pitch
+- Event pack landing: one-liner below checkout — "Or get this + every future pack with Annual Pro"
+- PackView: upgrade banner for `isPro && !isAnnual` users
 
 **Archetype quiz:** 12 questions → pilgrim | first_pilgrim | connoisseur | immersionist. Stored in `user_profiles.archetype`. Quiz at `/pro/onboarding?retake=true`.
 
