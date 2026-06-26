@@ -10,6 +10,7 @@ import { ARCHETYPE_DETAILS } from "@/lib/quiz";
 import SignOutButton from "@/app/event-pack/[slug]/_components/SignOutButton";
 import { hasProSubscription } from "@/lib/pro";
 import ManageSubscriptionButton from "./_components/ManageSubscriptionButton";
+import GiftCodeSection from "./_components/GiftCodeSection";
 import CookieSettingsButton from "./_components/CookieSettingsButton";
 import DeleteAccountButton from "./_components/DeleteAccountButton";
 
@@ -182,6 +183,13 @@ export default async function ProfilePage() {
             </div>
           )}
         </div>
+
+        {/* Pro member gift code */}
+        {isPro && (
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-6">
+            <GiftCodeSection />
+          </div>
+        )}
 
         {/* Account */}
         <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-6">
