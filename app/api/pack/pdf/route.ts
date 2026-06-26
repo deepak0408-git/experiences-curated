@@ -10,6 +10,7 @@ import type { ReactElement } from "react";
 import { renderToBuffer } from "@react-pdf/renderer";
 import type { DocumentProps } from "@react-pdf/renderer";
 import { PackPdfDocument } from "./PackPdfDocument";
+import { PACK_EDITORIAL, TOURNAMENT_RHYTHM } from "@/lib/pack-content";
 
 const SECTION_MAP: Record<string, string> = {
   transit: "Before you go",
@@ -115,6 +116,10 @@ export async function GET(request: NextRequest) {
     day: "numeric", month: "long", year: "numeric",
   });
 
+  const editorial = PACK_EDITORIAL[slug];
+  const localInfo = editorial?.localInfo ?? [];
+  const rhythmEntries = TOURNAMENT_RHYTHM[slug] ?? [];
+
   const docElement = createElement(PackPdfDocument, {
     eventName: event.name,
     editorialOverview: event.editorialOverview ?? null,
@@ -124,6 +129,8 @@ export async function GET(request: NextRequest) {
     isBrief,
     userEmail: user.email,
     dateStr,
+    localInfo,
+    rhythmEntries,
   }) as ReactElement<DocumentProps>;
 
   const buffer = await renderToBuffer(docElement);

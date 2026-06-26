@@ -42,12 +42,13 @@ export default async function ProfilePage() {
 
   const [proSub] = isPro && user.email
     ? await db
-        .select({ paddleCustomerId: proSubscriptions.paddleCustomerId })
+        .select({ paddleCustomerId: proSubscriptions.paddleCustomerId, billingCycle: proSubscriptions.billingCycle })
         .from(proSubscriptions)
         .where(eq(proSubscriptions.email, user.email))
         .limit(1)
     : [];
   const paddleCustomerId = proSub?.paddleCustomerId ?? null;
+  const isAnnualPro = proSub?.billingCycle === "annual";
   const archetypeDetails = archetype ? ARCHETYPE_DETAILS[archetype as keyof typeof ARCHETYPE_DETAILS] : null;
 
   const [stats] = dbUser
@@ -185,7 +186,7 @@ export default async function ProfilePage() {
         </div>
 
         {/* Pro member gift code */}
-        {isPro && (
+        {isPro && isAnnualPro && process.env.HIDE_PRO !== "true" && (
           <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-6">
             <GiftCodeSection />
           </div>
