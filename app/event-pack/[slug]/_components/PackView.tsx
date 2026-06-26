@@ -5,6 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { AddAllToBoard, AddOneToBoard } from "./AddToBoard";
 import HowToBook from "./HowToBook";
+import AskCuratorForm from "./AskCuratorForm";
+import PackDownload from "./PackDownload";
 import HomepageNav from "@/app/_components/HomepageNav";
 
 // transit → "Before you go" covers both planning and getting there.
@@ -1082,6 +1084,43 @@ export default async function PackView({
         ))}
       </div>
 
+      {/* Pro-only features — Download + Ask the Curator */}
+      {isPro && (
+        <div className="bg-[#141414]">
+          <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12 space-y-12">
+
+            {/* Download */}
+            <div className="max-w-xl">
+              <p className="text-xs font-mono font-black tracking-widest uppercase text-[#AAFF00] mb-3">
+                Pro
+              </p>
+              <h2 className="text-lg font-black text-white mb-2">
+                Take it offline
+              </h2>
+              <p className="text-sm text-[#A3A3A3] mb-6 leading-relaxed">
+                Download the pack as a PDF — for the plane, inside the stadium, or anywhere without signal. Travel Brief is a quick-reference digest. Full Pack includes everything.
+              </p>
+              <PackDownload eventSlug={eventSlug} />
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-[#2A2A2A]" />
+
+            {/* Ask the Curator */}
+            <div className="max-w-xl">
+              <h2 className="text-lg font-black text-white mb-2">
+                Ask the curator
+              </h2>
+              <p className="text-sm text-[#A3A3A3] mb-6 leading-relaxed">
+                Something not covered in the pack? Ask anything — a specific venue, a logistics question, what&apos;s actually worth it. A human reply within 48 hours.
+              </p>
+              <AskCuratorForm eventName={eventName} />
+            </div>
+
+          </div>
+        </div>
+      )}
+
       {/* Pro upsell — non-Pro users only */}
       {!isPro && !hideProCtas && (
         <div className="bg-[#141414]">
@@ -1125,6 +1164,28 @@ export default async function PackView({
                   <div>
                     <p className="text-sm font-semibold text-white">Unlimited Trip Boards</p>
                     <p className="text-xs text-[#6A6A6A] mt-0.5 leading-5">Plan and save across as many trips as you like — not just this one.</p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <span className="mt-0.5 w-4 h-4 rounded-sm bg-[#AAFF00] flex-shrink-0 flex items-center justify-center">
+                    <svg className="w-2.5 h-2.5 text-black" fill="none" viewBox="0 0 10 8">
+                      <path d="M1 4l3 3 5-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-white">Download for offline — Travel Brief or Full Pack PDF</p>
+                    <p className="text-xs text-[#6A6A6A] mt-0.5 leading-5">Take the pack on the plane, into the stadium, anywhere without signal.</p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <span className="mt-0.5 w-4 h-4 rounded-sm bg-[#AAFF00] flex-shrink-0 flex items-center justify-center">
+                    <svg className="w-2.5 h-2.5 text-black" fill="none" viewBox="0 0 10 8">
+                      <path d="M1 4l3 3 5-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-white">Ask the curator — human reply within 48 hrs</p>
+                    <p className="text-xs text-[#6A6A6A] mt-0.5 leading-5">A specific question about any venue, experience, or logistics — answered by a person, not an algorithm.</p>
                   </div>
                 </div>
               </div>

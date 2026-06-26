@@ -24,6 +24,9 @@ const PRO_FEATURES = [
   { label: "Booking reminders", detail: "Timed alerts before sell-out deadlines for high-demand experiences" },
   { label: "Unlimited Trip Boards", detail: "Save and plan across as many trips as you like" },
   { label: "Offline event packs", detail: "Download your pack before you travel — no signal needed on the ground" },
+  { label: "Ask the curator", detail: "Ask anything about a venue, experience, or logistics — a human reply within 48 hours" },
+  { label: "Gift a pack", detail: "One free gift code per year — your recipient claims any live event pack" },
+  { label: "Trip Planner", detail: "Day-by-day itinerary builder — drag experiences onto your schedule", comingSoon: true },
 ];
 
 export default async function ProPage() {
@@ -172,7 +175,12 @@ export default async function ProPage() {
                     </svg>
                   </span>
                   <div>
-                    <p className="text-sm font-black text-white">{f.label}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-black text-white">{f.label}</p>
+                      {"comingSoon" in f && f.comingSoon && (
+                        <span className="text-[10px] font-black tracking-widest uppercase text-[#6A6A6A] border border-[#2A2A2A] rounded-sm px-1.5 py-0.5">Soon</span>
+                      )}
+                    </div>
                     <p className="text-xs text-[#A3A3A3] mt-0.5 leading-5">{f.detail}</p>
                   </div>
                 </div>

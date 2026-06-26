@@ -526,6 +526,22 @@ export const sportingEventExperiences = pgTable("sporting_event_experiences", {
   index("see_rank_idx").on(t.sportingEventId, t.packRank),
 ]);
 
+// ─── Gift Codes ───────────────────────────────────────────────────────────────
+
+export const giftCodes = pgTable("gift_codes", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  code: varchar("code", { length: 12 }).notNull().unique(),
+  generatedByEmail: varchar("generated_by_email", { length: 255 }).notNull(),
+  sportingEventId: uuid("sporting_event_id").references(() => sportingEvents.id),
+  claimedByEmail: varchar("claimed_by_email", { length: 255 }),
+  claimedAt: timestamp("claimed_at"),
+  expiresAt: timestamp("expires_at").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+}, (t) => [
+  uniqueIndex("gift_codes_code_unique").on(t.code),
+  index("gift_codes_generated_by_idx").on(t.generatedByEmail),
+]);
+
 // ─── Relations ────────────────────────────────────────────────────────────────
 
 export const experiencesRelations = relations(experiences, ({ one, many }) => ({
