@@ -46,6 +46,22 @@ export async function GET(request: NextRequest) {
       set: { rating, comment: null, displayConsent: false, updatedAt: new Date() },
     });
 
+  const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
+  await resend.emails.send({
+    from: "Experiences | Curated <hello@experiences-curated.com>",
+    to: NOTIFY_TO,
+    subject: `Pack feedback: ${stars} for ${event.name}`,
+    html: `
+      <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;color:#171717">
+        <p style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#a3a3a3;margin-bottom:24px">Pack Feedback</p>
+        <p style="font-size:22px;margin-bottom:16px">${stars}</p>
+        <p style="font-size:14px;color:#525252;line-height:1.6;margin-bottom:8px"><strong>${STAR_LABELS[rating]}</strong> — ${rating}/5</p>
+        <p style="font-size:14px;color:#525252;line-height:1.6;margin-bottom:8px">Event: ${event.name}</p>
+        <p style="font-size:14px;color:#525252;line-height:1.6;">From: ${email}</p>
+      </div>
+    `,
+  }).catch(err => console.error("[pack-feedback] notify failed:", err.message));
+
   const thanksUrl = `${SITE_URL}/pack-feedback/thanks?eventId=${eventId}&rating=${rating}&email=${encodeURIComponent(email)}`;
   return NextResponse.redirect(thanksUrl);
 }
