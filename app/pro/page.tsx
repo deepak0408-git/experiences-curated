@@ -257,14 +257,6 @@ export default async function ProPage() {
               <p className="text-center text-xs text-[#6A6A6A] mt-4">
                 Cancel any time. No lock-in.
               </p>
-              <div className="mt-6 pt-5 border-t border-[#2A2A2A]">
-                <p className="text-xs text-[#6A6A6A] text-center">
-                  Already have an event pack?{" "}
-                  <Link href="/trip-board" className="underline hover:text-[#AAFF00] transition-colors">
-                    Sign in to your board
-                  </Link>
-                </p>
-              </div>
             </div>
           </div>
         )}
