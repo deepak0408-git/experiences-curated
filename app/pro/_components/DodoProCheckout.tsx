@@ -98,7 +98,7 @@ export default function DodoProCheckout({
         <p className="text-4xl font-black text-white tracking-tight">
           {cycle === "annual" ? annualMonthlyEquiv : monthlyDisplay}
           <span className="text-base font-normal text-[#6A6A6A] ml-1">/month</span>
-          <LocalCurrencyHint gbpAmount={cycle === "annual" ? 6.99 : 9.99} />
+          <LocalCurrencyHint gbpAmount={cycle === "annual" ? 4.92 : 6} />
         </p>
         <p className="text-sm text-[#6A6A6A] mt-1">
           {cycle === "annual"

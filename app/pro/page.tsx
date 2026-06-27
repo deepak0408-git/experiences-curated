@@ -238,9 +238,9 @@ export default async function ProPage() {
                 <DodoProCheckout
                   monthlyProductId={dodoMonthlyProductId}
                   annualProductId={dodoAnnualProductId}
-                  monthlyDisplay="£9"
-                  annualDisplay="£89"
-                  annualMonthlyEquiv="£7.42"
+                  monthlyDisplay="£6"
+                  annualDisplay="£59"
+                  annualMonthlyEquiv="£4.92"
                 />
               ) : (
                 <ProCheckout
