@@ -134,7 +134,7 @@ async function notifyProNewPack(events: { id: string; name: string; slug: string
           <p style="font-size:11px;color:#6A6A6A">You're getting this because you're an annual Pro member.</p>
         </div>
       `;
-      await sendBatch(annualEmails, html, `New pack: ${event.name} — it's in your library`);
+      await sendBatch(annualEmails, html, `New Event Pack: ${event.name} — it's in your library`);
     }
 
     if (monthlyEmails.length > 0) {
@@ -152,7 +152,7 @@ async function notifyProNewPack(events: { id: string; name: string; slug: string
           <p style="font-size:11px;color:#6A6A6A">You're getting this because you're a Pro member.</p>
         </div>
       `;
-      await sendBatch(monthlyEmails, html, `New pack: ${event.name} — buy it or upgrade`);
+      await sendBatch(monthlyEmails, html, `New Event Pack: ${event.name} — buy it or upgrade`);
     }
   }
 }

@@ -77,6 +77,19 @@ export default async function ProfilePage() {
         .where(eq(purchases.email, user.email))
     : [];
 
+  const purchasedSlugs = new Set(linkedPacks.map((p) => p.eventSlug));
+  const annualProPacks = isAnnualPro
+    ? (await db
+        .select({
+          eventName: sportingEvents.name,
+          eventSlug: sportingEvents.slug,
+          heroImageUrl: sportingEvents.heroImageUrl,
+        })
+        .from(sportingEvents)
+        .where(eq(sportingEvents.isHidden, false))
+      ).filter((p) => !purchasedSlugs.has(p.eventSlug))
+    : [];
+
   return (
     <div className="min-h-screen bg-[#0A0A0A]">
       <nav className="border-b border-[#2A2A2A] bg-[#0A0A0A]">
@@ -184,6 +197,33 @@ export default async function ProfilePage() {
             </div>
           )}
         </div>
+
+        {/* Annual Pro — included packs */}
+        {isAnnualPro && annualProPacks.length > 0 && (
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-6">
+            <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-1">Included with Annual Pro</p>
+            <p className="text-xs text-[#6A6A6A] mb-4">Every live event pack is part of your subscription.</p>
+            <div className="space-y-3">
+              {annualProPacks.map((pack) => (
+                <Link
+                  key={pack.eventSlug}
+                  href={`/event-pack/${pack.eventSlug}`}
+                  className="flex items-center gap-4 rounded-sm border border-[#2A2A2A] hover:border-[#AAFF00] transition-colors overflow-hidden"
+                >
+                  <div className="w-16 h-16 flex-shrink-0 bg-[#1A1A1A] overflow-hidden">
+                    {pack.heroImageUrl && (
+                      <Image src={pack.heroImageUrl} alt={pack.eventName} width={64} height={64} className="w-full h-full object-cover" />
+                    )}
+                  </div>
+                  <div className="py-2 pr-4">
+                    <p className="text-sm font-black text-white">{pack.eventName}</p>
+                    <p className="text-xs text-[#6A6A6A] mt-0.5">Included — Annual Pro</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Pro member gift code */}
         {isPro && isAnnualPro && process.env.HIDE_PRO !== "true" && (
