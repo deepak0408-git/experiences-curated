@@ -90,7 +90,7 @@ export default function ProCheckout({
         <p className="text-4xl font-bold text-neutral-900 tracking-tight">
           {cycle === "annual" ? annualMonthlyEquiv : monthlyDisplay}
           <span className="text-base font-normal text-neutral-400 ml-1">/month</span>
-          <LocalCurrencyHint gbpAmount={cycle === "annual" ? 6.99 : 9.99} />
+          <LocalCurrencyHint gbpAmount={cycle === "annual" ? 4.92 : 6} />
         </p>
         <p className="text-sm text-neutral-400 mt-1">
           {cycle === "annual"

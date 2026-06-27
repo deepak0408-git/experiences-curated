@@ -416,7 +416,7 @@ export default async function HomePage() {
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
             <div>
               <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">
-                Annual Pro — £89/yr
+                Annual Pro
               </p>
               <p className="text-lg font-black text-white leading-snug">
                 Every event pack, included. One subscription.

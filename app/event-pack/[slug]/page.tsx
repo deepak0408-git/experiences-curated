@@ -647,7 +647,7 @@ export default async function EventPackPage({
                     <p className="mt-4 text-xs text-[#6A6A6A] text-center">
                       Or get this + every future pack with{" "}
                       <Link href="/pro" className="underline hover:text-[#AAFF00] transition-colors">
-                        Annual Pro — £89/yr
+                        Annual Pro — £59/yr
                       </Link>
                     </p>
                   )}
@@ -811,7 +811,7 @@ export default async function EventPackPage({
                 <p className="mt-3 text-xs text-[#6A6A6A]">
                   Or get this + every future pack with{" "}
                   <Link href="/pro" className="underline hover:text-[#AAFF00] transition-colors">
-                    Annual Pro — £89/yr
+                    Annual Pro — £59/yr
                   </Link>
                 </p>
               )}

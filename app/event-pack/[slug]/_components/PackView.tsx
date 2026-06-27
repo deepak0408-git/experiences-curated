@@ -1137,7 +1137,7 @@ export default async function PackView({
                   Upgrade and future packs are included — no separate purchase.
                 </p>
                 <p className="mt-1 text-xs text-[#6A6A6A] leading-5">
-                  You're on monthly Pro. Switch to annual (£89/yr) and every pack we publish is part of your subscription.
+                  You're on monthly Pro. Switch to annual (£59/yr) and every pack we publish is part of your subscription.
                 </p>
               </div>
               <Link
