@@ -416,6 +416,7 @@ export default async function EventPackPage({
         editorialOverview={event.editorialOverview ?? null}
         sportLabel={SPORT_LABELS[event.sport] ?? event.sport}
         isPro={isPro}
+        isAnnual={isAnnual}
         archetype={archetype}
         preTripBriefLiveAt={event.preTripBriefLiveAt ?? null}
         preTripBriefLines={event.preTripBriefLines ?? null}
@@ -642,6 +643,14 @@ export default async function EventPackPage({
                   ) : (
                     <p className="text-xs text-[#6A6A6A]">Checkout coming soon.</p>
                   )}
+                  {!isPro && (
+                    <p className="mt-4 text-xs text-[#6A6A6A] text-center">
+                      Or get this + every future pack with{" "}
+                      <Link href="/pro" className="underline hover:text-[#AAFF00] transition-colors">
+                        Annual Pro — £89/yr
+                      </Link>
+                    </p>
+                  )}
                 </div>
               )}
             </aside>
@@ -796,6 +805,14 @@ export default async function EventPackPage({
               {!freeAccessEnabled && (
                 <p className="mt-5 text-xs text-[#6A6A6A]">
                   {priceDisplay} · one-time · instant access
+                </p>
+              )}
+              {!freeAccessEnabled && !isPro && (
+                <p className="mt-3 text-xs text-[#6A6A6A]">
+                  Or get this + every future pack with{" "}
+                  <Link href="/pro" className="underline hover:text-[#AAFF00] transition-colors">
+                    Annual Pro — £89/yr
+                  </Link>
                 </p>
               )}
               <p className="mt-4 text-xs text-[#6A6A6A]">

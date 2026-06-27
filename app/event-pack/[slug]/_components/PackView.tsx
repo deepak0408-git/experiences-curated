@@ -565,6 +565,7 @@ interface PackViewProps {
   editorialOverview: string | null;
   sportLabel: string;
   isPro: boolean;
+  isAnnual?: boolean;
   archetype?: string | null;
   preTripBriefLiveAt: Date | null;
   preTripBriefLines: string[] | null;
@@ -582,6 +583,7 @@ export default async function PackView({
   editorialOverview,
   sportLabel,
   isPro,
+  isAnnual = false,
   archetype,
   preTripBriefLiveAt,
   preTripBriefLines,
@@ -1118,6 +1120,33 @@ export default async function PackView({
               <AskCuratorForm eventName={eventName} />
             </div>
 
+          </div>
+        </div>
+      )}
+
+      {/* Monthly Pro → Annual upgrade nudge */}
+      {isPro && !isAnnual && !hideProCtas && (
+        <div className="bg-[#0A0A0A] border-t border-[#2A2A2A]">
+          <div className="max-w-5xl mx-auto px-6 sm:px-8 py-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 max-w-xl">
+              <div>
+                <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-1">
+                  Annual Pro
+                </p>
+                <p className="text-sm font-black text-white">
+                  Upgrade and future packs are included — no separate purchase.
+                </p>
+                <p className="mt-1 text-xs text-[#6A6A6A] leading-5">
+                  You're on monthly Pro. Switch to annual (£89/yr) and every pack we publish is part of your subscription.
+                </p>
+              </div>
+              <Link
+                href="/pro"
+                className="flex-shrink-0 inline-flex items-center justify-center px-5 py-2.5 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors whitespace-nowrap"
+              >
+                Upgrade to annual →
+              </Link>
+            </div>
           </div>
         </div>
       )}
