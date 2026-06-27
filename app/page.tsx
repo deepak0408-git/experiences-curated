@@ -418,6 +418,33 @@ export default async function HomePage() {
         </div>
       </div>
 
+      {/* Pro strip — annual pack pitch */}
+      {process.env.HIDE_PRO !== "true" && (
+        <div className="bg-[#141414] border-t border-[#2A2A2A]">
+          <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+            <div>
+              <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">
+                Annual Pro — £89/yr
+              </p>
+              <p className="text-lg font-black text-white leading-snug">
+                Every event pack, included. One subscription.
+              </p>
+              <p className="mt-2 text-sm text-[#A3A3A3] leading-6">
+                Annual Pro members get free access to every pack we publish — no separate purchase needed. Plus unlimited reads, Trip Boards, and booking contacts.
+              </p>
+            </div>
+            <div className="flex-shrink-0">
+              <Link
+                href="/pro"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors whitespace-nowrap"
+              >
+                See Pro →
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
     </main>
   );
 }
