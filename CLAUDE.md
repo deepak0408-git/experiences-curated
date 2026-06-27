@@ -177,10 +177,12 @@ sport:          tennis | cricket | football | rugby | golf | formula_one | cycli
 - Gift codes: annual-only (`billingCycle = "annual"` check in `/api/gift-codes/generate/route.ts`).
 - New pack notifications (fire from `curator/events/actions.ts` when event is reactivated): annual gets "in your library" email; monthly gets "buy it or upgrade" dual-CTA email.
 
-**Pending Pro upgrades (next session):**
-- Homepage "Why Pro?" strip above footer — annual pack-included pitch
-- Event pack landing: one-liner below checkout — "Or get this + every future pack with Annual Pro"
-- PackView: upgrade banner for `isPro && !isAnnual` users
+**Pro launched 27 Jun 2026.** HIDE_PRO removed from Vercel. All upgrade nudges live:
+- Homepage Annual Pro strip (above footer)
+- Event pack landing one-liner below checkout — "Or get this + every future pack with Annual Pro"
+- PackView monthly→annual upgrade banner (`isPro && !isAnnual`)
+- Profile: "Included with Annual Pro" section shows all live packs (excludes already-purchased ones)
+- New pack notification emails: subject `New Event Pack: [name] — it's in your library` (annual) / `— buy it or upgrade` (monthly)
 
 **Archetype quiz:** 12 questions → pilgrim | first_pilgrim | connoisseur | immersionist. Stored in `user_profiles.archetype`. Quiz at `/pro/onboarding?retake=true`.
 
