@@ -403,14 +403,6 @@ export default async function HomePage() {
                 </li>
               ))}
             </ul>
-            {process.env.HIDE_PRO !== "true" && (
-              <p className="mt-6 text-xs text-[#6A6A6A]">
-                Want booking contacts and unlimited Trip Boards?{" "}
-                <Link href="/pro" className="text-[#AAFF00] hover:underline underline-offset-2 transition-colors">
-                  See Pro →
-                </Link>
-              </p>
-            )}
           </div>
           <div className="mt-10 lg:mt-0">
             <HomepageTripBoardCTA isSignedIn={!!user} />
