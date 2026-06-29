@@ -571,7 +571,7 @@ export default async function EventPackPage({
               {freeAccessEnabled ? (
                 <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 lg:sticky lg:top-6">
                   <span className="inline-block px-2.5 py-0.5 rounded-sm bg-[#AAFF00]/10 text-[#AAFF00] border border-[#AAFF00]/30 text-xs font-semibold mb-3">
-                    Free until 29 June
+                    Free until 6 July
                   </span>
                   <p className="text-3xl font-black text-white tracking-tight mb-1">
                     £0
@@ -586,7 +586,7 @@ export default async function EventPackPage({
                     Sign in for free access
                   </Link>
                   <p className="mt-3 text-xs text-[#6A6A6A] text-center">
-                    Free access ends 29 June — no card required
+                    Free access ends 6 July — no card required
                   </p>
                 </div>
               ) : (
@@ -771,7 +771,7 @@ export default async function EventPackPage({
                     Sign in for free access
                   </Link>
                   <p className="mt-5 text-xs text-[#6A6A6A]">
-                    Free until 29 June · no card required · instant access
+                    Free until 6 July · no card required · instant access
                   </p>
                 </>
               ) : paymentProvider === "dodo" ? (
