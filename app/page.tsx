@@ -76,6 +76,8 @@ function eventPriceDisplay(slug: string): string {
 }
 
 function earlyBirdNudge(slug: string): { show: boolean; cutoffLabel: string; standardPrice: string } {
+  const FREE_EVENT_SLUGS = (process.env.FREE_EVENT_SLUGS ?? "").split(",").filter(Boolean);
+  if (FREE_EVENT_SLUGS.includes(slug)) return { show: false, cutoffLabel: "", standardPrice: "" };
   const pricing = HOMEPAGE_PRICE_BY_EVENT[slug];
   if (!pricing) return { show: false, cutoffLabel: "", standardPrice: "" };
   const isEarlyBird = new Date() < new Date(pricing.earlyBirdCutoff);
