@@ -380,7 +380,7 @@ export default async function EventPackPage({
   const FREE_EVENT_SLUGS = (process.env.FREE_EVENT_SLUGS ?? "").split(",").filter(Boolean);
   const freeAccessEnabled = FREE_EVENT_SLUGS.includes(slug);
   if (!hasPurchased && freeAccessEnabled && user?.email) {
-    await grantFreeAccess(user.email);
+    await grantFreeAccess(user.email, event.id);
     hasPurchased = true;
   }
 
