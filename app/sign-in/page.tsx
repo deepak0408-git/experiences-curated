@@ -17,6 +17,7 @@ function SignInForm() {
     if (!email.trim()) return;
     setStatus("loading");
     setErrorMessage(null);
+    import("@/lib/posthog-events").then(({ phEvent }) => phEvent.signInStarted({ next }));
 
     const res = await fetch("/api/auth/magic-link", {
       method: "POST",

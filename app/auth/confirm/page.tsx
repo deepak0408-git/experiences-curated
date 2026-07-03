@@ -12,10 +12,18 @@ function AuthConfirm() {
     const next = searchParams.get("next") ?? "/";
     const supabase = createClient();
 
+    const fireIdentify = (email: string) =>
+      import("@/lib/posthog-events").then(({ phEvent }) =>
+        phEvent.signInCompleted(email, { next })
+      );
+
     // PKCE flow — code in query string
     const code = searchParams.get("code");
     if (code) {
-      supabase.auth.exchangeCodeForSession(code).then(() => router.replace(next));
+      supabase.auth.exchangeCodeForSession(code).then(({ data }) => {
+        if (data.session?.user.email) fireIdentify(data.session.user.email);
+        router.replace(next);
+      });
       return;
     }
 
@@ -27,8 +35,11 @@ function AuthConfirm() {
 
     if (accessToken && refreshToken) {
       supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken })
-        .then(({ error }) => {
-          if (!error) router.replace(next);
+        .then(({ data, error }) => {
+          if (!error) {
+            if (data.session?.user.email) fireIdentify(data.session.user.email);
+            router.replace(next);
+          }
         });
       return;
     }

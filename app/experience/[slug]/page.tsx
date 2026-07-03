@@ -11,6 +11,7 @@ import { createClient } from "@/lib/supabase/server";
 import { hasProSubscription } from "@/lib/pro";
 import ExperienceViewGate from "./_components/ExperienceViewGate";
 import SaveExperienceCTA from "./_components/SaveExperienceCTA";
+import ExperienceTracker from "./_components/ExperienceTracker";
 
 export async function generateMetadata({
   params,
@@ -226,6 +227,12 @@ export default async function ExperiencePage({
 
   return (
     <div className="min-h-screen bg-[#0A0A0A]">
+      <ExperienceTracker
+        experienceSlug={exp.slug}
+        experienceTitle={exp.title}
+        eventSlug={eventPackSlug}
+        eventName={eventPackName}
+      />
       <ExperienceViewGate
         slug={slug}
         eventPackSlug={eventPackSlug}
@@ -255,6 +262,7 @@ export default async function ExperiencePage({
               slug.startsWith("open-lord-street-southport-") ? "object-[center_70%]" :
               slug.startsWith("open-liverpool-day-trip-") ? "object-[center_35%]" :
               slug.startsWith("open-vincent-hotel-") ? "object-[center_70%]" :
+              slug.startsWith("grandstand-22-parabolica-corner-") ? "object-[center_80%]" :
               ""
             }`}
             sizes="100vw"

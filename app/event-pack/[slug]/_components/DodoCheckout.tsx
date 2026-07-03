@@ -7,6 +7,8 @@ const { DodoPayments } = require("dodopayments-checkout");
 interface DodoCheckoutProps {
   productId: string;
   sportingEventId: string;
+  eventSlug: string;
+  eventName: string;
   priceTier: "early_bird" | "standard";
   successUrl: string;
   buttonClassName?: string;
@@ -18,6 +20,8 @@ let dodoInitialised = false;
 export default function DodoCheckout({
   productId,
   sportingEventId,
+  eventSlug,
+  eventName,
   priceTier,
   successUrl,
   buttonClassName,
@@ -31,12 +35,20 @@ export default function DodoCheckout({
       mode: (process.env.NEXT_PUBLIC_DODO_MODE === "test_mode" ? "test" : "live") as "test" | "live",
       displayType: "overlay",
       onEvent: (event: { event_type: string; data?: { message?: string } }) => {
-        if (event.event_type === "checkout.opened") setLoading(false);
+        if (event.event_type === "checkout.opened") {
+          setLoading(false);
+          import("@/lib/posthog-events").then(({ phEvent }) =>
+            phEvent.checkoutOpened({ eventSlug, eventName, priceTier })
+          );
+        }
         if (event.event_type === "checkout.error") {
           setLoading(false);
           console.error("[dodo checkout]", event.data?.message);
         }
         if (event.event_type === "checkout.redirect") {
+          import("@/lib/posthog-events").then(({ phEvent }) =>
+            phEvent.checkoutRedirected({ eventSlug, priceTier })
+          );
           setTimeout(() => { window.location.href = successUrl; }, 2500);
         }
       },
@@ -46,6 +58,9 @@ export default function DodoCheckout({
 
   const handleClick = async () => {
     setLoading(true);
+    import("@/lib/posthog-events").then(({ phEvent }) =>
+      phEvent.packCtaClicked({ eventSlug, eventName, priceTier, label })
+    );
     try {
       const res = await fetch("/api/checkout/dodo", {
         method: "POST",
