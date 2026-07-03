@@ -27,31 +27,45 @@ export async function getAllExperiencesForReview() {
     .orderBy(desc(experiences.updatedAt));
 }
 
+async function getSlug(id: string): Promise<string | null> {
+  const [row] = await db.select({ slug: experiences.slug }).from(experiences).where(eq(experiences.id, id)).limit(1);
+  return row?.slug ?? null;
+}
+
 export async function publishExperience(id: string) {
+  const slug = await getSlug(id);
   await db
     .update(experiences)
     .set({ status: "published", publishedAt: new Date() })
     .where(eq(experiences.id, id));
   await indexExperience(id);
   revalidatePath("/curator/review");
+  revalidatePath("/");
+  if (slug) revalidatePath(`/experience/${slug}`);
 }
 
 export async function archiveExperience(id: string) {
+  const slug = await getSlug(id);
   await db
     .update(experiences)
     .set({ status: "archived" })
     .where(eq(experiences.id, id));
   await removeFromIndex(id);
   revalidatePath("/curator/review");
+  revalidatePath("/");
+  if (slug) revalidatePath(`/experience/${slug}`);
 }
 
 export async function unpublishExperience(id: string) {
+  const slug = await getSlug(id);
   await db
     .update(experiences)
     .set({ status: "draft", publishedAt: null, reviewNotes: null })
     .where(eq(experiences.id, id));
   await removeFromIndex(id);
   revalidatePath("/curator/review");
+  revalidatePath("/");
+  if (slug) revalidatePath(`/experience/${slug}`);
 }
 
 export async function returnToDraft(id: string, notes: string) {
