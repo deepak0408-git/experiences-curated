@@ -12,7 +12,9 @@ import ScrollFadeInit from "./_components/ScrollFadeInit";
 import BrandHero from "./_components/BrandHero";
 import { createClient } from "@/lib/supabase/server";
 
-export const dynamic = "force-dynamic";
+// Revalidate every 5 minutes — events and experience counts change rarely.
+// Auth (nav email, trip board CTA) gracefully falls back to unauthenticated state from cache.
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Experiences | Curated — Insider guides to the world's greatest sporting events",

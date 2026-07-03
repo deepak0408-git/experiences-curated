@@ -1,5 +1,4 @@
-export const dynamic = "force-dynamic";
-
+import { unstable_cache } from "next/cache";
 import { getExperienceBySlug, type ExperienceDetail } from "@/lib/queries/experiences";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -93,15 +92,61 @@ export default async function ExperiencePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const exp = await getExperienceBySlug(slug);
 
-  const [ratingRow] = await db
-    .select({
-      avgRating: sql<number>`round(avg(${travelLogs.rating})::numeric, 1)`,
-      ratingCount: count(travelLogs.id),
-    })
-    .from(travelLogs)
-    .where(eq(travelLogs.experienceId, exp.id));
+  // Cache experience content, ratings, and related for 1 hour — only auth runs per-request
+  const getExperienceData = unstable_cache(
+    async (s: string) => {
+      const exp = await getExperienceBySlug(s);
+
+      const [ratingRow] = await db
+        .select({
+          avgRating: sql<number>`round(avg(${travelLogs.rating})::numeric, 1)`,
+          ratingCount: count(travelLogs.id),
+        })
+        .from(travelLogs)
+        .where(eq(travelLogs.experienceId, exp.id));
+
+      let eventPackSlug = "wimbledon-2026";
+      let eventPackName = "Wimbledon 2026";
+      if (exp.sportingEventId) {
+        const [ev] = await db
+          .select({ slug: sportingEvents.slug, name: sportingEvents.name })
+          .from(sportingEvents)
+          .where(eq(sportingEvents.id, exp.sportingEventId))
+          .limit(1);
+        if (ev) { eventPackSlug = ev.slug; eventPackName = ev.name; }
+      }
+
+      const related = await db
+        .select({
+          id: experiences.id,
+          title: experiences.title,
+          slug: experiences.slug,
+          heroImageUrl: experiences.heroImageUrl,
+          experienceType: experiences.experienceType,
+          subtitle: experiences.subtitle,
+          neighborhood: experiences.neighborhood,
+        })
+        .from(experiences)
+        .where(
+          and(
+            inArray(experiences.status, ["published", "in_review"]),
+            ne(experiences.slug, s),
+            exp.sportingEventId
+              ? eq(experiences.sportingEventId, exp.sportingEventId)
+              : eq(experiences.destinationId, exp.destinationId)
+          )
+        )
+        .limit(3);
+
+      return { exp, ratingRow, eventPackSlug, eventPackName, related };
+    },
+    ["experience-page"],
+    { revalidate: 3600 }
+  );
+
+  const { exp, ratingRow, eventPackSlug, eventPackName, related } = await getExperienceData(slug);
+
   const avgRating = ratingRow?.avgRating ?? null;
   const ratingCount = ratingRow?.ratingCount ?? 0;
 
@@ -116,49 +161,14 @@ export default async function ExperiencePage({
   const jsonLd = buildJsonLd(exp, ratingCount >= 3 ? { avgRating, ratingCount } : null);
 
   const isEarlyBird = new Date() < new Date(process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01");
-
-  // Look up the sporting event slug so we can resolve the correct pack slug/name and price
   const FREE_EVENT_SLUGS = (process.env.FREE_EVENT_SLUGS ?? "").split(",").filter(Boolean);
-  let eventPackSlug = "wimbledon-2026";
-  let eventPackName = "Wimbledon 2026";
-  if (exp.sportingEventId) {
-    const [ev] = await db
-      .select({ slug: sportingEvents.slug, name: sportingEvents.name })
-      .from(sportingEvents)
-      .where(eq(sportingEvents.id, exp.sportingEventId))
-      .limit(1);
-    if (ev) { eventPackSlug = ev.slug; eventPackName = ev.name; }
-  }
   const priceDisplay = FREE_EVENT_SLUGS.includes(eventPackSlug)
     ? "Free"
     : isEarlyBird
       ? (process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "£15")
       : (process.env.NEXT_PUBLIC_STANDARD_PRICE_DISPLAY ?? "£25");
 
-  // Related experiences — same sporting event, or same destination as fallback
-  const related = await db
-    .select({
-      id: experiences.id,
-      title: experiences.title,
-      slug: experiences.slug,
-      heroImageUrl: experiences.heroImageUrl,
-      experienceType: experiences.experienceType,
-      subtitle: experiences.subtitle,
-      neighborhood: experiences.neighborhood,
-    })
-    .from(experiences)
-    .where(
-      and(
-        inArray(experiences.status, ["published", "in_review"]),
-        ne(experiences.slug, slug),
-        exp.sportingEventId
-          ? eq(experiences.sportingEventId, exp.sportingEventId)
-          : eq(experiences.destinationId, exp.destinationId)
-      )
-    )
-    .limit(3);
-
-  // Auth + saved state
+  // Auth + saved state (always fresh — never cached)
   const supabase = await createClient();
   const { data: { user: authUser } } = await supabase.auth.getUser();
   const isLoggedIn = !!authUser;
