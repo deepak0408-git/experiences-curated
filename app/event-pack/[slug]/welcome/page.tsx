@@ -1,12 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
 export default function WelcomePage() {
   const params = useParams<{ slug: string }>();
   const slug = params.slug;
+
+  useEffect(() => {
+    import("@/lib/posthog-events").then(({ phEvent }) =>
+      phEvent.purchaseCompleted({ eventSlug: slug })
+    );
+  }, [slug]);
 
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);

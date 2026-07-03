@@ -617,6 +617,8 @@ export default async function EventPackPage({
                       <DodoCheckout
                         productId={dodoProductId}
                         sportingEventId={event.id}
+                        eventSlug={slug}
+                        eventName={event.name}
                         priceTier={isEarlyBird ? "early_bird" : "standard"}
                         successUrl={user?.email
                           ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}`
@@ -779,6 +781,8 @@ export default async function EventPackPage({
                   <DodoCheckout
                     productId={dodoProductId}
                     sportingEventId={event.id}
+                    eventSlug={slug}
+                    eventName={event.name}
                     priceTier={isEarlyBird ? "early_bird" : "standard"}
                     successUrl={user?.email
                       ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}`
