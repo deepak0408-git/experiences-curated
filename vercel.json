@@ -15,6 +15,10 @@
     {
       "path": "/api/cron/post-trip-feedback",
       "schedule": "30 4 * * *"
+    },
+    {
+      "path": "/api/cron/sports-brief",
+      "schedule": "30 1 * * *"
     }
   ]
 }
