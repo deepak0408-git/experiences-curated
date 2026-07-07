@@ -111,7 +111,7 @@ export default async function HomePage() {
     .where(and(isNotNull(sportingEvents.homepageSlot), eq(sportingEvents.isHidden, false)))
     .orderBy(asc(sportingEvents.homepageSlot));
 
-  const featuredSorted = featuredRows.slice(0, 2);
+  const featuredSorted = featuredRows.slice(0, 4);
 
   // All upcoming events not in the featured set — for "On the calendar"
   const allUpcoming = await db

@@ -61,14 +61,15 @@ export async function saveHomepageSlots(
 
   const hiddenIds = new Set(hidden.filter((h) => h.isHidden).map((h) => h.eventId));
 
+  const VALID_SLOTS = ["1", "2", "3", "4"];
   const withSlot = slots
-    .filter((s) => (s.slot === "1" || s.slot === "2") && !hiddenIds.has(s.eventId))
-    .map((s) => ({ eventId: s.eventId, slot: parseInt(s.slot, 10) as 1 | 2 }));
+    .filter((s) => VALID_SLOTS.includes(s.slot) && !hiddenIds.has(s.eventId))
+    .map((s) => ({ eventId: s.eventId, slot: parseInt(s.slot, 10) as 1 | 2 | 3 | 4 }));
 
-  const slot1 = withSlot.filter((s) => s.slot === 1);
-  const slot2 = withSlot.filter((s) => s.slot === 2);
-  if (slot1.length > 1) return { error: "More than one event assigned to slot 1." };
-  if (slot2.length > 1) return { error: "More than one event assigned to slot 2." };
+  for (const slotNum of [1, 2, 3, 4] as const) {
+    const assigned = withSlot.filter((s) => s.slot === slotNum);
+    if (assigned.length > 1) return { error: `More than one event assigned to slot ${slotNum}.` };
+  }
 
   // Clear all slots then set chosen ones (skipping hidden events — already nulled above)
   await db.update(sportingEvents).set({ homepageSlot: null });

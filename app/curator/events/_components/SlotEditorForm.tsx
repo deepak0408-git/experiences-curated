@@ -78,18 +78,24 @@ export default function SlotEditorForm({ events }: { events: Event[] }) {
 
   const slot1Event = events.find((e) => slots[e.id] === "1");
   const slot2Event = events.find((e) => slots[e.id] === "2");
+  const slot3Event = events.find((e) => slots[e.id] === "3");
+  const slot4Event = events.find((e) => slots[e.id] === "4");
 
   return (
     <div>
       {/* Preview */}
       <div className="mb-8 p-4 rounded-sm bg-[#141414] border border-[#2A2A2A]">
         <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-3">
-          Carousel preview
+          Homepage preview — shown 2x2 on desktop, stacked on mobile
         </p>
         <div className="flex items-center gap-3 flex-wrap">
           <SlotBadge slot={1} event={slot1Event} />
           <span className="text-[#6A6A6A] text-sm">→</span>
           <SlotBadge slot={2} event={slot2Event} />
+          <span className="text-[#6A6A6A] text-sm">→</span>
+          <SlotBadge slot={3} event={slot3Event} />
+          <span className="text-[#6A6A6A] text-sm">→</span>
+          <SlotBadge slot={4} event={slot4Event} />
         </div>
       </div>
 
@@ -121,7 +127,7 @@ export default function SlotEditorForm({ events }: { events: Event[] }) {
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex items-center justify-center gap-2">
-                    {(["", "1", "2"] as const).map((val) => (
+                    {(["", "1", "2", "3", "4"] as const).map((val) => (
                       <label key={val} className={`flex items-center gap-1.5 ${isDeactivated ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}>
                         <input
                           type="radio"
@@ -179,7 +185,7 @@ export default function SlotEditorForm({ events }: { events: Event[] }) {
   );
 }
 
-function SlotBadge({ slot, event }: { slot: 1 | 2; event?: Event }) {
+function SlotBadge({ slot, event }: { slot: 1 | 2 | 3 | 4; event?: Event }) {
   return (
     <div className={`flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-semibold ${event ? "bg-[#AAFF00] text-black" : "bg-[#1A1A1A] border border-[#2A2A2A] text-[#6A6A6A]"}`}>
       <span className="opacity-70">Slide {slot}</span>

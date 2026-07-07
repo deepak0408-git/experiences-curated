@@ -55,7 +55,7 @@ function shortEventName(name: string, slug: string): string {
   const SHORT_NAMES: Record<string, string> = {
     "wimbledon-2026": "Wimbledon 2026",
     "india-in-england-cricket-2026": "India in England 2026",
-    "the-open-championship-2026": "The Open 2026",
+    "open-championship-2026": "The Open 2026",
     "belgian-gp-2026": "Belgian GP 2026",
     "us-open-2026": "US Open 2026",
   };
@@ -119,7 +119,7 @@ export default function BrandHero({
       {/* Content — bottom-left */}
       <div className="absolute bottom-0 left-0 right-0 px-6 sm:px-10 pb-14 sm:pb-16">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-3xl sm:text-5xl font-black text-white leading-tight tracking-tight max-w-2xl">
+          <h1 className="text-2xl sm:text-5xl font-black text-white leading-tight tracking-tight max-w-2xl">
             Insider travel guides for the world&apos;s greatest sporting events
           </h1>
           <p className="mt-4 text-sm sm:text-base text-white/60 leading-relaxed font-light sm:whitespace-nowrap">
@@ -132,11 +132,11 @@ export default function BrandHero({
               Now featured
             </p>
 
-            {/* Featured event rows */}
-            <div className="flex flex-col gap-2.5 mb-4">
+            {/* Featured event rows — stacked on mobile, 2x2 on desktop */}
+            <div className="flex flex-col sm:grid sm:grid-cols-2 gap-2.5 sm:gap-x-8 sm:gap-y-4 mb-4">
               {featuredEvents.map((ev) => (
-                <div key={ev.slug} className="flex flex-col sm:grid sm:items-center gap-2 sm:gap-4" style={{ gridTemplateColumns: "320px auto" }}>
-                  <div className="flex items-center gap-2 min-w-0">
+                <div key={ev.slug} className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2 min-w-0 flex-wrap">
                     <span className="text-xs font-black text-[#AAFF00] flex-shrink-0">
                       {SPORT_LABELS[ev.sport] ?? ev.sport}
                     </span>
