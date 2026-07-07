@@ -60,5 +60,9 @@ export const config = {
   matcher: [
     "/curator/:path*",
     "/event-pack/:slug/pack/:path*",
+    "/profile/:path*",
+    "/trip-board/:path*",
+    "/my-travels/:path*",
+    "/sign-in/:path*",
   ],
 };
