@@ -4,6 +4,7 @@
 > **Middleware:** Keep named `middleware.ts` — renaming breaks Turbopack cache. Wrap Supabase calls in try-catch.
 > **Experience lists:** Every event pack has a confirmed experience list saved in memory (`project_belgian_gp_experiences.md` etc.). At the start of any content session, read the relevant memory file and work strictly from that list — never propose, add, or swap experiences without user confirmation. If no memory file exists for an event, ask the user to confirm the full list before writing anything, then save it immediately.
 > **Content writing:** Use the `experience-researcher` skill to research, write, humanize, and present experience copy; use `experience-seeder` to seed to DB. Always output each field as a clearly labelled, copyable block in this order: Title, Subtitle, Body, Why it's special, Practical info (address, website, how to get there), How to Book / Access (public, short), How to Book Pro (Pro-gated, tactical detail — lead times, contacts), Worth knowing tip 1, Worth knowing tip 2, Avoid 1, Avoid 2, Hero image (3 options — user chooses before seeding).
+> **Video content:** Use the `video-script-creator` skill for any Instagram/YouTube/TikTok video script — founder appears in no video (no face, no voice). Produces narration script + honesty-gated visual asset list (real hero images > verified generic B-roll > text/stat card — never AI-generated footage of a real venue). Stops at script; narration via ElevenLabs, assembly via Canva/InVideo.
 > **Brand name:** "Experiences | Curated" — never "ExperiencesCurated". Title template: `"%s — Experiences | Curated"`.
 > **Nav auth state:** HomepageNav is a server component — pass `email` as prop from the page. Never use `useEffect` to read auth in navs (bfcache freezes client components on back-navigation).
 > **Magic links:** always redirect to `/auth/confirm?next=<path>` — never `/auth/callback`.
@@ -66,6 +67,8 @@ India in England 2026 event: 2bab697d-9d2b-45ff-9b46-9fbfc3a0a40b
 Wimbledon 2026 event:        8bb7090e-1ec7-4c3f-b4e2-7fd6bf9942cf
 US Open 2026 event:          91f298a3-ca22-49c3-9c8e-5a200f0026c9
 Belgian GP 2026 event:       b1816396-6d71-4693-a53f-05bccb2d8a8e
+Milan destination:           0b0d8f9a-911d-4cc7-8049-50e4685958ca
+Italian GP 2026 event:       b93770c0-3d96-4e81-b3d0-c1e3a788fd8e
 ```
 
 ---
@@ -235,6 +238,7 @@ supabase.auth.admin.generateLink({
 - **Hero images — 3 options required:** Always present 3 CC-licensed image options before seeding. Never present fewer. Download to `Images/` folder with descriptive filename before running seed script.
 - **Radisson Blu Palace Hotel Spa → rebranded:** Now trades as Van der Valk Hotel Spa (Place Royale 39, Spa) from May 2024. Always verify hotel/venue trading name before writing.
 - **Belgian GP experiences:** All 15 published and packRanks set as of 15 Jun 2026. Hero images missing: Van der Valk Hotel Spa (email reception@valkspa.be), Fan Zone at Raidillon (f1media@f1.com or capture at race). Le Val d'Amblève hero image sourced by user — needs uploading to R2 and DB update.
+- **Italian GP experiences:** 6 of 16 seeded (in_review) as of 29 Jun 2026 — #1 Grandstand 26, #2 Grandstand 22 (ID: 99540487), #7 Getting to Circuit (ID: 037780a7), #8 Hotel de la Ville (ID: c224cf19), #11 Eating in Monza (ID: 581b601a), #14 Monza Town (ID: d93634df). Event dates: 4–6 Sep 2026. Milan destination updated: region = Lombardy, currency = EUR. PackView not yet wired. Booking.com affiliate links for accommodation experiences (#8, #9, #10) deferred to batch pass. packRanks not set.
 - **Open Championship experiences:** All 15 published, all hero images uploaded, packRanks set, event hero image uploaded to R2. PackView + page.tsx fully wired. Dodo test price IDs in .env.local; live IDs (early bird pdt_0NhBDTdJDrNX32NMvvo0t, standard pdt_0NhBDN4jP7TDTnT8CElua) must be added to Vercel before go-live. Pre-trip brief in DB (dormant) — cron activates ~9 Jul 2026.
 - **R&A media contact:** media@randa.org (confirmed from theopen.com/media-centre). Use for Open Championship hero image requests. Do NOT use mediaenquiries@randa.org — that address was unverified.
 - **Hillside Golf Club green fees (2026):** £300 midweek / £335 weekends (summer). Third-party sites show outdated figures — always use official hillside-golfclub.co.uk.
