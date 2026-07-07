@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { experiences, destinations, sportingEvents } from "@/schema/database";
 import { eq } from "drizzle-orm";
 
-const BASE = process.env.NEXT_PUBLIC_APP_URL ?? "https://experiencescurated.com";
+const BASE = process.env.NEXT_PUBLIC_APP_URL ?? "https://experiences-curated.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [publishedExps, allDestinations, allEvents] = await Promise.all([
@@ -21,8 +21,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE, lastModified: new Date(), changeFrequency: "daily", priority: 1 },
-    { url: `${BASE}/search`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
-    { url: `${BASE}/trip-board`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
     { url: `${BASE}/privacy`, lastModified: new Date("2026-05-07"), changeFrequency: "yearly", priority: 0.2 },
     { url: `${BASE}/terms`, lastModified: new Date("2026-05-07"), changeFrequency: "yearly", priority: 0.2 },
   ];
