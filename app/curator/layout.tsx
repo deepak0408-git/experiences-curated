@@ -8,8 +8,8 @@ export default function CuratorLayout({
   return (
     <div className="min-h-screen bg-[#0A0A0A]">
       <header className="bg-[#141414] border-b border-[#2A2A2A] px-6 py-4">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-6">
+        <div className="max-w-4xl mx-auto flex items-center justify-between gap-4 overflow-x-auto">
+          <div className="flex items-center gap-6 flex-shrink-0">
             <div className="hidden sm:block">
               <Link href="/" className="text-sm font-semibold tracking-widest text-[#6A6A6A] uppercase hover:text-[#AAFF00] transition-colors">
                 Experiences | Curated
@@ -17,7 +17,7 @@ export default function CuratorLayout({
               <span className="mx-2 text-[#2A2A2A]">·</span>
               <span className="text-sm text-[#6A6A6A]">Curator Portal</span>
             </div>
-            <nav className="flex items-center gap-1">
+            <nav className="flex items-center gap-1 flex-shrink-0">
               <Link
                 href="/curator/review"
                 className="px-3 py-1.5 rounded-sm text-sm text-[#6A6A6A] hover:bg-[#1A1A1A] hover:text-[#AAFF00] transition-colors"
