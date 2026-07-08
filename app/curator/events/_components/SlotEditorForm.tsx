@@ -35,9 +35,15 @@ const threeMonthsFromNow = new Date();
 threeMonthsFromNow.setMonth(threeMonthsFromNow.getMonth() + 3);
 const threeMonthsCutoff = threeMonthsFromNow.toISOString().split("T")[0];
 
+function isExpired(ev: Event) {
+  return ev.endDate < today;
+}
+
 function isEditable(ev: Event) {
-  // Editable if live or starting within 3 months
-  return ev.endDate >= today && ev.startDate <= threeMonthsCutoff;
+  // Editable if live or starting within 3 months, and not yet expired.
+  // Expired events show a locked "Deactivated" state instead — the
+  // expire-homepage-slots cron already clears their slot automatically.
+  return !isExpired(ev) && ev.startDate <= threeMonthsCutoff;
 }
 
 export default function SlotEditorForm({ events }: { events: Event[] }) {
@@ -114,7 +120,7 @@ export default function SlotEditorForm({ events }: { events: Event[] }) {
           <tbody>
             {events.map((ev, i) => {
               const editable = isEditable(ev);
-              const isDeactivated = hidden[ev.id] ?? false;
+              const isDeactivated = (hidden[ev.id] ?? false) || isExpired(ev);
               return (
               <tr
                 key={ev.id}
@@ -157,6 +163,14 @@ export default function SlotEditorForm({ events }: { events: Event[] }) {
                         if (nowHidden) setSlots((prev) => ({ ...prev, [ev.id]: "" }));
                       }}
                       className="w-4 h-4 accent-red-500 cursor-pointer"
+                    />
+                  ) : isExpired(ev) ? (
+                    <input
+                      type="checkbox"
+                      checked
+                      disabled
+                      title="Automatically deactivated — event has ended"
+                      className="w-4 h-4 accent-[#6A6A6A] cursor-not-allowed"
                     />
                   ) : (
                     <span className="text-xs text-[#6A6A6A]">—</span>

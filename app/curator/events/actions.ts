@@ -10,7 +10,13 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function getEventsForSlotEditor() {
   const today = new Date().toISOString().split("T")[0];
+  const sixMonthsAgo = new Date();
+  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+  const sixMonthsAgoStr = sixMonthsAgo.toISOString().split("T")[0];
 
+  // Includes events ended up to 6 months ago — they stay visible with a
+  // locked "Deactivated" state (see isEditable in SlotEditorForm) rather
+  // than disappearing the moment they end.
   const rows = await db
     .select({
       id: sportingEvents.id,
@@ -23,14 +29,16 @@ export async function getEventsForSlotEditor() {
       isHidden: sportingEvents.isHidden,
     })
     .from(sportingEvents)
-    .where(gte(sportingEvents.endDate, today))
+    .where(gte(sportingEvents.endDate, sixMonthsAgoStr))
     .orderBy(asc(sportingEvents.startDate));
 
-  // Live events (started, not yet ended) float to top; upcoming sorted by start date below
+  // Live/upcoming events float to top (soonest first); expired events sort
+  // to the bottom, most-recently-ended first.
   return rows.sort((a, b) => {
-    const aLive = a.startDate <= today ? 0 : 1;
-    const bLive = b.startDate <= today ? 0 : 1;
-    if (aLive !== bLive) return aLive - bLive;
+    const aExpired = a.endDate < today;
+    const bExpired = b.endDate < today;
+    if (aExpired !== bExpired) return aExpired ? 1 : -1;
+    if (aExpired && bExpired) return b.endDate.localeCompare(a.endDate);
     return a.startDate.localeCompare(b.startDate);
   });
 }
