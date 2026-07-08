@@ -37,6 +37,12 @@ export default function CuratorLayout({
                 Events
               </Link>
               <Link
+                href="/curator/feedback"
+                className="px-3 py-1.5 rounded-sm text-sm text-[#6A6A6A] hover:bg-[#1A1A1A] hover:text-[#AAFF00] transition-colors"
+              >
+                Feedback
+              </Link>
+              <Link
                 href="/curator/destinations"
                 className="px-3 py-1.5 rounded-sm text-sm text-[#6A6A6A] hover:bg-[#1A1A1A] hover:text-[#AAFF00] transition-colors"
               >
