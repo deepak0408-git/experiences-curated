@@ -13,7 +13,7 @@ export default async function EventsPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-black text-[#AAFF00]">Events</h1>
         <p className="mt-1 text-sm text-[#6A6A6A]">
-          Set which events appear in the homepage carousel. Slot 1 = first slide, Slot 2 = second slide. Max 2.
+          Set which events appear on the homepage. Slots 1-4 — shown as a 2x2 grid on desktop, stacked on mobile.
         </p>
       </div>
 
