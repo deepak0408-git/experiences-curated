@@ -273,6 +273,7 @@ export default async function ExperiencePage({
               slug.startsWith("open-liverpool-day-trip-") ? "object-[center_35%]" :
               slug.startsWith("open-vincent-hotel-") ? "object-[center_70%]" :
               slug.startsWith("grandstand-22-parabolica-corner-") ? "object-[center_80%]" :
+              slug.startsWith("staying-in-milan-city-base-strategy-") ? "object-[center_20%]" :
               ""
             }`}
             sizes="100vw"
