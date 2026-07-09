@@ -19,6 +19,12 @@ export default function CuratorLayout({
             </div>
             <nav className="flex items-center gap-1 flex-shrink-0">
               <Link
+                href="/"
+                className="px-3 py-1.5 rounded-sm text-sm text-[#6A6A6A] hover:bg-[#1A1A1A] hover:text-[#AAFF00] transition-colors"
+              >
+                Home
+              </Link>
+              <Link
                 href="/curator/review"
                 className="px-3 py-1.5 rounded-sm text-sm text-[#6A6A6A] hover:bg-[#1A1A1A] hover:text-[#AAFF00] transition-colors"
               >
