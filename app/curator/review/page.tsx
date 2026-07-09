@@ -57,16 +57,7 @@ export default async function ReviewQueuePage() {
       {/* Header */}
       <div className="flex items-start justify-between mb-8">
         <div>
-          <div className="flex items-center gap-2">
-            <Link
-              href="/"
-              className="sm:hidden text-sm text-[#6A6A6A] hover:text-[#AAFF00] transition-colors"
-            >
-              Home
-            </Link>
-            <span className="sm:hidden text-[#2A2A2A]">·</span>
-            <h1 className="text-2xl font-black text-white">Review Queue</h1>
-          </div>
+          <h1 className="text-2xl font-black text-white">Review Queue</h1>
           <p className="mt-1 text-sm text-[#6A6A6A]">
             {totalPublished} published · {totalDraft} in progress
           </p>
