@@ -21,10 +21,15 @@ export async function subscribeToNewsletter(email: string, source: string) {
     return { ok: true, alreadyMember: true };
   }
 
-  await db
+  const [inserted] = await db
     .insert(newsletterSubscribers)
     .values({ email: normalizedEmail, source })
-    .onConflictDoNothing();
+    .onConflictDoNothing()
+    .returning({ id: newsletterSubscribers.id });
+
+  if (!inserted) {
+    return { ok: true, alreadySubscribed: true };
+  }
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
