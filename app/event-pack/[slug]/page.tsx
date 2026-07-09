@@ -218,6 +218,33 @@ const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: strin
         "The 7 train from Midtown — 40 minutes, no transfers, straight to Mets-Willets Point and a 10-minute walk to the gates",
     },
   ],
+  "italian-gp-2026": [
+    {
+      label: "At the Circuit",
+      description:
+        "Curva Grande, the Lesmo curves, the Parabolica, and the Fan Zone — the natural grandstand areas a General Admission ticket unlocks, plus the covered grandstands and hospitality tiers above it",
+    },
+    {
+      label: "Race Weekend",
+      description:
+        "Friday practice, Saturday qualifying, Sunday's 15:00 race — what to prioritise at each session and how the Tifosi build the atmosphere across the weekend",
+    },
+    {
+      label: "Where to Stay",
+      description:
+        "Milan as the practical base with a 9-minute direct train, Monza's own small hotel stock, and Lake Como for a slower, scenic alternative",
+    },
+    {
+      label: "Where to Eat & Drink",
+      description:
+        "A century-old Milanese trattoria, Carlo Cracco's Michelin-starred restaurant in the Galleria, and the aperitivo ritual Milan invented",
+    },
+    {
+      label: "Beyond the Track",
+      description:
+        "The abandoned 1955 banked oval, Monza's own royal villa and historic centre, and the Alfa Romeo Museum's actual 1951 championship car",
+    },
+  ],
 };
 
 const PACK_PRICING: Record<string, {
@@ -261,6 +288,13 @@ const PACK_PRICING: Record<string, {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_OPEN_EARLY_BIRD_CUTOFF ?? "2026-07-06",
     earlyBirdDisplay: "£15",
     standardDisplay: "£25",
+  },
+  "italian-gp-2026": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ITALIAN_GP_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ITALIAN_GP_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_ITALIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-08-25",
+    earlyBirdDisplay: "€15",
+    standardDisplay: "€25",
   },
 };
 
