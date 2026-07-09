@@ -629,7 +629,7 @@ function buildJsonLd(
       ...(exp.address ? { streetAddress: exp.address } : {}),
     },
     ...(priceRange ? { priceRange } : {}),
-    ...(exp.publishedAt ? { datePublished: exp.publishedAt.toISOString() } : {}),
+    ...(exp.publishedAt ? { datePublished: new Date(exp.publishedAt).toISOString() } : {}),
     ...(exp.curatorName ? { author: { "@type": "Person", name: exp.curatorName } } : {}),
     ...(rating
       ? {
