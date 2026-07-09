@@ -274,6 +274,8 @@ export default async function ExperiencePage({
               slug.startsWith("open-vincent-hotel-") ? "object-[center_70%]" :
               slug.startsWith("grandstand-22-parabolica-corner-") ? "object-[center_80%]" :
               slug.startsWith("staying-in-milan-city-base-strategy-") ? "object-[center_20%]" :
+              slug.startsWith("alfa-romeo-museum-arese-") ? "object-[center_15%]" :
+              slug.startsWith("paddock-club-champions-club-hospitality-") ? "object-[center_10%]" :
               ""
             }`}
             sizes="100vw"

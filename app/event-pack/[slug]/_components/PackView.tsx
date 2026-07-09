@@ -252,6 +252,36 @@ const PACK_EDITORIAL: Record<string, PackEditorial> = {
       "On the grounds": ["Eau Rouge", "Kemmel", "Pouhon", "Fan Zone"],
     },
   },
+
+  "italian-gp-2026": {
+    brief:
+      "Monza is the fastest circuit on the F1 calendar, and it's also the only one where the cheapest ticket puts you closer to full speed than at almost any other race. This is a 5.8km lap through royal parkland just north of Milan, a layout that predates modern circuit design by decades, and it shows: long straights, heavy braking zones, and a first corner where cars arrive well past 300km/h.\n\nThis pack is built around one idea: Monza rewards people who understand its two faces. There's the racing itself — Curva Grande, the Lesmo curves, the Parabolica, all of it walkable on a General Admission ticket for less than a grandstand seat costs anywhere else. And there's the Tifosi, Ferrari's home crowd, who turn this into the loudest weekend of the season regardless of who's winning. You can watch the race from a covered grandstand at the Parabolica, or you can stand on grass in the trees at Curva Grande with a folding chair and the same view teams have used to judge braking points for a hundred years.\n\nA few things worth knowing before you commit to a plan. Monza itself is a small town — most people base in Milan and take the 9-minute direct train from Milano Centrale, which is a genuinely better trip than trying to find a hotel room in Monza during race week. Tickets went on sale September 2025, with American Express cardholders getting early access before general sale opened. General Admission sells out, but it sells out last, which means it's usually still available closer to race weekend than the grandstands are. The sections here follow the actual shape of a Monza trip: what to sort before you travel, what to do at the circuit, where to stay and eat, and what's worth seeing beyond the track.",
+    sectionIntros: {
+      "Before you go":
+        "Tickets went on sale September 2025, with an early access window for American Express cardholders before the general sale opened. Grandstand tickets, especially anything near the main straight or the Parabolica, sell out well ahead of race weekend — General Admission is the one that survives longest, since it's the budget option and Monza's General Admission genuinely gets you closer to the track than most circuits allow. This is a standard race weekend, not a sprint: two Friday practice sessions, one Saturday practice plus qualifying, and the race itself on Sunday at 15:00 local time. Download the F1 app for session timing changes — weather and red flags shift things more at Monza than at some circuits, since so much of the track is exposed.",
+      "On the grounds":
+        "Monza's layout means you're choosing between speed and comfort more than at most circuits. Curva Grande and the general admission parkland areas get you standing distance from cars at full throttle, no cover, bring a chair. The Parabolica grandstands put you under a roof with a view of the corner that decides most of the lap. The Fan Zone between Ascari and the Parabolica is where the non-track parts of the weekend happen — simulators, driver appearances, a genuinely good food setup. And if a client's budget allows for more, Monza runs three real hospitality tiers above a standard ticket, each a meaningfully different product, not just a pricier seat.",
+      "Where to stay":
+        "Monza the town has a small hotel stock that fills fast and prices up hard for race weekend. Most experienced visitors base in Milan instead — the direct train to Monza takes 9 minutes, which makes the extra half hour of city living an easy trade for a much better range of hotels, restaurants, and an actual nightlife scene once the day session ends. Lake Como is the third option, genuinely scenic but a longer, more complicated commute best suited to people extending the trip into a proper holiday rather than squeezing three tight circuit days into a weekend.",
+      "Where to eat":
+        "Milan does the heavy lifting here — Monza itself is a quiet town outside race hours. A fourth-generation Milanese trattoria sits a short taxi from most Milan hotels, and Carlo Cracco's Michelin-starred restaurant inside the Galleria Vittorio Emanuele II is the other end of the spectrum entirely. The Milan aperitivo ritual — Campari was invented here — is worth doing at least once before a race weekend, ideally somewhere in Navigli or Brera rather than at an all-you-can-eat apericena buffet, which locals mostly avoid.",
+      "The neighbourhood":
+        "Monza's own history is worth an afternoon on a non-race day: the abandoned 1955 banked oval still stands, free to walk, a genuinely unsettling piece of motorsport history left mostly as it was when Formula 1 stopped using it. Monza town itself has a royal villa and a real historic centre beyond the circuit gates. And twelve kilometres from the track, the Alfa Romeo Museum in Arese holds the actual car Fangio drove to the 1951 World Championship, a direct physical link back to the era this circuit comes from.",
+    },
+    localInfo: [
+      { label: "Address", value: "Autodromo Nazionale Monza, Parco di Monza, 20900 Monza MB, Italy", href: "https://maps.google.com/?q=Autodromo+Nazionale+Monza", linkLabel: "Open in Maps" },
+      { label: "Official site", value: "formula1.com/en/racing/2026/italy", href: "https://www.formula1.com/en/racing/2026/italy", linkLabel: "Visit" },
+      { label: "Ticketing", value: "Official tickets via monzanet.it or f1italy.com — sales opened September 2025 with early access for American Express cardholders. General Admission is the last tier to sell out.", href: "https://www.monzanet.it/en/tickets/", linkLabel: "Buy tickets" },
+      { label: "Getting to Monza", value: "Trenord direct train, Milano Centrale to Monza, 9 minutes, roughly hourly 05:25–23:22.", href: "https://www.trenord.it/en/routes-and-timetables/most-searched-lines/milano-centrale-monza/", linkLabel: "Train times" },
+      { label: "Circuit gates", value: "Gates typically open around 07:30 on race weekend days. Standard weekend format: FP1/FP2 Friday, FP3 and qualifying Saturday, race Sunday 15:00 local time." },
+      { label: "What to bring", value: "Folding chair or blanket for General Admission (grass, no seating). Sunscreen — most of the parkland has patchy shade, not deep cover. Ear protection if you'll be trackside for long stretches." },
+      { label: "Weather", value: "September highs typically 22–27°C, generally dry but with occasional afternoon showers — pack a light waterproof just in case.", href: "https://www.accuweather.com/en/it/monza/214047/weather-forecast/214047?type=locality&city=monza", linkLabel: "AccuWeather forecast" },
+      { label: "Emergencies", value: "Emergency services: 112 · Nearest hospital: Ospedale San Gerardo, Via Giovanni Battista Pergolesi 33, 20900 Monza" },
+    ],
+    experienceOrder: {
+      "On the grounds": ["Curva Grande", "Grandstand 22", "Grandstand 26", "Fan Zone", "Paddock Club", "Tifosi"],
+    },
+  },
 };
 
 function orderItems<T extends { packRank: number | null }>(items: T[]): T[] {
@@ -435,6 +465,38 @@ const INSIDER_TIPS: Record<string, Record<string, string[]>> = {
       "Eat before 11:00 or after 14:30 on race Sunday — the food queue at peak mid-morning runs 20+ minutes and frites sell out at two of the three stalls by early afternoon",
     ],
   },
+
+  "italian-gp-2026": {
+    "Curva Grande": [
+      "Park in the Green lot near Gate D rather than the more obvious central lots — it's the most direct walk to Curva Grande and the Lesmo bends without fighting the crowds heading to the main straight",
+      "Use Friday practice, when crowds are thinnest, to walk the full inside loop of the park and mark your spot for Saturday and Sunday before the good ground is taken",
+      "Grandstands 8 and 9 overlook this same stretch of track if you want a reserved seat instead of General Admission grass",
+    ],
+    "Grandstand 22": [
+      "Request row H or higher if buying early — those rows are fully under the roof, while the front rows have partial exposure to afternoon showers",
+      "Seat numbers below 30 (left side of the stand) give the better view of the corner exit and the TV screen positioned across the circuit",
+      "This is a 3-day ticket only, no single-day option — if you only want race day, look at General Admission instead",
+    ],
+    "Grandstand 26": [
+      "This grandstand covers the pit lane, grid formation, and podium in one sightline — the closest thing at Monza to seeing the whole raceday ceremony from one seat",
+      "Arrive early on race day; grid walk viewing fills the front rows well before the formation lap",
+    ],
+    "Fan Zone — Ascari": [
+      "Thursday afternoon (roughly 13:00–20:00) the Fan Zone opens free to the public through Gate G, no race ticket required — a good way to get a feel for the event before committing to a full ticket",
+      "Driver appearances on the Fan Zone stage tend to happen Friday or Saturday morning rather than race day itself",
+      "Mornings before the first session of the day are quieter for the simulators — queues build fast once each day's session finishes",
+    ],
+    "Paddock Club": [
+      "Champions Club Centrale is the more forgiving booking window of the three hospitality tiers — a sensible fallback if Paddock Club sells out",
+      "House 44, the Lewis Hamilton and Soho House collaboration, sold out for 2026 well ahead of race weekend — if you want it for a future season, move as soon as the general Paddock Club on-sale opens",
+      "Don't expect a driver appearance to be guaranteed on any tier — the paddock tour and grid walk are confirmed, but which drivers show up is never published in advance",
+    ],
+    "Tifosi": [
+      "Track invasion access points are at Turn 1 and near the Parabolica, with additional openings by the Centrale grandstand and the Glass Tower — head there during the closing laps, not after the flag falls",
+      "Track invasion isn't officially confirmed every season — check f1italy.com closer to race weekend rather than assuming it's running",
+      "If Ferrari is fighting for the win, get to your grandstand well before lights out — the atmosphere builds for hours and the best views of the sea of red go early",
+    ],
+  },
 };
 
 function getInsiderTips(title: string, eventSlug: string): string[] | null {
@@ -547,6 +609,21 @@ const TOURNAMENT_RHYTHM: Record<string, RhythmEntry[]> = {
     {
       label: "Sunday (19 Jul) — Race Day",
       body: "Race start is 14:00 local time. The circuit fills from 07:00 and fence-side positions on the Kemmel Straight are gone by 09:30. If you have a grandstand ticket, arrive with time to spare — the forest paths are slower on race morning than any other day. The opening lap through Eau Rouge and Raidillon is 44 seconds into the race and worth the entire trip. The DRS zone on the Kemmel Straight produces the most overtaking moves of the weekend. After the podium ceremony — worth staying for — plan your exit before the crowd clears: the single-carriageway roads around the circuit take two hours to clear on Sunday evening. Take the shuttle, or walk to Stavelot and let it pass.",
+    },
+  ],
+
+  "italian-gp-2026": [
+    {
+      label: "Friday 4 Sep — Practice 1 & 2",
+      body: "A standard weekend, no sprint format, which means two practice sessions on Friday and a quieter circuit than Saturday or Sunday. This is the day to walk the full loop before committing to a spot — the General Admission areas at Curva Grande, the Lesmo curves, and the run to Ascari are all open, and Friday is when you find out which patch of grass actually gives you the view you want. Fan Zone queues for simulators and the pit stop challenge are shortest today, and driver appearances at the stage tend to land on Friday or Saturday morning rather than race day.",
+    },
+    {
+      label: "Saturday 5 Sep — Practice 3 & Qualifying",
+      body: "FP3 in the morning is the last chance for teams to tune the car before parc ferme rules kick in. Qualifying in the afternoon is the session most Monza regulars prioritise if they can only pick one — single-lap efforts with no race traffic mean the differences between cars through Curva Grande and the Parabolica are stark in a way race laps don't show. If you're choosing between practice and qualifying for a grandstand session, qualifying is the better use of a ticket.",
+    },
+    {
+      label: "Sunday 6 Sep — Race Day",
+      body: "Race start is 15:00 local time. Arrive early if you're General Admission — the good ground at Curva Grande and the Lesmo bends fills through the morning, and by mid-morning you're choosing between what's left rather than what you scouted on Friday. The Tifosi build the atmosphere for hours before lights out, so being in your spot well ahead of the grid formation matters more here than at most circuits. After the flag, track invasion (when it runs — check closer to the date, as it isn't confirmed every season) sends the crowd toward the podium via Turn 1 and the Parabolica. If you're not joining that, plan your exit early: the roads around Monza and the trains back to Milan get heavily loaded in the hour after the race finishes.",
     },
   ],
 };
