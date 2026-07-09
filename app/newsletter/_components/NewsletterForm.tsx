@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { subscribeToNewsletter } from "../actions";
 
 export function NewsletterForm({ source }: { source: string }) {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [error, setError] = useState("");
@@ -14,6 +16,7 @@ export function NewsletterForm({ source }: { source: string }) {
     const result = await subscribeToNewsletter(email, source);
     if (result.ok) {
       setStatus("done");
+      setTimeout(() => router.push("/"), 2000);
     } else {
       setStatus("error");
       setError(result.error ?? "Something went wrong — please try again.");

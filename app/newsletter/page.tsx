@@ -17,11 +17,11 @@ export default async function NewsletterPage({
           Experiences | Curated
         </p>
         <h1 className="text-2xl sm:text-3xl font-black text-white leading-snug mb-3">
-          Get insider guides for the sports events you&apos;re going to
+          Insider guides for the sports events you&apos;re going to
         </h1>
         <p className="text-sm text-[#A3A3A3] leading-relaxed mb-8">
-          One email when a new event guide goes live — where to eat, where to stay,
-          how to actually get there. No noise, no spam.
+          One email when a new event guide goes live — the best experiences, where to
+          eat, where to stay, how to actually get there. No noise, no spam.
         </p>
         <NewsletterForm source={utmSource} />
       </div>
