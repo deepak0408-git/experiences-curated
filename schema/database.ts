@@ -542,6 +542,15 @@ export const giftCodes = pgTable("gift_codes", {
   index("gift_codes_generated_by_idx").on(t.generatedByEmail),
 ]);
 
+export const newsletterSubscribers = pgTable("newsletter_subscribers", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  source: varchar("source", { length: 50 }),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+}, (t) => [
+  uniqueIndex("newsletter_subscribers_email_unique").on(t.email),
+]);
+
 // ─── Relations ────────────────────────────────────────────────────────────────
 
 export const experiencesRelations = relations(experiences, ({ one, many }) => ({
