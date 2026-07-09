@@ -1,16 +1,29 @@
 "use server";
 
+import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { newsletterSubscribers } from "@/schema/database";
+import { newsletterSubscribers, users } from "@/schema/database";
 
 export async function subscribeToNewsletter(email: string, source: string) {
   if (!email || !email.includes("@")) {
     return { ok: false, error: "Please enter a valid email address." };
   }
 
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const [existingUser] = await db
+    .select({ id: users.id })
+    .from(users)
+    .where(eq(users.email, normalizedEmail))
+    .limit(1);
+
+  if (existingUser) {
+    return { ok: true, alreadyMember: true };
+  }
+
   await db
     .insert(newsletterSubscribers)
-    .values({ email: email.trim().toLowerCase(), source })
+    .values({ email: normalizedEmail, source })
     .onConflictDoNothing();
 
   const res = await fetch("https://api.resend.com/emails", {
