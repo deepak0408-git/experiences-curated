@@ -10,6 +10,7 @@
 > **Magic links:** always redirect to `/auth/confirm?next=<path>` — never `/auth/callback`.
 > **Internal links:** always use Next.js `<Link>` — never plain `<a href>` for internal paths. Plain anchors cause full page loads, making pages bfcache-eligible and breaking back-navigation.
 > **Design system:** Dark canvas + fluorescent green. Merged to `main` 21 Jun 2026 (commit 135bec7 = validated baseline). Rollback: `git reset --hard 135bec7`. Full token set in memory `project_design_system.md`. Full-site overhaul not yet started — Tier 3 (experience detail, event-pack, curator) pending.
+> **Third-party platform setup:** Before proposing any hands-on setup on a third-party platform (analytics, verification, embeds, integrations) — search for that platform's documented plan/tier limitations first, before touching anything. Stop and re-search after one failed attempt, not three. See memory `feedback_third_party_platform_limits.md` for the incident this came from (Substack free-tier + Google Search Console, 10 Jul 2026 — an hour lost to GA4/GTM setup that a single upfront search would have shown was futile).
 
 ---
 

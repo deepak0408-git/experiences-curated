@@ -19,6 +19,10 @@
     {
       "path": "/api/cron/expire-homepage-slots",
       "schedule": "1 0 * * *"
+    },
+    {
+      "path": "/api/cron/event-reminder-to-buyer-5-days-before-trip",
+      "schedule": "0 4 * * *"
     }
   ]
 }
