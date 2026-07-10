@@ -223,6 +223,36 @@ const PACK_EDITORIAL: Record<string, PackEditorial> = {
     },
   },
 
+  "bmw-pga-championship-2026": {
+    brief:
+      "The BMW PGA Championship is four days at Wentworth Club, and Wentworth is not a course you can simply decide to play. It's fully private — no green fees, no public booking, guest-of-member only — which makes tournament week the one time most people will ever get close to the West Course at all. That's the thing to understand before anything else: this isn't a golf weekend where the venue happens to be exclusive, the exclusivity is the whole shape of the trip.\n\nWhat you get instead of a course you can walk any day is a genuinely different kind of golf week. This is the DP World Tour's own flagship event — a Rolex Series tournament with a 2026 field that includes Rory McIlroy, Aaron Rai, and the last three champions of the event. It's also billed, accurately, as the Festival of Golf: a Celebrity Pro-Am on the Wednesday before, live concerts on the Show Stage through the weekend (The Kooks confirmed to headline Saturday 19 September), and a Championship Village built around BMW and MINI as much as around golf. You're not choosing between watching a tournament and having a day out. Wentworth built both into the same ticket.\n\nA few things worth knowing before you commit to a plan. This is a London day trip, not a multi-night expedition — Wentworth sits roughly 46 minutes from London Waterloo by direct train, which means you can genuinely do this without booking anywhere to stay, though Windsor Castle and Eton sitting a few miles away make a strong case for turning it into more than one day. Hospitality here runs in real tiers with real differences, not just pricier seats: Treetops on the 14th, The Approach beside the 18th fairway, and 72 Lounge/Green on 18 inside the Championship Pavilion each give you a genuinely different day, not the same day with better catering. The sections here follow the shape of the week: what to sort before you go, what's actually on the grounds, where to stay if you make a trip of it, where to eat, and what Windsor and Eton add if you have the time.",
+    sectionIntros: {
+      "Before you go":
+        "General admission and hospitality packages go on sale well ahead of the 17–20 September week — Rolex Series demand means the Celebrity Pro-Am (Wednesday) and the weekend rounds sell fastest. Hospitality tiers range from 72 Lounge (£370pp) through Green on 18 (£750pp) and The Approach by James Tanner (from £540pp) up to Treetops on the 14th. Transport is simple: direct South Western Railway service from London Waterloo to Longcross (~46 min) or Virginia Water (~58 min), both a short walk or shuttle from the gates. There is no way to book a round at Wentworth itself as a member of the public — tournament week general admission is the realistic way to see the West Course in person.",
+      "On the grounds":
+        "Wentworth's West Course rewards knowing where to plant yourself. The 18th green sits in a natural amphitheatre and is where recent tournaments have actually been decided — Billy Horschel's 2024 playoff eagle happened here. The 10th is a deceptively hard par 3 on a hillside shelf, and the 7th has a grandstand positioned to show both the tee shot and the green, a rare double sightline. Horschel Hill, between the 1st and 18th tees, is the free, unreserved big-screen spot if you don't want a fixed seat all day. Beyond the golf, the Championship Village and Show Stage run concerts through the weekend, and premium hospitality (Treetops, 72 Lounge, Green on 18, The Approach) sits at genuinely different price and format points worth understanding before you book.",
+      "Where to stay":
+        "This can be a single London day trip with no accommodation booked at all, given the ~46-minute train from Waterloo. If you want to make a proper trip of it, Coworth Park in Ascot is the luxury anchor — a 5-star Dorchester Collection estate with its own polo fields and a Michelin-starred restaurant, a short drive from Wentworth. The Wheatsheaf Hotel, 0.7 miles from the club, is the accessible-price alternative — a straightforward, well-kept coaching inn rather than a resort.",
+      "Where to eat":
+        "The Fat Duck in nearby Bray has held three Michelin stars for 21 consecutive years — Heston Blumenthal's restaurant is a genuine detour, best kept for a clear evening rather than squeezed between tournament sessions. Closer to the course, Piccolino in Virginia Water village is the sensible, no-fuss dinner option — currently the top-rated restaurant in the village, with an all-weather terrace and live entertainment on weekend nights.",
+      "The neighbourhood":
+        "Windsor Castle, the world's oldest inhabited castle and a working royal residence, sits a few miles from Wentworth — genuinely close enough to combine with a golf day rather than needing its own separate trip. The Long Walk, a 2.5-mile tree-lined avenue, is one of the more grand approaches to any building in England. Eton, a five-minute walk across Windsor Bridge, adds a genuinely old high street and a 580-year-old school to the same outing. Virginia Water Lake and Savill Garden, inside Windsor Great Park, are the pack's slower-paced counterpart to a full tournament day — a walk, a Georgian cascade waterfall, and 35 acres of seasonal gardens.",
+    },
+    localInfo: [
+      { label: "Address", value: "Wentworth Dr, Virginia Water, Surrey GU25 4LS", href: "https://maps.google.com/?q=Wentworth+Club+Wentworth+Drive+Virginia+Water+Surrey+GU25+4LS", linkLabel: "Open in Maps" },
+      { label: "Official site", value: "europeantour.com/dpworld-tour/bmw-pga-championship-2026", href: "https://www.europeantour.com/dpworld-tour/bmw-pga-championship-2026/", linkLabel: "Visit" },
+      { label: "Tickets", value: "Book via the official DP World Tour ticketing page — Wednesday Pro-Am and weekend rounds sell fastest.", href: "https://www.europeantour.com/dpworld-tour/bmw-pga-championship-2026/tickets-packages/", linkLabel: "Buy tickets" },
+      { label: "Best transport", value: "Direct South Western Railway, London Waterloo → Longcross (~46 min) or Virginia Water (~58 min). No car needed.", href: "https://www.southwesternrailway.com/train-times/london-waterloo-to-virginia-water", linkLabel: "Plan journey" },
+      { label: "Gates open", value: "Championship days: gates typically open several hours before first tee. Wednesday Pro-Am: shotgun starts 8:00am and 1:30pm BST." },
+      { label: "What to bring", value: "Layers (mid-to-high teens °C in September, cooler mornings). Waterproof. Comfortable walking shoes — the West Course is a genuine walk between holes." },
+      { label: "Weather", value: "September in Surrey typically runs mild, cooler mornings, rain possible on any day — pack a light waterproof.", href: "https://www.accuweather.com/en/gb/virginia-water/gu25-4/weather-forecast/330996", linkLabel: "AccuWeather forecast" },
+      { label: "Emergencies", value: "Emergency services: 999 · NHS urgent: 111 · Nearest A&E: Frimley Park Hospital, Portsmouth Rd, Frimley, Camberley GU16 7UJ" },
+    ],
+    experienceOrder: {
+      "On the grounds": ["18th at Wentworth", "72 Lounge", "The Approach", "Treetops", "10th", "7th", "Championship Village", "Celebrity Pro-Am", "Horschel Hill", "Course You Can't Play"],
+    },
+  },
+
   "belgian-gp-2026": {
     brief:
       "The Belgian Grand Prix is three days in the Ardennes forest, and the forest is the point. Circuit de Spa-Francorchamps is 7 kilometres of road that climbs and drops through trees, with corners named after the villages they pass through and a weather system that changes within the hour. It is the circuit most F1 drivers cite as their favourite, and after a lap in a road car you understand why — the elevation changes alone are unlike anything else on the calendar.\n\nThis pack is built around one idea: Spa is not a single experience. It is a circuit you roam. A Bronze general admission ticket unlocks most of it — the Kemmel Straight bank, the Pouhon mound, the Fan Zone at the base of Raidillon, and 7 kilometres of forest trackside. Grandstand tickets — Gold 3 at Raidillon, Silver 3 at Pouhon — give you a fixed seat and cover. The choice between them shapes what kind of weekend this is.\n\nA few things worth knowing before you arrive. July in the Ardennes is unpredictable — the same afternoon can run 28 degrees and then a downpour within the hour, and it matters when you're standing on a grassy bank. Day return shuttles run from 14 cities across Belgium and the Netherlands — sales close 26 June, so book early. Parking on-site on race Sunday takes two hours to clear. Plan your exit before race day. The sections here follow the shape of the weekend — what to do on each day, where to watch from, and how to make the most of a circuit that rewards movement over sitting still.",
@@ -443,6 +473,82 @@ const INSIDER_TIPS: Record<string, Record<string, string[]>> = {
     ],
   },
 
+  "bmw-pga-championship-2026": {
+    "18th at Wentworth": [
+      "Get to the 18th grandstand at least 30-45 minutes before the final groups are due to putt — it's first-come and fills from early afternoon on the weekend.",
+      "If you want to see the whole hole play out from tee to green rather than just the approach, the grandstand's higher tiers give you the better sightline over the dogleg.",
+      "This is the single most contested viewing spot on the course once the tournament comes down to the wire — don't expect a late-Sunday walk-in.",
+    ],
+    "10th": [
+      "Stand near the tee rather than the green if you want to see the actual shot-shaping decision players face around the tree on the left.",
+      "This hole is far less crowded than the marquee holes — one of the easier spots to get a close, unobstructed view without arriving hours early.",
+    ],
+    "7th": [
+      "Arrive well before the first tee times if you want a seat with a view of both the tee and the green — this grandstand fills earlier than most others.",
+      "The two-tiered green means a short approach can trickle back a good three feet — watch for players misjudging distance on the front tier.",
+    ],
+    "Championship Village": [
+      "The Kooks are confirmed to headline the Show Stage on Saturday, September 19, 2026 — build your day around being near the stage by early evening if that matters to you.",
+      "Live music runs through the week in the Fan Village beyond the Saturday headline slot, so there's still something to catch on the quieter practice days.",
+    ],
+    Treetops: [
+      "Use the fast-track bag check and priority entry from your very first arrival of the day — it saves real time on a busy tournament morning.",
+      "The included meal voucher (up to £15) and two drink vouchers are only valid within the package — plan to eat and drink here rather than buying elsewhere first.",
+    ],
+    "The Approach": [
+      "The format is flexible rather than scheduled — duck out to watch a group finish on 18, then come back to the food stations.",
+      "Tables for larger groups (6 or 8 guests) tend to sell out first — book early if you're planning a group outing.",
+    ],
+    "72 Lounge": [
+      "72 Lounge only debuted in 2025 and demand has grown fast since — don't assume it's an easy last-minute booking.",
+      "Green on 18's covered terrace is the real differentiator from the indoor dining area — ask for it specifically when booking.",
+    ],
+    "Celebrity Pro-Am": [
+      "The shotgun start means groups are spread across the entire course simultaneously — check the published tee sheet on the day rather than waiting at one spot.",
+      "Pro-Am general admission has sold out in recent years alongside the tournament days — buy your Wednesday ticket as early as the rest.",
+    ],
+    "Horschel Hill": [
+      "Use Horschel Hill as your group's meeting point if you're planning to split up and watch different holes during the day.",
+      "This is the most relaxed viewing spot on the course — bring a picnic blanket or portable chair if you want to settle in.",
+    ],
+    "Course You Can't Play": [
+      "Don't bother searching for a way to book a round as a member of the public — it genuinely doesn't exist without a member's invitation.",
+      "If playing a Harry Colt course matters to you and Wentworth itself is out of reach, look into other Colt designs in the area as a genuine alternative.",
+    ],
+    "Getting to Wentworth": [
+      "Longcross station is closer to Wentworth Club than Virginia Water station — use it as your default unless a specific connection makes Virginia Water more convenient.",
+      "Check the last train back to Waterloo before committing to a full day's play — tournament crowds make evening trains busier than usual.",
+    ],
+    "Coworth Park": [
+      "Book a table at Woven by Adam Smith (the hotel's Michelin-starred restaurant) at the same time as your room — it fills fast during tournament week.",
+      "Ask about the on-site polo fields and equestrian centre if you're not golfing yourself — a genuinely distinctive way to spend a day here.",
+    ],
+    "Wheatsheaf Hotel": [
+      "One of the closest walkable options to Wentworth — factor that in against slightly cheaper alternatives further from Virginia Water.",
+      "Book ahead specifically for tournament week — its proximity to Wentworth means it fills faster than everyday pricing might suggest.",
+    ],
+    "Fat Duck": [
+      "Book well ahead — reservations require full payment upfront, and availability for popular dates fills fast.",
+      "Plan a clear evening around this meal rather than squeezing it between tournament sessions — the tasting menu format runs for hours.",
+    ],
+    Piccolino: [
+      "Book ahead for Friday or Saturday evenings during tournament week — the village sees more visitors than usual.",
+      "The all-weather terrace is worth requesting specifically if you want to eat outside.",
+    ],
+    "Windsor Castle": [
+      "Book tickets in advance online — it's cheaper and guarantees entry on your chosen date rather than risking a sold-out day.",
+      "Time your visit around the Changing of the Guard (roughly 11am, Tue/Thu/Sat year-round, daily except Sundays Apr-Jul) if the ceremony matters to you.",
+    ],
+    "Virginia Water Lake": [
+      "The Cascade is free to visit and requires no booking — a good low-commitment addition if you don't have time for the full Savill Garden.",
+      "Savill Garden's £40 entry includes car parking for the day — factor that into cost comparisons if you're driving.",
+    ],
+    Eton: [
+      "Treat this as a one-to-two-hour add-on to a Windsor Castle visit rather than a separate outing — the walk itself is only five minutes.",
+      "Look for the Cockpit Inn on the first stretch of the High Street, a genuine 1420s timber-framed building.",
+    ],
+  },
+
   "belgian-gp-2026": {
     "Eau Rouge": [
       "Blocks B or C, rows 18–22 — fully under the roof, best angle down Raidillon, with a partial sightline to the Bus Stop Chicane across the circuit",
@@ -594,6 +700,33 @@ const TOURNAMENT_RHYTHM: Record<string, RhythmEntry[]> = {
     {
       label: "Sunday 19 Jul — Final round",
       body: "The closing round. The 18th grandstand is claimed hours before the leaders arrive — standing positions go by early afternoon, reserved Signature seats are the only guarantee. The rest of the course empties relative to Saturday as everyone migrates toward the closing stretch. If you want to watch golf rather than a crowd, the 11th dune on Sunday morning is one of the better places to be.",
+    },
+  ],
+
+  "bmw-pga-championship-2026": [
+    {
+      label: "Tuesday 15 Sep — Practice",
+      body: "The quietest day of the week. The field is on the course working pre-tournament routines, the Championship Village is open, and general admission gets you close without the Pro-Am's energy or the weekend's crowds. Right for anyone who wants to walk the West Course's viewing spots — the 18th, the 10th, the 7th — and find their preferred positions before committing on the busier days ahead.",
+    },
+    {
+      label: "Wednesday 16 Sep — Celebrity Pro-Am",
+      body: "The traditional curtain-raiser: DP World Tour professionals paired with names from sport and entertainment, played as two shotgun starts (8:00am and 1:30pm). Looser and considerably less serious than the championship rounds that follow — general admission has sold out in recent years, so this isn't a day to leave until last. The whole West Course fills with groups simultaneously rather than the usual staggered tee times.",
+    },
+    {
+      label: "Thursday 17 Sep — Round 1",
+      body: "The tournament proper begins. The full field is out, the course hasn't yet settled into a leaderboard shape, and this is generally the best value day for course walkers — quieter than the weekend, full field variety on show. A good day to follow a group for a full nine holes rather than planting at one spot.",
+    },
+    {
+      label: "Friday 18 Sep — Round 2 (cut day)",
+      body: "The field plays through the morning and the cut falls in the afternoon — the emotional range of the tournament shows up in a single session, players making the cut relieved, others walking off for the week. The Show Stage and Fan Village entertainment starts building through the evening ahead of the weekend.",
+    },
+    {
+      label: "Saturday 19 Sep — Round 3 + Show Stage headline",
+      body: "The busiest and loudest day of the week. The leaderboard has real shape by now, the grandstands fill early, and The Kooks headline the Show Stage in the evening — meaning this is genuinely a full day rather than a golf morning followed by a quiet afternoon. Commit to your 18th position by mid-morning if you want a view of the tournament's business end.",
+    },
+    {
+      label: "Sunday 20 Sep — Final round",
+      body: "The closing day. The 18th green — where recent tournaments have actually been decided, including Billy Horschel's 2024 playoff eagle — is claimed well before the leaders arrive. Standing positions go by early afternoon. If you want to watch golf rather than a crowd, the 10th or the 7th earlier in the day are calmer, genuinely tactical viewing before the tournament narrows to its final stretch.",
     },
   ],
 

@@ -164,6 +164,28 @@ const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: strin
       description: "Merseyrail from Liverpool Central, the Southport connection, and Liverpool as a day trip 40 minutes from the gates",
     },
   ],
+  "bmw-pga-championship-2026": [
+    {
+      label: "On the Course",
+      description: "The 18th, 10th and 7th grandstands, Horschel Hill, and the private-club story behind Wentworth's West Course",
+    },
+    {
+      label: "Festival of Golf",
+      description: "The Celebrity Pro-Am, the Championship Village and Show Stage concerts, and the hospitality tiers that shape your day",
+    },
+    {
+      label: "Where to Stay",
+      description: "Coworth Park's polo-estate luxury and the Wheatsheaf's accessible alternative, both minutes from Wentworth",
+    },
+    {
+      label: "Where to Eat",
+      description: "The Fat Duck's three Michelin stars in nearby Bray, plus Piccolino in Virginia Water village",
+    },
+    {
+      label: "Getting There & Beyond",
+      description: "A straightforward day trip from London Waterloo, with Windsor Castle and Eton minutes from the gates",
+    },
+  ],
   "belgian-gp-2026": [
     {
       label: "At the Circuit",
@@ -295,6 +317,13 @@ const PACK_PRICING: Record<string, {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_ITALIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-08-25",
     earlyBirdDisplay: "€15",
     standardDisplay: "€25",
+  },
+  "bmw-pga-championship-2026": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BMW_PGA_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BMW_PGA_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_BMW_PGA_EARLY_BIRD_CUTOFF ?? "2026-09-03",
+    earlyBirdDisplay: "£15",
+    standardDisplay: "£25",
   },
 };
 

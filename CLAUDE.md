@@ -70,6 +70,8 @@ US Open 2026 event:          91f298a3-ca22-49c3-9c8e-5a200f0026c9
 Belgian GP 2026 event:       b1816396-6d71-4693-a53f-05bccb2d8a8e
 Milan destination:           0b0d8f9a-911d-4cc7-8049-50e4685958ca
 Italian GP 2026 event:       b93770c0-3d96-4e81-b3d0-c1e3a788fd8e
+Surrey/Virginia Water dest:  0b015fab-26a0-48b4-a8ff-ef7c7ed977a7
+BMW PGA Championship 2026:   ea035967-b5d7-47e6-ad44-7cf4db07e70b
 ```
 
 ---
