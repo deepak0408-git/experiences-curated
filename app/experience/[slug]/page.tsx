@@ -276,6 +276,7 @@ export default async function ExperiencePage({
               slug.startsWith("staying-in-milan-city-base-strategy-") ? "object-[center_20%]" :
               slug.startsWith("alfa-romeo-museum-arese-") ? "object-[center_15%]" :
               slug.startsWith("paddock-club-champions-club-hospitality-") ? "object-[center_10%]" :
+              slug.startsWith("7th-wentworth-grandstand-green-") ? "object-[center_75%]" :
               ""
             }`}
             sizes="100vw"

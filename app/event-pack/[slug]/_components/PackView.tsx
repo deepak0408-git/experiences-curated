@@ -239,7 +239,7 @@ const PACK_EDITORIAL: Record<string, PackEditorial> = {
         "Windsor Castle, the world's oldest inhabited castle and a working royal residence, sits a few miles from Wentworth — genuinely close enough to combine with a golf day rather than needing its own separate trip. The Long Walk, a 2.5-mile tree-lined avenue, is one of the more grand approaches to any building in England. Eton, a five-minute walk across Windsor Bridge, adds a genuinely old high street and a 580-year-old school to the same outing. Virginia Water Lake and Savill Garden, inside Windsor Great Park, are the pack's slower-paced counterpart to a full tournament day — a walk, a Georgian cascade waterfall, and 35 acres of seasonal gardens.",
     },
     localInfo: [
-      { label: "Address", value: "Wentworth Dr, Virginia Water, Surrey GU25 4LS", href: "https://maps.google.com/?q=Wentworth+Club+Wentworth+Drive+Virginia+Water+Surrey+GU25+4LS", linkLabel: "Open in Maps" },
+      { label: "Address", value: "Wentworth Dr, Virginia Water, Surrey GU25 4LS", href: "https://maps.app.goo.gl/HEuUvKjLGiFWoTNM8", linkLabel: "Open in Maps" },
       { label: "Official site", value: "europeantour.com/dpworld-tour/bmw-pga-championship-2026", href: "https://www.europeantour.com/dpworld-tour/bmw-pga-championship-2026/", linkLabel: "Visit" },
       { label: "Tickets", value: "Book via the official DP World Tour ticketing page — Wednesday Pro-Am and weekend rounds sell fastest.", href: "https://www.europeantour.com/dpworld-tour/bmw-pga-championship-2026/tickets-packages/", linkLabel: "Buy tickets" },
       { label: "Best transport", value: "Direct South Western Railway, London Waterloo → Longcross (~46 min) or Virginia Water (~58 min). No car needed.", href: "https://www.southwesternrailway.com/train-times/london-waterloo-to-virginia-water", linkLabel: "Plan journey" },
@@ -249,7 +249,7 @@ const PACK_EDITORIAL: Record<string, PackEditorial> = {
       { label: "Emergencies", value: "Emergency services: 999 · NHS urgent: 111 · Nearest A&E: Frimley Park Hospital, Portsmouth Rd, Frimley, Camberley GU16 7UJ" },
     ],
     experienceOrder: {
-      "On the grounds": ["18th at Wentworth", "72 Lounge", "The Approach", "Treetops", "10th", "7th", "Championship Village", "Celebrity Pro-Am", "Horschel Hill", "Course You Can't Play"],
+      "On the grounds": ["18th at Wentworth", "72 Lounge", "The Approach", "Treetops", "7th", "Championship Village", "Celebrity Pro-Am", "Horschel Hill", "Course You Can't Play"],
     },
   },
 
@@ -478,10 +478,6 @@ const INSIDER_TIPS: Record<string, Record<string, string[]>> = {
       "Get to the 18th grandstand at least 30-45 minutes before the final groups are due to putt — it's first-come and fills from early afternoon on the weekend.",
       "If you want to see the whole hole play out from tee to green rather than just the approach, the grandstand's higher tiers give you the better sightline over the dogleg.",
       "This is the single most contested viewing spot on the course once the tournament comes down to the wire — don't expect a late-Sunday walk-in.",
-    ],
-    "10th": [
-      "Stand near the tee rather than the green if you want to see the actual shot-shaping decision players face around the tree on the left.",
-      "This hole is far less crowded than the marquee holes — one of the easier spots to get a close, unobstructed view without arriving hours early.",
     ],
     "7th": [
       "Arrive well before the first tee times if you want a seat with a view of both the tee and the green — this grandstand fills earlier than most others.",

@@ -167,7 +167,7 @@ const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: strin
   "bmw-pga-championship-2026": [
     {
       label: "On the Course",
-      description: "The 18th, 10th and 7th grandstands, Horschel Hill, and the private-club story behind Wentworth's West Course",
+      description: "The 18th and 7th grandstands, Horschel Hill, and the private-club story behind Wentworth's West Course",
     },
     {
       label: "Festival of Golf",
@@ -277,22 +277,40 @@ const PACK_PRICING: Record<string, {
   standardDisplay: string;
 }> = {
   "wimbledon-2026": {
-    earlyBirdPriceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_EARLY_BIRD ?? "",
-    standardPriceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_STANDARD ?? "",
+    earlyBirdPriceId:
+      process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
+        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_EARLY_BIRD ?? ""
+        : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_EARLY_BIRD ?? "",
+    standardPriceId:
+      process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
+        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_STANDARD ?? ""
+        : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01",
     earlyBirdDisplay: process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "£15",
     standardDisplay: process.env.NEXT_PUBLIC_STANDARD_PRICE_DISPLAY ?? "£25",
   },
   "us-open-2026": {
-    earlyBirdPriceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_US_OPEN_EARLY_BIRD ?? "",
-    standardPriceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_US_OPEN_STANDARD ?? "",
+    earlyBirdPriceId:
+      process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
+        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_US_OPEN_EARLY_BIRD ?? ""
+        : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_US_OPEN_EARLY_BIRD ?? "",
+    standardPriceId:
+      process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
+        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_US_OPEN_STANDARD ?? ""
+        : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_US_OPEN_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_US_OPEN_EARLY_BIRD_CUTOFF ?? "2026-08-01",
     earlyBirdDisplay: "$15",
     standardDisplay: "$25",
   },
   "india-in-england-cricket-2026": {
-    earlyBirdPriceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_CRICKET_EARLY_BIRD ?? "",
-    standardPriceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_CRICKET_STANDARD ?? "",
+    earlyBirdPriceId:
+      process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
+        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_CRICKET_EARLY_BIRD ?? ""
+        : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_CRICKET_EARLY_BIRD ?? "",
+    standardPriceId:
+      process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
+        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_CRICKET_STANDARD ?? ""
+        : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_CRICKET_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_CRICKET_EARLY_BIRD_CUTOFF ?? "2026-06-15",
     earlyBirdDisplay: "£9",
     standardDisplay: "£15",
@@ -510,35 +528,8 @@ export default async function EventPackPage({
 
   const paymentProvider = process.env.NEXT_PUBLIC_PAYMENT_PROVIDER ?? "paddle";
 
-  const DODO_PRICING: Record<string, { earlyBirdPriceId: string; standardPriceId: string; earlyBirdCutoff: string }> = {
-    "wimbledon-2026": {
-      earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_EARLY_BIRD ?? "",
-      standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_STANDARD ?? "",
-      earlyBirdCutoff: process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01",
-    },
-    "us-open-2026": {
-      earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_US_OPEN_EARLY_BIRD ?? "",
-      standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_US_OPEN_STANDARD ?? "",
-      earlyBirdCutoff: process.env.NEXT_PUBLIC_US_OPEN_EARLY_BIRD_CUTOFF ?? "2026-08-01",
-    },
-    "india-in-england-cricket-2026": {
-      earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_CRICKET_EARLY_BIRD ?? "",
-      standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_CRICKET_STANDARD ?? "",
-      earlyBirdCutoff: process.env.NEXT_PUBLIC_CRICKET_EARLY_BIRD_CUTOFF ?? "2026-06-15",
-    },
-    "belgian-gp-2026": {
-      earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_EARLY_BIRD ?? "",
-      standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_STANDARD ?? "",
-      earlyBirdCutoff: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-10",
-    },
-    "open-championship-2026": {
-      earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_OPEN_EARLY_BIRD ?? "",
-      standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_OPEN_STANDARD ?? "",
-      earlyBirdCutoff: process.env.NEXT_PUBLIC_OPEN_EARLY_BIRD_CUTOFF ?? "2026-07-06",
-    },
-  };
-  const dodoPricing = DODO_PRICING[slug] ?? DODO_PRICING["wimbledon-2026"];
-  const dodoProductId = isEarlyBird ? dodoPricing.earlyBirdPriceId : dodoPricing.standardPriceId;
+  // Dodo and Paddle share the same per-event price IDs from PACK_PRICING — no separate table.
+  const dodoProductId = priceId;
 
   const dateRange = formatDateRange(event.startDate, event.endDate);
 
