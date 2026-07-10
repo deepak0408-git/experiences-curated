@@ -438,6 +438,7 @@ export const purchases = pgTable("purchases", {
   status: purchaseStatusEnum("status").notNull().default("active"),
   rescueSentAt: timestamp("rescue_sent_at"),
   postTripEmailSentAt: timestamp("post_trip_email_sent_at"),
+  preTripReminderSentAt: timestamp("pre_trip_reminder_sent_at"),
   purchasedAt: timestamp("purchased_at").notNull().defaultNow(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 }, (t) => [
@@ -549,6 +550,17 @@ export const newsletterSubscribers = pgTable("newsletter_subscribers", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 }, (t) => [
   uniqueIndex("newsletter_subscribers_email_unique").on(t.email),
+]);
+
+// Tracks the 5-day pre-trip reminder for Annual Pro members, who have free
+// pack access with no purchases row for a given event to key idempotency off.
+export const eventRemindersSent = pgTable("event_reminders_sent", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: varchar("email", { length: 255 }).notNull(),
+  sportingEventId: uuid("sporting_event_id").notNull().references(() => sportingEvents.id),
+  sentAt: timestamp("sent_at").notNull().defaultNow(),
+}, (t) => [
+  uniqueIndex("event_reminders_sent_email_event_unique").on(t.email, t.sportingEventId),
 ]);
 
 // ─── Relations ────────────────────────────────────────────────────────────────
