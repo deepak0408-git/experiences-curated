@@ -74,6 +74,17 @@ Surrey/Virginia Water dest:  0b015fab-26a0-48b4-a8ff-ef7c7ed977a7
 BMW PGA Championship 2026:   ea035967-b5d7-47e6-ad44-7cf4db07e70b
 ```
 
+**Live event dates — always match `sporting_events.start_date/end_date` in the DB, and the Content Calendar (`C:\Users\HP\.claude\docs\Content Calendar.txt`) is the single source of truth. If any date below ever conflicts with the Calendar or the DB, trust the DB, fix the Calendar, then fix this list — never the reverse.**
+```
+Wimbledon 2026:            29 Jun – 12 Jul 2026
+India in England 2026:     1 – 19 Jul 2026
+Open Championship 2026:    16 – 19 Jul 2026
+Belgian GP 2026:           17 – 19 Jul 2026
+US Open 2026:              25 Aug – 7 Sep 2026
+Italian GP 2026:           4 – 6 Sep 2026
+BMW PGA Championship 2026: 17 – 20 Sep 2026
+```
+
 ---
 
 ## Project Structure
@@ -243,6 +254,8 @@ supabase.auth.admin.generateLink({
 - **Belgian GP experiences:** All 15 published and packRanks set as of 15 Jun 2026. Hero images missing: Van der Valk Hotel Spa (email reception@valkspa.be), Fan Zone at Raidillon (f1media@f1.com or capture at race). Le Val d'Amblève hero image sourced by user — needs uploading to R2 and DB update.
 - **Italian GP experiences:** All 16 seeded, published, and packRanked as of 8 Jul 2026. PackView fully wired (PACK_EDITORIAL, TOURNAMENT_RHYTHM, INSIDER_TIPS, PACK_SECTIONS_BY_EVENT, PACK_PRICING). Event hero image set; ticketingUrl set; pre-trip brief lines written (dormant, cron activates ~10 days before 6 Sep). Dodo checkout live in both `.env.local` and Vercel (Early Bird `pdt_0NikYGrrEQD1Fpj2vgLox` €15, Standard `pdt_0NikYMwNSXtnJZKV2Oe8V` €25). Event dates: 4–6 Sep 2026. Milan destination: region = Lombardy, currency = EUR. Event still `isHidden: true` — activate via /curator/events closer to race weekend. Booking.com affiliate links added 10 Jul 2026 for all 7 hotels (Hotel de la Ville, Staying in Milan's 3 hotels, Lake Como's 3 hotels) — partner approval came through. Only 5 of 16 experiences carry Pro-gated `howToBook` content (Grandstand 22, Grandstand 26, Paddock Club, Hotel de la Ville, Alfa Romeo Museum) — see feedback_pro_concierge_scope memory for why the other 11 were declassified. Full detail in memory `project_italian_gp_experiences.md`.
 - **Open Championship experiences:** All 15 published, all hero images uploaded, packRanks set, event hero image uploaded to R2. PackView + page.tsx fully wired. Dodo test price IDs in .env.local; live IDs (early bird pdt_0NhBDTdJDrNX32NMvvo0t, standard pdt_0NhBDN4jP7TDTnT8CElua) must be added to Vercel before go-live. Pre-trip brief in DB (dormant) — cron activates ~9 Jul 2026.
+- **BMW PGA Championship experiences:** All 17 seeded, published, packRanked, and hero-imaged as of 11 Jul 2026 (built against the Open Championship's golf template, not the F1 template — private-club framing, Festival of Golf angle). PackView fully wired. Event hero image set. Pre-trip brief lines written (dormant, cron activates ~7 days before 17 Sep). Dodo checkout live in both `.env.local` and Vercel (Early Bird `pdt_0NitXmVzWZrQ7edKrq7fk` £15, Standard `pdt_0NitXtHNIzpuzaPezysKC` £25). Event dates: 17–20 Sep 2026. Surrey/Virginia Water destination created (region = Surrey, currency = GBP). Event still `isHidden: true` — activate via /curator/events closer to tournament week. Wentworth Club is fully private (no green fees, no public booking) — do not write any experience implying public course access. Full detail in memory `project_bmw_pga_experiences.md`. Built in ~5 hours end-to-end (research through deployed, tested pack) vs. the 10-day per-event estimate in the Content Calendar.
+- **Duplicate pricing table bug fixed 11 Jul 2026:** `app/event-pack/[slug]/page.tsx` had a second undocumented `DODO_PRICING` table separate from `PACK_PRICING`, silently falling back to Wimbledon's Dodo product ID for any event missing from it (Italian GP and BMW PGA both affected). Removed — `PACK_PRICING` is now the single, provider-aware source of truth for both Dodo and Paddle. See `feedback_duplicate_config_tables.md` memory — when wiring a new event, grep for every `Record<string,` per-event object in both PackView.tsx and page.tsx, not just the 5 named in the event-builder skill.
 - **R&A media contact:** media@randa.org (confirmed from theopen.com/media-centre). Use for Open Championship hero image requests. Do NOT use mediaenquiries@randa.org — that address was unverified.
 - **Hillside Golf Club green fees (2026):** £300 midweek / £335 weekends (summer). Third-party sites show outdated figures — always use official hillside-golfclub.co.uk.
 - **Homepage carousel:** 2-slide rotating HeroCarousel (`app/_components/HeroCarousel.tsx`). Featured events controlled via `/curator/events` (radio Slot 1/2 + Deactivate checkbox). `homepage_slot` + `is_hidden` columns on `sporting_events`. Deactivated events hidden from carousel and calendar section. Active events sort first in curator table. Pill pinned `top-8`, title `top-[15%]`, CTA/dots/hint `bottom-0`. Dot indicators: `flex-1 sm:flex-none` for 50-50 mobile / natural desktop split.
