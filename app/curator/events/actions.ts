@@ -59,11 +59,18 @@ export async function saveHomepageSlots(
     .map((h) => currentStates.find((e) => e.id === h.eventId)!)
     .filter(Boolean);
 
+  const newlyActivatedIds = new Set(newlyActivated.map((e) => e.id));
+
   // Apply hidden flags first — hidden events cannot hold a slot
   for (const { eventId, isHidden } of hidden) {
     await db
       .update(sportingEvents)
-      .set({ isHidden, homepageSlot: isHidden ? null : undefined })
+      .set({
+        isHidden,
+        homepageSlot: isHidden ? null : undefined,
+        // Stamp activation time — anchors the 2-day-later newsletter announcement
+        ...(newlyActivatedIds.has(eventId) ? { activatedAt: new Date() } : {}),
+      })
       .where(eq(sportingEvents.id, eventId));
   }
 
