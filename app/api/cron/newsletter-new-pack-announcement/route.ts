@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { and, eq, isNotNull, isNull, lte } from "drizzle-orm";
+import { and, eq, gt, isNotNull, isNull, lte } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { sportingEvents, newsletterSubscribers } from "@/schema/database";
+import { sportingEvents, newsletterSubscribers, proSubscriptions } from "@/schema/database";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://experiences-curated.com";
@@ -10,7 +10,9 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://experiences-curate
 // Fires daily. Announces a newly-activated event pack to newsletter subscribers
 // 2 days after Pro subscribers were already notified (via notifyProNewPack in
 // app/curator/events/actions.ts) — keeps the "Pro sees it first" promise true
-// in substance, not just technically.
+// in substance, not just technically. Active Pro subscribers are excluded from
+// this send (email match, case-insensitive) so a subscriber who is also on the
+// newsletter list doesn't get the "new pack" announcement twice.
 export async function GET(request: NextRequest) {
   const auth = request.headers.get("authorization");
   if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -40,9 +42,20 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ ok: true, announced: 0 });
   }
 
-  const subscribers = await db
+  const allSubscribers = await db
     .select({ email: newsletterSubscribers.email })
     .from(newsletterSubscribers);
+
+  // Active Pro subscribers already get a "new pack" email via notifyProNewPack
+  // at activation time — exclude them here so they don't get a second email
+  // 2 days later for the same pack.
+  const activeProEmails = await db
+    .select({ email: proSubscriptions.email })
+    .from(proSubscriptions)
+    .where(gt(proSubscriptions.currentPeriodEnd, now));
+  const proEmailSet = new Set(activeProEmails.map((p) => p.email.toLowerCase()));
+
+  const subscribers = allSubscribers.filter((sub) => !proEmailSet.has(sub.email.toLowerCase()));
 
   let announced = 0;
 
@@ -78,7 +91,7 @@ export async function GET(request: NextRequest) {
             )
           );
         }
-        console.log(`[newsletter-new-pack-announcement] ✓ announced ${event.name} to ${subscribers.length} subscribers`);
+        console.log(`[newsletter-new-pack-announcement] ✓ announced ${event.name} to ${subscribers.length} subscribers (${allSubscribers.length - subscribers.length} active Pro emails excluded)`);
       } catch (err) {
         console.error(`[newsletter-new-pack-announcement] failed batch for ${event.name}`, err);
         continue; // don't mark as announced if the send failed
