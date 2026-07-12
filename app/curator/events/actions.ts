@@ -1,10 +1,11 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { sportingEvents, proSubscriptions } from "@/schema/database";
-import { eq, gte, asc } from "drizzle-orm";
+import { sportingEvents, proSubscriptions, experiences } from "@/schema/database";
+import { eq, gte, asc, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
+import { algoliasearch } from "algoliasearch";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -61,6 +62,14 @@ export async function saveHomepageSlots(
 
   const newlyActivatedIds = new Set(newlyActivated.map((e) => e.id));
 
+  // Any event whose isHidden flag actually changed (either direction) needs
+  // its experiences' eventIsHidden facet updated in Algolia — otherwise search
+  // keeps showing/hiding experiences based on stale state from the last full
+  // sync-algolia.mjs run, independent of what /curator/events actually did.
+  const changedEventIds = hidden
+    .filter((h) => currentlyHiddenIds.has(h.eventId) !== h.isHidden)
+    .map((h) => h.eventId);
+
   // Apply hidden flags first — hidden events cannot hold a slot
   for (const { eventId, isHidden } of hidden) {
     await db
@@ -103,7 +112,45 @@ export async function saveHomepageSlots(
     notifyProNewPack(newlyActivated).catch((e) => console.error("[pro-notify]", e));
   }
 
+  // Keep Algolia's eventIsHidden facet in sync with the isHidden flag we just
+  // set, so search reflects the new activation state immediately rather than
+  // waiting for the next manual sync-algolia.mjs run.
+  if (changedEventIds.length > 0) {
+    syncAlgoliaEventVisibility(changedEventIds, hidden).catch((e) =>
+      console.error("[algolia-visibility-sync]", e)
+    );
+  }
+
   return { success: true };
+}
+
+async function syncAlgoliaEventVisibility(
+  changedEventIds: string[],
+  hidden: { eventId: string; isHidden: boolean }[]
+) {
+  if (!process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || !process.env.ALGOLIA_ADMIN_KEY || !process.env.ALGOLIA_EXPERIENCES_INDEX) {
+    return;
+  }
+
+  const algolia = algoliasearch(process.env.NEXT_PUBLIC_ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_KEY);
+  const isHiddenByEventId = new Map(hidden.map((h) => [h.eventId, h.isHidden]));
+
+  for (const eventId of changedEventIds) {
+    const isHidden = isHiddenByEventId.get(eventId);
+    if (isHidden === undefined) continue;
+
+    const linkedExperiences = await db
+      .select({ id: experiences.id })
+      .from(experiences)
+      .where(and(eq(experiences.sportingEventId, eventId), eq(experiences.status, "published")));
+
+    if (linkedExperiences.length === 0) continue;
+
+    await algolia.partialUpdateObjects({
+      indexName: process.env.ALGOLIA_EXPERIENCES_INDEX!,
+      objects: linkedExperiences.map((e) => ({ objectID: e.id, eventIsHidden: isHidden })),
+    });
+  }
 }
 
 async function notifyProNewPack(events: { id: string; name: string; slug: string }[]) {
