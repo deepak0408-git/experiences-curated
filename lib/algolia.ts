@@ -61,8 +61,11 @@ export async function indexExperience(id: string) {
       destinationId: destinations.id,
       destinationName: destinations.name,
       destinationCountry: destinations.countryCode,
+      sportingEventId: experiences.sportingEventId,
       eventStartDate: sportingEvents.startDate,
       eventEndDate: sportingEvents.endDate,
+      eventIsHidden: sportingEvents.isHidden,
+      eventName: sportingEvents.name,
     })
     .from(experiences)
     .innerJoin(destinations, eq(experiences.destinationId, destinations.id))
@@ -116,6 +119,16 @@ export async function indexExperience(id: string) {
       destinationId: row.destinationId,
       destinationName: row.destinationName,
       destinationCountry: row.destinationCountry,
+      sportingEventId: row.sportingEventId ?? null,
+      // Filterable field, not an index-membership gate — see sync-algolia.mjs
+      // for the full explanation. Must stay in sync with that script's copy of
+      // this same logic, or a Publish action after this drifts and silently
+      // strips these fields back out (found 12 Jul 2026 — this function was a
+      // stale copy missing eventIsHidden/eventName/sportingEventId entirely,
+      // so re-publishing an experience after activation wiped its search
+      // visibility fields back to undefined).
+      eventIsHidden: row.sportingEventId ? !!row.eventIsHidden : false,
+      eventName: row.eventName ?? undefined,
     },
   });
 }
