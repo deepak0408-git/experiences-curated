@@ -322,7 +322,10 @@ export function SearchUI({
       <Configure
         hitsPerPage={50}
         {...(optionalFilters.length > 0 ? { optionalFilters } : {})}
-        {...(freeEventIds.length > 0 ? { filters: freeEventIds.map(id => `sportingEventId:"${id}"`).join(" OR ") } : {})}
+        filters={[
+          "eventIsHidden:false",
+          ...(freeEventIds.length > 0 ? [`(${freeEventIds.map(id => `sportingEventId:"${id}"`).join(" OR ")})`] : []),
+        ].join(" AND ")}
       />
 
       <div className="min-h-screen bg-[#0A0A0A]">
