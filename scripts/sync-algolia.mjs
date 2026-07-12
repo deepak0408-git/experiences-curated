@@ -66,6 +66,7 @@ const rows = await db
     eventStartDate: sportingEvents.startDate,
     eventEndDate: sportingEvents.endDate,
     eventIsHidden: sportingEvents.isHidden,
+    eventName: sportingEvents.name,
   })
   .from(experiences)
   .innerJoin(destinations, eq(experiences.destinationId, destinations.id))
@@ -124,6 +125,13 @@ const objects = rows.map((row) => {
     // gate — records for hidden events stay indexed, they're just excluded by
     // the search page's query filter until the event goes live.
     eventIsHidden: row.sportingEventId ? !!row.eventIsHidden : false,
+    // Searchable tournament/event name (e.g. "Hungarian Grand Prix 2026") so a
+    // query like "Hungarian" reliably matches every experience linked to that
+    // event, regardless of whether the destination name happens to contain the
+    // same word (Belgian GP matched by coincidence via "Belgian Ardennes";
+    // Hungarian GP did not, since its destination is "Budapest"). Fixed 12 Jul
+    // 2026 after the user caught this gap live.
+    eventName: row.eventName ?? undefined,
     saveCount: row.saveCount,
     publishedAt: row.publishedAt ? Math.floor(row.publishedAt.getTime() / 1000) : null,
     destinationId: row.destinationId,
@@ -147,6 +155,7 @@ await algolia.setSettings({
       "moodTags",
       "interestCategories",
       "experienceType",
+      "eventName",
     ],
     attributesForFaceting: [
       "destinationName",
