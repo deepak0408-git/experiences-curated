@@ -196,6 +196,7 @@ sport:          tennis | cricket | football | rugby | golf | formula_one | cycli
 - Monthly Pro: unlimited reads, trip boards, PDF downloads, ask curator, concierge picks — but must buy each event pack individually.
 - Gift codes: annual-only (`billingCycle = "annual"` check in `/api/gift-codes/generate/route.ts`).
 - New pack notifications (fire from `curator/events/actions.ts` when event is reactivated): annual gets "in your library" email; monthly gets "buy it or upgrade" dual-CTA email.
+- **Newsletter announcement — 2 days after activation:** `/api/cron/newsletter-new-pack-announcement` (daily cron) emails every row in `newsletter_subscribers` once `activatedAt` is ≥2 days old and `newsletterAnnouncedAt` is still null. Subject: `New Event Pack: [name] — the full guide is live`. Active Pro subscribers are excluded from this send (case-insensitive email match against `pro_subscriptions` where `currentPeriodEnd > now`) so a subscriber who is both Pro and newsletter-subscribed doesn't get the pack announced twice. Fixed 12 Jul 2026 after this exact duplicate was caught live on Hungarian GP's activation.
 
 **Pro launched 27 Jun 2026.** HIDE_PRO removed from Vercel. All upgrade nudges live:
 - Homepage Annual Pro strip (above footer)
