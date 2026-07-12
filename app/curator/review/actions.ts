@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { experiences } from "@/schema/database";
+import { experiences, sportingEvents } from "@/schema/database";
 import { eq, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { indexExperience, removeFromIndex } from "@/lib/algolia";
@@ -22,9 +22,20 @@ export async function getAllExperiencesForReview() {
       bodyContent: experiences.bodyContent,
       whyItsSpecial: experiences.whyItsSpecial,
       reviewNotes: experiences.reviewNotes,
+      sportingEventId: experiences.sportingEventId,
+      sportingEventName: sportingEvents.name,
+      sportingEventSlug: sportingEvents.slug,
     })
     .from(experiences)
+    .leftJoin(sportingEvents, eq(experiences.sportingEventId, sportingEvents.id))
     .orderBy(desc(experiences.updatedAt));
+}
+
+export async function getEventFilterOptions() {
+  return db
+    .select({ id: sportingEvents.id, name: sportingEvents.name, slug: sportingEvents.slug })
+    .from(sportingEvents)
+    .orderBy(desc(sportingEvents.startDate));
 }
 
 async function getSlug(id: string): Promise<string | null> {
