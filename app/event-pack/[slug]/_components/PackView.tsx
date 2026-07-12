@@ -428,7 +428,7 @@ const INSIDER_TIPS: Record<string, Record<string, string[]>> = {
       "The official US Open app has direct info from the referee's office; don't trust a generic weather app",
       "Extreme heat policy kicks in at a Heat Stress Index of 86.2°F — a 10-min break is added between sets",
     ],
-    "Food Concourse": [
+    "Eating at the US Open": [
       "The Food Village clears out at night — best time to eat without queuing",
       "Poke Yachty and the Oyster Bar behind the Grandstand both have quick-moving lines",
       "You can bring your own food in a soft-sided bag no bigger than 12\"×12\"×16\"",
@@ -436,8 +436,36 @@ const INSIDER_TIPS: Record<string, Record<string, string[]>> = {
     "Rooftop Dinner Then the Night Session": [
       "Pier 17's Dinner and a Match packages are date-specific — book the dinner and the night session ticket on the same day so the timings align",
     ],
-    "A Foodie Morning in Queens Before the Tennis": [
+    "A Morning in Queens Before the Tennis": [
       "Morning tour + day session is the move — Queens at its quietest, then courts from 11am before the crowds build",
+    ],
+    "Jackson Heights: The Food Mile": [
+      "Birria-Landia opens at 5pm on weekdays — arriving at opening means no queue and the freshest consommé; by 7pm on session days there's a 15-minute wait",
+      "At Himalayan Yak, order the beef momos and thukpa noodle soup as a baseline",
+    ],
+    "The 7 Train to Flushing": [
+      "The 7 runs express during rush hours, skipping several Queens stations but not Mets-Willets Point — look for the diamond symbol on the front of the train",
+      "Tap in with a contactless card or phone (OMNY) rather than buying a MetroCard — no machine queues, and the fare cap applies automatically",
+    ],
+    "Where to Stay for the US Open": [
+      "Long Island City hotels often have better room quality than equivalent Flushing options at similar prices — check Boro Hotel and Hilton Garden Inn LIC before defaulting to Flushing",
+      "Book the moment your session tickets are confirmed — Flushing hotel inventory for the second week (quarterfinals onward) disappears months in advance",
+    ],
+    "Queens: A Day Beyond the Courts": [
+      "MoMA PS1's Warm Up series runs Saturdays in August — outdoor music in the museum courtyard, free with admission",
+      "Astoria Park's waterfront gives the best ground-level view of the Hell Gate Bridge — go in the morning before the heat builds",
+    ],
+    "Flushing Meadows-Corona Park": [
+      "The Unisphere fountains run during park hours in summer — go in the morning before the tournament crowds arrive for the best photos",
+      "The Queens Museum's Panorama of the City of New York is updated periodically — allow at least 45 minutes",
+    ],
+    "Flushing's Golden Mall": [
+      "Order the lamb skewers and the Xi'an cold noodles with chili oil as a baseline, then add one soup dumpling order from whichever Shanghainese stall has the shorter queue",
+      "Bring small bills — a couple of the older vendors are cash-only, and the basement ATM charges a fee",
+    ],
+    "Preparing for Your US Open Visit": [
+      "Download the US Open app before you arrive — real-time court assignments, match scores, and delay notifications",
+      "Bring a refillable water bottle — free filling stations are distributed throughout the grounds",
     ],
   },
   "india-in-england-cricket-2026": {
