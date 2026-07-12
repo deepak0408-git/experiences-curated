@@ -117,7 +117,7 @@ try {
       title: "Your Belgian GP Ticket Guide",
       subtitle: "Bronze GA, Silver 3 Pouhon, Gold 3 Eau Rouge, Gold 8 La Source — which ticket fits your weekend",
       slug,
-      experienceType: "transit",
+      experienceType: "fan_experience",
       status: "in_review",
       destinationId: BELGIAN_ARDENNES_ID,
       sportingEventId: BELGIAN_GP_EVENT_ID,

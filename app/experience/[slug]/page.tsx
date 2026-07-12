@@ -277,6 +277,9 @@ export default async function ExperiencePage({
               slug.startsWith("alfa-romeo-museum-arese-") ? "object-[center_15%]" :
               slug.startsWith("paddock-club-champions-club-hospitality-") ? "object-[center_10%]" :
               slug.startsWith("7th-wentworth-grandstand-green-") ? "object-[center_75%]" :
+              slug.startsWith("a-day-in-budapest-") ? "lg:object-[center_20%]" :
+              slug.startsWith("szimpla-kert-") ? "lg:object-[center_100%]" :
+              slug.startsWith("four-seasons-gresham-palace-") ? "lg:object-[center_25%]" :
               ""
             }`}
             sizes="100vw"
