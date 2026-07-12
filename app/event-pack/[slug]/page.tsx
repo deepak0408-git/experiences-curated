@@ -242,14 +242,9 @@ const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: strin
   ],
   "us-open-2026": [
     {
-      label: "Night Sessions",
-      description:
-        "Arthur Ashe under lights — prime matches from 7pm in the largest tennis stadium in the world, at full volume",
-    },
-    {
       label: "On the Grounds",
       description:
-        "Outer courts, practice facility, the big stadiums — grounds passes get you closer to top players than at any other Slam",
+        "Arthur Ashe under lights, outer courts, the practice facility — grounds passes get you closer to top players than at any other Slam",
     },
     {
       label: "Where to Eat",
@@ -265,6 +260,11 @@ const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: strin
       label: "Getting There",
       description:
         "The 7 train from Midtown — 40 minutes, no transfers, straight to Mets-Willets Point and a 10-minute walk to the gates",
+    },
+    {
+      label: "Beyond the Courts",
+      description:
+        "The Unisphere, Queens Museum, and a rest-day route through Corona Park and beyond for when you need a break from the tennis",
     },
   ],
   "italian-gp-2026": [
