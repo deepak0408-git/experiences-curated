@@ -161,7 +161,12 @@ export default async function ExperiencePage({
   const jsonLd = buildJsonLd(exp, ratingCount >= 3 ? { avgRating, ratingCount } : null);
 
   const isEarlyBird = new Date() < new Date(process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01");
-  const FREE_EVENT_SLUGS = (process.env.FREE_EVENT_SLUGS ?? "").split(",").filter(Boolean);
+  // FREE_EVENT_SLUGS format: "slug:YYYY-MM-DD,slug:YYYY-MM-DD,slug" — strip the
+  // :date suffix before matching. Must match parsing in app/event-pack/[slug]/page.tsx.
+  const FREE_EVENT_SLUGS = (process.env.FREE_EVENT_SLUGS ?? "")
+    .split(",")
+    .filter(Boolean)
+    .map((entry) => entry.split(":")[0].trim());
   const priceDisplay = FREE_EVENT_SLUGS.includes(eventPackSlug)
     ? "Free"
     : isEarlyBird
