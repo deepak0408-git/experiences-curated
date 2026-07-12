@@ -1,8 +1,9 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { getAllExperiencesForReview } from "./actions";
+import { getAllExperiencesForReview, getEventFilterOptions } from "./actions";
 import { ReviewActions } from "./_components/ReviewActions";
+import { EventFilter } from "./_components/EventFilter";
 
 export const metadata = { title: "Review Queue" };
 
@@ -39,8 +40,24 @@ function timeAgo(date: Date) {
   return `${Math.floor(hrs / 24)}d ago`;
 }
 
-export default async function ReviewQueuePage() {
-  const all = await getAllExperiencesForReview();
+export default async function ReviewQueuePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ event?: string }>;
+}) {
+  const { event: eventFilter } = await searchParams;
+  const [allExperiences, eventOptions] = await Promise.all([
+    getAllExperiencesForReview(),
+    getEventFilterOptions(),
+  ]);
+
+  const all = eventFilter
+    ? allExperiences.filter((e) =>
+        eventFilter === "none"
+          ? !e.sportingEventSlug
+          : e.sportingEventSlug === eventFilter
+      )
+    : allExperiences;
 
   const groups = {
     in_review: all.filter((e) => e.status === "in_review"),
@@ -70,15 +87,30 @@ export default async function ReviewQueuePage() {
         </Link>
       </div>
 
+      <div className="mb-6">
+        <EventFilter events={eventOptions} activeSlug={eventFilter} />
+      </div>
+
       {all.length === 0 ? (
         <div className="rounded-sm border border-dashed border-[#2A2A2A] p-12 text-center">
-          <p className="text-[#6A6A6A] text-sm">No experiences yet.</p>
-          <Link
-            href="/curator/submit"
-            className="mt-3 inline-block text-sm font-medium text-[#AAFF00] underline"
-          >
-            Write your first experience
-          </Link>
+          <p className="text-[#6A6A6A] text-sm">
+            {eventFilter ? "No experiences match this filter." : "No experiences yet."}
+          </p>
+          {eventFilter ? (
+            <Link
+              href="/curator/review"
+              className="mt-3 inline-block text-sm font-medium text-[#AAFF00] underline"
+            >
+              Clear filter
+            </Link>
+          ) : (
+            <Link
+              href="/curator/submit"
+              className="mt-3 inline-block text-sm font-medium text-[#AAFF00] underline"
+            >
+              Write your first experience
+            </Link>
+          )}
         </div>
       ) : (
         <div className="space-y-8">
@@ -112,6 +144,11 @@ export default async function ReviewQueuePage() {
                               <p className="text-sm font-semibold text-white truncate">
                                 {exp.title}
                               </p>
+                              {exp.sportingEventName && (
+                                <span className="flex-shrink-0 px-1.5 py-0.5 rounded-sm bg-[#1A1A1A] border border-[#2A2A2A] text-[10px] font-medium text-[#A3A3A3]">
+                                  {exp.sportingEventName}
+                                </span>
+                              )}
                             </div>
                             <div className="flex items-center gap-3 mt-1 flex-wrap">
                               <span className="text-xs text-[#6A6A6A] capitalize">
