@@ -938,7 +938,9 @@ export default async function PackView({
   preTripBriefUpdatedAt,
   endDate,
 }: PackViewProps) {
-  const isEventPast = new Date() > new Date(endDate);
+  // endDate is a bare date string, parsed as UTC midnight — compare against
+  // end-of-day so the pack doesn't flip to "past" for the entire final day.
+  const isEventPast = new Date() > new Date(`${endDate}T23:59:59Z`);
   const hideProCtas = process.env.HIDE_PRO === "true";
   const editorial = PACK_EDITORIAL[eventSlug] ?? PACK_EDITORIAL["wimbledon-2026"];
   const sectionOrder = (archetype ? ARCHETYPE_SECTION_ORDER[archetype] : undefined) ?? SECTION_ORDER;
