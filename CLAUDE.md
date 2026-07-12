@@ -83,7 +83,7 @@ Wimbledon 2026:            29 Jun – 12 Jul 2026
 India in England 2026:     1 – 19 Jul 2026
 Open Championship 2026:    16 – 19 Jul 2026
 Belgian GP 2026:           17 – 19 Jul 2026
-US Open 2026:              25 Aug – 7 Sep 2026
+US Open 2026:              30 Aug – 13 Sep 2026 (Fan Week free-admission period 23-29 Aug precedes main draw)
 Italian GP 2026:           4 – 6 Sep 2026
 BMW PGA Championship 2026: 17 – 20 Sep 2026
 ```
