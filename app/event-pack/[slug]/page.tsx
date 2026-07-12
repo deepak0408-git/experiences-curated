@@ -326,8 +326,8 @@ const PACK_PRICING: Record<string, {
         ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_US_OPEN_STANDARD ?? ""
         : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_US_OPEN_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_US_OPEN_EARLY_BIRD_CUTOFF ?? "2026-08-01",
-    earlyBirdDisplay: "$15",
-    standardDisplay: "$25",
+    earlyBirdDisplay: "$0",
+    standardDisplay: "$10",
   },
   "india-in-england-cricket-2026": {
     earlyBirdPriceId:

@@ -48,8 +48,8 @@ const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: 
   },
   "us-open-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_US_OPEN_EARLY_BIRD_CUTOFF ?? "2026-08-01",
-    early: "$15",
-    standard: "$25",
+    early: "$0",
+    standard: "$10",
   },
   "india-in-england-cricket-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_CRICKET_EARLY_BIRD_CUTOFF ?? "2026-06-15",
