@@ -65,6 +65,7 @@ const rows = await db
     sportingEventId: experiences.sportingEventId,
     eventStartDate: sportingEvents.startDate,
     eventEndDate: sportingEvents.endDate,
+    eventIsHidden: sportingEvents.isHidden,
   })
   .from(experiences)
   .innerJoin(destinations, eq(experiences.destinationId, destinations.id))
@@ -117,6 +118,12 @@ const objects = rows.map((row) => {
     lastVerifiedTimestamp,
     eventBoost,
     sportingEventId: row.sportingEventId ?? null,
+    // Non-event experiences (sportingEventId null) always pass; event-linked
+    // experiences are searchable only once the parent event is activated
+    // (isHidden: false). This is a filterable field, not an index-membership
+    // gate — records for hidden events stay indexed, they're just excluded by
+    // the search page's query filter until the event goes live.
+    eventIsHidden: row.sportingEventId ? !!row.eventIsHidden : false,
     saveCount: row.saveCount,
     publishedAt: row.publishedAt ? Math.floor(row.publishedAt.getTime() / 1000) : null,
     destinationId: row.destinationId,
@@ -154,6 +161,7 @@ await algolia.setSettings({
       "curationTier",
       "sport",
       "sportingEventId",
+      "eventIsHidden",
     ],
   },
 });
