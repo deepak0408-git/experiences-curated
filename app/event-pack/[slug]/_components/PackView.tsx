@@ -448,8 +448,8 @@ const INSIDER_TIPS: Record<string, Record<string, string[]>> = {
       "Tap in with a contactless card or phone (OMNY) rather than buying a MetroCard — no machine queues, and the fare cap applies automatically",
     ],
     "Where to Stay for the US Open": [
-      "Long Island City hotels often have better room quality than equivalent Flushing options at similar prices — check Boro Hotel and Hilton Garden Inn LIC before defaulting to Flushing",
-      "Book the moment your session tickets are confirmed — Flushing hotel inventory for the second week (quarterfinals onward) disappears months in advance",
+      "Long Island City hotels (Boro Hotel, Hilton Garden Inn LIC) often have better room quality than equivalent Flushing options at similar prices",
+      "If you want Manhattan, Hyatt Grand Central New York sits directly above Grand Central Terminal — the same 7 train line to Mets-Willets Point with no transfer",
     ],
     "Queens: A Day Beyond the Courts": [
       "MoMA PS1's Warm Up series runs Saturdays in August — outdoor music in the museum courtyard, free with admission",
