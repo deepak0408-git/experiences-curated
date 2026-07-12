@@ -35,7 +35,12 @@ export default async function SearchPage({
     archetype = profile?.archetype ?? null;
   }
 
-  const freeEventSlugs = (process.env.FREE_EVENT_SLUGS ?? "").split(",").filter(Boolean);
+  // FREE_EVENT_SLUGS format: "slug:YYYY-MM-DD,slug:YYYY-MM-DD,slug" — strip the
+  // :date suffix before matching. Must match parsing in app/event-pack/[slug]/page.tsx.
+  const freeEventSlugs = (process.env.FREE_EVENT_SLUGS ?? "")
+    .split(",")
+    .filter(Boolean)
+    .map((entry) => entry.split(":")[0].trim());
   let freeEventIds: string[] = [];
   if (freeEventSlugs.length > 0) {
     const rows = await db.select({ id: sportingEvents.id })

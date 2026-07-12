@@ -69,17 +69,27 @@ function formatDateRange(start: string, end: string) {
   return `${s.toLocaleDateString("en-GB", { day: "numeric", month: "long" })} – ${e.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}`;
 }
 
+// FREE_EVENT_SLUGS format: "slug:YYYY-MM-DD,slug:YYYY-MM-DD,slug" — a slug with
+// no :date is free with no end date. Must match the parsing in
+// app/event-pack/[slug]/page.tsx exactly, or the two pages disagree on which
+// events are free (caught live on homepage vs event-pack pages, 12 Jul 2026).
+function isFreeEventSlug(slug: string): boolean {
+  const freeSlugs = (process.env.FREE_EVENT_SLUGS ?? "")
+    .split(",")
+    .filter(Boolean)
+    .map((entry) => entry.split(":")[0].trim());
+  return freeSlugs.includes(slug);
+}
+
 function eventPriceDisplay(slug: string): string {
-  const FREE_EVENT_SLUGS = (process.env.FREE_EVENT_SLUGS ?? "").split(",").filter(Boolean);
-  if (FREE_EVENT_SLUGS.includes(slug)) return "Free";
+  if (isFreeEventSlug(slug)) return "Free";
   const pricing = HOMEPAGE_PRICE_BY_EVENT[slug] ?? HOMEPAGE_PRICE_BY_EVENT["wimbledon-2026"];
   const isEarlyBird = new Date() < new Date(pricing.earlyBirdCutoff);
   return isEarlyBird ? pricing.early : pricing.standard;
 }
 
 function earlyBirdNudge(slug: string): { show: boolean; cutoffLabel: string; standardPrice: string } {
-  const FREE_EVENT_SLUGS = (process.env.FREE_EVENT_SLUGS ?? "").split(",").filter(Boolean);
-  if (FREE_EVENT_SLUGS.includes(slug)) return { show: false, cutoffLabel: "", standardPrice: "" };
+  if (isFreeEventSlug(slug)) return { show: false, cutoffLabel: "", standardPrice: "" };
   const pricing = HOMEPAGE_PRICE_BY_EVENT[slug];
   if (!pricing) return { show: false, cutoffLabel: "", standardPrice: "" };
   const isEarlyBird = new Date() < new Date(pricing.earlyBirdCutoff);
