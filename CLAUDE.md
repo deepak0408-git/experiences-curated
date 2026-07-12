@@ -3,6 +3,7 @@
 > **Next.js 16:** `params` is a `Promise` — always `await params` before accessing properties.
 > **Middleware:** Keep named `middleware.ts` — renaming breaks Turbopack cache. Wrap Supabase calls in try-catch.
 > **Experience lists:** Every event pack has a confirmed experience list saved in memory (`project_belgian_gp_experiences.md` etc.). At the start of any content session, read the relevant memory file and work strictly from that list — never propose, add, or swap experiences without user confirmation. If no memory file exists for an event, ask the user to confirm the full list before writing anything, then save it immediately.
+> **Day-trip rule:** Any sporting event within ~30-45 min of a major city MUST include one experience covering that city as a day trip / sightseeing anchor (e.g. London for Wimbledon, Liverpool for the Open, Spa town for Belgian GP, Budapest for Hungarian GP). Check for this explicitly when drafting a new event's experience list — caught missing for Hungarian GP (added as experience #18, 11 Jul 2026) and retroactively flagged as missing for Italian GP (Milan day trip still to be added).
 > **Content writing:** Use the `experience-researcher` skill to research, write, humanize, and present experience copy; use `experience-seeder` to seed to DB. Always output each field as a clearly labelled, copyable block in this order: Title, Subtitle, Body, Why it's special, Practical info (address, website, how to get there), How to Book / Access (public, short), How to Book Pro (Pro-gated, tactical detail — lead times, contacts), Worth knowing tip 1, Worth knowing tip 2, Avoid 1, Avoid 2, Hero image (3 options — user chooses before seeding).
 > **Video content:** Use the `video-script-creator` skill for any Instagram/YouTube/TikTok video script — founder appears in no video (no face, no voice). Produces narration script + honesty-gated visual asset list (real hero images > verified generic B-roll > text/stat card — never AI-generated footage of a real venue). Stops at script; narration via ElevenLabs, assembly via Canva/InVideo.
 > **Brand name:** "Experiences | Curated" — never "ExperiencesCurated". Title template: `"%s — Experiences | Curated"`.
@@ -72,6 +73,8 @@ Milan destination:           0b0d8f9a-911d-4cc7-8049-50e4685958ca
 Italian GP 2026 event:       b93770c0-3d96-4e81-b3d0-c1e3a788fd8e
 Surrey/Virginia Water dest:  0b015fab-26a0-48b4-a8ff-ef7c7ed977a7
 BMW PGA Championship 2026:   ea035967-b5d7-47e6-ad44-7cf4db07e70b
+Budapest destination:        0d01105a-1e01-40a7-91af-89299939389b
+Hungarian GP 2026 event:      a767ae5f-de6c-48a1-b6fb-fec941f3ad86
 ```
 
 **Live event dates — always match `sporting_events.start_date/end_date` in the DB, and the Content Calendar (`C:\Users\HP\.claude\docs\Content Calendar.txt`) is the single source of truth. If any date below ever conflicts with the Calendar or the DB, trust the DB, fix the Calendar, then fix this list — never the reverse.**

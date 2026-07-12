@@ -213,6 +213,33 @@ const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: strin
         "Francorchamps hotels 2km from the gates, Malmedy and Spa-town options, and what fills fastest for race weekend",
     },
   ],
+  "hungarian-gp-2026": [
+    {
+      label: "At the Circuit",
+      description:
+        "Where to sit, the Chicane's technical drama, and General Admission on a natural bowl terrain that makes the cheap seats genuinely good",
+    },
+    {
+      label: "Race Weekend",
+      description:
+        "Friday practice, Saturday qualifying, Sunday's 15:00 race — how to use the calendar's most affordable weekend without underestimating how fast the best spots move",
+    },
+    {
+      label: "Budapest & Beyond",
+      description:
+        "Castle Hill, the Jewish Quarter's ruin bars, and Europe's largest thermal bath complex — 25 minutes from the circuit by metro",
+    },
+    {
+      label: "Where to Eat & Drink",
+      description:
+        "Traditional goulash in the Jewish Quarter, a Michelin Bib Gourmand bistro across the river, and Budapest's ruin bar scene",
+    },
+    {
+      label: "Where to Stay",
+      description:
+        "Pest's district-by-district character, a Danube-front five-star, and Zengo Camping right behind the final corner",
+    },
+  ],
   "us-open-2026": [
     {
       label: "Night Sessions",
@@ -321,6 +348,13 @@ const PACK_PRICING: Record<string, {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-10",
     earlyBirdDisplay: "€15",
     standardDisplay: "€25",
+  },
+  "hungarian-gp-2026": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_HUNGARIAN_GP_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_HUNGARIAN_GP_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_HUNGARIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-17",
+    earlyBirdDisplay: "€0",
+    standardDisplay: "€7",
   },
   "open-championship-2026": {
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_OPEN_EARLY_BIRD ?? "",
@@ -458,14 +492,21 @@ export default async function EventPackPage({
   }
 
   // Auto-grant free access for designated free events (controlled via FREE_EVENT_SLUGS env var)
-  const FREE_EVENT_SLUGS = (process.env.FREE_EVENT_SLUGS ?? "").split(",").filter(Boolean);
-  const freeAccessEnabled = FREE_EVENT_SLUGS.includes(slug);
-  // Wimbledon and cricket stay free with no end date shown; other free events show 12 July
-  const NO_END_DATE_SLUGS = ["wimbledon-2026", "india-in-england-cricket-2026"];
-  const freeUntilLabel = NO_END_DATE_SLUGS.includes(slug) ? "Free" : "Free until 12 July";
-  const freeEndsLabel = NO_END_DATE_SLUGS.includes(slug)
-    ? "No card required"
-    : "Free access ends 12 July — no card required";
+  // Format: "slug:YYYY-MM-DD,slug:YYYY-MM-DD,slug" — a slug with no :date shows "Free" with no end date
+  const freeEventEntries = (process.env.FREE_EVENT_SLUGS ?? "")
+    .split(",")
+    .filter(Boolean)
+    .map((entry) => {
+      const [entrySlug, endDate] = entry.split(":");
+      return { slug: entrySlug.trim(), endDate: endDate?.trim() };
+    });
+  const freeEventEntry = freeEventEntries.find((e) => e.slug === slug);
+  const freeAccessEnabled = !!freeEventEntry;
+  const formattedFreeEndDate = freeEventEntry?.endDate
+    ? new Date(freeEventEntry.endDate + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long" })
+    : undefined;
+  const freeUntilLabel = formattedFreeEndDate ? `Free until ${formattedFreeEndDate}` : "Free";
+  const freeEndsLabel = "No card required";
   if (!hasPurchased && freeAccessEnabled && user?.email) {
     await grantFreeAccess(user.email, event.id);
     hasPurchased = true;
@@ -634,7 +675,7 @@ export default async function EventPackPage({
                     {freeUntilLabel}
                   </span>
                   <p className="text-3xl font-black text-white tracking-tight mb-1">
-                    £0
+                    Free
                   </p>
                   <p className="text-xs text-[#6A6A6A] mb-4">
                     {totalCount > 0 ? `${totalCount} experiences` : "Curated experiences"} · free access, no card needed
