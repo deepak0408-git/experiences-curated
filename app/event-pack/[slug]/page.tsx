@@ -555,7 +555,11 @@ export default async function EventPackPage({
   }
 
   // Landing page
-  const isEventPast = new Date() > new Date(event.endDate);
+  // event.endDate is a bare date string ("2026-07-12"), which JS parses as UTC
+  // midnight — comparing directly against `new Date()` made the pack show
+  // "ended" for the entire final day of the event, not just after it's over.
+  // Compare against end-of-day instead.
+  const isEventPast = new Date() > new Date(`${event.endDate}T23:59:59Z`);
 
   const pricing = PACK_PRICING[slug] ?? PACK_PRICING["wimbledon-2026"];
   const isEarlyBird = new Date() < new Date(pricing.earlyBirdCutoff);
