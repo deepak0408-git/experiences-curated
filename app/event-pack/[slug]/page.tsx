@@ -501,7 +501,12 @@ export default async function EventPackPage({
       return { slug: entrySlug.trim(), endDate: endDate?.trim() };
     });
   const freeEventEntry = freeEventEntries.find((e) => e.slug === slug);
-  const freeAccessEnabled = !!freeEventEntry;
+  // A dated entry only grants access through the end of that day (UTC) — found
+  // 13 Jul 2026 that this had never actually been enforced: the endDate was
+  // parsed everywhere for display purposes only, so Belgian GP/Open
+  // Championship stayed free indefinitely well past their stated cutoff.
+  const freeAccessEnabled = !!freeEventEntry
+    && (!freeEventEntry.endDate || new Date() <= new Date(`${freeEventEntry.endDate}T23:59:59Z`));
   const formattedFreeEndDate = freeEventEntry?.endDate
     ? new Date(freeEventEntry.endDate + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long" })
     : undefined;
