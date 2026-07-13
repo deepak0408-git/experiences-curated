@@ -283,7 +283,6 @@ export function SearchUI({
   archetype,
   userEmail,
   hideProCtas = false,
-  freeEventIds = [],
 }: {
   appId: string;
   searchKey: string;
@@ -293,7 +292,6 @@ export function SearchUI({
   archetype?: string | null;
   userEmail?: string | null;
   hideProCtas?: boolean;
-  freeEventIds?: string[];
 }) {
   const searchClient = useMemo(() => liteClient(appId, searchKey), [appId, searchKey]);
 
@@ -322,10 +320,7 @@ export function SearchUI({
       <Configure
         hitsPerPage={50}
         {...(optionalFilters.length > 0 ? { optionalFilters } : {})}
-        filters={[
-          "eventIsHidden:false",
-          ...(freeEventIds.length > 0 ? [`(${freeEventIds.map(id => `sportingEventId:"${id}"`).join(" OR ")})`] : []),
-        ].join(" AND ")}
+        filters="eventIsHidden:false"
       />
 
       <div className="min-h-screen bg-[#0A0A0A]">
