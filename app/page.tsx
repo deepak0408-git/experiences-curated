@@ -63,13 +63,13 @@ const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: 
   },
   "italian-gp-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_ITALIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-08-25",
-    early: "€15",
-    standard: "€25",
+    early: "€5",
+    standard: "€10",
   },
   "bmw-pga-championship-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_BMW_PGA_EARLY_BIRD_CUTOFF ?? "2026-09-03",
-    early: "£15",
-    standard: "£25",
+    early: "£5",
+    standard: "£10",
   },
 };
 

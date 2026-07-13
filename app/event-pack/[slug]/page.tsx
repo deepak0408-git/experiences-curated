@@ -367,15 +367,15 @@ const PACK_PRICING: Record<string, {
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ITALIAN_GP_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ITALIAN_GP_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_ITALIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-08-25",
-    earlyBirdDisplay: "€15",
-    standardDisplay: "€25",
+    earlyBirdDisplay: "€5",
+    standardDisplay: "€10",
   },
   "bmw-pga-championship-2026": {
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BMW_PGA_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BMW_PGA_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_BMW_PGA_EARLY_BIRD_CUTOFF ?? "2026-09-03",
-    earlyBirdDisplay: "£15",
-    standardDisplay: "£25",
+    earlyBirdDisplay: "£5",
+    standardDisplay: "£10",
   },
 };
 
