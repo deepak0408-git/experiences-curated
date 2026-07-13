@@ -183,7 +183,7 @@ const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: strin
     },
     {
       label: "Getting There & Beyond",
-      description: "A straightforward day trip from London Waterloo, with Windsor Castle and Eton minutes from the gates",
+      description: "A straightforward day trip from London Waterloo, with Windsor Castle, Eton, and Virginia Water Lake & Savill Garden minutes from the gates",
     },
   ],
   "belgian-gp-2026": [

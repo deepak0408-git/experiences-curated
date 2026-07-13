@@ -230,7 +230,7 @@ const PACK_EDITORIAL: Record<string, PackEditorial> = {
       "Before you go":
         "General admission and hospitality packages go on sale well ahead of the 17–20 September week — Rolex Series demand means the Celebrity Pro-Am (Wednesday) and the weekend rounds sell fastest. Hospitality tiers range from 72 Lounge (£370pp) through Green on 18 (£750pp) and The Approach by James Tanner (from £540pp) up to Treetops on the 14th. Transport is simple: direct South Western Railway service from London Waterloo to Longcross (~46 min) or Virginia Water (~58 min), both a short walk or shuttle from the gates. There is no way to book a round at Wentworth itself as a member of the public — tournament week general admission is the realistic way to see the West Course in person.",
       "On the grounds":
-        "Wentworth's West Course rewards knowing where to plant yourself. The 18th green sits in a natural amphitheatre and is where recent tournaments have actually been decided — Billy Horschel's 2024 playoff eagle happened here. The 10th is a deceptively hard par 3 on a hillside shelf, and the 7th has a grandstand positioned to show both the tee shot and the green, a rare double sightline. Horschel Hill, between the 1st and 18th tees, is the free, unreserved big-screen spot if you don't want a fixed seat all day. Beyond the golf, the Championship Village and Show Stage run concerts through the weekend, and premium hospitality (Treetops, 72 Lounge, Green on 18, The Approach) sits at genuinely different price and format points worth understanding before you book.",
+        "Wentworth's West Course rewards knowing where to plant yourself. The 18th green sits in a natural amphitheatre and is where recent tournaments have actually been decided — Billy Horschel's 2024 playoff eagle happened here. The 7th has a grandstand positioned to show both the tee shot and the green, a rare double sightline. Horschel Hill, between the 1st and 18th tees, is the free, unreserved big-screen spot if you don't want a fixed seat all day. Beyond the golf, the Championship Village and Show Stage run concerts through the weekend, and premium hospitality (Treetops, 72 Lounge, Green on 18, The Approach) sits at genuinely different price and format points worth understanding before you book.",
       "Where to stay":
         "This can be a single London day trip with no accommodation booked at all, given the ~46-minute train from Waterloo. If you want to make a proper trip of it, Coworth Park in Ascot is the luxury anchor — a 5-star Dorchester Collection estate with its own polo fields and a Michelin-starred restaurant, a short drive from Wentworth. The Wheatsheaf Hotel, 0.7 miles from the club, is the accessible-price alternative — a straightforward, well-kept coaching inn rather than a resort.",
       "Where to eat":
@@ -829,7 +829,7 @@ const TOURNAMENT_RHYTHM: Record<string, RhythmEntry[]> = {
   "bmw-pga-championship-2026": [
     {
       label: "Tuesday 15 Sep — Practice",
-      body: "The quietest day of the week. The field is on the course working pre-tournament routines, the Championship Village is open, and general admission gets you close without the Pro-Am's energy or the weekend's crowds. Right for anyone who wants to walk the West Course's viewing spots — the 18th, the 10th, the 7th — and find their preferred positions before committing on the busier days ahead.",
+      body: "The quietest day of the week. The field is on the course working pre-tournament routines, the Championship Village is open, and general admission gets you close without the Pro-Am's energy or the weekend's crowds. Right for anyone who wants to walk the West Course's viewing spots — the 18th and the 7th — and find their preferred positions before committing on the busier days ahead.",
     },
     {
       label: "Wednesday 16 Sep — Celebrity Pro-Am",
@@ -849,7 +849,7 @@ const TOURNAMENT_RHYTHM: Record<string, RhythmEntry[]> = {
     },
     {
       label: "Sunday 20 Sep — Final round",
-      body: "The closing day. The 18th green — where recent tournaments have actually been decided, including Billy Horschel's 2024 playoff eagle — is claimed well before the leaders arrive. Standing positions go by early afternoon. If you want to watch golf rather than a crowd, the 10th or the 7th earlier in the day are calmer, genuinely tactical viewing before the tournament narrows to its final stretch.",
+      body: "The closing day. The 18th green — where recent tournaments have actually been decided, including Billy Horschel's 2024 playoff eagle — is claimed well before the leaders arrive. Standing positions go by early afternoon. If you want to watch golf rather than a crowd, the 7th earlier in the day is calmer, genuinely tactical viewing before the tournament narrows to its final stretch.",
     },
   ],
 
