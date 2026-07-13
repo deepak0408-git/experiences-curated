@@ -85,15 +85,24 @@ function formatDateRange(start: string, end: string) {
 }
 
 // FREE_EVENT_SLUGS format: "slug:YYYY-MM-DD,slug:YYYY-MM-DD,slug" — a slug with
-// no :date is free with no end date. Must match the parsing in
-// app/event-pack/[slug]/page.tsx exactly, or the two pages disagree on which
-// events are free (caught live on homepage vs event-pack pages, 12 Jul 2026).
+// no :date is free with no end date; a slug with :date is free through the end
+// of that day (UTC). Must match the parsing in app/event-pack/[slug]/page.tsx
+// exactly, or the pages disagree on which events are free (caught live on
+// homepage vs event-pack pages, 12 Jul 2026 — and again 13 Jul 2026, when the
+// :date suffix was found to be parsed everywhere but never actually compared
+// against today, so dated entries stayed free forever past their cutoff).
 function isFreeEventSlug(slug: string): boolean {
-  const freeSlugs = (process.env.FREE_EVENT_SLUGS ?? "")
+  const entry = (process.env.FREE_EVENT_SLUGS ?? "")
     .split(",")
     .filter(Boolean)
-    .map((entry) => entry.split(":")[0].trim());
-  return freeSlugs.includes(slug);
+    .map((e) => {
+      const [entrySlug, endDate] = e.split(":");
+      return { slug: entrySlug.trim(), endDate: endDate?.trim() };
+    })
+    .find((e) => e.slug === slug);
+  if (!entry) return false;
+  if (!entry.endDate) return true;
+  return new Date() <= new Date(`${entry.endDate}T23:59:59Z`);
 }
 
 function eventPriceDisplay(slug: string): string {

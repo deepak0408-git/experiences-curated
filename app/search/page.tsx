@@ -35,12 +35,18 @@ export default async function SearchPage({
     archetype = profile?.archetype ?? null;
   }
 
-  // FREE_EVENT_SLUGS format: "slug:YYYY-MM-DD,slug:YYYY-MM-DD,slug" — strip the
-  // :date suffix before matching. Must match parsing in app/event-pack/[slug]/page.tsx.
+  // FREE_EVENT_SLUGS format: "slug:YYYY-MM-DD,slug:YYYY-MM-DD,slug" — a slug with
+  // no :date is free with no end date; a slug with :date is free through the end
+  // of that day (UTC). Must match parsing in app/event-pack/[slug]/page.tsx.
   const freeEventSlugs = (process.env.FREE_EVENT_SLUGS ?? "")
     .split(",")
     .filter(Boolean)
-    .map((entry) => entry.split(":")[0].trim());
+    .map((entry) => {
+      const [entrySlug, endDate] = entry.split(":");
+      return { slug: entrySlug.trim(), endDate: endDate?.trim() };
+    })
+    .filter((e) => !e.endDate || new Date() <= new Date(`${e.endDate}T23:59:59Z`))
+    .map((e) => e.slug);
   let freeEventIds: string[] = [];
   if (freeEventSlugs.length > 0) {
     const rows = await db.select({ id: sportingEvents.id })
