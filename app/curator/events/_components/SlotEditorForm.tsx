@@ -31,19 +31,21 @@ function formatDate(d: string) {
 }
 
 const today = new Date().toISOString().split("T")[0];
-const threeMonthsFromNow = new Date();
-threeMonthsFromNow.setMonth(threeMonthsFromNow.getMonth() + 3);
-const threeMonthsCutoff = threeMonthsFromNow.toISOString().split("T")[0];
+const sixMonthsFromNow = new Date();
+sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
+const sixMonthsCutoff = sixMonthsFromNow.toISOString().split("T")[0];
 
 function isExpired(ev: Event) {
   return ev.endDate < today;
 }
 
 function isEditable(ev: Event) {
-  // Editable if live or starting within 3 months, and not yet expired.
+  // Editable if live or starting within 6 months, and not yet expired.
+  // Widened from 3 to 6 months (14 Jul 2026) — events are now built and
+  // released further in advance to give travelers more planning lead time.
   // Expired events show a locked "Deactivated" state instead — the
   // expire-homepage-slots cron already clears their slot automatically.
-  return !isExpired(ev) && ev.startDate <= threeMonthsCutoff;
+  return !isExpired(ev) && ev.startDate <= sixMonthsCutoff;
 }
 
 export default function SlotEditorForm({ events }: { events: Event[] }) {
