@@ -521,9 +521,13 @@ export default async function EventPackPage({
     ? await getProDetails(user.email)
     : { isPro: false, isAnnual: false, currentPeriodEnd: null };
 
-  // Annual Pro subscribers get free access to all event packs during their subscription period
+  // Annual Pro subscribers get free access to all ACTIVATED event packs during
+  // their subscription period — must never bypass event.isHidden. Found 14 Jul
+  // 2026: this check never referenced isHidden at all, so an Annual Pro
+  // subscriber got full authenticated pack access to a still-hidden,
+  // unactivated test event, before the curator had activated it.
   const isAnnualProActive = isAnnual && currentPeriodEnd != null && currentPeriodEnd > new Date();
-  if (!hasPurchased && isAnnualProActive && user?.email) {
+  if (!hasPurchased && isAnnualProActive && !event.isHidden && user?.email) {
     hasPurchased = true;
   }
 
