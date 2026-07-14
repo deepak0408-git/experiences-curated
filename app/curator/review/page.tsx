@@ -144,11 +144,6 @@ export default async function ReviewQueuePage({
                               <p className="text-sm font-semibold text-white truncate">
                                 {exp.title}
                               </p>
-                              {exp.sportingEventName && (
-                                <span className="flex-shrink-0 px-1.5 py-0.5 rounded-sm bg-[#1A1A1A] border border-[#2A2A2A] text-[10px] font-medium text-[#A3A3A3]">
-                                  {exp.sportingEventName}
-                                </span>
-                              )}
                             </div>
                             <div className="flex items-center gap-3 mt-1 flex-wrap">
                               <span className="text-xs text-[#6A6A6A] capitalize">
