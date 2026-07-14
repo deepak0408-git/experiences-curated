@@ -6,8 +6,15 @@ import { eq, gte, asc, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 import { algoliasearch } from "algoliasearch";
+import { createClient } from "@supabase/supabase-js";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  { auth: { autoRefreshToken: false, persistSession: false } }
+);
 
 export async function getEventsForSlotEditor() {
   const today = new Date().toISOString().split("T")[0];
@@ -186,18 +193,47 @@ async function notifyProNewPack(events: { id: string; name: string; slug: string
     const proUrl = `${appUrl}/pro`;
 
     if (annualEmails.length > 0) {
-      const html = `
+      // Annual Pro already has access to every pack — send a per-recipient
+      // magic link straight into the authenticated pack view instead of a
+      // plain URL. Without this, a logged-out subscriber who clicks the plain
+      // link lands on the paid landing page (no session = no way to know
+      // they're covered) and has to sign in separately, then re-find the
+      // pack — 5+ steps for someone who already has access. Same
+      // generateLink + /auth/confirm pattern as the post-trip-feedback cron.
+      // Fixed 14 Jul 2026 after the user hit this confusion firsthand on the
+      // Italian GP activation email.
+      const buildHtml = (openUrl: string) => `
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:40px 24px;background:#0A0A0A">
           <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#AAFF00;margin-bottom:28px">Pro Annual — Early Access</p>
           <h1 style="font-size:20px;font-weight:900;color:#ffffff;margin:0 0 8px">New event pack just dropped</h1>
           <p style="font-size:16px;font-weight:900;color:#ffffff;margin:0 0 20px">${event.name}</p>
           <p style="font-size:13px;color:#A3A3A3;line-height:1.6;margin:0 0 24px">It's already in your library — your annual Pro membership includes every pack we publish. You're seeing this before anyone else.</p>
-          <a href="${packUrl}" style="display:inline-block;padding:10px 20px;background:#AAFF00;color:#000;font-size:13px;font-weight:900;text-decoration:none;border-radius:2px">Open the pack →</a>
+          <a href="${openUrl}" style="display:inline-block;padding:10px 20px;background:#AAFF00;color:#000;font-size:13px;font-weight:900;text-decoration:none;border-radius:2px">Open the pack →</a>
           <hr style="border:none;border-top:1px solid #2A2A2A;margin:32px 0 16px">
-          <p style="font-size:11px;color:#6A6A6A">You're getting this because you're an annual Pro member.</p>
+          <p style="font-size:11px;color:#6A6A6A">You're getting this because you're an annual Pro member. This link signs you in automatically.</p>
         </div>
       `;
-      await sendBatch(annualEmails, html, `New Event Pack: ${event.name} — it's in your library`);
+      const subject = `New Event Pack: ${event.name} — it's in your library`;
+
+      for (let i = 0; i < annualEmails.length; i += 50) {
+        await Promise.all(
+          annualEmails.slice(i, i + 50).map(async (to) => {
+            const { data, error } = await supabaseAdmin.auth.admin.generateLink({
+              type: "magiclink",
+              email: to,
+              options: { redirectTo: `${appUrl}/auth/confirm?next=/event-pack/${event.slug}` },
+            });
+            const openUrl = !error && data?.properties?.action_link ? data.properties.action_link : packUrl;
+            if (error) console.error("[pro-notify] magic link failed for", to, error);
+            await resend.emails.send({
+              from: "Experiences | Curated <hello@experiences-curated.com>",
+              to,
+              subject,
+              html: buildHtml(openUrl),
+            });
+          })
+        );
+      }
     }
 
     if (monthlyEmails.length > 0) {
