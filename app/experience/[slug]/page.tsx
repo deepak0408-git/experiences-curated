@@ -290,6 +290,7 @@ export default async function ExperiencePage({
               slug.startsWith("a-day-in-budapest-") ? "lg:object-[center_20%]" :
               slug.startsWith("szimpla-kert-") ? "lg:object-[center_100%]" :
               slug.startsWith("four-seasons-gresham-palace-") ? "lg:object-[center_25%]" :
+              slug.startsWith("newlands-where-to-sit-") ? "lg:object-[center_65%]" :
               ""
             }`}
             sizes="100vw"
