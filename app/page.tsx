@@ -71,6 +71,11 @@ const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: 
     early: "£5",
     standard: "£10",
   },
+  "australia-in-south-africa-cricket-2026": {
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_AUS_SA_EARLY_BIRD_CUTOFF ?? "2026-08-09",
+    early: "$5",
+    standard: "$10",
+  },
 };
 
 
