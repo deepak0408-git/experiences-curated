@@ -193,6 +193,37 @@ const PACK_EDITORIAL: Record<string, PackEditorial> = {
     ],
   },
 
+  "australia-in-south-africa-cricket-2026": {
+    brief:
+      "This is Australia's first Test tour of South Africa since the 2018 ball-tampering scandal, against the reigning World Test Championship holders, and it runs five weeks — three ODIs followed by three Tests, spread across five cities. Durban hosts the tour twice: the 1st ODI on 24 September, then the 1st Test three weeks later from 9-13 October. Johannesburg gets the 2nd ODI, a Pink Day fixture at the Wanderers on 27 September. Cape Town closes the entire tour with the 3rd Test at Newlands, 27-31 October — the series finale, and historically the hardest Newlands ticket to get.\n\nThis pack is built around three cities — Durban, Johannesburg, Cape Town — the ones with the strongest combination of cricket and everything around it. Gqeberha and Potchefstroom are real stops on the tour but sit outside this pack's focus. The three grounds themselves each play differently: Kingsmead is a genuine seamer's wicket lifted by coastal humidity, the Wanderers earns its Bullring nickname from stands built to throw crowd noise back at the pitch, and Newlands gives bowlers a real new-ball window before turning into one of South Africa's better batting surfaces — Table Mountain rising behind one end the whole time.\n\nA few things worth knowing upfront. Durban's back-to-back visits mean deciding early whether you're doing one long stay or two separate trips. Because the tour spans five weeks, it's genuinely built for combining with broader South Africa travel — a Kruger safari from Johannesburg, the Cape Peninsula and Winelands around the Cape Town Test — rather than treating cricket as the entire itinerary. And Newlands sells out early: if you can only commit to one leg, that's the one to book first. The sections here follow the shape of the trip: the grounds, where to stay, where to eat, and what's worth doing beyond the boundary rope in each city.",
+    sectionIntros: {
+      "Before you go": "Tickets are sold through Cricket South Africa's official partner, TicketPro (tickets.cricket.co.za) — search each match individually rather than relying on a single event listing, since fixtures go on sale separately. Newlands has a track record of selling out before general sale even opens, so the Cape Town Test is the one to prioritise if you're picking a single leg. Malaria prophylaxis is a real consideration if a Kruger add-on is part of your trip — start medication about a week before travelling, not on arrival.",
+      "On the grounds": "Kingsmead, the Wanderers, and Newlands each have a distinct character worth knowing before you sit down for a full day. Kingsmead rewards an early arrival with new-ball seam movement and coastal humidity; the Wanderers' steep, close stands make it the loudest ground on the tour; Newlands gives bowlers a real early window before the pitch flattens into one of the country's better batting surfaces. All three reward knowing which stand to book for shade and atmosphere, not just proximity to the pitch.",
+      "Where to stay": "Three cities, three genuinely different bases. Durban's Golden Mile keeps you walking distance from Kingsmead; Umhlanga trades that for a quieter, more polished stay twenty minutes up the coast. Sandton is where almost every Johannesburg visitor bases themselves — safe, connected, a short ride from the Wanderers. Cape Town splits between the city centre near Newlands and the wider options this pack covers in detail.",
+      "Where to eat": "Each city has its own food identity worth building time around. Durban's bunny chow, invented here and inseparable from the city's Indian diaspora history, is the one dish worth prioritising. Johannesburg's braai culture is participatory, not just a cuisine — expect to be handed tongs if you're invited to a real one. Cape Town's Bo-Kaap and City Bowl scene and the Cape Winelands both reward a full day, not a rushed stop.",
+      "The neighbourhood": "This is a five-week tour, which leaves real room for South Africa beyond the boundary rope. A Kruger safari from Johannesburg is the standout addition — three days is enough for a genuine safari rhythm without eating a week of the trip. Robben Island, Table Mountain and Cape Point, and the Cape Winelands all sit within easy reach of the Newlands Test. None of this needs to be booked as a single package — the tour's own rhythm leaves the gaps for exactly this kind of travel.",
+    },
+    localInfo: [
+      { label: "Tickets", value: "tickets.cricket.co.za — TicketPro, CSA's official partner", href: "https://tickets.cricket.co.za", linkLabel: "TicketPro" },
+      { label: "Durban transport", value: "Kingsmead sits close to the Golden Mile — walkable from most beachfront accommodation", href: "https://maps.app.goo.gl/B19nmVCET6LBDarJ6", linkLabel: "Open in Maps" },
+      { label: "Johannesburg transport", value: "Gautrain to Sandton, then Uber/Bolt from Sandton City (not the station itself) — 7-10 min to the Wanderers", href: "https://maps.google.com/?q=DP+World+Wanderers+Stadium+Corlett+Drive+Illovo+Sandton", linkLabel: "Open in Maps" },
+      { label: "Cape Town transport", value: "Newlands train station (Southern Line) is a 2-minute walk from the ground", href: "https://maps.google.com/?q=Newlands+Cricket+Ground+Cape+Town", linkLabel: "Open in Maps" },
+      { label: "Weather — Durban", value: "Warm, humid coastal spring — check before packing for the ODI/Test window", href: "https://www.accuweather.com/en/za/durban/305605/weather-forecast/305605", linkLabel: "AccuWeather forecast" },
+      { label: "Weather — Johannesburg", value: "High altitude (1,750m), strong UV even in spring — sun protection matters as much as rain gear", href: "https://www.accuweather.com/en/za/johannesburg/305448/weather-forecast/305448", linkLabel: "AccuWeather forecast" },
+      { label: "Weather — Cape Town", value: "Cool, changeable spring — the Newlands Test in late October can still bring the 'tablecloth' cloud over Table Mountain", href: "https://www.accuweather.com/en/za/cape-town/306633/weather-forecast/306633", linkLabel: "AccuWeather forecast" },
+      { label: "Emergencies", value: "Emergency services: 10111 (police) / 10177 (ambulance) · Nearest hospitals vary by city — confirm locally on arrival" },
+    ],
+    experienceOrder: {},
+    tourItinerary: [
+      { date: "24 Sep", type: "1st ODI", venue: "Kingsmead", city: "Durban" },
+      { date: "27 Sep", type: "2nd ODI (Pink Day)", venue: "Wanderers", city: "Johannesburg" },
+      { date: "30 Sep", type: "3rd ODI", venue: "JB Marks Oval", city: "Potchefstroom" },
+      { date: "9-13 Oct", type: "1st Test", venue: "Kingsmead", city: "Durban" },
+      { date: "18-22 Oct", type: "2nd Test", venue: "St George's Park", city: "Gqeberha" },
+      { date: "27-31 Oct", type: "3rd Test", venue: "Newlands", city: "Cape Town" },
+    ],
+  },
+
   "open-championship-2026": {
     brief:
       "The Open is four days in July on a links course in Southport that is simultaneously the most famous golf tournament in the world and one of the most accessible major sports events on the UK calendar. The championship field is the best in golf. The course is public. The dunes are free to climb. If you go once and do it right, it is one of the most purely enjoyable days in sport.\n\nThe event runs Thursday 16 to Sunday 19 July 2026 at Royal Birkdale Golf Club. The full sequence starts Sunday 12 July with the first practice day and builds across a week — Last-Chance Qualifier on Monday, the full field on Tuesday, the Heroes Classic on Wednesday, and then four championship days. General admission is the foundation: it unlocks the whole course, the Spectator Village, and everything in the dunes. The hospitality tiers — Ticket Plus at £270–300, Platinum from £1,632, Signature from £2,574 — layer on top for those who want a fixed base and a reserved seat.\n\nA few things to sort before you arrive. General admission championship days are sold out. Practice day tickets (Sunday through Wednesday, from £30) still have availability as of mid-June 2026. Transport is simple: Merseyrail Northern Line to Birkdale station, 40 minutes from Liverpool Central, 8 minutes' walk to the gates. Do not drive on championship days — road closures around Royal Birkdale are extensive and parking is hospitality-only. The sections here follow the shape of the trip: how to get there, what to do on the course, where to stay in Southport, where to eat in Birkdale village, and how the wider area fits a longer trip.",
@@ -499,6 +530,92 @@ const INSIDER_TIPS: Record<string, Record<string, string[]>> = {
       "If the Lord's match runs long, the day trip compresses naturally — Regent's Park and St John's Wood village alone fill a morning without rushing",
     ],
   },
+
+  "australia-in-south-africa-cricket-2026": {
+    "Tour Planning Guide": [
+      "Domestic flights, not driving, are the practical way to move between the three cities — book early, since fares climb fast as each leg approaches.",
+      "This pack's cities aren't evenly spaced through the tour: Durban gets two separate visits three weeks apart, so decide upfront whether that's one long stay or two trips before booking anything else.",
+    ],
+    "Where to Sit": [
+      "Newlands' grass banks fill fastest at the Kelvin Grove End — arrive early if you want space to spread out rather than a tightly packed patch.",
+      "Covered stands sell out well before the grass areas do on a Test day with any sellout risk — if shade matters more than price, that's the ticket to buy first.",
+    ],
+    "Newlands — Table Mountain's Cricket Ground": [
+      "If a wicket falls in the first hour with the new ball, don't leave your seat for a coffee — that's when Newlands is at its most dramatic, before the pitch flattens out.",
+      "The outfield slopes from the Wynberg End down to the Kelvin Grove End, which affects both drainage and how the ball moves off the seam.",
+      "The President's Pavilion / South West Stand is the best spot for shade from around midday onward.",
+    ],
+    "Table Mountain": [
+      "The cableway's first-departure slot isn't just about beating queues — Cape Town's afternoon cloud ('the tablecloth') can close the summit entirely by early afternoon, so an early booking is a genuine weather hedge, not just a crowd one.",
+      "Cape Point itself is a separate stop from the cableway and involves more driving and walking than most visitors expect — treat this as a half-day trip at minimum, not a quick add-on after the mountain.",
+    ],
+    "Robben Island": [
+      "Ferries can be cancelled outright in rough Cape Town conditions, not just delayed — build a buffer day into your Cape Town leg if this is a must-do, rather than booking it for your only free afternoon.",
+      "The former political prisoners who lead some tours are the single best reason to book this over a generic harbour cruise — check whether your specific crossing includes one, since it changes the experience considerably.",
+    ],
+    "Bullring": [
+      "Memorial Stand (Level 2/3) is fully covered and the safest bet for shade all day; western stands catch a genuinely blinding late-afternoon sun.",
+      "This is Pink Day — expect a pink-kitted Proteas side and a fuller, more occasion-driven atmosphere than a standard ODI.",
+      "The Wanderers sits at 1,750m altitude, among the highest international grounds anywhere — the ball carries further, and even mistimed shots can clear the rope.",
+    ],
+    "Getting to Kingsmead": [
+      "For the Test's five-day stretch, pick one route — walking or rideshare — on day one and stick with it; most regulars settle into a rhythm by day two.",
+      "Set your Uber or Bolt pickup point to the South Entrance on K.E. Masinga Road specifically — a vague \"Kingsmead\" pin means a longer walk to find your driver in a crowd.",
+      "If you're on the park-and-ride from further up the coast, the Suncoast Casino shuttle link via the North Entrance is worth checking specifically.",
+    ],
+    "Kingsmead": [
+      "The North Stand stays in shade for most of the day, while the South Stand's lower tier bakes in direct sun.",
+      "Look past the standard burgers-and-chips concourse fare — Kingsmead's food court also runs proper Durban bunny chow and samoosa stalls.",
+      "The tide folklore around this ground's seam movement is genuine local colour, but it's been debunked by the ground's own curators — the real cause is coastal humidity, not the Indian Ocean.",
+    ],
+    "Where to Stay in Cape Town": [
+      "Cape Grace and Taj Cape Town are both a 20-25 minute drive from Newlands depending on traffic; the Vineyard Hotel is roughly a 12-15 minute walk.",
+      "Traffic builds well before the toss and after close of play on match days — don't assume a normal-hours drive time on a Test day.",
+    ],
+    "Where to Stay in Durban": [
+      "Southern Sun's headline rate typically excludes breakfast; The Oyster Box's published rate is bed-and-breakfast inclusive by default — compare like for like before assuming one is better value.",
+      "The Golden Mile keeps you walking distance from Kingsmead; Umhlanga trades that for a quieter, more polished stay twenty minutes north.",
+    ],
+    "Where to Stay in Sandton": [
+      "Both hotels' airport shuttles are priced differently — Michelangelo Towers charges per person, the Radisson Blu per vehicle, which matters a lot for a group.",
+      "Sandton's CBD empties out fast once the workday crowd leaves — an Uber for even a five-minute walk after dark is standard local advice, not overcaution.",
+    ],
+    "Kruger National Park": [
+      "The dawn-and-dusk drive rhythm exists because that's genuinely when wildlife is most active — don't skip the early start to sleep in.",
+      "Malaria prophylaxis needs to start about a week before you travel — book a GP appointment as soon as your Kruger dates are confirmed.",
+      "Kruger's conservation fee is charged per person entering the park, not per vehicle — budget per-person for the gate fee even if you're sharing a rental car.",
+    ],
+    "Getting to the Wanderers": [
+      "Request Uber/Bolt pickups from Sandton City shopping centre, a five-minute covered walk from the Gautrain station — drivers avoid stopping right outside the station itself.",
+      "The Gautrain connects Sandton directly to OR Tambo Airport, so it's worth using for your arrival transfer as well as matchday transport.",
+    ],
+    "Getting to Newlands": [
+      "The Southern Line shares a wall with the ground itself — walk straight out of Newlands station and you're at the stadium, no road to cross.",
+      "Set your Uber or Bolt pickup point to Newlands Swimming Pool specifically, not the ground — it's the venue's actual dedicated e-hailing point.",
+      "For the five-day Test, buying a 1st class (MetroPlus) ticket over 3rd class is a small fare difference for a genuinely quieter carriage on packed match days.",
+    ],
+    "Cradle of Humankind": [
+      "Wear closed-toe shoes with real grip — the cave floor and walking mats get genuinely slippery in wet sections, and there are narrow passages where you'll need to crouch.",
+      "Book online rather than turning up on the day — school groups can fill an entire hourly tour slot, sometimes hundreds of children in a single day.",
+    ],
+    "Soweto": [
+      "The museum's reconstructed detention cell block is easy to walk past quickly, but it's one of the most physically disorienting exhibits in the building — slow down.",
+      "Sakhumzi Restaurant on Vilakazi Street (established 2001) is the most established sit-down option for traditional dishes, or grab a kota from a street stall for a genuinely local lunch.",
+    ],
+    "uShaka": [
+      "Arrive at opening time on a weekday for empty queues and the water park slides largely to yourself before the midday rush.",
+      "If you only want the aquarium and not the marine park shows, the aquarium-only ticket is less than half the price of the full Sea World ticket.",
+    ],
+    "Bunny Chow": [
+      "Order a 'quarter' bunny if you're not sure how hungry you are — it's a genuinely substantial portion despite the name.",
+      "Bean bunny chow is the vegetarian option and is just as traditional as the meat versions.",
+    ],
+    "Cape Winelands": [
+      "Pick Stellenbosch for more walkable history plus the Cabernet and Pinotage focus, Franschhoek for a slower, food-and-Cap-Classique-focused day.",
+      "South Africa's legal drink-drive limit is 0.05% — as little as one drink can put a driver over the line, so a tour or designated driver isn't optional if more than one person wants to actually taste.",
+    ],
+  },
+
   "open-championship-2026": {
     "18th at Royal Birkdale": [
       "The grandstand at 18 fills from mid-morning on championship days — arrive at gate open if you want a front-row position without a reserved hospitality seat",
@@ -741,6 +858,33 @@ interface RhythmEntry {
 }
 
 const TOURNAMENT_RHYTHM: Record<string, RhythmEntry[]> = {
+  "australia-in-south-africa-cricket-2026": [
+    {
+      label: "Durban — 1st ODI (24 Sep)",
+      body: "The tour opener at Kingsmead, a genuine seamer's wicket lifted by coastal humidity — expect swing and movement in the first hour, especially under cloud cover. Book early: this is also the first real read on how Australia's touring squad is settling into South African conditions.",
+    },
+    {
+      label: "Johannesburg — 2nd ODI, Pink Day (27 Sep)",
+      body: "The Wanderers hosts CSA's breast cancer awareness fixture — the Proteas play in pink, funds go to Charlotte Maxeke Hospital's Breast Care Clinic, and the atmosphere runs fuller and more occasion-driven than a standard ODI. It's also the ground where AB de Villiers scored the fastest ODI century in history in 2015, on this exact occasion a decade earlier.",
+    },
+    {
+      label: "Potchefstroom — 3rd ODI (30 Sep)",
+      body: "The series decider at JB Marks Oval sits outside this pack's three-city focus, about two hours from Johannesburg by road — genuinely worth the trip only if you're already extending your stay or chasing the full ODI series rather than just the marquee legs. It's a smaller, more intimate ground than the three this pack covers in depth, with none of the accommodation or dining infrastructure of Durban, Johannesburg, or Cape Town nearby.",
+    },
+    {
+      label: "Durban — 1st Test (9-13 Oct)",
+      body: "Kingsmead's second visit of the tour, three weeks after the ODI. A five-day Test here rewards knowing the ground's rhythm: early days favour the seamers, days three and four flatten out, and day five — if the match reaches it — is usually the highest-stakes cricket of the whole leg. Recent Kingsmead Tests have leaned toward finishing in 3-4 days rather than needing all five.",
+    },
+    {
+      label: "Gqeberha — 2nd Test (18-22 Oct)",
+      body: "St George's Park, outside this pack's three-city focus but a real leg of the tour for fans following the full series. Addo Elephant Park sits close by as a genuine Big Five alternative to Kruger for anyone extending their trip this far south.",
+    },
+    {
+      label: "Cape Town — 3rd Test, series finale (27-31 Oct)",
+      body: "Newlands closes the tour, and it's historically the hardest ticket on the calendar — recent Tests here have sold out before general sale even opens. The pitch gives seamers a real new-ball window before turning into one of South Africa's better batting surfaces; Australia's own 651 all out here in 2009, still the ground's highest total, is proof the conditions can turn either way. Table Mountain rises behind one end the entire match.",
+    },
+  ],
+
   "wimbledon-2026": [
     {
       label: "Opening Monday (29 Jun)",
@@ -1178,6 +1322,7 @@ export default async function PackView({
       {editorial.tourItinerary && editorial.tourItinerary.length > 0 && (() => {
         const t20s = editorial.tourItinerary!.filter(m => m.type.includes("T20"));
         const odis = editorial.tourItinerary!.filter(m => m.type.includes("ODI"));
+        const tests = editorial.tourItinerary!.filter(m => m.type.includes("Test"));
         const MatchBlock = ({ matches, label }: { matches: typeof t20s; label: string }) => (
           <div className="rounded-sm border border-[#2A2A2A] overflow-hidden">
             <div className="px-4 py-2.5 border-b border-[#2A2A2A] bg-[#141414]">
@@ -1186,7 +1331,7 @@ export default async function PackView({
             <div className="divide-y divide-[#2A2A2A]">
               {matches.map((match, i) => (
                 <div key={i} className="flex items-center gap-4 px-4 py-3 bg-[#0A0A0A]">
-                  <span className="w-12 text-xs font-semibold text-[#6A6A6A] shrink-0">{match.date}</span>
+                  <span className="w-16 text-xs font-semibold text-[#6A6A6A] shrink-0">{match.date}</span>
                   <span className="flex-1 text-sm text-white">{match.venue}</span>
                   <span className="text-sm text-[#6A6A6A] text-right shrink-0">{match.city}</span>
                 </div>
@@ -1203,6 +1348,7 @@ export default async function PackView({
               <div className="flex flex-col sm:flex-row gap-4">
                 {t20s.length > 0 && <div className="flex-1"><MatchBlock matches={t20s} label="T20 Internationals" /></div>}
                 {odis.length > 0 && <div className="flex-1"><MatchBlock matches={odis} label="One Day Internationals" /></div>}
+                {tests.length > 0 && <div className="flex-1"><MatchBlock matches={tests} label="Test Matches" /></div>}
               </div>
             </div>
           </div>
