@@ -291,6 +291,12 @@ export default async function ExperiencePage({
               slug.startsWith("szimpla-kert-") ? "lg:object-[center_100%]" :
               slug.startsWith("four-seasons-gresham-palace-") ? "lg:object-[center_25%]" :
               slug.startsWith("newlands-where-to-sit-") ? "lg:object-[center_65%]" :
+              slug.startsWith("durban-bunny-chow-indian-ocean-cuisine-") ? "lg:object-[center_10%]" :
+              slug.startsWith("ushaka-marine-world-golden-mile-") ? "lg:object-[center_15%]" :
+              slug.startsWith("aus-sa-ticket-guide-") ? "lg:object-[center_70%]" :
+              slug.startsWith("cape-winelands-stellenbosch-franschhoek-") ? "lg:object-[center_85%]" :
+              slug.startsWith("where-to-stay-sandton-") ? "lg:object-[center_25%]" :
+              slug.startsWith("soweto-apartheid-museum-") ? "lg:object-[center_15%]" :
               ""
             }`}
             sizes="100vw"

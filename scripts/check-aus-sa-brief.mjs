@@ -3,14 +3,14 @@ config({ path: ".env.local" });
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { eq } from "drizzle-orm";
-import { purchases } from "../schema/database.ts";
+import { sportingEvents } from "../schema/database.ts";
 
 const client = postgres(process.env.DATABASE_URL, { ssl: "require", prepare: false });
 const db = drizzle(client);
 
-const [deleted] = await db.delete(purchases)
-  .where(eq(purchases.id, "dafc3155-feae-43a5-81ff-855b435f548d"))
-  .returning({ id: purchases.id, email: purchases.email });
+const [event] = await db.select({ preTripBriefLines: sportingEvents.preTripBriefLines })
+  .from(sportingEvents)
+  .where(eq(sportingEvents.id, "be8e1129-6e53-4e45-a574-931250988806"));
 
-console.log(deleted ? "✓ Deleted: " + deleted.email : "Not found (already deleted)");
+console.log(JSON.stringify(event.preTripBriefLines, null, 2));
 await client.end();

@@ -142,6 +142,28 @@ const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: strin
       description: "Edgbaston from New Street, Lord's from St John's Wood tube — transport strategy for both grounds",
     },
   ],
+  "australia-in-south-africa-cricket-2026": [
+    {
+      label: "The Grounds",
+      description: "Kingsmead's seamer's wicket, the Wanderers' Bullring roar, and Newlands beneath Table Mountain — what each ground actually plays like",
+    },
+    {
+      label: "Three Cities",
+      description: "Durban twice, Johannesburg once, Cape Town for the finale — how to sequence a trip across all three without wasting a day backtracking",
+    },
+    {
+      label: "Where to Stay",
+      description: "Golden Mile or Umhlanga in Durban, Sandton in Johannesburg, and the real options in Cape Town for the Test",
+    },
+    {
+      label: "Where to Eat",
+      description: "Durban's bunny chow, Johannesburg's braai culture, Cape Town's Bo-Kaap and the Winelands — three cities, three food identities",
+    },
+    {
+      label: "Beyond the Boundary",
+      description: "A five-week tour leaves real room for Kruger, Robben Island, and the Cape Peninsula — how to fill the gaps between matches",
+    },
+  ],
   "open-championship-2026": [
     {
       label: "On the Course",
@@ -376,6 +398,13 @@ const PACK_PRICING: Record<string, {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_BMW_PGA_EARLY_BIRD_CUTOFF ?? "2026-09-03",
     earlyBirdDisplay: "£5",
     standardDisplay: "£10",
+  },
+  "australia-in-south-africa-cricket-2026": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_AUS_SA_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_AUS_SA_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_AUS_SA_EARLY_BIRD_CUTOFF ?? "2026-08-09",
+    earlyBirdDisplay: "$5",
+    standardDisplay: "$10",
   },
 };
 
