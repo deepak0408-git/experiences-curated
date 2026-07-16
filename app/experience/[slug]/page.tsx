@@ -455,18 +455,21 @@ export default async function ExperiencePage({
               {exp.bookingLinks && (exp.bookingLinks as Array<{ platform: string; label?: string; url: string }>).length > 0 && (
                 <div className="flex gap-4">
                   <dt className="w-[30%] flex-shrink-0 text-sm font-medium text-[#6A6A6A]">Book</dt>
-                  <dd className="flex flex-wrap gap-2">
-                    {(exp.bookingLinks as Array<{ platform: string; label?: string; url: string }>).map((link, i) => (
-                      <a
-                        key={link.url ?? i}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block text-sm text-[#AAFF00] underline underline-offset-2 hover:text-white transition-colors"
-                      >
-                        {link.label ?? link.platform}
-                      </a>
-                    ))}
+                  <dd className="flex flex-col gap-1.5">
+                    <div className="flex flex-wrap gap-2">
+                      {(exp.bookingLinks as Array<{ platform: string; label?: string; url: string }>).map((link, i) => (
+                        <a
+                          key={link.url ?? i}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-block text-sm text-[#AAFF00] underline underline-offset-2 hover:text-white transition-colors"
+                        >
+                          {link.label ?? link.platform}
+                        </a>
+                      ))}
+                    </div>
+                    <p className="text-xs text-[#6A6A6A]">Affiliate link — we may earn a small commission at no extra cost to you.</p>
                   </dd>
                 </div>
               )}
