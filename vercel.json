@@ -13,10 +13,6 @@
       "schedule": "30 3 * * *"
     },
     {
-      "path": "/api/cron/sports-brief",
-      "schedule": "30 1 * * *"
-    },
-    {
       "path": "/api/cron/expire-homepage-slots",
       "schedule": "1 0 * * *"
     },
