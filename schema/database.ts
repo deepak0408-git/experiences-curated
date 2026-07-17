@@ -442,6 +442,8 @@ export const purchases = pgTable("purchases", {
   rescueSentAt: timestamp("rescue_sent_at"),
   postTripEmailSentAt: timestamp("post_trip_email_sent_at"),
   preTripReminderSentAt: timestamp("pre_trip_reminder_sent_at"),
+  conciergeOutreachPreTripSentAt: timestamp("concierge_outreach_pre_trip_sent_at"),
+  conciergeOutreachPostTripSentAt: timestamp("concierge_outreach_post_trip_sent_at"),
   purchasedAt: timestamp("purchased_at").notNull().defaultNow(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 }, (t) => [

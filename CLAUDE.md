@@ -244,6 +244,18 @@ supabase.auth.admin.generateLink({
 }).then(({ data }) => console.log(data.properties.action_link));
 ```
 
+**All outreach/transactional email HTML must use the dark-canvas + fluorescent-green brand palette** (per Design System below), not plain white/dark-grey styling. Standard template, confirmed working in `app/api/cron/newsletter-new-pack-announcement/route.ts`:
+```html
+<div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0A0A0A">
+  <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#AAFF00;margin-bottom:28px">Experiences | Curated</p>
+  <p style="font-size:14px;color:#A3A3A3;line-height:1.6">Body copy here.</p>
+  <a href="..." style="display:inline-block;padding:10px 20px;background:#AAFF00;color:#000;font-size:13px;font-weight:900;text-decoration:none;border-radius:2px">CTA text →</a>
+  <p style="font-size:14px;color:#ffffff;font-weight:900">Sign-off / heading text</p>
+  <p style="font-size:11px;color:#6A6A6A">Fine print / footer.</p>
+</div>
+```
+**Standing rule (17 Jul 2026):** never send a new outreach email without first sending a test copy to the founder's own inbox for a visual check, and never send to any real recipient list without the founder's explicit approval of that exact draft + that exact recipient list — approval never carries over from a previously-approved, different send.
+
 ---
 
 ## Security
