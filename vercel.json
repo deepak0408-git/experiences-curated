@@ -23,6 +23,14 @@
     {
       "path": "/api/cron/newsletter-new-pack-announcement",
       "schedule": "30 4 * * *"
+    },
+    {
+      "path": "/api/cron/concierge-outreach-pre-trip",
+      "schedule": "0 5 * * *"
+    },
+    {
+      "path": "/api/cron/concierge-outreach-post-trip",
+      "schedule": "30 5 * * *"
     }
   ]
 }
