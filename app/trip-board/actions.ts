@@ -62,10 +62,22 @@ export async function addExperiencesToBoard(experienceIds: string[], boardId?: s
     .limit(1);
 
   if (!dbUser) {
-    [dbUser] = await db
+    // Race condition fix (20 Jul 2026): rapid-clicking "Save to Trip Board"
+    // across multiple experience cards fires this action concurrently per
+    // click. Multiple invocations can all pass the SELECT above before any
+    // INSERT commits, then collide on users_email_unique. onConflictDoNothing
+    // absorbs the loser inserts; the follow-up SELECT recovers the row that
+    // actually won, same pattern already used for savedItems below.
+    await db
       .insert(users)
       .values({ email: user.email!, authId: user.id })
-      .returning({ id: users.id });
+      .onConflictDoNothing();
+
+    [dbUser] = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.authId, user.id))
+      .limit(1);
   }
 
   const tripBoardId = boardId ?? await getOrCreateDefaultBoard(dbUser.id);

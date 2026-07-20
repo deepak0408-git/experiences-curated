@@ -15,10 +15,18 @@ async function getOrCreateDbUser(authId: string, email: string) {
     .limit(1);
   if (existing) return existing;
 
+  // Race condition fix (20 Jul 2026): rapid-clicking "Save" across multiple
+  // experience cards fires this concurrently per click, colliding on
+  // users_email_unique before any insert commits. onConflictDoNothing
+  // absorbs the loser inserts; the follow-up select recovers the row that
+  // actually won. Same fix applied to app/trip-board/actions.ts.
+  await db.insert(users).values({ email, authId }).onConflictDoNothing();
+
   const [created] = await db
-    .insert(users)
-    .values({ email, authId })
-    .returning({ id: users.id });
+    .select({ id: users.id })
+    .from(users)
+    .where(eq(users.authId, authId))
+    .limit(1);
   return created;
 }
 
