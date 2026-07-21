@@ -27,7 +27,19 @@ async function getOrCreateDbUser(authId: string, email: string) {
     .from(users)
     .where(eq(users.authId, authId))
     .limit(1);
-  return created;
+  if (created) return created;
+
+  // Fix (21 Jul 2026): the conflict above can also come from a row created
+  // earlier by email alone (e.g. grantFreeAccess or a webhook) with authId
+  // still NULL — onConflictDoNothing no-ops on the email collision, so the
+  // authId-based select above finds nothing. Recover by email instead and
+  // backfill authId now that this person has actually signed in.
+  const [backfilled] = await db
+    .update(users)
+    .set({ authId })
+    .where(eq(users.email, email))
+    .returning({ id: users.id });
+  return backfilled;
 }
 
 export async function saveExperience(experienceId: string, slug: string) {

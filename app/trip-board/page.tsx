@@ -2,7 +2,7 @@
 import { hasProSubscription } from "@/lib/pro";
 import { db } from "@/lib/db";
 import { savedItems, users, experiences, destinations, sportingEvents } from "@/schema/database";
-import { eq, and, desc, gte } from "drizzle-orm";
+import { eq, and, desc, gte, inArray } from "drizzle-orm";
 import Link from "next/link";
 import type { Metadata } from "next";
 import TripBoardSignIn from "./_components/TripBoardSignIn";
@@ -53,10 +53,23 @@ export default async function TripBoardPage({
     .limit(1);
 
   if (!dbUser) {
-    [dbUser] = await db
+    // Race condition fix (21 Jul 2026): concurrent requests for the same
+    // new user (e.g. a double-tap or rapid reload) can both pass the
+    // SELECT above before either INSERT commits, then collide on
+    // users_email_unique. onConflictDoNothing absorbs the loser insert;
+    // the follow-up SELECT recovers the row that actually won — same
+    // pattern already used in trip-board/actions.ts and
+    // experience/[slug]/actions.ts.
+    await db
       .insert(users)
       .values({ email: authUser.email!, authId: authUser.id })
-      .returning({ id: users.id, email: users.email });
+      .onConflictDoNothing();
+
+    [dbUser] = await db
+      .select({ id: users.id, email: users.email })
+      .from(users)
+      .where(eq(users.authId, authUser.id))
+      .limit(1);
   }
 
   // Ensure a default board exists and backfill any orphaned saves
@@ -113,7 +126,11 @@ export default async function TripBoardPage({
     })
     .from(sportingEvents)
     .leftJoin(destinations, eq(sportingEvents.destinationId, destinations.id))
-    .where(and(gte(sportingEvents.endDate, today), eq(sportingEvents.isHidden, false)))
+    .where(and(
+      gte(sportingEvents.endDate, today),
+      eq(sportingEvents.isHidden, false),
+      inArray(sportingEvents.packStatus, ["built_hidden", "live"]),
+    ))
     .orderBy(sportingEvents.startDate);
 
   const upcomingEvents: UpcomingEvent[] = upcomingEventRows.map((e) => ({

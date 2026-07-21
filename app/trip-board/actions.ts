@@ -78,6 +78,20 @@ export async function addExperiencesToBoard(experienceIds: string[], boardId?: s
       .from(users)
       .where(eq(users.authId, user.id))
       .limit(1);
+
+    if (!dbUser) {
+      // Fix (21 Jul 2026): the conflict above can also come from a row
+      // created earlier by email alone (e.g. grantFreeAccess or a webhook)
+      // with authId still NULL — onConflictDoNothing no-ops on the email
+      // collision, so the authId-based SELECT above finds nothing. Recover
+      // by email instead and backfill authId now that this person has
+      // actually signed in.
+      [dbUser] = await db
+        .update(users)
+        .set({ authId: user.id })
+        .where(eq(users.email, user.email!))
+        .returning({ id: users.id });
+    }
   }
 
   const tripBoardId = boardId ?? await getOrCreateDefaultBoard(dbUser.id);
