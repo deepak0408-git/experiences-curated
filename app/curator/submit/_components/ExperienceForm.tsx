@@ -49,6 +49,18 @@ const INTEREST_CATEGORIES = [
   { value: "sports", label: "Sports" },
 ];
 
+const SPORTS = [
+  { value: "tennis", label: "Tennis" },
+  { value: "cricket", label: "Cricket" },
+  { value: "football", label: "Football" },
+  { value: "rugby", label: "Rugby" },
+  { value: "golf", label: "Golf" },
+  { value: "formula_one", label: "Formula 1" },
+  { value: "cycling", label: "Cycling" },
+  { value: "athletics", label: "Athletics" },
+  { value: "other", label: "Other" },
+];
+
 const SEASONS = [
   { value: "jan", label: "Jan" }, { value: "feb", label: "Feb" },
   { value: "mar", label: "Mar" }, { value: "apr", label: "Apr" },
@@ -100,6 +112,7 @@ function toFormDefaults(exp: ExperienceForEdit): Partial<ExperienceFormData> {
     advanceBookingDays: exp.advanceBookingDays ? String(exp.advanceBookingDays) : "",
     sportingEventId: exp.sportingEventId ?? "",
     availability: exp.availability ?? "perennial",
+    sport: exp.sport ?? [],
     heroImageUrl: exp.heroImageUrl ?? "",
     heroImageAlt: exp.heroImageAlt ?? "",
     heroImageCredit: exp.heroImageCredit ?? "",
@@ -500,6 +513,18 @@ export function ExperienceForm({
               placeholder="e.g. 550e8400-e29b-41d4-a716-446655440000"
               className={inputClass}
             />
+          </Field>
+          <Field label="Sport" hint="Powers the sport filter in search — pick the one that genuinely applies.">
+            <select
+              value={watch("sport")?.[0] ?? ""}
+              onChange={(e) => setValue("sport", e.target.value ? [e.target.value] : [])}
+              className={inputClass}
+            >
+              <option value="">Select…</option>
+              {SPORTS.map((s) => (
+                <option key={s.value} value={s.value}>{s.label}</option>
+              ))}
+            </select>
           </Field>
         </FormSection>
       )}
