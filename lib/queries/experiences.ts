@@ -99,6 +99,7 @@ export async function getExperienceForEdit(id: string) {
       advanceBookingDays: experiences.advanceBookingDays,
       sportingEventId: experiences.sportingEventId,
       availability: experiences.availability,
+      sport: experiences.sport,
     })
     .from(experiences)
     .where(eq(experiences.id, id))

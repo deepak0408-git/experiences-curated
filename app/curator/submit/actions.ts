@@ -42,6 +42,7 @@ export type ExperienceFormData = {
   // Sports
   sportingEventId: string;
   availability: string;
+  sport: string[];
   // Media
   heroImageUrl: string;
   heroImageAlt: string;
@@ -101,6 +102,7 @@ export async function saveDraft(data: ExperienceFormData) {
         : null,
       sportingEventId: data.sportingEventId || null,
       availability: (data.availability as any) || "perennial",
+      sport: data.sport,
       curationTier: "editorial",
     })
     .returning({ id: experiences.id, slug: experiences.slug });
@@ -149,6 +151,7 @@ export async function updateDraft(id: string, data: ExperienceFormData) {
       advanceBookingDays: data.advanceBookingDays ? parseInt(data.advanceBookingDays) : null,
       sportingEventId: data.sportingEventId || null,
       availability: (data.availability as any) || "perennial",
+      sport: data.sport,
       updatedAt: new Date(),
     })
     .where(eq(experiences.id, id));
