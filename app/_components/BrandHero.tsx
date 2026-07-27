@@ -78,9 +78,11 @@ type FeaturedEvent = {
 export default function BrandHero({
   featuredEvents,
   hasCalendarEvents,
+  showPlannerLink = false,
 }: {
   featuredEvents: FeaturedEvent[];
   hasCalendarEvents: boolean;
+  showPlannerLink?: boolean;
 }) {
   const [active, setActive] = useState(0);
 
@@ -161,13 +163,29 @@ export default function BrandHero({
               ))}
             </div>
 
-            {/* See all events */}
-            <a
-              href={hasCalendarEvents ? "#on-the-calendar" : "/search"}
-              className="text-sm text-white/50 hover:text-[#AAFF00] transition-colors"
-            >
-              See all events ↓
-            </a>
+            {/* See all events / Planner entry point — same row, and same
+                2-col grid as the tiles above so "Or start with your budget"
+                lands under Italian GP's own column (right), not just
+                anywhere on the right. The Planner link only renders when
+                the homepage teaser itself is showing (showPlannerLink) —
+                otherwise it points at a #planner-teaser anchor that
+                doesn't exist on the page during the beta gate. */}
+            <div className="flex flex-row gap-4 sm:grid sm:grid-cols-2 sm:gap-x-8">
+              <a
+                href={hasCalendarEvents ? "#on-the-calendar" : "/search"}
+                className="text-sm font-black text-white hover:text-[#AAFF00] transition-colors"
+              >
+                See all events ↓
+              </a>
+              {showPlannerLink && (
+                <a
+                  href="#planner-teaser"
+                  className="text-sm font-black text-white hover:text-[#AAFF00] transition-colors"
+                >
+                  Or start with your budget ↓
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </div>

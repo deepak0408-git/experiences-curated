@@ -94,6 +94,17 @@ export const purchaseStatusEnum = pgEnum("purchase_status", [
   "disputed",
 ]);
 
+// Richer than isHidden — adds a state for "event is calendared (e.g. on
+// the Content Calendar / for the season planner) but no pack has been
+// built yet," which isHidden alone can't represent (it only distinguishes
+// "pack exists but not activated" from "pack live").
+export const packStatusEnum = pgEnum("pack_status", [
+  "planned",
+  "building",
+  "built_hidden",
+  "live",
+]);
+
 export const savedItemStatusEnum = pgEnum("saved_item_status", [
   "to_do",
   "booked",
@@ -143,6 +154,46 @@ export const destinations = pgTable("destinations", {
   countryCode: varchar("country_code", { length: 2 }).notNull(),
   region: varchar("region", { length: 100 }),
   destinationType: destinationTypeEnum("destination_type").notNull().default("city"),
+  // Nearest bookable airport — a sports destination like "Belgian Ardennes"
+  // isn't itself a flight-searchable place; this is what real flight-price
+  // seeding (Skyscanner/Google Flights lookups) actually keys against.
+  // Added 19 Jul 2026 for the Season Planner's flight-cost matrix.
+  nearestAirportIata: varchar("nearest_airport_iata", { length: 3 }),
+  // Optional budget-alternate airport — only set when a genuine, sourced
+  // secondary option exists (most destinations stay NULL). Qualitative
+  // Tradeoff Engine lever, not a calculated saving — see design doc
+  // "Alternate-airport lever" section. BLOCKER: never seed without
+  // explicit user approval, same rule as nearestAirportIata.
+  budgetAlternateAirportIata: varchar("budget_alternate_airport_iata", { length: 3 }),
+  // Real, specific ground-transport facts (shuttle/bus name, approx cost,
+  // approx time) — freeform editorial text, not structured fields, since
+  // this is a one-off fact per destination, not a repeating data pattern.
+  alternateAirportNote: text("alternate_airport_note"),
+  // Hotel-search zone logic for the Season Planner — added 21 Jul 2026 per
+  // the planner-data-researcher skill's Hotels methodology. NULL = this
+  // destination is itself a genuine fan booking base (search radius: 20km
+  // from the event VENUE, not the destination centroid). Set to another
+  // destination's id = this is a venue-adjacent/satellite destination (e.g.
+  // Belgian Ardennes -> Brussels, Surrey/Virginia Water -> London); hotel
+  // sampling then draws 70% from the anchor city, 30% from this venue area.
+  // BLOCKER: never set without presenting reasoning and getting explicit
+  // user approval, one destination at a time (same rule as nearestAirportIata).
+  nextClosestHotelDestinationId: uuid("next_closest_hotel_destination_id"),
+  // Local Travel/Food cost-research proxy — added 23 Jul 2026 per the
+  // planner-data-researcher skill's Local Travel & Food methodology. NULL =
+  // this destination has its own real Budget Your Trip coverage. Set to a
+  // free-text city name = this destination isn't covered (or has thin/
+  // unreliable data) on Budget Your Trip, so its planner_destination_bands
+  // row borrows the named city's Food/Local Travel figures instead. Not a
+  // strict "capital city" rule — the substitute is whichever nearby major
+  // city has genuinely representative, well-covered data (e.g. Turin ->
+  // Milan, not Rome; Adelaide/Perth -> Sydney, not Canberra). Free text, not
+  // an FK, since some substitutes (e.g. London for Liverpool/Manchester,
+  // used as a data-quality fallback, not a geographic proxy) don't need a
+  // full destination row of their own. BLOCKER: never set without
+  // presenting reasoning and getting explicit user approval, same rule as
+  // nearestAirportIata / nextClosestHotelDestinationId.
+  nearestMajorCity: varchar("nearest_major_city", { length: 100 }),
   // Coordinates stored as numeric for portability; PostGIS point added via migration
   lat: numeric("lat", { precision: 9, scale: 6 }),
   lng: numeric("lng", { precision: 9, scale: 6 }),
@@ -186,6 +237,15 @@ export const sportingEvents = pgTable("sporting_events", {
   venueAddress: text("venue_address"),
   venueLat: numeric("venue_lat", { precision: 9, scale: 6 }),
   venueLng: numeric("venue_lng", { precision: 9, scale: 6 }),
+  // For multi-city tours only (cricket-style series spanning several venues)
+  // — plain city names in visiting order, INCLUDING the event's own anchor
+  // destination (this is what actually renders in the Planner's "Multiple
+  // venues — City, City, City" line, so it must be complete on its own,
+  // not rely on a separately-shown destination name elsewhere in that UI).
+  // e.g. ["Johannesburg", "Durban", "Cape Town"]. venueName stays free text
+  // for the main event-pack page ("Kingsmead (Durban), Wanderers
+  // (Johannesburg)..."). NULL for single-venue events.
+  tourCities: text("tour_cities").array(),
   startDate: date("start_date").notNull(),
   endDate: date("end_date").notNull(),
   recurrence: varchar("recurrence", { length: 30 }),
@@ -198,6 +258,14 @@ export const sportingEvents = pgTable("sporting_events", {
   preTripBriefUpdatedAt: timestamp("pre_trip_brief_updated_at"),
   homepageSlot: smallint("homepage_slot"),
   isHidden: boolean("is_hidden").notNull().default(true),
+  // Hard exclusion flag — every email-sending cron that queries sportingEvents
+  // must filter this false. Any dev/test event, however production-shaped
+  // (isHidden: false, activatedAt backdated, etc.), must be created with this
+  // true so it can never satisfy a real cron's send trigger. See incident
+  // 20 Jul 2026: a fake "TEST EVENT" row without this flag reached 20 real
+  // newsletter subscribers.
+  isTestEvent: boolean("is_test_event").notNull().default(false),
+  packStatus: packStatusEnum("pack_status").notNull().default("live"),
   // When isHidden last flipped false — anchors the 2-day-later newsletter announcement
   activatedAt: timestamp("activated_at"),
   newsletterAnnouncedAt: timestamp("newsletter_announced_at"),
@@ -568,6 +636,233 @@ export const eventRemindersSent = pgTable("event_reminders_sent", {
   uniqueIndex("event_reminders_sent_email_event_unique").on(t.email, t.sportingEventId),
 ]);
 
+// ─── Season/Budget Planner (G3) ────────────────────────────────────────────────
+// See docs/Season Budget Planner Tool G3 - Customer and Monetization Journey.txt
+// for the full design brief. All prices in this section are USD-only — the
+// planner is a planning surface, not a checkout surface; nothing here touches
+// the local-currency pack/checkout pages.
+
+// "general" dropped 19 Jul 2026 — Screen 2 now uses the real "moderate"
+// tier as its default display value instead of a synthetic blend, so the
+// Tradeoff Engine's "current tier" is a known fact, not an inference.
+export const plannerTierEnum = pgEnum("planner_tier", [
+  "budget",
+  "moderate",
+  "splurge",
+  "luxury",
+]);
+
+// Fixed, sortable tier keys — NOT tier names. Real display names are
+// sport-level (plannerTicketTierSportLabel) with an optional event-level
+// override (plannerTicketTierCost.eventTierLabel). Redesigned 19 Jul 2026
+// after research confirmed F1's General Admission/Grandstand/Premium
+// Grandstand/Hospitality vocabulary does not generalize to tennis/golf/
+// cricket — tier1 (cheapest) through tier4 (priciest) sorts correctly
+// regardless of what each sport calls that rung.
+// "general" dropped 19 Jul 2026 — Screen 2 now uses the real "tier2"
+// (Grandstand-equivalent) row as its default display value instead of a
+// synthetic blend.
+export const plannerTicketTierEnum = pgEnum("planner_ticket_tier", [
+  "tier1",
+  "tier2",
+  "tier3",
+  "tier4",
+]);
+
+export const plannerTimeWindowEnum = pgEnum("planner_time_window", [
+  "next_3mo",
+  "next_6mo",
+  "next_9mo",
+  "flexible",
+]);
+
+// Tracks which of the 3 scheduled research passes (planner-data-researcher
+// skill §5) produced a given Flights/Hotels row — added 21 Jul 2026 so a
+// missed or late refresh is directly visible in the data, not something
+// that has to be inferred after the fact from lastUpdated timing.
+export const plannerRefreshPassEnum = pgEnum("planner_refresh_pass", [
+  "initial",
+  "t60",
+  "t30",
+]);
+
+export const plannerGateActionEnum = pgEnum("planner_gate_action", [
+  "saved",
+  "compared",
+  "notified",
+]);
+
+export const plannerDripStepEnum = pgEnum("planner_drip_step", [
+  "immediate",
+  "day_3",
+  "day_10",
+  "notify_live",
+]);
+
+// Origin-market cities — where fans are based and travel FROM, researched
+// against real outbound fan-travel patterns for F1/tennis/golf/cricket (not
+// host-venue fame — Monaco/St Andrews were correctly rejected as candidates
+// since fans travel TO those, not FROM them). DB table, not a TS const, per
+// the standing rule against hardcoded per-entity Record<string,> tables —
+// iataCode exists so real flight-price seeding can join against a real
+// bookable airport instead of the fan-facing city label. Screen 1's dropdown
+// reads this table directly.
+export const plannerOriginMarkets = pgTable("planner_origin_markets", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  city: varchar("city", { length: 100 }).notNull().unique(),
+  region: varchar("region", { length: 50 }).notNull(),
+  iataCode: varchar("iata_code", { length: 3 }).notNull(),
+});
+
+// Route-and-season flight cost matrix — destination x origin x seasonal band,
+// NOT per-event. Events look this up by (destination, month); this is what
+// keeps the same real-world route (e.g. Sydney-London) from being duplicated
+// and drifting out of sync across every event in that city.
+export const plannerFlightCost = pgTable("planner_flight_cost", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  destinationId: uuid("destination_id").notNull().references(() => destinations.id),
+  // Free-form for now — the exact ~20-market origin list is not yet finalized
+  // (deferred to detailed build per standing decision); enforce the real list
+  // at the application layer once chosen, not via a schema-level enum, so
+  // adding/adjusting markets doesn't require a migration.
+  originMarket: varchar("origin_market", { length: 100 }).notNull(),
+  seasonalBand: varchar("seasonal_band", { length: 20 }).notNull(), // e.g. "jan", "feb" ... or a quarterly code
+  costLow: numeric("cost_low", { precision: 10, scale: 2 }).notNull(),
+  costHigh: numeric("cost_high", { precision: 10, scale: 2 }).notNull(),
+  // All planner cost data is USD-only, no exceptions — standing rule added
+  // 22 Jul 2026 after being violated twice in one session (Milan EUR,
+  // Virginia Water GBP). This column makes that rule structural rather
+  // than relying on memory every seeding pass.
+  currency: varchar("currency", { length: 3 }).notNull().default("USD"),
+  refreshPass: plannerRefreshPassEnum("refresh_pass").notNull().default("initial"),
+  lastUpdated: timestamp("last_updated").notNull().defaultNow(),
+}, (t) => [
+  uniqueIndex("planner_flight_cost_route_season_unique").on(t.destinationId, t.originMarket, t.seasonalBand),
+]);
+
+// Hotel tier cost — keyed by destination, not event (a budget hotel in Monza
+// serves any Monza-based event). No lead-time dimension — see design doc for
+// why (footnote disclaimer covers the approximation instead).
+export const plannerHotelTierCost = pgTable("planner_hotel_tier_cost", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  destinationId: uuid("destination_id").notNull().references(() => destinations.id),
+  tier: plannerTierEnum("tier").notNull(),
+  // Same pattern as planner_flight_cost.seasonalBand — a destination shared
+  // by events in genuinely different seasons (e.g. Johannesburg: Sep vs
+  // Dec/Jan) needs separate price data per season, added 22 Jul 2026 after
+  // this exact gap was caught.
+  seasonalBand: varchar("seasonal_band", { length: 20 }).notNull(),
+  costLow: numeric("cost_low", { precision: 10, scale: 2 }).notNull(),
+  costHigh: numeric("cost_high", { precision: 10, scale: 2 }).notNull(),
+  // All planner cost data is USD-only, no exceptions — see the same note on
+  // plannerFlightCost.currency.
+  currency: varchar("currency", { length: 3 }).notNull().default("USD"),
+  refreshPass: plannerRefreshPassEnum("refresh_pass").notNull().default("initial"),
+  lastUpdated: timestamp("last_updated").notNull().defaultNow(),
+}, (t) => [
+  uniqueIndex("planner_hotel_tier_cost_dest_tier_season_unique").on(t.destinationId, t.tier, t.seasonalBand),
+]);
+
+// Sport-level default tier labels — real per-sport vocabulary (e.g. F1's
+// "Grandstand" vs tennis's "Outer Court Reserved"), one row per (sport,
+// tierKey). DB table, not a hardcoded TS constant, per the standing rule
+// against hardcoded per-entity Record<string,> tables. This is what
+// Screen 2 / Tradeoff Engine display when an event has no eventTierLabel
+// override set below.
+export const plannerTicketTierSportLabel = pgTable("planner_ticket_tier_sport_label", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sport: sportEnum("sport").notNull(),
+  tierKey: plannerTicketTierEnum("tier_key").notNull(),
+  defaultLabel: varchar("default_label", { length: 100 }).notNull(),
+}, (t) => [
+  uniqueIndex("planner_ticket_tier_sport_label_sport_tier_unique").on(t.sport, t.tierKey),
+]);
+
+// Ticket tier cost — keyed by event, not destination (grandstand pricing is
+// specific to one event, not shared across events in the same city).
+export const plannerTicketTierCost = pgTable("planner_ticket_tier_cost", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sportingEventId: uuid("sporting_event_id").notNull().references(() => sportingEvents.id),
+  tier: plannerTicketTierEnum("tier").notNull(),
+  // Event-level label override — real named stand(s) for this specific
+  // event (e.g. Italian GP tier2 = "Grandstand 26/27, Curva Grande"),
+  // enabling genuinely curated advice instead of generic sport-level
+  // labels. NULL falls back to plannerTicketTierSportLabel's default.
+  // Plain string for V1, not structured — see design doc "Ticket tier
+  // structure" section (19 Jul 2026) for why.
+  eventTierLabel: varchar("event_tier_label", { length: 255 }),
+  costLow: numeric("cost_low", { precision: 10, scale: 2 }).notNull(),
+  costHigh: numeric("cost_high", { precision: 10, scale: 2 }).notNull(),
+  // All planner cost data is USD-only, no exceptions — see the same note on
+  // plannerFlightCost.currency.
+  currency: varchar("currency", { length: 3 }).notNull().default("USD"),
+  lastUpdated: timestamp("last_updated").notNull().defaultNow(),
+}, (t) => [
+  uniqueIndex("planner_ticket_tier_cost_event_tier_unique").on(t.sportingEventId, t.tier),
+]);
+
+// Local travel and food/daily spend — simplified per-destination bands, not
+// per-event and not tiered (these don't vary enough within one destination to
+// justify the extra structure the other three line items carry).
+export const plannerDestinationBands = pgTable("planner_destination_bands", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  destinationId: uuid("destination_id").notNull().references(() => destinations.id).unique(),
+  localTravelLow: numeric("local_travel_low", { precision: 10, scale: 2 }).notNull(),
+  localTravelHigh: numeric("local_travel_high", { precision: 10, scale: 2 }).notNull(),
+  foodPerDayLow: numeric("food_per_day_low", { precision: 10, scale: 2 }).notNull(),
+  foodPerDayHigh: numeric("food_per_day_high", { precision: 10, scale: 2 }).notNull(),
+  // All planner cost data is USD-only, no exceptions — see the same note on
+  // plannerFlightCost.currency.
+  currency: varchar("currency", { length: 3 }).notNull().default("USD"),
+  // Short (2-sentence) curated editorial notes for the Tradeoff Engine's
+  // Flights-Local Travel-Food commentary sequence — added 19 Jul 2026.
+  // Researched from real published experience content where available
+  // (destination-specific, not generic travel-blog advice). Nullable —
+  // not every destination has this written yet.
+  localTravelNote: text("local_travel_note"),
+  foodNote: text("food_note"),
+  lastUpdated: timestamp("last_updated").notNull().defaultNow(),
+});
+
+// A single planner intake + gate-action session. Append-only per email — a
+// second session with different inputs (e.g. re-planning) is a real, separate
+// signal and must never overwrite an earlier one (standing decision, see
+// design doc). This is the qualifying-signal record the post-planner drip
+// sequence (PlannerDripSent) is driven entirely from.
+export const plannerSessions = pgTable("planner_sessions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: varchar("email", { length: 255 }).notNull(),
+  sports: sportEnum("sports").array().notNull(),
+  budgetMin: numeric("budget_min", { precision: 10, scale: 2 }).notNull(),
+  budgetMax: numeric("budget_max", { precision: 10, scale: 2 }).notNull(),
+  timeWindow: plannerTimeWindowEnum("time_window").notNull(),
+  tripLengthDays: smallint("trip_length_days").notNull(),
+  // One of the eventual ~20-market list, or "unspecified" if the visitor's
+  // origin isn't on it — same free-form-for-now reasoning as originMarket above.
+  originMarket: varchar("origin_market", { length: 100 }).notNull().default("unspecified"),
+  shortlistedEventIds: uuid("shortlisted_event_ids").array().notNull().default([]),
+  gateAction: plannerGateActionEnum("gate_action").notNull(),
+  gateActionEventIds: uuid("gate_action_event_ids").array().notNull().default([]),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  // Set the moment the user clicks through to a pack page from any drip email
+  // (via the /api/planner/click tracked redirect). Stops the saved/compared
+  // drip sequences immediately — see design doc "Post-Planner Drip Sequence".
+  clickedAt: timestamp("clicked_at"),
+}, (t) => [
+  index("planner_sessions_email_idx").on(t.email),
+]);
+
+// Idempotency/tracking for the post-planner drip sequence — mirrors the
+// existing eventRemindersSent pattern.
+export const plannerDripSent = pgTable("planner_drip_sent", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  plannerSessionId: uuid("planner_session_id").notNull().references(() => plannerSessions.id),
+  sequenceStep: plannerDripStepEnum("sequence_step").notNull(),
+  sentAt: timestamp("sent_at").notNull().defaultNow(),
+}, (t) => [
+  uniqueIndex("planner_drip_sent_session_step_unique").on(t.plannerSessionId, t.sequenceStep),
+]);
+
 // ─── Relations ────────────────────────────────────────────────────────────────
 
 export const experiencesRelations = relations(experiences, ({ one, many }) => ({
@@ -675,5 +970,44 @@ export const travelLogsRelations = relations(travelLogs, ({ one }) => ({
   experience: one(experiences, {
     fields: [travelLogs.experienceId],
     references: [experiences.id],
+  }),
+}));
+
+export const plannerFlightCostRelations = relations(plannerFlightCost, ({ one }) => ({
+  destination: one(destinations, {
+    fields: [plannerFlightCost.destinationId],
+    references: [destinations.id],
+  }),
+}));
+
+export const plannerHotelTierCostRelations = relations(plannerHotelTierCost, ({ one }) => ({
+  destination: one(destinations, {
+    fields: [plannerHotelTierCost.destinationId],
+    references: [destinations.id],
+  }),
+}));
+
+export const plannerTicketTierCostRelations = relations(plannerTicketTierCost, ({ one }) => ({
+  sportingEvent: one(sportingEvents, {
+    fields: [plannerTicketTierCost.sportingEventId],
+    references: [sportingEvents.id],
+  }),
+}));
+
+export const plannerDestinationBandsRelations = relations(plannerDestinationBands, ({ one }) => ({
+  destination: one(destinations, {
+    fields: [plannerDestinationBands.destinationId],
+    references: [destinations.id],
+  }),
+}));
+
+export const plannerSessionsRelations = relations(plannerSessions, ({ many }) => ({
+  dripSent: many(plannerDripSent),
+}));
+
+export const plannerDripSentRelations = relations(plannerDripSent, ({ one }) => ({
+  plannerSession: one(plannerSessions, {
+    fields: [plannerDripSent.plannerSessionId],
+    references: [plannerSessions.id],
   }),
 }));
