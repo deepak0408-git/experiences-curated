@@ -15,6 +15,22 @@ import NewBoardModal from "./NewBoardModal";
 import { renameBoard, deleteBoard } from "../actions";
 import MoveToBoard from "./MoveToBoard";
 
+// Same map used on the homepage — the raw DB enum ("formula_one") was being
+// rendered directly with a naive capitalize, producing "Formula_one" (then
+// forced to "FORMULA_ONE" by the uppercase CSS class) instead of "Formula 1".
+// Fixed 26 Jul 2026.
+const SPORT_LABELS: Record<string, string> = {
+  tennis: "Tennis",
+  cricket: "Cricket",
+  football: "Football",
+  rugby: "Rugby",
+  golf: "Golf",
+  formula_one: "Formula 1",
+  cycling: "Cycling",
+  athletics: "Athletics",
+  other: "Sport",
+};
+
 export interface PlannerItem {
   savedItemId: string;
   experienceId: string;
@@ -297,7 +313,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                 <p className="text-xs text-[#6A6A6A] mb-8">Save experiences as you browse to build your itinerary.</p>
                 <div className="mt-2 pt-8 border-t border-[#2A2A2A] text-left">
                   <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-4 text-center">Upcoming event packs</p>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     {upcomingEvents.map((ev) => (
                       <Link key={ev.slug} href={`/event-pack/${ev.slug}`} className="group rounded-sm border border-[#2A2A2A] overflow-hidden hover:border-[#AAFF00] transition-colors">
                         <div className="relative h-32 overflow-hidden bg-[#1A1A1A]">
@@ -306,8 +322,8 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
                           )}
                         </div>
                         <div className="p-4">
-                          <p className="text-[10px] font-semibold tracking-widest uppercase text-[#6A6A6A] mb-1">
-                            {ev.sport.charAt(0).toUpperCase() + ev.sport.slice(1)}{ev.destinationName ? ` · ${ev.destinationName}` : ""}
+                          <p className="text-[10px] font-semibold tracking-widest uppercase text-[#6A6A6A] mb-1 truncate">
+                            {SPORT_LABELS[ev.sport] ?? ev.sport}{ev.destinationName ? ` · ${ev.destinationName}` : ""}
                           </p>
                           <p className="text-sm font-black text-white group-hover:text-[#AAFF00] transition-colors mb-1">{ev.name}</p>
                           <p className="text-xs text-[#6A6A6A]">

@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
 import { sportingEvents, sportingEventExperiences, experiences } from "@/schema/database";
-import { eq, and, gte, asc, isNotNull, count } from "drizzle-orm";
+import { eq, and, gte, asc, isNotNull, count, inArray } from "drizzle-orm";
 import Link from "next/link";
 import Image from "next/image";
 import HomepageTripBoardCTA from "./_components/HomepageTripBoardCTA";
 import HomepageNav from "./_components/HomepageNav";
 import IdentityStrip from "./_components/IdentityStrip";
+import PlannerTeaser from "./_components/PlannerTeaser";
 import SportNavigator from "./_components/SportNavigator";
 import ScrollFadeInit from "./_components/ScrollFadeInit";
 import BrandHero from "./_components/BrandHero";
@@ -156,7 +157,10 @@ export default async function HomePage() {
   const allUpcoming = await db
     .select()
     .from(sportingEvents)
-    .where(gte(sportingEvents.endDate, today))
+    .where(and(
+      gte(sportingEvents.endDate, today),
+      inArray(sportingEvents.packStatus, ["built_hidden", "live"]),
+    ))
     .orderBy(asc(sportingEvents.startDate));
 
   const calendarEvents = allUpcoming
@@ -220,8 +224,19 @@ export default async function HomePage() {
             isFree: eventPriceDisplay(ev.slug) === "Free",
           }))}
           hasCalendarEvents={calendarEvents.length > 0}
+          showPlannerLink={process.env.SHOW_PLANNER_TEASER === "true"}
         />
       </div>
+
+      {/* Zone 1.5 — Trip Planner teaser: the alternate path for visitors who
+          are sport-decided but event-undecided. Sits before Identity Strip
+          and On the calendar/Browse by sport, since those all assume the
+          visitor already knows their event.
+          Gated behind SHOW_PLANNER_TEASER during Planner beta (27 Jul 2026)
+          — Planner itself stays live at /planner (shareable with beta
+          testers directly), homepage stays unchanged for everyone else
+          until beta wraps and this flag flips to "true". */}
+      {process.env.SHOW_PLANNER_TEASER === "true" && <PlannerTeaser />}
 
       {/* Zone 2 — Identity strip */}
       <IdentityStrip />

@@ -2,6 +2,16 @@ import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Dev-only. Next.js 15.6+ blocks cross-origin dev requests by default (a
+  // security fix) — accessing the dev server via LAN IP from a phone (e.g.
+  // 192.168.1.2:3000) counts as cross-origin from the dev server's own
+  // perspective, silently failing hydration: the page renders from SSR (so
+  // scrolling/static content look fine) but React never attaches, so
+  // EVERY click/tap handler site-wide does nothing. No effect on production
+  // builds. Diagnosed 26 Jul 2026 after ruling out the Planner's own code —
+  // this reproduced on unrelated pages (sign-in, curator/ranker) too, only
+  // when accessed via LAN IP in dev, never on localhost or in production.
+  allowedDevOrigins: ["192.168.1.2"],
   async headers() {
     return [
       {
