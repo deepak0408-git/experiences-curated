@@ -135,7 +135,30 @@ export async function saveHomepageSlots(
 
   // Clear all slots, then set the chosen ones in a single batched UPDATE
   // (skipping hidden events — already nulled above).
-  await db.update(sportingEvents).set({ homepageSlot: null });
+  //
+  // Both statements below exclude rows where is_hidden=false AND
+  // activated_at IS NULL. Root cause (full RCA 27 Jul 2026): a handful of
+  // events activated before the DB's guard_sporting_events_activation
+  // trigger existed (Belgian GP, India in England, Wimbledon, The Open)
+  // have is_hidden=false with a genuinely NULL activated_at. That trigger
+  // fires on ANY UPDATE touching such a row — regardless of which columns
+  // are in the SET clause, regardless of a WHERE id=X filter — because
+  // Postgres row-level triggers evaluate the full NEW row. The original
+  // unconditional `db.update(sportingEvents).set({ homepageSlot: null })`
+  // touched every row including these 4, so the whole save 500'd even when
+  // the intent was only to change an unrelated event's slot (caught live
+  // 27 Jul 2026, blocking a BMW PGA Championship slot change). This WHERE
+  // clause is a pure code-level workaround — it does not fix the
+  // underlying data gap. Backfilling activated_at for those events is a
+  // separate, deliberate follow-up (see Operations Checklist) that must
+  // never set it to NOW() or anything that could make
+  // newsletter-new-pack-announcement's cron treat them as freshly
+  // activated.
+  await db.execute(sql`
+    UPDATE sporting_events
+    SET homepage_slot = NULL
+    WHERE NOT (is_hidden = false AND activated_at IS NULL)
+  `);
   if (withSlot.length > 0) {
     const slotValues = withSlot.map((s) => sql`(${s.eventId}::uuid, ${s.slot}::int)`);
     await db.execute(sql`
@@ -143,6 +166,7 @@ export async function saveHomepageSlots(
       SET homepage_slot = v.slot
       FROM (VALUES ${sql.join(slotValues, sql`, `)}) AS v(id, slot)
       WHERE se.id = v.id
+        AND NOT (se.is_hidden = false AND se.activated_at IS NULL)
     `);
   }
 
