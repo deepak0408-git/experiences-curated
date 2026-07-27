@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { sportingEvents, proSubscriptions, experiences } from "@/schema/database";
-import { eq, gte, asc, and } from "drizzle-orm";
+import { eq, gte, asc, and, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 import { algoliasearch } from "algoliasearch";
@@ -77,17 +77,31 @@ export async function saveHomepageSlots(
     .filter((h) => currentlyHiddenIds.has(h.eventId) !== h.isHidden)
     .map((h) => h.eventId);
 
-  // Apply hidden flags first — hidden events cannot hold a slot
-  for (const { eventId, isHidden } of hidden) {
-    await db
-      .update(sportingEvents)
-      .set({
-        isHidden,
-        homepageSlot: isHidden ? null : undefined,
-        // Stamp activation time — anchors the 2-day-later newsletter announcement
-        ...(newlyActivatedIds.has(eventId) ? { activatedAt: new Date() } : {}),
-      })
-      .where(eq(sportingEvents.id, eventId));
+  // Apply hidden flags — batched into a single UPDATE...FROM(VALUES) instead
+  // of one awaited round-trip per row. The previous per-row loop (plus the
+  // matching per-row slot-assignment loop below) meant a ~14-row page paid
+  // ~15-20+ sequential DB round-trips before the save could resolve —
+  // measured live as a save that never finished. Same root cause and fix
+  // shape as the Planner's getPlannerEvents.ts N+1 batching (26 Jul 2026).
+  // activatedAt is carried per-row through the VALUES list (NULL for rows
+  // that don't need it) rather than dropped, since it must only stamp for
+  // events that are newly activated in this exact call.
+  if (hidden.length > 0) {
+    const hiddenValues = hidden.map(
+      (h) =>
+        sql`(${h.eventId}::uuid, ${h.isHidden}::boolean, ${
+          newlyActivatedIds.has(h.eventId) ? new Date().toISOString() : null
+        }::timestamptz)`
+    );
+    await db.execute(sql`
+      UPDATE sporting_events AS se
+      SET
+        is_hidden = v.is_hidden,
+        homepage_slot = CASE WHEN v.is_hidden THEN NULL ELSE se.homepage_slot END,
+        activated_at = COALESCE(v.activated_at, se.activated_at)
+      FROM (VALUES ${sql.join(hiddenValues, sql`, `)}) AS v(id, is_hidden, activated_at)
+      WHERE se.id = v.id
+    `);
   }
 
   const hiddenIds = new Set(hidden.filter((h) => h.isHidden).map((h) => h.eventId));
@@ -102,13 +116,17 @@ export async function saveHomepageSlots(
     if (assigned.length > 1) return { error: `More than one event assigned to slot ${slotNum}.` };
   }
 
-  // Clear all slots then set chosen ones (skipping hidden events — already nulled above)
+  // Clear all slots, then set the chosen ones in a single batched UPDATE
+  // (skipping hidden events — already nulled above).
   await db.update(sportingEvents).set({ homepageSlot: null });
-  for (const { eventId, slot } of withSlot) {
-    await db
-      .update(sportingEvents)
-      .set({ homepageSlot: slot })
-      .where(eq(sportingEvents.id, eventId));
+  if (withSlot.length > 0) {
+    const slotValues = withSlot.map((s) => sql`(${s.eventId}::uuid, ${s.slot}::int)`);
+    await db.execute(sql`
+      UPDATE sporting_events AS se
+      SET homepage_slot = v.slot
+      FROM (VALUES ${sql.join(slotValues, sql`, `)}) AS v(id, slot)
+      WHERE se.id = v.id
+    `);
   }
 
   revalidatePath("/curator/events");
