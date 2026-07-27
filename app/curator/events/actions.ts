@@ -86,8 +86,25 @@ export async function saveHomepageSlots(
   // activatedAt is carried per-row through the VALUES list (NULL for rows
   // that don't need it) rather than dropped, since it must only stamp for
   // events that are newly activated in this exact call.
-  if (hidden.length > 0) {
-    const hiddenValues = hidden.map(
+  //
+  // Only rows whose isHidden actually changed (changedEventIds, computed
+  // above) go into the batch — reusing changedEventIds rather than the raw
+  // `hidden` array. This is NOT just an optimization: a handful of
+  // long-live events (Belgian GP, India in England, Wimbledon, The Open —
+  // all activated before the DB's activation-guard trigger existed) have
+  // isHidden=false with a genuinely NULL activatedAt. The guard trigger
+  // rejects any statement whose NEW row has is_hidden=false AND
+  // activated_at IS NULL — and it evaluates every row in the batch, not
+  // just the ones that changed, so including these untouched rows made the
+  // ENTIRE batched save fail with a 500 (caught live 27 Jul 2026, blocking
+  // an unrelated BMW PGA homepage-slot change). Backfilling activatedAt for
+  // those 4 events is a separate, deliberate follow-up — see
+  // Operations Checklist. This scoping fix alone unblocks saves that don't
+  // touch those events, with zero data writes and zero email risk (no
+  // notifyProNewPack/newsletter-cron code path is reachable from here).
+  const hiddenToUpdate = hidden.filter((h) => changedEventIds.includes(h.eventId));
+  if (hiddenToUpdate.length > 0) {
+    const hiddenValues = hiddenToUpdate.map(
       (h) =>
         sql`(${h.eventId}::uuid, ${h.isHidden}::boolean, ${
           newlyActivatedIds.has(h.eventId) ? new Date().toISOString() : null
