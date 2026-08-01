@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
 
@@ -129,6 +130,16 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="relative w-full aspect-[1464/1035] rounded-sm border border-[#2A2A2A] overflow-hidden mb-8 bg-[#141414]">
+        <Image
+          src="https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/bahrain-grand-prix-grandstand-map.jpg"
+          alt="Sepang International Circuit map showing the Main Grandstand, K1 Grandstand, Grandstand F, and Hill Stand (C2 General Admission) positioned around the track"
+          fill
+          className="object-contain"
+          sizes="(max-width: 768px) 100vw, 720px"
+        />
       </div>
 
       <div className="flex flex-col gap-2 mb-8">
