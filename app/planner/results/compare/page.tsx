@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import HomepageNav from "@/app/_components/HomepageNav";
 import ComparisonView from "./_components/ComparisonView";
 import { getPlannerEvents } from "../../_lib/getPlannerEvents";
@@ -22,8 +22,7 @@ export default async function ComparePage({
   }>;
 }) {
   const { slugs, sports, budgetMin, budgetMax, timeWindow, tripLengthDays, originMarket } = await searchParams;
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
   const events = await getPlannerEvents(Number(tripLengthDays ?? 0), originMarket ?? "unspecified");
 
   return (

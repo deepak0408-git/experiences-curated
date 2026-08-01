@@ -69,6 +69,25 @@ export default async function TripBoardPage({
       .from(users)
       .where(eq(users.authId, authUser.id))
       .limit(1);
+
+    if (!dbUser) {
+      // Fix (1 Aug 2026): the conflict above can also come from a row
+      // created earlier by email alone (e.g. grantFreeAccess or a webhook)
+      // with authId still NULL — onConflictDoNothing no-ops on the email
+      // collision, so the authId-based select above finds nothing. Recover
+      // by email instead and backfill authId now that this person has
+      // actually signed in. Same fix already applied in
+      // experience/[slug]/actions.ts's getOrCreateDbUser and
+      // trip-board/actions.ts — this file had its own inline copy of the
+      // same logic that was missing this third step, causing dbUser to stay
+      // undefined and crash on dbUser.id below (Sentry: TypeError: Cannot
+      // read properties of undefined (reading 'id'), /trip-board, 31 Jul 2026).
+      [dbUser] = await db
+        .update(users)
+        .set({ authId: authUser.id })
+        .where(eq(users.email, authUser.email!))
+        .returning({ id: users.id, email: users.email });
+    }
   }
 
   // Ensure a default board exists and backfill any orphaned saves
