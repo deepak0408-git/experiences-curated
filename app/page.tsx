@@ -77,6 +77,11 @@ const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: 
     early: "US$5",
     standard: "US$10",
   },
+  "bahrain-grand-prix": {
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_BAHRAIN_GP_EARLY_BIRD_CUTOFF ?? "2026-09-04",
+    early: "US$5",
+    standard: "US$10",
+  },
 };
 
 
