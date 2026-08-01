@@ -6,7 +6,8 @@ const SPOKE_ID = "luxury";
 
 export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) {
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
-  const heroImageUrl = getSpokeImage(linkedExperiences, getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!.imageSlug);
+  const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
+  const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
   const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
   const paddockClub = linkedExperiences.find((e) => e.slug.includes("f1-paddock-club"));
