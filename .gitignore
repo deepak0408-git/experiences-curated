@@ -49,3 +49,10 @@ drizzle/
 # Sentry Config File
 .env.sentry-build-plugin
 .env.local
+
+# sensitive documents — never commit credentials or business docs
+docs/
+*.docx
+*.doc
+*.xlsx
+*.xls
