@@ -62,6 +62,7 @@ export async function GET(request: NextRequest) {
     .where(and(
       eq(sportingEvents.startDate, targetDate),
       isNotNull(sportingEvents.preTripBriefLiveAt),
+      eq(sportingEvents.isTestEvent, false),
     ));
 
   if (events.length === 0) {

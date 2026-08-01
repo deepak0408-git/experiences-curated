@@ -3,7 +3,7 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { db } from "@/lib/db";
 import { giftCodes, purchases, sportingEvents } from "@/schema/database";
-import { eq, and, isNull, gte } from "drizzle-orm";
+import { eq, and, isNull, gte, inArray } from "drizzle-orm";
 
 export async function POST(request: NextRequest) {
   const cookieStore = await cookies();
@@ -58,14 +58,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "You can't redeem your own gift code." }, { status: 400 });
   }
 
-  // Validate the chosen event exists and is live
+  // Validate the chosen event exists, is live, and actually has a pack
   const [event] = await db
-    .select({ id: sportingEvents.id, name: sportingEvents.name, slug: sportingEvents.slug })
+    .select({ id: sportingEvents.id, name: sportingEvents.name, slug: sportingEvents.slug, packCurrency: sportingEvents.packCurrency })
     .from(sportingEvents)
     .where(
       and(
         eq(sportingEvents.id, sportingEventId),
-        eq(sportingEvents.isHidden, false)
+        eq(sportingEvents.isHidden, false),
+        inArray(sportingEvents.packStatus, ["built_hidden", "live"])
       )
     )
     .limit(1);
@@ -107,7 +108,7 @@ export async function POST(request: NextRequest) {
       paddlePriceId: "gift",
       priceTier: "gift",
       pricePaid: "0.00",
-      currency: "GBP",
+      currency: event.packCurrency ?? "USD",
       status: "active",
     })
     .onConflictDoNothing();

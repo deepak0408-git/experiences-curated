@@ -9,6 +9,7 @@ import { and, eq, ne, inArray, count, sql } from "drizzle-orm";
 import { getAuthUser } from "@/lib/supabase/server";
 import { hasProSubscription } from "@/lib/pro";
 import ExperienceViewGate from "./_components/ExperienceViewGate";
+import { getPackPricing } from "@/lib/packPricing";
 import SaveExperienceCTA from "./_components/SaveExperienceCTA";
 import ExperienceTracker from "./_components/ExperienceTracker";
 
@@ -160,7 +161,14 @@ export default async function ExperiencePage({
 
   const jsonLd = buildJsonLd(exp, ratingCount >= 3 ? { avgRating, ratingCount } : null);
 
-  const isEarlyBird = new Date() < new Date(process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01");
+  // Real per-event pricing from the shared PACK_PRICING table (lib/packPricing.ts)
+  // — was previously hardcoded to "wimbledon-2026" as the fallback event and read
+  // price from GLOBAL env vars regardless of which event this experience actually
+  // belongs to. Fixed 1 Aug 2026 after a Bahrain GP (USD) experience page showed
+  // "£25" with no relationship to the real event or currency. If the resolved
+  // event has no PACK_PRICING entry yet, priceDisplay is null and the gate falls
+  // back to a generic "Get the full pack" CTA with no invented price.
+  const eventPricing = getPackPricing(eventPackSlug);
   // FREE_EVENT_SLUGS format: "slug:YYYY-MM-DD,slug:YYYY-MM-DD,slug" — a slug with
   // no :date is free with no end date; a slug with :date is free through the end
   // of that day (UTC). Must match parsing in app/event-pack/[slug]/page.tsx.
@@ -172,11 +180,7 @@ export default async function ExperiencePage({
       return { slug: entrySlug.trim(), endDate: endDate?.trim() };
     })
     .some((e) => e.slug === eventPackSlug && (!e.endDate || new Date() <= new Date(`${e.endDate}T23:59:59Z`)));
-  const priceDisplay = isFreeEventSlug
-    ? "Free"
-    : isEarlyBird
-      ? (process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "£15")
-      : (process.env.NEXT_PUBLIC_STANDARD_PRICE_DISPLAY ?? "£25");
+  const priceDisplay = isFreeEventSlug ? "Free" : eventPricing?.priceDisplay ?? null;
 
   // Auth + saved state (always fresh — never cached)
   const { user: authUser } = await getAuthUser();
@@ -296,6 +300,9 @@ export default async function ExperiencePage({
               slug.startsWith("cape-winelands-stellenbosch-franschhoek-") ? "lg:object-[center_85%]" :
               slug.startsWith("where-to-stay-sandton-") ? "lg:object-[center_25%]" :
               slug.startsWith("soweto-apartheid-museum-") ? "lg:object-[center_15%]" :
+              slug.startsWith("putrajaya-day-trip-pink-mosque-capital") ? "lg:object-[center_50%]" :
+              slug.startsWith("sama-sama-hotel-klia-sepang") ? "lg:object-[center_65%]" :
+              slug.startsWith("hill-stand-c2-sepang-general-admission") ? "object-[center_80%]" :
               ""
             }`}
             sizes="100vw"

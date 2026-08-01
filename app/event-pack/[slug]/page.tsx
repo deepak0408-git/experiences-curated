@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { sportingEvents, experiences, purchases, userProfiles, sportingEventExperiences } from "@/schema/database";
-import { eq, and, sql, asc, isNotNull } from "drizzle-orm";
+import { eq, and, sql, asc, isNotNull, inArray } from "drizzle-orm";
 import { getAuthUser } from "@/lib/supabase/server";
 import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
@@ -13,6 +13,7 @@ import { getProDetails } from "@/lib/pro";
 import HomepageNav from "@/app/_components/HomepageNav";
 import LocalCurrencyHint from "./_components/LocalCurrencyHint";
 import { grantFreeAccess } from "./actions";
+import { PACK_PRICING } from "@/lib/packPricing";
 
 export async function generateMetadata({
   params,
@@ -30,7 +31,10 @@ export async function generateMetadata({
       venueName: sportingEvents.venueName,
     })
     .from(sportingEvents)
-    .where(eq(sportingEvents.slug, slug))
+    .where(and(
+      eq(sportingEvents.slug, slug),
+      inArray(sportingEvents.packStatus, ["built_hidden", "live"]),
+    ))
     .limit(1);
 
   if (!event) return { title: "Event Pack" };
@@ -318,95 +322,10 @@ const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: strin
   ],
 };
 
-const PACK_PRICING: Record<string, {
-  earlyBirdPriceId: string;
-  standardPriceId: string;
-  earlyBirdCutoff: string;
-  earlyBirdDisplay: string;
-  standardDisplay: string;
-}> = {
-  "wimbledon-2026": {
-    earlyBirdPriceId:
-      process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
-        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_EARLY_BIRD ?? ""
-        : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_EARLY_BIRD ?? "",
-    standardPriceId:
-      process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
-        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_STANDARD ?? ""
-        : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_STANDARD ?? "",
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01",
-    earlyBirdDisplay: process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "£15",
-    standardDisplay: process.env.NEXT_PUBLIC_STANDARD_PRICE_DISPLAY ?? "£25",
-  },
-  "us-open-2026": {
-    earlyBirdPriceId:
-      process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
-        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_US_OPEN_EARLY_BIRD ?? ""
-        : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_US_OPEN_EARLY_BIRD ?? "",
-    standardPriceId:
-      process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
-        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_US_OPEN_STANDARD ?? ""
-        : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_US_OPEN_STANDARD ?? "",
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_US_OPEN_EARLY_BIRD_CUTOFF ?? "2026-08-01",
-    earlyBirdDisplay: "$0",
-    standardDisplay: "$10",
-  },
-  "india-in-england-cricket-2026": {
-    earlyBirdPriceId:
-      process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
-        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_CRICKET_EARLY_BIRD ?? ""
-        : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_CRICKET_EARLY_BIRD ?? "",
-    standardPriceId:
-      process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
-        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_CRICKET_STANDARD ?? ""
-        : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_CRICKET_STANDARD ?? "",
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_CRICKET_EARLY_BIRD_CUTOFF ?? "2026-06-15",
-    earlyBirdDisplay: "£9",
-    standardDisplay: "£15",
-  },
-  "belgian-gp-2026": {
-    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_EARLY_BIRD ?? "",
-    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_STANDARD ?? "",
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-10",
-    earlyBirdDisplay: "€15",
-    standardDisplay: "€25",
-  },
-  "hungarian-gp-2026": {
-    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_HUNGARIAN_GP_EARLY_BIRD ?? "",
-    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_HUNGARIAN_GP_STANDARD ?? "",
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_HUNGARIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-17",
-    earlyBirdDisplay: "€0",
-    standardDisplay: "€7",
-  },
-  "open-championship-2026": {
-    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_OPEN_EARLY_BIRD ?? "",
-    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_OPEN_STANDARD ?? "",
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_OPEN_EARLY_BIRD_CUTOFF ?? "2026-07-06",
-    earlyBirdDisplay: "£15",
-    standardDisplay: "£25",
-  },
-  "italian-gp-2026": {
-    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ITALIAN_GP_EARLY_BIRD ?? "",
-    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ITALIAN_GP_STANDARD ?? "",
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_ITALIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-08-25",
-    earlyBirdDisplay: "€5",
-    standardDisplay: "€10",
-  },
-  "bmw-pga-championship-2026": {
-    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BMW_PGA_EARLY_BIRD ?? "",
-    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BMW_PGA_STANDARD ?? "",
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_BMW_PGA_EARLY_BIRD_CUTOFF ?? "2026-09-03",
-    earlyBirdDisplay: "£5",
-    standardDisplay: "£10",
-  },
-  "australia-in-south-africa-cricket-2026": {
-    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_AUS_SA_EARLY_BIRD ?? "",
-    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_AUS_SA_STANDARD ?? "",
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_AUS_SA_EARLY_BIRD_CUTOFF ?? "2026-08-09",
-    earlyBirdDisplay: "$5",
-    standardDisplay: "$10",
-  },
-};
+// PACK_PRICING moved to lib/packPricing.ts (shared with app/experience/[slug]/page.tsx)
+// 1 Aug 2026 — was previously duplicated per-file, and app/experience/[slug]/page.tsx's
+// copy didn't exist at all (it hardcoded "wimbledon-2026" + global env-var pricing
+// regardless of the actual event). Import PACK_PRICING below.
 
 function formatDateRange(startDate: string, endDate: string) {
   const start = new Date(startDate);
@@ -427,10 +346,24 @@ export default async function EventPackPage({
   const [event] = await db
     .select()
     .from(sportingEvents)
-    .where(eq(sportingEvents.slug, slug))
+    .where(and(
+      eq(sportingEvents.slug, slug),
+      inArray(sportingEvents.packStatus, ["built_hidden", "live"]),
+    ))
     .limit(1);
 
   if (!event) notFound();
+
+  // Hub-and-spoke events render an entirely different page — see
+  // _hub-and-spoke/HubPage.tsx. Branches before any of the classic-pack
+  // logic below runs; every existing live event has packFormat="classic"
+  // (the column default) and is completely unaffected. Spoke pages
+  // (Tickets, Hotels, etc.) live at the sibling app/event-pack/[slug]/[spoke]/
+  // route. Built per the hub-and-spoke-event-pack skill.
+  if (event.packFormat === "hub_and_spoke") {
+    const { default: HubPage } = await import("./_hub-and-spoke/HubPage");
+    return <HubPage slug={slug} />;
+  }
 
   // Teaser cards — top 2 by packRank, fall back to unranked published experiences
   const rankedTeasers = await db
@@ -738,7 +671,7 @@ export default async function EventPackPage({
                   )}
                   <p className="text-3xl font-black text-white tracking-tight">
                     {priceDisplay}
-                    <LocalCurrencyHint gbpAmount={parseFloat(priceDisplay.replace(/[^0-9.]/g, ""))} />
+                    <LocalCurrencyHint baseAmount={parseFloat(priceDisplay.replace(/[^0-9.]/g, ""))} baseCurrency={event.packCurrency ?? "USD"} />
                   </p>
                   {isEarlyBird && pricing.earlyBirdDisplay !== pricing.standardDisplay && (
                     <p className="mt-0.5 text-xs text-[#6A6A6A] mb-4">
@@ -789,7 +722,7 @@ export default async function EventPackPage({
                     <p className="mt-4 text-xs text-[#6A6A6A] text-center">
                       Or get this + every future pack with{" "}
                       <Link href="/pro" className="underline hover:text-[#AAFF00] transition-colors">
-                        Annual Pro — £59/yr
+                        Annual Pro — US$59/yr
                       </Link>
                     </p>
                   )}
@@ -955,7 +888,7 @@ export default async function EventPackPage({
                 <p className="mt-3 text-xs text-[#6A6A6A]">
                   Or get this + every future pack with{" "}
                   <Link href="/pro" className="underline hover:text-[#AAFF00] transition-colors">
-                    Annual Pro — £59/yr
+                    Annual Pro — US$59/yr
                   </Link>
                 </p>
               )}

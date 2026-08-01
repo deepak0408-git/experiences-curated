@@ -498,6 +498,10 @@ const INSIDER_TIPS: Record<string, Record<string, string[]>> = {
       "Download the US Open app before you arrive — real-time court assignments, match scores, and delay notifications",
       "Bring a refillable water bottle — free filling stations are distributed throughout the grounds",
     ],
+    "Fan Week": [
+      "Grandstand is where Fan Week's closest practice viewing happens — there's no assigned seating, so arrive before the courts fill up as players prepare for the main draw",
+      "The Roger Federer exhibition (Tue 25 Aug, 7pm) and Stars of the Open presented by Chase (Thu 27 Aug, 6pm) are the two nights worth building a day around — confirm the lineup on usopen.org closer to the date, since names on these cards can shift",
+    ],
   },
   "india-in-england-cricket-2026": {
     "Edgbaston": [
@@ -1633,7 +1637,7 @@ export default async function PackView({
                   Upgrade and future packs are included — no separate purchase.
                 </p>
                 <p className="mt-1 text-xs text-[#6A6A6A] leading-5">
-                  You're on monthly Pro. Switch to annual (£59/yr) and every pack we publish is part of your subscription.
+                  You're on monthly Pro. Switch to annual (US$59/yr) and every pack we publish is part of your subscription.
                 </p>
               </div>
               <Link

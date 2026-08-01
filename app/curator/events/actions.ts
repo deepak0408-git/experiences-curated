@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { sportingEvents, proSubscriptions, experiences } from "@/schema/database";
-import { eq, gte, asc, and, sql } from "drizzle-orm";
+import { eq, gte, asc, and, sql, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 import { algoliasearch } from "algoliasearch";
@@ -35,6 +35,7 @@ export async function getEventsForSlotEditor() {
       endDate: sportingEvents.endDate,
       homepageSlot: sportingEvents.homepageSlot,
       isHidden: sportingEvents.isHidden,
+      packStatus: sportingEvents.packStatus,
     })
     .from(sportingEvents)
     .where(gte(sportingEvents.endDate, sixMonthsAgoStr))
@@ -55,6 +56,24 @@ export async function saveHomepageSlots(
   slots: { eventId: string; slot: string }[],
   hidden: { eventId: string; isHidden: boolean }[]
 ): Promise<{ success: true } | { error: string }> {
+  // Server-side enforcement, not just a disabled UI control — this action
+  // must never activate/slot/feature a planned/building event that has no
+  // pack built yet (SlotEditorForm disables these controls client-side,
+  // but that alone doesn't stop a direct call to this server action).
+  const requestedIds = new Set([...slots.map((s) => s.eventId), ...hidden.map((h) => h.eventId)]);
+  if (requestedIds.size > 0) {
+    const noPackYet = await db
+      .select({ id: sportingEvents.id })
+      .from(sportingEvents)
+      .where(and(
+        inArray(sportingEvents.id, [...requestedIds]),
+        inArray(sportingEvents.packStatus, ["planned", "building"]),
+      ));
+    if (noPackYet.length > 0) {
+      return { error: "Can't activate, feature, or deactivate an event with no pack built yet." };
+    }
+  }
+
   // Detect newly-activated events (isHidden flipping false) before updating
   const currentStates = await db
     .select({ id: sportingEvents.id, isHidden: sportingEvents.isHidden, name: sportingEvents.name, slug: sportingEvents.slug })

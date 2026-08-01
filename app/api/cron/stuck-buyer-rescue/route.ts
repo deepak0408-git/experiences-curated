@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
-import { and, eq, gte, isNull, lt } from "drizzle-orm";
+import { and, eq, gte, isNull, lt, or } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { purchases, sportingEvents } from "@/schema/database";
 
@@ -43,6 +43,7 @@ export async function GET(request: NextRequest) {
       lt(purchases.purchasedAt, twoHoursAgo),
       gte(purchases.purchasedAt, sevenDaysAgo),
       isNull(purchases.rescueSentAt),
+      or(isNull(sportingEvents.isTestEvent), eq(sportingEvents.isTestEvent, false)),
     ));
 
   if (candidates.length === 0) {

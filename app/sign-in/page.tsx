@@ -90,7 +90,7 @@ export default function SignInPage() {
             Sign in
           </p>
           <h1 className="text-2xl font-black text-white text-center mb-8">
-            Welcome back
+            Sign in or create an account
           </h1>
           <Suspense>
             <SignInForm />

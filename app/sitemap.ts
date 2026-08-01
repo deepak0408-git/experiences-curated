@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { db } from "@/lib/db";
 import { experiences, destinations, sportingEvents } from "@/schema/database";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 
 const BASE = process.env.NEXT_PUBLIC_APP_URL ?? "https://experiences-curated.com";
 
@@ -16,7 +16,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .from(destinations),
     db
       .select({ slug: sportingEvents.slug, updatedAt: sportingEvents.updatedAt })
-      .from(sportingEvents),
+      .from(sportingEvents)
+      .where(inArray(sportingEvents.packStatus, ["built_hidden", "live"])),
   ]);
 
   const staticPages: MetadataRoute.Sitemap = [

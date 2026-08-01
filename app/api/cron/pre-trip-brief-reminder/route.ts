@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { and, eq, gte, isNull, lte } from "drizzle-orm";
+import { and, eq, gte, isNull, lte, inArray } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { sportingEvents } from "@/schema/database";
 import crypto from "crypto";
@@ -34,6 +34,8 @@ export async function GET(request: NextRequest) {
       lte(sportingEvents.startDate, tenDaysFromNow.toISOString().split("T")[0]),
       gte(sportingEvents.startDate, now.toISOString().split("T")[0]),
       isNull(sportingEvents.preTripBriefLiveAt),
+      inArray(sportingEvents.packStatus, ["built_hidden", "live"]),
+      eq(sportingEvents.isTestEvent, false),
     ));
 
   if (candidates.length === 0) {

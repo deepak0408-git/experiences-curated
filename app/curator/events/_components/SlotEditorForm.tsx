@@ -12,6 +12,7 @@ type Event = {
   endDate: string;
   homepageSlot: number | null;
   isHidden: boolean;
+  packStatus: "planned" | "building" | "built_hidden" | "live";
 };
 
 const SPORT_LABELS: Record<string, string> = {
@@ -39,13 +40,20 @@ function isExpired(ev: Event) {
   return ev.endDate < today;
 }
 
+function hasNoPackYet(ev: Event) {
+  // planned/building events are calendared (e.g. for the season planner)
+  // but have no pack built — Deactivate/homepage-slot controls don't apply
+  // to them since there's nothing to activate or feature yet.
+  return ev.packStatus === "planned" || ev.packStatus === "building";
+}
+
 function isEditable(ev: Event) {
   // Editable if live or starting within 6 months, and not yet expired.
   // Widened from 3 to 6 months (14 Jul 2026) — events are now built and
   // released further in advance to give travelers more planning lead time.
   // Expired events show a locked "Deactivated" state instead — the
   // expire-homepage-slots cron already clears their slot automatically.
-  return !isExpired(ev) && ev.startDate <= sixMonthsCutoff;
+  return !isExpired(ev) && !hasNoPackYet(ev) && ev.startDate <= sixMonthsCutoff;
 }
 
 export default function SlotEditorForm({ events }: { events: Event[] }) {
@@ -174,6 +182,10 @@ export default function SlotEditorForm({ events }: { events: Event[] }) {
                       title="Automatically deactivated — event has ended"
                       className="w-4 h-4 accent-[#6A6A6A] cursor-not-allowed"
                     />
+                  ) : hasNoPackYet(ev) ? (
+                    <span className="text-xs text-[#AAFF00] font-semibold" title="Calendared, no pack built yet — nothing to activate or deactivate">
+                      No pack yet
+                    </span>
                   ) : (
                     <span className="text-xs text-[#6A6A6A]">—</span>
                   )}

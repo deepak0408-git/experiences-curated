@@ -2,11 +2,17 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 
 export default function WelcomePage() {
   const params = useParams<{ slug: string }>();
   const slug = params.slug;
+  // Preserves which spoke checkout was initiated from (see SpokeShell's
+  // successUrl) so the magic link lands the buyer back where they were,
+  // not always on the hub. Absent for hub-initiated purchases.
+  const searchParams = useSearchParams();
+  const spoke = searchParams.get("spoke");
+  const nextPath = spoke ? `/event-pack/${slug}/${spoke}` : `/event-pack/${slug}`;
 
   useEffect(() => {
     import("@/lib/posthog-events").then(({ phEvent }) =>
@@ -27,7 +33,7 @@ export default function WelcomePage() {
     const res = await fetch("/api/auth/magic-link", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, next: `/event-pack/${slug}` }),
+      body: JSON.stringify({ email, next: nextPath }),
     });
 
     setLoading(false);

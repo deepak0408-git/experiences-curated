@@ -2,7 +2,7 @@
 import { hasProSubscription } from "@/lib/pro";
 import { db } from "@/lib/db";
 import { savedItems, users, experiences, destinations, sportingEvents } from "@/schema/database";
-import { eq, and, desc, gte } from "drizzle-orm";
+import { eq, and, desc, gte, inArray } from "drizzle-orm";
 import Link from "next/link";
 import type { Metadata } from "next";
 import TripBoardSignIn from "./_components/TripBoardSignIn";
@@ -144,7 +144,11 @@ export default async function TripBoardPage({
     })
     .from(sportingEvents)
     .leftJoin(destinations, eq(sportingEvents.destinationId, destinations.id))
-    .where(and(gte(sportingEvents.endDate, today), eq(sportingEvents.isHidden, false)))
+    .where(and(
+      gte(sportingEvents.endDate, today),
+      eq(sportingEvents.isHidden, false),
+      inArray(sportingEvents.packStatus, ["built_hidden", "live"]),
+    ))
     .orderBy(sportingEvents.startDate);
 
   const upcomingEvents: UpcomingEvent[] = upcomingEventRows.map((e) => ({

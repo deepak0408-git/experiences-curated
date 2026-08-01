@@ -39,43 +39,43 @@ const SPORT_LABELS: Record<string, string> = {
 const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: string; standard: string }> = {
   "wimbledon-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01",
-    early: process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "£15",
-    standard: process.env.NEXT_PUBLIC_STANDARD_PRICE_DISPLAY ?? "£25",
+    early: process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "US$15",
+    standard: process.env.NEXT_PUBLIC_STANDARD_PRICE_DISPLAY ?? "US$25",
   },
   "belgian-gp-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-10",
-    early: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_PRICE_DISPLAY ?? "€15",
-    standard: process.env.NEXT_PUBLIC_BELGIAN_GP_STANDARD_PRICE_DISPLAY ?? "€25",
+    early: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_PRICE_DISPLAY ?? "US$15",
+    standard: process.env.NEXT_PUBLIC_BELGIAN_GP_STANDARD_PRICE_DISPLAY ?? "US$25",
   },
   "us-open-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_US_OPEN_EARLY_BIRD_CUTOFF ?? "2026-08-01",
-    early: "$0",
-    standard: "$10",
+    early: "US$0",
+    standard: "US$10",
   },
   "india-in-england-cricket-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_CRICKET_EARLY_BIRD_CUTOFF ?? "2026-06-15",
-    early: "£9",
-    standard: "£15",
+    early: "US$9",
+    standard: "US$15",
   },
   "hungarian-gp-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_HUNGARIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-17",
-    early: "€0",
-    standard: "€7",
+    early: "US$0",
+    standard: "US$7",
   },
   "italian-gp-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_ITALIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-08-25",
-    early: "€5",
-    standard: "€10",
+    early: "US$5",
+    standard: "US$10",
   },
   "bmw-pga-championship-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_BMW_PGA_EARLY_BIRD_CUTOFF ?? "2026-09-03",
-    early: "£5",
-    standard: "£10",
+    early: "US$5",
+    standard: "US$10",
   },
   "australia-in-south-africa-cricket-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_AUS_SA_EARLY_BIRD_CUTOFF ?? "2026-08-09",
-    early: "$5",
-    standard: "$10",
+    early: "US$5",
+    standard: "US$10",
   },
 };
 
