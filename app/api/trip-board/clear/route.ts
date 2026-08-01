@@ -1,12 +1,11 @@
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { savedItems, users } from "@/schema/database";
 import { and, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 export async function DELETE(request: Request) {
-  const supabase = await createClient();
-  const { data: { user: authUser } } = await supabase.auth.getUser();
+  const { user: authUser } = await getAuthUser();
 
   if (!authUser) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

@@ -1,5 +1,5 @@
 ﻿import Image from "next/image";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { users, userProfiles, travelLogs, purchases, sportingEvents, proSubscriptions } from "@/schema/database";
 import { eq, count, sql } from "drizzle-orm";
@@ -19,8 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProfilePage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
   if (!user) redirect("/");
 
   const [dbUser] = await db

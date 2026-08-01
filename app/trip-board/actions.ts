@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { savedItems, users, tripBoards } from "@/schema/database";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import { getOrCreateDefaultBoard, createBoard, getBoardCount } from "@/lib/trip-boards";
 import { hasProSubscription } from "@/lib/pro";
 
@@ -31,8 +31,7 @@ export async function updateSavedItemNotes(savedItemId: string, notes: string) {
 }
 
 export async function removeSavedItemByExperienceId(experienceId: string) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
   if (!user) return { error: "Not authenticated" };
 
   const [dbUser] = await db
@@ -51,8 +50,7 @@ export async function removeSavedItemByExperienceId(experienceId: string) {
 }
 
 export async function addExperiencesToBoard(experienceIds: string[], boardId?: string) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
   if (!user) return { error: "Not authenticated" };
 
   let [dbUser] = await db
@@ -108,8 +106,7 @@ export async function addExperiencesToBoard(experienceIds: string[], boardId?: s
 }
 
 export async function renameBoard(boardId: string, title: string) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
   if (!user) return { error: "Not authenticated" };
 
   const [dbUser] = await db
@@ -129,8 +126,7 @@ export async function renameBoard(boardId: string, title: string) {
 }
 
 export async function moveItemToBoard(savedItemId: string, targetBoardId: string) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
   if (!user) return { error: "Not authenticated" };
 
   const [dbUser] = await db
@@ -150,8 +146,7 @@ export async function moveItemToBoard(savedItemId: string, targetBoardId: string
 }
 
 export async function deleteBoard(boardId: string) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
   if (!user) return { error: "Not authenticated" };
 
   const [dbUser] = await db
@@ -179,8 +174,7 @@ export async function deleteBoard(boardId: string) {
 }
 
 export async function createNewBoard(title: string) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
   if (!user) return { error: "Not authenticated" };
 
   const [dbUser] = await db

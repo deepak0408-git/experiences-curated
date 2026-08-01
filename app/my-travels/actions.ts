@@ -4,11 +4,10 @@ import { db } from "@/lib/db";
 import { travelLogs, users, experiences } from "@/schema/database";
 import { and, eq, ilike, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 
 async function getDbUser() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
   if (!user) return null;
   const [dbUser] = await db.select({ id: users.id }).from(users).where(eq(users.authId, user.id)).limit(1);
   return dbUser ?? null;

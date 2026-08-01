@@ -1,4 +1,4 @@
-﻿import { createClient } from "@/lib/supabase/server";
+﻿import { getAuthUser } from "@/lib/supabase/server";
 import { hasProSubscription } from "@/lib/pro";
 import { db } from "@/lib/db";
 import { savedItems, users, experiences, destinations, sportingEvents } from "@/schema/database";
@@ -19,8 +19,7 @@ export default async function TripBoardPage({
 }: {
   searchParams: Promise<{ board?: string }>;
 }) {
-  const supabase = await createClient();
-  const { data: { user: authUser } } = await supabase.auth.getUser();
+  const { user: authUser } = await getAuthUser();
 
   if (!authUser) {
     return (

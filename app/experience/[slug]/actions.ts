@@ -1,6 +1,6 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { users, savedItems } from "@/schema/database";
 import { and, eq } from "drizzle-orm";
@@ -43,8 +43,7 @@ async function getOrCreateDbUser(authId: string, email: string) {
 }
 
 export async function saveExperience(experienceId: string, slug: string) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
   if (!user) return { error: "Not authenticated" };
 
   const dbUser = await getOrCreateDbUser(user.id, user.email!);
@@ -59,8 +58,7 @@ export async function saveExperience(experienceId: string, slug: string) {
 }
 
 export async function unsaveExperience(experienceId: string, slug: string) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
   if (!user) return { error: "Not authenticated" };
 
   const [dbUser] = await db

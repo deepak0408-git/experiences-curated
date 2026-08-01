@@ -43,7 +43,13 @@ export async function GET(request: NextRequest) {
     { cookies: { getAll: () => cookieStore.getAll() } }
   );
 
-  const { data: { user } } = await supabase.auth.getUser();
+  let user: { email?: string } | null = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch {
+    // Stale/invalid refresh token — treat exactly like "not signed in"
+  }
   if (!user?.email) {
     return NextResponse.json({ error: "Unauthenticated" }, { status: 401 });
   }

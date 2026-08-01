@@ -6,7 +6,7 @@ import Image from "next/image";
 import { db } from "@/lib/db";
 import { experiences, savedItems, users, userProfiles, travelLogs, purchases, sportingEvents } from "@/schema/database";
 import { and, eq, ne, inArray, count, sql } from "drizzle-orm";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import { hasProSubscription } from "@/lib/pro";
 import ExperienceViewGate from "./_components/ExperienceViewGate";
 import SaveExperienceCTA from "./_components/SaveExperienceCTA";
@@ -179,8 +179,7 @@ export default async function ExperiencePage({
       : (process.env.NEXT_PUBLIC_STANDARD_PRICE_DISPLAY ?? "£25");
 
   // Auth + saved state (always fresh — never cached)
-  const supabase = await createClient();
-  const { data: { user: authUser } } = await supabase.auth.getUser();
+  const { user: authUser } = await getAuthUser();
   const isLoggedIn = !!authUser;
   const isPro = authUser?.email ? await hasProSubscription(authUser.email) : false;
 
