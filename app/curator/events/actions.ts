@@ -56,11 +56,35 @@ export async function saveHomepageSlots(
   slots: { eventId: string; slot: string }[],
   hidden: { eventId: string; isHidden: boolean }[]
 ): Promise<{ success: true } | { error: string }> {
-  // Server-side enforcement, not just a disabled UI control — this action
-  // must never activate/slot/feature a planned/building event that has no
-  // pack built yet (SlotEditorForm disables these controls client-side,
-  // but that alone doesn't stop a direct call to this server action).
-  const requestedIds = new Set([...slots.map((s) => s.eventId), ...hidden.map((h) => h.eventId)]);
+  // Detect current state for every event up front — needed both to scope
+  // the no-pack-yet guard below to actually-changed rows, and (for the
+  // isHidden subset) to detect newly-activated events further down.
+  const allCurrentStates = await db
+    .select({ id: sportingEvents.id, isHidden: sportingEvents.isHidden, homepageSlot: sportingEvents.homepageSlot, name: sportingEvents.name, slug: sportingEvents.slug })
+    .from(sportingEvents);
+  const currentStateById = new Map(allCurrentStates.map((e) => [e.id, e]));
+
+  // SlotEditorForm always submits every event's current slot/hidden value,
+  // not just the row the curator actually touched (its React state is
+  // initialized from all events on page load). Server-side enforcement,
+  // not just a disabled UI control — this action must never activate/slot/
+  // feature a planned/building event that has no pack built yet.
+  //
+  // Scope the guard to genuinely CHANGED rows only, not every submitted
+  // row — same fix shape as changedEventIds/hiddenToUpdate below. Before
+  // this fix, any planned/building event sitting anywhere on the page
+  // (e.g. Alfred Dunhill, Singapore GP — not yet built) blocked the ENTIRE
+  // save, including an unrelated event's legitimate activation, since its
+  // ID was always present in the full-form payload regardless of whether
+  // its own value changed. Caught live 1 Aug 2026 blocking Bahrain GP's
+  // activation even though Bahrain GP's own packStatus was already "live".
+  const changedSlotIds = slots
+    .filter((s) => (currentStateById.get(s.eventId)?.homepageSlot?.toString() ?? "") !== s.slot)
+    .map((s) => s.eventId);
+  const changedHiddenIds = hidden
+    .filter((h) => currentStateById.get(h.eventId)?.isHidden !== h.isHidden)
+    .map((h) => h.eventId);
+  const requestedIds = new Set([...changedSlotIds, ...changedHiddenIds]);
   if (requestedIds.size > 0) {
     const noPackYet = await db
       .select({ id: sportingEvents.id })
@@ -75,10 +99,7 @@ export async function saveHomepageSlots(
   }
 
   // Detect newly-activated events (isHidden flipping false) before updating
-  const currentStates = await db
-    .select({ id: sportingEvents.id, isHidden: sportingEvents.isHidden, name: sportingEvents.name, slug: sportingEvents.slug })
-    .from(sportingEvents)
-    .where(eq(sportingEvents.isHidden, true));
+  const currentStates = allCurrentStates.filter((e) => e.isHidden);
 
   const currentlyHiddenIds = new Set(currentStates.map((e) => e.id));
   const newlyActivated = hidden
