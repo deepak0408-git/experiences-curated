@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { userProfiles } from "@/schema/database";
 import { eq } from "drizzle-orm";
 import { scoreQuiz } from "@/lib/quiz";
 
 export async function POST(request: NextRequest) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
 
   if (!user?.email) {
     return NextResponse.json({ error: "Unauthorised" }, { status: 401 });

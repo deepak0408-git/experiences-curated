@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { sportingEvents, experiences, purchases, userProfiles, sportingEventExperiences } from "@/schema/database";
 import { eq, and, sql, asc, isNotNull } from "drizzle-orm";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -495,10 +495,7 @@ export default async function EventPackPage({
   const totalCount = Number(countRow.count);
 
   // Auth + purchase check
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
 
   if (!user && status === "succeeded") {
     redirect(`/event-pack/${slug}/welcome`);

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { SearchUI } from "./_components/SearchUI";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { userProfiles } from "@/schema/database";
 import { eq } from "drizzle-orm";
@@ -22,8 +22,7 @@ export default async function SearchPage({
 
   const { q, sport } = await searchParams;
 
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
 
   let archetype: string | null = null;
   if (user?.email) {

@@ -11,7 +11,7 @@ import PlannerTeaser from "./_components/PlannerTeaser";
 import SportNavigator from "./_components/SportNavigator";
 import ScrollFadeInit from "./_components/ScrollFadeInit";
 import BrandHero from "./_components/BrandHero";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 
 // Revalidate every 5 minutes — events and experience counts change rarely.
 // Auth (nav email, trip board CTA) gracefully falls back to unauthenticated state from cache.
@@ -141,8 +141,7 @@ export default async function HomePage() {
   const today = new Date().toISOString().split("T")[0];
   const in120Days = new Date(Date.now() + 120 * 86_400_000).toISOString().split("T")[0];
 
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
 
   // Fetch featured events from DB by homepageSlot (set via /curator/events)
   const featuredRows = await db

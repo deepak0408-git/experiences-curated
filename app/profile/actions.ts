@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
@@ -34,8 +34,7 @@ export async function openPaddlePortal(paddleCustomerId: string) {
 }
 
 export async function deleteAccount() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { supabase, user } = await getAuthUser();
   if (!user) redirect("/");
 
   // email is the stable identifier across auth + purchases

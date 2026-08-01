@@ -1,6 +1,6 @@
 import DodoPayments from "dodopayments";
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 
 const client = new DodoPayments({
   bearerToken: process.env.DODO_API_KEY!,
@@ -8,8 +8,7 @@ const client = new DodoPayments({
 });
 
 export async function POST(request: NextRequest) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
 
   const { productId, successUrl } = await request.json();
 

@@ -3,7 +3,7 @@ import { sportingEvents, purchases } from "@/schema/database";
 import { eq, gte, and } from "drizzle-orm";
 import type { Metadata } from "next";
 import HomepageNav from "@/app/_components/HomepageNav";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import GiftRedeemForm from "./_components/GiftRedeemForm";
 import { notFound } from "next/navigation";
 
@@ -14,8 +14,7 @@ export const metadata: Metadata = {
 export default async function GiftPage() {
   if (process.env.HIDE_PRO === "true") notFound();
 
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
 
   const today = new Date().toISOString().slice(0, 10);
   const [liveEvents, ownedPurchases] = await Promise.all([

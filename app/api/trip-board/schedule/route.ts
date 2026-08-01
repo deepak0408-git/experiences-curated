@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { savedItems, users } from "@/schema/database";
 import { and, eq } from "drizzle-orm";
@@ -15,8 +15,7 @@ async function getDbUserId(authId: string) {
 
 // PATCH — set or update schedule for a saved item
 export async function PATCH(request: NextRequest) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const userId = await getDbUserId(user.id);
@@ -34,8 +33,7 @@ export async function PATCH(request: NextRequest) {
 
 // DELETE — remove schedule from a saved item
 export async function DELETE(request: NextRequest) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const userId = await getDbUserId(user.id);

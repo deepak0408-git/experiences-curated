@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { travelLogs, users, experiences, sportingEvents, sportingEventExperiences, purchases } from "@/schema/database";
 import { eq, desc, and, inArray, isNotNull, asc } from "drizzle-orm";
@@ -11,8 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function MyTravelsPage(props: { searchParams: Promise<{ event?: string }> }) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
   if (!user) redirect("/");
 
   const [dbUser] = await db

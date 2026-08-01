@@ -1,7 +1,7 @@
 ﻿import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import { hasProSubscription } from "@/lib/pro";
 import { db } from "@/lib/db";
 import { userProfiles, sportingEvents } from "@/schema/database";
@@ -72,8 +72,7 @@ const PRO_FEATURES: { label: string; detail: string; annualOnly?: boolean; comin
 ];
 
 export default async function ProPage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
 
   if (process.env.HIDE_PRO === "true") {
     return (

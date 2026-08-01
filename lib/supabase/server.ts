@@ -25,3 +25,22 @@ export async function createClient() {
     }
   );
 }
+
+// A stale/invalid refresh-token cookie makes supabase.auth.getUser() throw
+// (AuthApiError: Invalid Refresh Token) instead of returning user: null —
+// middleware.ts already guards against this with its own try-catch; this
+// helper brings every Server Component/Action that calls getUser() up to the
+// same standard, since none of them had that protection and the unhandled
+// throw was crashing whole pages in production. Treat a throw exactly like
+// "not signed in" — every call site already has real handling for that case.
+export async function getAuthUser() {
+  const supabase = await createClient();
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    return { supabase, user };
+  } catch {
+    return { supabase, user: null };
+  }
+}
