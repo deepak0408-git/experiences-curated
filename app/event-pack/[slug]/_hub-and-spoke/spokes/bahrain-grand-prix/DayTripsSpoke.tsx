@@ -6,7 +6,8 @@ const SPOKE_ID = "day-trips";
 
 export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }) {
   const { event, linkedExperiences, dayTrips } = await getSpokeData(eventSlug);
-  const heroImageUrl = getSpokeImage(linkedExperiences, getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!.imageSlug);
+  const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
+  const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
   const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
   const genting = dayTrips.find((t) => t.slug.includes("genting-highlands"));
