@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/server";
 import HomepageNav from "@/app/_components/HomepageNav";
 import PlannerIntakeForm from "./_components/PlannerIntakeForm";
 import { getOriginMarkets } from "./_lib/getOriginMarkets";
@@ -10,8 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PlannerPage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { user } = await getAuthUser();
   const originMarkets = await getOriginMarkets();
 
   return (
