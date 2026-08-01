@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { sportingEvents, purchases } from "@/schema/database";
-import { eq, gte, and } from "drizzle-orm";
+import { eq, gte, and, inArray } from "drizzle-orm";
 import type { Metadata } from "next";
 import HomepageNav from "@/app/_components/HomepageNav";
 import { getAuthUser } from "@/lib/supabase/server";
@@ -21,7 +21,11 @@ export default async function GiftPage() {
     db
       .select({ id: sportingEvents.id, name: sportingEvents.name, slug: sportingEvents.slug, heroImageUrl: sportingEvents.heroImageUrl, startDate: sportingEvents.startDate })
       .from(sportingEvents)
-      .where(and(eq(sportingEvents.isHidden, false), gte(sportingEvents.endDate, today)))
+      .where(and(
+        eq(sportingEvents.isHidden, false),
+        gte(sportingEvents.endDate, today),
+        inArray(sportingEvents.packStatus, ["built_hidden", "live"]),
+      ))
       .orderBy(sportingEvents.startDate),
     user?.email
       ? db

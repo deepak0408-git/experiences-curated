@@ -63,7 +63,8 @@
     ],
     "additionalDirectories": [
       "c:\\Users\\HP\\.clone\\projects\\ExperienceCurator\\app\\trip-board",
-      "c:\\Users\\HP\\.claude\\projects\\ExperienceCurator\\app\\trip-board\\share"
+      "c:\\Users\\HP\\.claude\\projects\\ExperienceCurator\\app\\trip-board\\share",
+      "C:\\Users\\HP\\.claude\\docs"
     ]
   }
 }

@@ -35,6 +35,7 @@ export async function GET(request: NextRequest) {
       eq(purchases.status, "active"),
       eq(sportingEvents.endDate, targetDate),
       isNull(purchases.conciergeOutreachPostTripSentAt),
+      eq(sportingEvents.isTestEvent, false),
     ));
 
   if (candidates.length === 0) {

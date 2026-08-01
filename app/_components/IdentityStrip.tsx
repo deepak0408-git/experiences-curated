@@ -6,11 +6,11 @@ export default function IdentityStrip() {
     },
     {
       heading: "BUILT FOR SPORT",
-      body: "Wimbledon. The Open Championships. Belgian GP. World Cup Cricket. And more.",
+      body: "Wimbledon. The Open. Formula 1. World Cup Cricket. And more.",
     },
     {
-      heading: "TRIP-READY",
-      body: "Save experiences, arrange by day, share with whoever's coming.",
+      heading: "BUDGET-SMART",
+      body: "Events matched to your budget, from real, researched costs.",
     },
   ];
 

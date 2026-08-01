@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { experiences, sportingEvents } from "@/schema/database";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { indexExperience, removeFromIndex } from "@/lib/algolia";
 
@@ -35,6 +35,7 @@ export async function getEventFilterOptions() {
   return db
     .select({ id: sportingEvents.id, name: sportingEvents.name, slug: sportingEvents.slug })
     .from(sportingEvents)
+    .where(inArray(sportingEvents.packStatus, ["built_hidden", "live"]))
     .orderBy(desc(sportingEvents.startDate));
 }
 

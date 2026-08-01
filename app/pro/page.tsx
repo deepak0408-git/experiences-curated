@@ -5,7 +5,7 @@ import { getAuthUser } from "@/lib/supabase/server";
 import { hasProSubscription } from "@/lib/pro";
 import { db } from "@/lib/db";
 import { userProfiles, sportingEvents } from "@/schema/database";
-import { eq, gte, and } from "drizzle-orm";
+import { eq, gte, and, inArray } from "drizzle-orm";
 import ProCheckout from "./_components/ProCheckout";
 import DodoProCheckout from "./_components/DodoProCheckout";
 import { ARCHETYPE_DETAILS } from "@/lib/quiz";
@@ -93,7 +93,11 @@ export default async function ProPage() {
   const upcomingEvents = await db
     .select({ slug: sportingEvents.slug, name: sportingEvents.name, sport: sportingEvents.sport, heroImageUrl: sportingEvents.heroImageUrl, startDate: sportingEvents.startDate, endDate: sportingEvents.endDate })
     .from(sportingEvents)
-    .where(and(gte(sportingEvents.endDate, today), eq(sportingEvents.isHidden, false)))
+    .where(and(
+      gte(sportingEvents.endDate, today),
+      eq(sportingEvents.isHidden, false),
+      inArray(sportingEvents.packStatus, ["built_hidden", "live"]),
+    ))
     .orderBy(sportingEvents.startDate);
 
   const clientToken = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN ?? "";
@@ -237,9 +241,9 @@ export default async function ProPage() {
                 <DodoProCheckout
                   monthlyProductId={dodoMonthlyProductId}
                   annualProductId={dodoAnnualProductId}
-                  monthlyDisplay="£6"
-                  annualDisplay="£59"
-                  annualMonthlyEquiv="£4.92"
+                  monthlyDisplay="US$6"
+                  annualDisplay="US$59"
+                  annualMonthlyEquiv="US$4.92"
                 />
               ) : (
                 <ProCheckout

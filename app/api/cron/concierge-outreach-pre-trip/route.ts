@@ -24,7 +24,10 @@ export async function GET(request: NextRequest) {
   const events = await db
     .select({ id: sportingEvents.id, name: sportingEvents.name })
     .from(sportingEvents)
-    .where(eq(sportingEvents.startDate, targetDate));
+    .where(and(
+      eq(sportingEvents.startDate, targetDate),
+      eq(sportingEvents.isTestEvent, false),
+    ));
 
   if (events.length === 0) {
     console.log("[concierge-outreach-pre-trip] no qualifying events for", targetDate);

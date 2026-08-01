@@ -2,13 +2,14 @@
 
 import { db } from "@/lib/db";
 import { sportingEvents, sportingEventExperiences, experiences } from "@/schema/database";
-import { eq, and, asc } from "drizzle-orm";
+import { eq, and, asc, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export async function getEventsForRanker() {
   return db
     .select({ id: sportingEvents.id, name: sportingEvents.name, slug: sportingEvents.slug })
     .from(sportingEvents)
+    .where(inArray(sportingEvents.packStatus, ["built_hidden", "live"]))
     .orderBy(asc(sportingEvents.startDate));
 }
 

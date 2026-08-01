@@ -33,7 +33,7 @@ export default function ExperienceViewGate({
   slug: string;
   eventPackSlug: string;
   eventPackName: string;
-  priceDisplay: string;
+  priceDisplay: string | null;
   isPro: boolean;
   hasPurchasedPack: boolean;
 }) {
@@ -87,7 +87,9 @@ export default function ExperienceViewGate({
         >
           {priceDisplay === "Free"
             ? "Get the full pack for free"
-            : `Get the full pack — ${priceDisplay}`}
+            : priceDisplay
+              ? `Get the full pack — ${priceDisplay}`
+              : "Get the full pack"}
         </Link>
 
         <Link

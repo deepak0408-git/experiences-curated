@@ -1,0 +1,10 @@
+import { config } from "dotenv";
+config({ path: ".env.local" });
+import postgres from "postgres";
+const sql = postgres(process.env.DIRECT_URL);
+const rows = await sql`SELECT city, region, iata_code FROM planner_origin_markets ORDER BY region, city`;
+console.log(rows.length, "rows");
+const byRegion = {};
+for (const r of rows) byRegion[r.region] = (byRegion[r.region] || 0) + 1;
+console.log(byRegion);
+await sql.end();

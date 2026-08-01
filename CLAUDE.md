@@ -12,6 +12,7 @@
 > **Internal links:** always use Next.js `<Link>` — never plain `<a href>` for internal paths. Plain anchors cause full page loads, making pages bfcache-eligible and breaking back-navigation.
 > **Design system:** Dark canvas + fluorescent green. Merged to `main` 21 Jun 2026 (commit 135bec7 = validated baseline). Rollback: `git reset --hard 135bec7`. Full token set in memory `project_design_system.md`. Full-site overhaul not yet started — Tier 3 (experience detail, event-pack, curator) pending.
 > **Third-party platform setup:** Before proposing any hands-on setup on a third-party platform (analytics, verification, embeds, integrations) — search for that platform's documented plan/tier limitations first, before touching anything. Stop and re-search after one failed attempt, not three. See memory `feedback_third_party_platform_limits.md` for the incident this came from (Substack free-tier + Google Search Console, 10 Jul 2026 — an hour lost to GA4/GTM setup that a single upfront search would have shown was futile).
+> **Currency — USD only, site-wide:** Site-wide currency migration completed 1 Aug 2026. Every event pack price and Pro subscription price is USD, displayed as `US$` (never a bare `$`, which is ambiguous against AUD/CAD/SGD readers). This applies to *our own* pricing only — real local-price facts in editorial copy (e.g. "£2.50 for strawberries at Wimbledon") and third-party pricing we don't control (e.g. F1 Experiences' own EUR hospitality tiers) stay in their real, original currency; never convert those. Paddle's pricing block on `/pro` intentionally stays GBP (dormant, blocked on bank/KYB) — not part of this migration. See `project_usd_only_currency_migration` memory for the full before/after and the sourcing rule.
 
 ---
 
@@ -171,9 +172,10 @@ sport:          tennis | cricket | football | rugby | golf | formula_one | cycli
 - Magic links must redirect to `/auth/confirm?next=<path>` not `/auth/callback` (implicit hash-fragment flow).
 - `purchases` table: `userId` nullable, `email + sportingEventId` unique, webhook idempotent via `onConflictDoNothing`.
 - **Paddle checkout pre-fills user email** via `customer: { email: userEmail }` in `Paddle.Checkout.open()` — prevents wrong email on purchase. `userEmail` passed as prop to `PaddleCheckout` from the server page.
-- `PACK_PRICING`, `PACK_SECTIONS_BY_EVENT`, `INSIDER_TIPS`, `PACK_EDITORIAL`, `TOURNAMENT_RHYTHM` — all keyed by event slug. Add new event entries to all five when adding a pack.
+- `PACK_PRICING`, `PACK_SECTIONS_BY_EVENT`, `INSIDER_TIPS`, `PACK_EDITORIAL`, `TOURNAMENT_RHYTHM` — all keyed by event slug. Add new event entries to all five when adding a pack. **Pricing is USD-only** — every `earlyBirdDisplay`/`standardDisplay` string across all pricing tables (`lib/packPricing.ts`, the hub-and-spoke `_lib/packPricing.ts`, `app/page.tsx`'s `HOMEPAGE_PRICE_BY_EVENT`) must use the `US$` prefix, matching the real Dodo product price. These three tables are known duplicates (Operations Checklist P3 T3 #2 tracks deduping them into one shared source) — until that's done, a new event's price must be added to all three or they'll silently disagree.
 - **PackView large object edits:** always Read 10–15 lines around the insertion point to confirm brace depth before editing `INSIDER_TIPS` or `PACK_EDITORIAL`. Misplaced entries break the function definitions that follow.
-- `LocalCurrencyHint` — client component at `event-pack/[slug]/_components/LocalCurrencyHint.tsx`. Detects locale via `navigator.languages`, fetches rate via `/api/fx?currency=XXX` (proxied to frankfurter.app to avoid CORS in dev).
+- `LocalCurrencyHint` — client component at `event-pack/[slug]/_components/LocalCurrencyHint.tsx`. Detects locale via `navigator.languages`, fetches rate via `/api/fx?currency=XXX` (proxied to frankfurter.app to avoid CORS in dev). `baseCurrency` defaults to `"USD"` (not GBP) since the migration — pass the real event/product currency explicitly wherever it's known.
+- `sportingEvents.packCurrency` is the DB-level source of truth for what currency an event's pack actually charges — set to `USD` on every event as of 1 Aug 2026. `grantFreeAccess` and gift-code redemption both read this field (falling back to `"USD"`, not `"GBP"`) rather than hardcoding a currency — never reintroduce a hardcoded currency literal in either path.
 - Hero image upload: `node --experimental-strip-types scripts/seed-<name>.mjs` or direct R2 upload + DB update. R2 key: `sporting-events/hero/<slug>.jpg`.
 
 **Purchase flow (Paddle):** Paddle → `transaction.completed` webhook → purchases row + Supabase user → `/welcome` magic link → `/auth/confirm` → pack view.
@@ -190,6 +192,8 @@ sport:          tennis | cricket | football | rugby | golf | formula_one | cycli
 
 ## Pro Subscription
 `pro_subscriptions` table. Check via `hasProSubscription(email)` (boolean) or `getProDetails(email)` (returns `{ isPro, isAnnual, currentPeriodEnd }`) in `lib/pro.ts`. Use `getProDetails` on event pack pages — it returns billing cycle in one query. Gates: experience reads (3 free / unlimited Pro), PackView HowToBook, Trip Board (1 board free / unlimited Pro + Move to).
+
+**Pricing (1 Aug 2026):** Dodo (current default provider) is `US$6/mo`, `US$59/yr` (`app/pro/page.tsx`'s `DodoProCheckout` block) — these are the real, confirmed Dodo product prices, not display-only figures. Paddle's block stays `£9.99/mo`, `£83.88/yr` — GBP, deliberately untouched, since Paddle is dormant (blocked on bank/KYB). `pro_subscriptions` has no `currency` column — Pro's billing currency exists only as these hardcoded display strings plus whichever currency the Dodo/Paddle price IDs are actually configured in on each provider's dashboard.
 
 **Annual vs Monthly (27 Jun 2026):**
 - Annual Pro: free access to all event packs while `currentPeriodEnd > now` — no purchase needed. Pack page gate: `hasPurchased OR freeEvent OR isAnnualProActive`.

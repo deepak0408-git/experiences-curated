@@ -1,0 +1,13 @@
+import { config } from "dotenv";
+config({ path: ".env.local" });
+import postgres from "postgres";
+const sql = postgres(process.env.DIRECT_URL);
+const hotelCount = await sql`SELECT count(*) FROM planner_hotel_tier_cost`;
+const ticketCount = await sql`SELECT count(*) FROM planner_ticket_tier_cost`;
+console.log("Total hotel rows:", hotelCount[0].count, "(should be 4 tiers x 4 destinations = 16)");
+console.log("Total ticket rows:", ticketCount[0].count, "(should be 4 tiers x 4 events = 16)");
+const enums = await sql`SELECT enumlabel FROM pg_enum WHERE enumtypid = 'planner_tier'::regtype`;
+const ticketEnums = await sql`SELECT enumlabel FROM pg_enum WHERE enumtypid = 'planner_ticket_tier'::regtype`;
+console.log("planner_tier values:", enums.map(e=>e.enumlabel));
+console.log("planner_ticket_tier values:", ticketEnums.map(e=>e.enumlabel));
+await sql.end();

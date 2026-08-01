@@ -199,11 +199,11 @@ export async function GET(request: NextRequest) {
       <h2 style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#a3a3a3;margin-bottom:12px">Pro Subscriptions</h2>
       <table style="width:100%;border-collapse:collapse;margin-bottom:24px;font-size:13px">
         <tr>
-          <td style="padding:5px 0;color:#525252">Monthly (£9/mo)</td>
+          <td style="padding:5px 0;color:#525252">Monthly (US$6/mo)</td>
           <td style="padding:5px 0;text-align:right;color:#525252">${proMonthlyCount}</td>
         </tr>
         <tr>
-          <td style="padding:5px 0;color:#525252">Annual (£89/yr)</td>
+          <td style="padding:5px 0;color:#525252">Annual (US$59/yr)</td>
           <td style="padding:5px 0;text-align:right;color:#525252">${proAnnualCount}</td>
         </tr>
         <tr style="border-top:1px solid #e5e5e5">

@@ -105,6 +105,15 @@ export const packStatusEnum = pgEnum("pack_status", [
   "live",
 ]);
 
+// Drives which UI app/event-pack/[slug]/page.tsx renders. Defaults to
+// "classic" so every existing live event (Wimbledon, Belgian GP, Italian GP,
+// etc.) needs zero changes — only events deliberately built in the new
+// hub-and-spoke format (see hub-and-spoke-event-pack skill) get switched.
+export const packFormatEnum = pgEnum("pack_format", [
+  "classic",
+  "hub_and_spoke",
+]);
+
 export const savedItemStatusEnum = pgEnum("saved_item_status", [
   "to_do",
   "booked",
@@ -266,6 +275,16 @@ export const sportingEvents = pgTable("sporting_events", {
   // newsletter subscribers.
   isTestEvent: boolean("is_test_event").notNull().default(false),
   packStatus: packStatusEnum("pack_status").notNull().default("live"),
+  packFormat: packFormatEnum("pack_format").notNull().default("classic"),
+  // Real currency the event's Dodo/Paddle pack is actually priced in — the
+  // single source of truth for grantFreeAccess (writes purchases.currency)
+  // and LocalCurrencyHint (converts FROM this, not a hardcoded GBP
+  // assumption). Nullable: events without a pack (or not yet priced) have
+  // no currency yet. Added 1 Aug 2026 after grantFreeAccess was found
+  // hardcoding "GBP" for every free-access grant regardless of the event's
+  // real currency (Hungarian GP is EUR, US Open is USD, etc.) — purchases
+  // rows were silently wrong for every non-GBP event.
+  packCurrency: varchar("pack_currency", { length: 3 }),
   // When isHidden last flipped false — anchors the 2-day-later newsletter announcement
   activatedAt: timestamp("activated_at"),
   newsletterAnnouncedAt: timestamp("newsletter_announced_at"),

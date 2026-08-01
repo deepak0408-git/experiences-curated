@@ -11,7 +11,7 @@ const LOCALE_CURRENCY: Record<string, string> = {
 };
 
 const CURRENCY_SYMBOLS: Record<string, string> = {
-  INR: "₹", USD: "$", CAD: "CA$", AUD: "A$", SGD: "S$",
+  INR: "₹", USD: "US$", CAD: "CA$", AUD: "A$", SGD: "S$",
   AED: "AED", ZAR: "R", EUR: "€", NZD: "NZ$", PKR: "₨", NGN: "₦",
 };
 
@@ -26,24 +26,24 @@ function detectCurrency(): string | null {
   return null;
 }
 
-export default function LocalCurrencyHint({ gbpAmount }: { gbpAmount: number }) {
+export default function LocalCurrencyHint({ baseAmount, baseCurrency = "USD" }: { baseAmount: number; baseCurrency?: string }) {
   const [hint, setHint] = useState<string | null>(null);
 
   useEffect(() => {
     const currency = detectCurrency();
-    if (!currency || currency === "GBP") return;
+    if (!currency || currency === baseCurrency) return;
 
-    fetch(`/api/fx?currency=${currency}`)
+    fetch(`/api/fx?currency=${currency}&from=${baseCurrency}`)
       .then(r => r.json())
       .then(data => {
         const rate = data?.rate;
         if (!rate) return;
-        const converted = Math.round(gbpAmount * rate);
+        const converted = Math.round(baseAmount * rate);
         const symbol = CURRENCY_SYMBOLS[currency] ?? currency + " ";
         setHint(`≈ ${symbol}${converted.toLocaleString()}`);
       })
       .catch(() => {});
-  }, [gbpAmount]);
+  }, [baseAmount, baseCurrency]);
 
   if (!hint) return null;
 

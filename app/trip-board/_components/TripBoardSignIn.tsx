@@ -30,25 +30,25 @@ export default function TripBoardSignIn() {
 
   if (status === "sent") {
     return (
-      <div>
-        <p className="text-sm font-semibold text-neutral-900 mb-1">Check your inbox</p>
-        <p className="text-sm text-neutral-500 leading-6">
-          We sent a sign-in link to <span className="text-neutral-700">{email}</span>.
-          Click it to open your Trip Board.
+      <div className="text-center">
+        <p className="text-base font-black text-white mb-2">Check your inbox</p>
+        <p className="text-sm text-[#A3A3A3] leading-6">
+          We sent a sign-in link to <span className="text-white">{email}</span>.
+          <br />Click it to open your Trip Board.
         </p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3 text-left">
+    <form onSubmit={handleSubmit} className="space-y-3">
       <input
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="your@email.com"
         required
-        className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-400 transition-colors"
+        className="w-full px-4 py-3 rounded-sm border border-[#2A2A2A] bg-[#141414] text-sm text-white placeholder:text-[#3A3A3A] focus:outline-none focus:border-[#AAFF00] transition-colors"
       />
       {errorMessage && (
         <p className="text-xs text-red-500">{errorMessage}</p>
@@ -56,7 +56,7 @@ export default function TripBoardSignIn() {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="w-full px-6 py-3 rounded-xl bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors disabled:opacity-50"
+        className="w-full px-4 py-3 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] disabled:opacity-50 transition-colors"
       >
         {status === "loading" ? "Sending…" : "Send sign-in link"}
       </button>
