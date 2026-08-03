@@ -83,6 +83,15 @@ export async function getSpokeData(slug: string) {
     culturalExperiences: linkedExperiences.filter((e) => e.experienceType === "cultural_site"),
     luxuryExperiences: linkedExperiences.filter((e) => e.budgetTier === "splurge" || e.budgetTier === "luxury"),
     dateRange: `${new Date(event.startDate).toLocaleDateString("en-GB", { day: "numeric", month: "long" })}–${new Date(event.endDate).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}`,
+    // Oldest lastUpdated across all 3 planner cost tables feeding the Cost
+    // spoke — the honest "verified as of" date, not the newest table's date,
+    // since the headline price is only as fresh as its stalest input.
+    costDataVerifiedAt: (() => {
+      const dates = [...hotels, ...tickets, destinationBand]
+        .filter((r): r is NonNullable<typeof r> => !!r?.lastUpdated)
+        .map((r) => new Date(r.lastUpdated).getTime());
+      return dates.length ? new Date(Math.min(...dates)) : null;
+    })(),
   };
 }
 
