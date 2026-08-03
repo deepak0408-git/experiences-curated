@@ -27,7 +27,14 @@ export async function GET(request: NextRequest) {
   const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
   // Find purchases that are active, old enough for link to have expired,
-  // recent enough to still be worth rescuing, and not yet rescued
+  // recent enough to still be worth rescuing, and not yet rescued.
+  // isHidden:false guard added 3 Aug 2026 — a free-access grant (curator
+  // preview via FREE_EVENT_SLUGS, or an early-access buyer) on an event
+  // that hasn't launched yet still creates a real "active" purchases row,
+  // which this cron had no way to distinguish from a genuine stuck buyer.
+  // Caught live: a curator's own Singapore GP preview grant (still
+  // isHidden:true) triggered a "your pack is ready" rescue email 2 hours
+  // later, despite the event never having gone public.
   const candidates = await db
     .select({
       id: purchases.id,
@@ -44,6 +51,7 @@ export async function GET(request: NextRequest) {
       gte(purchases.purchasedAt, sevenDaysAgo),
       isNull(purchases.rescueSentAt),
       or(isNull(sportingEvents.isTestEvent), eq(sportingEvents.isTestEvent, false)),
+      eq(sportingEvents.isHidden, false),
     ));
 
   if (candidates.length === 0) {
