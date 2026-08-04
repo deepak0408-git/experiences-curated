@@ -12,7 +12,7 @@ const TRIP_NIGHTS = 3;
 // left as an honest "not yet announced" line, per explicit user instruction
 // (1 Aug 2026), not folded into the headline total or estimated.
 export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
-  const { event, linkedExperiences, hotels, destinationBand, flights } = await getSpokeData(eventSlug);
+  const { event, linkedExperiences, hotels, destinationBand, flights, costDataVerifiedAt } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
   const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
@@ -92,6 +92,11 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
               see why ↓
             </a>
           </p>
+          {costDataVerifiedAt && (
+            <p className="text-xs text-[#6A6A6A] mt-1">
+              Prices verified {costDataVerifiedAt.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })} — not real-time
+            </p>
+          )}
         </div>
       )}
 
