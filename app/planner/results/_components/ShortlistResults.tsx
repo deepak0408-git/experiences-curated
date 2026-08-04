@@ -234,12 +234,12 @@ export default function ShortlistResults({
                   Estimated trip cost: {formatMoneyRange(event.totalLow, event.totalHigh)}
                 </p>
                 <p className="text-xs text-[#6A6A6A] mb-1">
-                  Typical: ${Math.round(event.totalMid).toLocaleString()}
+                  Typical: US${Math.round(event.totalMid).toLocaleString()}
                 </p>
 
                 {overage > 0 ? (
                   <p className="text-xs text-red-500 mb-4">
-                    ${Math.round(overage).toLocaleString()} over your budget
+                    US${Math.round(overage).toLocaleString()} over your budget
                   </p>
                 ) : (
                   <p className="text-xs text-[#AAFF00] mb-4">✓ Fits your budget</p>

@@ -122,8 +122,8 @@ export async function sendTradeoffPlanEmail(
   const typicalOverage = Math.max(0, Math.round(newTotalMid) - budgetMax);
 
   const fitLine = fitsBudget
-    ? `<p style="font-size:13px;color:#AAFF00;font-weight:900;margin:0 0 24px">✓ Fits your $${Math.round(budgetMax).toLocaleString()} budget</p>`
-    : `<p style="font-size:13px;color:#ff6b6b;font-weight:900;margin:0 0 24px">Still ~$${typicalOverage.toLocaleString()} over your $${Math.round(budgetMax).toLocaleString()} budget</p>`;
+    ? `<p style="font-size:13px;color:#AAFF00;font-weight:900;margin:0 0 24px">✓ Fits your US$${Math.round(budgetMax).toLocaleString()} budget</p>`
+    : `<p style="font-size:13px;color:#ff6b6b;font-weight:900;margin:0 0 24px">Still ~US$${typicalOverage.toLocaleString()} over your US$${Math.round(budgetMax).toLocaleString()} budget</p>`;
 
   const breakdownRows = lineItemBreakdown
     .map(
@@ -162,7 +162,7 @@ export async function sendTradeoffPlanEmail(
       <p style="font-size:14px;font-weight:900;color:#ffffff;margin:0 0 16px">${leverEmployed}</p>
       ${breakdownRows}
       <p style="font-size:16px;font-weight:900;color:#ffffff;margin:12px 0 2px">New estimated trip cost: ${formatMoneyRange(newTotalLow, newTotalHigh)}</p>
-      <p style="font-size:12px;color:#6A6A6A;margin:0 0 8px">Typical: $${Math.round(newTotalMid).toLocaleString()}</p>
+      <p style="font-size:12px;color:#6A6A6A;margin:0 0 8px">Typical: US$${Math.round(newTotalMid).toLocaleString()}</p>
       ${fitLine}
       ${cta}
       ${backToPlanLink}

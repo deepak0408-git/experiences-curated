@@ -78,10 +78,10 @@ export default async function PlannerTeaser() {
               <div className="w-[50%]">
                 <p className="text-sm font-black text-white">{italianGp.name}</p>
                 <p className="mt-1 text-xs text-[#A3A3A3]">
-                  Total cost: {formatMoneyRange(italianTotalLow, italianTotalHigh)} · typical ${italianMid.toLocaleString()}
+                  Total cost: {formatMoneyRange(italianTotalLow, italianTotalHigh)} · typical US${italianMid.toLocaleString()}
                 </p>
                 <p className={`mt-1 text-xs font-black ${italianFits ? "text-[#AAFF00]" : "text-red-500"}`}>
-                  {italianFits ? "✓ Fits your budget" : `$${(italianMid - TEASER_BUDGET_MAX).toLocaleString()} over your budget`}
+                  {italianFits ? "✓ Fits your budget" : `US$${(italianMid - TEASER_BUDGET_MAX).toLocaleString()} over your budget`}
                 </p>
               </div>
               {/* The 5 cost categories the Planner researches for every
@@ -103,10 +103,10 @@ export default async function PlannerTeaser() {
               <div className="w-[50%]">
                 <p className="text-sm font-black text-white">{singaporeGp.name}</p>
                 <p className="mt-1 text-xs text-[#A3A3A3]">
-                  Total cost: {formatMoneyRange(singaporeTotalLow, singaporeTotalHigh)} · typical ${singaporeMid.toLocaleString()}
+                  Total cost: {formatMoneyRange(singaporeTotalLow, singaporeTotalHigh)} · typical US${singaporeMid.toLocaleString()}
                 </p>
                 <p className={`mt-1 text-xs font-black ${singaporeFits ? "text-[#AAFF00]" : "text-red-500"}`}>
-                  {singaporeFits ? "✓ Fits your budget" : `$${singaporeOverage.toLocaleString()} over your budget`}
+                  {singaporeFits ? "✓ Fits your budget" : `US$${singaporeOverage.toLocaleString()} over your budget`}
                 </p>
                 {!singaporeFits && (
                   <p className="mt-1 text-xs text-[#A3A3A3]">We&apos;ll help you optimize.</p>

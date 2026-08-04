@@ -129,15 +129,15 @@ function ScenarioCard({
         New estimated trip cost: {formatMoneyRange(scenario.newTotalLow, scenario.newTotalHigh)}
       </p>
       <p className="text-xs text-[#6A6A6A] pl-1 mb-1">
-        Typical: ${Math.round(scenario.newTotalMid).toLocaleString()}
+        Typical: US${Math.round(scenario.newTotalMid).toLocaleString()}
       </p>
       {scenario.fitsBudget ? (
         <p className={rag === "amber" ? "text-xs text-amber-400 pl-1 mt-1 mb-3" : "text-xs text-[#AAFF00] pl-1 mt-1 mb-3"}>
-          ✓ This fits your ${Math.round(budgetMax).toLocaleString()} budget
+          ✓ This fits your US${Math.round(budgetMax).toLocaleString()} budget
         </p>
       ) : (
         <p className="text-xs text-red-500 pl-1 mt-1 mb-3">
-          Even with both changes, you&apos;re still ~${typicalOverage.toLocaleString()} over — would you be flexible in considering this enhanced budget?
+          Even with both changes, you&apos;re still ~US${typicalOverage.toLocaleString()} over — would you be flexible in considering this enhanced budget?
         </p>
       )}
       {sent ? (

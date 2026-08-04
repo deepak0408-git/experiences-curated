@@ -303,6 +303,8 @@ export default async function ExperiencePage({
               slug.startsWith("putrajaya-day-trip-pink-mosque-capital") ? "lg:object-[center_50%]" :
               slug.startsWith("sama-sama-hotel-klia-sepang") ? "lg:object-[center_65%]" :
               slug.startsWith("hill-stand-c2-sepang-general-admission") ? "object-[center_80%]" :
+              slug.startsWith("singapore-gp-ticket-guide-") ? "lg:object-[center_75%]" :
+              slug.startsWith("singapore-gp-zone4-walkabout-") ? "object-[center_80%]" :
               ""
             }`}
             sizes="100vw"
@@ -401,6 +403,9 @@ export default async function ExperiencePage({
         {/* Body */}
         {exp.bodyContent && (
           <div className="mt-10 max-w-none">
+            {slug.startsWith("singapore-gp-trackside-hotels-") && (
+              <p className="text-xs text-[#6A6A6A] mb-4">Updated on: 2 August 2026</p>
+            )}
             {exp.bodyContent.split("\n\n").map((para, i) => (
               <p key={i} className="text-[#A3A3A3] leading-8 mb-5">
                 {renderInline(para)}

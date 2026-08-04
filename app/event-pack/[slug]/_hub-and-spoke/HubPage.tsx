@@ -35,6 +35,12 @@ const FILMSTRIP_SLUGS_BY_EVENT: Record<string, string[]> = {
     "malaysia-f1-fans-nostalgia-2026-return",
     "petronas-twin-towers-kl-skybridge",
   ],
+  "singapore-grand-prix": [
+    "singapore-gp-turn1-grandstand",
+    "singapore-gp-padang-stage-concerts",
+    "singapore-gp-gardens-by-the-bay",
+    "singapore-gp-waterfront-walk",
+  ],
 };
 
 // "Quick Reference" — the classic pack's factual lookup table (address,
@@ -44,6 +50,11 @@ const FILMSTRIP_SLUGS_BY_EVENT: Record<string, string[]> = {
 // possible (see below); emergency numbers and hospital are real, sourced
 // facts for the Sepang/KLIA area, not invented — see reference memory.
 const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; value: string; href?: string; linkLabel?: string }>> = {
+  "singapore-grand-prix": [
+    { label: "Gates open", value: "F1 hasn't published exact 2026 gate-opening times yet. Based on the confirmed 2026 session schedule — Practice 1 Fri 4:30pm, Sprint Qualifying Fri 8:30pm, Sprint Sat 5pm, Qualifying Sat 9pm, Race Sun 8pm — expect gates to open roughly 2-3 hours before each day's first session. Confirm exact times closer to race week." },
+    { label: "Emergencies", value: "Police: 999. Fire/ambulance (SCDF): 995 — the same number covers both. Non-emergency ambulance: 1777. Nearest 24-hour A&E to the circuit: Raffles Hospital, 585 North Bridge Road, Singapore 188770." },
+    { label: "Tourism Infoline", value: "Singapore Tourism Board visitor hotline (info, not emergency dispatch): 1800-736 2000 (Mon-Fri, 9am-6pm), or +65 6736 2000 from overseas." },
+  ],
   "bahrain-grand-prix": [
     { label: "Emergencies", value: "General emergency (police/ambulance/fire): 999, or 112 from a mobile with no SIM/credit. Nearest major A&E: Hospital Putrajaya, Presint 7, 62250 Putrajaya (~12-15 min from the circuit), tel 03-8312 4200." },
     { label: "Tourism Infoline", value: "Tourism Malaysia Infoline (info, not emergency dispatch): 1-300-88-5050" },
@@ -62,6 +73,17 @@ const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: string; h
     // return experiences' whyItsSpecial fields), not invented.
     introText:
       "F1 hasn't raced in Malaysia since 2017. A regional conflict left a gap in the 2026 calendar, and Sepang — a circuit that once set the template for modern F1 venues — was ready to fill it. Nobody engineered a homecoming here, which is rare in a sport that almost never gives its dropped venues a second chance.\n\nNearly 191,000 fans turned out for a single Sepang MotoGP weekend in 2025 — proof demand here never left, it just had no F1 race to attach to for nine years. You're watching a generation of Malaysian fans meet a real piece of their own sporting history, in person, for the first time.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
+  "singapore-grand-prix": {
+    displayName: "Singapore Grand Prix",
+    venueLine: "Held at the Marina Bay Street Circuit — F1's original night race, run under floodlights through the streets of downtown Singapore.",
+    heroFallbackImageSlug: "singapore-gp-turn1-grandstand",
+    // Built from real sourced facts already researched during experience
+    // seeding (F1's official heat-hazard designation, the concert lineup,
+    // the night-race format) — not invented, matches the Bahrain GP
+    // pattern of drawing The Brief from real underlying content.
+    introText:
+      "Singapore is F1's only true night race, run entirely under floodlights through the streets of Marina Bay, and it's officially been classified F1's first-ever \"heat hazard\" event — the humidity here is a real, documented part of the challenge, not just race-weekend colour.\n\nIt's also the one Grand Prix built as much around the music as the racing. Ten stages run across the circuit park all weekend, headlined this year by Lana Del Rey's first-ever Singapore show, The Killers, and JJ Lin, so a full race day genuinely runs from afternoon sessions through to a late-night set under the same lights.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
 };
 
