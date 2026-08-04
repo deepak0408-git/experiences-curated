@@ -175,6 +175,16 @@ export default async function SpokeShell({
             </div>
           </div>
         )}
+
+        {/* Bottom back-link — mirrors the one at the top so a reader who
+            finishes the page doesn't have to scroll all the way back up
+            just to return to the hub. Added 4 Aug 2026 per direct UX
+            feedback. */}
+        <nav className="flex items-center gap-2 text-xs text-[#6A6A6A] mt-12 pt-6 border-t border-[#2A2A2A]">
+          <Link href={`/event-pack/${eventSlug}`} className="hover:text-[#AAFF00] transition-colors">
+            ← All {spokes.length} {eventName} planning guides
+          </Link>
+        </nav>
       </div>
     </main>
   );
