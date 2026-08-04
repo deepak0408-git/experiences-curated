@@ -46,8 +46,8 @@ export function sumLineItems(lineItems: CostLineItem[], key: "low" | "high") {
 export function formatMoneyRange(low: number, high: number): string {
   const roundedLow = Math.round(low);
   const roundedHigh = Math.round(high);
-  if (roundedLow === roundedHigh) return `$${roundedLow.toLocaleString()}`;
-  return `$${roundedLow.toLocaleString()}–$${roundedHigh.toLocaleString()}`;
+  if (roundedLow === roundedHigh) return `US$${roundedLow.toLocaleString()}`;
+  return `US$${roundedLow.toLocaleString()}–US$${roundedHigh.toLocaleString()}`;
 }
 
 export type RankedEvent = MockEvent & {

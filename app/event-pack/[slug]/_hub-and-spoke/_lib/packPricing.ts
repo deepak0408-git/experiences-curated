@@ -14,6 +14,16 @@ export const PACK_PRICING: Record<string, { earlyBirdPriceId: string; standardPr
     earlyBirdDisplay: "US$5",
     standardDisplay: "US$10",
   },
+  "singapore-grand-prix": {
+    // Real Dodo Live Mode product IDs — env-var only, no hardcoded fallback
+    // (removed 4 Aug 2026, see feedback_ask_dodo_ids_upfront memory). Set in
+    // .env.local for dev and must also be set in Vercel for production.
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SINGAPORE_GP_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SINGAPORE_GP_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_SINGAPORE_GP_EARLY_BIRD_CUTOFF ?? "2026-09-01",
+    earlyBirdDisplay: "US$5",
+    standardDisplay: "US$10",
+  },
 };
 
 // freeAccessEnabled mirrors the classic pack's exact behaviour (page.tsx,

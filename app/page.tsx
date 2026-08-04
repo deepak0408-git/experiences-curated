@@ -82,6 +82,11 @@ const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: 
     early: "US$5",
     standard: "US$10",
   },
+  "singapore-grand-prix": {
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_SINGAPORE_GP_EARLY_BIRD_CUTOFF ?? "2026-09-01",
+    early: "US$5",
+    standard: "US$10",
+  },
 };
 
 
