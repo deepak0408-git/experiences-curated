@@ -6,9 +6,56 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Trip Board — Experiences | Curated",
-};
+// Dynamic per-board metadata — needed for real link-preview cards (WhatsApp,
+// iMessage, Slack, etc. crawl these OG tags for the shared URL, separate
+// from whatever title/text was passed to navigator.share on the sender's
+// device). Was a static export const metadata with no description at all,
+// so shared links showed a bare "www.experiences-curated.com" preview with
+// no title/description — caught 4 Aug 2026 comparing against event-pack's
+// share preview, which already had real generateMetadata.
+export async function generateMetadata({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ userId: string }>;
+  searchParams: Promise<{ board?: string }>;
+}): Promise<Metadata> {
+  const { userId } = await params;
+  const { board: boardId } = await searchParams;
+
+  const [owner] = await db
+    .select({ id: users.id })
+    .from(users)
+    .where(eq(users.authId, userId))
+    .limit(1);
+  if (!owner) return { title: "Trip Board — Experiences | Curated" };
+
+  let board = boardId
+    ? (await db
+        .select({ title: tripBoards.title })
+        .from(tripBoards)
+        .where(and(eq(tripBoards.id, boardId), eq(tripBoards.userId, owner.id)))
+        .limit(1))[0]
+    : undefined;
+  if (!board) {
+    board = (await db
+      .select({ title: tripBoards.title })
+      .from(tripBoards)
+      .where(eq(tripBoards.userId, owner.id))
+      .limit(1))[0];
+  }
+
+  const boardTitle = board?.title ?? "Trip Board";
+  const title = `${boardTitle} — Experiences | Curated`;
+  const description = `A trip board on Experiences | Curated — curated sports travel experiences, saved and planned.`;
+
+  return {
+    title,
+    description,
+    openGraph: { title, description },
+    twitter: { card: "summary", title, description },
+  };
+}
 
 const TYPE_LABELS: Record<string, string> = {
   activity: "Activity", dining: "Dining", accommodation: "Stay",

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getPlannerEvents } from "../planner/_lib/getPlannerEvents";
+import { getTeaserEvents } from "../planner/_lib/getTeaserEvents";
 import { sumLineItems, formatMoneyRange } from "../planner/_lib/mockEvents";
 
 // Homepage teaser for the Trip Planner — the rest of the homepage assumes
@@ -15,11 +15,18 @@ const TEASER_BUDGET_MAX = 3500;
 const TEASER_TRIP_LENGTH_DAYS = 4;
 const TEASER_ORIGIN_MARKET = "Paris";
 
-export default async function PlannerTeaser() {
-  const events = await getPlannerEvents(TEASER_TRIP_LENGTH_DAYS, TEASER_ORIGIN_MARKET);
+const TEASER_ITALIAN_GP_SLUG = "italian-gp-2026";
+const TEASER_SINGAPORE_GP_SLUG = "singapore-grand-prix";
 
-  const italianGp = events.find((e) => e.slug === "italian-gp-2026");
-  const singaporeGp = events.find((e) => e.slug === "singapore-gp-2026");
+export default async function PlannerTeaser() {
+  const events = await getTeaserEvents(
+    [TEASER_ITALIAN_GP_SLUG, TEASER_SINGAPORE_GP_SLUG],
+    TEASER_TRIP_LENGTH_DAYS,
+    TEASER_ORIGIN_MARKET
+  );
+
+  const italianGp = events.find((e) => e.slug === TEASER_ITALIAN_GP_SLUG);
+  const singaporeGp = events.find((e) => e.slug === TEASER_SINGAPORE_GP_SLUG);
 
   // If either event's data isn't available (e.g. not yet seeded, or a
   // future re-seed changes which routes exist), skip the live example
