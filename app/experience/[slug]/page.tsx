@@ -87,6 +87,15 @@ const MONTH_LABELS: Record<string, string> = {
   sep: "Sep", oct: "Oct", nov: "Nov", dec: "Dec",
 };
 
+// Real word count from the two actual prose fields (bodyContent +
+// whyItsSpecial), not an estimate — 200 wpm is the standard adult
+// silent-reading baseline most reading-time tools use. Added per beta
+// feedback 4 Aug 2026.
+function estimateReadingTime(bodyContent: string | null, whyItsSpecial: string | null): number {
+  const words = `${bodyContent ?? ""} ${whyItsSpecial ?? ""}`.split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
+}
+
 export default async function ExperiencePage({
   params,
 }: {
@@ -378,6 +387,9 @@ export default async function ExperiencePage({
 
         {/* Meta row */}
         <div className="flex flex-wrap items-center gap-3 mt-6 pt-6 border-t border-[#2A2A2A]">
+          {(exp.bodyContent || exp.whyItsSpecial) && (
+            <MetaBadge label={`${estimateReadingTime(exp.bodyContent, exp.whyItsSpecial)} min read`} />
+          )}
           {exp.budgetTier && (
             <MetaBadge label={BUDGET_LABELS[exp.budgetTier]} />
           )}

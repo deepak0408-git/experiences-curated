@@ -495,6 +495,24 @@ export const savedItems = pgTable("saved_items", {
   uniqueIndex("saved_items_user_experience_unique").on(t.userId, t.experienceId),
 ]);
 
+// ─── Saved Event Packs ──────────────────────────────────────────────────────────
+// Whole-pack favoriting, deliberately kept as its own table rather than
+// loosening savedItems.experienceId to nullable — savedItems' existing
+// call sites (trip-board, experience page) all assume experienceId is
+// always present; a new table has zero blast radius on that code. Added
+// per beta feedback 4 Aug 2026 ("Save/Favorite ... functionality").
+
+export const savedEventPacks = pgTable("saved_event_packs", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull().references(() => users.id),
+  sportingEventId: uuid("sporting_event_id").notNull().references(() => sportingEvents.id),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+}, (t) => [
+  index("saved_event_packs_user_idx").on(t.userId),
+  index("saved_event_packs_event_idx").on(t.sportingEventId),
+  uniqueIndex("saved_event_packs_user_event_unique").on(t.userId, t.sportingEventId),
+]);
+
 // ─── Community Flags ──────────────────────────────────────────────────────────
 
 export const communityFlags = pgTable("community_flags", {
@@ -967,6 +985,17 @@ export const savedItemsRelations = relations(savedItems, ({ one }) => ({
   tripBoard: one(tripBoards, {
     fields: [savedItems.tripBoardId],
     references: [tripBoards.id],
+  }),
+}));
+
+export const savedEventPacksRelations = relations(savedEventPacks, ({ one }) => ({
+  user: one(users, {
+    fields: [savedEventPacks.userId],
+    references: [users.id],
+  }),
+  sportingEvent: one(sportingEvents, {
+    fields: [savedEventPacks.sportingEventId],
+    references: [sportingEvents.id],
   }),
 }));
 

@@ -186,7 +186,7 @@ export default function ShortlistResults({
                       it's ready" together were too wide for a phone screen
                       and wrapped badly mid-word. Fixed 26 Jul 2026. */}
                   <div className="flex flex-col sm:flex-row sm:items-center items-end gap-1.5 sm:gap-3">
-                    {isBuilt && index === 0 && (
+                    {index === 0 && (
                       <span className="px-2 py-0.5 rounded-sm text-[10px] font-black uppercase bg-[#AAFF00] text-black whitespace-nowrap">
                         Best fit
                       </span>
@@ -242,13 +242,17 @@ export default function ShortlistResults({
                     US${Math.round(overage).toLocaleString()} over your budget
                   </p>
                 ) : (
-                  <p className="text-xs text-[#AAFF00] mb-4">✓ Fits your budget</p>
+                  <p className="mb-4">
+                    <span className="inline-block px-2 py-0.5 rounded-sm text-[10px] font-black uppercase bg-[#AAFF00]/10 border border-[#AAFF00]/40 text-[#AAFF00]">
+                      ✓ Fits your budget
+                    </span>
+                  </p>
                 )}
 
                 <button
                   type="button"
                   onClick={() => setExpandedSlug(isExpanded ? null : event.slug)}
-                  className="text-xs text-[#6A6A6A] hover:text-[#AAFF00] transition-colors mb-4"
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-[#A3A3A3] hover:text-[#AAFF00] border border-[#2A2A2A] hover:border-[#AAFF00]/50 rounded-sm px-3 py-1.5 transition-colors mb-4"
                 >
                   {isExpanded ? "Hide breakdown ▴" : "Show breakdown ▾"}
                 </button>

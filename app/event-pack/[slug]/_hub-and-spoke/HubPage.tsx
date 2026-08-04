@@ -7,6 +7,10 @@ import { getPackPricing } from "./_lib/packPricing";
 import { STATUS_LABEL } from "./_components/SpokeShell";
 import DodoCheckout from "../_components/DodoCheckout";
 import LocalCurrencyHint from "../_components/LocalCurrencyHint";
+import FavouriteToggle from "../_components/FavouriteToggle";
+import ShareGuideButton from "../_components/ShareGuideButton";
+import RateGuideButton from "../_components/RateGuideButton";
+import { isEventPackSaved, getMyEventPackRating } from "../actions";
 
 // Hub index for any hub_and_spoke-format event, rendered from
 // app/event-pack/[slug]/page.tsx when event.packFormat === "hub_and_spoke".
@@ -99,6 +103,8 @@ export default async function HubPage({ slug }: { slug: string }) {
 
   const { hasPurchased, justPurchased } = await getPurchaseStatus(slug, event.id, event.isHidden);
   const pricing = getPackPricing(slug, event.packCurrency);
+  const initiallySaved = user ? await isEventPackSaved(event.id) : false;
+  const myRating = user ? await getMyEventPackRating(event.id) : null;
 
   const hubHeroUrl = event.heroImageUrl ?? (config ? getSpokeImage(linkedExperiences, config.heroFallbackImageSlug) : null);
 
@@ -160,6 +166,15 @@ export default async function HubPage({ slug }: { slug: string }) {
             <p className="text-xs text-[#A3A3A3] mt-1">Every spoke below now shows our full curated picks and booking detail.</p>
           </div>
         )}
+
+        {/* Favourite/Share row — per beta feedback 4 Aug 2026. Favouriting
+            requires sign-in (same as saving an experience); a signed-out
+            visitor sees only Share, not a toggle they can't use. */}
+        <div className="flex items-center gap-3 mb-6 flex-wrap">
+          {user && <FavouriteToggle sportingEventId={event.id} slug={slug} initiallySaved={initiallySaved} />}
+          <ShareGuideButton slug={slug} eventName={event.name} />
+          {user && <RateGuideButton sportingEventId={event.id} slug={slug} initialRating={myRating} />}
+        </div>
 
         {/* Intro + purchase CTA — same 2-column layout as the classic pack
             (page.tsx ~line 622: lg:grid lg:grid-cols-3 lg:gap-12, text in
