@@ -104,5 +104,8 @@ export function rankEvents(
       const fits = totalMid <= budgetMax;
       return { ...e, totalLow, totalHigh, totalMid, fits, delta: Math.abs(totalMid - budgetMid) };
     })
-    .sort((a, b) => (budgetMax >= 100000 ? a.totalMid - b.totalMid : a.delta - b.delta));
+    .sort((a, b) => {
+      if (a.fits !== b.fits) return a.fits ? -1 : 1; // fits-first partition
+      return a.totalMid - b.totalMid; // cheapest first, within each group — "Best fit" = most budget headroom
+    });
 }

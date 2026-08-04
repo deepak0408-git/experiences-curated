@@ -6,7 +6,7 @@ import type { RagLevel } from "../../_lib/scoreTradeoffOptions";
 import type { FlightsAdvisory } from "../../_lib/getFlightsAdvisory";
 import type { TradeoffResult, TradeoffScenario } from "../../_lib/computeTradeoffScenarios";
 import type { TripCommentary } from "../../_lib/getTripCommentary";
-import { formatMoneyRange, type CostLineItem } from "../../_lib/mockEvents";
+import { formatMoneyRange, sumLineItems, type CostLineItem } from "../../_lib/mockEvents";
 
 export type EventContext = {
   name: string;
@@ -35,6 +35,7 @@ function ragDot(rag: RagLevel) {
 function ScenarioCard({
   scenario,
   budgetMax,
+  originalTotalMid,
   index,
   eventContext,
   resultsUrl,
@@ -44,6 +45,7 @@ function ScenarioCard({
 }: {
   scenario: TradeoffScenario;
   budgetMax: number;
+  originalTotalMid: number;
   index?: number;
   eventContext: EventContext;
   resultsUrl: string;
@@ -73,6 +75,14 @@ function ScenarioCard({
   // Typical figure shown directly above this line. One number, matching
   // what the reader already anchors on. Fixed 26 Jul 2026.
   const typicalOverage = Math.max(0, Math.round(scenario.newTotalMid) - budgetMax);
+
+  // Whole-trip savings vs. the original (pre-tradeoff) total — deliberately
+  // NOT reusing ScoredTierOption.savingsLow/High, which is a per-lever-option
+  // saving against that single line item, not the whole trip. For a "both"
+  // scenario that per-option figure would understate the real total saved.
+  // Clamped at 0 so a same-or-more-expensive deepest tier never shows a
+  // negative/zero "savings" line. Added per beta feedback 4 Aug 2026.
+  const savings = Math.max(0, Math.round(originalTotalMid - scenario.newTotalMid));
 
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [email, setEmail] = useState(userEmail ?? defaultEmail ?? "");
@@ -111,9 +121,30 @@ function ScenarioCard({
     <div className="rounded-sm border border-[#2A2A2A] bg-[#0A0A0A] p-4 mb-3">
       <div className="flex items-start gap-2 mb-3">
         {ragDot(rag)}
-        <p className="text-sm font-black text-white">
-          Lever employed{index !== undefined ? ` ${index + 1}` : ""}: {leverEmployed}
-        </p>
+        {/* "Both levers" scenario names two separate changes at once — split
+            into two short bullets instead of one joined sentence, easier to
+            scan. Single-lever scenarios keep the one-line sentence, a
+            bullet list of one item is unnecessary chrome. Added per beta
+            feedback 4 Aug 2026. leverEmployed itself is left unchanged for
+            the email body (emailTradeoffPlan below), which doesn't need the
+            same on-screen bulleting treatment. */}
+        {scenario.kind === "both" ? (
+          <div>
+            <p className="text-sm font-black text-white mb-1">
+              Levers applied{index !== undefined ? ` ${index + 1}` : ""}:
+            </p>
+            <p className="text-sm text-white">
+              ▸ Hotel → {(scenario.option as { hotel: { label: string } }).hotel.label} tier
+            </p>
+            <p className="text-sm text-white">
+              ▸ Tickets → {(scenario.option as { tickets: { label: string } }).tickets.label} tier
+            </p>
+          </div>
+        ) : (
+          <p className="text-sm font-black text-white">
+            Lever employed{index !== undefined ? ` ${index + 1}` : ""}: {leverEmployed}
+          </p>
+        )}
       </div>
 
       <div className="space-y-1 mb-3 pl-1">
@@ -131,9 +162,22 @@ function ScenarioCard({
       <p className="text-xs text-[#6A6A6A] pl-1 mb-1">
         Typical: US${Math.round(scenario.newTotalMid).toLocaleString()}
       </p>
+      {savings > 0 && (
+        <p className="text-xs font-black text-[#AAFF00] pl-1 mb-1">
+          💰 Estimated savings: ~US${savings.toLocaleString()}
+        </p>
+      )}
       {scenario.fitsBudget ? (
-        <p className={rag === "amber" ? "text-xs text-amber-400 pl-1 mt-1 mb-3" : "text-xs text-[#AAFF00] pl-1 mt-1 mb-3"}>
-          ✓ This fits your US${Math.round(budgetMax).toLocaleString()} budget
+        <p className="ml-1 mt-1 mb-3">
+          <span
+            className={
+              rag === "amber"
+                ? "inline-block px-2 py-0.5 rounded-sm text-[10px] font-black uppercase bg-amber-400/10 border border-amber-400/40 text-amber-400"
+                : "inline-block px-2 py-0.5 rounded-sm text-[10px] font-black uppercase bg-[#AAFF00]/10 border border-[#AAFF00]/40 text-[#AAFF00]"
+            }
+          >
+            ✓ This fits your US${Math.round(budgetMax).toLocaleString()} budget
+          </span>
         </p>
       ) : (
         <p className="text-xs text-red-500 pl-1 mt-1 mb-3">
@@ -206,6 +250,11 @@ export default function TradeoffPanel({
     .filter((li) => li.label !== "Hotel" && li.label !== "Tickets")
     .map((li) => ({ label: li.label, low: li.low, high: li.high }));
 
+  // Original (pre-tradeoff) trip total, same computation ShortlistResults.tsx
+  // already does for event.totalMid — derived here from the same lineItems
+  // prop rather than adding a redundant duplicate prop.
+  const originalTotalMid = (sumLineItems(lineItems, "low") + sumLineItems(lineItems, "high")) / 2;
+
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
@@ -241,6 +290,7 @@ export default function TradeoffPanel({
             key={i}
             scenario={scenario}
             budgetMax={budgetMax}
+            originalTotalMid={originalTotalMid}
             index={data.scenarioResult!.scenarios.length > 1 ? i : undefined}
             eventContext={eventContext}
             resultsUrl={resultsUrl}

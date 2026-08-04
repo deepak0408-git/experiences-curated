@@ -1,7 +1,7 @@
 ﻿import Image from "next/image";
 import { getAuthUser } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
-import { users, userProfiles, travelLogs, purchases, sportingEvents, proSubscriptions } from "@/schema/database";
+import { users, userProfiles, travelLogs, purchases, sportingEvents, proSubscriptions, savedEventPacks } from "@/schema/database";
 import { eq, count, sql } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
@@ -13,6 +13,7 @@ import ManageSubscriptionButton from "./_components/ManageSubscriptionButton";
 import GiftCodeSection from "./_components/GiftCodeSection";
 import CookieSettingsButton from "./_components/CookieSettingsButton";
 import DeleteAccountButton from "./_components/DeleteAccountButton";
+import RemoveFavouriteButton from "./_components/RemoveFavouriteButton";
 
 export const metadata: Metadata = {
   title: "Profile — Experiences | Curated",
@@ -74,6 +75,23 @@ export default async function ProfilePage() {
         .from(purchases)
         .innerJoin(sportingEvents, eq(purchases.sportingEventId, sportingEvents.id))
         .where(eq(purchases.email, user.email))
+    : [];
+
+  // Favourites — whole-pack saves, per beta feedback 4 Aug 2026. Separate
+  // from linkedPacks (purchase history) — this is browsing/intent, not a
+  // record of what was bought.
+  const favouritePacks = dbUser
+    ? await db
+        .select({
+          eventId: sportingEvents.id,
+          eventName: sportingEvents.name,
+          eventSlug: sportingEvents.slug,
+          heroImageUrl: sportingEvents.heroImageUrl,
+          savedAt: savedEventPacks.createdAt,
+        })
+        .from(savedEventPacks)
+        .innerJoin(sportingEvents, eq(savedEventPacks.sportingEventId, sportingEvents.id))
+        .where(eq(savedEventPacks.userId, dbUser.id))
     : [];
 
   const purchasedSlugs = new Set(linkedPacks.map((p) => p.eventSlug));
@@ -196,6 +214,36 @@ export default async function ProfilePage() {
             </div>
           )}
         </div>
+
+        {/* Favourites — whole-pack saves */}
+        {favouritePacks.length > 0 && (
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-6">
+            <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-4">Favourites</p>
+            <div className="space-y-3">
+              {favouritePacks.map((pack) => (
+                <div
+                  key={pack.eventSlug}
+                  className="flex items-center gap-4 rounded-sm border border-[#2A2A2A] hover:border-[#AAFF00] transition-colors overflow-hidden"
+                >
+                  <Link href={`/event-pack/${pack.eventSlug}`} className="flex items-center gap-4 flex-1 min-w-0">
+                    <div className="w-16 h-16 flex-shrink-0 bg-[#1A1A1A] overflow-hidden">
+                      {pack.heroImageUrl && (
+                        <Image src={pack.heroImageUrl} alt={pack.eventName} width={64} height={64} className="w-full h-full object-cover" />
+                      )}
+                    </div>
+                    <div className="py-2 min-w-0">
+                      <p className="text-sm font-black text-white truncate">{pack.eventName}</p>
+                      <p className="text-xs text-[#6A6A6A] mt-0.5">
+                        Saved {new Date(pack.savedAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+                      </p>
+                    </div>
+                  </Link>
+                  <RemoveFavouriteButton sportingEventId={pack.eventId} slug={pack.eventSlug} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Annual Pro — included packs */}
         {isAnnualPro && annualProPacks.length > 0 && (

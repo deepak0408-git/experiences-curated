@@ -271,7 +271,7 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
             <div className="flex items-center gap-2">
               <ExportCalendar items={items} />
               <ClearBoardButton boardId={activeBoardId} onCleared={() => setItems([])} />
-              <ShareButton userId={userId} boardId={activeBoardId} />
+              <ShareButton userId={userId} boardId={activeBoardId} boardTitle={boardTitle} />
             </div>
           </div>
         </div>
