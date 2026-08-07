@@ -75,7 +75,7 @@ export default async function SpokeShell({
 
       <div className="max-w-3xl mx-auto px-6 py-12">
         <nav className="flex items-center gap-2 text-xs text-[#6A6A6A] mb-6">
-          <Link href={`/event-pack/${eventSlug}`} className="hover:text-[#AAFF00] transition-colors">
+          <Link href={`/event-pack/${eventSlug}`} className="text-[#AAFF00] hover:text-[#BBFF33] transition-colors">
             ← All {spokes.length} {eventName} planning guides
           </Link>
         </nav>
@@ -181,7 +181,7 @@ export default async function SpokeShell({
             just to return to the hub. Added 4 Aug 2026 per direct UX
             feedback. */}
         <nav className="flex items-center gap-2 text-xs text-[#6A6A6A] mt-12 pt-6 border-t border-[#2A2A2A]">
-          <Link href={`/event-pack/${eventSlug}`} className="hover:text-[#AAFF00] transition-colors">
+          <Link href={`/event-pack/${eventSlug}`} className="text-[#AAFF00] hover:text-[#BBFF33] transition-colors">
             ← All {spokes.length} {eventName} planning guides
           </Link>
         </nav>

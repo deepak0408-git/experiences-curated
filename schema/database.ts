@@ -388,6 +388,9 @@ export const experiences = pgTable("experiences", {
     pricePoint?: string;
   }>>(),
   operatorName: varchar("operator_name", { length: 200 }),
+  googleMapsRating: numeric("google_maps_rating", { precision: 2, scale: 1 }),
+  googleMapsReviewCount: integer("google_maps_review_count"),
+  googleMapsUrl: text("google_maps_url"),
   operatorWebsite: text("operator_website"),
 
   reviewNotes: text("review_notes"),

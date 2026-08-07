@@ -24,6 +24,13 @@ export const PACK_PRICING: Record<string, { earlyBirdPriceId: string; standardPr
     earlyBirdDisplay: "US$5",
     standardDisplay: "US$10",
   },
+  "atp-finals": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ATP_FINALS_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ATP_FINALS_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_ATP_FINALS_EARLY_BIRD_CUTOFF ?? "2026-10-18",
+    earlyBirdDisplay: "US$5",
+    standardDisplay: "US$10",
+  },
 };
 
 // freeAccessEnabled mirrors the classic pack's exact behaviour (page.tsx,
