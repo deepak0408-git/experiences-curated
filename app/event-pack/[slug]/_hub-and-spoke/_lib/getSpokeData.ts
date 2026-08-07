@@ -42,10 +42,18 @@ export async function getSpokeData(slug: string) {
       insiderTips: experiences.insiderTips,
       whatToAvoid: experiences.whatToAvoid,
       packRank: sportingEventExperiences.packRank,
+      googleMapsRating: experiences.googleMapsRating,
+      googleMapsReviewCount: experiences.googleMapsReviewCount,
+      googleMapsUrl: experiences.googleMapsUrl,
     })
     .from(sportingEventExperiences)
     .innerJoin(experiences, eq(experiences.id, sportingEventExperiences.experienceId))
-    .where(and(eq(sportingEventExperiences.sportingEventId, event.id)))
+    .where(
+      and(
+        eq(sportingEventExperiences.sportingEventId, event.id),
+        eq(experiences.status, "published")
+      )
+    )
     .orderBy(sportingEventExperiences.packRank);
 
   const hotels = event.destinationId
@@ -146,6 +154,17 @@ export async function getPurchaseStatus(slug: string, eventId: string, isHidden:
 
   let hasPurchased = false;
   let justPurchased = false;
+
+  // isPro is computed unconditionally, once, regardless of purchase status —
+  // mirrors the classic pack (app/event-pack/[slug]/page.tsx, ~line 479-481).
+  // Previously this only ran inside the "not yet purchased" branch below (to
+  // check Annual Pro auto-unlock), so a real purchaser's isPro was never
+  // computed at all — every spoke's <HowToBook> gate silently defaulted to
+  // isPro=false for every purchaser, Pro or not. Fixed 6 Aug 2026.
+  const { isPro, isAnnual, currentPeriodEnd } = user?.email
+    ? await getProDetails(user.email)
+    : { isPro: false, isAnnual: false, currentPeriodEnd: null };
+
   if (user?.email) {
     const [purchase] = await db
       .select({ id: purchases.id, createdAt: purchases.createdAt })
@@ -165,15 +184,14 @@ export async function getPurchaseStatus(slug: string, eventId: string, isHidden:
     justPurchased = true;
   }
 
-  if (!hasPurchased && user?.email) {
-    const { isAnnual, currentPeriodEnd } = await getProDetails(user.email);
+  if (!hasPurchased) {
     const isAnnualProActive = isAnnual && currentPeriodEnd != null && currentPeriodEnd > new Date();
     if (isAnnualProActive && !isHidden) {
       hasPurchased = true;
     }
   }
 
-  return { hasPurchased, justPurchased, userEmail: user?.email ?? null };
+  return { hasPurchased, justPurchased, isPro, userEmail: user?.email ?? null };
 }
 
 export type SpokeStatus = "public" | "teaser" | "gated";
@@ -187,6 +205,11 @@ export type SpokeConfig = {
   // linked experience (e.g. a standalone packing/weather photo) — takes
   // priority over imageSlug matching when present.
   imageOverride?: string;
+  // CSS object-position value (e.g. "center 30%"), passed straight through
+  // to SpokeShell's <Image style={{ objectPosition }}>. Only needed when
+  // the default object-cover crops out something important (a text overlay,
+  // a subject near an edge) — most spokes don't need this set.
+  heroImagePosition?: string;
 };
 
 export function getSpokesForEvent(slug: string): SpokeConfig[] {

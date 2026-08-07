@@ -45,4 +45,23 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "map", label: "Venue Map", question: "What facilities are available at Marina Bay Street Circuit?", status: "public", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/singapore-gp-marina-bay-street-circuit.jpg" },
     { id: "luxury", label: "Luxury Guide", question: "What does a genuinely luxury Singapore GP weekend look like?", status: "teaser", imageSlug: "singapore-gp-paddock-club", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/singapore-grand-prix-luxury.jpg" },
   ],
+  "atp-finals": [
+    // Real experience slugs assigned 6 Aug 2026, once hero images existed
+    // to draw from — see feedback_hub_and_spoke_missing_tripboard_and_pro_gate
+    // and project_atp_finals_experiences memory for build history. No
+    // dedicated spoke-tile imageOverride assets exist for this event yet;
+    // these map each spoke to its closest-fit real, image-bearing experience.
+    { id: "cost", label: "Cost Guide", question: "How much does an ATP Finals trip to Turin cost?", status: "teaser", imageSlug: "atp-finals-royal-palace-" },
+    { id: "tickets", label: "Ticket Guide", question: "Which ATP Finals ticket is the best buy?", status: "teaser", imageSlug: "atp-finals-ticket-guide-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg", heroImagePosition: "center 25%" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the ATP Finals in Turin?", status: "teaser", imageSlug: "atp-finals-luxury-hotels-", heroImagePosition: "center 88%" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to Inalpi Arena, and around Turin?", status: "public", imageSlug: "atp-finals-getting-to-inalpi-arena-" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like in Turin in November, and what should I pack?", status: "public", imageSlug: "atp-finals-inalpi-arena-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first ATP Finals?", status: "public", imageSlug: "atp-finals-mole-antonelliana-" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat in Turin during the ATP Finals?", status: "teaser", imageSlug: "atp-finals-piedmontese-dining-" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips from Turin?", status: "teaser", imageSlug: "atp-finals-barolo-langhe-daytrip-" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does an ATP Finals week in Turin actually look like?", status: "teaser", imageSlug: "atp-finals-piazza-san-carlo-" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at Inalpi Arena?", status: "public", imageSlug: "atp-finals-inalpi-arena-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at Inalpi Arena?", status: "public", imageSlug: "atp-finals-inalpi-arena-" },
+    { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the ATP Finals?", status: "teaser", imageSlug: "atp-finals-gianduja-chocolate-" },
+  ],
 };

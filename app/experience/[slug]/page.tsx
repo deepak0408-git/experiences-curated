@@ -13,6 +13,59 @@ import { getPackPricing } from "@/lib/packPricing";
 import SaveExperienceCTA from "./_components/SaveExperienceCTA";
 import ExperienceTracker from "./_components/ExperienceTracker";
 
+// Hub-and-spoke "back to spoke" link — maps an experience's slug prefix to
+// the ONE spoke it's most at home in, per explicit curator sign-off (7 Aug
+// 2026). Where an experience is referenced by more than one spoke (e.g.
+// atp-finals-luxury-hotels- appears in both Hotels and Luxury), this picks
+// its true home, not every spoke that happens to link to it. Only render
+// this link when eventPackFormat === "hub_and_spoke" — classic-pack events
+// have no spoke pages to link back to.
+const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; spokeLabel: string }> = {
+  "atp-finals-ticket-guide-": { eventSlug: "atp-finals", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "atp-finals-luxury-hospitality-": { eventSlug: "atp-finals", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "atp-finals-luxury-hotels-": { eventSlug: "atp-finals", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "atp-finals-porta-nuova-neighborhood-": { eventSlug: "atp-finals", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "atp-finals-airport-to-city-": { eventSlug: "atp-finals", spokeId: "getting-there", spokeLabel: "Getting There" },
+  "atp-finals-getting-to-inalpi-arena-": { eventSlug: "atp-finals", spokeId: "getting-there", spokeLabel: "Getting There" },
+  "atp-finals-aperitivo-vermouth-": { eventSlug: "atp-finals", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "atp-finals-caffe-bicerin-": { eventSlug: "atp-finals", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "atp-finals-gianduja-chocolate-": { eventSlug: "atp-finals", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "atp-finals-piedmontese-dining-": { eventSlug: "atp-finals", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "atp-finals-barolo-langhe-daytrip-": { eventSlug: "atp-finals", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "atp-finals-juventus-museum-": { eventSlug: "atp-finals", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "atp-finals-practice-courts-": { eventSlug: "atp-finals", spokeId: "map", spokeLabel: "Venue Map" },
+  "atp-finals-inalpi-arena-": { eventSlug: "atp-finals", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+  "atp-finals-mole-antonelliana-": { eventSlug: "atp-finals", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "atp-finals-museo-egizio-": { eventSlug: "atp-finals", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "atp-finals-royal-palace-": { eventSlug: "atp-finals", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "atp-finals-piazza-san-carlo-": { eventSlug: "atp-finals", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "atp-finals-turin-cathedral-": { eventSlug: "atp-finals", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+};
+
+function getSpokeBackLink(slug: string) {
+  const entry = Object.entries(EXPERIENCE_TO_SPOKE).find(([prefix]) => slug.startsWith(prefix));
+  return entry ? entry[1] : null;
+}
+
+// Multi-venue experiences (a hotel comparison, a restaurant roundup) never
+// get a single top-line googleMapsRating — see experience-researcher skill
+// §2c. Instead the badge-row rating slot becomes a jump-link down to a
+// #ratings anchor in bodyContent, where each named venue's real rating is
+// written inline. venueCount is display-only ("all 3 hotels").
+const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: string }> = {
+  "atp-finals-luxury-hotels-": { venueCount: 3, venueNoun: "hotels" },
+  "atp-finals-piedmontese-dining-": { venueCount: 3, venueNoun: "restaurants" },
+  "atp-finals-gianduja-chocolate-": { venueCount: 2, venueNoun: "places" },
+  "atp-finals-porta-nuova-neighborhood-": { venueCount: 2, venueNoun: "hotels" },
+  "atp-finals-aperitivo-vermouth-": { venueCount: 2, venueNoun: "cafés" },
+  "atp-finals-barolo-langhe-daytrip-": { venueCount: 4, venueNoun: "wineries" },
+};
+
+function getMultiVenueRatings(slug: string) {
+  const entry = Object.entries(MULTI_VENUE_RATINGS).find(([prefix]) => slug.startsWith(prefix));
+  return entry ? entry[1] : null;
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -118,13 +171,14 @@ export default async function ExperiencePage({
 
       let eventPackSlug = "wimbledon-2026";
       let eventPackName = "Wimbledon 2026";
+      let eventPackFormat: string | null = null;
       if (exp.sportingEventId) {
         const [ev] = await db
-          .select({ slug: sportingEvents.slug, name: sportingEvents.name })
+          .select({ slug: sportingEvents.slug, name: sportingEvents.name, packFormat: sportingEvents.packFormat })
           .from(sportingEvents)
           .where(eq(sportingEvents.id, exp.sportingEventId))
           .limit(1);
-        if (ev) { eventPackSlug = ev.slug; eventPackName = ev.name; }
+        if (ev) { eventPackSlug = ev.slug; eventPackName = ev.name; eventPackFormat = ev.packFormat; }
       }
 
       const related = await db
@@ -149,16 +203,17 @@ export default async function ExperiencePage({
         )
         .limit(3);
 
-      return { exp, ratingRow, eventPackSlug, eventPackName, related };
+      return { exp, ratingRow, eventPackSlug, eventPackName, eventPackFormat, related };
     },
     ["experience-page"],
     { revalidate: 3600 }
   );
 
-  const { exp, ratingRow, eventPackSlug, eventPackName, related } = await getExperienceData(slug);
+  const { exp, ratingRow, eventPackSlug, eventPackName, eventPackFormat, related } = await getExperienceData(slug);
 
   const avgRating = ratingRow?.avgRating ?? null;
   const ratingCount = ratingRow?.ratingCount ?? 0;
+  const multiVenueRatings = getMultiVenueRatings(exp.slug);
 
   const practical = exp.practicalInfo as {
     hours?: string;
@@ -314,6 +369,11 @@ export default async function ExperiencePage({
               slug.startsWith("hill-stand-c2-sepang-general-admission") ? "object-[center_80%]" :
               slug.startsWith("singapore-gp-ticket-guide-") ? "lg:object-[center_75%]" :
               slug.startsWith("singapore-gp-zone4-walkabout-") ? "object-[center_80%]" :
+              slug.startsWith("atp-finals-ticket-guide-") ? "object-[center_30%]" :
+              slug.startsWith("atp-finals-piazza-san-carlo-") ? "object-[center_60%]" :
+              slug.startsWith("atp-finals-turin-cathedral-") ? "object-[center_82%]" :
+              slug.startsWith("atp-finals-caffe-bicerin-") ? "object-[center_42%]" :
+              slug.startsWith("atp-finals-luxury-hotels-") ? "object-[center_88%]" :
               ""
             }`}
             sizes="100vw"
@@ -333,32 +393,71 @@ export default async function ExperiencePage({
       <div className="max-w-3xl mx-auto px-6 py-12">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-xs text-[#6A6A6A] mb-6">
-          <Link href="/" className="hover:text-[#AAFF00] transition-colors">Home</Link>
-          <span>·</span>
-          <span>{exp.destinationName}, {exp.destinationCountry.toUpperCase()}</span>
-          {exp.neighborhood && (
-            <>
-              <span>·</span>
-              <span>{exp.neighborhood}</span>
-            </>
-          )}
+        <nav className="flex items-center justify-between gap-2 text-xs text-[#6A6A6A] mb-6">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Link href="/" className="hover:text-[#AAFF00] transition-colors">Home</Link>
+            <span>·</span>
+            <span>{exp.destinationName}, {exp.destinationCountry.toUpperCase()}</span>
+            {exp.neighborhood && (
+              <>
+                <span>·</span>
+                <span>{exp.neighborhood}</span>
+              </>
+            )}
+          </div>
+          {eventPackFormat === "hub_and_spoke" && (() => {
+            const spokeLink = getSpokeBackLink(exp.slug);
+            return spokeLink ? (
+              <Link
+                href={`/event-pack/${spokeLink.eventSlug}/${spokeLink.spokeId}`}
+                className="flex-shrink-0 text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+              >
+                ← Back to {spokeLink.spokeLabel}
+              </Link>
+            ) : null;
+          })()}
         </nav>
 
         {/* Type badge */}
-        <div className="mb-4 flex items-center gap-3">
-          <span className="inline-block text-xs font-semibold tracking-widest uppercase text-[#6A6A6A]">
-            {TYPE_LABELS[exp.experienceType] ?? exp.experienceType}
-          </span>
-          {hasVisited && (
-            <span className="inline-flex items-center gap-1 text-[10px] font-medium text-[#AAFF00] bg-[#AAFF00]/10 border border-[#AAFF00]/30 rounded-sm px-2 py-0.5">
-              ✓ You{`'`}ve been here{visitRating ? ` · ${visitRating}/5` : ""}
+        <div className="mb-4 flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="inline-block text-xs font-semibold tracking-widest uppercase text-[#6A6A6A]">
+              {TYPE_LABELS[exp.experienceType] ?? exp.experienceType}
             </span>
+            {hasVisited && (
+              <span className="inline-flex items-center gap-1 text-[10px] font-medium text-[#AAFF00] bg-[#AAFF00]/10 border border-[#AAFF00]/30 rounded-sm px-2 py-0.5">
+                ✓ You{`'`}ve been here{visitRating ? ` · ${visitRating}/5` : ""}
+              </span>
+            )}
+            {!hasVisited && isArchetypeMatch && (
+              <span className="inline-block text-[10px] font-medium text-[#6A6A6A] border border-[#2A2A2A] rounded-sm px-2 py-0.5">
+                Picked for your profile
+              </span>
+            )}
+          </div>
+          {exp.googleMapsRating && (
+            <a
+              href={exp.googleMapsUrl ?? undefined}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-shrink-0 flex items-center gap-1 text-xs text-[#A3A3A3] hover:text-[#AAFF00] transition-colors"
+            >
+              <span className="text-[#AAFF00]">★</span>
+              <span className="font-bold text-white">{exp.googleMapsRating}</span>
+              {exp.googleMapsReviewCount != null && (
+                <span>({exp.googleMapsReviewCount.toLocaleString()} Google reviews)</span>
+              )}
+            </a>
           )}
-          {!hasVisited && isArchetypeMatch && (
-            <span className="inline-block text-[10px] font-medium text-[#6A6A6A] border border-[#2A2A2A] rounded-sm px-2 py-0.5">
-              Picked for your profile
-            </span>
+          {!exp.googleMapsRating && multiVenueRatings && (
+            <a
+              href="#ratings"
+              className="flex-shrink-0 flex items-center gap-1 text-xs text-[#A3A3A3] hover:text-[#AAFF00] transition-colors"
+            >
+              <span className="text-[#AAFF00]">★</span>
+              <span>Ratings for all {multiVenueRatings.venueCount} {multiVenueRatings.venueNoun}</span>
+              <span className="text-[#6A6A6A]">↓</span>
+            </a>
           )}
         </div>
 
@@ -414,7 +513,7 @@ export default async function ExperiencePage({
 
         {/* Body */}
         {exp.bodyContent && (
-          <div className="mt-10 max-w-none">
+          <div id={multiVenueRatings ? "ratings" : undefined} className="mt-10 max-w-none scroll-mt-20">
             {slug.startsWith("singapore-gp-trackside-hotels-") && (
               <p className="text-xs text-[#6A6A6A] mb-4">Updated on: 2 August 2026</p>
             )}

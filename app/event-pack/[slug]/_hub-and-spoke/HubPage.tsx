@@ -63,6 +63,11 @@ const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; value: str
     { label: "Emergencies", value: "General emergency (police/ambulance/fire): 999, or 112 from a mobile with no SIM/credit. Nearest major A&E: Hospital Putrajaya, Presint 7, 62250 Putrajaya (~12-15 min from the circuit), tel 03-8312 4200." },
     { label: "Tourism Infoline", value: "Tourism Malaysia Infoline (info, not emergency dispatch): 1-300-88-5050" },
   ],
+  "atp-finals": [
+    { label: "Session times", value: "Group stage (15-20 Nov): day session 11:30am, evening session 6pm. Semifinals (21 Nov): 12pm and evening. Final (22 Nov): single session, 3pm. Gate-opening times ahead of each session aren't published by the tournament yet — confirm closer to the event." },
+    { label: "Emergencies", value: "Single European emergency number: 112 (free, no prefix needed, English-speaking operators available in major cities). Health-specific: 118. Nearest hospital to the arena's Santa Rita area: Ospedale Mauriziano Umberto I." },
+    { label: "Tourism Infoline", value: "Turismo Torino e Provincia contact centre: +39 011 535181, info.torino@turismotorino.org." },
+  ],
 };
 
 const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: string; heroFallbackImageSlug: string; introText: string }> = {
@@ -88,6 +93,18 @@ const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: string; h
     // pattern of drawing The Brief from real underlying content.
     introText:
       "Singapore is F1's only true night race, run entirely under floodlights through the streets of Marina Bay, and it's officially been classified F1's first-ever \"heat hazard\" event — the humidity here is a real, documented part of the challenge, not just race-weekend colour.\n\nIt's also the one Grand Prix built as much around the music as the racing. Ten stages run across the circuit park all weekend, headlined this year by Lana Del Rey's first-ever Singapore show, The Killers, and JJ Lin, so a full race day genuinely runs from afternoon sessions through to a late-night set under the same lights.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
+  "atp-finals": {
+    displayName: "Nitto ATP Finals",
+    venueLine: "Held at Inalpi Arena — an Olympic ice hockey venue turned season-finale tennis arena in Turin, Italy.",
+    heroFallbackImageSlug: "__no-image-yet__",
+    // Built from real sourced facts researched during experience seeding
+    // (round-robin format, the venue's Olympic/Games history, the Fan
+    // Village's genuine free access) — not invented, matches the
+    // Bahrain GP / Singapore GP pattern of drawing The Brief from real
+    // underlying content.
+    introText:
+      "This is the only tournament all season where the eight best players in the world are guaranteed to show up — no qualifying rounds, no early upsets taking a name off the draw. Round-robin means every group-stage session gets a real match between top-8 players, not a filler contest, right through to the semifinals and final.\n\nInalpi Arena wasn't built for tennis — it went up in 2005 as the ice hockey venue for Turin's 2006 Winter Olympics, and the scale still shows. You're watching the season finale inside the largest indoor arena in Italy, a building that's since hosted Eurovision and stadium tours from Madonna and Harry Styles, not a boutique tennis venue.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
 };
 

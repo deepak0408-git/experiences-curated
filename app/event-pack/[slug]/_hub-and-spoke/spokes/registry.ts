@@ -25,6 +25,19 @@ import SGArrivalSpoke from "./singapore-grand-prix/ArrivalSpoke";
 import SGMapSpoke from "./singapore-grand-prix/MapSpoke";
 import SGLuxurySpoke from "./singapore-grand-prix/LuxurySpoke";
 
+import ATPCostSpoke from "./atp-finals/CostSpoke";
+import ATPTicketsSpoke from "./atp-finals/TicketsSpoke";
+import ATPHotelsSpoke from "./atp-finals/HotelsSpoke";
+import ATPGettingThereSpoke from "./atp-finals/GettingThereSpoke";
+import ATPWeatherSpoke from "./atp-finals/WeatherSpoke";
+import ATPFirstTimerGuideSpoke from "./atp-finals/FirstTimerGuideSpoke";
+import ATPWhereToEatSpoke from "./atp-finals/WhereToEatSpoke";
+import ATPDayTripsSpoke from "./atp-finals/DayTripsSpoke";
+import ATPItinerarySpoke from "./atp-finals/ItinerarySpoke";
+import ATPArrivalSpoke from "./atp-finals/ArrivalSpoke";
+import ATPMapSpoke from "./atp-finals/MapSpoke";
+import ATPLuxurySpoke from "./atp-finals/LuxurySpoke";
+
 type SpokeComponent = ComponentType<{ eventSlug: string }>;
 
 // Registry mapping eventSlug -> spokeId -> component. A new hub_and_spoke
@@ -60,6 +73,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: SGMapSpoke,
     luxury: SGLuxurySpoke,
   },
+  "atp-finals": {
+    cost: ATPCostSpoke,
+    tickets: ATPTicketsSpoke,
+    hotels: ATPHotelsSpoke,
+    "getting-there": ATPGettingThereSpoke,
+    weather: ATPWeatherSpoke,
+    "first-timer-guide": ATPFirstTimerGuideSpoke,
+    "where-to-eat": ATPWhereToEatSpoke,
+    "day-trips": ATPDayTripsSpoke,
+    itinerary: ATPItinerarySpoke,
+    arrival: ATPArrivalSpoke,
+    map: ATPMapSpoke,
+    luxury: ATPLuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -90,5 +117,19 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Singapore Grand Prix — Arrival & Gate Guide",
     map: "Marina Bay Street Circuit Map — Zones and Facilities",
     luxury: "Luxury Guide for Singapore GP — including F1 Paddock Club",
+  },
+  "atp-finals": {
+    cost: "How Much Does the Nitto ATP Finals Cost? — Turin Budget Guide",
+    tickets: "Nitto ATP Finals Ticket Guide — Tribuna, Platea, and Hospitality Tiers",
+    hotels: "Where to Stay for the Nitto ATP Finals — Central Turin Guide",
+    "getting-there": "Getting to Inalpi Arena — Nitto ATP Finals Transit Guide",
+    weather: "Turin Weather in November — What to Pack for the ATP Finals",
+    "first-timer-guide": "First-Timer's Guide — Nitto ATP Finals in Turin",
+    "where-to-eat": "Where to Eat in Turin — Nitto ATP Finals Week",
+    "day-trips": "Best Day Trips from Turin — Nitto ATP Finals Week",
+    itinerary: "Sample 4-Day Nitto ATP Finals Itinerary — Hour by Hour",
+    arrival: "Inalpi Arena Arrival & Queue Guide — Nitto ATP Finals",
+    map: "Inalpi Arena & Fan Village Map — Nitto ATP Finals",
+    luxury: "Luxury Guide for the Nitto ATP Finals — Hospitality, Transit, and More",
   },
 };

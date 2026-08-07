@@ -87,6 +87,11 @@ const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: 
     early: "US$5",
     standard: "US$10",
   },
+  "atp-finals": {
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_ATP_FINALS_EARLY_BIRD_CUTOFF ?? "2026-10-18",
+    early: "US$5",
+    standard: "US$10",
+  },
 };
 
 

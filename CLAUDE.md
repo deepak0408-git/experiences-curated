@@ -220,6 +220,17 @@ sport:          tennis | cricket | football | rugby | golf | formula_one | cycli
 
 **Empty board state:** queries `sporting_events` for upcoming events (`endDate >= today`) and renders them dynamically — no hardcoded event slugs. Add new events to the DB and they appear automatically.
 
+**Share board:** `ShareButton.tsx` uses the native Web Share API (`navigator.share`) where available — opens the real OS share sheet (WhatsApp/Instagram/Messages/etc.) with a title/text + the share URL. Falls back to clipboard-copy on desktop browsers without Web Share support, then a `window.prompt` last resort if `navigator.clipboard` is also unavailable (e.g. a non-secure-context origin). `navigator.share`/`navigator.clipboard` both require a secure context (HTTPS or `localhost`) — testing on a real device over a plain `http://<lan-ip>` URL will never show the share sheet; use an HTTPS tunnel (ngrok etc.) or a Vercel preview deploy instead.
+
+---
+
+## Season Planner
+`/planner` → `/planner/results` (Screen 2, shortlist) → `/planner/results/compare` (Screen 3). Real cost data from `planner_flight_cost` / `planner_hotel_tier_cost` / `planner_ticket_tier_cost` / `planner_destination_bands`, assembled by `getPlannerEvents()` (`app/planner/_lib/getPlannerEvents.ts`) — filters events to `packStatus IN (planned, building, built_hidden, live)`. Sort in `rankEvents()` (`app/planner/_lib/mockEvents.ts`): events that fit the stated budget rank before ones that don't; within each group, cheapest (`totalMid`) first — "Best fit" badge = cheapest event that still fits.
+
+**Homepage teaser (`app/_components/PlannerTeaser.tsx`):** gated behind `SHOW_PLANNER_TEASER` env var (must be set in both `.env.local` and Vercel to show; `/planner` itself is always live regardless of this flag). Shows two fixed example events (Italian GP fits a $3,500 F1 budget from Paris, Singapore GP doesn't) — this is a deliberate, permanent hardcoded demo, not a "pick any current event" widget, and must keep showing these two specific events regardless of any future `packStatus`/`isHidden` change to either. For this reason it does **not** use `getPlannerEvents()` — it has its own dedicated `getTeaserEvents()` (`app/planner/_lib/getTeaserEvents.ts`) that looks up events directly by slug with zero status filtering. If the teaser goes blank, check the hardcoded slugs in `PlannerTeaser.tsx` against the real `sporting_events.slug` values first (wrong slug — not a missing-data issue — silently broke this on 4 Aug 2026: `singapore-gp-2026` doesn't exist, the real slug is `singapore-grand-prix`).
+
+**Rate Guide + Favourites (event packs, hub-and-spoke format only):** `RateGuideButton.tsx` (1-5 stars, writes to `event_pack_feedback` via `rateEventPack`/`getMyEventPackRating` in `event-pack/[slug]/actions.ts` — same table the post-trip email flow uses, upsert on `email`+`sportingEventId`, never fires the curator notification email that the post-trip comment route sends) and `FavouriteToggle.tsx` (whole-pack save, `saved_event_packs` table, `saveEventPack`/`unsaveEventPack`/`isEventPackSaved`) both sit next to `ShareGuideButton.tsx` on `HubPage.tsx`, gated to signed-in users only. Profile page's "Favourites" section (`RemoveFavouriteButton.tsx`) uses a click-again-to-confirm delete (3s window), same pattern as Trip Board's `ClearBoardButton.tsx`.
+
 ---
 
 ## Post-trip Feedback

@@ -17,16 +17,27 @@ export const metadata: Metadata = {
   description: "Unlock concierge picks, insider booking guidance, and exclusive experiences with a Pro subscription.",
 };
 
-const PRO_FEATURES: { label: string; detail: string; annualOnly?: boolean; comingSoon?: boolean }[] = [
+const PRO_FEATURES: { label: string; detail: string; annualOnly?: boolean; comingSoon?: boolean; freeForNow?: boolean }[] = [
+  {
+    label: "All event guides, free",
+    detail: "Includes every guide published while your subscription is active — buy once, read everything",
+    annualOnly: true,
+  },
   {
     label: "Unlimited experience reads",
-    detail: "Browse every experience in every pack — no 3-read cap",
+    detail: "Browse every experience in every guide — no 3-read cap",
     annualOnly: false,
   },
   {
-    label: "All event packs, free",
-    detail: "Includes every pack published while your subscription is active — buy once, read everything",
-    annualOnly: true,
+    label: "Trip Planner",
+    detail: "Plan your next sports trip within your budget",
+    annualOnly: false,
+    freeForNow: true,
+  },
+  {
+    label: "Ask the curator",
+    detail: "Ask anything about a venue, experience, or logistics — a human reply within 48 hours",
+    annualOnly: false,
   },
   {
     label: "Concierge picks",
@@ -42,6 +53,7 @@ const PRO_FEATURES: { label: string; detail: string; annualOnly?: boolean; comin
     label: "Booking reminders",
     detail: "Timed alerts before sell-out deadlines for high-demand experiences",
     annualOnly: false,
+    comingSoon: true,
   },
   {
     label: "Unlimited Trip Boards",
@@ -49,25 +61,14 @@ const PRO_FEATURES: { label: string; detail: string; annualOnly?: boolean; comin
     annualOnly: false,
   },
   {
-    label: "Offline event packs",
-    detail: "Download your pack before you travel — no signal needed on the ground",
+    label: "Offline event guides",
+    detail: "Download your guide before you travel — no signal needed on the ground",
     annualOnly: false,
   },
   {
-    label: "Ask the curator",
-    detail: "Ask anything about a venue, experience, or logistics — a human reply within 48 hours",
-    annualOnly: false,
-  },
-  {
-    label: "Gift a pack",
-    detail: "One free gift code per year — your recipient claims any live event pack",
+    label: "Gift a guide",
+    detail: "One free gift code per year — your recipient claims any live event guide",
     annualOnly: true,
-  },
-  {
-    label: "Trip Planner",
-    detail: "Day-by-day itinerary builder — drag experiences onto your schedule",
-    annualOnly: false,
-    comingSoon: true,
   },
 ];
 
@@ -142,7 +143,7 @@ export default async function ProPage() {
             The version for people who take trips seriously
           </h1>
           <p className="text-[#A3A3A3] text-sm leading-7">
-            Event packs give you great experiences. Pro adds the layer that turns a good trip into one you'll talk about — private booking contacts, concierge-only picks, and reminders before the good things sell out.
+            Event guides give you great experiences. Pro adds the layer that turns a good trip into one you'll talk about — private booking contacts, concierge-only picks, and reminders before the good things sell out.
           </p>
         </div>
 
@@ -184,7 +185,7 @@ export default async function ProPage() {
             {/* Event packs */}
             {upcomingEvents.length > 0 && (
               <div>
-                <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-5">Upcoming event packs</p>
+                <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-5">Upcoming event guides</p>
                 <div className="grid sm:grid-cols-2 gap-4">
                   {upcomingEvents.map((ev) => (
                     <Link key={ev.slug} href={`/event-pack/${ev.slug}`} className="group text-left rounded-sm border border-[#2A2A2A] overflow-hidden hover:border-[#AAFF00] transition-colors">
@@ -227,6 +228,9 @@ export default async function ProPage() {
                       )}
                       {f.comingSoon && (
                         <span className="text-[10px] font-black tracking-widest uppercase text-[#6A6A6A] border border-[#2A2A2A] rounded-sm px-1.5 py-0.5">Soon</span>
+                      )}
+                      {f.freeForNow && (
+                        <span className="text-[10px] font-black tracking-widest uppercase text-[#6A6A6A] border border-[#2A2A2A] rounded-sm px-1.5 py-0.5">Currently free for a limited time, only Pro soon</span>
                       )}
                     </div>
                     <p className="text-xs text-[#A3A3A3] mt-0.5 leading-5">{f.detail}</p>
