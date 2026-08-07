@@ -1,5 +1,6 @@
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
+import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
 const SPOKE_ID = "arrival";
 
@@ -8,7 +9,7 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
   const hillstand = linkedExperiences.find((e) => e.slug.includes("hill-stand-c2"));
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
 
   return (
@@ -79,7 +80,14 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
       </div>
 
       {hillstand?.whatToAvoid && (
-        <p className="text-sm text-[#A3A3A3] leading-7 mt-8">{hillstand.whatToAvoid}</p>
+        <p className="text-sm text-[#A3A3A3] leading-7 mt-8 mb-8">{hillstand.whatToAvoid}</p>
+      )}
+
+      {hillstand && (
+        <div className="mb-8">
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The general admission stand</p>
+          <SpokeExperienceCard experience={hillstand} isPro={isPro} />
+        </div>
       )}
     </SpokeShell>
   );

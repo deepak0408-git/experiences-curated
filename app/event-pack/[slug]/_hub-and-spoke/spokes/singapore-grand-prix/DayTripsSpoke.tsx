@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
+import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
 const SPOKE_ID = "day-trips";
 
@@ -8,7 +9,7 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
   const gardens = linkedExperiences.find((e) => e.slug.includes("singapore-gp-gardens-by-the-bay"));
   const sentosa = linkedExperiences.find((e) => e.slug.includes("singapore-gp-sentosa"));
@@ -39,23 +40,12 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
         same day as a session rather than treating as separate outings.
       </p>
 
-      <div className="flex flex-col gap-3 mb-8">
-        {waterfront && (
-          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
-            <p className="text-sm font-bold text-white mb-1">{waterfront.title}</p>
-            <p className="text-sm text-[#A3A3A3] leading-6">Merlion Park to the Singapore Flyer — the same waterfront the circuit wraps around, worth doing early as orientation. If your walk runs into the evening, Marina Bay Sands' free Spectra light and water show (8pm/9pm nightly) sits right on the route.</p>
-          </div>
-        )}
-        {sentosa && (
-          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
-            <p className="text-sm font-bold text-white mb-1">{sentosa.title}</p>
-            <p className="text-sm text-[#A3A3A3] leading-6">10 minutes by MRT — beaches, cable car, and Universal Studios, genuinely doable before an evening session. The only one of the three that's an actual day trip.</p>
-          </div>
-        )}
+      <div className="grid sm:grid-cols-2 gap-4 mb-4">
+        {waterfront && <SpokeExperienceCard experience={waterfront} isPro={isPro} />}
+        {sentosa && <SpokeExperienceCard experience={sentosa} isPro={isPro} />}
         {gardens && (
-          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
-            <p className="text-sm font-bold text-white mb-1">{gardens.title}</p>
-            <p className="text-sm text-[#A3A3A3] leading-6">Free outdoor gardens, paid Cloud Forest/Flower Dome, and a free nightly Garden Rhapsody light show at 7:45pm and 8:45pm — a short walk or one MRT stop from the circuit, not a separate trip.</p>
+          <div className="sm:col-span-2">
+            <SpokeExperienceCard experience={gardens} isPro={isPro} />
           </div>
         )}
       </div>
@@ -71,11 +61,6 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
             a relaxed beach day in one Sentosa visit if you also have a session that evening, the park alone is a
             full day.
           </p>
-          <div className="flex flex-wrap gap-4 mb-6">
-            {waterfront && <Link href={`/experience/${waterfront.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">Read the full waterfront walk guide →</Link>}
-            {sentosa && <Link href={`/experience/${sentosa.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">Read the full Sentosa guide →</Link>}
-            {gardens && <Link href={`/experience/${gardens.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">Read the full Gardens by the Bay guide →</Link>}
-          </div>
           <p className="text-sm text-[#A3A3A3] leading-7">
             For the exact hour-by-hour version of this, sequenced against real session times and concert sets, see
             the{" "}
