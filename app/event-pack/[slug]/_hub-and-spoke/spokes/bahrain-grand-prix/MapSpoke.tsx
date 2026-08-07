@@ -1,23 +1,20 @@
-import Link from "next/link";
 import Image from "next/image";
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
+import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
 const SPOKE_ID = "map";
-
-const STANDS = [
-  { slug: "main-grandstand-sepang-start-finish", name: "Main Grandstand", position: "Start/finish straight, the grid, pits and podium" },
-  { slug: "k1-grandstand-sepang-turn-1", name: "K1 Grandstand", position: "Turn 1 — the main overtaking zone" },
-  { slug: "grandstand-f-sepang-panoramic", name: "Grandstand F", position: "Turns 6–8 and the back straight" },
-  { slug: "hill-stand-c2-sepang-general-admission", name: "Hill Stand (C2)", position: "Turns 9, 10 and 11, general admission" },
-];
 
 export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
+  const mainGrandstand = linkedExperiences.find((e) => e.slug.includes("main-grandstand-sepang-start-finish"));
+  const k1 = linkedExperiences.find((e) => e.slug.includes("k1-grandstand-sepang-turn-1"));
+  const grandstandF = linkedExperiences.find((e) => e.slug.includes("grandstand-f-sepang-panoramic"));
+  const hillstand = linkedExperiences.find((e) => e.slug.includes("hill-stand-c2-sepang-general-admission"));
 
   return (
     <SpokeShell eventSlug={eventSlug} eventId={event.id} eventCurrency={event.packCurrency} spokeId={SPOKE_ID} justPurchased={justPurchased} eventName="Bahrain Grand Prix" status="public" h1="A first-timer's guide to the venue itself" question="What facilities are available at Sepang International Circuit?" heroImageUrl={heroImageUrl} isUnlocked={isUnlocked}>
@@ -74,26 +71,6 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
         re-tagged by security on your way out — leaving without that re-tag forfeits same-day re-entry.
       </p>
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The four grandstands, in lap order</p>
-      <div className="flex flex-col gap-3 mb-8">
-        {STANDS.map((stand) => {
-          const exp = linkedExperiences.find((e) => e.slug.includes(stand.slug));
-          return (
-            <div key={stand.slug} className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4 flex items-center justify-between flex-wrap gap-2">
-              <div>
-                <p className="text-sm font-bold text-white">{stand.name}</p>
-                <p className="text-xs text-[#AAFF00]">{stand.position}</p>
-              </div>
-              {exp && (
-                <Link href={`/experience/${exp.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">
-                  Full guide to this stand →
-                </Link>
-              )}
-            </div>
-          );
-        })}
-      </div>
-
       <div className="relative w-full aspect-[1464/1035] rounded-sm border border-[#2A2A2A] overflow-hidden mb-8 bg-[#141414]">
         <Image
           src="https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/bahrain-grand-prix-grandstand-map.jpg"
@@ -104,7 +81,7 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
         />
       </div>
 
-      <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5">
+      <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8">
         <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">A real circuit map</p>
         <p className="text-sm text-[#A3A3A3] leading-6">
           Sepang has published detailed spectator guide PDFs for recent race weekends — car parks, gates, and
@@ -115,6 +92,14 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
           for a real sense of the layout — treat it as a guide to the venue&apos;s shape, not a confirmed 2026 F1
           document, since Sepang hasn&apos;t published race-specific materials for this relocated Grand Prix yet.
         </p>
+      </div>
+
+      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The four grandstands, in lap order</p>
+      <div className="grid sm:grid-cols-2 gap-4 mb-8">
+        {mainGrandstand && <SpokeExperienceCard experience={mainGrandstand} isPro={isPro} />}
+        {k1 && <SpokeExperienceCard experience={k1} isPro={isPro} />}
+        {grandstandF && <SpokeExperienceCard experience={grandstandF} isPro={isPro} />}
+        {hillstand && <SpokeExperienceCard experience={hillstand} isPro={isPro} />}
       </div>
     </SpokeShell>
   );

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
+import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
 const SPOKE_ID = "tickets";
 
@@ -38,7 +39,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
 
   const ticketGuide = linkedExperiences.find((e) => e.slug.includes("singapore-gp-ticket-guide"));
@@ -143,20 +144,35 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
             both for the lowest price at the event.
           </p>
 
+          <div className="grid sm:grid-cols-2 gap-4 mb-8">
+            {turn1 && <SpokeExperienceCard experience={turn1} isPro={isPro} />}
+            {stamford && <SpokeExperienceCard experience={stamford} isPro={isPro} />}
+            {padang && <SpokeExperienceCard experience={padang} isPro={isPro} />}
+            {walkabout && <SpokeExperienceCard experience={walkabout} isPro={isPro} />}
+          </div>
+
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">What each is actually like</p>
-          <div className="flex flex-col gap-4 mb-6">
-            {stamford?.whyItsSpecial && (
-              <TierExperienceCard title="Stamford Grandstand" summary="Best value racing seat on the circuit." detail={stamford.whyItsSpecial} slug={stamford.slug} />
-            )}
-            {turn1?.whyItsSpecial && (
-              <TierExperienceCard title="Turn 1 Grandstand" summary="The closest thing to a start-line seat." detail={turn1.whyItsSpecial} slug={turn1.slug} />
-            )}
-            {padang?.whyItsSpecial && (
-              <TierExperienceCard title="Padang Grandstand" summary="A concert ticket that happens to include a race." detail={padang.whyItsSpecial} slug={padang.slug} />
-            )}
-            {walkabout?.whyItsSpecial && (
-              <TierExperienceCard title="Zone 4 Walkabout" summary="No seat, real racing, the lowest price at the race." detail={walkabout.whyItsSpecial} slug={walkabout.slug} />
-            )}
+          <div className="overflow-x-auto rounded-sm border border-[#2A2A2A] mb-6">
+            <table className="w-full text-sm border-collapse">
+              <tbody>
+                {[
+                  { title: "Stamford Grandstand", summary: "Best value racing seat on the circuit.", detail: stamford?.whyItsSpecial },
+                  { title: "Turn 1 Grandstand", summary: "The closest thing to a start-line seat.", detail: turn1?.whyItsSpecial },
+                  { title: "Padang Grandstand", summary: "A concert ticket that happens to include a race.", detail: padang?.whyItsSpecial },
+                  { title: "Zone 4 Walkabout", summary: "No seat, real racing, the lowest price at the race.", detail: walkabout?.whyItsSpecial },
+                ]
+                  .filter((row) => row.detail)
+                  .map((row, i) => (
+                    <tr key={row.title} className={i % 2 === 0 ? "bg-[#141414]" : "bg-[#0A0A0A]"}>
+                      <td className="px-4 py-3 align-top w-1/4">
+                        <p className="text-sm font-bold text-white">{row.title}</p>
+                        <p className="text-xs text-[#6A6A6A] mt-1">{row.summary}</p>
+                      </td>
+                      <td className="px-4 py-3 text-[#A3A3A3] leading-6 align-top">{row.detail}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
           </div>
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Buy only through official channels</p>
@@ -175,20 +191,5 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         </div>
       )}
     </SpokeShell>
-  );
-}
-
-function TierExperienceCard({ title, summary, detail, slug }: { title: string; summary: string; detail: string; slug?: string }) {
-  return (
-    <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
-      <p className="text-sm font-bold text-white mb-1">{title}</p>
-      <p className="text-xs text-[#6A6A6A] mb-3">{summary}</p>
-      <p className="text-sm text-[#A3A3A3] leading-6">{detail}</p>
-      {slug && (
-        <Link href={`/experience/${slug}`} className="inline-block mt-3 text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">
-          Read the full guide to this stand →
-        </Link>
-      )}
-    </div>
   );
 }

@@ -1,7 +1,7 @@
-import Link from "next/link";
 import Image from "next/image";
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
+import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
 const SPOKE_ID = "tickets";
 
@@ -47,7 +47,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
 
   const stands = STANDS.map((s) => ({ ...s, exp: linkedExperiences.find((e) => e.slug.includes(s.slug)) }));
@@ -171,40 +171,35 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
             grandstand versus another.
           </p>
 
+          <div className="grid sm:grid-cols-2 gap-4 mb-8">
+            {mainGrandstand && <SpokeExperienceCard experience={mainGrandstand} isPro={isPro} />}
+            {k1 && <SpokeExperienceCard experience={k1} isPro={isPro} />}
+            {grandstandF && <SpokeExperienceCard experience={grandstandF} isPro={isPro} />}
+            {hillstand && <SpokeExperienceCard experience={hillstand} isPro={isPro} />}
+          </div>
+
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">What each is actually like</p>
-          <div className="flex flex-col gap-4 mb-6">
-            {mainGrandstand?.whyItsSpecial && (
-              <TierExperienceCard
-                title="Main Grandstand"
-                summary="The ceremony seat — grid, lights, pit stops, podium, all from one spot."
-                detail={mainGrandstand.whyItsSpecial}
-                slug={mainGrandstand.slug}
-              />
-            )}
-            {k1?.whyItsSpecial && (
-              <TierExperienceCard
-                title="K1 Grandstand — Turn 1"
-                summary="The racing seat — the second-longest run to any first corner on the calendar."
-                detail={k1.whyItsSpecial}
-                slug={k1.slug}
-              />
-            )}
-            {grandstandF?.whyItsSpecial && (
-              <TierExperienceCard
-                title="Grandstand F"
-                summary="The connoisseur's seat — cars under sustained load through a real sequence, not one braking zone."
-                detail={grandstandF.whyItsSpecial}
-                slug={grandstandF.slug}
-              />
-            )}
-            {hillstand?.whyItsSpecial && (
-              <TierExperienceCard
-                title="Hill Stand (C2)"
-                summary="The value seat — genuinely wide view, general admission, freedom to move within the zone."
-                detail={hillstand.whyItsSpecial}
-                slug={hillstand.slug}
-              />
-            )}
+          <div className="overflow-x-auto rounded-sm border border-[#2A2A2A] mb-6">
+            <table className="w-full text-sm border-collapse">
+              <tbody>
+                {[
+                  { title: "Main Grandstand", summary: "The ceremony seat — grid, lights, pit stops, podium, all from one spot.", detail: mainGrandstand?.whyItsSpecial },
+                  { title: "K1 Grandstand — Turn 1", summary: "The racing seat — the second-longest run to any first corner on the calendar.", detail: k1?.whyItsSpecial },
+                  { title: "Grandstand F", summary: "The connoisseur's seat — cars under sustained load through a real sequence, not one braking zone.", detail: grandstandF?.whyItsSpecial },
+                  { title: "Hill Stand (C2)", summary: "The value seat — genuinely wide view, general admission, freedom to move within the zone.", detail: hillstand?.whyItsSpecial },
+                ]
+                  .filter((row) => row.detail)
+                  .map((row, i) => (
+                    <tr key={row.title} className={i % 2 === 0 ? "bg-[#141414]" : "bg-[#0A0A0A]"}>
+                      <td className="px-4 py-3 align-top w-1/4">
+                        <p className="text-sm font-bold text-white">{row.title}</p>
+                        <p className="text-xs text-[#6A6A6A] mt-1">{row.summary}</p>
+                      </td>
+                      <td className="px-4 py-3 text-[#A3A3A3] leading-6 align-top">{row.detail}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
           </div>
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What to watch for once pricing lands</p>
@@ -221,30 +216,5 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         </div>
       )}
     </SpokeShell>
-  );
-}
-
-function TierExperienceCard({
-  title,
-  summary,
-  detail,
-  slug,
-}: {
-  title: string;
-  summary: string;
-  detail: string;
-  slug?: string;
-}) {
-  return (
-    <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
-      <p className="text-sm font-bold text-white mb-1">{title}</p>
-      <p className="text-xs text-[#6A6A6A] mb-3">{summary}</p>
-      <p className="text-sm text-[#A3A3A3] leading-6">{detail}</p>
-      {slug && (
-        <Link href={`/experience/${slug}`} className="inline-block mt-3 text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">
-          Read the full guide to this stand →
-        </Link>
-      )}
-    </div>
   );
 }

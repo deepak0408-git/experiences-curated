@@ -10,6 +10,18 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://experiences-curated.com";
 const ALERT_TO = "experiencescurated@gmail.com";
 
+const SPORT_LABELS: Record<string, string> = {
+  tennis: "Tennis",
+  cricket: "Cricket",
+  football: "Football",
+  rugby: "Rugby",
+  golf: "Golf",
+  formula_one: "Formula 1",
+  cycling: "Cycling",
+  athletics: "Athletics",
+  other: "Sport",
+};
+
 // Fires daily. Announces a newly-activated event pack to newsletter subscribers
 // 2 days after Pro subscribers were already notified (via notifyProNewPack in
 // app/curator/events/actions.ts) — keeps the "Pro sees it first" promise true
@@ -31,6 +43,7 @@ export async function GET(request: NextRequest) {
       id: sportingEvents.id,
       name: sportingEvents.name,
       slug: sportingEvents.slug,
+      sport: sportingEvents.sport,
     })
     .from(sportingEvents)
     .where(and(
@@ -227,6 +240,7 @@ export async function GET(request: NextRequest) {
           <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0A0A0A">
             <div>
               <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#AAFF00;margin-bottom:28px">Experiences | Curated</p>
+              <p style="font-size:11px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;color:#AAFF00;margin:0 0 4px">${SPORT_LABELS[event.sport] ?? event.sport}</p>
               <h1 style="font-size:20px;font-weight:900;color:#ffffff;margin:0 0 8px">${event.name} is live</h1>
               <p style="font-size:13px;color:#A3A3A3;line-height:1.6;margin:0 0 24px">
                 You asked to be notified when the guide was ready — it's here. Grandstands
@@ -289,6 +303,7 @@ export async function GET(request: NextRequest) {
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:40px 24px;background:#0A0A0A">
           <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#AAFF00;margin-bottom:28px">New Pack</p>
           <h1 style="font-size:20px;font-weight:900;color:#ffffff;margin:0 0 8px">New event pack just dropped</h1>
+          <p style="font-size:11px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;color:#AAFF00;margin:0 0 4px">${SPORT_LABELS[event.sport] ?? event.sport}</p>
           <p style="font-size:16px;font-weight:900;color:#ffffff;margin:0 0 20px">${event.name}</p>
           <p style="font-size:13px;color:#A3A3A3;line-height:1.6;margin:0 0 24px">
             The full guide is live — grandstands and gates, where to stay, where to eat,

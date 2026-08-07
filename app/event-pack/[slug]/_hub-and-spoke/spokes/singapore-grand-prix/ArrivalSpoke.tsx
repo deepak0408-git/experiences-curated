@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
+import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
 const SPOKE_ID = "arrival";
 
@@ -32,7 +32,7 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
   const padang = linkedExperiences.find((e) => e.slug.includes("singapore-gp-padang-grandstand"));
   const walkabout = linkedExperiences.find((e) => e.slug.includes("singapore-gp-zone4-walkabout"));
   const f1Village = linkedExperiences.find((e) => e.slug.includes("singapore-gp-f1-village"));
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
 
   return (
@@ -78,20 +78,19 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Arrival strategy actually differs by stand</p>
+      <div className="grid sm:grid-cols-2 gap-4 mb-4">
+        {turn1 && <SpokeExperienceCard experience={turn1} isPro={isPro} />}
+        {stamford && <SpokeExperienceCard experience={stamford} isPro={isPro} />}
+        {padang && <SpokeExperienceCard experience={padang} isPro={isPro} />}
+        {walkabout && <SpokeExperienceCard experience={walkabout} isPro={isPro} />}
+      </div>
+
       <div className="flex flex-col gap-3 mb-8">
         <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
           <p className="text-sm font-bold text-white mb-1">Reserved grandstands (Turn 1, Stamford, and most named stands)</p>
           <p className="text-sm text-[#A3A3A3] leading-6">
             Your seat is yours regardless of arrival time, so the 60-90 minute window is really about clearing
             security without the closer-to-session-time crush and having time in the Fan Zone, not claiming ground.
-            {f1Village && (
-              <>
-                {" "}
-                <Link href={`/experience/${f1Village.slug}`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
-                  See what's actually in the F1 Village →
-                </Link>
-              </>
-            )}
           </p>
         </div>
         <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
@@ -111,6 +110,13 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
         </div>
       </div>
 
+      {f1Village && (
+        <div className="mb-8">
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">What's actually in the Fan Zone</p>
+          <SpokeExperienceCard experience={f1Village} isPro={isPro} />
+        </div>
+      )}
+
       <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-4">
         <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Getting through security faster</p>
         <p className="text-sm text-[#A3A3A3] leading-6">
@@ -120,20 +126,17 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
         </p>
       </div>
 
-      {orientation?.whyItsSpecial && (
-        <p className="text-sm text-[#A3A3A3] leading-7 mt-4">{orientation.whyItsSpecial}</p>
-      )}
-
       {orientation && (
-        <Link href={`/experience/${orientation.slug}`} className="inline-block mt-6 text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">
-          Read the full first-timer orientation guide →
-        </Link>
+        <div className="mb-8">
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">First time at Marina Bay?</p>
+          <SpokeExperienceCard experience={orientation} isPro={isPro} />
+        </div>
       )}
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Leaving your seat mid-session</p>
-          <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
+          <p className="text-sm text-[#A3A3A3] leading-7">
             At Turn 1, Stamford, and every other reserved grandstand, your seat is yours for the whole session
             regardless of when you step out, so a food or bathroom break doesn&apos;t cost you your view. Padang is
             the same for the seat itself, but factor in walking time back from Padang Stage if you left for the
@@ -141,12 +144,6 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
             mid-session break as a real trade-off, bring water and snacks in with you rather than planning to step
             out and back.
           </p>
-          <div className="flex flex-wrap gap-4">
-            {turn1 && <Link href={`/experience/${turn1.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">Read the full Turn 1 guide →</Link>}
-            {stamford && <Link href={`/experience/${stamford.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">Read the full Stamford guide →</Link>}
-            {padang && <Link href={`/experience/${padang.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">Read the full Padang guide →</Link>}
-            {walkabout && <Link href={`/experience/${walkabout.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">Read the full Zone 4 Walkabout guide →</Link>}
-          </div>
         </div>
       )}
 

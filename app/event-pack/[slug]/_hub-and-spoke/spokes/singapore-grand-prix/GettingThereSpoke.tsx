@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
+import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
 const SPOKE_ID = "getting-there";
 
@@ -9,7 +9,7 @@ export default async function GettingThereSpoke({ eventSlug }: { eventSlug: stri
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
   const transit = linkedExperiences.find((e) => e.slug.includes("singapore-gp-getting-around"));
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
 
   return (
@@ -126,14 +126,10 @@ export default async function GettingThereSpoke({ eventSlug }: { eventSlug: stri
         </p>
       </div>
 
-      {transit?.whyItsSpecial && (
-        <p className="text-sm text-[#A3A3A3] leading-7 mt-4">{transit.whyItsSpecial}</p>
-      )}
-
       {transit && (
-        <Link href={`/experience/${transit.slug}`} className="inline-block mt-6 text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">
-          Read the full transit guide →
-        </Link>
+        <div className="mb-8">
+          <SpokeExperienceCard experience={transit} isPro={isPro} />
+        </div>
       )}
 
       <p className="text-xs text-[#6A6A6A] mt-8">

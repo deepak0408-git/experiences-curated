@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
+import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
 const SPOKE_ID = "where-to-eat";
 
@@ -8,7 +8,7 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
   const lauPaSat = linkedExperiences.find((e) => e.slug.includes("singapore-gp-lau-pa-sat"));
   const maxwell = linkedExperiences.find((e) => e.slug.includes("singapore-gp-maxwell-food-centre"));
@@ -27,7 +27,7 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
       question="Where to eat during Singapore GP race weekend?"
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="Every venue, hours, and honest rating above is free. The pack adds our full verdict on which spot fits which moment of race weekend, the Makansutra vs. Satay by the Bay distinction that trips people up, specific stall picks, and the complete deep-dive guide to all three venues."
+      ctaCopy="The three venues are named above — the pack adds the real detail on each one, our full verdict on which spot fits which moment of race weekend, the Makansutra vs. Satay by the Bay distinction that trips people up, and specific stall picks at Lau Pa Sat's Satay Street."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
         A hawker centre is Singapore&apos;s everyday food hall format — dozens of independent stalls, each usually
@@ -41,23 +41,12 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
         the most photogenic option and the most locally-recommended one aren&apos;t the same place.
       </p>
 
-      <div className="flex flex-col gap-3 mb-8">
-        {maxwell && (
-          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
-            <p className="text-sm font-bold text-white mb-1">{maxwell.title}</p>
-            <p className="text-sm text-[#A3A3A3] leading-6">Tian Tian's Michelin Bib Gourmand chicken rice — the hawker centre locals actually recommend over Lau Pa Sat, on genuine quality-for-price, not just atmosphere.</p>
-          </div>
-        )}
+      <div className="grid sm:grid-cols-2 gap-4 mb-4">
+        {maxwell && <SpokeExperienceCard experience={maxwell} isPro={isPro} />}
+        {lauPaSat && <SpokeExperienceCard experience={lauPaSat} isPro={isPro} />}
         {bayfront && (
-          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
-            <p className="text-sm font-bold text-white mb-1">{bayfront.title}</p>
-            <p className="text-sm text-[#A3A3A3] leading-6">Two distinct venues, different hours: Makansutra Gluttons Bay runs late (till 2-3am) for post-session eating, Satay by the Bay closes at 10pm and suits a daytime Gardens visit instead — don't mix the two up on race night.</p>
-          </div>
-        )}
-        {lauPaSat && (
-          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
-            <p className="text-sm font-bold text-white mb-1">{lauPaSat.title}</p>
-            <p className="text-sm text-[#A3A3A3] leading-6">1894 cast-iron national monument, Satay Street runs till 3am, 5-10 min walk from the circuit. Genuinely the most photogenic of the three, but honestly the most tourist-priced — go for the setting and the satay, not for a bargain.</p>
+          <div className="sm:col-span-2">
+            <SpokeExperienceCard experience={bayfront} isPro={isPro} />
           </div>
         )}
       </div>
@@ -65,7 +54,7 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Where we'd send you first</p>
-          <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
             After a night session specifically, Makansutra Gluttons Bay is the right call, it's built for exactly
             this rhythm, open till 2-3am — don't confuse it with Satay by the Bay, which closes hours earlier. For
             an authentic hawker meal earlier in the day, Maxwell Food Centre and Tian Tian beat Lau Pa Sat on
@@ -73,18 +62,28 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
             Pa Sat's Satay Street, stalls 7 and 8 are worth trying first — a repeated tip in visitor reviews, though
             not one we've independently verified stall-by-stall.
           </p>
-          <div className="flex flex-wrap gap-4">
-            {lauPaSat && <Link href={`/experience/${lauPaSat.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">Read the full Lau Pa Sat guide →</Link>}
-            {maxwell && <Link href={`/experience/${maxwell.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">Read the full Maxwell guide →</Link>}
-            {bayfront && <Link href={`/experience/${bayfront.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">Read the full bayfront hawkers guide →</Link>}
+
+          <div className="flex flex-col gap-3">
+            <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+              <p className="text-sm font-bold text-white mb-1">Maxwell Food Centre</p>
+              <p className="text-sm text-[#A3A3A3] leading-6">Tian Tian's Michelin Bib Gourmand chicken rice — the hawker centre locals actually recommend over Lau Pa Sat, on genuine quality-for-price, not just atmosphere.</p>
+            </div>
+            <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+              <p className="text-sm font-bold text-white mb-1">Bayfront hawkers</p>
+              <p className="text-sm text-[#A3A3A3] leading-6">Two distinct venues, different hours: Makansutra Gluttons Bay runs late (till 2-3am) for post-session eating, Satay by the Bay closes at 10pm and suits a daytime Gardens visit instead — don't mix the two up on race night.</p>
+            </div>
+            <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+              <p className="text-sm font-bold text-white mb-1">Lau Pa Sat</p>
+              <p className="text-sm text-[#A3A3A3] leading-6">1894 cast-iron national monument, Satay Street runs till 3am, 5-10 min walk from the circuit. Genuinely the most photogenic of the three, but honestly the most tourist-priced — go for the setting and the satay, not for a bargain.</p>
+            </div>
           </div>
         </div>
       )}
 
       <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: Michelin Guide official listings (guide.michelin.com), Tripadvisor (Lau Pa Sat 4.2/5, 2,556
-        reviews, confirmed via live listing screenshot 2 Aug 2026), esplanade.com (Makansutra hours/stalls),
-        gardensbythebay.com.sg (Satay by the Bay hours/stalls), laupasat.sg (history). Verified 3 Aug 2026.
+        Sources: Michelin Guide official listings (guide.michelin.com), Google Maps (live ratings, linked from each
+        venue's own experience page), esplanade.com (Makansutra hours/stalls), gardensbythebay.com.sg (Satay by the
+        Bay hours/stalls), laupasat.sg (history). Verified 7 Aug 2026.
       </p>
     </SpokeShell>
   );

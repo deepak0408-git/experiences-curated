@@ -113,7 +113,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
           <ItineraryTable
             day="Monday — Optional Genting Highlands day"
             rows={[
-              { time: "All day", location: "Genting Highlands", activity: "Only makes sense as a full day, not a squeeze between other plans — the Awana SkyWay climb, the 15-25°C air, and the resort itself are worth the 60-75 minutes each way on their own terms. Go on a weekday if your extra day falls on one, to avoid cable car queues. The Genting Express bus from KL Sentral runs roughly RM11-15 one way." },
+              { time: "All day", location: "Genting Highlands", activity: "Only makes sense as a full day, not a squeeze between other plans — the Awana SkyWay climb, the 22°C air (colder after dark), and the resort itself are worth the 60-75 minutes each way on their own terms. Go on a weekday if your extra day falls on one, to avoid cable car queues. The Genting Express bus from KL Sentral runs roughly RM11-15 one way." },
             ]}
           />
         </div>

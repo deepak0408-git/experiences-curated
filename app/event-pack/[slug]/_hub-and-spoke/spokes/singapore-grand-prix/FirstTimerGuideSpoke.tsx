@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
+import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
 const SPOKE_ID = "first-timer-guide";
 
@@ -9,7 +9,8 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
   const orientation = linkedExperiences.find((e) => e.slug.includes("singapore-gp-first-timer-orientation"));
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const padangStage = linkedExperiences.find((e) => e.slug.includes("singapore-gp-padang-stage-concerts"));
+  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
 
   return (
@@ -84,6 +85,12 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
           specific headliner actually matters to you, since not every ticket reaches the Padang Stage.
         </p>
       </div>
+
+      {padangStage && (
+        <div className="mb-10">
+          <SpokeExperienceCard experience={padangStage} isPro={isPro} />
+        </div>
+      )}
 
       {/* Practical essentials — a genuinely different layer from the 5
           mistakes above (tactical gate-day checklist vs. how-to-think-about-
@@ -167,14 +174,11 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
         </p>
       </div>
 
-      {orientation?.whyItsSpecial && (
-        <p className="text-sm text-[#A3A3A3] leading-7 mt-8">{orientation.whyItsSpecial}</p>
-      )}
-
       {orientation && (
-        <Link href={`/experience/${orientation.slug}`} className="inline-block mt-6 text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">
-          Read the full first-timer orientation guide →
-        </Link>
+        <div className="mt-8">
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The full orientation guide</p>
+          <SpokeExperienceCard experience={orientation} isPro={isPro} />
+        </div>
       )}
 
       <p className="text-xs text-[#6A6A6A] mt-8">

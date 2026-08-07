@@ -1,5 +1,6 @@
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
+import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
 const SPOKE_ID = "first-timer-guide";
 
@@ -7,8 +8,11 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
+  const petronas = linkedExperiences.find((e) => e.slug.includes("petronas-twin-towers"));
+  const circuitHistory = linkedExperiences.find((e) => e.slug.includes("sepang-circuit-history"));
+  const fanNostalgia = linkedExperiences.find((e) => e.slug.includes("malaysia-f1-fans-nostalgia"));
 
   return (
     <SpokeShell eventSlug={eventSlug} eventId={event.id} eventCurrency={event.packCurrency} spokeId={SPOKE_ID} justPurchased={justPurchased} eventName="Bahrain Grand Prix" status="public" h1="5 mistakes first-time visitors make" question="What do I need to know for my first Sepang race weekend?" heroImageUrl={heroImageUrl} isUnlocked={isUnlocked}>
@@ -29,6 +33,12 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
           Grand Prix.
         </p>
       </div>
+
+      {circuitHistory && (
+        <div className="mb-6">
+          <SpokeExperienceCard experience={circuitHistory} isPro={isPro} />
+        </div>
+      )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Mistake 2 — assuming any grandstand shows you the same race</p>
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-6">
@@ -73,6 +83,12 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
           background trivia.
         </p>
       </div>
+
+      {fanNostalgia && (
+        <div className="mb-10">
+          <SpokeExperienceCard experience={fanNostalgia} isPro={isPro} />
+        </div>
+      )}
 
       {/* Practical essentials — a genuinely different layer from the 5
           mistakes above (tactical gate-day checklist vs. how-to-think-about-
@@ -164,6 +180,15 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
           around 45 minutes total and sidesteps the road congestion that can push a bus back well over an hour.
         </p>
       </div>
+
+      {petronas && (
+        <>
+          <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-4 pt-10 mt-6 border-t border-[#2A2A2A]">
+            The city, not just the circuit
+          </p>
+          <SpokeExperienceCard experience={petronas} isPro={isPro} />
+        </>
+      )}
 
       <p className="text-xs text-[#6A6A6A] mt-8">
         Sources: grab.com/my, touchngo.com.my/consumer/international-tourists (ASEAN-only tourist registration,

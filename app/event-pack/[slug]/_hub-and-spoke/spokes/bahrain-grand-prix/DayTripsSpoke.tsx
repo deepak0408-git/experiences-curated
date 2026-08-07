@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
+import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
 const SPOKE_ID = "day-trips";
 
@@ -8,7 +8,7 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
   const { event, linkedExperiences, dayTrips } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
   const genting = dayTrips.find((t) => t.slug.includes("genting-highlands"));
   const putrajaya = dayTrips.find((t) => t.slug.includes("putrajaya"));
@@ -43,7 +43,7 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
       question="What are the best day trips from Kuala Lumpur?"
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="All three trips above are real and free to plan yourself. The pack adds which one we'd pick for your specific free day, how to fit it around race sessions without wasting travel time, and the full guide to each."
+      ctaCopy="The three trips are named above — the pack adds the real detail on each one (what's actually there, entry rules, costs), which one we'd pick for your specific free day, and how to fit it around race sessions without wasting travel time."
     >
       {/* Orientation intro — expanded 1 Aug 2026 after the user flagged the
           page as thin, then again to add Batu Caves as a real third
@@ -61,66 +61,61 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
       </p>
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Genting Highlands is escape — a resort complex an hour outside the city, high enough that the temperature
-        genuinely drops from KL&apos;s tropical heat to a real 15-25°C. Putrajaya is spectacle — Malaysia&apos;s
+        genuinely drops from KL&apos;s tropical heat to around 22°C by day, closer to 12°C after dark. Putrajaya is spectacle — Malaysia&apos;s
         purpose-built administrative capital, centred on a rose-granite mosque that appears to float on a
         650-hectare man-made lake. Batu Caves is the closest and most easily combined with a half day — a genuine
         active place of worship, not a museum piece, reachable by direct train from KL Sentral in under an hour.
       </p>
 
-      {genting && (
-        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
-          <p className="text-sm font-bold text-white mb-1">{genting.title}</p>
-          <p className="text-sm text-[#A3A3A3] leading-6 mb-3">{genting.subtitle}</p>
-          <p className="text-sm text-[#A3A3A3] leading-6">
-            The climb is the point — the Awana SkyWay cable car carries you up to Resorts World Genting, a full hill
-            resort of seven hotels, a theme park, and Malaysia&apos;s only legal casino. Casino access is real and
-            legally mandated, not casino policy: Malaysian Muslims cannot enter by federal law, Malaysian non-Muslims
-            need a MyKad and a RM200 entrance fee, and foreign tourists need a passport and must be 21 or older. A
-            dedicated Genting Express bus runs from KL Sentral for roughly RM11-15 one way if you&apos;d rather not
-            drive.
-          </p>
-        </div>
-      )}
-
-      {putrajaya && (
-        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
-          <p className="text-sm font-bold text-white mb-1">{putrajaya.title}</p>
-          <p className="text-sm text-[#A3A3A3] leading-6 mb-3">{putrajaya.subtitle}</p>
-          <p className="text-sm text-[#A3A3A3] leading-6">
-            The centrepiece is Putra Mosque — the Pink Mosque — built between 1997 and 1999 from pale pink rose
-            granite, its 116-metre minaret drawing on Persian, Arab, and Malay architectural traditions and inspired
-            specifically by Baghdad&apos;s Sheikh Omar Mosque. Non-Muslim visitors are welcome during specific windows
-            (free entry, no booking, modest dress required — robes are provided at the door). Beyond the mosque,
-            Cruise Tasik Putrajaya has run scenic lake tours since 2003 past the Seri Wawasan Bridge, its cable-stayed
-            design deliberately echoing a sailing ship&apos;s mast and sails.
-          </p>
-        </div>
-      )}
-
-      {batuCaves && (
-        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
-          <p className="text-sm font-bold text-white mb-1">{batuCaves.title}</p>
-          <p className="text-sm text-[#A3A3A3] leading-6 mb-3">{batuCaves.subtitle}</p>
-          <p className="text-sm text-[#A3A3A3] leading-6">
-            Guarding the base of the 272 rainbow-painted steps is a 42.7-metre gold statue of Lord Murugan, the
-            largest statue in Malaysia, funded entirely by community donations. The Temple Cave at the top is a
-            genuine active shrine, first dedicated in 1890 when a Tamil trader noticed the main cave entrance
-            resembled Lord Murugan&apos;s divine spear. Entry to the main cave is free; the Dark Cave tour, exploring
-            an undeveloped cave system with real conservation guides, runs from around RM35. The resident macaques
-            are real and grab loose items — keep phones zipped away and don&apos;t carry visible food.
-          </p>
-        </div>
-      )}
-
-      <p className="text-sm text-[#A3A3A3] leading-7">
-        Pack for both climates if you&apos;re headed to Genting — a jacket that feels unnecessary leaving Kuala
-        Lumpur&apos;s heat is exactly what you&apos;ll want once the SkyWay climbs and the temperature drops after
-        dark. For Putrajaya and Batu Caves, dress modestly regardless of which window you visit in — both are active
-        places of worship, not tourist sites open on your schedule.
-      </p>
+      <div className="grid sm:grid-cols-2 gap-4 mb-4">
+        {genting && <SpokeExperienceCard experience={genting} isPro={isPro} />}
+        {putrajaya && <SpokeExperienceCard experience={putrajaya} isPro={isPro} />}
+        {batuCaves && (
+          <div className="sm:col-span-2">
+            <SpokeExperienceCard experience={batuCaves} isPro={isPro} />
+          </div>
+        )}
+      </div>
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
+            <p className="text-sm font-bold text-white mb-1">Genting Highlands</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">
+              The climb is the point — the Awana SkyWay cable car carries you up to Resorts World Genting, a full
+              hill resort of seven hotels, a theme park, and Malaysia&apos;s only legal casino. Casino access is
+              real and legally mandated, not casino policy: Malaysian Muslims cannot enter by federal law,
+              Malaysian non-Muslims need a MyKad and a RM200 entrance fee, and foreign tourists need a passport and
+              must be 21 or older. A dedicated Genting Express bus runs from KL Sentral for roughly RM11-15 one way
+              if you&apos;d rather not drive.
+            </p>
+          </div>
+
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
+            <p className="text-sm font-bold text-white mb-1">Putrajaya</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">
+              The centrepiece is Putra Mosque — the Pink Mosque — built between 1997 and 1999 from pale pink rose
+              granite, its 116-metre minaret drawing on Persian, Arab, and Malay architectural traditions and
+              inspired specifically by Baghdad&apos;s Sheikh Omar Mosque. Non-Muslim visitors are welcome during
+              specific windows (free entry, no booking, modest dress required — robes are provided at the door).
+              Beyond the mosque, Cruise Tasik Putrajaya has run scenic lake tours since 2003 past the Seri Wawasan
+              Bridge, its cable-stayed design deliberately echoing a sailing ship&apos;s mast and sails.
+            </p>
+          </div>
+
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
+            <p className="text-sm font-bold text-white mb-1">Batu Caves</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">
+              Guarding the base of the 272 rainbow-painted steps is a 42.7-metre gold statue of Lord Murugan, the
+              largest statue in Malaysia, funded entirely by community donations. The Temple Cave at the top is a
+              genuine active shrine, first dedicated in 1890 when a Tamil trader noticed the main cave entrance
+              resembled Lord Murugan&apos;s divine spear. Entry to the main cave is free; the Dark Cave tour,
+              exploring an undeveloped cave system with real conservation guides, runs from around RM35. The
+              resident macaques are real and grab loose items — keep phones zipped away and don&apos;t carry
+              visible food.
+            </p>
+          </div>
+
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Which one we&apos;d pick</p>
           <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
             If you only have half a day, Batu Caves is the easiest fit — under an hour there by direct train, and a
@@ -131,6 +126,12 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
             worth the extra travel time — the temperature drop alone is a different physical sensation from anything
             else on this trip. For any of the three, an organised tour with pickup included is worth the modest extra
             cost on a single free day squeezed between race sessions rather than managing transfers yourself.
+          </p>
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
+            Pack for both climates if you&apos;re headed to Genting — a jacket that feels unnecessary leaving Kuala
+            Lumpur&apos;s heat is exactly what you&apos;ll want once the SkyWay climbs and the temperature drops
+            after dark. For Putrajaya and Batu Caves, dress modestly regardless of which window you visit in — both
+            are active places of worship, not tourist sites open on your schedule.
           </p>
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Timing it around race sessions</p>
           <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
@@ -143,7 +144,7 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
           </p>
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Book a guided tour</p>
-          <div className="flex flex-col gap-3 mb-8">
+          <div className="flex flex-col gap-3">
             {genting && (
               <TourLinkCard title={genting.title} url={gygLinks.genting} />
             )}
@@ -152,25 +153,6 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
             )}
             {batuCaves && (
               <TourLinkCard title={batuCaves.title} url={gygLinks.batuCaves} />
-            )}
-          </div>
-
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Full guides</p>
-          <div className="flex flex-wrap gap-4">
-            {genting && (
-              <Link href={`/experience/${genting.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">
-                {genting.title} — full guide →
-              </Link>
-            )}
-            {putrajaya && (
-              <Link href={`/experience/${putrajaya.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">
-                {putrajaya.title} — full guide →
-              </Link>
-            )}
-            {batuCaves && (
-              <Link href={`/experience/${batuCaves.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">
-                {batuCaves.title} — full guide →
-              </Link>
             )}
           </div>
         </div>

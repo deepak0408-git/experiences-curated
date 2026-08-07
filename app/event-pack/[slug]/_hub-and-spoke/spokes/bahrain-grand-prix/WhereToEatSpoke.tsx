@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
+import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
 const SPOKE_ID = "where-to-eat";
 
@@ -8,7 +8,7 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
   const jalanAlor = linkedExperiences.find((e) => e.slug.includes("jalan-alor"));
   const oldChinaCafe = linkedExperiences.find((e) => e.slug.includes("old-china-cafe"));
@@ -48,28 +48,27 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
         quiet and historic. Both are worth doing on their own terms across a three-day weekend.
       </p>
 
-      {jalanAlor && (
-        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
-          <p className="text-sm font-bold text-white mb-1">{jalanAlor.title}</p>
-          <p className="text-sm text-[#A3A3A3] leading-6 mb-3">{jalanAlor.subtitle}</p>
-          <p className="text-sm text-[#A3A3A3] leading-6">
-            The anchor is Wong Ah Wah, grilling BBQ chicken wings here for more than 70 years — famous enough to have
-            drawn Jay Chou and, before his death, Anthony Bourdain. Runs 5pm to 4am. Most dishes run RM5-15, cash
-            only.
-          </p>
-        </div>
-      )}
+      <div className="grid sm:grid-cols-2 gap-4 mb-4">
+        {jalanAlor && <SpokeExperienceCard experience={jalanAlor} isPro={isPro} />}
+        {oldChinaCafe && <SpokeExperienceCard experience={oldChinaCafe} isPro={isPro} />}
+      </div>
 
-      {oldChinaCafe && (
-        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
-          <p className="text-sm font-bold text-white mb-1">{oldChinaCafe.title}</p>
-          <p className="text-sm text-[#A3A3A3] leading-6 mb-3">{oldChinaCafe.subtitle}</p>
-          <p className="text-sm text-[#A3A3A3] leading-6">
-            A pre-war shophouse dating to 1920, the cafe operating inside it since 1997. Peranakan and Nyonya
-            cooking, 4.2 out of 5 from over 3,000 Google reviews. Open 11am-10pm, kitchen closes 9:15pm.
-          </p>
-        </div>
-      )}
+      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
+        <p className="text-sm font-bold text-white mb-1">Jalan Alor</p>
+        <p className="text-sm text-[#A3A3A3] leading-6">
+          The anchor is Wong Ah Wah, grilling BBQ chicken wings here for more than 70 years — famous enough to have
+          drawn Jay Chou and, before his death, Anthony Bourdain. Runs 5pm to 4am. Most dishes run RM5-15, cash
+          only.
+        </p>
+      </div>
+
+      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
+        <p className="text-sm font-bold text-white mb-1">Old China Cafe</p>
+        <p className="text-sm text-[#A3A3A3] leading-6">
+          A pre-war shophouse dating to 1920, the cafe operating inside it since 1997. Peranakan and Nyonya
+          cooking. Open 11am-10pm, kitchen closes 9:15pm.
+        </p>
+      </div>
 
       <p className="text-sm text-[#A3A3A3] leading-7">
         Jalan Alor sits inside Bukit Bintang, a short walk from the monorail and most of the hotels a Sepang-bound
@@ -94,20 +93,6 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
             heritage building means genuinely limited seating and it&apos;s a well-known, well-reviewed spot that
             fills at peak times. Jalan Alor never needs a reservation; that&apos;s part of what it is.
           </p>
-
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Full guides</p>
-          <div className="flex flex-wrap gap-4">
-            {jalanAlor && (
-              <Link href={`/experience/${jalanAlor.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">
-                {jalanAlor.title} — full guide →
-              </Link>
-            )}
-            {oldChinaCafe && (
-              <Link href={`/experience/${oldChinaCafe.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">
-                {oldChinaCafe.title} — full guide →
-              </Link>
-            )}
-          </div>
         </div>
       )}
     </SpokeShell>

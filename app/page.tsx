@@ -406,8 +406,8 @@ export default async function HomePage() {
                 },
                 {
                   icon: "✦",
-                  heading: "Packed for the event, not just the destination",
-                  body: "We tell you what matters for this specific event — the ticket you should buy, the section of the ground to stand in, the restaurant that stays open on race Sunday.",
+                  heading: "Plan your next trip. Know real costs before you commit.",
+                  body: "No guessing what you can afford. Give us your budget, we'll show you what fits. Flights, hotels, tickets.",
                 },
                 {
                   icon: "✦",
@@ -431,11 +431,13 @@ export default async function HomePage() {
                 What&apos;s in an event pack
               </p>
               {[
-                "Ranked fan experiences at the venue",
+                "Real cost breakdown before you buy",
                 "Ticketing guide — what to buy and when",
                 "Stays near the action, verified by our team",
                 "Dining picks open on event days",
                 "Getting there — shuttles, parking, timing",
+                "Day trips and city guides beyond the venue",
+                "First-timer guide — apps, rules, what to expect",
                 "Pre-trip brief sent 7 days before kick-off",
               ].map((point) => (
                 <div key={point} className="flex items-start gap-2.5 py-2 border-b border-[#2A2A2A] last:border-0">

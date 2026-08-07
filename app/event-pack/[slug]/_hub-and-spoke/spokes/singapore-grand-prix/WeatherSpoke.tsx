@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
 
@@ -8,7 +7,6 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const orientation = linkedExperiences.find((e) => e.slug.includes("singapore-gp-first-timer-orientation"));
   const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
 
@@ -102,16 +100,6 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
           cards, but carry some cash too, not every stall does.
         </p>
       </div>
-
-      {orientation?.whyItsSpecial && (
-        <p className="text-sm text-[#A3A3A3] leading-7 mt-4">{orientation.whyItsSpecial}</p>
-      )}
-
-      {orientation && (
-        <Link href={`/experience/${orientation.slug}`} className="inline-block mt-6 text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">
-          Read the full first-timer guide →
-        </Link>
-      )}
 
       <p className="text-xs text-[#6A6A6A] mt-8">
         Sources: BBC Sport, malaymail.com (heat hazard designation), weather-atlas.com and currentresults.com

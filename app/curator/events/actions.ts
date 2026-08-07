@@ -10,6 +10,18 @@ import { createClient } from "@supabase/supabase-js";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+const SPORT_LABELS: Record<string, string> = {
+  tennis: "Tennis",
+  cricket: "Cricket",
+  football: "Football",
+  rugby: "Rugby",
+  golf: "Golf",
+  formula_one: "Formula 1",
+  cycling: "Cycling",
+  athletics: "Athletics",
+  other: "Sport",
+};
+
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!,
@@ -60,7 +72,7 @@ export async function saveHomepageSlots(
   // the no-pack-yet guard below to actually-changed rows, and (for the
   // isHidden subset) to detect newly-activated events further down.
   const allCurrentStates = await db
-    .select({ id: sportingEvents.id, isHidden: sportingEvents.isHidden, homepageSlot: sportingEvents.homepageSlot, name: sportingEvents.name, slug: sportingEvents.slug })
+    .select({ id: sportingEvents.id, isHidden: sportingEvents.isHidden, homepageSlot: sportingEvents.homepageSlot, name: sportingEvents.name, slug: sportingEvents.slug, sport: sportingEvents.sport })
     .from(sportingEvents);
   const currentStateById = new Map(allCurrentStates.map((e) => [e.id, e]));
 
@@ -259,7 +271,7 @@ async function syncAlgoliaEventVisibility(
   }
 }
 
-async function notifyProNewPack(events: { id: string; name: string; slug: string }[]) {
+async function notifyProNewPack(events: { id: string; name: string; slug: string; sport: string }[]) {
   const subs = await db
     .select({ email: proSubscriptions.email, billingCycle: proSubscriptions.billingCycle })
     .from(proSubscriptions)
@@ -305,6 +317,7 @@ async function notifyProNewPack(events: { id: string; name: string; slug: string
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:40px 24px;background:#0A0A0A">
           <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#AAFF00;margin-bottom:28px">Pro Annual — Early Access</p>
           <h1 style="font-size:20px;font-weight:900;color:#ffffff;margin:0 0 8px">New event pack just dropped</h1>
+          <p style="font-size:11px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;color:#AAFF00;margin:0 0 4px">${SPORT_LABELS[event.sport] ?? event.sport}</p>
           <p style="font-size:16px;font-weight:900;color:#ffffff;margin:0 0 20px">${event.name}</p>
           <p style="font-size:13px;color:#A3A3A3;line-height:1.6;margin:0 0 24px">It's already in your library — your annual Pro membership includes every pack we publish. You're seeing this before anyone else.</p>
           <a href="${openUrl}" style="display:inline-block;padding:10px 20px;background:#AAFF00;color:#000;font-size:13px;font-weight:900;text-decoration:none;border-radius:2px">Open the pack →</a>
@@ -340,6 +353,7 @@ async function notifyProNewPack(events: { id: string; name: string; slug: string
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:40px 24px;background:#0A0A0A">
           <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#AAFF00;margin-bottom:28px">Pro — New Pack</p>
           <h1 style="font-size:20px;font-weight:900;color:#ffffff;margin:0 0 8px">New event pack just dropped</h1>
+          <p style="font-size:11px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;color:#AAFF00;margin:0 0 4px">${SPORT_LABELS[event.sport] ?? event.sport}</p>
           <p style="font-size:16px;font-weight:900;color:#ffffff;margin:0 0 20px">${event.name}</p>
           <p style="font-size:13px;color:#A3A3A3;line-height:1.6;margin:0 0 16px">You can buy this pack now, or upgrade to an annual plan and get every pack we publish included — no separate purchase needed.</p>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px">

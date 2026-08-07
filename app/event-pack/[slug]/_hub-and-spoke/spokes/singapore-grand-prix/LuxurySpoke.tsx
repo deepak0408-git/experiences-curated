@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
+import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
 const SPOKE_ID = "luxury";
 
@@ -8,7 +8,7 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
   const paddockClub = linkedExperiences.find((e) => e.slug.includes("singapore-gp-paddock-club"));
 
@@ -88,10 +88,14 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       {paddockClub && (
         <>
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The single biggest luxury decision: F1 Paddock Club</p>
-          <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
             Paddock Club sits directly above the pit garages at Marina Bay, built around proximity to the cars,
             teams, and the grid before lights out, not just a premium seat.
           </p>
+
+          <div className="mb-8">
+            <SpokeExperienceCard experience={paddockClub} isPro={isPro} />
+          </div>
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">What&apos;s actually included</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
@@ -114,17 +118,13 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
           </div>
 
           {paddockClub.practicalInfo?.website && (
-            <p className="text-sm text-[#A3A3A3] mb-6">
+            <p className="text-sm text-[#A3A3A3]">
               Official page:{" "}
               <a href={paddockClub.practicalInfo.website} target="_blank" rel="noopener noreferrer" className="text-[#AAFF00] hover:text-[#BBFF33] underline">
                 {paddockClub.practicalInfo.website.replace(/^https?:\/\//, "")}
               </a>
             </p>
           )}
-
-          <Link href={`/experience/${paddockClub.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">
-            Full F1 Paddock Club guide →
-          </Link>
         </>
       )}
 
@@ -179,29 +179,6 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
             and availability are quoted per night, not as one flat rate across the whole week.
           </p>
 
-          {(paddockClub?.whyItsSpecial || paddockClub?.practicalInfo?.howToBook) && (
-            <>
-              <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Why Paddock Club is worth naming plainly as the real luxury tier</p>
-              {paddockClub?.whyItsSpecial && (
-                <p className="text-sm text-[#A3A3A3] leading-7 mb-4">{paddockClub.whyItsSpecial}</p>
-              )}
-              {paddockClub?.practicalInfo?.howToBook && (
-                <p className="text-sm text-[#A3A3A3] leading-7 mb-6">{paddockClub.practicalInfo.howToBook}</p>
-              )}
-            </>
-          )}
-          {paddockClub?.insiderTips && paddockClub.insiderTips.length > 0 && (
-            <>
-              <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Booking specifics worth knowing</p>
-              <div className="flex flex-col gap-3 mb-6">
-                {paddockClub.insiderTips.map((tip, i) => (
-                  <div key={i} className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
-                    <p className="text-sm text-[#A3A3A3] leading-6">{tip}</p>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
           {paddockClub?.whatToAvoid && (
             <>
               <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Worth avoiding</p>

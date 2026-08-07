@@ -1,7 +1,7 @@
-import Link from "next/link";
 import Image from "next/image";
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
+import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
 const SPOKE_ID = "map";
 
@@ -14,7 +14,7 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
   const padang = linkedExperiences.find((e) => e.slug.includes("singapore-gp-padang-grandstand"));
   const walkabout = linkedExperiences.find((e) => e.slug.includes("singapore-gp-zone4-walkabout"));
   const f1Village = linkedExperiences.find((e) => e.slug.includes("singapore-gp-f1-village"));
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
 
   return (
@@ -129,57 +129,18 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
         back straight down Raffles Avenue. Use it for orientation, not precise navigation.
       </p>
 
-      {isUnlocked && (
-        <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">A few named grandstands, by zone</p>
-          <div className="flex flex-col gap-3">
-            {turn1 && (
-              <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4 flex items-center justify-between flex-wrap gap-2">
-                <div>
-                  <p className="text-sm font-bold text-white">Turn 1 Grandstand</p>
-                  <p className="text-xs text-[#AAFF00]">Zone 1 — start-line braking into Turns 1-3</p>
-                </div>
-                <Link href={`/experience/${turn1.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">Full guide to this stand →</Link>
-              </div>
-            )}
-            {stamford && (
-              <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4 flex items-center justify-between flex-wrap gap-2">
-                <div>
-                  <p className="text-sm font-bold text-white">Stamford Grandstand</p>
-                  <p className="text-xs text-[#AAFF00]">Zone 4 — Turn 7, a real bumpy braking zone</p>
-                </div>
-                <Link href={`/experience/${stamford.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">Full guide to this stand →</Link>
-              </div>
-            )}
-            {padang && (
-              <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4 flex items-center justify-between flex-wrap gap-2">
-                <div>
-                  <p className="text-sm font-bold text-white">Padang Grandstand</p>
-                  <p className="text-xs text-[#AAFF00]">Zone 4 — closest to the Padang Stage, weak racing view</p>
-                </div>
-                <Link href={`/experience/${padang.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">Full guide to this stand →</Link>
-              </div>
-            )}
-            {walkabout && (
-              <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4 flex items-center justify-between flex-wrap gap-2">
-                <div>
-                  <p className="text-sm font-bold text-white">Zone 4 Walkabout</p>
-                  <p className="text-xs text-[#AAFF00]">Zone 4 — general admission, roams the viewing platforms</p>
-                </div>
-                <Link href={`/experience/${walkabout.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline">Full guide to this stand →</Link>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">A few named grandstands, by zone</p>
+      <div className="grid sm:grid-cols-2 gap-4 mb-4">
+        {turn1 && <SpokeExperienceCard experience={turn1} isPro={isPro} />}
+        {stamford && <SpokeExperienceCard experience={stamford} isPro={isPro} />}
+        {padang && <SpokeExperienceCard experience={padang} isPro={isPro} />}
+        {walkabout && <SpokeExperienceCard experience={walkabout} isPro={isPro} />}
+      </div>
 
       {f1Village && (
-        <div className="mt-8 rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 flex items-center justify-between flex-wrap gap-3">
-          <p className="text-sm text-[#A3A3A3] leading-6">
-            Not a grandstand, but worth knowing where it is: both F1 Villages run activity stations, the driver Fan
-            Forum, and the Amex Fan Experience.
-          </p>
-          <Link href={`/experience/${f1Village.slug}`} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] underline whitespace-nowrap">Full guide to the fan zones →</Link>
+        <div className="mb-8">
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Not a grandstand, but worth knowing where it is</p>
+          <SpokeExperienceCard experience={f1Village} isPro={isPro} />
         </div>
       )}
 
