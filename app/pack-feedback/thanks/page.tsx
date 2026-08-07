@@ -31,7 +31,8 @@ function PackFeedbackThanks() {
       await fetch("/api/pack-feedback/comment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, eventId, comment, displayConsent: consent }),
+        // `consent` here is an opt-OUT checkbox — ticked means "don't share".
+        body: JSON.stringify({ email, eventId, comment, displayConsent: !consent }),
       });
       setSubmitted(true);
     });
@@ -57,7 +58,7 @@ function PackFeedbackThanks() {
         {rating >= 4 && !submitted && (
           <>
             <p className="text-sm text-[#A3A3A3] leading-6 mb-6">
-              What did you love most about the pack? (optional)
+              What did you love most about the event guide? (optional)
             </p>
 
             <textarea
@@ -76,7 +77,7 @@ function PackFeedbackThanks() {
                 className="mt-0.5 flex-shrink-0 accent-[#AAFF00]"
               />
               <span className="text-xs text-[#6A6A6A] leading-5">
-                Experiences | Curated can share my comment and star rating on their website and marketing materials.
+                Don't share my comment or star rating on your website or marketing materials.
               </span>
             </label>
 
@@ -92,7 +93,7 @@ function PackFeedbackThanks() {
 
         {(rating < 4 || submitted) && (
           <p className="text-sm text-[#A3A3A3] leading-6 mb-6">
-            Your feedback helps us improve the pack for next year.
+            Your feedback helps us improve the event guide for next year.
           </p>
         )}
 
