@@ -40,6 +40,25 @@ const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; 
   "atp-finals-royal-palace-": { eventSlug: "atp-finals", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
   "atp-finals-piazza-san-carlo-": { eventSlug: "atp-finals", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
   "atp-finals-turin-cathedral-": { eventSlug: "atp-finals", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "qizhong-forest-sports-city-arena-": { eventSlug: "shanghai-masters", spokeId: "map", spokeLabel: "Venue Map" },
+  "getting-to-qizhong-shanghai-masters-": { eventSlug: "shanghai-masters", spokeId: "getting-there", spokeLabel: "Getting There" },
+  "where-to-stay-shanghai-masters-": { eventSlug: "shanghai-masters", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "china-visa-apps-payments-guide-": { eventSlug: "shanghai-masters", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "shanghai-masters-ticket-guide-": { eventSlug: "shanghai-masters", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "qizhong-center-court-": { eventSlug: "shanghai-masters", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "the-bund-shanghai-dusk-": { eventSlug: "shanghai-masters", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "yu-garden-old-city-shanghai-": { eventSlug: "shanghai-masters", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "french-concession-tianzifang-shanghai-": { eventSlug: "shanghai-masters", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "xiaolongbao-shanghai-guide-": { eventSlug: "shanghai-masters", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "lujiazui-skyline-shanghai-": { eventSlug: "shanghai-masters", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "hangzhou-west-lake-day-trip-": { eventSlug: "shanghai-masters", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "suzhou-classical-gardens-day-trip-": { eventSlug: "shanghai-masters", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "shanghai-masters-crowds-atmosphere-": { eventSlug: "shanghai-masters", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+  "li-na-zheng-qinwen-generations-": { eventSlug: "shanghai-masters", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+  "french-concession-dining-shanghai-": { eventSlug: "shanghai-masters", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "shanghai-maglev-airport-question-": { eventSlug: "shanghai-masters", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+  "luxury-shanghai-peninsula-bulgari-": { eventSlug: "shanghai-masters", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "roger-friends-federer-exhibition-": { eventSlug: "shanghai-masters", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
   "main-grandstand-sepang-start-finish": { eventSlug: "bahrain-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
   "k1-grandstand-sepang-turn-1": { eventSlug: "bahrain-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
   "grandstand-f-sepang-panoramic": { eventSlug: "bahrain-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
@@ -96,9 +115,14 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "atp-finals-barolo-langhe-daytrip-": { venueCount: 4, venueNoun: "wineries" },
   "staying-in-kuala-lumpur-klcc-bukit-bintang": { venueCount: 4, venueNoun: "hotels" },
   "singapore-gp-trackside-hotels-": { venueCount: 3, venueNoun: "hotels" },
+  "xiaolongbao-shanghai-guide-": { venueCount: 2, venueNoun: "restaurants" },
+  "french-concession-dining-shanghai-": { venueCount: 3, venueNoun: "restaurants" },
   "singapore-gp-chinatown-stay-": { venueCount: 2, venueNoun: "hotels" },
   "singapore-gp-clarke-quay-stay-": { venueCount: 2, venueNoun: "hotels" },
   "singapore-gp-bayfront-hawkers-": { venueCount: 2, venueNoun: "hawker spots" },
+  "luxury-shanghai-peninsula-bulgari-": { venueCount: 3, venueNoun: "hotels" },
+  "where-to-stay-shanghai-masters-": { venueCount: 3, venueNoun: "hotels" },
+  "lujiazui-skyline-shanghai-": { venueCount: 3, venueNoun: "towers" },
 };
 
 function getMultiVenueRatings(slug: string) {
@@ -398,6 +422,7 @@ export default async function ExperiencePage({
               slug.startsWith("szimpla-kert-") ? "lg:object-[center_100%]" :
               slug.startsWith("four-seasons-gresham-palace-") ? "lg:object-[center_25%]" :
               slug.startsWith("newlands-where-to-sit-") ? "lg:object-[center_65%]" :
+              slug.startsWith("luxury-shanghai-peninsula-bulgari-") ? "lg:object-[center_65%]" :
               slug.startsWith("durban-bunny-chow-indian-ocean-cuisine-") ? "lg:object-[center_10%]" :
               slug.startsWith("ushaka-marine-world-golden-mile-") ? "lg:object-[center_15%]" :
               slug.startsWith("aus-sa-ticket-guide-") ? "lg:object-[center_70%]" :
@@ -414,6 +439,15 @@ export default async function ExperiencePage({
               slug.startsWith("atp-finals-turin-cathedral-") ? "object-[center_82%]" :
               slug.startsWith("atp-finals-caffe-bicerin-") ? "object-[center_42%]" :
               slug.startsWith("atp-finals-luxury-hotels-") ? "object-[center_88%]" :
+              slug.startsWith("li-na-zheng-qinwen-generations-") ? "lg:object-[center_25%]" :
+              slug.startsWith("getting-to-qizhong-shanghai-masters-") ? "lg:object-[center_75%]" :
+              slug.startsWith("where-to-stay-shanghai-masters-") ? "lg:object-[center_25%]" :
+              slug.startsWith("the-bund-shanghai-dusk-") ? "lg:object-[center_80%]" :
+              slug.startsWith("xiaolongbao-shanghai-guide-") ? "lg:object-[center_70%]" :
+              slug.startsWith("china-visa-apps-payments-guide-") ? "lg:object-[center_0%]" :
+              slug.startsWith("suzhou-classical-gardens-day-trip-") ? "lg:object-[center_20%]" :
+              slug.startsWith("lujiazui-skyline-shanghai-") ? "lg:object-[center_25%]" :
+              slug.startsWith("roger-friends-federer-exhibition-") ? "lg:object-[center_10%]" :
               ""
             }`}
             sizes="100vw"

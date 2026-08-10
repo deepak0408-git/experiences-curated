@@ -296,6 +296,85 @@ export const sportingEvents = pgTable("sporting_events", {
   index("sporting_events_sport_idx").on(t.sport),
 ]);
 
+// ─── External Calendar Events (Sports Calendar page) ───────────────────────────
+// See docs/Sports Calendar - Design Document.txt for full spec. This table is
+// the "full external calendar" layer described there — the real, complete
+// season calendar per sport, sourced from each sport's own golden source,
+// independent of whether we've built a pack for it. sportingEvents alone is
+// only a curated ~20-row subset (events we've chosen to cover) and cannot
+// serve as this page's data source on its own — see the design doc's "Data
+// source — the real architecture change" section for why.
+//
+// Population method differs by sport, but the schema doesn't care which:
+// - Formula 1, Golf: fetched from formula1.com / tour sites, which serve
+//   plain fetchable HTML — populated via a scheduled sync job.
+// - Tennis (ATP), Cricket (ESPN Cricinfo): both sources return HTTP 403 to
+//   automated fetches (confirmed 8 Aug 2026) — populated via periodic manual
+//   research passes (a throwaway script run every few weeks, same pattern as
+//   other seed data) instead of a live cron. sourceType records which path
+//   populated a given row.
+export const calendarSourceTypeEnum = pgEnum("calendar_source_type", [
+  "scheduled_fetch",
+  "manual_research",
+]);
+
+export const externalCalendarEvents = pgTable("external_calendar_events", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sport: sportEnum("sport").notNull(),
+  name: varchar("name", { length: 200 }).notNull(),
+  // Free text — golden sources don't share a consistent venue/city model
+  // (F1 gives a country, golf gives a course + city, cricket gives a tour
+  // with multiple venues). Not an FK to destinations — most external events
+  // will never resolve to one of our destination rows.
+  venueOrCity: varchar("venue_or_city", { length: 200 }),
+  startDate: date("start_date").notNull(),
+  endDate: date("end_date").notNull(),
+  // The sport's own golden source this row came from, e.g.
+  // "formula1.com/en/racing/2026", "ESPN Cricinfo fixtures, research pass
+  // 8 Aug 2026" — always fill this in, it's the provenance trail for a
+  // reference page whose entire value is being trustworthy.
+  sourceName: varchar("source_name", { length: 200 }).notNull(),
+  sourceUrl: text("source_url"),
+  sourceType: calendarSourceTypeEnum("source_type").notNull(),
+  // True when the source itself flags dates as tentative/not yet official —
+  // e.g. the 2027 F1 calendar, still provisional as of Aug 2026 (source
+  // still finalizing venue/date changes; different outlets report
+  // conflicting details for the same rounds). Distinct from sourceType,
+  // which records HOW the data was gathered, not how confident we are in
+  // it. Calendar page must render a visible "provisional — not yet
+  // confirmed" badge on any row with this true; never present a provisional
+  // row with the same visual weight as a confirmed one.
+  isProvisional: boolean("is_provisional").notNull().default(false),
+  // When this row was last confirmed against the source — drives staleness
+  // checks (a sport's calendar can shift; 2027 F1 dates are still
+  // provisional as of Aug 2026). Distinct from createdAt/updatedAt, which
+  // track our own DB row, not source freshness.
+  lastVerifiedAt: timestamp("last_verified_at").notNull().defaultNow(),
+  // Nullable match against our own curated event. Null = a real event exists
+  // on the sport's golden calendar that we don't cover (yet) — this is the
+  // page's third, honest CTA state, not a data gap. Set = this external
+  // event corresponds to a sportingEvents row we do cover; the calendar page
+  // reads packStatus/isHidden off that row to pick "See the full guide" vs.
+  // "Guide coming." Matching is manual (curator-confirmed), not fuzzy/auto —
+  // the design doc flags name/date near-matches as a real ambiguity risk,
+  // so this FK is only ever set by a human confirming the match, never an
+  // automated string-similarity guess.
+  matchedSportingEventId: uuid("matched_sporting_event_id").references(() => sportingEvents.id),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+}, (t) => [
+  index("external_calendar_events_sport_idx").on(t.sport),
+  index("external_calendar_events_dates_idx").on(t.startDate, t.endDate),
+  index("external_calendar_events_matched_event_idx").on(t.matchedSportingEventId),
+]);
+
+export const externalCalendarEventsRelations = relations(externalCalendarEvents, ({ one }) => ({
+  matchedSportingEvent: one(sportingEvents, {
+    fields: [externalCalendarEvents.matchedSportingEventId],
+    references: [sportingEvents.id],
+  }),
+}));
+
 // ─── Experiences ──────────────────────────────────────────────────────────────
 
 export const experiences = pgTable("experiences", {
@@ -903,6 +982,58 @@ export const plannerDripSent = pgTable("planner_drip_sent", {
   uniqueIndex("planner_drip_sent_session_step_unique").on(t.plannerSessionId, t.sequenceStep),
 ]);
 
+// ─── Blog ─────────────────────────────────────────────────────────────────────
+// Sports Travel Blog — upper-funnel "why" content, distinct from the pack's
+// "how" content. See docs/Blog Design Document.txt for the full spec.
+
+export const blogContentCategoryEnum = pgEnum("blog_content_category", [
+  "history",
+  "rivalry",
+  "why_go",
+  "bucket_list",
+  // General, non-event-specific travel wisdom — mistakes, flight/hotel/
+  // dining craft. Event-agnostic BY RULE: sportingEventId must stay null
+  // for this category (enforced at the application layer, not a DB
+  // constraint) — this is what keeps it from drifting into trip-guide/pack
+  // territory. See docs/Blog Design Document.txt.
+  "travel_craft",
+]);
+
+export const blogArticles = pgTable("blog_articles", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  title: varchar("title", { length: 255 }).notNull(),
+  // Mandatory, 1+ values — usually 1, genuine cross-sport pieces carry all
+  // real sports involved (never a synthetic "cross_sport" value).
+  sport: sportEnum("sport").array().notNull(),
+  // Optional — only set when the piece is genuinely tied to one specific
+  // event. Null for sport-level or genuinely cross-sport content.
+  sportingEventId: uuid("sporting_event_id").references(() => sportingEvents.id),
+  contentCategory: blogContentCategoryEnum("content_category").notNull(),
+  // Free-text slug, not a hard enum — avoids the hardcoded Record<string,>
+  // trap already logged in Operations Checklist P2 T3 #1. Null if one-off.
+  seriesSlug: varchar("series_slug", { length: 100 }),
+  seriesPosition: integer("series_position"),
+  excerpt: text("excerpt").notNull(),
+  bodyContent: text("body_content").notNull(),
+  readMinutes: integer("read_minutes"),
+  heroImageUrl: text("hero_image_url"),
+  heroImageAlt: varchar("hero_image_alt", { length: 255 }),
+  heroImageCredit: varchar("hero_image_credit", { length: 255 }),
+  status: varchar("status", { length: 20 }).notNull().default("in_review"), // in_review | published | archived
+  editorialNote: text("editorial_note"),
+  // Curator feedback on a Return — same pattern as experiences.reviewNotes.
+  reviewNotes: text("review_notes"),
+  publishedAt: timestamp("published_at"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+}, (t) => [
+  index("blog_articles_category_idx").on(t.contentCategory),
+  index("blog_articles_event_idx").on(t.sportingEventId),
+  index("blog_articles_series_idx").on(t.seriesSlug),
+  index("blog_articles_status_idx").on(t.status),
+]);
+
 // ─── Relations ────────────────────────────────────────────────────────────────
 
 export const experiencesRelations = relations(experiences, ({ one, many }) => ({
@@ -937,6 +1068,15 @@ export const sportingEventsRelations = relations(sportingEvents, ({ one, many })
   eventExperiences: many(sportingEventExperiences),
   tripBoards: many(tripBoards),
   purchases: many(purchases),
+  blogArticles: many(blogArticles),
+  externalCalendarMatches: many(externalCalendarEvents),
+}));
+
+export const blogArticlesRelations = relations(blogArticles, ({ one }) => ({
+  sportingEvent: one(sportingEvents, {
+    fields: [blogArticles.sportingEventId],
+    references: [sportingEvents.id],
+  }),
 }));
 
 export const sportingEventExperiencesRelations = relations(sportingEventExperiences, ({ one }) => ({

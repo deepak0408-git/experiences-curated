@@ -68,6 +68,10 @@ const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; value: str
     { label: "Emergencies", value: "Single European emergency number: 112 (free, no prefix needed, English-speaking operators available in major cities). Health-specific: 118. Nearest hospital to the arena's Santa Rita area: Ospedale Mauriziano Umberto I." },
     { label: "Tourism Infoline", value: "Turismo Torino e Provincia contact centre: +39 011 535181, info.torino@turismotorino.org." },
   ],
+  "shanghai-masters": [
+    { label: "Emergencies", value: "Police: 110. Fire: 119. Medical/ambulance: 120. All free, but English-speaking operators aren't guaranteed even in Shanghai — having your hotel call on your behalf, or using Alipay's SOS function, is more reliable than dialing directly." },
+    { label: "Gate times", value: "Not yet published for the 2026 tournament — confirm closer to the event via the official ticketing site." },
+  ],
 };
 
 const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: string; heroFallbackImageSlug: string; introText: string }> = {
@@ -105,6 +109,17 @@ const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: string; h
     // underlying content.
     introText:
       "This is the only tournament all season where the eight best players in the world are guaranteed to show up — no qualifying rounds, no early upsets taking a name off the draw. Round-robin means every group-stage session gets a real match between top-8 players, not a filler contest, right through to the semifinals and final.\n\nInalpi Arena wasn't built for tennis — it went up in 2005 as the ice hockey venue for Turin's 2006 Winter Olympics, and the scale still shows. You're watching the season finale inside the largest indoor arena in Italy, a building that's since hosted Eurovision and stadium tours from Madonna and Harry Styles, not a boutique tennis venue.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
+  "shanghai-masters": {
+    displayName: "Shanghai Masters",
+    venueLine: "Held at Qizhong Forest Sports City Arena — the only ATP Masters 1000 not played in Europe or North America.",
+    heroFallbackImageSlug: "qizhong-forest-sports-city-arena-",
+    // Built from real sourced facts researched during experience seeding
+    // (attendance figures, the magnolia-roof design, Federer's Shanghai
+    // record) — not invented, matches the Bahrain GP/Singapore GP/ATP
+    // Finals pattern of drawing The Brief from real underlying content.
+    introText:
+      "Shanghai draws more spectators than any other Masters 1000 on the calendar — over 220,000 across a single tournament, with more than 70% of that crowd travelling in from outside the city itself. This isn't a regional stop with a big venue; it's a genuine national event, and the atmosphere reflects it.\n\nQizhong Arena's eight-petal retractable roof, styled after Shanghai's magnolia city flower, opens and closes in a spiral over about eight minutes — the same building that hosted the year-end ATP Finals from 2005 to 2008 before Shanghai earned its own Masters 1000 in 2009. Roger Federer returns again this year for a celebrity exhibition on 16 October, extending a Shanghai record that includes two titles and a 77% win rate at this exact venue.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
 };
 
@@ -152,7 +167,14 @@ export default async function HubPage({ slug }: { slug: string }) {
           site chrome, not two different products. */}
       <div className="relative h-[38vh] min-h-[220px] overflow-hidden bg-[#0A0A0A]">
         {hubHeroUrl && (
-          <Image src={hubHeroUrl} alt={config?.displayName ?? event.name} fill className="object-cover opacity-90" sizes="100vw" priority />
+          <Image
+            src={hubHeroUrl}
+            alt={config?.displayName ?? event.name}
+            fill
+            className={`object-cover opacity-90 ${slug === "shanghai-masters" ? "lg:object-[center_65%]" : ""}`}
+            sizes="100vw"
+            priority
+          />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 px-8 pb-8 max-w-5xl mx-auto">

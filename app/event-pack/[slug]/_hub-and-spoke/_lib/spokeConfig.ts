@@ -64,4 +64,24 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "map", label: "Venue Map", question: "What facilities are available at Inalpi Arena?", status: "public", imageSlug: "atp-finals-inalpi-arena-" },
     { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the ATP Finals?", status: "teaser", imageSlug: "atp-finals-gianduja-chocolate-" },
   ],
+  // Shanghai Masters 2026 — built overnight 8-9 Aug 2026, 18 experiences
+  // seeded (status: in_review, not yet published — spoke tiles will show no
+  // experience cards until the curator publishes via /curator/review).
+  // imageSlug values match real seeded experience slugs; no dedicated
+  // spoke-tile imageOverride assets exist yet (hero images not yet sourced
+  // as of this scaffolding — see project memory).
+  "shanghai-masters": [
+    { id: "cost", label: "Cost Guide", question: "How much does a Shanghai Masters trip cost?", status: "teaser", imageSlug: "lujiazui-skyline-shanghai-" },
+    { id: "tickets", label: "Ticket Guide", question: "Which Shanghai Masters ticket is the best buy?", status: "teaser", imageSlug: "qizhong-forest-sports-city-arena-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the Shanghai Masters?", status: "teaser", imageSlug: "where-to-stay-shanghai-masters-" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to Qizhong, and is the metro enough?", status: "public", imageSlug: "getting-to-qizhong-shanghai-masters-" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like in Shanghai in October?", status: "public", imageSlug: "the-bund-shanghai-dusk-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know before my first trip to China?", status: "public", imageSlug: "china-visa-apps-payments-guide-" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat in Shanghai during Masters week?", status: "teaser", imageSlug: "xiaolongbao-shanghai-guide-" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips from Shanghai?", status: "teaser", imageSlug: "hangzhou-west-lake-day-trip-" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does a Shanghai Masters week actually look like?", status: "teaser", imageSlug: "shanghai-masters-crowds-atmosphere-" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "Pudong or Hongqiao, and how do I get into the city?", status: "public", imageSlug: "shanghai-maglev-airport-question-" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at Qizhong?", status: "public", imageSlug: "qizhong-forest-sports-city-arena-" },
+    { id: "luxury", label: "Luxury Guide", question: "What's the best luxury hospitality in Shanghai?", status: "teaser", imageSlug: "luxury-shanghai-peninsula-bulgari-" },
+  ],
 };

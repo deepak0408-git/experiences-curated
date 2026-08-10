@@ -67,7 +67,7 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
           travel dates, check a live 10-day forecast once you&apos;re within range of the tournament.
         </p>
         <a
-          href="https://weather.com/weather/tenday/l/Centro+Turin+Italy"
+          href="https://weather.com/it/piedmont/city/turin/tenday"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block text-xs text-[#AAFF00] hover:text-[#BBFF33] underline"

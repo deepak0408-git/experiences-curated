@@ -38,6 +38,19 @@ import ATPArrivalSpoke from "./atp-finals/ArrivalSpoke";
 import ATPMapSpoke from "./atp-finals/MapSpoke";
 import ATPLuxurySpoke from "./atp-finals/LuxurySpoke";
 
+import SHCostSpoke from "./shanghai-masters/CostSpoke";
+import SHTicketsSpoke from "./shanghai-masters/TicketsSpoke";
+import SHHotelsSpoke from "./shanghai-masters/HotelsSpoke";
+import SHGettingThereSpoke from "./shanghai-masters/GettingThereSpoke";
+import SHWeatherSpoke from "./shanghai-masters/WeatherSpoke";
+import SHFirstTimerGuideSpoke from "./shanghai-masters/FirstTimerGuideSpoke";
+import SHWhereToEatSpoke from "./shanghai-masters/WhereToEatSpoke";
+import SHDayTripsSpoke from "./shanghai-masters/DayTripsSpoke";
+import SHItinerarySpoke from "./shanghai-masters/ItinerarySpoke";
+import SHArrivalSpoke from "./shanghai-masters/ArrivalSpoke";
+import SHMapSpoke from "./shanghai-masters/MapSpoke";
+import SHLuxurySpoke from "./shanghai-masters/LuxurySpoke";
+
 type SpokeComponent = ComponentType<{ eventSlug: string }>;
 
 // Registry mapping eventSlug -> spokeId -> component. A new hub_and_spoke
@@ -87,6 +100,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: ATPMapSpoke,
     luxury: ATPLuxurySpoke,
   },
+  "shanghai-masters": {
+    cost: SHCostSpoke,
+    tickets: SHTicketsSpoke,
+    hotels: SHHotelsSpoke,
+    "getting-there": SHGettingThereSpoke,
+    weather: SHWeatherSpoke,
+    "first-timer-guide": SHFirstTimerGuideSpoke,
+    "where-to-eat": SHWhereToEatSpoke,
+    "day-trips": SHDayTripsSpoke,
+    itinerary: SHItinerarySpoke,
+    arrival: SHArrivalSpoke,
+    map: SHMapSpoke,
+    luxury: SHLuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -131,5 +158,19 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Inalpi Arena Arrival & Queue Guide — Nitto ATP Finals",
     map: "Inalpi Arena & Fan Village Map — Nitto ATP Finals",
     luxury: "Luxury Guide for the Nitto ATP Finals — Hospitality, Transit, and More",
+  },
+  "shanghai-masters": {
+    cost: "How Much Does the Shanghai Masters Cost? — Budget Guide",
+    tickets: "Shanghai Masters Ticket Guide — Grounds Pass vs Center Court",
+    hotels: "Where to Stay for the Shanghai Masters — Xujiahui vs Minhang",
+    "getting-there": "Getting to Qizhong — Shanghai Masters Transit Guide",
+    weather: "Shanghai Weather in October — What to Pack for the Masters",
+    "first-timer-guide": "First-Timer's Guide — Shanghai Masters and China Travel Basics",
+    "where-to-eat": "Where to Eat in Shanghai — Shanghai Masters Week",
+    "day-trips": "Best Day Trips from Shanghai — Shanghai Masters Week",
+    itinerary: "Sample Shanghai Masters Itinerary — Hour by Hour",
+    arrival: "Shanghai Masters — Pudong vs Hongqiao Arrival Guide",
+    map: "Qizhong Arena Map — Courts and Facilities",
+    luxury: "Luxury Guide for the Shanghai Masters — Peninsula, Bulgari, and More",
   },
 };
