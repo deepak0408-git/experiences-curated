@@ -13,6 +13,7 @@
 > **Design system:** Dark canvas + fluorescent green. Merged to `main` 21 Jun 2026 (commit 135bec7 = validated baseline). Rollback: `git reset --hard 135bec7`. Full token set in memory `project_design_system.md`. Full-site overhaul not yet started — Tier 3 (experience detail, event-pack, curator) pending.
 > **Third-party platform setup:** Before proposing any hands-on setup on a third-party platform (analytics, verification, embeds, integrations) — search for that platform's documented plan/tier limitations first, before touching anything. Stop and re-search after one failed attempt, not three. See memory `feedback_third_party_platform_limits.md` for the incident this came from (Substack free-tier + Google Search Console, 10 Jul 2026 — an hour lost to GA4/GTM setup that a single upfront search would have shown was futile).
 > **Currency — USD only, site-wide:** Site-wide currency migration completed 1 Aug 2026. Every event pack price and Pro subscription price is USD, displayed as `US$` (never a bare `$`, which is ambiguous against AUD/CAD/SGD readers). This applies to *our own* pricing only — real local-price facts in editorial copy (e.g. "£2.50 for strawberries at Wimbledon") and third-party pricing we don't control (e.g. F1 Experiences' own EUR hospitality tiers) stay in their real, original currency; never convert those. Paddle's pricing block on `/pro` intentionally stays GBP (dormant, blocked on bank/KYB) — not part of this migration. See `project_usd_only_currency_migration` memory for the full before/after and the sourcing rule.
+> **Skill maintenance — fortnightly full read-through:** Reinforce skills with new gates proactively as real incidents happen, without waiting for the founder to confirm each addition. Roughly every 2 weeks (or whenever a skill file is next touched, if that's sooner), read the whole skill top to bottom in one pass — not just the section being edited — looking for: redundant/overlapping rules that could be merged, incidents that are now stale/superseded, and any rule that could be tightened into a clearer gate instead of prose. The goal is a skill file that gets stronger and more concise over time, not one that only grows. Never let the "add a new incident note" habit alone bloat a file — every addition is also a prompt to check whether something nearby can be tightened or removed.
 
 ---
 
@@ -76,6 +77,8 @@ Surrey/Virginia Water dest:  0b015fab-26a0-48b4-a8ff-ef7c7ed977a7
 BMW PGA Championship 2026:   ea035967-b5d7-47e6-ad44-7cf4db07e70b
 Budapest destination:        0d01105a-1e01-40a7-91af-89299939389b
 Hungarian GP 2026 event:      a767ae5f-de6c-48a1-b6fb-fec941f3ad86
+Shanghai destination:         998a8774-05ac-4482-ba7a-4ca2a556b963
+Shanghai Masters 2026 event:  09254d18-a22f-4032-ac05-b7c26a9c3057
 ```
 
 **Live event dates — always match `sporting_events.start_date/end_date` in the DB, and the Content Calendar (`C:\Users\HP\.claude\docs\Content Calendar.txt`) is the single source of truth. If any date below ever conflicts with the Calendar or the DB, trust the DB, fix the Calendar, then fix this list — never the reverse.**
@@ -87,6 +90,7 @@ Belgian GP 2026:           17 – 19 Jul 2026
 US Open 2026:              30 Aug – 13 Sep 2026 (Fan Week free-admission period 23-29 Aug precedes main draw)
 Italian GP 2026:           4 – 6 Sep 2026
 BMW PGA Championship 2026: 17 – 20 Sep 2026
+Shanghai Masters 2026:     5 – 18 Oct 2026
 ```
 
 ---

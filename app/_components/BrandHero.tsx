@@ -65,6 +65,7 @@ function shortEventName(name: string, slug: string): string {
     "bahrain-grand-prix": "Bahrain GP 2026",
     "singapore-grand-prix": "Singapore GP 2026",
     "atp-finals": "ATP Finals 2026",
+    "shanghai-masters": "Shanghai Masters 2026",
   };
   return SHORT_NAMES[slug] ?? name;
 }

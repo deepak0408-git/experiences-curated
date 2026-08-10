@@ -92,6 +92,11 @@ const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: 
     early: "US$5",
     standard: "US$10",
   },
+  "shanghai-masters": {
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_SHANGHAI_MASTERS_EARLY_BIRD_CUTOFF ?? "2026-09-21",
+    early: "US$5",
+    standard: "US$10",
+  },
 };
 
 

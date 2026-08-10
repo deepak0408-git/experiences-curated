@@ -31,6 +31,15 @@ export const PACK_PRICING: Record<string, { earlyBirdPriceId: string; standardPr
     earlyBirdDisplay: "US$5",
     standardDisplay: "US$10",
   },
+  // Real Dodo product IDs wired 9 Aug 2026: Early Bird pdt_0NkzuzJ3sDd5pcevNllNC
+  // (US$5), Standard pdt_0Nkzv4p8BkXFgyrxga0aN (US$10).
+  "shanghai-masters": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SHANGHAI_MASTERS_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SHANGHAI_MASTERS_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_SHANGHAI_MASTERS_EARLY_BIRD_CUTOFF ?? "2026-09-21",
+    earlyBirdDisplay: "US$5",
+    standardDisplay: "US$10",
+  },
 };
 
 // freeAccessEnabled mirrors the classic pack's exact behaviour (page.tsx,

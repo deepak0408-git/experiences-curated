@@ -17,12 +17,13 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://experiences-curate
 // and stops immediately on click-through (checked via clickedAt, set by the
 // /api/planner/click tracked redirect every drip link uses).
 //
-// NOT YET WIRED INTO vercel.json — do not add to the crons list until the
-// founder has reviewed and approved the exact day-3/day-10 email copy in
-// sendPlannerEmails.ts (sendSavedDripEmail). Standing rule: no real send
-// without founder sign-off on the exact content first; for a recurring
-// automated cron (as opposed to a one-off send) that means one-time
-// approval of the template + trigger logic, not per-send approval.
+// Wired into vercel.json 8 Aug 2026, daily at 06:00 UTC — founder reviewed
+// and approved the exact day-3/day-10 email copy in sendPlannerEmails.ts
+// (sendSavedDripEmail) before this was scheduled. See
+// feedback_no_dev_crons_against_prod_db memory: this route was tested via a
+// direct localhost call against the production DB prior to scheduling —
+// never do that again; test via a read-only reconstruction of the send
+// function instead, or via the real deployed route.
 export async function GET(request: NextRequest) {
   const auth = request.headers.get("authorization");
   if (auth !== `Bearer ${process.env.CRON_SECRET}`) {

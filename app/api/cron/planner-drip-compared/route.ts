@@ -16,10 +16,11 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://experiences-curate
 // single event's pack), the click-through here always goes back to the
 // comparison page itself — there's no single "the" destination.
 //
-// NOT YET WIRED INTO vercel.json — same gate as planner-drip-saved: no
-// production cron registration until the founder approves the exact
-// day-3/day-10 email copy AND until the production-data-loads step is
-// complete (design doc, "Post-Planner Drip Sequence" section).
+// Wired into vercel.json 8 Aug 2026, daily at 06:30 UTC — founder reviewed
+// and approved the exact day-3/day-10 email copy (same review pass as
+// planner-drip-saved). See feedback_no_dev_crons_against_prod_db memory:
+// this route was tested via a direct localhost call against the production
+// DB prior to scheduling — never do that again.
 export async function GET(request: NextRequest) {
   const auth = request.headers.get("authorization");
   if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
