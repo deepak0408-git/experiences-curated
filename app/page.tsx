@@ -270,16 +270,31 @@ export default async function HomePage() {
         </Link>
       </div>
 
-      {/* Zone 3 — On the calendar */}
+      {/* Zone 3 — Available Now */}
       {calendarEvents.length > 0 && (
         <div id="on-the-calendar" className="bg-[#0A0A0A]">
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14">
-            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-1">
-              On the calendar
-            </p>
-            <p className="text-sm text-[#A3A3A3] mb-8">
-              Event packs available now — buy once, keep forever.
-            </p>
+            <div className="flex flex-col-reverse sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+              <div>
+                <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-1">
+                  Available Now
+                </p>
+                <p className="text-sm text-[#A3A3A3]">
+                  Full guides, ready today — buy once, keep forever.
+                </p>
+              </div>
+              <Link
+                href="/calendar"
+                className="group pb-4 border-b border-[#2A2A2A] sm:pb-0 sm:border-b-0 sm:text-right"
+              >
+                <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-1 group-hover:text-[#BBFF33] transition-colors">
+                  The Full Calendar
+                </p>
+                <p className="text-sm text-[#A3A3A3] group-hover:text-white transition-colors">
+                  40+ events across Formula 1, Tennis, Golf &amp; Cricket — every date we track →
+                </p>
+              </Link>
+            </div>
             <div className="flex flex-col gap-6">
               {calendarEvents.map((ev) => {
                 const es = eventState(ev.startDate, ev.endDate);
@@ -419,12 +434,26 @@ export default async function HomePage() {
                   heading: "One pack. Everything you need.",
                   body: "Buy an Event Pack and get the full picture: venues, transport, stays, dining, and insider tips — sorted and ready for your trip.",
                 },
+                {
+                  icon: "✦",
+                  heading: "The stories behind the sport, not just the trip",
+                  body: "History, rivalries, and the moments that made these events matter — written the same way, by people who actually care.",
+                  link: { href: "/blog/federer-nadal-2008-final-that-changed-everything", label: "Read: Federer vs. Nadal, 2008 — the final that changed what a final could be" },
+                },
               ].map((item) => (
                 <div key={item.heading} className="flex gap-4">
                   <span className="text-[#AAFF00] mt-0.5 flex-shrink-0 text-lg leading-none">{item.icon}</span>
                   <div>
                     <p className="text-sm font-black text-white">{item.heading}</p>
                     <p className="mt-1 text-sm text-[#A3A3A3] leading-6">{item.body}</p>
+                    {item.link && (
+                      <Link
+                        href={item.link.href}
+                        className="mt-2 inline-block text-xs font-black text-[#AAFF00] hover:text-[#BBFF33] transition-colors"
+                      >
+                        {item.link.label} →
+                      </Link>
+                    )}
                   </div>
                 </div>
               ))}

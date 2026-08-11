@@ -27,6 +27,13 @@ const SPORT_LABELS: Record<string, string> = {
   formula_one: "Formula 1",
 };
 
+const SERIES_LABELS: Record<string, string> = {
+  best_seat_per_sport: "Best Seat in [Sport]",
+  one_weekend_per_sport: "If You Could Only Attend One [Sport] Weekend",
+  pilgrimages: "Sporting Pilgrimages",
+  the_events_list: "Sporting Events Every Fan Should See Live",
+};
+
 function timeAgo(date: Date) {
   const diff = Date.now() - new Date(date).getTime();
   const mins = Math.floor(diff / 60000);
@@ -55,6 +62,14 @@ export default async function BlogReviewQueuePage({
     return true;
   });
 
+  // When viewing a single series, order by seriesPosition (the field that
+  // actually defines reading order) rather than createdAt (seed-time order,
+  // unrelated to position) — createdAt sorting showed entries as 1, 3, 2, 4
+  // whenever a later seeding session filled in a series out of position order.
+  if (series) {
+    filtered.sort((a, b) => (a.seriesPosition ?? 0) - (b.seriesPosition ?? 0));
+  }
+
   const groups = {
     in_review: filtered.filter((a) => a.status === "in_review"),
     published: filtered.filter((a) => a.status === "published"),
@@ -76,6 +91,7 @@ export default async function BlogReviewQueuePage({
       <div className="mb-6">
         <BlogFilters
           seriesOptions={seriesOptions}
+          seriesLabels={SERIES_LABELS}
           activeCategory={category}
           activeStructure={structure}
           activeSeries={series}
@@ -114,7 +130,7 @@ export default async function BlogReviewQueuePage({
                       <>
                         <span className="text-xs text-[#6A6A6A]">·</span>
                         <span className="text-xs text-[#6A6A6A]">
-                          {a.seriesSlug} {a.seriesPosition ? `#${a.seriesPosition}` : ""}
+                          {SERIES_LABELS[a.seriesSlug] ?? a.seriesSlug} {a.seriesPosition ? `#${a.seriesPosition}` : ""}
                         </span>
                       </>
                     )}

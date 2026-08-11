@@ -8,6 +8,9 @@ export default function SiteFooter() {
           &copy; {new Date().getFullYear()} Experiences | Curated
         </span>
         <div className="flex items-center gap-5">
+          <Link href="/blog" className="text-xs text-[#6A6A6A] hover:text-[#AAFF00] transition-colors">
+            Blogs
+          </Link>
           <Link href="/privacy" className="text-xs text-[#6A6A6A] hover:text-[#AAFF00] transition-colors">
             Privacy
           </Link>

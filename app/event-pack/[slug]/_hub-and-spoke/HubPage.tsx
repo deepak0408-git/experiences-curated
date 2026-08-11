@@ -11,6 +11,7 @@ import FavouriteToggle from "../_components/FavouriteToggle";
 import ShareGuideButton from "../_components/ShareGuideButton";
 import RateGuideButton from "../_components/RateGuideButton";
 import { isEventPackSaved, getMyEventPackRating } from "../actions";
+import { getArticlesForEvent } from "@/lib/queries/blog";
 
 // Hub index for any hub_and_spoke-format event, rendered from
 // app/event-pack/[slug]/page.tsx when event.packFormat === "hub_and_spoke".
@@ -139,6 +140,11 @@ export default async function HubPage({ slug }: { slug: string }) {
   const myRating = user ? await getMyEventPackRating(event.id) : null;
 
   const hubHeroUrl = event.heroImageUrl ?? (config ? getSpokeImage(linkedExperiences, config.heroFallbackImageSlug) : null);
+
+  // "Worth Reading" — pack-side counterpart to the blog's own "Get the full
+  // guide" sidebar link. Event-tagged articles first, same-sport fallback,
+  // capped at 3, renders nothing if truly empty — see getArticlesForEvent.
+  const relatedArticles = await getArticlesForEvent(event.id, event.sport);
 
   // Quick reference rows — address and official ticketing link are built
   // from the real sportingEvents record (not hardcoded), prepended to any
@@ -415,6 +421,52 @@ export default async function HubPage({ slug }: { slug: string }) {
                 </li>
               ))}
             </ul>
+          </div>
+        )}
+
+        {/* Worth Reading — the reverse direction of the blog article
+            sidebar's "Get the full guide" link (see Blog Design
+            Document.txt's cross-linking model). Event-tagged articles
+            first, same-sport fallback, capped at 3 — see
+            getArticlesForEvent. Always public/unlocked, same job as the
+            blog itself (engagement/SEO, not a purchased perk). Renders
+            nothing if the event's sport genuinely has zero published
+            articles yet — no placeholder. */}
+        {relatedArticles.length > 0 && (
+          <div className="mt-10">
+            <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-3">Worth reading</p>
+            <div className="grid sm:grid-cols-3 gap-4">
+              {relatedArticles.map((article) => (
+                <Link
+                  key={article.slug}
+                  href={`/blog/${article.slug}`}
+                  className="group flex flex-col rounded-sm border border-[#2A2A2A] bg-[#141414] overflow-hidden hover:border-[#AAFF00] transition-colors"
+                >
+                  <div className="relative h-36 w-full overflow-hidden bg-[#1A1A1A]">
+                    {article.heroImageUrl ? (
+                      <Image
+                        src={article.heroImageUrl}
+                        alt={article.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 640px) 100vw, 33vw"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-neutral-800" />
+                    )}
+                  </div>
+                  <div className="flex flex-col flex-1 px-4 py-3.5">
+                    <p className="text-sm font-semibold text-white group-hover:text-[#AAFF00] transition-colors leading-snug">
+                      {article.title}
+                    </p>
+                    <p className="mt-1.5 text-xs text-[#A3A3A3] leading-5 line-clamp-2 flex-1">{article.excerpt}</p>
+                    {article.readMinutes && (
+                      <span className="mt-2 text-xs text-[#6A6A6A]">{article.readMinutes} min read</span>
+                    )}
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         )}
       </div>

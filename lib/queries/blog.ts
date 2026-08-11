@@ -73,6 +73,42 @@ export async function getRelatedByCategory(contentCategory: string, excludeSlug:
     .then((rows) => rows.filter((r) => r.slug !== excludeSlug).slice(0, limit));
 }
 
+// Pack-side "Worth Reading" block (hub page) — the reverse direction of the
+// blog sidebar's existing "Get the full guide" link. Event-tagged articles
+// first (most relevant), topped up with same-sport articles if fewer than
+// `limit` direct matches exist. Never pads with an unrelated sport — if a
+// sport genuinely has zero published articles, returns fewer than `limit`
+// (or none), and the hub page renders nothing rather than a placeholder.
+export async function getArticlesForEvent(sportingEventId: string, sport: string, limit = 3) {
+  const eventMatches = await db
+    .select({ slug: blogArticles.slug, title: blogArticles.title, excerpt: blogArticles.excerpt, readMinutes: blogArticles.readMinutes, heroImageUrl: blogArticles.heroImageUrl })
+    .from(blogArticles)
+    .where(and(eq(blogArticles.sportingEventId, sportingEventId), PUBLISHED))
+    .orderBy(desc(blogArticles.publishedAt))
+    .limit(limit);
+
+  if (eventMatches.length >= limit) return eventMatches;
+
+  const sportMatches = await db
+    .select({ slug: blogArticles.slug, title: blogArticles.title, excerpt: blogArticles.excerpt, readMinutes: blogArticles.readMinutes, heroImageUrl: blogArticles.heroImageUrl })
+    .from(blogArticles)
+    .where(and(sql`${sport} = ANY(${blogArticles.sport})`, PUBLISHED))
+    // Single/narrow-sport articles first, then recency — a 4-sport
+    // travel-craft piece ("never book a same-day return flight") merely
+    // includes this sport, it isn't really about it. Without this, a
+    // recently-published cross-sport article can bump a genuinely
+    // sport-specific piece (e.g. a Federer/Nadal final) out of the fallback
+    // slots purely on publish date. Found live on Shanghai Masters, 10 Aug
+    // 2026 — the two fallback fill slots were both cross-sport travel-craft
+    // pieces instead of any real tennis-specific article.
+    .orderBy(sql`array_length(${blogArticles.sport}, 1) asc`, desc(blogArticles.publishedAt))
+    .limit(limit + eventMatches.length);
+
+  const seen = new Set(eventMatches.map((a) => a.slug));
+  const fill = sportMatches.filter((a) => !seen.has(a.slug)).slice(0, limit - eventMatches.length);
+  return [...eventMatches, ...fill];
+}
+
 // Index listing — flat, chronological (see design doc: flat is fine at
 // pilot-batch scale, revisit past ~40-50 articles).
 export async function getBlogArticles(opts?: { category?: string; sport?: string }) {

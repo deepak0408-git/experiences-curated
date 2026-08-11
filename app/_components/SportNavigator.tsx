@@ -42,7 +42,7 @@ export default function SportNavigator() {
         <p className="text-sm text-[#A3A3A3] mb-8">
           Find experiences for the events you follow.
         </p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {SPORTS.map((sport) => (
             <Link
               key={sport.label}

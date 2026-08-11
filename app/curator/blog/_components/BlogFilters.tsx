@@ -12,11 +12,13 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 export function BlogFilters({
   seriesOptions,
+  seriesLabels,
   activeCategory,
   activeStructure,
   activeSeries,
 }: {
   seriesOptions: string[];
+  seriesLabels?: Record<string, string>;
   activeCategory?: string;
   activeStructure?: string;
   activeSeries?: string;
@@ -75,7 +77,7 @@ export function BlogFilters({
         <option value="">All series</option>
         {seriesOptions.map((s) => (
           <option key={s} value={s}>
-            {s}
+            {seriesLabels?.[s] ?? s}
           </option>
         ))}
       </select>
