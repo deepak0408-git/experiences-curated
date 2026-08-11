@@ -104,11 +104,6 @@ export default function ArticleActionSidebar({
                 s.slug === currentSlug ? "text-[#AAFF00]" : ""
               }`}
             >
-              {seriesSlug && s.seriesPosition != null && (
-                <span className={`text-xs font-mono flex-shrink-0 ${s.slug === currentSlug ? "text-[#AAFF00]" : "text-[#6A6A6A]"}`}>
-                  {s.seriesPosition}
-                </span>
-              )}
               <span className={`text-xs ${s.slug === currentSlug ? "text-[#AAFF00] font-bold" : "text-[#A3A3A3]"}`}>
                 {s.title}
               </span>

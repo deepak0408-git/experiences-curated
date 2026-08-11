@@ -77,24 +77,32 @@ export default async function CalendarSportPage({
           <p className="text-xs text-[#6A6A6A] mb-8 max-w-2xl">{SCOPE_NOTES[sport]}</p>
         )}
 
-        <div className="flex flex-wrap items-center gap-2 mb-4">
-          <Link
-            href="/calendar"
-            className="text-xs font-black uppercase tracking-wide px-3.5 py-1.5 rounded-sm border bg-[#141414] text-[#A3A3A3] border-[#2A2A2A] hover:border-[#AAFF00] hover:text-white transition-colors"
-          >
-            All
-          </Link>
-          {ALL_SPORTS.map(([slug, s]) => (
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <div className="flex flex-wrap items-center gap-2">
             <Link
-              key={slug}
-              href={`/calendar/${slug}`}
-              className={`text-xs font-black uppercase tracking-wide px-3.5 py-1.5 rounded-sm border ${
-                slug === sport ? "bg-[#AAFF00] text-black border-[#AAFF00]" : "bg-[#141414] text-[#A3A3A3] border-[#2A2A2A] hover:border-[#AAFF00] hover:text-white"
-              } transition-colors`}
+              href="/calendar"
+              className="text-xs font-black uppercase tracking-wide px-3.5 py-1.5 rounded-sm border bg-[#141414] text-[#A3A3A3] border-[#2A2A2A] hover:border-[#AAFF00] hover:text-white transition-colors"
             >
-              {s.label}
+              All
             </Link>
-          ))}
+            {ALL_SPORTS.map(([slug, s]) => (
+              <Link
+                key={slug}
+                href={`/calendar/${slug}`}
+                className={`text-xs font-black uppercase tracking-wide px-3.5 py-1.5 rounded-sm border ${
+                  slug === sport ? "bg-[#AAFF00] text-black border-[#AAFF00]" : "bg-[#141414] text-[#A3A3A3] border-[#2A2A2A] hover:border-[#AAFF00] hover:text-white"
+                } transition-colors`}
+              >
+                {s.label}
+              </Link>
+            ))}
+          </div>
+          <Link
+            href="/#on-the-calendar"
+            className="text-xs font-black text-[#AAFF00] hover:text-[#BBFF33] transition-colors whitespace-nowrap"
+          >
+            ← Available events
+          </Link>
         </div>
 
         <div className="mb-10">

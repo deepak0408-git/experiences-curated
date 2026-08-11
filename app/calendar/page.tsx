@@ -41,19 +41,27 @@ export default async function CalendarPage({
           Every date on each sport&apos;s own official calendar, whether or not we&apos;ve built a guide for it yet.
         </p>
 
-        <div className="flex flex-wrap items-center gap-2 mb-4">
-          <span className="text-xs font-black uppercase tracking-wide px-3.5 py-1.5 rounded-sm border bg-[#AAFF00] text-black border-[#AAFF00]">
-            All
-          </span>
-          {SPORTS.map((s) => (
-            <Link
-              key={s.key}
-              href={`/calendar/${s.key === "formula_one" ? "formula-1" : s.key}`}
-              className="text-xs font-black uppercase tracking-wide px-3.5 py-1.5 rounded-sm border bg-[#141414] text-[#A3A3A3] border-[#2A2A2A] hover:border-[#AAFF00] hover:text-white transition-colors"
-            >
-              {s.label}
-            </Link>
-          ))}
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-black uppercase tracking-wide px-3.5 py-1.5 rounded-sm border bg-[#AAFF00] text-black border-[#AAFF00]">
+              All
+            </span>
+            {SPORTS.map((s) => (
+              <Link
+                key={s.key}
+                href={`/calendar/${s.key === "formula_one" ? "formula-1" : s.key}`}
+                className="text-xs font-black uppercase tracking-wide px-3.5 py-1.5 rounded-sm border bg-[#141414] text-[#A3A3A3] border-[#2A2A2A] hover:border-[#AAFF00] hover:text-white transition-colors"
+              >
+                {s.label}
+              </Link>
+            ))}
+          </div>
+          <Link
+            href="/#on-the-calendar"
+            className="text-xs font-black text-[#AAFF00] hover:text-[#BBFF33] transition-colors whitespace-nowrap"
+          >
+            ← Available events
+          </Link>
         </div>
 
         <div className="mb-10">
