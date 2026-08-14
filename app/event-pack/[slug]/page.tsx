@@ -511,6 +511,7 @@ export default async function EventPackPage({
         dateRange={formatDateRange(event.startDate, event.endDate)}
         editorialOverview={event.editorialOverview ?? null}
         sportLabel={SPORT_LABELS[event.sport] ?? event.sport}
+        sport={event.sport}
         isPro={isPro}
         isAnnual={isAnnual}
         archetype={archetype}

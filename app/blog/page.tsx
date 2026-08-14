@@ -34,6 +34,19 @@ export default async function BlogIndexPage({
   const { user } = await getAuthUser();
   const articles = await getBlogArticles({ category, sport });
 
+  // Preserves the other filter dimension when toggling either row — e.g.
+  // clicking "History" while "Tennis" is active keeps ?sport=tennis, and
+  // vice versa. Both filters are independently combinable.
+  function buildHref(next: { category?: string; sport?: string }) {
+    const params = new URLSearchParams();
+    const nextCategory = "category" in next ? next.category : category;
+    const nextSport = "sport" in next ? next.sport : sport;
+    if (nextCategory) params.set("category", nextCategory);
+    if (nextSport) params.set("sport", nextSport);
+    const qs = params.toString();
+    return qs ? `/blog?${qs}` : "/blog";
+  }
+
   return (
     <div className="min-h-screen bg-[#0A0A0A] flex flex-col">
       <HomepageNav email={user?.email ?? null} />
@@ -46,9 +59,9 @@ export default async function BlogIndexPage({
           History, rivalries, and the events every fan should see live — before you plan a single flight.
         </p>
 
-        <div className="flex flex-wrap gap-2 mb-10">
+        <div className="flex flex-wrap gap-2 mb-3">
           <Link
-            href="/blog"
+            href={buildHref({ sport: undefined })}
             className={`text-xs font-black uppercase tracking-wide px-3.5 py-1.5 rounded-sm border ${
               !sport ? "bg-[#AAFF00] text-black border-[#AAFF00]" : "bg-[#141414] text-[#A3A3A3] border-[#2A2A2A]"
             }`}
@@ -58,9 +71,31 @@ export default async function BlogIndexPage({
           {Object.entries(SPORT_LABELS).map(([key, label]) => (
             <Link
               key={key}
-              href={`/blog?sport=${key}`}
+              href={buildHref({ sport: key })}
               className={`text-xs font-black uppercase tracking-wide px-3.5 py-1.5 rounded-sm border ${
                 sport === key ? "bg-[#AAFF00] text-black border-[#AAFF00]" : "bg-[#141414] text-[#A3A3A3] border-[#2A2A2A]"
+              }`}
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap gap-2 mb-10">
+          <Link
+            href={buildHref({ category: undefined })}
+            className={`text-xs font-black uppercase tracking-wide px-3.5 py-1.5 rounded-sm border ${
+              !category ? "bg-[#AAFF00] text-black border-[#AAFF00]" : "bg-[#141414] text-[#A3A3A3] border-[#2A2A2A]"
+            }`}
+          >
+            All
+          </Link>
+          {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
+            <Link
+              key={key}
+              href={buildHref({ category: key })}
+              className={`text-xs font-black uppercase tracking-wide px-3.5 py-1.5 rounded-sm border ${
+                category === key ? "bg-[#AAFF00] text-black border-[#AAFF00]" : "bg-[#141414] text-[#A3A3A3] border-[#2A2A2A]"
               }`}
             >
               {label}

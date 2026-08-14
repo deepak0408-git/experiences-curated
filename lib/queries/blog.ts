@@ -60,7 +60,16 @@ export async function getSeriesSiblings(seriesSlug: string, excludeSlug: string)
 
 // Other one-off pieces in the same category, most recent first — used when
 // an article has no seriesSlug (see design doc: "More '[Category]' pieces").
-export async function getRelatedByCategory(contentCategory: string, excludeSlug: string, limit = 4) {
+// Sport-relevance ranked ahead of recency — same fix already applied to
+// getArticlesForEvent's fallback tier (10 Aug 2026 incident: cross-sport
+// pieces were bumping genuinely sport-specific ones purely on publish date).
+// Found live on this same page 14 Aug 2026: a tennis article's "More History
+// pieces" sidebar led with cricket/F1/golf history over any tennis piece,
+// because the query only filtered on category and sorted by date. `sport`
+// takes the viewed article's own sport array so a same-sport match ranks
+// first; single/narrow-sport articles are still preferred over broad
+// cross-sport ones within each tier, same reasoning as the sibling function.
+export async function getRelatedByCategory(contentCategory: string, excludeSlug: string, sport: string[], limit = 4) {
   return db
     .select({
       slug: blogArticles.slug,
@@ -68,7 +77,11 @@ export async function getRelatedByCategory(contentCategory: string, excludeSlug:
     })
     .from(blogArticles)
     .where(and(eq(blogArticles.contentCategory, contentCategory as "history" | "rivalry" | "why_go" | "bucket_list" | "travel_craft"), PUBLISHED))
-    .orderBy(desc(blogArticles.publishedAt))
+    .orderBy(
+      sql`CASE WHEN ${blogArticles.sport} && ARRAY[${sql.join(sport.map((s) => sql`${s}`), sql`, `)}]::sport[] THEN 0 ELSE 1 END`,
+      sql`array_length(${blogArticles.sport}, 1) asc`,
+      desc(blogArticles.publishedAt),
+    )
     .limit(limit + 1)
     .then((rows) => rows.filter((r) => r.slug !== excludeSlug).slice(0, limit));
 }
@@ -109,16 +122,30 @@ export async function getArticlesForEvent(sportingEventId: string, sport: string
   return [...eventMatches, ...fill];
 }
 
-// Index listing — flat, chronological (see design doc: flat is fine at
-// pilot-batch scale, revisit past ~40-50 articles).
+// Index listing. Travel Craft always sorts last (added 14 Aug 2026, founder
+// request) — it's the broadest/least sport-specific category by design
+// (never carries a sportingEventId — see the hard rule in
+// blog-article-researcher skill §0), so it reads as a "browse everything
+// else first" tier regardless of which filters are active. When a sport
+// filter is active, the remaining (non-Travel-Craft) articles get a second
+// tier on top: articles where this is the ONLY sport (array length 1 —
+// genuinely about this sport, not just touching it) before multi-sport
+// articles that merely include it. Recency is the tiebreaker within each
+// tier throughout.
 export async function getBlogArticles(opts?: { category?: string; sport?: string }) {
   const conditions = [PUBLISHED];
   if (opts?.category) {
-    conditions.push(eq(blogArticles.contentCategory, opts.category as "history" | "rivalry" | "why_go" | "bucket_list"));
+    conditions.push(eq(blogArticles.contentCategory, opts.category as "history" | "rivalry" | "why_go" | "bucket_list" | "travel_craft"));
   }
   if (opts?.sport) {
     conditions.push(sql`${opts.sport} = ANY(${blogArticles.sport})`);
   }
+
+  const orderBy = [
+    sql`CASE WHEN ${blogArticles.contentCategory} = 'travel_craft' THEN 1 ELSE 0 END`,
+    ...(opts?.sport ? [sql`array_length(${blogArticles.sport}, 1) asc`] : []),
+    desc(blogArticles.publishedAt),
+  ];
 
   return db
     .select({
@@ -134,5 +161,5 @@ export async function getBlogArticles(opts?: { category?: string; sport?: string
     })
     .from(blogArticles)
     .where(and(...conditions))
-    .orderBy(desc(blogArticles.publishedAt));
+    .orderBy(...orderBy);
 }

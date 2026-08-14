@@ -7,6 +7,7 @@ import { AddAllToBoard, AddOneToBoard } from "./AddToBoard";
 import HowToBook from "./HowToBook";
 import AskCuratorForm from "./AskCuratorForm";
 import PackDownload from "./PackDownload";
+import { getArticlesForEvent } from "@/lib/queries/blog";
 import HomepageNav from "@/app/_components/HomepageNav";
 
 // transit → "Before you go" covers both planning and getting there.
@@ -1060,6 +1061,7 @@ interface PackViewProps {
   dateRange: string;
   editorialOverview: string | null;
   sportLabel: string;
+  sport: string;
   isPro: boolean;
   isAnnual?: boolean;
   archetype?: string | null;
@@ -1078,6 +1080,7 @@ export default async function PackView({
   dateRange,
   editorialOverview,
   sportLabel,
+  sport,
   isPro,
   isAnnual = false,
   archetype,
@@ -1091,6 +1094,11 @@ export default async function PackView({
   const isEventPast = new Date() > new Date(`${endDate}T23:59:59Z`);
   const hideProCtas = process.env.HIDE_PRO === "true";
   const editorial = PACK_EDITORIAL[eventSlug] ?? PACK_EDITORIAL["wimbledon-2026"];
+
+  // "Worth Reading" — same cross-linking model as the hub-and-spoke pack
+  // (see HubPage.tsx). Event-tagged articles first, same-sport fallback,
+  // capped at 3, renders nothing if truly empty — see getArticlesForEvent.
+  const relatedArticles = await getArticlesForEvent(eventId, sport);
   const sectionOrder = (archetype ? ARCHETYPE_SECTION_ORDER[archetype] : undefined) ?? SECTION_ORDER;
 
   const exps = await db
@@ -1586,6 +1594,50 @@ export default async function PackView({
           </div>
         ))}
       </div>
+
+      {/* Worth Reading — reverse direction of the blog article sidebar's
+          "Get the full guide" link (see Blog Design Document.txt's
+          cross-linking model). Same block as the hub-and-spoke pack
+          (HubPage.tsx) — classic pack was missing this entirely until
+          14 Aug 2026. Always public/unlocked, renders nothing if the
+          event's sport genuinely has zero published articles yet. */}
+      {relatedArticles.length > 0 && (
+        <div className="max-w-5xl mx-auto px-6 sm:px-8 py-10">
+          <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-3">Worth reading</p>
+          <div className="grid sm:grid-cols-3 gap-4">
+            {relatedArticles.map((article) => (
+              <Link
+                key={article.slug}
+                href={`/blog/${article.slug}`}
+                className="group flex flex-col rounded-sm border border-[#2A2A2A] bg-[#141414] overflow-hidden hover:border-[#AAFF00] transition-colors"
+              >
+                <div className="relative h-36 w-full overflow-hidden bg-[#1A1A1A]">
+                  {article.heroImageUrl ? (
+                    <Image
+                      src={article.heroImageUrl}
+                      alt={article.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 640px) 100vw, 33vw"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-neutral-800" />
+                  )}
+                </div>
+                <div className="flex flex-col flex-1 px-4 py-3.5">
+                  <p className="text-sm font-semibold text-white group-hover:text-[#AAFF00] transition-colors leading-snug">
+                    {article.title}
+                  </p>
+                  <p className="mt-1.5 text-xs text-[#A3A3A3] leading-5 line-clamp-2 flex-1">{article.excerpt}</p>
+                  {article.readMinutes && (
+                    <span className="mt-2 text-xs text-[#6A6A6A]">{article.readMinutes} min read</span>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Pro-only features — Download + Ask the Curator */}
       {isPro && !hideProCtas && (
