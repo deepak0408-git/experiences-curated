@@ -32,7 +32,15 @@ export default async function BlogIndexPage({
 }) {
   const { category, sport } = await searchParams;
   const { user } = await getAuthUser();
-  const articles = await getBlogArticles({ category, sport });
+  const isFiltered = Boolean(category || sport);
+  const [articles, allArticles] = await Promise.all([
+    getBlogArticles({ category, sport }),
+    // Only needed to compute the "m of n" total when a filter is active —
+    // skip the second query on the unfiltered view, articles.length already
+    // is the total there.
+    isFiltered ? getBlogArticles({}) : Promise.resolve(null),
+  ]);
+  const totalCount = allArticles?.length ?? articles.length;
 
   // Preserves the other filter dimension when toggling either row — e.g.
   // clicking "History" while "Tennis" is active keeps ?sport=tennis, and
@@ -102,6 +110,10 @@ export default async function BlogIndexPage({
             </Link>
           ))}
         </div>
+
+        <p className="text-xs text-[#6A6A6A] mb-6">
+          {isFiltered ? `${articles.length} of ${totalCount} articles` : `${totalCount} articles`}
+        </p>
 
         {articles.length === 0 ? (
           <p className="text-sm text-[#6A6A6A]">No articles yet in this category.</p>
