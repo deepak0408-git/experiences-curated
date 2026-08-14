@@ -60,16 +60,24 @@ export async function getSeriesSiblings(seriesSlug: string, excludeSlug: string)
 
 // Other one-off pieces in the same category, most recent first — used when
 // an article has no seriesSlug (see design doc: "More '[Category]' pieces").
-// Sport-relevance ranked ahead of recency — same fix already applied to
-// getArticlesForEvent's fallback tier (10 Aug 2026 incident: cross-sport
-// pieces were bumping genuinely sport-specific ones purely on publish date).
-// Found live on this same page 14 Aug 2026: a tennis article's "More History
-// pieces" sidebar led with cricket/F1/golf history over any tennis piece,
-// because the query only filtered on category and sorted by date. `sport`
-// takes the viewed article's own sport array so a same-sport match ranks
-// first; single/narrow-sport articles are still preferred over broad
-// cross-sport ones within each tier, same reasoning as the sibling function.
-export async function getRelatedByCategory(contentCategory: string, excludeSlug: string, sport: string[], limit = 4) {
+// Ranked in 3 tiers: (1) same sportingEventId — genuinely the same event's
+// other history/rivalry/etc pieces, (2) same-sport, (3) everything else in
+// the category. Within each tier, narrower-sport articles (array length 1)
+// rank ahead of broad cross-sport ones, then recency.
+// Sport-relevance-over-recency fix: 10 Aug 2026 incident (getArticlesForEvent's
+// fallback tier — cross-sport pieces bumping genuinely sport-specific ones).
+// Event-tier fix: 14 Aug 2026, found live on a US Open article — 3 other real
+// US Open history pieces existed but never surfaced because this query only
+// checked contentCategory + sport, never sportingEventId, even though the
+// viewed article had one. `sportingEventId` is nullable — most articles
+// (rivalries, general history) have none, so that tier is a no-op for them.
+export async function getRelatedByCategory(
+  contentCategory: string,
+  excludeSlug: string,
+  sport: string[],
+  sportingEventId: string | null,
+  limit = 4,
+) {
   return db
     .select({
       slug: blogArticles.slug,
@@ -78,6 +86,9 @@ export async function getRelatedByCategory(contentCategory: string, excludeSlug:
     .from(blogArticles)
     .where(and(eq(blogArticles.contentCategory, contentCategory as "history" | "rivalry" | "why_go" | "bucket_list" | "travel_craft"), PUBLISHED))
     .orderBy(
+      sportingEventId
+        ? sql`CASE WHEN ${blogArticles.sportingEventId} = ${sportingEventId} THEN 0 ELSE 1 END`
+        : sql`0`,
       sql`CASE WHEN ${blogArticles.sport} && ARRAY[${sql.join(sport.map((s) => sql`${s}`), sql`, `)}]::sport[] THEN 0 ELSE 1 END`,
       sql`array_length(${blogArticles.sport}, 1) asc`,
       desc(blogArticles.publishedAt),

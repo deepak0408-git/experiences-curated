@@ -121,7 +121,7 @@ export default async function BlogArticlePage({
 
   const siblings = article.seriesSlug
     ? await getSeriesSiblings(article.seriesSlug, article.slug)
-    : await getRelatedByCategory(article.contentCategory, article.slug, article.sport);
+    : await getRelatedByCategory(article.contentCategory, article.slug, article.sport, article.sportingEventId);
 
   const relatedLabel = article.seriesSlug
     ? "More in this series"
