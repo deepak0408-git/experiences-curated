@@ -755,6 +755,28 @@ export const eventRemindersSent = pgTable("event_reminders_sent", {
   uniqueIndex("event_reminders_sent_email_event_unique").on(t.email, t.sportingEventId),
 ]);
 
+// Tour operators, content collaborators, and other organizations contacted
+// for partnership outreach. One row per organization — contactEmail is
+// unique, so an org reached via two different pitches (e.g. tour operator
+// licensing AND a separate destination-research outreach) is a single row;
+// details of each pitch go in notes rather than a structured type/history table.
+export const businessPartners = pgTable("business_partners", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  organizationName: varchar("organization_name", { length: 255 }).notNull(),
+  contactEmail: varchar("contact_email", { length: 255 }).notNull(),
+  contactName: varchar("contact_name", { length: 255 }),
+  phone1: varchar("phone_1", { length: 30 }),
+  phone2: varchar("phone_2", { length: 30 }),
+  partnerType: varchar("partner_type", { length: 30 }).notNull(), // tour_operator | influencer | sporting_club | luxury_experience_operator
+  status: varchar("status", { length: 20 }).notNull().default("contacted"), // contacted | replied | in_discussion | declined | active_partner | no_response
+  notes: text("notes"),
+  firstContactedAt: timestamp("first_contacted_at"),
+  lastContactedAt: timestamp("last_contacted_at"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+}, (t) => [
+  uniqueIndex("business_partners_email_unique").on(t.contactEmail),
+]);
+
 // ─── Season/Budget Planner (G3) ────────────────────────────────────────────────
 // See docs/Season Budget Planner Tool G3 - Customer and Monetization Journey.txt
 // for the full design brief. All prices in this section are USD-only — the

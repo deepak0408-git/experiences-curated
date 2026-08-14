@@ -12,6 +12,20 @@ function formatPublishedDate(date: Date | null) {
   return new Date(date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 }
 
+// Per-slug crop override for hero images whose subject sits off-center in a
+// 16:9 crop — same pattern as the hub-and-spoke pack's per-event object-position
+// override (HubPage.tsx). Tall portrait-orientation source photos in particular
+// tend to crop into the torso rather than the face under plain object-cover.
+const HERO_CROP_BY_SLUG: Record<string, string> = {
+  "federer-vs-djokovic-never-a-quiet-match": "object-top",
+  "connors-vs-lendl-won-first-8-lost-next-17": "object-[center_25%]",
+  "connors-vs-mcenroe-most-contentious-rivalry": "object-[center_25%]",
+  "hingis-vs-serena-williams-changing-of-the-guard": "object-top",
+  "agassi-vs-sampras-best-returner-best-server": "object-top",
+  "evert-vs-navratilova-80-matches-and-a-friendship": "object-top",
+  "becker-vs-edberg-three-straight-wimbledon-finals": "object-[center_15%]",
+};
+
 const CATEGORY_LABELS: Record<string, string> = {
   history: "History",
   rivalry: "Rivalry",
@@ -107,7 +121,7 @@ export default async function BlogArticlePage({
 
   const siblings = article.seriesSlug
     ? await getSeriesSiblings(article.seriesSlug, article.slug)
-    : await getRelatedByCategory(article.contentCategory, article.slug);
+    : await getRelatedByCategory(article.contentCategory, article.slug, article.sport);
 
   const relatedLabel = article.seriesSlug
     ? "More in this series"
@@ -169,7 +183,7 @@ export default async function BlogArticlePage({
                   src={article.heroImageUrl}
                   alt={article.heroImageAlt ?? article.title}
                   fill
-                  className="object-cover"
+                  className={`object-cover ${HERO_CROP_BY_SLUG[article.slug] ?? ""}`}
                   priority
                 />
               </div>
