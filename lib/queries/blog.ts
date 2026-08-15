@@ -88,7 +88,7 @@ export async function getRelatedByCategory(
     .orderBy(
       sportingEventId
         ? sql`CASE WHEN ${blogArticles.sportingEventId} = ${sportingEventId} THEN 0 ELSE 1 END`
-        : sql`0`,
+        : sql`0::int`,
       sql`CASE WHEN ${blogArticles.sport} && ARRAY[${sql.join(sport.map((s) => sql`${s}`), sql`, `)}]::sport[] THEN 0 ELSE 1 END`,
       sql`array_length(${blogArticles.sport}, 1) asc`,
       desc(blogArticles.publishedAt),
