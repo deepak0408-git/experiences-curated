@@ -8,12 +8,23 @@ const R2 = process.env.NEXT_PUBLIC_R2_PUBLIC_URL ?? "";
 
 const EVENT_PACKS = [
   {
-    slug: "wimbledon-2026",
-    name: "Wimbledon 2026",
-    dates: "30 Jun – 13 Jul 2026",
+    // Real, current slug post evergreen-slug migration (14 Aug 2026) — was
+    // "wimbledon-2026". Updated to the 2027 edition (28 Jun–11 Jul 2027)
+    // when the sportingEvents row was rolled over to 2027, 14 Aug 2026 —
+    // this hardcoded copy has already gone stale once (drifted to "30 Jun –
+    // 13 Jul" against 2026's real dates) and will again every year this
+    // table isn't updated in lockstep with the DB row. This whole
+    // EVENT_PACKS array is a hardcoded per-event table of the kind flagged
+    // in feedback_avoid_hardcoded_per_entity_tables — should be replaced
+    // with a real query against sportingEvents (name/dates/heroImageUrl are
+    // all already DB fields) rather than patched by hand every time an
+    // evergreen event rolls to its next edition.
+    slug: "wimbledon",
+    name: "Wimbledon 2027",
+    dates: "28 Jun – 11 Jul 2027",
     location: "London",
     sport: "Tennis",
-    heroImageUrl: `${R2}/sporting-events/hero/wimbledon-2026.jpg`,
+    heroImageUrl: `${R2}/sporting-events/hero/wimbledon-2026-v2.jpg`,
   },
   {
     slug: "us-open-2026",

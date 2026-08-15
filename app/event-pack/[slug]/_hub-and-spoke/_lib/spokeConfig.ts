@@ -84,4 +84,32 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "map", label: "Venue Map", question: "What facilities are available at Qizhong?", status: "public", imageSlug: "qizhong-forest-sports-city-arena-" },
     { id: "luxury", label: "Luxury Guide", question: "What's the best luxury hospitality in Shanghai?", status: "teaser", imageSlug: "luxury-shanghai-peninsula-bulgari-" },
   ],
+  // Wimbledon — classic-to-hub-and-spoke conversion, 14 Aug 2026 (bundled
+  // with the evergreen-slug migration per the hub-and-spoke skill's standing
+  // rule). All 19 experiences are real, published, pack-ranked, and already
+  // hero-imaged (this pack shipped under the old classic format first, so
+  // unlike a brand-new build, real images already exist — no
+  // "__no-image-yet__" sentinel needed here). imageSlug values are distinct
+  // real experience slugs, one per spoke, no forced duplication (see
+  // feedback_spoke_image_assignment_unclear memory).
+  //
+  // Weather/Arrival/Tickets use the skill's standing cross-event default
+  // images (imageOverride) — same 3 fixed Bahrain GP-sourced files every
+  // hub-and-spoke event uses for these 3 spokes, confirmed 1 Aug 2026.
+  // Missed on Wimbledon's first pass (14 Aug 2026, caught by the founder
+  // reviewing the rendered hub) — fixed here.
+  wimbledon: [
+    { id: "cost", label: "Cost Guide", question: "How much does a Wimbledon trip cost?", status: "teaser", imageSlug: "wimbledon-centre-court-" },
+    { id: "tickets", label: "Ticket Guide", question: "Which Wimbledon ticket is the best buy — Centre Court, No. 1 Court, or the grounds?", status: "teaser", imageSlug: "wimbledon-no1-court-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for Wimbledon?", status: "teaser", imageSlug: "wimbledon-cannizaro-house-" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to the All England Club?", status: "public", imageSlug: "traveling-to-the-all-england-club-" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at Wimbledon, and what should I pack?", status: "public", imageSlug: "wimbledon-when-it-rains-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Wimbledon?", status: "public", imageSlug: "preparing-for-your-wimbledon-visit-" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat at and around Wimbledon during the Fortnight?", status: "teaser", imageSlug: "wimbledon-eating-" },
+    { id: "day-trips", label: "Day Trips", question: "What's the best day trip during Wimbledon — Windsor, or a day in London?", status: "teaser", imageSlug: "london-rest-day-" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does a Wimbledon Fortnight trip actually look like?", status: "teaser", imageSlug: "sw19-during-the-fortnight-" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I join the Wimbledon Queue?", status: "public", imageSlug: "the-wimbledon-queue-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at the All England Club?", status: "public", imageSlug: "wimbledon-outer-courts-" },
+    { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at Wimbledon?", status: "teaser", imageSlug: "wimbledon-the-lawn-hospitality-" },
+  ],
 };

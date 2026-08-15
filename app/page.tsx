@@ -37,6 +37,18 @@ const SPORT_LABELS: Record<string, string> = {
 
 
 const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: string; standard: string }> = {
+  // Real, current key for the evergreen-slug Wimbledon event (migrated 14 Aug
+  // 2026) — the DB row's slug is now "wimbledon", not "wimbledon-2026".
+  "wimbledon": {
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01",
+    early: process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "US$15",
+    standard: process.env.NEXT_PUBLIC_STANDARD_PRICE_DISPLAY ?? "US$25",
+  },
+  // "wimbledon-2026" kept permanently as the fallback source for any future
+  // event slug missing its own entry — never delete, per the founder's
+  // explicit decision during the hub-and-spoke conversion planning (14 Aug
+  // 2026). No live event resolves via this key anymore now that the real
+  // Wimbledon row uses "wimbledon" above.
   "wimbledon-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01",
     early: process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "US$15",

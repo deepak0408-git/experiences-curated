@@ -94,6 +94,35 @@ const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; 
   "singapore-gp-first-timer-orientation-": { eventSlug: "singapore-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Gate Guide" },
   "singapore-gp-f1-village-": { eventSlug: "singapore-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Gate Guide" },
   "singapore-gp-padang-stage-concerts-": { eventSlug: "singapore-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  // Wimbledon — added 14 Aug 2026 for the classic-to-hub-and-spoke
+  // conversion. True-home spoke matches where each experience's
+  // SpokeExperienceCard actually renders (see spokes/wimbledon/*.tsx) —
+  // "wimbledon-cannizaro-house-" appears in both Hotels and Luxury, so its
+  // true home here is Hotels, matching the ATP Finals precedent for a
+  // dual-appearing experience.
+  "wimbledon-centre-court-": { eventSlug: "wimbledon", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "the-hill-wimbledon-": { eventSlug: "wimbledon", spokeId: "map", spokeLabel: "Venue Map" },
+  "wimbledon-eating-": { eventSlug: "wimbledon", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "wimbledon-no1-court-": { eventSlug: "wimbledon", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "wimbledon-museum-private-tour-": { eventSlug: "wimbledon", spokeId: "map", spokeLabel: "Venue Map" },
+  "wimbledon-practice-courts-": { eventSlug: "wimbledon", spokeId: "map", spokeLabel: "Venue Map" },
+  "wimbledon-the-lawn-hospitality-": { eventSlug: "wimbledon", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "the-wimbledon-queue-": { eventSlug: "wimbledon", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+  "dinner-at-the-crooked-billet-": { eventSlug: "wimbledon", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "traveling-to-the-all-england-club-": { eventSlug: "wimbledon", spokeId: "getting-there", spokeLabel: "Getting There" },
+  "wimbledon-when-it-rains-": { eventSlug: "wimbledon", spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+  "dinner-at-the-black-lamb-": { eventSlug: "wimbledon", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "wimbledon-outer-courts-": { eventSlug: "wimbledon", spokeId: "map", spokeLabel: "Venue Map" },
+  "preparing-for-your-wimbledon-visit-": { eventSlug: "wimbledon", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "sw19-during-the-fortnight-": { eventSlug: "wimbledon", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+  "london-rest-day-": { eventSlug: "wimbledon", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "brixton-village-market-row-": { eventSlug: "wimbledon", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "wimbledon-cannizaro-house-": { eventSlug: "wimbledon", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "wimbledon-rose-crown-": { eventSlug: "wimbledon", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "park-plaza-county-hall-london-": { eventSlug: "wimbledon", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "nox-waterloo-": { eventSlug: "wimbledon", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "eton-across-river-windsor-": { eventSlug: "wimbledon", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "windsor-castle-long-walk-": { eventSlug: "wimbledon", spokeId: "day-trips", spokeLabel: "Day Trips" },
 };
 
 function getSpokeBackLink(slug: string) {

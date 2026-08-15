@@ -40,6 +40,26 @@ export const PACK_PRICING: Record<string, { earlyBirdPriceId: string; standardPr
     earlyBirdDisplay: "US$5",
     standardDisplay: "US$10",
   },
+  // Real Dodo product IDs, reused unchanged from the classic pack's own
+  // pricing (see .env.local's "Wimbledon-prefixed aliases" block, added
+  // 14 Aug 2026 for this conversion) — not new IDs, same checkout the
+  // classic pack has used since launch.
+  //
+  // earlyBirdCutoff is still the STALE 2026 edition's real cutoff
+  // (29 Jun 2026, now in the past) — deliberately left unset for 2027 as of
+  // the 2026->2027 row rollover (14 Aug 2026); the founder chose to ship
+  // standard-price-only rather than guess a new cutoff date. isEarlyBird
+  // will always evaluate false until NEXT_PUBLIC_WIMBLEDON_EARLY_BIRD_CUTOFF
+  // is set to a real 2027 date — standardDisplay (US$25) is what actually
+  // renders in the meantime. This is a real, open pricing decision, not a
+  // bug — don't "fix" this date without asking first.
+  wimbledon: {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_WIMBLEDON_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_WIMBLEDON_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_WIMBLEDON_EARLY_BIRD_CUTOFF ?? "2026-06-29",
+    earlyBirdDisplay: "US$15",
+    standardDisplay: "US$25",
+  },
 };
 
 // freeAccessEnabled mirrors the classic pack's exact behaviour (page.tsx,
