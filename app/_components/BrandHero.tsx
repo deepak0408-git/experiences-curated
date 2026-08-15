@@ -53,6 +53,11 @@ function formatShortDateRange(start: string, end: string) {
 function shortEventName(name: string, slug: string): string {
   // Derive a short display name from the slug — more reliable than string-stripping
   const SHORT_NAMES: Record<string, string> = {
+    // Real key for the evergreen-slug event (migrated 14 Aug 2026).
+    "wimbledon": "Wimbledon 2026",
+    // Kept for consistency with the other permanent-fallback tables, though
+    // this map has no fallback-on-miss behavior of its own (falls back to
+    // the real event name via `?? name`, per the hub-and-spoke skill's §4c).
     "wimbledon-2026": "Wimbledon 2026",
     "india-in-england-cricket-2026": "India in England 2026",
     "open-championship-2026": "The Open 2026",

@@ -64,17 +64,10 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
         <FactRow label="Other practice/qualifying courts" value="Dozens more across the wider 80-hectare complex" />
       </div>
 
-      {centerCourt && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={centerCourt} isPro={isPro} />
-        </div>
-      )}
-
-      {arena && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={arena} isPro={isPro} />
-        </div>
-      )}
+      <div className="grid sm:grid-cols-2 gap-4 mb-8">
+        {centerCourt && <SpokeExperienceCard experience={centerCourt} isPro={isPro} />}
+        {arena && <SpokeExperienceCard experience={arena} isPro={isPro} />}
+      </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Facilities inside the arena</p>
       <div className="flex flex-col gap-3 mb-8">

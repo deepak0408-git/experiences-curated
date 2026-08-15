@@ -255,6 +255,13 @@ export const sportingEvents = pgTable("sporting_events", {
   // for the main event-pack page ("Kingsmead (Durban), Wanderers
   // (Johannesburg)..."). NULL for single-venue events.
   tourCities: text("tour_cities").array(),
+  // Evergreen-slug migration (Operations Checklist T2 #2). Nullable — only
+  // populated for events that have actually migrated off a dated slug (e.g.
+  // "wimbledon-2026" -> "wimbledon", seasonYear: 2026). Unique constraint
+  // stays slug-only for now (not (slug, seasonYear)) since only one event
+  // needs an evergreen slug as of this migration — add the composite
+  // constraint when a second concurrent-season row actually requires it.
+  seasonYear: smallint("season_year"),
   startDate: date("start_date").notNull(),
   endDate: date("end_date").notNull(),
   recurrence: varchar("recurrence", { length: 30 }),
@@ -294,6 +301,27 @@ export const sportingEvents = pgTable("sporting_events", {
   index("sporting_events_series_idx").on(t.tournamentSeries),
   index("sporting_events_dates_idx").on(t.startDate, t.endDate),
   index("sporting_events_sport_idx").on(t.sport),
+]);
+
+// ─── Sporting Event Archives (Operations Checklist T2 #3) ──────────────────────
+// Year-end snapshot of an evergreen-slug event's edition, taken immediately
+// before its sportingEvents row is reused/overwritten for the next edition
+// (dates, name, editionYear/seasonYear all get updated in place on the same
+// row — see the evergreen-slug migration, Operations Checklist T2 #2). Not a
+// cron — a deliberate, curator-triggered snapshot run once per edition
+// rollover, via a one-off script, same pattern as any other DB migration
+// script in this codebase. Audit/dispute use only, not customer-facing.
+export const sportingEventArchives = pgTable("sporting_event_archives", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sportingEventId: uuid("sporting_event_id").notNull().references(() => sportingEvents.id),
+  // The edition being archived — NOT the current seasonYear on the live row
+  // (which may already have moved on by the time this is queried).
+  seasonYear: smallint("season_year").notNull(),
+  pdfUrl: text("pdf_url").notNull(),
+  jsonUrl: text("json_url").notNull(),
+  archivedAt: timestamp("archived_at").notNull().defaultNow(),
+}, (t) => [
+  uniqueIndex("sporting_event_archives_event_season_idx").on(t.sportingEventId, t.seasonYear),
 ]);
 
 // ─── External Calendar Events (Sports Calendar page) ───────────────────────────

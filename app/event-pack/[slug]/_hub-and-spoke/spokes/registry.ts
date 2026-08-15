@@ -51,6 +51,19 @@ import SHArrivalSpoke from "./shanghai-masters/ArrivalSpoke";
 import SHMapSpoke from "./shanghai-masters/MapSpoke";
 import SHLuxurySpoke from "./shanghai-masters/LuxurySpoke";
 
+import WimCostSpoke from "./wimbledon/CostSpoke";
+import WimTicketsSpoke from "./wimbledon/TicketsSpoke";
+import WimHotelsSpoke from "./wimbledon/HotelsSpoke";
+import WimGettingThereSpoke from "./wimbledon/GettingThereSpoke";
+import WimWeatherSpoke from "./wimbledon/WeatherSpoke";
+import WimFirstTimerGuideSpoke from "./wimbledon/FirstTimerGuideSpoke";
+import WimWhereToEatSpoke from "./wimbledon/WhereToEatSpoke";
+import WimDayTripsSpoke from "./wimbledon/DayTripsSpoke";
+import WimItinerarySpoke from "./wimbledon/ItinerarySpoke";
+import WimArrivalSpoke from "./wimbledon/ArrivalSpoke";
+import WimMapSpoke from "./wimbledon/MapSpoke";
+import WimLuxurySpoke from "./wimbledon/LuxurySpoke";
+
 type SpokeComponent = ComponentType<{ eventSlug: string }>;
 
 // Registry mapping eventSlug -> spokeId -> component. A new hub_and_spoke
@@ -114,6 +127,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: SHMapSpoke,
     luxury: SHLuxurySpoke,
   },
+  wimbledon: {
+    cost: WimCostSpoke,
+    tickets: WimTicketsSpoke,
+    hotels: WimHotelsSpoke,
+    "getting-there": WimGettingThereSpoke,
+    weather: WimWeatherSpoke,
+    "first-timer-guide": WimFirstTimerGuideSpoke,
+    "where-to-eat": WimWhereToEatSpoke,
+    "day-trips": WimDayTripsSpoke,
+    itinerary: WimItinerarySpoke,
+    arrival: WimArrivalSpoke,
+    map: WimMapSpoke,
+    luxury: WimLuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -172,5 +199,19 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Shanghai Masters — Pudong vs Hongqiao Arrival Guide",
     map: "Qizhong Arena Map — Courts and Facilities",
     luxury: "Luxury Guide for the Shanghai Masters — Peninsula, Bulgari, and More",
+  },
+  wimbledon: {
+    cost: "How Much Does a Wimbledon Trip Cost? — Budget Guide",
+    tickets: "Wimbledon Ticket Guide — Ballot, Queue, and Resale",
+    hotels: "Where to Stay for Wimbledon — SW19 Village vs Central London",
+    "getting-there": "Getting to the All England Club — Wimbledon Transit Guide",
+    weather: "Wimbledon Weather — What to Pack for the Fortnight",
+    "first-timer-guide": "First-Timer's Guide — Wimbledon and the Queue",
+    "where-to-eat": "Where to Eat at Wimbledon — Strawberries, Pimm's, and the Village",
+    "day-trips": "Rest Day Ideas — A Day in London During Wimbledon",
+    itinerary: "How the Wimbledon Fortnight Unfolds — Day by Day",
+    arrival: "The Wimbledon Queue — Arrival and Timing Guide",
+    map: "All England Club Map — Courts and Facilities",
+    luxury: "Luxury Guide for Wimbledon — The Lawn, Cannizaro House, and More",
   },
 };

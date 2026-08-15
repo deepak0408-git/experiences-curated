@@ -12,6 +12,26 @@ const nextConfig: NextConfig = {
   // this reproduced on unrelated pages (sign-in, curator/ranker) too, only
   // when accessed via LAN IP in dev, never on localhost or in production.
   allowedDevOrigins: ["192.168.1.2"],
+  // Evergreen-slug migration (Operations Checklist T2 #2). Permanent 301s
+  // from a dated event-pack slug to its evergreen replacement — added for
+  // Wimbledon's classic->hub-and-spoke conversion (14 Aug 2026), the first
+  // event to migrate off a dated slug. Add one entry here per event as it
+  // migrates; this table only needs to exist once, future migrations just
+  // add rows.
+  async redirects() {
+    return [
+      {
+        source: "/event-pack/wimbledon-2026",
+        destination: "/event-pack/wimbledon",
+        permanent: true,
+      },
+      {
+        source: "/event-pack/wimbledon-2026/:spoke",
+        destination: "/event-pack/wimbledon/:spoke",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

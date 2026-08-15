@@ -73,6 +73,18 @@ const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; value: str
     { label: "Emergencies", value: "Police: 110. Fire: 119. Medical/ambulance: 120. All free, but English-speaking operators aren't guaranteed even in Shanghai — having your hotel call on your behalf, or using Alipay's SOS function, is more reliable than dialing directly." },
     { label: "Gate times", value: "Not yet published for the 2026 tournament — confirm closer to the event via the official ticketing site." },
   ],
+  // Same real rows as PACK_EDITORIAL["wimbledon-2026"].localInfo in the
+  // classic pack (PackView.tsx) — address/official-site are already
+  // handled generically above from the DB record, so only the
+  // event-specific rows (queue gates, weather, emergencies) are repeated
+  // here, matching every other event's pattern of not duplicating what
+  // the generic address/ticketing block already covers.
+  wimbledon: [
+    { label: "Queue gates open", value: "10:30am daily. Queue cards issued from mid-afternoon the day before." },
+    { label: "What to bring", value: "Layers — London June weather swings 15°C–28°C. Waterproof. Good walking shoes. Picnic food (no alcohol, no glass). No large camera lenses." },
+    { label: "Weather", value: "Variable. Rain likely. Centre Court and No. 1 Court roofs close automatically; outer courts may pause.", href: "https://www.accuweather.com/en/gb/wimbledon/sw19-4/weather-forecast/323341", linkLabel: "AccuWeather forecast" },
+    { label: "Emergencies", value: "Emergency services: 999 · Non-emergency police: 101 · NHS urgent (non-emergency): 111 · Nearest A&E: St George's Hospital, Tooting SW17 0QT" },
+  ],
 };
 
 const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: string; heroFallbackImageSlug: string; introText: string }> = {
@@ -122,12 +134,33 @@ const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: string; h
     introText:
       "Shanghai draws more spectators than any other Masters 1000 on the calendar — over 220,000 across a single tournament, with more than 70% of that crowd travelling in from outside the city itself. This isn't a regional stop with a big venue; it's a genuine national event, and the atmosphere reflects it.\n\nQizhong Arena's eight-petal retractable roof, styled after Shanghai's magnolia city flower, opens and closes in a spiral over about eight minutes — the same building that hosted the year-end ATP Finals from 2005 to 2008 before Shanghai earned its own Masters 1000 in 2009. Roger Federer returns again this year for a celebrity exhibition on 16 October, extending a Shanghai record that includes two titles and a 77% win rate at this exact venue.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
+  // Wimbledon — hub intro text drawn directly from the real "brief" and
+  // "On the grounds" copy already written for the classic pack
+  // (PACK_EDITORIAL["wimbledon-2026"] in PackView.tsx), condensed to match
+  // the hub's shorter 3-paragraph pattern — not new/invented copy.
+  wimbledon: {
+    displayName: "Wimbledon",
+    venueLine: "Held at the All England Lawn Tennis Club, Church Road, SW19 — the only Grand Slam still played on grass.",
+    heroFallbackImageSlug: "wimbledon-centre-court-",
+    introText:
+      "Wimbledon runs for two weeks in late June and early July, but the experience of it — the bit worth paying for — starts before you get on the train. The queue culture, the strawberry ritual, the SW19 neighbourhood that treats its famous visitor with relaxed familiarity: none of it is accidental, and none of it is in the official guide.\n\nThis pack is built around one idea: that the best version of Wimbledon isn't on Centre Court. It's a picnic on Henman Hill when a match has just turned, a pre-match breakfast on the village high street, a quiet pint in the local pub after the day's last result. The experiences here were chosen because they're the difference between attending a tennis tournament and actually experiencing one.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
 };
 
 export default async function HubPage({ slug }: { slug: string }) {
   const { event, dateRange, linkedExperiences } = await getSpokeData(slug);
   const spokes = getSpokesForEvent(slug);
   const config = INTRO_BY_EVENT[slug];
+
+  // Evergreen-slug events (seasonYear set, e.g. "wimbledon") need the year
+  // appended dynamically wherever displayName renders — INTRO_BY_EVENT's
+  // displayName strings stay year-free by design (same static string every
+  // edition), since hardcoding "Wimbledon 2027" here would just recreate
+  // next year's version of the same staleness problem this field already
+  // caused once. Non-evergreen events (no seasonYear) render unchanged.
+  const displayEventName = config?.displayName
+    ? event.seasonYear ? `${config.displayName} ${event.seasonYear}` : config.displayName
+    : event.name;
 
   const supabase = await createClient();
   const {
@@ -175,7 +208,7 @@ export default async function HubPage({ slug }: { slug: string }) {
         {hubHeroUrl && (
           <Image
             src={hubHeroUrl}
-            alt={config?.displayName ?? event.name}
+            alt={displayEventName}
             fill
             className={`object-cover opacity-90 ${slug === "shanghai-masters" ? "lg:object-[center_65%]" : ""}`}
             sizes="100vw"
@@ -188,7 +221,7 @@ export default async function HubPage({ slug }: { slug: string }) {
             {SPORT_LABELS[event.sport] ?? event.sport} · Event Guide
           </span>
           <h1 className="text-3xl sm:text-4xl font-black text-white leading-tight tracking-tight max-w-2xl">
-            {config?.displayName ?? event.name}
+            {displayEventName}
           </h1>
           <p className="mt-1.5 text-white/70 text-sm">{dateRange}</p>
           <p className="mt-0.5 text-white/50 text-xs">
@@ -207,7 +240,7 @@ export default async function HubPage({ slug }: { slug: string }) {
             own DB write. */}
         {justPurchased && (
           <div className="mb-8 rounded-sm border border-[#AAFF00]/40 bg-[#AAFF00]/10 px-5 py-4 max-w-2xl">
-            <p className="text-sm font-black text-[#AAFF00]">🎉 You&apos;re in — {config?.displayName ?? event.name} is unlocked</p>
+            <p className="text-sm font-black text-[#AAFF00]">🎉 You&apos;re in — {displayEventName} is unlocked</p>
             <p className="text-xs text-[#A3A3A3] mt-1">Every spoke below now shows our full curated picks and booking detail.</p>
           </div>
         )}
@@ -275,12 +308,12 @@ export default async function HubPage({ slug }: { slug: string }) {
                   </>
                 ) : (
                   <>
-                    <p className="text-2xl font-black text-white">
+                    <p className="text-2xl font-black text-white mb-4">
                       {pricing.priceDisplay}
                       <LocalCurrencyHint baseAmount={parseFloat(pricing.priceDisplay.replace(/[^0-9.]/g, ""))} baseCurrency={pricing.currency} />
                     </p>
                     {pricing.isEarlyBird && pricing.earlyBirdDisplay !== pricing.standardDisplay && (
-                      <p className="mt-0.5 text-xs text-[#6A6A6A] mb-4">
+                      <p className="-mt-3 mb-4 text-xs text-[#6A6A6A]">
                         Rises to {pricing.standardDisplay} after{" "}
                         {new Date(pricing.earlyBirdCutoff).toLocaleDateString("en-GB", { day: "numeric", month: "long" })}
                       </p>
@@ -290,7 +323,7 @@ export default async function HubPage({ slug }: { slug: string }) {
                         productId={pricing.dodoProductId}
                         sportingEventId={event.id}
                         eventSlug={slug}
-                        eventName={config?.displayName ?? event.name}
+                        eventName={displayEventName}
                         priceTier={pricing.isEarlyBird ? "early_bird" : "standard"}
                         successUrl={user?.email
                           ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}`

@@ -55,6 +55,16 @@ export default async function SpokeShell({
   const spokes = getSpokesForEvent(eventSlug);
   const pricing = getPackPricing(eventSlug, eventCurrency);
 
+  // "Next spoke" navigation — added 15 Aug 2026 per direct UX feedback.
+  // Follows SPOKES_BY_EVENT's own declared array order (already a
+  // deliberate sequence — cost, tickets, hotels, getting-there, weather,
+  // first-timer-guide, where-to-eat, day-trips, itinerary, arrival, map,
+  // luxury), wrapping from the last spoke (luxury) back to the first
+  // (cost). No separate order constant needed — the array order IS the
+  // order, for every hub-and-spoke event, not just Wimbledon.
+  const currentIdx = spokes.findIndex((s) => s.id === spokeId);
+  const nextSpoke = currentIdx === -1 ? null : spokes[(currentIdx + 1) % spokes.length];
+
   return (
     <main className="min-h-screen bg-[#0A0A0A]">
       <HomepageNav email={user?.email ?? null} />
@@ -74,10 +84,15 @@ export default async function SpokeShell({
       )}
 
       <div className="max-w-3xl mx-auto px-6 py-12">
-        <nav className="flex items-center gap-2 text-xs text-[#6A6A6A] mb-6">
+        <nav className="flex items-center justify-between gap-2 text-xs text-[#6A6A6A] mb-6">
           <Link href={`/event-pack/${eventSlug}`} className="text-[#AAFF00] hover:text-[#BBFF33] transition-colors">
             ← All {spokes.length} {eventName} planning guides
           </Link>
+          {nextSpoke && (
+            <Link href={`/event-pack/${eventSlug}/${nextSpoke.id}`} className="text-[#AAFF00] hover:text-[#BBFF33] transition-colors">
+              Next: {nextSpoke.label} →
+            </Link>
+          )}
         </nav>
 
         {/* One-time celebratory banner — justPurchased is derived server-side
@@ -179,11 +194,18 @@ export default async function SpokeShell({
         {/* Bottom back-link — mirrors the one at the top so a reader who
             finishes the page doesn't have to scroll all the way back up
             just to return to the hub. Added 4 Aug 2026 per direct UX
-            feedback. */}
-        <nav className="flex items-center gap-2 text-xs text-[#6A6A6A] mt-12 pt-6 border-t border-[#2A2A2A]">
+            feedback. Right-aligned "Next spoke" link added 15 Aug 2026,
+            same reasoning — a reader who reaches the bottom shouldn't have
+            to scroll up to see where to go next either. */}
+        <nav className="flex items-center justify-between gap-2 text-xs text-[#6A6A6A] mt-12 pt-6 border-t border-[#2A2A2A]">
           <Link href={`/event-pack/${eventSlug}`} className="text-[#AAFF00] hover:text-[#BBFF33] transition-colors">
             ← All {spokes.length} {eventName} planning guides
           </Link>
+          {nextSpoke && (
+            <Link href={`/event-pack/${eventSlug}/${nextSpoke.id}`} className="text-[#AAFF00] hover:text-[#BBFF33] transition-colors">
+              Next: {nextSpoke.label} →
+            </Link>
+          )}
         </nav>
       </div>
     </main>

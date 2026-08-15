@@ -45,17 +45,10 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
         plan.
       </p>
 
-      {xiaolongbao && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={xiaolongbao} isPro={isPro} />
-        </div>
-      )}
-
-      {frenchConcessionDining && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={frenchConcessionDining} isPro={isPro} />
-        </div>
-      )}
+      <div className="grid sm:grid-cols-2 gap-4 mb-8">
+        {xiaolongbao && <SpokeExperienceCard experience={xiaolongbao} isPro={isPro} />}
+        {frenchConcessionDining && <SpokeExperienceCard experience={frenchConcessionDining} isPro={isPro} />}
+      </div>
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
