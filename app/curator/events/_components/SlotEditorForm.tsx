@@ -32,9 +32,15 @@ function formatDate(d: string) {
 }
 
 const today = new Date().toISOString().split("T")[0];
-const sixMonthsFromNow = new Date();
-sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
-const sixMonthsCutoff = sixMonthsFromNow.toISOString().split("T")[0];
+// Widened from 6 to 13 months (16 Aug 2026) — an annual evergreen-slug event
+// (e.g. Wimbledon) rolls over to its next edition roughly 12 months after
+// the previous one, so a 6-month window locked out activation/deactivation
+// controls for a real, already-audited, ready-to-activate event (Wimbledon
+// 2027, ~10.5 months out) with no way to toggle isHidden via this UI at all.
+// 13 months (not 12) gives a full year of lead time plus a small buffer.
+const editableMonthsFromNow = new Date();
+editableMonthsFromNow.setMonth(editableMonthsFromNow.getMonth() + 13);
+const editableCutoff = editableMonthsFromNow.toISOString().split("T")[0];
 
 function isExpired(ev: Event) {
   return ev.endDate < today;
@@ -48,12 +54,16 @@ function hasNoPackYet(ev: Event) {
 }
 
 function isEditable(ev: Event) {
-  // Editable if live or starting within 6 months, and not yet expired.
-  // Widened from 3 to 6 months (14 Jul 2026) — events are now built and
-  // released further in advance to give travelers more planning lead time.
+  // Editable if live or starting within 13 months, and not yet expired.
+  // Widened 3 -> 6 months (14 Jul 2026), then 6 -> 13 months (16 Aug 2026) —
+  // an annual evergreen-slug event's next edition is real and audit-ready
+  // roughly 12 months after the previous one, so a 6-month window blocked
+  // the Deactivate/activation toggle entirely for a real, ready event
+  // (Wimbledon 2027 was ~10.5 months out with no way to flip isHidden via
+  // this UI). 13 months, not 12, for a small buffer past a clean year.
   // Expired events show a locked "Deactivated" state instead — the
   // expire-homepage-slots cron already clears their slot automatically.
-  return !isExpired(ev) && !hasNoPackYet(ev) && ev.startDate <= sixMonthsCutoff;
+  return !isExpired(ev) && !hasNoPackYet(ev) && ev.startDate <= editableCutoff;
 }
 
 export default function SlotEditorForm({ events }: { events: Event[] }) {

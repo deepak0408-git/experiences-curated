@@ -53,8 +53,11 @@ function formatShortDateRange(start: string, end: string) {
 function shortEventName(name: string, slug: string): string {
   // Derive a short display name from the slug — more reliable than string-stripping
   const SHORT_NAMES: Record<string, string> = {
-    // Real key for the evergreen-slug event (migrated 14 Aug 2026).
-    "wimbledon": "Wimbledon 2026",
+    // Real key for the evergreen-slug event (migrated 14 Aug 2026). Updated
+    // to 2027 (16 Aug 2026 audit) after the sportingEvents row rolled to the
+    // 2027 edition — this table doesn't update itself when a row's edition
+    // changes, same class of gap as the pre-trip brief and hero image.
+    "wimbledon": "Wimbledon 2027",
     // Kept for consistency with the other permanent-fallback tables, though
     // this map has no fallback-on-miss behavior of its own (falls back to
     // the real event name via `?? name`, per the hub-and-spoke skill's §4c).

@@ -39,7 +39,7 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The real destinations and travel times are all free above. The Event Pack adds our actual verdict — which day of the Fortnight to give up for Windsor given the tournament's own rhythm, and how to fit it in without missing a day you actually care about."
+      ctaCopy="The real destinations and travel times are all free above — no guessing on distances or train times. What it can't tell you is which day of your specific trip to actually give up for Windsor without costing you a match you'd regret missing. Unlocking adds that verdict, plus the exact booking window for Windsor Castle before Fortnight demand pushes you onto the pricier on-the-day rate."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         With the Championships running two full weeks, there&apos;s real room to build a genuine day away from SW19
@@ -95,7 +95,7 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
 
       <p className="text-xs text-[#6A6A6A] mt-8">
         Sources: rct.uk (Royal Collection Trust — Windsor Castle hours and pricing), South Western Railway published
-        timetables, experience research.
+        timetables.
       </p>
     </SpokeShell>
   );

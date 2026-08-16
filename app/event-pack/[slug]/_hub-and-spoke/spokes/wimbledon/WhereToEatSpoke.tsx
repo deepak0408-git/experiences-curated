@@ -42,7 +42,7 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="Eating on the grounds is free above. Unlocking adds our named village picks and the booking timing that matters for a Fortnight dinner table."
+      ctaCopy="Eating on the grounds is free above — real tactics, not a sales pitch. What it can't tell you is where to eat when the day's over: The Crooked Billet and The Black Lamb both fill for the nights that matter, and turning up without a table on Middle Saturday means a chain on the Broadway instead. Unlocking adds our verdict on which one fits your night, the exact booking window before the Fortnight's biggest days sell out, and the direct-call move that gets you a table when the website says fully booked."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         The strawberries first: yes, get them. The Wimbledon strawberries-and-cream ritual is worth doing once for
@@ -81,11 +81,8 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
         <p className="text-sm font-bold text-white mb-2">Pimm&apos;s</p>
         <p className="text-sm text-[#A3A3A3] leading-6">
           A Wimbledon fixture since 1971; official stalls are scattered across the grounds, not just on the Hill. No
-          glass and no alcohol brought in from outside the grounds — see the{" "}
-          <a href={`/event-pack/${eventSlug}/weather`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
-            Weather guide
-          </a>{" "}
-          for the real, current allowance if you want to bring your own.
+          glass and no alcohol brought in from outside the grounds — check the AELTC website for the current
+          year&apos;s rules before packing if you want to bring your own.
         </p>
       </div>
 
@@ -117,7 +114,7 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
       )}
 
       <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: wimbledon.com (on-grounds food and drink), theblacklamb-restaurant.com, experience research.
+        Sources: wimbledon.com (on-grounds food and drink), theblacklamb-restaurant.com.
       </p>
     </SpokeShell>
   );

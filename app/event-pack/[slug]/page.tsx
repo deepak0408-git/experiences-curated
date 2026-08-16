@@ -97,33 +97,13 @@ const BUDGET_LABELS: Record<string, string> = {
 };
 
 const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: string }[]> = {
-  "wimbledon-2026": [
-    {
-      label: "Fan Experiences",
-      description:
-        "Queuing tips, Henman Hill, public screens, fan zones, and the rituals that make Wimbledon, Wimbledon",
-    },
-    {
-      label: "Where to Stay",
-      description:
-        "SW19 hotels, central London picks for day-trippers, and the spots locals actually recommend",
-    },
-    {
-      label: "Where to Eat",
-      description:
-        "Strawberries and cream, pre-match dining, neighbourhood favourites, and post-match spots worth the detour",
-    },
-    {
-      label: "Day Plans",
-      description:
-        "Morning routines, rest-day itineraries, and neighbourhood walks to fill every hour",
-    },
-    {
-      label: "Getting There",
-      description:
-        "Transport strategy, the District line myth debunked, queue science, and what to bring",
-    },
-  ],
+  // "wimbledon-2026" entry retired 16 Aug 2026 — the real Wimbledon row
+  // migrated to the evergreen "wimbledon" slug and hub_and_spoke packFormat,
+  // which dispatches to HubPage.tsx before this file's classic-pack render
+  // path (including PACK_SECTIONS_BY_EVENT) is ever reached. No live event
+  // uses this key anymore; the generic fallback below now points at
+  // "us-open-2026" instead (see line ~533's PACK_PRICING fallback, changed
+  // for the same reason).
   "india-in-england-cricket-2026": [
     {
       label: "Match Day",
@@ -530,7 +510,14 @@ export default async function EventPackPage({
   // Compare against end-of-day instead.
   const isEventPast = new Date() > new Date(`${event.endDate}T23:59:59Z`);
 
-  const pricing = PACK_PRICING[slug] ?? PACK_PRICING["wimbledon-2026"];
+  // Fallback changed from "wimbledon-2026" to "us-open-2026" 16 Aug 2026 —
+  // the Wimbledon evergreen-slug migration retired the "wimbledon-2026" key
+  // entirely (see lib/packPricing.ts), and this line only runs for
+  // classic-format events (the real Wimbledon row now dispatches to
+  // HubPage.tsx before ever reaching here) — a generic fallback for a
+  // still-classic event should point at another real classic event, not a
+  // hub-and-spoke one's pricing shape.
+  const pricing = PACK_PRICING[slug] ?? PACK_PRICING["us-open-2026"];
   const isEarlyBird = new Date() < new Date(pricing.earlyBirdCutoff);
   const priceDisplay = freeAccessEnabled ? "Free" : isEarlyBird ? pricing.earlyBirdDisplay : pricing.standardDisplay;
   const priceId = isEarlyBird ? pricing.earlyBirdPriceId : pricing.standardPriceId;
@@ -739,7 +726,7 @@ export default async function EventPackPage({
             What&apos;s inside
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {(PACK_SECTIONS_BY_EVENT[slug] ?? PACK_SECTIONS_BY_EVENT["wimbledon-2026"]).map((section) => (
+            {(PACK_SECTIONS_BY_EVENT[slug] ?? PACK_SECTIONS_BY_EVENT["us-open-2026"]).map((section) => (
               <div
                 key={section.label}
                 className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 hover:border-[#AAFF00] transition-colors"
