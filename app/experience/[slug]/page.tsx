@@ -17,9 +17,28 @@ import ExperienceTracker from "./_components/ExperienceTracker";
 // the ONE spoke it's most at home in, per explicit curator sign-off (7 Aug
 // 2026). Where an experience is referenced by more than one spoke (e.g.
 // atp-finals-luxury-hotels- appears in both Hotels and Luxury), this picks
-// its true home, not every spoke that happens to link to it. Only render
-// this link when eventPackFormat === "hub_and_spoke" — classic-pack events
-// have no spoke pages to link back to.
+// its true home, not every spoke that happens to link to it.
+//
+// Rendering no longer gates on eventPackFormat === "hub_and_spoke" (fixed
+// 16 Aug 2026) — that flag is derived from experiences.sportingEventId, a
+// single direct FK to the experience's PRIMARY owning event, which doesn't
+// see experiences shared into a second event via sporting_event_experiences
+// (the real many-to-many join table). Eton and Windsor Castle's
+// sportingEventId still points to BMW PGA Championship (packFormat:
+// "classic") even though they're also linked into Wimbledon's Day Trips
+// spoke — the old gate silently hid their otherwise-correct
+// EXPERIENCE_TO_SPOKE entries. getSpokeBackLink() is a pure, static,
+// slug-based lookup that already only returns non-null for experiences
+// explicitly mapped to a real hub-and-spoke event/spoke, so checking its
+// result directly is both sufficient and correct — no separate format
+// check needed, and eventPackFormat/eventPackSlug/eventPackName (which
+// drive checkout/pricing) are deliberately left untouched, still resolved
+// from the experience's primary sportingEventId as before. See memory
+// project_shared_experience_backlink_gap for the fuller design context
+// (a `?from=` referrer-based fix is still pending for the OPPOSITE case —
+// an experience reached from its non-primary event's pack whose target
+// spoke should reflect that referring event, not always its EXPERIENCE_TO_SPOKE
+// default).
 const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; spokeLabel: string }> = {
   "atp-finals-ticket-guide-": { eventSlug: "atp-finals", spokeId: "tickets", spokeLabel: "Ticket Guide" },
   "atp-finals-luxury-hospitality-": { eventSlug: "atp-finals", spokeId: "luxury", spokeLabel: "Luxury Guide" },
@@ -130,6 +149,43 @@ function getSpokeBackLink(slug: string) {
   return entry ? entry[1] : null;
 }
 
+// Real affiliate relationships are Booking.com and GetYourGuide only — see
+// feedback_affiliate_link_generation memory. A GetYourGuide link is a direct
+// getyourguide.com domain, easy to detect. A Booking.com affiliate link is
+// NOT hosted on booking.com itself — it goes through a Commission Junction
+// (CJ Affiliate) tracking-redirect domain (tkqlhce.com, anrdoezrs.net,
+// kqzyfj.com, and others CJ assigns), with the real booking.com destination
+// URL-encoded inside a `url=` query parameter, not visible as the link's own
+// hostname. Checking the raw href for a literal "booking.com" substring is
+// fragile (works by coincidence when the encoded param happens to contain
+// the unescaped string, breaks if a network encodes it differently) — this
+// decodes the URL and checks the real destination host instead. A plain
+// link to an official site (e.g. wimbledon.com) is not an affiliate link
+// and must never carry the disclaimer, even though it legitimately lives in
+// the same bookingLinks array.
+const CJ_REDIRECT_HOSTS = ["tkqlhce.com", "anrdoezrs.net", "kqzyfj.com", "jdoqocy.com", "dpbolvw.net"];
+
+function isRealAffiliateLink(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname === "getyourguide.com" || parsed.hostname.endsWith(".getyourguide.com")) return true;
+    if (CJ_REDIRECT_HOSTS.some((h) => parsed.hostname === h || parsed.hostname.endsWith(`.${h}`))) {
+      const embedded = parsed.searchParams.get("url");
+      if (embedded) {
+        try {
+          const embeddedHost = new URL(embedded).hostname;
+          return embeddedHost === "booking.com" || embeddedHost.endsWith(".booking.com");
+        } catch {
+          return false;
+        }
+      }
+    }
+    return parsed.hostname === "booking.com" || parsed.hostname.endsWith(".booking.com");
+  } catch {
+    return false;
+  }
+}
+
 // Multi-venue experiences (a hotel comparison, a restaurant roundup) never
 // get a single top-line googleMapsRating — see experience-researcher skill
 // §2c. Instead the badge-row rating slot becomes a jump-link down to a
@@ -152,6 +208,9 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "luxury-shanghai-peninsula-bulgari-": { venueCount: 3, venueNoun: "hotels" },
   "where-to-stay-shanghai-masters-": { venueCount: 3, venueNoun: "hotels" },
   "lujiazui-skyline-shanghai-": { venueCount: 3, venueNoun: "towers" },
+  "sw19-during-the-fortnight-": { venueCount: 3, venueNoun: "pubs" },
+  "brixton-village-market-row-": { venueCount: 3, venueNoun: "vendors" },
+  "london-rest-day-": { venueCount: 3, venueNoun: "landmarks" },
 };
 
 function getMultiVenueRatings(slug: string) {
@@ -262,8 +321,8 @@ export default async function ExperiencePage({
         .from(travelLogs)
         .where(eq(travelLogs.experienceId, exp.id));
 
-      let eventPackSlug = "wimbledon-2026";
-      let eventPackName = "Wimbledon 2026";
+      let eventPackSlug = "wimbledon";
+      let eventPackName = "Wimbledon";
       let eventPackFormat: string | null = null;
       if (exp.sportingEventId) {
         const [ev] = await db
@@ -508,7 +567,7 @@ export default async function ExperiencePage({
               </>
             )}
           </div>
-          {eventPackFormat === "hub_and_spoke" && (() => {
+          {(() => {
             const spokeLink = getSpokeBackLink(exp.slug);
             return spokeLink ? (
               <Link
@@ -694,7 +753,11 @@ export default async function ExperiencePage({
                         </a>
                       ))}
                     </div>
-                    <p className="text-xs text-[#6A6A6A]">Affiliate link — we may earn a small commission at no extra cost to you.</p>
+                    {(exp.bookingLinks as Array<{ platform: string; label?: string; url: string }>).some((link) =>
+                      isRealAffiliateLink(link.url)
+                    ) && (
+                      <p className="text-xs text-[#6A6A6A]">Affiliate link — we may earn a small commission at no extra cost to you.</p>
+                    )}
                   </dd>
                 </div>
               )}

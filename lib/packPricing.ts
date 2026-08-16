@@ -19,16 +19,23 @@ export const PACK_PRICING: Record<string, {
   earlyBirdDisplay: string;
   standardDisplay: string;
 }> = {
-  "wimbledon-2026": {
+  // Real, current key post evergreen-slug migration (14 Aug 2026) — the DB
+  // row's slug is "wimbledon", not "wimbledon-2026". Was previously
+  // "wimbledon-2026" only, which silently broke app/experience/[slug]/page.tsx's
+  // price lookup for every Wimbledon experience after the migration (found
+  // and fixed 16 Aug 2026, alongside the classic-to-hub-and-spoke migration
+  // skill writeup). Uses the WIMBLEDON-prefixed Dodo/Paddle env vars, same
+  // convention as the hub-and-spoke pack's own packPricing.ts.
+  "wimbledon": {
     earlyBirdPriceId:
       process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
-        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_EARLY_BIRD ?? ""
+        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_WIMBLEDON_EARLY_BIRD ?? ""
         : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_EARLY_BIRD ?? "",
     standardPriceId:
       process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
-        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_STANDARD ?? ""
+        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_WIMBLEDON_STANDARD ?? ""
         : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_STANDARD ?? "",
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_WIMBLEDON_EARLY_BIRD_CUTOFF ?? "2026-06-01",
     earlyBirdDisplay: process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "US$15",
     standardDisplay: process.env.NEXT_PUBLIC_STANDARD_PRICE_DISPLAY ?? "US$25",
   },

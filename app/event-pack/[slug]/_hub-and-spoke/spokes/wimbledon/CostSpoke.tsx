@@ -48,8 +48,22 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
   // Same-city origin (London) is seeded $0-$0 by design — real for the
   // Planner's per-origin lookup, meaningless in an aggregate range, so it's
   // excluded here explicitly (per hub-and-spoke skill §2a-2, same fix as
-  // Shanghai Masters' CostSpoke).
-  const europeFlights = flights.filter((f) => f.region === "Europe" && f.originMarket !== "London");
+  // Shanghai Masters' CostSpoke). Sorted by high end, the real seeded data
+  // has a natural break after Rome ($399) before jumping to Barcelona
+  // ($509), Amsterdam ($624), Zurich ($742), and Moscow ($2,058) — those 4
+  // are excluded from this headline range as outliers next to the rest of
+  // Europe's tight $122-$399 band (Paris/Manchester/Madrid/Dublin/Milan/
+  // Munich/Berlin/Stockholm/Rome). Moscow has a real routing reason (no
+  // direct flights to London, airspace closures forcing expensive
+  // connections); the other 3 have no routing explanation, just higher real
+  // fares in the dataset. All 4 stay seeded and available via the Planner's
+  // own per-origin lookup — just excluded from this blended range so it
+  // reflects normal, representative European travel. Founder direction,
+  // 15-16 Aug 2026.
+  const EUROPE_RANGE_EXCLUDED_ORIGINS = ["London", "Barcelona", "Amsterdam", "Zurich", "Moscow"];
+  const europeFlights = flights.filter(
+    (f) => f.region === "Europe" && !EUROPE_RANGE_EXCLUDED_ORIGINS.includes(f.originMarket)
+  );
   const flightRange = europeFlights.length
     ? {
         low: Math.min(...europeFlights.map((f) => Number(f.costLow))),

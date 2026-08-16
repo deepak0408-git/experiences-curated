@@ -48,7 +48,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The honest SW19-vs-central tradeoff, the village atmosphere, and 4 real named hotels are all free above. Unlocking adds our verdict on which specific hotel to book for your trip shape, and the exact booking-lead-time window that matters most for the Fortnight's short, high-demand run."
+      ctaCopy="The honest SW19-vs-central tradeoff, the village atmosphere, and 4 real named hotels are all free above — no filler, no generic 'book early' advice. What's missing is the call that actually matters: which of these 4 fits your trip, and exactly when to book it before SW19's genuinely small hotel stock runs out for your dates. Get that wrong and you're commuting from Zone 4 for a trip you built around being in the Village."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Two honest options: SW19 and central London. The case for SW19 is straightforward — you&apos;re 15 minutes
@@ -124,10 +124,6 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
         </div>
       )}
 
-      <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: Google Places API (ratings/review counts for all 4 hotels, verified 15 Aug 2026), NOX Waterloo and
-        Park Plaza official sites (address, room details).
-      </p>
     </SpokeShell>
   );
 }

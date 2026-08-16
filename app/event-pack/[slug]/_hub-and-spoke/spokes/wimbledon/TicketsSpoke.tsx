@@ -38,7 +38,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="All 3 routes and the resale-queue mechanics are free above — real, checkable facts, not a sales pitch. What the free version can't tell you is which route is actually worth building your trip around given your dates, your budget, and your odds — that's a judgment call, and it's the one thing free research can't give you. Unlocking adds our route-by-route verdict, the exact resale-queue registration window that actually works, and the specific move that saved past readers a wasted overnight queue."
+      ctaCopy="All 3 routes and the resale-queue mechanics are free above — real, checkable facts, not a sales pitch. What the free version can't tell you is which route is actually worth building your trip around given your dates, your budget, and your odds — that's a judgment call, and it's the one thing free research can't give you. Unlocking adds our route-by-route verdict, the exact resale-queue registration window that actually works, the specific move that saved past readers a wasted overnight queue, and the international-visitor channel most overseas fans never find out about."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Centre Court tickets are harder to get than the public Ballot suggests — accepting that early makes for a
@@ -66,8 +66,14 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Route 2 — The Queue (day tickets)</p>
+      <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
+        The Queue is Wimbledon&apos;s famous walk-up line for day tickets — no ballot luck, no advance booking, just
+        showing up and waiting your turn. It&apos;s genuinely well-organised (numbered cards, an official Queue
+        Guide, stewards throughout) and guarantees grounds access; how early you need to arrive just depends on
+        which court you&apos;re after.
+      </p>
       <div className="flex flex-col gap-3 mb-8">
-        <TicketRow label="For Centre Court" detail="Join by midday the day before and camp overnight. Queue cards are issued from mid-afternoon, one per person present. Day tickets are released to queuers at 9:30am." />
+        <TicketRow label="For Centre Court and No. 1 Court" detail="Join by midday the day before and camp overnight. Queue cards are issued from mid-afternoon, one per person present. Day tickets are released to queuers at 9:30am." />
         <TicketRow label="For a grounds pass only" detail="Arriving by 5-6am on the morning is usually enough — the line moves steadily once gates open at 10:30am." />
       </div>
 
@@ -113,20 +119,6 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         </p>
       </div>
 
-      <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">If you&apos;re travelling from outside the UK</p>
-        <p className="text-sm text-[#A3A3A3] leading-6">
-          Two things work differently for international fans. First, the AELTC allocates a real block of tickets
-          directly to overseas national tennis federations and associations, distributed to their own affiliated
-          clubs — worth checking with your home country&apos;s tennis federation, since this is a genuinely separate
-          channel from the public Ballot, not just a rebrand of it. Second, Debenture ownership itself is
-          restricted for residents of several countries (including the US, Canada, Australia, Japan, and South
-          Africa) — but that restriction is on owning a Debenture, not on buying a Debenture holder&apos;s resold
-          single-day ticket, which remains open to anyone. The Queue and the public Ballot both work identically
-          for overseas and UK visitors — no separate process, no separate odds.
-        </p>
-      </div>
-
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Which route we&apos;d pick</p>
@@ -144,7 +136,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
             don&apos;t.
           </p>
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Timing the resale queue</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
             Register the moment you&apos;re through the gates, not later in the day — the Queue Village window
             (8:30am–2:30pm) opens well before the Parkside kiosk (10am–2:30pm), so registering at Queue Village on
             your way in is the earliest you can lock in your place. The app then lets you roam freely, so there&apos;s
@@ -152,6 +144,17 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
             over Centre Court when a resale slot comes up: it seats fewer (12,345 vs 14,979) with better sightlines
             for most seats, and its own retractable roof (since 2019) means play isn&apos;t stopped by rain either —
             don&apos;t assume Centre Court is automatically the better resale pickup.
+          </p>
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">If you&apos;re travelling from outside the UK</p>
+          <p className="text-sm text-[#A3A3A3] leading-7">
+            Two things work differently for international fans. First, the AELTC allocates a real block of tickets
+            directly to overseas national tennis federations and associations, distributed to their own affiliated
+            clubs — worth checking with your home country&apos;s tennis federation, since this is a genuinely
+            separate channel from the public Ballot, not just a rebrand of it. Second, Debenture ownership itself is
+            restricted for residents of several countries (including the US, Canada, Australia, Japan, and South
+            Africa) — but that restriction is on owning a Debenture, not on buying a Debenture holder&apos;s resold
+            single-day ticket, which remains open to anyone. The Queue and the public Ballot both work identically
+            for overseas and UK visitors — no separate process, no separate odds.
           </p>
         </div>
       )}

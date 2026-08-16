@@ -44,16 +44,6 @@ const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: 
     early: process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "US$15",
     standard: process.env.NEXT_PUBLIC_STANDARD_PRICE_DISPLAY ?? "US$25",
   },
-  // "wimbledon-2026" kept permanently as the fallback source for any future
-  // event slug missing its own entry — never delete, per the founder's
-  // explicit decision during the hub-and-spoke conversion planning (14 Aug
-  // 2026). No live event resolves via this key anymore now that the real
-  // Wimbledon row uses "wimbledon" above.
-  "wimbledon-2026": {
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01",
-    early: process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "US$15",
-    standard: process.env.NEXT_PUBLIC_STANDARD_PRICE_DISPLAY ?? "US$25",
-  },
   "belgian-gp-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-10",
     early: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_PRICE_DISPLAY ?? "US$15",
@@ -145,7 +135,11 @@ function isFreeEventSlug(slug: string): boolean {
 
 function eventPriceDisplay(slug: string): string {
   if (isFreeEventSlug(slug)) return "Free";
-  const pricing = HOMEPAGE_PRICE_BY_EVENT[slug] ?? HOMEPAGE_PRICE_BY_EVENT["wimbledon-2026"];
+  // Fallback changed from "wimbledon-2026" to "us-open-2026" 16 Aug 2026 —
+  // "wimbledon-2026" retired entirely as part of the Wimbledon evergreen-
+  // slug migration (see lib/packPricing.ts and app/event-pack/[slug]/page.tsx
+  // for the same change).
+  const pricing = HOMEPAGE_PRICE_BY_EVENT[slug] ?? HOMEPAGE_PRICE_BY_EVENT["us-open-2026"];
   const isEarlyBird = new Date() < new Date(pricing.earlyBirdCutoff);
   return isEarlyBird ? pricing.early : pricing.standard;
 }

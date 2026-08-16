@@ -31,7 +31,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The week-by-week shape is free above. The pack adds our verdict on which stretch of the Fortnight is genuinely worth building a trip around."
+      ctaCopy="How each stretch of the Fortnight actually feels is free above. What it can't do is plan your specific trip — the pack adds the real hour-by-hour, day-by-day itinerary: which day to spend at the grounds, which to give up for Windsor, and how to sequence it all so you're not improvising on day 3 of a trip you spent months planning."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Wimbledon runs as a single-elimination draw across two weeks, and the character of the grounds changes
@@ -115,7 +115,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
             day="Day 4 — London rest day"
             rows={[
               { time: "Morning", location: "Central London", activity: "A genuine day away from SW19 — see the Day Trips guide for the full route. Early-round weekdays (Tuesday through Thursday) are the easiest days to give up; the corporate crowds are gone from the grounds either way." },
-              { time: "Afternoon", location: "Brixton Village & Market Row", activity: "A different, non-tournament side of London — worth it precisely because it has nothing to do with tennis." },
+              { time: "Afternoon", location: "Brixton Village & Market Row, or Wimbledon Afternoon Tea at The Dorchester", activity: "Brixton for a different, non-tournament side of London. If today is a splurge day instead, The Dorchester's Wimbledon Afternoon Tea (see the Luxury Guide) is a real, event-themed alternative — book ahead, and treat it as the whole afternoon, not a quick stop." },
               { time: "Evening", location: "Back to your base", activity: "An early night if tomorrow starts a Windsor day trip — it's a genuinely full day out." },
             ]}
           />
@@ -140,8 +140,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       )}
 
       <p className="text-xs text-[#6A6A6A] mt-8">
-        Source: wimbledon.com, AELTC published schedule — dates given relative to
-        the Fortnight's own structure, since this content applies across every future Championships under this slug.
+        Source: wimbledon.com, AELTC published schedule.
       </p>
     </SpokeShell>
   );

@@ -106,7 +106,7 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at Wimbledon, and what should I pack?", status: "public", imageSlug: "wimbledon-when-it-rains-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
     { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Wimbledon?", status: "public", imageSlug: "preparing-for-your-wimbledon-visit-" },
     { id: "where-to-eat", label: "Where to Eat", question: "Where to eat at and around Wimbledon during the Fortnight?", status: "teaser", imageSlug: "wimbledon-eating-" },
-    { id: "day-trips", label: "Day Trips", question: "What's the best day trip during Wimbledon — Windsor, or a day in London?", status: "teaser", imageSlug: "london-rest-day-" },
+    { id: "day-trips", label: "Day Trips", question: "What's the best day trip during Wimbledon — Windsor, or a day in London?", status: "teaser", imageSlug: "windsor-castle-long-walk-" },
     { id: "itinerary", label: "Trip Schedule", question: "What does a Wimbledon Fortnight trip actually look like?", status: "teaser", imageSlug: "sw19-during-the-fortnight-" },
     { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I join the Wimbledon Queue?", status: "public", imageSlug: "the-wimbledon-queue-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
     { id: "map", label: "Venue Map", question: "What facilities are available at the All England Club?", status: "public", imageSlug: "wimbledon-outer-courts-" },
