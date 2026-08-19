@@ -32,11 +32,28 @@ import { SPOKES_BY_EVENT } from "./spokeConfig";
 // almost certainly the single largest Postgres egress driver. 1-hour
 // revalidate matches the same pattern already used on the classic
 // experience page (app/experience/[slug]/page.tsx).
-export const getSpokeData = unstable_cache(
+const getSpokeDataCached = unstable_cache(
   async (slug: string) => getSpokeDataUncached(slug),
   ["hub-and-spoke-spoke-data"],
   { revalidate: 3600 }
 );
+
+// unstable_cache serializes its return value through JSON, so any real Date
+// object (costDataVerifiedAt) comes back out as a plain ISO string, not a
+// Date — every Cost spoke calls .toLocaleDateString() directly on this field
+// with no defensive wrapping, so this rehydration is required, not optional.
+// Bug found + fixed 19 Aug 2026, same day the cache was added, caught live on
+// the NZ-Australia Cost spoke ("costDataVerifiedAt.toLocaleDateString is not
+// a function") — same root cause would have broken all 6 live hub-and-spoke
+// events' Cost spokes (Wimbledon, ATP Finals, Bahrain GP, Singapore GP,
+// Shanghai Masters, NZ-Australia).
+export async function getSpokeData(slug: string) {
+  const data = await getSpokeDataCached(slug);
+  return {
+    ...data,
+    costDataVerifiedAt: data.costDataVerifiedAt ? new Date(data.costDataVerifiedAt) : null,
+  };
+}
 
 async function getSpokeDataUncached(slug: string) {
   const [event] = await db.select().from(sportingEvents).where(eq(sportingEvents.slug, slug)).limit(1);
