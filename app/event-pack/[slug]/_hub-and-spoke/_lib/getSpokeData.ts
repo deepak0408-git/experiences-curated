@@ -12,6 +12,7 @@ import {
 } from "@/schema/database";
 import { eq, and } from "drizzle-orm";
 import { notFound } from "next/navigation";
+import { unstable_cache } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getProDetails } from "@/lib/pro";
 import { grantFreeAccess } from "../../actions";
@@ -22,7 +23,22 @@ import { SPOKES_BY_EVENT } from "./spokeConfig";
 // event only needs a new SPOKES_BY_EVENT entry, not a new copy of this file.
 // Built per the hub-and-spoke-event-pack skill; ported from the per-event
 // static-folder pilot (Bahrain GP, Italian GP) to this dynamic route 29 Jul 2026.
-export async function getSpokeData(slug: string) {
+//
+// Cached 19 Aug 2026 (Supabase egress fix) — this function carries no
+// per-user data (purchase/auth state is fetched separately via
+// getPurchaseStatus below), so it's safe to cache per-slug. Every spoke
+// component and HubPage call this on every render with zero caching
+// previously — across ~70 routes (5 live events × ~14 pages each), this was
+// almost certainly the single largest Postgres egress driver. 1-hour
+// revalidate matches the same pattern already used on the classic
+// experience page (app/experience/[slug]/page.tsx).
+export const getSpokeData = unstable_cache(
+  async (slug: string) => getSpokeDataUncached(slug),
+  ["hub-and-spoke-spoke-data"],
+  { revalidate: 3600 }
+);
+
+async function getSpokeDataUncached(slug: string) {
   const [event] = await db.select().from(sportingEvents).where(eq(sportingEvents.slug, slug)).limit(1);
   if (!event) notFound();
 
@@ -38,7 +54,6 @@ export async function getSpokeData(slug: string) {
       heroImageUrl: experiences.heroImageUrl,
       practicalInfo: experiences.practicalInfo,
       whyItsSpecial: experiences.whyItsSpecial,
-      bodyContent: experiences.bodyContent,
       insiderTips: experiences.insiderTips,
       whatToAvoid: experiences.whatToAvoid,
       packRank: sportingEventExperiences.packRank,

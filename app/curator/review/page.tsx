@@ -26,11 +26,6 @@ const TYPE_LABELS: Record<string, string> = {
   transit: "Transit", event: "Event",
 };
 
-function wordCount(text: string | null) {
-  if (!text) return 0;
-  return text.split(/\s+/).filter(Boolean).length;
-}
-
 function timeAgo(date: Date) {
   const diff = Date.now() - new Date(date).getTime();
   const mins = Math.floor(diff / 60000);
@@ -151,9 +146,9 @@ export default async function ReviewQueuePage({
                               </span>
                               <span className="text-[#2A2A2A]">·</span>
                               <span className="text-xs text-[#6A6A6A]">
-                                {wordCount(exp.bodyContent)} words
+                                {exp.bodyWordCount} words
                               </span>
-                              {exp.whyItsSpecial && (
+                              {exp.hasWhyItsSpecial && (
                                 <>
                                   <span className="text-[#2A2A2A]">·</span>
                                   <span className="text-xs text-[#AAFF00]">

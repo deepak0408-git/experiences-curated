@@ -2,10 +2,15 @@
 
 import { db } from "@/lib/db";
 import { experiences, sportingEvents } from "@/schema/database";
-import { eq, asc, desc, inArray } from "drizzle-orm";
+import { eq, asc, desc, inArray, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { indexExperience, removeFromIndex } from "@/lib/algolia";
 
+// bodyContent/whyItsSpecial were previously selected as full text just to
+// compute a word count and a presence check in the review list UI — the
+// actual prose is never rendered there. Switched to SQL-computed values
+// (19 Aug 2026, Supabase egress fix) so this unfiltered, whole-catalogue
+// query stops pulling every experience's full body text on every page load.
 export async function getAllExperiencesForReview() {
   return db
     .select({
@@ -19,8 +24,8 @@ export async function getAllExperiencesForReview() {
       createdAt: experiences.createdAt,
       updatedAt: experiences.updatedAt,
       publishedAt: experiences.publishedAt,
-      bodyContent: experiences.bodyContent,
-      whyItsSpecial: experiences.whyItsSpecial,
+      bodyWordCount: sql<number>`coalesce(array_length(regexp_split_to_array(trim(${experiences.bodyContent}), '\s+'), 1), 0)`,
+      hasWhyItsSpecial: sql<boolean>`${experiences.whyItsSpecial} is not null and ${experiences.whyItsSpecial} != ''`,
       reviewNotes: experiences.reviewNotes,
       sportingEventId: experiences.sportingEventId,
       sportingEventName: sportingEvents.name,
