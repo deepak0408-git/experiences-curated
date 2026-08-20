@@ -52,15 +52,15 @@ export default function CalendarEventRow({
 
   return (
     <div className={`py-4 border-b border-[#2A2A2A] last:border-b-0 ${isPast ? "opacity-50" : ""}`}>
-      <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+      <div className="sm:flex sm:flex-wrap sm:items-start sm:justify-between sm:gap-x-4 sm:gap-y-2">
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-black uppercase tracking-widest text-[#AAFF00]">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-1">
+            <span className="text-xs font-black uppercase tracking-widest text-[#AAFF00] whitespace-nowrap">
               {SPORT_LABELS[event.sport] ?? event.sport}
             </span>
             {event.isProvisional && (
-              <span className="text-[10px] font-bold uppercase tracking-wide text-[#6A6A6A] border border-[#2A2A2A] rounded-sm px-1.5 py-0.5">
-                Provisional — not yet confirmed
+              <span className="text-[9px] font-bold uppercase tracking-wide text-[#6A6A6A] border border-[#2A2A2A] rounded-sm px-1.5 py-0.5 whitespace-nowrap">
+                Provisional
               </span>
             )}
           </div>
@@ -82,7 +82,12 @@ export default function CalendarEventRow({
           </p>
         </div>
 
-        <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
+        {/* Mobile: CTAs flow below the date/venue line, left-aligned — the
+            previous right-aligned flex-column squeezed into a cramped,
+            justified-right stack at phone widths. sm: and up keeps the
+            original right-aligned side-by-side layout. Fixed 16 Aug 2026
+            per direct mobile screenshot feedback. */}
+        <div className="flex flex-col items-start gap-1.5 mt-2 sm:items-end sm:mt-0 sm:flex-shrink-0">
           {ctaContent(cta, event.name)}
           {!isPast && canPlanCosts(event) && (
             <Link

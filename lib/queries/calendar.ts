@@ -75,16 +75,21 @@ export function getCtaState(row: Awaited<ReturnType<typeof getCalendarEvents>>[n
 }
 
 // The "Plan costs for this trip" link only makes sense for an event that
-// could plausibly have real Planner cost data — getPlannerEvents.ts filters
-// to sportingEvents rows with packStatus IN (planned, building,
-// built_hidden, live) (see app/planner/_lib/getPlannerEvents.ts). A calendar
-// row with no sportingEvents match at all, or one whose packStatus is
-// outside that set, has zero chance of real flight/hotel/ticket cost rows
-// in planner_flight_cost etc. — showing the link there would send someone
-// into a Planner session that can never actually answer their question.
-// Confirmed with the founder 8 Aug 2026 after the calendar started listing
-// dozens of not-yet-covered events across all 4 sports.
-const PLANNER_ELIGIBLE_STATUSES = new Set(["planned", "building", "built_hidden", "live"]);
+// could plausibly have real Planner cost data. "planned" is deliberately
+// EXCLUDED here even though getPlannerEvents.ts's own filter includes it
+// (app/planner/_lib/getPlannerEvents.ts) — "planned" is the DB default for
+// a sportingEvents row that's been created but has no real build work done
+// yet, meaning zero chance of real planner_ticket_tier_cost/hotel_tier_cost
+// rows existing. Confirmed live 16 Aug 2026: Border-Gavaskar Trophy 2027 and
+// The Ashes 2027 both sat at packStatus "planned" with zero real ticket-cost
+// rows, yet the calendar showed "Plan costs for this trip" for both — the
+// getPlannerEvents.ts filter is a genuinely different, looser check (used to
+// decide which events appear in the Planner's own event picker at all,
+// including ones a curator is actively scoping) and was never meant to be
+// reused as the stricter "does real cost data plausibly exist" gate this
+// function needs. "building" is kept since scoping/research work may already
+// be seeding real planner tables even before packStatus advances further.
+const PLANNER_ELIGIBLE_STATUSES = new Set(["building", "built_hidden", "live"]);
 
 export function canPlanCosts(row: Awaited<ReturnType<typeof getCalendarEvents>>[number]): boolean {
   return !!row.matchedEventSlug && PLANNER_ELIGIBLE_STATUSES.has(row.packStatus ?? "");

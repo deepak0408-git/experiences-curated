@@ -99,6 +99,11 @@ const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: 
     early: "US$5",
     standard: "US$10",
   },
+  "new-zealand-in-australia-cricket-2026-27": {
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_NZ_AUSTRALIA_EARLY_BIRD_CUTOFF ?? "2026-11-09",
+    early: "US$5",
+    standard: "US$10",
+  },
 };
 
 

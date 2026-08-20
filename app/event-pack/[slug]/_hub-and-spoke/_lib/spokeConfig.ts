@@ -112,4 +112,26 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "map", label: "Venue Map", question: "What facilities are available at the All England Club?", status: "public", imageSlug: "wimbledon-outer-courts-" },
     { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at Wimbledon?", status: "teaser", imageSlug: "wimbledon-the-lawn-hospitality-" },
   ],
+  // New Zealand tour of Australia 2026-27 — 4-Test cricket series across
+  // Perth, Adelaide, Melbourne, and Sydney. Scaffolded 16 Aug 2026, all 24
+  // experiences already real/seeded/hero-imaged (built before this spoke
+  // config, see project_nz_in_australia_experiences memory) — real
+  // imageSlug values used directly, no "__no-image-yet__" sentinel needed.
+  // Weather/Arrival/Tickets use the skill's standing cross-event default
+  // images (imageOverride), same 3 fixed Bahrain-GP-sourced files every
+  // hub-and-spoke event uses for these 3 spokes.
+  "new-zealand-in-australia-cricket-2026-27": [
+    { id: "cost", label: "Cost Guide", question: "How much does a full NZ-Australia series trip cost?", status: "teaser", imageSlug: "mcg-boxing-day-test-msvo4eko" },
+    { id: "tickets", label: "Ticket Guide", question: "Which NZ-Australia Test ticket is the best buy?", status: "teaser", imageSlug: "nz-australia-series-ticket-guide-msvod4sn", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay across the four Test cities?", status: "teaser", imageSlug: "where-to-stay-melbourne-boxing-day-msvp80zu" },
+    { id: "getting-there", label: "Getting There", question: "How do I get between Perth, Adelaide, Melbourne, and Sydney?", status: "public", imageSlug: "getting-between-four-cities-flights-not-trains-msvrvq4aq2" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like across an Australian summer tour, and what should I pack?", status: "public", imageSlug: "perth-stadium-series-opener-msvnyanm", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first NZ-Australia Test series?", status: "public", imageSlug: "beige-brigade-nz-traveling-support-msvrvq4a15" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat across Perth, Adelaide, Melbourne, and Sydney during the series?", status: "teaser", imageSlug: "where-nz-fans-actually-eat-city-guide-msvrvq4acy" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips across a four-city Australian tour?", status: "teaser", imageSlug: "fremantle-day-trip-from-perth-msvq3fc0" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does a full four-Test NZ-Australia series trip actually look like?", status: "teaser", imageSlug: "blue-mountains-day-trip-from-sydney-msvq9l5b" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at each Test venue?", status: "public", imageSlug: "adelaide-oval-most-beautiful-ground-msvo1gxa", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at each of the four Test grounds?", status: "public", imageSlug: "scg-fourth-test-sydney-summer-msvoaji7" },
+    { id: "luxury", label: "Luxury Guide", question: "What does a genuinely luxury NZ-Australia series trip look like?", status: "teaser", imageSlug: "scg-luxury-invincibles-lounge-members-pavilion-msvosomt" },
+  ],
 };
