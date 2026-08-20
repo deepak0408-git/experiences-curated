@@ -142,6 +142,33 @@ const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; 
   "nox-waterloo-": { eventSlug: "wimbledon", spokeId: "hotels", spokeLabel: "Where to Stay" },
   "eton-across-river-windsor-": { eventSlug: "wimbledon", spokeId: "day-trips", spokeLabel: "Day Trips" },
   "windsor-castle-long-walk-": { eventSlug: "wimbledon", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  // New Zealand tour of Australia 2026-27 — mapping locked with the curator
+  // before seeding (see project_nz_in_australia_experiences memory).
+  "perth-stadium-series-opener-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "map", spokeLabel: "Venue Map" },
+  "adelaide-oval-most-beautiful-ground-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "map", spokeLabel: "Venue Map" },
+  "mcg-boxing-day-test-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "map", spokeLabel: "Venue Map" },
+  "scg-fourth-test-sydney-summer-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "map", spokeLabel: "Venue Map" },
+  "nz-australia-series-ticket-guide-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "mcg-boxing-day-seating-comparison-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "adelaide-oval-hill-vs-reserve-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "mcg-corporate-boxes-boxing-day-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "adelaide-oval-stadium-club-deck-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "scg-luxury-invincibles-lounge-members-pavilion-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "where-to-stay-perth-first-test-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "where-to-stay-adelaide-city-vs-north-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "where-to-stay-melbourne-boxing-day-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "where-to-stay-sydney-fourth-test-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "fremantle-day-trip-from-perth-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "mclaren-vale-adelaide-wine-daytrip-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "yarra-valley-melbourne-wine-daytrip-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "blue-mountains-day-trip-from-sydney-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "melbourne-laneways-coffee-city-day-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "sydney-harbour-beaches-city-day-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "wildlife-down-under-featherdale-phillip-island-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "great-ocean-road-twelve-apostles-daytrip-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "beige-brigade-nz-traveling-support-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "where-nz-fans-actually-eat-city-guide-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "getting-between-four-cities-flights-not-trains-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "getting-there", spokeLabel: "Getting There" },
 };
 
 function getSpokeBackLink(slug: string) {
@@ -192,6 +219,16 @@ function isRealAffiliateLink(url: string): boolean {
 // #ratings anchor in bodyContent, where each named venue's real rating is
 // written inline. venueCount is display-only ("all 3 hotels").
 const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: string }> = {
+  "where-to-stay-perth-first-test-": { venueCount: 2, venueNoun: "hotels" },
+  "where-to-stay-adelaide-city-vs-north-": { venueCount: 2, venueNoun: "hotels" },
+  "where-to-stay-melbourne-boxing-day-": { venueCount: 2, venueNoun: "hotels" },
+  "where-to-stay-sydney-fourth-test-": { venueCount: 2, venueNoun: "hotels" },
+  "fremantle-day-trip-from-perth-": { venueCount: 3, venueNoun: "places" },
+  "mclaren-vale-adelaide-wine-daytrip-": { venueCount: 3, venueNoun: "places" },
+  "yarra-valley-melbourne-wine-daytrip-": { venueCount: 2, venueNoun: "wineries" },
+  "blue-mountains-day-trip-from-sydney-": { venueCount: 2, venueNoun: "places" },
+  "melbourne-laneways-coffee-city-day-": { venueCount: 3, venueNoun: "places" },
+  "sydney-harbour-beaches-city-day-": { venueCount: 3, venueNoun: "places" },
   "atp-finals-luxury-hotels-": { venueCount: 3, venueNoun: "hotels" },
   "atp-finals-piedmontese-dining-": { venueCount: 3, venueNoun: "restaurants" },
   "atp-finals-gianduja-chocolate-": { venueCount: 2, venueNoun: "places" },
@@ -211,6 +248,8 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "sw19-during-the-fortnight-": { venueCount: 3, venueNoun: "pubs" },
   "brixton-village-market-row-": { venueCount: 3, venueNoun: "vendors" },
   "london-rest-day-": { venueCount: 3, venueNoun: "landmarks" },
+  "where-nz-fans-actually-eat-city-guide-": { venueCount: 6, venueNoun: "places" },
+  "wildlife-down-under-featherdale-phillip-island-": { venueCount: 2, venueNoun: "places" },
 };
 
 function getMultiVenueRatings(slug: string) {
@@ -536,6 +575,10 @@ export default async function ExperiencePage({
               slug.startsWith("suzhou-classical-gardens-day-trip-") ? "lg:object-[center_20%]" :
               slug.startsWith("lujiazui-skyline-shanghai-") ? "lg:object-[center_25%]" :
               slug.startsWith("roger-friends-federer-exhibition-") ? "lg:object-[center_10%]" :
+              slug.startsWith("adelaide-oval-hill-vs-reserve-") ? "object-[center_80%]" :
+              slug.startsWith("mcg-corporate-boxes-boxing-day-") ? "object-[center_25%]" :
+              slug.startsWith("blue-mountains-day-trip-from-sydney-") ? "object-[center_40%]" :
+              slug.startsWith("sydney-harbour-beaches-city-day-") ? "object-[center_60%]" :
               ""
             }`}
             sizes="100vw"

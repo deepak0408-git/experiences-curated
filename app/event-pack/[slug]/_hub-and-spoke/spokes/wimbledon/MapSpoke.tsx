@@ -68,17 +68,10 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
       </div>
       <p className="text-xs text-[#6A6A6A] mb-8">Credit: wimbledon.org.</p>
 
-      {theHill && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={theHill} isPro={isPro} />
-        </div>
-      )}
-
-      {outerCourts && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={outerCourts} isPro={isPro} />
-        </div>
-      )}
+      <div className="grid sm:grid-cols-2 gap-6 mb-8">
+        {theHill && <SpokeExperienceCard experience={theHill} isPro={isPro} />}
+        {outerCourts && <SpokeExperienceCard experience={outerCourts} isPro={isPro} />}
+      </div>
 
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
         <p className="text-sm font-bold text-white mb-2">Watching outer-court tennis well</p>
@@ -89,11 +82,10 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
         </p>
       </div>
 
-      {practiceCourts && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={practiceCourts} isPro={isPro} />
-        </div>
-      )}
+      <div className="grid sm:grid-cols-2 gap-6 mb-8">
+        {practiceCourts && <SpokeExperienceCard experience={practiceCourts} isPro={isPro} />}
+        {museum && <SpokeExperienceCard experience={museum} isPro={isPro} />}
+      </div>
 
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
         <p className="text-sm font-bold text-white mb-2">Aorangi Park practice courts</p>
@@ -103,12 +95,6 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
           10am but practice can start before that — worth arriving early if you want to catch a specific player.
         </p>
       </div>
-
-      {museum && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={museum} isPro={isPro} />
-        </div>
-      )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Facilities &amp; accessibility</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">

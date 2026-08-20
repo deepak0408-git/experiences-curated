@@ -51,6 +51,19 @@ import SHArrivalSpoke from "./shanghai-masters/ArrivalSpoke";
 import SHMapSpoke from "./shanghai-masters/MapSpoke";
 import SHLuxurySpoke from "./shanghai-masters/LuxurySpoke";
 
+import NZACostSpoke from "./new-zealand-in-australia-cricket-2026-27/CostSpoke";
+import NZATicketsSpoke from "./new-zealand-in-australia-cricket-2026-27/TicketsSpoke";
+import NZAHotelsSpoke from "./new-zealand-in-australia-cricket-2026-27/HotelsSpoke";
+import NZAGettingThereSpoke from "./new-zealand-in-australia-cricket-2026-27/GettingThereSpoke";
+import NZAWeatherSpoke from "./new-zealand-in-australia-cricket-2026-27/WeatherSpoke";
+import NZAFirstTimerGuideSpoke from "./new-zealand-in-australia-cricket-2026-27/FirstTimerGuideSpoke";
+import NZAWhereToEatSpoke from "./new-zealand-in-australia-cricket-2026-27/WhereToEatSpoke";
+import NZADayTripsSpoke from "./new-zealand-in-australia-cricket-2026-27/DayTripsSpoke";
+import NZAItinerarySpoke from "./new-zealand-in-australia-cricket-2026-27/ItinerarySpoke";
+import NZAArrivalSpoke from "./new-zealand-in-australia-cricket-2026-27/ArrivalSpoke";
+import NZAMapSpoke from "./new-zealand-in-australia-cricket-2026-27/MapSpoke";
+import NZALuxurySpoke from "./new-zealand-in-australia-cricket-2026-27/LuxurySpoke";
+
 import WimCostSpoke from "./wimbledon/CostSpoke";
 import WimTicketsSpoke from "./wimbledon/TicketsSpoke";
 import WimHotelsSpoke from "./wimbledon/HotelsSpoke";
@@ -141,6 +154,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: WimMapSpoke,
     luxury: WimLuxurySpoke,
   },
+  "new-zealand-in-australia-cricket-2026-27": {
+    cost: NZACostSpoke,
+    tickets: NZATicketsSpoke,
+    hotels: NZAHotelsSpoke,
+    "getting-there": NZAGettingThereSpoke,
+    weather: NZAWeatherSpoke,
+    "first-timer-guide": NZAFirstTimerGuideSpoke,
+    "where-to-eat": NZAWhereToEatSpoke,
+    "day-trips": NZADayTripsSpoke,
+    itinerary: NZAItinerarySpoke,
+    arrival: NZAArrivalSpoke,
+    map: NZAMapSpoke,
+    luxury: NZALuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -213,5 +240,19 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "The Wimbledon Queue — Arrival and Timing Guide",
     map: "All England Club Map — Courts and Facilities",
     luxury: "Luxury Guide for Wimbledon — The Lawn, Cannizaro House, and More",
+  },
+  "new-zealand-in-australia-cricket-2026-27": {
+    cost: "How Much Does the NZ-Australia Test Series Cost? — Budget Guide",
+    tickets: "NZ-Australia Ticket Guide — General Admission vs Reserve",
+    hotels: "Where to Stay — Perth, Adelaide, Melbourne, and Sydney Guide",
+    "getting-there": "Getting Between Four Cities — NZ-Australia Series Transit Guide",
+    weather: "Australian Summer Weather — What to Pack for a 4-Test Tour",
+    "first-timer-guide": "First-Timer's Guide — The NZ-Australia Test Series",
+    "where-to-eat": "Where to Eat — Melbourne Coffee and Four-City Dining Guide",
+    "day-trips": "Best Day Trips — Perth, Adelaide, Melbourne, and Sydney",
+    itinerary: "Sample NZ-Australia Series Itinerary",
+    arrival: "Four Grounds Arrival Guide — NZ-Australia Test Series",
+    map: "Four Test Venues — Perth, Adelaide, MCG, and SCG Map Guide",
+    luxury: "Luxury Guide for the NZ-Australia Series — Hospitality Across 3 Cities",
   },
 };

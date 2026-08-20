@@ -60,6 +60,17 @@ export const PACK_PRICING: Record<string, { earlyBirdPriceId: string; standardPr
     earlyBirdDisplay: "US$15",
     standardDisplay: "US$25",
   },
+  // Real Dodo Live Mode product IDs, confirmed by the founder 16 Aug 2026:
+  // Early Bird pdt_0NlWmXdcXf1ZbtGSpHOo7 (US$5), Standard
+  // pdt_0NlWmcXo9P8VQHymH6fgm (US$10). Cutoff set to 9 Nov 2026, the
+  // founder's explicit choice (not the event's own 9 Dec start date).
+  "new-zealand-in-australia-cricket-2026-27": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_NZ_AUSTRALIA_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_NZ_AUSTRALIA_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_NZ_AUSTRALIA_EARLY_BIRD_CUTOFF ?? "2026-11-09",
+    earlyBirdDisplay: "US$5",
+    standardDisplay: "US$10",
+  },
 };
 
 // freeAccessEnabled mirrors the classic pack's exact behaviour (page.tsx,

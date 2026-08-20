@@ -85,6 +85,15 @@ const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; value: str
     { label: "Weather", value: "Variable. Rain likely. Centre Court and No. 1 Court roofs close automatically; outer courts may pause.", href: "https://www.accuweather.com/en/gb/wimbledon/sw19-4/weather-forecast/323341", linkLabel: "AccuWeather forecast" },
     { label: "Emergencies", value: "Emergency services: 999 · Non-emergency police: 101 · NHS urgent (non-emergency): 111 · Nearest A&E: St George's Hospital, Tooting SW17 0QT" },
   ],
+  // Real, sourced facts for all 4 host cities — no single "address" applies
+  // to a 4-venue tour, so this table carries the venue-specific content the
+  // generic address/ticketing block above can't (it only handles one venue).
+  "new-zealand-in-australia-cricket-2026-27": [
+    { label: "Venues", value: "Perth Stadium (1st Test) · Adelaide Oval (2nd) · MCG (3rd, Boxing Day) · SCG (4th)" },
+    { label: "Gate times", value: "Not yet published for this 2026-27 series — expect roughly 1-2 hours before first session, confirm via cricket.com.au closer to each Test." },
+    { label: "What to bring", value: "Sun protection every day (Australian UV is genuinely strong). Layers for Melbourne specifically. Light rain gear for Melbourne and Sydney. No glass or outside alcohol at any venue." },
+    { label: "Emergencies", value: "Australia-wide emergency number: 000 (police/fire/ambulance). Non-emergency police: 131 444." },
+  ],
 };
 
 const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: string; heroFallbackImageSlug: string; introText: string }> = {
@@ -144,6 +153,18 @@ const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: string; h
     heroFallbackImageSlug: "wimbledon-centre-court-",
     introText:
       "Wimbledon runs for two weeks in late June and early July, but the experience of it — the bit worth paying for — starts before you get on the train. The queue culture, the strawberry ritual, the SW19 neighbourhood that treats its famous visitor with relaxed familiarity: none of it is accidental, and none of it is in the official guide.\n\nThis pack is built around one idea: that the best version of Wimbledon isn't on Centre Court. It's a picnic on Henman Hill when a match has just turned, a pre-match breakfast on the village high street, a quiet pint in the local pub after the day's last result. The experiences here were chosen because they're the difference between attending a tennis tournament and actually experiencing one.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
+  "new-zealand-in-australia-cricket-2026-27": {
+    displayName: "New Zealand tour of Australia",
+    venueLine: "Four Tests, four cities — Perth Stadium, Adelaide Oval, the MCG, and the SCG — the first-ever four-Test Trans-Tasman series.",
+    heroFallbackImageSlug: "mcg-boxing-day-test-msvo4eko",
+    // Built from real sourced facts researched during experience seeding
+    // (the first-ever four-Test format, NZ's first Australia tour since
+    // 2019-20, the Beige Brigade's real history, Boxing Day's real scale)
+    // — not invented, matches every other hub-and-spoke event's pattern of
+    // drawing The Brief from real underlying content.
+    introText:
+      "This is the first-ever four-Test Trans-Tasman series between New Zealand and Australia — a genuinely historic scale for a rivalry that's never been given this much room before. New Zealand's first tour of Australia since 2019-20 runs across five weeks, four cities, and roughly 4,300km of internal travel if you follow the whole thing.\n\nEach ground tells a different story. Perth Stadium opens the series as the newest, most purpose-built venue on the tour. Adelaide Oval pairs Test cricket with a cathedral spire in the same sightline. The MCG hosts Boxing Day — the single biggest date on the Southern Hemisphere cricket calendar, full stop. The SCG closes it out with more than 140 years of the sport's own history inside its walls, and a heritage changeroom hospitality experience no other ground on this tour can match.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
 };
 
