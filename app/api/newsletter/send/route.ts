@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { db } from "@/lib/db";
-import { newsletterSubscribers, proSubscriptions } from "@/schema/database";
-import { gt, ilike, inArray } from "drizzle-orm";
+import { newsletterSubscribers } from "@/schema/database";
+import { inArray } from "drizzle-orm";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.experiences-curated.com";
@@ -14,13 +14,22 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.experiences-cu
 //
 // mode: "test"  -> sends only to the recipients array provided (used for the
 //                  single-recipient approval send to the founder's own inbox)
-// mode: "live"  -> sends to every real newsletter_subscribers row, excluding
-//                  active Pro subscribers (same dedup rule as
-//                  newsletter-new-pack-announcement's cron) — never call this
-//                  mode without the founder's explicit go-ahead on both the
-//                  exact HTML and the exact recipient list, per the standing
-//                  "never send without per-draft, per-recipient-list approval"
-//                  rule.
+// mode: "live"  -> sends to every real newsletter_subscribers row, no
+//                  exclusions. (Deliberately does NOT exclude active Pro
+//                  subscribers the way newsletter-new-pack-announcement's
+//                  cron does — that exclusion exists there specifically
+//                  because Pro gets a separate "new pack" email at
+//                  activation time, so excluding them avoids a real
+//                  duplicate. A general newsletter issue has no such
+//                  duplicate-channel problem, so Pro subscribers who are
+//                  also on the newsletter list should receive it like
+//                  anyone else — confirmed with the founder 21 Aug 2026
+//                  after this copied-over exclusion nearly skipped their
+//                  own inbox on the first live send.) Never call this mode
+//                  without the founder's explicit go-ahead on both the
+//                  exact HTML and the exact recipient list, per the
+//                  standing "never send without per-draft,
+//                  per-recipient-list approval" rule.
 export async function POST(request: NextRequest) {
   const auth = request.headers.get("authorization");
   if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -48,9 +57,7 @@ export async function POST(request: NextRequest) {
     recipients = testRecipients;
   } else if (mode === "live") {
     const allSubscribers = await db.select({ email: newsletterSubscribers.email }).from(newsletterSubscribers);
-    const activePro = await db.select({ email: proSubscriptions.email }).from(proSubscriptions).where(gt(proSubscriptions.currentPeriodEnd, new Date()));
-    const proEmailSet = new Set(activePro.map((p) => p.email.toLowerCase()));
-    recipients = allSubscribers.map((s) => s.email).filter((e) => !proEmailSet.has(e.toLowerCase()));
+    recipients = allSubscribers.map((s) => s.email);
   } else {
     return NextResponse.json({ error: "mode must be 'test' or 'live'" }, { status: 400 });
   }
