@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { db } from "@/lib/db";
 import { newsletterSubscribers, proSubscriptions } from "@/schema/database";
-import { gt } from "drizzle-orm";
+import { gt, ilike, inArray } from "drizzle-orm";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.experiences-curated.com";
 
 // Manually triggered by the build-newsletter skill, never a public or cron
 // endpoint — gated on the same CRON_SECRET used by every cron route in this
@@ -54,6 +55,24 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "mode must be 'test' or 'live'" }, { status: 400 });
   }
 
+  // Real unsubscribe links are per-recipient — {{unsubscribe_url}} in the
+  // template gets substituted with each subscriber's own
+  // /newsletter/unsubscribe/[id] link (that page deletes the row keyed by
+  // id, see app/newsletter/unsubscribe/[id]/page.tsx). A recipient not
+  // found in newsletter_subscribers (e.g. a test address that was never
+  // actually subscribed) falls back to the plain /newsletter signup page
+  // rather than a broken/dead link.
+  const subscriberRows = await db
+    .select({ id: newsletterSubscribers.id, email: newsletterSubscribers.email })
+    .from(newsletterSubscribers)
+    .where(inArray(newsletterSubscribers.email, recipients));
+  const idByEmail = new Map(subscriberRows.map((r) => [r.email.toLowerCase(), r.id]));
+
+  function unsubscribeUrlFor(email: string) {
+    const id = idByEmail.get(email.toLowerCase());
+    return id ? `${SITE_URL}/newsletter/unsubscribe/${id}` : `${SITE_URL}/newsletter`;
+  }
+
   // Same throttle discipline as newsletter-new-pack-announcement — Resend
   // caps at 10 req/sec, batches of 8 with a pause keeps real margin under
   // that limit.
@@ -66,14 +85,15 @@ export async function POST(request: NextRequest) {
   for (let i = 0; i < recipients.length; i += BATCH_SIZE) {
     const batch = recipients.slice(i, i + BATCH_SIZE);
     const settled = await Promise.allSettled(
-      batch.map((email) =>
-        resend.emails.send({
+      batch.map((email) => {
+        const personalizedHtml = html.replaceAll("{{unsubscribe_url}}", unsubscribeUrlFor(email));
+        return resend.emails.send({
           from: "Experiences | Curated <hello@experiences-curated.com>",
           to: email,
           subject,
-          html,
-        })
-      )
+          html: personalizedHtml,
+        });
+      })
     );
     settled.forEach((result, idx) => {
       const email = batch[idx];
