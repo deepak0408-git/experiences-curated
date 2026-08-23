@@ -7,7 +7,7 @@ import { getPlannerEvents } from "@/app/planner/_lib/getPlannerEvents";
 import { sumLineItems } from "@/app/planner/_lib/mockEvents";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://experiences-curated.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.experiences-curated.com";
 const ALERT_TO = "experiencescurated@gmail.com";
 
 const SPORT_LABELS: Record<string, string> = {

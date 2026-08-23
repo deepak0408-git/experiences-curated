@@ -7,7 +7,7 @@ import { sumLineItems, buildSummaryLine } from "@/app/planner/_lib/mockEvents";
 import { sendSavedDripEmail } from "@/app/planner/_lib/sendPlannerEmails";
 import { dedupeLatestPerGroup } from "@/app/planner/_lib/dripDedup";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://experiences-curated.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.experiences-curated.com";
 
 // Post-Planner Drip Sequence — "saved" (Touchpoint 5, design doc). Daily cron:
 // for every saved PlannerSession with no click-through yet, sends the day-3

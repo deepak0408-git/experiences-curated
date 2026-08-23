@@ -219,7 +219,7 @@ export async function POST(request: NextRequest) {
   console.log(`[dodo webhook] ✓ purchase recorded — email: ${email}, event: ${sportingEvent.slug}, tier: ${priceTier}`);
 
   // ── Send purchase confirmation email ─────────────────────────────────────
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://experiences-curated.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.experiences-curated.com";
   const packUrl = `${siteUrl}/event-pack/${sportingEvent.slug}`;
   const formattedAmount = (payment.total_amount / 100).toFixed(2);
   const currencySymbol = currency === "GBP" ? "£" : currency === "USD" ? "US$" : currency === "EUR" ? "€" : currency + " ";

@@ -72,7 +72,7 @@ function buildJsonLd(article: {
   heroImageUrl: string | null;
   publishedAt: Date | null;
 }) {
-  const base = process.env.NEXT_PUBLIC_APP_URL ?? "https://experiences-curated.com";
+  const base = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.experiences-curated.com";
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",

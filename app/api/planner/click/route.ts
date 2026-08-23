@@ -3,7 +3,7 @@ import { eq, isNull } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { plannerSessions } from "@/schema/database";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://experiences-curated.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.experiences-curated.com";
 
 // Tracked redirect used by every Post-Planner Drip email link. Marks the
 // PlannerSession as clicked (stopping the saved/compared drip sequences
