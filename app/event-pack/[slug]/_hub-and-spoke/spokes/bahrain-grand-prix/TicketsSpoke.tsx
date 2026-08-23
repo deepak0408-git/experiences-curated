@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { formatMoneyRange } from "@/app/planner/_lib/mockEvents";
 import SpokeShell from "../../_components/SpokeShell";
 import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
@@ -8,6 +9,9 @@ const SPOKE_ID = "tickets";
 // Real factual columns only (seating/exposure/what it shows) — no
 // "best for"/verdict column here, that judgment lives in the gated
 // section below. Same split as the Italian GP pilot's Ticket Guide.
+// priceBand is populated at render time from the real seeded
+// planner_ticket_tier_cost rows (confirmed by the founder 23 Aug 2026) —
+// see the tierBySlug lookup in the component below.
 const STANDS = [
   {
     slug: "main-grandstand-sepang-start-finish",
@@ -15,7 +19,7 @@ const STANDS = [
     shows: "Grid, pit lane, start & podium — the whole arc of the event",
     seating: "Reserved seat",
     exposure: "Fully covered",
-    priceBand: "Historical 3-day reference: n/a — pricing unpublished",
+    tier: "tier3" as const,
   },
   {
     slug: "k1-grandstand-sepang-turn-1",
@@ -23,7 +27,7 @@ const STANDS = [
     shows: "Turn 1 — real, repeated overtaking every lap",
     seating: "Unreserved within your block (A–R)",
     exposure: "Fully covered",
-    priceBand: "Historical 3-day reference: roughly $180–280",
+    tier: "tier2" as const,
   },
   {
     slug: "grandstand-f-sepang-panoramic",
@@ -31,7 +35,7 @@ const STANDS = [
     shows: "Turns 6–8 and the back straight — widest single sightline on the lap",
     seating: "Reserved seat",
     exposure: "Fully covered",
-    priceBand: "Historical 3-day reference: n/a — pricing unpublished",
+    tier: "tier2" as const,
   },
   {
     slug: "hill-stand-c2-sepang-general-admission",
@@ -39,18 +43,24 @@ const STANDS = [
     shows: "Turns 9–11 — wide view of the circuit's southern half",
     seating: "General admission, unreserved",
     exposure: "Partial canopy only",
-    priceBand: "Historical 3-day reference: roughly $40–75",
+    tier: "tier1" as const,
   },
 ];
 
 export default async function TicketsSpoke({ eventSlug }: { eventSlug: string }) {
-  const { event, linkedExperiences } = await getSpokeData(eventSlug);
+  const { event, linkedExperiences, tickets } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
   const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
 
-  const stands = STANDS.map((s) => ({ ...s, exp: linkedExperiences.find((e) => e.slug.includes(s.slug)) }));
+  const tierByKey = new Map(tickets.map((t) => [t.tier, t]));
+  const priceBandFor = (tierKey: (typeof STANDS)[number]["tier"]) => {
+    const t = tierByKey.get(tierKey);
+    return t ? `3-day: ${formatMoneyRange(Math.round(Number(t.costLow)), Math.round(Number(t.costHigh)))}` : "3-day: pricing unavailable";
+  };
+
+  const stands = STANDS.map((s) => ({ ...s, exp: linkedExperiences.find((e) => e.slug.includes(s.slug)), priceBand: priceBandFor(s.tier) }));
   const mainGrandstand = linkedExperiences.find((e) => e.slug.includes("main-grandstand-sepang-start-finish"));
   const k1 = linkedExperiences.find((e) => e.slug.includes("k1-grandstand-sepang-turn-1"));
   const grandstandF = linkedExperiences.find((e) => e.slug.includes("grandstand-f-sepang-panoramic"));
@@ -69,13 +79,12 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       question="Which grandstand ticket is the best buy for Sepang?"
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The tiers, what they show, and real historical price references are all free above. The Event Pack adds our actual verdict — which stand we'd pick for a first Sepang weekend and why — plus the real, experience-level detail (what it's genuinely like to sit there, block-by-block advice) for every stand, not just a summary."
+      ctaCopy="The tiers, what they show, and real 3-day pricing are all free above. The Event Pack adds our actual verdict — which stand we'd pick for a first Sepang weekend and why — plus the real, experience-level detail (what it's genuinely like to sit there, block-by-block advice) for every stand, not just a summary."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Sepang has four named ticket options, and they&apos;re built around genuinely different ideas of what&apos;s
-        worth watching — not just different price points for the same experience. 2026 pricing for this relocated
-        race hasn&apos;t been published yet (F1&apos;s official announcement says pricing &quot;will be announced
-        soon&quot;), so this guide focuses on what each ticket actually gets you, which is knowable now.
+        worth watching — not just different price points for the same experience. Real 3-day pricing is now
+        confirmed, so this guide covers both what each ticket actually gets you and what it costs.
       </p>
 
       {/* Comparison table — free, factual columns only. Desktop/tablet gets
@@ -151,10 +160,10 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       </div>
 
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Historical pricing reference — not confirmed for 2026</p>
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">3-day pricing, confirmed</p>
         <p className="text-sm text-[#A3A3A3] leading-6">
-          Figures above are drawn from comparable recent Sepang MotoGP/F1 race weekends at this circuit, not a
-          confirmed 2026 Bahrain GP number — treat them as a rough sense of scale, not a figure to budget against.
+          Figures above are real 3-day grandstand pricing for this race. A Paddock Club hospitality tier also
+          exists above these four public stands — see the Cost Guide for that figure.
         </p>
       </div>
 
@@ -162,11 +171,12 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Which stand we&apos;d pick</p>
           <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
-            For a genuine first Malaysian GP, the Main Grandstand is the right call — it teaches you the shape of a
-            full race weekend in one seat, and the roof matters more here than at almost any other circuit given how
-            fast Sepang&apos;s weather turns. If you already know you want to watch racing rather than ceremony, K1
-            is the sharper pick — real, repeated overtaking at Turn 1, not a highlight-reel moment. We wouldn&apos;t
-            spend the jump from Hill Stand to a mid-tier grandstand just for a marginally better view; the real
+            For a genuine first Malaysian GP, the Main Grandstand ({priceBandFor("tier3")}) is the right call — it
+            teaches you the shape of a full race weekend in one seat, and the roof matters more here than at almost
+            any other circuit given how fast Sepang&apos;s weather turns. If you already know you want to watch
+            racing rather than ceremony, K1 ({priceBandFor("tier2")}) is the sharper pick — real, repeated
+            overtaking at Turn 1, not a highlight-reel moment. We wouldn&apos;t spend the jump from Hill Stand
+            ({priceBandFor("tier1")}) to a mid-tier grandstand just for a marginally better view; the real
             difference in what you actually experience is general admission versus any covered stand, not one
             grandstand versus another.
           </p>
@@ -202,7 +212,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
             </table>
           </div>
 
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What to watch for once pricing lands</p>
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Where to actually buy</p>
           <p className="text-sm text-[#A3A3A3] leading-7">
             Buy only through the official F1 ticketing site (
             <a href="https://tickets.formula1.com/en/f1-83069-bahrain-in-malaysia" target="_blank" rel="noopener noreferrer" className="text-[#AAFF00] hover:text-[#BBFF33] underline">
