@@ -6,7 +6,7 @@ import { db } from "@/lib/db";
 import { newsletterSubscribers, users, sportingEvents } from "@/schema/database";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://experiences-curated.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.experiences-curated.com";
 
 async function sendWelcomeEmail(email: string, subscriberId: string) {
   const featured = await db

@@ -282,7 +282,7 @@ async function notifyProNewPack(events: { id: string; name: string; slug: string
   const annualEmails = subs.filter((s) => s.billingCycle === "annual").map((s) => s.email);
   const monthlyEmails = subs.filter((s) => s.billingCycle === "monthly").map((s) => s.email);
 
-  const appUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://experiences-curated.com";
+  const appUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.experiences-curated.com";
 
   const sendBatch = async (emails: string[], html: string, subject: string) => {
     for (let i = 0; i < emails.length; i += 50) {

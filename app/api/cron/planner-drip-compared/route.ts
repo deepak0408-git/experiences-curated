@@ -7,7 +7,7 @@ import { sumLineItems, buildSummaryLine } from "@/app/planner/_lib/mockEvents";
 import { sendComparisonDripEmail, type ComparisonEmailEvent } from "@/app/planner/_lib/sendPlannerEmails";
 import { dedupeLatestPerGroup } from "@/app/planner/_lib/dripDedup";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://experiences-curated.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.experiences-curated.com";
 
 // Post-Planner Drip Sequence — "compared" (Touchpoint 5, design doc). Same
 // shape and stop-on-click rule as planner-drip-saved: day-3 nudge (references

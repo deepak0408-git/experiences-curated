@@ -263,7 +263,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const base = process.env.NEXT_PUBLIC_APP_URL ?? "https://experiences-curated.com";
+  const base = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.experiences-curated.com";
   try {
     const exp = await getExperienceBySlug(slug);
     const description = exp.subtitle ?? exp.whyItsSpecial?.slice(0, 160) ?? "";
@@ -961,7 +961,7 @@ function buildJsonLd(
   exp: ExperienceDetail,
   rating: { avgRating: number; ratingCount: number } | null,
 ) {
-  const base = process.env.NEXT_PUBLIC_APP_URL ?? "https://experiences-curated.com";
+  const base = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.experiences-curated.com";
 
   const priceRange =
     exp.budgetMinCost && exp.budgetMaxCost

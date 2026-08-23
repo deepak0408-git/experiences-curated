@@ -2,7 +2,7 @@ import { Resend } from "resend";
 import { formatMoneyRange, SPORT_LABELS } from "./mockEvents";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://experiences-curated.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.experiences-curated.com";
 
 // Real email sends for the Season Planner — built 19 Jul 2026 after
 // discovering Save's "Check your inbox" promise was false (no send existed,
