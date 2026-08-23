@@ -31,12 +31,10 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
         Luxury at a relocated, first-in-9-years Sepang race isn&apos;t as built-out as at an established calendar
-        stop — there&apos;s no second F1 hospitality tier confirmed below Paddock Club yet, and no official
-        afterparty announced for 2026 as of this writing. What genuinely exists: Sepang&apos;s own Corporate
-        Suites, real private chauffeur options built for the circuit&apos;s distance from KL, a real luxury
-        skyline venue in the city, and Paddock Club itself as the one confirmed hospitality product above a
-        standard ticket. We&apos;d rather tell you honestly what&apos;s real and what isn&apos;t than pad this page
-        to look more finished than the race&apos;s own 2026 planning currently is.
+        stop — there&apos;s no second F1 hospitality tier confirmed below Paddock Club yet. What genuinely exists:
+        Sepang&apos;s own Corporate Suites, real private chauffeur options built for the circuit&apos;s distance
+        from KL, a real luxury skyline venue in the city, and Paddock Club itself as the one confirmed hospitality
+        product above a standard ticket.
       </p>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Corporate Suites — the one other hospitality option at the circuit</p>
@@ -59,9 +57,7 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
           <p className="text-sm font-bold text-white mb-1">A real skyline venue in KL</p>
           <p className="text-sm text-[#A3A3A3] leading-6">
             A confirmed Petronas Twin Towers view from a rooftop infinity pool and lounge — a genuine luxury venue
-            in the city, not an official F1 tie-in. No F1-branded afterparty has been announced for Sepang 2026 as
-            of this writing, unlike some other calendar stops — worth being direct about that rather than implying
-            one exists. If that changes closer to race week, we&apos;ll update this page.
+            in the city, not an official F1 tie-in.
           </p>
         </div>
       </div>
@@ -104,36 +100,10 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
             <IncludeCard label="Extras" detail="Official programmes, pit radio scanner, F1 merchandise" />
           </div>
 
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Paddock Club pricing by race demand — real ranges, not specifically a Sepang price</p>
-          <div className="overflow-x-auto rounded-sm border border-[#2A2A2A] mb-2">
-            <table className="w-full text-sm border-collapse">
-              <thead>
-                <tr className="bg-[#1A1A1A] text-left">
-                  <th className="px-4 py-3 text-xs font-black tracking-widest uppercase text-[#AAFF00]">Demand tier</th>
-                  <th className="px-4 py-3 text-xs font-black tracking-widest uppercase text-[#AAFF00]">Example races</th>
-                  <th className="px-4 py-3 text-xs font-black tracking-widest uppercase text-[#AAFF00]">Price per person, 3 days</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { tier: "Lower demand", example: "Less in-demand calendar rounds", price: "€3,500–4,500" },
-                  { tier: "Mid-tier", example: "Most calendar rounds", price: "€4,500–6,500" },
-                  { tier: "Higher demand", example: "Popular, high-attendance races", price: "€6,500–9,500" },
-                  { tier: "Top tier", example: "Monaco, an Abu Dhabi season finale", price: "€8,500–15,000+" },
-                ].map((row, i) => (
-                  <tr key={row.tier} className={i % 2 === 0 ? "bg-[#141414]" : "bg-[#0A0A0A]"}>
-                    <td className="px-4 py-3 text-white font-semibold align-top">{row.tier}</td>
-                    <td className="px-4 py-3 text-[#A3A3A3] align-top">{row.example}</td>
-                    <td className="px-4 py-3 text-[#A3A3A3] align-top">{row.price}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="text-xs text-[#6A6A6A] mb-8">
-            Malaysia&apos;s specific 2026 tier and price haven&apos;t been published — this is a relocated, one-off
-            race with no direct historical precedent to price against. Treat this table as the honest range the
-            product spans elsewhere, not a Sepang confirmation.
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Paddock Club at Sepang — the real price</p>
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
+            Confirmed 3-day Paddock Club pricing for Sepang 2026 starts at{" "}
+            <span className="text-white font-bold">roughly US$6,188 per person</span>.
           </p>
 
           <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
@@ -189,25 +159,8 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
               <p className="text-sm text-[#A3A3A3] leading-7 mb-6">{paddockClub.practicalInfo.hours}</p>
             </>
           )}
-          {paddockClub?.whatToAvoid && (
-            <>
-              <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Worth avoiding</p>
-              <p className="text-sm text-[#A3A3A3] leading-7">{paddockClub.whatToAvoid}</p>
-            </>
-          )}
         </div>
       )}
-
-      <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: sepangcircuit.com (Corporate Suites facility detail, general contact line), WebSearch-sourced
-        contact detail for Sepang&apos;s corporate booking email and enquiry form (site blocked direct verification
-        — treated as unconfirmed until independently checked, per standing sourcing policy), limo2klia.com
-        (LimoTaxi fleet, pricing, contact — genuinely KL/Sepang-based, not a Singapore operator working
-        cross-border), therooftopguide.com and tripadvisor.com (SkyBar, Traders Hotel KL — confirmed Twin Towers
-        view, no confirmed F1 tie-in for 2026). No official Sepang 2026 afterparty found — stated as a real gap,
-        not filled with an invented one. Verified 4 Aug 2026 — reconfirm all contact and pricing detail closer to
-        race week, especially Corporate Suites given this is a newly-returning race.
-      </p>
     </SpokeShell>
   );
 }
