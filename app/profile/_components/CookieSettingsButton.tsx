@@ -2,7 +2,11 @@
 
 export default function CookieSettingsButton() {
   const reset = () => {
-    localStorage.removeItem("ec_cookie_consent");
+    try {
+      localStorage.removeItem("ec_cookie_consent");
+    } catch {
+      // ignore — nothing to clear if storage is denied
+    }
     window.location.reload();
   };
 

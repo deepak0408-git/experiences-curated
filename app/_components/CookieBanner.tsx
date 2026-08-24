@@ -9,17 +9,30 @@ export default function CookieBanner() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem(COOKIE_KEY);
-    if (!stored) setVisible(true);
+    try {
+      const stored = localStorage.getItem(COOKIE_KEY);
+      if (!stored) setVisible(true);
+    } catch {
+      // localStorage can throw (not just return null) in storage-restricted
+      // contexts (e.g. some private-browsing modes) — treat as unavailable.
+    }
   }, []);
 
   const accept = () => {
-    localStorage.setItem(COOKIE_KEY, "accepted");
+    try {
+      localStorage.setItem(COOKIE_KEY, "accepted");
+    } catch {
+      // ignore — nothing to persist to if storage is denied
+    }
     setVisible(false);
   };
 
   const decline = () => {
-    localStorage.setItem(COOKIE_KEY, "declined");
+    try {
+      localStorage.setItem(COOKIE_KEY, "declined");
+    } catch {
+      // ignore — nothing to persist to if storage is denied
+    }
     setVisible(false);
   };
 

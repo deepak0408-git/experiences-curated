@@ -18,8 +18,13 @@ function getViewedSlugs(): string[] {
 }
 
 function saveViewedSlugs(slugs: string[]) {
-  const expires = new Date(Date.now() + COOKIE_DAYS * 864e5).toUTCString();
-  document.cookie = `${COOKIE_NAME}=${encodeURIComponent(JSON.stringify(slugs))}; expires=${expires}; path=/; SameSite=Lax`;
+  try {
+    const expires = new Date(Date.now() + COOKIE_DAYS * 864e5).toUTCString();
+    document.cookie = `${COOKIE_NAME}=${encodeURIComponent(JSON.stringify(slugs))}; expires=${expires}; path=/; SameSite=Lax`;
+  } catch {
+    // document.cookie can throw in storage-restricted contexts — degrade
+    // to "not tracked" rather than crashing the page.
+  }
 }
 
 export default function ExperienceViewGate({
