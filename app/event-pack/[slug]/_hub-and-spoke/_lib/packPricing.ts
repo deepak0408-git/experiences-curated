@@ -28,16 +28,16 @@ export const PACK_PRICING: Record<string, { earlyBirdPriceId: string; standardPr
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ATP_FINALS_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ATP_FINALS_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_ATP_FINALS_EARLY_BIRD_CUTOFF ?? "2026-10-18",
-    earlyBirdDisplay: "US$5",
+    earlyBirdDisplay: "US$3",
     standardDisplay: "US$10",
   },
-  // Real Dodo product IDs wired 9 Aug 2026: Early Bird pdt_0NkzuzJ3sDd5pcevNllNC
-  // (US$5), Standard pdt_0Nkzv4p8BkXFgyrxga0aN (US$10).
+  // Real Dodo product IDs wired 9 Aug 2026, early-bird price updated 24 Aug 2026:
+  // Early Bird pdt_0NkzuzJ3sDd5pcevNllNC (US$3), Standard pdt_0Nkzv4p8BkXFgyrxga0aN (US$10).
   "shanghai-masters": {
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SHANGHAI_MASTERS_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SHANGHAI_MASTERS_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_SHANGHAI_MASTERS_EARLY_BIRD_CUTOFF ?? "2026-09-21",
-    earlyBirdDisplay: "US$5",
+    earlyBirdDisplay: "US$3",
     standardDisplay: "US$10",
   },
   // Real Dodo product IDs, reused unchanged from the classic pack's own

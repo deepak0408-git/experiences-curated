@@ -50,7 +50,7 @@ export const PACK_PRICING: Record<string, {
         : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_US_OPEN_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_US_OPEN_EARLY_BIRD_CUTOFF ?? "2026-08-01",
     earlyBirdDisplay: "US$0",
-    standardDisplay: "US$10",
+    standardDisplay: "US$5",
   },
   "india-in-england-cricket-2026": {
     earlyBirdPriceId:
@@ -90,8 +90,8 @@ export const PACK_PRICING: Record<string, {
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ITALIAN_GP_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ITALIAN_GP_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_ITALIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-08-25",
-    earlyBirdDisplay: "US$5",
-    standardDisplay: "US$10",
+    earlyBirdDisplay: "US$3",
+    standardDisplay: "US$5",
   },
   "bmw-pga-championship-2026": {
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BMW_PGA_EARLY_BIRD ?? "",
