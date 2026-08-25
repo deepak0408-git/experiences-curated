@@ -170,7 +170,7 @@ export default function BrandHero({
                     href={`/event-pack/${ev.slug}`}
                     className="inline-flex items-center justify-center w-52 py-1.5 rounded-sm bg-[#AAFF00] text-black text-xs font-black tracking-wide hover:bg-[#BBFF33] transition-colors"
                   >
-                    {ev.isFree ? "Get the free event pack →" : "Get the event pack →"}
+                    Get the pack →
                   </Link>
                 </div>
               ))}
