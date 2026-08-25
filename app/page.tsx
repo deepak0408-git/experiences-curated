@@ -39,10 +39,16 @@ const SPORT_LABELS: Record<string, string> = {
 const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: string; standard: string }> = {
   // Real, current key for the evergreen-slug Wimbledon event (migrated 14 Aug
   // 2026) — the DB row's slug is now "wimbledon", not "wimbledon-2026".
+  // Hardcoded 25 Aug 2026 to match every other event's pattern below —
+  // previously the only event still reading its price display from the
+  // generic, non-Wimbledon-named NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY /
+  // NEXT_PUBLIC_STANDARD_PRICE_DISPLAY env vars (a leftover from when
+  // Wimbledon was the only live event). Those two vars are no longer read
+  // anywhere — safe to remove from .env.local/Vercel.
   "wimbledon": {
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_EARLY_BIRD_CUTOFF ?? "2026-06-01",
-    early: process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "US$15",
-    standard: process.env.NEXT_PUBLIC_STANDARD_PRICE_DISPLAY ?? "US$25",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_WIMBLEDON_EARLY_BIRD_CUTOFF ?? "2027-06-27",
+    early: "US$5",
+    standard: "US$10",
   },
   "belgian-gp-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-10",
@@ -309,8 +315,6 @@ export default async function HomePage() {
             <div className="flex flex-col gap-6">
               {calendarEvents.map((ev) => {
                 const es = eventState(ev.startDate, ev.endDate);
-                const price = eventPriceDisplay(ev.slug);
-                const nudge = earlyBirdNudge(ev.slug);
                 const expCount = expCountMap[ev.id] ?? 0;
                 const glimpse = glimpseMap[ev.id] ?? [];
                 const venue = ev.slug === "india-in-england-cricket-2026"
@@ -376,18 +380,14 @@ export default async function HomePage() {
                           </p>
                         )}
 
-                        {/* Early bird nudge */}
-                        {nudge.show && (
-                          <p className="mt-2 text-xs text-[#AAFF00] border border-[#AAFF00]/30 rounded-sm inline-block px-3 py-1 font-mono">
-                            Early bird {price} — rises to {nudge.standardPrice} after {nudge.cutoffLabel}
-                          </p>
-                        )}
                       </div>
 
-                      {/* CTA */}
+                      {/* CTA — no price shown on the homepage (masthead and
+                          calendar cards deliberately price-free; the real
+                          price/checkout lives on the event pack page itself). */}
                       <div className="mt-5">
                         <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm bg-[#AAFF00] text-black text-sm font-black tracking-wide group-hover:bg-[#BBFF33] transition-colors whitespace-nowrap">
-                          {price === "Free" ? "Get the free pack" : <>Get the pack <span className="text-black/50 font-black">{price}</span></>}
+                          Get the pack
                         </span>
                       </div>
 

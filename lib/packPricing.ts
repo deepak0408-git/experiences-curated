@@ -35,9 +35,17 @@ export const PACK_PRICING: Record<string, {
       process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
         ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_WIMBLEDON_STANDARD ?? ""
         : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_STANDARD ?? "",
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_WIMBLEDON_EARLY_BIRD_CUTOFF ?? "2026-06-01",
-    earlyBirdDisplay: process.env.NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY ?? "US$15",
-    standardDisplay: process.env.NEXT_PUBLIC_STANDARD_PRICE_DISPLAY ?? "US$25",
+    // Same 25 Aug 2026 repricing as the hub-and-spoke packPricing.ts
+    // (app/event-pack/[slug]/_hub-and-spoke/_lib/packPricing.ts) — same 2
+    // Dodo products (pdt_0NgioFcIGNbl0KLr8Ppnw Standard, pdt_0NgioNYxUTkRSjpXdeD8o
+    // Early Bird), same $5/$10, same real 2027 cutoff. Keep these two tables
+    // in sync for Wimbledon — see feedback_duplicate_config_tables memory.
+    // Hardcoded display strings (no longer reading the generic
+    // NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY / NEXT_PUBLIC_STANDARD_PRICE_DISPLAY
+    // env vars — those are dead now, matches app/page.tsx's own fix).
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_WIMBLEDON_EARLY_BIRD_CUTOFF ?? "2027-06-27",
+    earlyBirdDisplay: "US$5",
+    standardDisplay: "US$10",
   },
   "us-open-2026": {
     earlyBirdPriceId:

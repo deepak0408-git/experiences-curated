@@ -40,25 +40,21 @@ export const PACK_PRICING: Record<string, { earlyBirdPriceId: string; standardPr
     earlyBirdDisplay: "US$3",
     standardDisplay: "US$10",
   },
-  // Real Dodo product IDs, reused unchanged from the classic pack's own
-  // pricing (see .env.local's "Wimbledon-prefixed aliases" block, added
-  // 14 Aug 2026 for this conversion) — not new IDs, same checkout the
-  // classic pack has used since launch.
-  //
-  // earlyBirdCutoff is still the STALE 2026 edition's real cutoff
-  // (29 Jun 2026, now in the past) — deliberately left unset for 2027 as of
-  // the 2026->2027 row rollover (14 Aug 2026); the founder chose to ship
-  // standard-price-only rather than guess a new cutoff date. isEarlyBird
-  // will always evaluate false until NEXT_PUBLIC_WIMBLEDON_EARLY_BIRD_CUTOFF
-  // is set to a real 2027 date — standardDisplay (US$25) is what actually
-  // renders in the meantime. This is a real, open pricing decision, not a
-  // bug — don't "fix" this date without asking first.
+  // Real Dodo product IDs, same IDs the classic pack has used since launch
+  // (see .env.local's "Wimbledon-prefixed aliases" block, added 14 Aug 2026
+  // for this conversion) — the founder repriced these same 2 products in
+  // the Dodo dashboard on 25 Aug 2026 (Standard pdt_0NgioFcIGNbl0KLr8Ppnw
+  // now $10, Early Bird pdt_0NgioNYxUTkRSjpXdeD8o now $5, matching every
+  // other event's $5/$10 pattern) — display strings and cutoff updated to
+  // match. Cutoff moved to the real 2027 edition's window (28 Jun–11 Jul
+  // 2027 tournament, day-before cutoff), replacing the stale 2026 date that
+  // had made isEarlyBird permanently false.
   wimbledon: {
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_WIMBLEDON_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_WIMBLEDON_STANDARD ?? "",
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_WIMBLEDON_EARLY_BIRD_CUTOFF ?? "2026-06-29",
-    earlyBirdDisplay: "US$15",
-    standardDisplay: "US$25",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_WIMBLEDON_EARLY_BIRD_CUTOFF ?? "2027-06-27",
+    earlyBirdDisplay: "US$5",
+    standardDisplay: "US$10",
   },
   // Real Dodo Live Mode product IDs, confirmed by the founder 16 Aug 2026:
   // Early Bird pdt_0NlWmXdcXf1ZbtGSpHOo7 (US$5), Standard
