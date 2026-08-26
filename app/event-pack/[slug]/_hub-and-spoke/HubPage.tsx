@@ -94,6 +94,15 @@ const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; value: str
     { label: "What to bring", value: "Sun protection every day (Australian UV is genuinely strong). Layers for Melbourne specifically. Light rain gear for Melbourne and Sydney. No glass or outside alcohol at any venue." },
     { label: "Emergencies", value: "Australia-wide emergency number: 000 (police/fire/ambulance). Non-emergency police: 131 444." },
   ],
+  // Real facts sourced during experience seeding (Rod Laver Arena's real
+  // Google rating/review count, the free tram 70/70a fact, the day/night
+  // session split) — not invented. Gate times genuinely aren't published
+  // for 2027 yet, stated honestly per skill §2a-3 rather than guessed.
+  "australian-open": [
+    { label: "Gate times", value: "Not yet published for the 2027 tournament. Based on the pattern in recent years, expect gates to open roughly 1-2 hours before the day session's first match — confirm exact times via ausopen.com closer to the tournament." },
+    { label: "Free tram", value: "Trams 70 and 70a run free on the day of any valid Australian Open match ticket — no tap-on needed. All other Melbourne public transport requires a myki card." },
+    { label: "Emergencies", value: "Australia-wide emergency number: 000 (police/fire/ambulance). Non-emergency police: 131 444." },
+  ],
 };
 
 const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: string; heroFallbackImageSlug: string; introText: string }> = {
@@ -166,6 +175,19 @@ const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: string; h
     introText:
       "This is the first-ever four-Test Trans-Tasman series between New Zealand and Australia — a genuinely historic scale for a rivalry that's never been given this much room before. New Zealand's first tour of Australia since 2019-20 runs across five weeks, four cities, and roughly 4,300km of internal travel if you follow the whole thing.\n\nEach ground tells a different story. Perth Stadium opens the series as the newest, most purpose-built venue on the tour. Adelaide Oval pairs Test cricket with a cathedral spire in the same sightline. The MCG hosts Boxing Day — the single biggest date on the Southern Hemisphere cricket calendar, full stop. The SCG closes it out with more than 140 years of the sport's own history inside its walls, and a heritage changeroom hospitality experience no other ground on this tour can match.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
+  // Built from real sourced facts researched during experience seeding
+  // (Rod Laver Arena's real 4.7/7,876-review Google rating, the free tram
+  // 70/70a fact, the day/night session structure, the "Happy Slam"
+  // branding that's genuinely how the tournament markets itself) — not
+  // invented, matches every other hub-and-spoke event's pattern of drawing
+  // The Brief from real underlying content.
+  "australian-open": {
+    displayName: "Australian Open",
+    venueLine: "Held at Melbourne Park — the first Grand Slam of the tennis season, played on hard courts under a roof that closes on demand.",
+    heroFallbackImageSlug: "rod-laver-arena-inside-main-court-o0lvsc",
+    introText:
+      "The Australian Open calls itself the Happy Slam, and the description holds up: this is the loosest, most festival-like of the four majors, with a real live-music program running alongside the tennis and a home crowd that's louder and more willing to get behind an outsider than most Grand Slam galleries. Rod Laver Arena has anchored the tournament since 1988, and it still rates 4.7 from nearly 8,000 Google reviews — a rare thing for a stadium that's been standing for almost four decades.\n\nMelbourne Park is genuinely built for a full day, not just a match. A single Rod Laver Arena reserved seat also gets you into Margaret Court Arena's neighbour John Cain Arena, Show Court 3, and every outside court on the same day, and the free tram 70/70a on any match-ticket day removes the one logistical headache most first-timers worry about. What you do with the rest of the day — the outside courts in the first week, the food village, the AO Live stages — is most of what separates a good trip from a great one.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
 };
 
 export default async function HubPage({ slug }: { slug: string }) {
@@ -188,7 +210,7 @@ export default async function HubPage({ slug }: { slug: string }) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(slug, event.id, event.isHidden);
+  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(slug, event.id, event.isHidden);
   const pricing = getPackPricing(slug, event.packCurrency);
   const initiallySaved = user ? await isEventPackSaved(event.id) : false;
   const myRating = user ? await getMyEventPackRating(event.id) : null;
@@ -353,6 +375,20 @@ export default async function HubPage({ slug }: { slug: string }) {
                       />
                     ) : (
                       <p className="text-xs text-[#6A6A6A]">Checkout coming soon.</p>
+                    )}
+                    {/* Annual Pro upsell — same placement/copy pattern as the
+                        classic pack's own CTA (page.tsx ~line 709-716), just
+                        without the price per founder instruction (25 Aug
+                        2026) — the price already lives on /pro itself.
+                        Gated on !isPro same as the classic pack, so an
+                        existing Pro subscriber never sees this. */}
+                    {!isPro && (
+                      <p className="mt-4 text-xs text-[#6A6A6A] text-center">
+                        Or get this + every future pack with{" "}
+                        <Link href="/pro" className="underline hover:text-[#AAFF00] transition-colors">
+                          Annual Pro subscription
+                        </Link>
+                      </p>
                     )}
                   </>
                 )}

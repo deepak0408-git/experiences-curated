@@ -44,8 +44,8 @@ export const PACK_PRICING: Record<string, {
     // NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY / NEXT_PUBLIC_STANDARD_PRICE_DISPLAY
     // env vars — those are dead now, matches app/page.tsx's own fix).
     earlyBirdCutoff: process.env.NEXT_PUBLIC_WIMBLEDON_EARLY_BIRD_CUTOFF ?? "2027-06-27",
-    earlyBirdDisplay: "US$5",
-    standardDisplay: "US$10",
+    earlyBirdDisplay: "US$10",
+    standardDisplay: "US$15",
   },
   "us-open-2026": {
     earlyBirdPriceId:
@@ -58,7 +58,7 @@ export const PACK_PRICING: Record<string, {
         : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_US_OPEN_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_US_OPEN_EARLY_BIRD_CUTOFF ?? "2026-08-01",
     earlyBirdDisplay: "US$0",
-    standardDisplay: "US$5",
+    standardDisplay: "US$10",
   },
   "india-in-england-cricket-2026": {
     earlyBirdPriceId:

@@ -134,4 +134,25 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "map", label: "Venue Map", question: "What facilities are available at each of the four Test grounds?", status: "public", imageSlug: "scg-fourth-test-sydney-summer-msvoaji7" },
     { id: "luxury", label: "Luxury Guide", question: "What does a genuinely luxury NZ-Australia series trip look like?", status: "teaser", imageSlug: "scg-luxury-invincibles-lounge-members-pavilion-msvosomt" },
   ],
+  // Australian Open 2027 — built 24 Aug 2026. All 20 experiences already
+  // real/seeded/hero-imaged (research + hero-image passes both completed
+  // before this scaffolding), so real imageSlug values are used directly,
+  // no "__no-image-yet__" sentinel needed. Weather/Arrival/Tickets use the
+  // skill's standing cross-event default images (imageOverride), same 3
+  // fixed Bahrain-GP-sourced files every hub-and-spoke event uses for these
+  // 3 spokes — set here at config-creation time, not deferred.
+  "australian-open": [
+    { id: "cost", label: "Cost Guide", question: "How much does an Australian Open trip cost?", status: "teaser", imageSlug: "rod-laver-arena-inside-main-court-o0lvsc", heroImagePosition: "center 75%" },
+    { id: "tickets", label: "Ticket Guide", question: "Which Australian Open ticket is the best buy — grounds pass, reserved seat, or finals?", status: "teaser", imageSlug: "ao-ticket-guide-grounds-session-finals-p0773j", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the Australian Open?", status: "teaser", imageSlug: "where-to-stay-melbourne-boxing-day-msvp80zu" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to Melbourne Park?", status: "public", imageSlug: "getting-to-melbourne-park-transit-ddujvz" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the Australian Open, and what should I pack?", status: "public", imageSlug: "melbourne-january-heat-what-to-pack-df5qwz", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Australian Open?", status: "public", imageSlug: "first-timers-guide-etiquette-crowd-culture-fdp4b7" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat at and around the Australian Open?", status: "teaser", imageSlug: "melbourne-coffee-food-culture-guide-bt5u1c" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips during the Australian Open?", status: "teaser", imageSlug: "great-ocean-road-twelve-apostles-daytrip-msxbk23p" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does an Australian Open trip actually look like?", status: "teaser", imageSlug: "late-night-melbourne-park-midnight-finishes-svfimc", heroImagePosition: "center 32%" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at Melbourne Park?", status: "public", imageSlug: "outside-courts-grounds-pass-strategy-cxqxp7", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at Melbourne Park?", status: "public", imageSlug: "margaret-court-john-cain-arenas-cnqerg" },
+    { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Australian Open?", status: "teaser", imageSlug: "corporate-hospitality-premium-suites-qspcms" },
+  ],
 };

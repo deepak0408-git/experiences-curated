@@ -77,6 +77,19 @@ import WimArrivalSpoke from "./wimbledon/ArrivalSpoke";
 import WimMapSpoke from "./wimbledon/MapSpoke";
 import WimLuxurySpoke from "./wimbledon/LuxurySpoke";
 
+import AOCostSpoke from "./australian-open/CostSpoke";
+import AOTicketsSpoke from "./australian-open/TicketsSpoke";
+import AOHotelsSpoke from "./australian-open/HotelsSpoke";
+import AOGettingThereSpoke from "./australian-open/GettingThereSpoke";
+import AOWeatherSpoke from "./australian-open/WeatherSpoke";
+import AOFirstTimerGuideSpoke from "./australian-open/FirstTimerGuideSpoke";
+import AOWhereToEatSpoke from "./australian-open/WhereToEatSpoke";
+import AODayTripsSpoke from "./australian-open/DayTripsSpoke";
+import AOItinerarySpoke from "./australian-open/ItinerarySpoke";
+import AOArrivalSpoke from "./australian-open/ArrivalSpoke";
+import AOMapSpoke from "./australian-open/MapSpoke";
+import AOLuxurySpoke from "./australian-open/LuxurySpoke";
+
 type SpokeComponent = ComponentType<{ eventSlug: string }>;
 
 // Registry mapping eventSlug -> spokeId -> component. A new hub_and_spoke
@@ -168,6 +181,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: NZAMapSpoke,
     luxury: NZALuxurySpoke,
   },
+  "australian-open": {
+    cost: AOCostSpoke,
+    tickets: AOTicketsSpoke,
+    hotels: AOHotelsSpoke,
+    "getting-there": AOGettingThereSpoke,
+    weather: AOWeatherSpoke,
+    "first-timer-guide": AOFirstTimerGuideSpoke,
+    "where-to-eat": AOWhereToEatSpoke,
+    "day-trips": AODayTripsSpoke,
+    itinerary: AOItinerarySpoke,
+    arrival: AOArrivalSpoke,
+    map: AOMapSpoke,
+    luxury: AOLuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -254,5 +281,19 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Four Grounds Arrival Guide — NZ-Australia Test Series",
     map: "Four Test Venues — Perth, Adelaide, MCG, and SCG Map Guide",
     luxury: "Luxury Guide for the NZ-Australia Series — Hospitality Across 3 Cities",
+  },
+  "australian-open": {
+    cost: "How Much Does the Australian Open Cost? — Budget Guide",
+    tickets: "Australian Open Ticket Guide — Ground Pass, Reserved Seats, and Finals",
+    hotels: "Where to Stay for the Australian Open — East Melbourne vs the CBD",
+    "getting-there": "Getting to Melbourne Park — Australian Open Transit Guide",
+    weather: "Melbourne Weather in January — What to Pack for the Australian Open",
+    "first-timer-guide": "First-Timer's Guide — the Australian Open and the Happy Slam",
+    "where-to-eat": "Where to Eat at the Australian Open — Grand Slam Oval and Melbourne's Cafés",
+    "day-trips": "Best Day Trips During the Australian Open — Great Ocean Road, Yarra Valley, and More",
+    itinerary: "Sample Australian Open Itinerary — Hour by Hour",
+    arrival: "Melbourne Park Arrival Guide — Australian Open",
+    map: "Melbourne Park Map — Courts and Facilities",
+    luxury: "Luxury Guide for the Australian Open — AO Reserve and More",
   },
 };
