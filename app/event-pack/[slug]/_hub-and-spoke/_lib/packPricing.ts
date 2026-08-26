@@ -28,8 +28,8 @@ export const PACK_PRICING: Record<string, { earlyBirdPriceId: string; standardPr
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ATP_FINALS_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ATP_FINALS_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_ATP_FINALS_EARLY_BIRD_CUTOFF ?? "2026-10-18",
-    earlyBirdDisplay: "US$3",
-    standardDisplay: "US$10",
+    earlyBirdDisplay: "US$10",
+    standardDisplay: "US$15",
   },
   // Real Dodo product IDs wired 9 Aug 2026, early-bird price updated 24 Aug 2026:
   // Early Bird pdt_0NkzuzJ3sDd5pcevNllNC (US$3), Standard pdt_0Nkzv4p8BkXFgyrxga0aN (US$10).
@@ -37,8 +37,8 @@ export const PACK_PRICING: Record<string, { earlyBirdPriceId: string; standardPr
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SHANGHAI_MASTERS_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SHANGHAI_MASTERS_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_SHANGHAI_MASTERS_EARLY_BIRD_CUTOFF ?? "2026-09-21",
-    earlyBirdDisplay: "US$3",
-    standardDisplay: "US$10",
+    earlyBirdDisplay: "US$10",
+    standardDisplay: "US$15",
   },
   // Real Dodo product IDs, same IDs the classic pack has used since launch
   // (see .env.local's "Wimbledon-prefixed aliases" block, added 14 Aug 2026
@@ -53,8 +53,8 @@ export const PACK_PRICING: Record<string, { earlyBirdPriceId: string; standardPr
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_WIMBLEDON_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_WIMBLEDON_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_WIMBLEDON_EARLY_BIRD_CUTOFF ?? "2027-06-27",
-    earlyBirdDisplay: "US$5",
-    standardDisplay: "US$10",
+    earlyBirdDisplay: "US$10",
+    standardDisplay: "US$15",
   },
   // Real Dodo Live Mode product IDs, confirmed by the founder 16 Aug 2026:
   // Early Bird pdt_0NlWmXdcXf1ZbtGSpHOo7 (US$5), Standard
@@ -66,6 +66,21 @@ export const PACK_PRICING: Record<string, { earlyBirdPriceId: string; standardPr
     earlyBirdCutoff: process.env.NEXT_PUBLIC_NZ_AUSTRALIA_EARLY_BIRD_CUTOFF ?? "2026-11-09",
     earlyBirdDisplay: "US$5",
     standardDisplay: "US$10",
+  },
+  // Real Dodo Live Mode product IDs, confirmed by the founder 24 Aug 2026:
+  // Early Bird pdt_0Nm6PZ2x7Tzdmq5ef2tVT, Standard pdt_0Nm6PT3uFTugngmY1VcVN.
+  // Cutoff 1 Dec 2026, the founder's explicit choice (~6 weeks before the 17
+  // Jan 2027 tournament start, matching the Shanghai Masters/ATP Finals
+  // early-bird-window pattern). Repriced by the founder 27 Aug 2026 in the
+  // Dodo dashboard to US$10/US$15 — display strings below match the live
+  // product prices as of that repricing, not the original US$5/US$10 this
+  // comment previously (and briefly incorrectly) described.
+  "australian-open": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_AUSTRALIAN_OPEN_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_AUSTRALIAN_OPEN_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_AUSTRALIAN_OPEN_EARLY_BIRD_CUTOFF ?? "2026-12-01",
+    earlyBirdDisplay: "US$10",
+    standardDisplay: "US$15",
   },
 };
 

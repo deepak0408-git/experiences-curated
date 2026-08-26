@@ -47,8 +47,8 @@ const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: 
   // anywhere — safe to remove from .env.local/Vercel.
   "wimbledon": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_WIMBLEDON_EARLY_BIRD_CUTOFF ?? "2027-06-27",
-    early: "US$5",
-    standard: "US$10",
+    early: "US$10",
+    standard: "US$15",
   },
   "belgian-gp-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-10",
@@ -58,7 +58,7 @@ const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: 
   "us-open-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_US_OPEN_EARLY_BIRD_CUTOFF ?? "2026-08-01",
     early: "US$0",
-    standard: "US$5",
+    standard: "US$10",
   },
   "india-in-england-cricket-2026": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_CRICKET_EARLY_BIRD_CUTOFF ?? "2026-06-15",
@@ -97,13 +97,18 @@ const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: 
   },
   "atp-finals": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_ATP_FINALS_EARLY_BIRD_CUTOFF ?? "2026-10-18",
-    early: "US$3",
-    standard: "US$10",
+    early: "US$10",
+    standard: "US$15",
   },
   "shanghai-masters": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_SHANGHAI_MASTERS_EARLY_BIRD_CUTOFF ?? "2026-09-21",
-    early: "US$3",
-    standard: "US$10",
+    early: "US$10",
+    standard: "US$15",
+  },
+  "australian-open": {
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_AUSTRALIAN_OPEN_EARLY_BIRD_CUTOFF ?? "2026-12-01",
+    early: "US$10",
+    standard: "US$15",
   },
   "new-zealand-in-australia-cricket-2026-27": {
     earlyBirdCutoff: process.env.NEXT_PUBLIC_NZ_AUSTRALIA_EARLY_BIRD_CUTOFF ?? "2026-11-09",

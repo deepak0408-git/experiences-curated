@@ -156,19 +156,55 @@ const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; 
   "scg-luxury-invincibles-lounge-members-pavilion-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "luxury", spokeLabel: "Luxury Guide" },
   "where-to-stay-perth-first-test-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "hotels", spokeLabel: "Where to Stay" },
   "where-to-stay-adelaide-city-vs-north-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "where-to-stay-melbourne-boxing-day-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  // Tactically pointed at AO2027's hotels spoke instead of the cricket pack,
+  // 26 Aug 2026 — the founder's explicit call for this one shared experience
+  // for now. Object.entries().find() only returns the first prefix match,
+  // so a reader reaching this experience via the CRICKET pack's Hotels spoke
+  // will now see a "← Back to Where to Stay" link that goes to AO2027's
+  // spoke instead of its own — the same one-directional collision documented
+  // in project_shared_experience_backlink_gap, just flipped which event loses
+  // its correct backlink. Still not a real fix; the ?from=eventSlug design
+  // is the real fix, tracked in Ops Checklist P1 T3 #4.
+  "where-to-stay-melbourne-boxing-day-": { eventSlug: "australian-open", spokeId: "hotels", spokeLabel: "Where to Stay" },
   "where-to-stay-sydney-fourth-test-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "hotels", spokeLabel: "Where to Stay" },
   "fremantle-day-trip-from-perth-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
   "mclaren-vale-adelaide-wine-daytrip-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "yarra-valley-melbourne-wine-daytrip-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
   "blue-mountains-day-trip-from-sydney-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "melbourne-laneways-coffee-city-day-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
   "sydney-harbour-beaches-city-day-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
   "wildlife-down-under-featherdale-phillip-island-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "great-ocean-road-twelve-apostles-daytrip-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
   "beige-brigade-nz-traveling-support-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
   "where-nz-fans-actually-eat-city-guide-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
   "getting-between-four-cities-flights-not-trains-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "getting-there", spokeLabel: "Getting There" },
+  // Australian Open 2027 — added 24 Aug 2026. Only the 16 experiences
+  // unique to this event get an entry here — 4 Melbourne experiences are
+  // reused from the NZ-in-Australia cricket pack and can only show ONE
+  // "← Back to" link today (Object.entries().find() only returns the first
+  // match — the exact documented gap in project_shared_experience_backlink_gap
+  // memory, Ops Checklist P1 T3 #4). where-to-stay-melbourne-boxing-day- was
+  // flipped to AO2027 on creation (see its entry above). The remaining 3
+  // (great-ocean-road-twelve-apostles-daytrip-, yarra-valley-melbourne-wine-
+  // daytrip-, melbourne-laneways-coffee-city-day-) were flipped to AO2027 on
+  // 26 Aug 2026 per founder request — the cricket pack now loses its back-link
+  // on these 3 until the real ?from=eventSlug + nested-lookup fix is built.
+  "great-ocean-road-twelve-apostles-daytrip-": { eventSlug: "australian-open", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "yarra-valley-melbourne-wine-daytrip-": { eventSlug: "australian-open", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "melbourne-laneways-coffee-city-day-": { eventSlug: "australian-open", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "rod-laver-arena-inside-main-court-": { eventSlug: "australian-open", spokeId: "map", spokeLabel: "Venue Map" },
+  "margaret-court-john-cain-arenas-": { eventSlug: "australian-open", spokeId: "map", spokeLabel: "Venue Map" },
+  "outside-courts-grounds-pass-strategy-": { eventSlug: "australian-open", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "practice-week-national-tennis-centre-": { eventSlug: "australian-open", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+  "grand-slam-oval-food-village-": { eventSlug: "australian-open", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "ao-ticket-guide-grounds-session-finals-": { eventSlug: "australian-open", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "rod-laver-arena-seating-comparison-": { eventSlug: "australian-open", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "corporate-hospitality-premium-suites-": { eventSlug: "australian-open", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "getting-to-melbourne-park-transit-": { eventSlug: "australian-open", spokeId: "getting-there", spokeLabel: "Getting There" },
+  "melbourne-january-heat-what-to-pack-": { eventSlug: "australian-open", spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+  "first-timers-guide-etiquette-crowd-culture-": { eventSlug: "australian-open", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "federation-square-cbd-laneways-": { eventSlug: "australian-open", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "st-kilda-beaches-melbourne-park-": { eventSlug: "australian-open", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "melbourne-coffee-food-culture-guide-": { eventSlug: "australian-open", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "late-night-melbourne-park-midnight-finishes-": { eventSlug: "australian-open", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+  "grand-slam-oval-party-live-music-": { eventSlug: "australian-open", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
 };
 
 function getSpokeBackLink(slug: string) {
@@ -221,7 +257,7 @@ function isRealAffiliateLink(url: string): boolean {
 const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: string }> = {
   "where-to-stay-perth-first-test-": { venueCount: 2, venueNoun: "hotels" },
   "where-to-stay-adelaide-city-vs-north-": { venueCount: 2, venueNoun: "hotels" },
-  "where-to-stay-melbourne-boxing-day-": { venueCount: 2, venueNoun: "hotels" },
+  "where-to-stay-melbourne-boxing-day-": { venueCount: 4, venueNoun: "stay options" },
   "where-to-stay-sydney-fourth-test-": { venueCount: 2, venueNoun: "hotels" },
   "fremantle-day-trip-from-perth-": { venueCount: 3, venueNoun: "places" },
   "mclaren-vale-adelaide-wine-daytrip-": { venueCount: 3, venueNoun: "places" },
@@ -250,6 +286,15 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "london-rest-day-": { venueCount: 3, venueNoun: "landmarks" },
   "where-nz-fans-actually-eat-city-guide-": { venueCount: 6, venueNoun: "places" },
   "wildlife-down-under-featherdale-phillip-island-": { venueCount: 2, venueNoun: "places" },
+  // Australian Open 2027 — added 25 Aug 2026. yarra-valley-melbourne-wine-
+  // daytrip- and where-to-stay-melbourne-boxing-day- already had entries
+  // above (shared with the NZ-Australia pack, counts unchanged).
+  "great-ocean-road-twelve-apostles-daytrip-": { venueCount: 2, venueNoun: "landmarks" },
+  "federation-square-cbd-laneways-": { venueCount: 4, venueNoun: "landmarks" },
+  "st-kilda-beaches-melbourne-park-": { venueCount: 2, venueNoun: "places" },
+  "melbourne-coffee-food-culture-guide-": { venueCount: 3, venueNoun: "cafés" },
+  "margaret-court-john-cain-arenas-": { venueCount: 2, venueNoun: "arenas" },
+  "grand-slam-oval-food-village-": { venueCount: 3, venueNoun: "restaurants" },
 };
 
 function getMultiVenueRatings(slug: string) {
@@ -553,6 +598,7 @@ export default async function ExperiencePage({
               slug.startsWith("durban-bunny-chow-indian-ocean-cuisine-") ? "lg:object-[center_10%]" :
               slug.startsWith("ushaka-marine-world-golden-mile-") ? "lg:object-[center_15%]" :
               slug.startsWith("aus-sa-ticket-guide-") ? "lg:object-[center_70%]" :
+              slug.startsWith("late-night-melbourne-park-midnight-finishes-") ? "lg:object-[center_32%]" :
               slug.startsWith("cape-winelands-stellenbosch-franschhoek-") ? "lg:object-[center_85%]" :
               slug.startsWith("where-to-stay-sandton-") ? "lg:object-[center_25%]" :
               slug.startsWith("soweto-apartheid-museum-") ? "lg:object-[center_15%]" :
@@ -579,6 +625,8 @@ export default async function ExperiencePage({
               slug.startsWith("mcg-corporate-boxes-boxing-day-") ? "object-[center_25%]" :
               slug.startsWith("blue-mountains-day-trip-from-sydney-") ? "object-[center_40%]" :
               slug.startsWith("sydney-harbour-beaches-city-day-") ? "object-[center_60%]" :
+              slug.startsWith("rod-laver-arena-inside-main-court-") ? "lg:object-[center_75%]" :
+              slug.startsWith("federation-square-cbd-laneways-") ? "lg:object-[center_68%]" :
               ""
             }`}
             sizes="100vw"
