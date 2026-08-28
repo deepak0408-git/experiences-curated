@@ -137,6 +137,7 @@ export async function getPackPricing(slug: string) {
     .select({
       earlyBirdDisplay: sportingEvents.earlyBirdDisplay,
       standardDisplay: sportingEvents.standardDisplay,
+      earlyBirdCutoff: sportingEvents.earlyBirdCutoff,
     })
     .from(sportingEvents)
     .where(eq(sportingEvents.slug, slug))
@@ -144,12 +145,19 @@ export async function getPackPricing(slug: string) {
 
   const earlyBirdDisplay = event?.earlyBirdDisplay ?? FALLBACK_DISPLAY.earlyBird;
   const standardDisplay = event?.standardDisplay ?? FALLBACK_DISPLAY.standard;
-  const isEarlyBird = new Date() < new Date(config.earlyBirdCutoff);
+  // DB value (curator-set via /curator/price) wins if present; otherwise
+  // falls back to PACK_PRICING_CONFIG's env-var-driven value — resolved live
+  // from process.env every call, never a copied/hardcoded date (see memory
+  // project_curator_driven_pack_pricing_design.md — no backfill was done on
+  // purpose, this fallback chain is the only source until a curator saves).
+  const earlyBirdCutoff = event?.earlyBirdCutoff ?? config.earlyBirdCutoff;
+  const isEarlyBird = new Date() < new Date(earlyBirdCutoff);
 
   return {
     ...config,
     earlyBirdDisplay,
     standardDisplay,
+    earlyBirdCutoff,
     isEarlyBird,
     priceDisplay: isEarlyBird ? earlyBirdDisplay : standardDisplay,
     dodoProductId: isEarlyBird ? config.earlyBirdPriceId : config.standardPriceId,

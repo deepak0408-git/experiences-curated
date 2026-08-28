@@ -24,6 +24,7 @@ export async function getEventsForPriceEditor() {
       endDate: sportingEvents.endDate,
       earlyBirdDisplay: sportingEvents.earlyBirdDisplay,
       standardDisplay: sportingEvents.standardDisplay,
+      earlyBirdCutoff: sportingEvents.earlyBirdCutoff,
       pricingUpdatedAt: sportingEvents.pricingUpdatedAt,
       pricingUpdatedBy: sportingEvents.pricingUpdatedBy,
     })
@@ -33,21 +34,22 @@ export async function getEventsForPriceEditor() {
 
   // Only events with a real PACK_PRICING_CONFIG entry (env-var Dodo price
   // IDs) are actually sellable — a planned/building event with no product
-  // yet has nothing to price. earlyBirdCutoff comes from that same
-  // env-var-driven config, never from the curator page — the founder's
-  // explicit call, 28 Aug 2026 (real checkout-pricing implications; see
-  // memory project_curator_driven_pack_pricing_design.md).
+  // yet has nothing to price. Cutoff shown here is DB value if the curator
+  // has ever saved one, else PACK_PRICING_CONFIG's env-var-driven value —
+  // resolved live from process.env (local .env.local in dev, Vercel's real
+  // value in prod), never a hardcoded/copied date. See memory
+  // project_curator_driven_pack_pricing_design.md.
   return rows
     .filter((r) => PACK_PRICING_CONFIG[r.slug])
     .map((r) => ({
       ...r,
-      earlyBirdCutoff: PACK_PRICING_CONFIG[r.slug].earlyBirdCutoff,
+      earlyBirdCutoff: r.earlyBirdCutoff ?? PACK_PRICING_CONFIG[r.slug].earlyBirdCutoff,
     }));
 }
 
 export async function updateEventPackPricing(
   eventId: string,
-  input: { earlyBirdDisplay: string; standardDisplay: string }
+  input: { earlyBirdDisplay: string; standardDisplay: string; earlyBirdCutoff: string }
 ): Promise<{ success: true } | { error: string }> {
   const { user } = await getAuthUser();
   if (!user?.email) return { error: "Not signed in." };
@@ -58,12 +60,16 @@ export async function updateEventPackPricing(
   if (!US_DOLLAR_DISPLAY.test(input.standardDisplay)) {
     return { error: `Standard price must look like "US$15" — got "${input.standardDisplay}".` };
   }
+  if (Number.isNaN(new Date(input.earlyBirdCutoff).getTime())) {
+    return { error: `Cutoff date "${input.earlyBirdCutoff}" isn't a valid date.` };
+  }
 
   await db
     .update(sportingEvents)
     .set({
       earlyBirdDisplay: input.earlyBirdDisplay,
       standardDisplay: input.standardDisplay,
+      earlyBirdCutoff: input.earlyBirdCutoff,
       pricingUpdatedAt: new Date(),
       pricingUpdatedBy: user.email,
     })
