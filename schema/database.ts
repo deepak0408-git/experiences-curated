@@ -296,12 +296,18 @@ export const sportingEvents = pgTable("sporting_events", {
   // replacing the 3 duplicate hardcoded PACK_PRICING/HOMEPAGE_PRICE_BY_EVENT
   // tables. Written via /curator/price, not by any automated Dodo sync (no
   // webhook exists for Dodo product/price changes — confirmed against Dodo's
-  // own docs). earlyBirdCutoff deliberately NOT here — stays env-var-driven
-  // since it also gates which real Dodo product ID is charged at checkout,
-  // not just which string displays; founder's explicit call, 28 Aug 2026.
-  // See memory project_curator_driven_pack_pricing_design.md.
+  // own docs). See memory project_curator_driven_pack_pricing_design.md.
   earlyBirdDisplay: varchar("early_bird_display", { length: 20 }),
   standardDisplay: varchar("standard_display", { length: 20 }),
+  // Curator-editable as of 29 Aug 2026 (moved off its per-event Vercel env
+  // var — founder's explicit reversal of the original 28 Aug design, which
+  // had kept this env-var-only specifically because it also gates which
+  // real Dodo product ID is charged at checkout, not just which string
+  // displays). Plain calendar date, no time component — matches the
+  // env-var era's semantics exactly (comparison is always against
+  // end-of-that-day). getPackPricing() falls back to the env var default
+  // only if this column is NULL.
+  earlyBirdCutoff: date("early_bird_cutoff"),
   pricingUpdatedAt: timestamp("pricing_updated_at"),
   pricingUpdatedBy: varchar("pricing_updated_by", { length: 255 }),
   // When isHidden last flipped false — anchors the 2-day-later newsletter announcement

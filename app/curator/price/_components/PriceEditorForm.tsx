@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { updateEventPackPricing } from "../actions";
 
 type Event = {
@@ -31,7 +31,9 @@ function stripDollarPrefix(display: string | null): string {
 }
 
 // Desktop grid: Event | Early-bird | Standard | Cutoff | Last updated | Save
-const DESKTOP_GRID = "sm:grid-cols-[2fr_100px_100px_120px_140px_90px]";
+const DESKTOP_GRID = "sm:grid-cols-[2fr_100px_100px_140px_140px_150px]";
+
+const CONFIRM_WINDOW_MS = 4000;
 
 export default function PriceEditorForm({ events, curatorEmail }: { events: Event[]; curatorEmail: string }) {
   return (
@@ -40,9 +42,7 @@ export default function PriceEditorForm({ events, curatorEmail }: { events: Even
         <span className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00]">Event</span>
         <span className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00]">Early-bird</span>
         <span className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00]">Standard</span>
-        <span className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00]">
-          Cutoff <span className="normal-case text-[#6A6A6A] font-normal">(Vercel)</span>
-        </span>
+        <span className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00]">Cutoff</span>
         <span className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00]">Last updated</span>
         <span />
       </div>
@@ -85,19 +85,55 @@ function PriceNumberInput({
   );
 }
 
+function CutoffDateInput({
+  value,
+  onChange,
+  className,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  className?: string;
+}) {
+  return (
+    <input
+      type="date"
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className={`px-2 py-1.5 rounded-sm bg-[#1A1A1A] border border-[#2A2A2A] text-white text-sm focus:outline-none focus:border-[#AAFF00] ${className ?? ""}`}
+    />
+  );
+}
+
 function PriceRow({ event, curatorEmail, rowBg }: { event: Event; curatorEmail: string; rowBg: string }) {
   const [earlyBird, setEarlyBird] = useState(stripDollarPrefix(event.earlyBirdDisplay));
   const [standard, setStandard] = useState(stripDollarPrefix(event.standardDisplay));
+  const [cutoff, setCutoff] = useState(event.earlyBirdCutoff);
   const [baselineEarlyBird, setBaselineEarlyBird] = useState(earlyBird);
   const [baselineStandard, setBaselineStandard] = useState(standard);
+  const [baselineCutoff, setBaselineCutoff] = useState(cutoff);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [updatedAt, setUpdatedAt] = useState(event.pricingUpdatedAt);
   const [updatedBy, setUpdatedBy] = useState(event.pricingUpdatedBy);
+  const [confirmPending, setConfirmPending] = useState(false);
+  const confirmTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const dirty = earlyBird !== baselineEarlyBird || standard !== baselineStandard;
-  const canSave = dirty && earlyBird !== "" && standard !== "" && !saving;
+  const cutoffDirty = cutoff !== baselineCutoff;
+  const dirty = earlyBird !== baselineEarlyBird || standard !== baselineStandard || cutoffDirty;
+  const canSave = dirty && earlyBird !== "" && standard !== "" && cutoff !== "" && !saving;
+
+  function clearConfirm() {
+    if (confirmTimeoutRef.current) clearTimeout(confirmTimeoutRef.current);
+    setConfirmPending(false);
+  }
+
+  function onFieldChange<T>(setter: (v: T) => void) {
+    return (v: T) => {
+      clearConfirm();
+      setter(v);
+    };
+  }
 
   async function handleSave() {
     setSaving(true);
@@ -106,6 +142,7 @@ function PriceRow({ event, curatorEmail, rowBg }: { event: Event; curatorEmail: 
     const result = await updateEventPackPricing(event.id, {
       earlyBirdDisplay: `US$${earlyBird}`,
       standardDisplay: `US$${standard}`,
+      earlyBirdCutoff: cutoff,
     });
     setSaving(false);
     if ("error" in result) {
@@ -114,19 +151,38 @@ function PriceRow({ event, curatorEmail, rowBg }: { event: Event; curatorEmail: 
       setSaved(true);
       setBaselineEarlyBird(earlyBird);
       setBaselineStandard(standard);
+      setBaselineCutoff(cutoff);
       setUpdatedAt(new Date());
       setUpdatedBy(curatorEmail);
       setTimeout(() => setSaved(false), 3000);
     }
   }
 
+  // Changing the cutoff changes what a customer is actually charged at
+  // checkout, not just a display label — so a cutoff-dirty save requires a
+  // second click within CONFIRM_WINDOW_MS before it actually commits. Same
+  // click-again-to-confirm pattern already used by ClearBoardButton/
+  // RemoveFavouriteButton elsewhere in the app. Price-only edits (no cutoff
+  // change) save on the first click, same as before.
+  function handleSaveClick() {
+    if (cutoffDirty && !confirmPending) {
+      setConfirmPending(true);
+      confirmTimeoutRef.current = setTimeout(() => setConfirmPending(false), CONFIRM_WINDOW_MS);
+      return;
+    }
+    clearConfirm();
+    handleSave();
+  }
+
   const saveButton = (
     <button
-      onClick={handleSave}
+      onClick={handleSaveClick}
       disabled={!canSave}
-      className="px-3 py-1.5 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
+      className={`px-3 py-1.5 rounded-sm text-xs font-black transition-colors disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap ${
+        confirmPending ? "bg-red-500 text-white hover:bg-red-400" : "bg-[#AAFF00] text-black hover:bg-[#BBFF33]"
+      }`}
     >
-      {saving ? "Saving…" : "Save"}
+      {saving ? "Saving…" : confirmPending ? "Confirm — changes checkout price" : "Save"}
     </button>
   );
 
@@ -138,9 +194,9 @@ function PriceRow({ event, curatorEmail, rowBg }: { event: Event; curatorEmail: 
           <div className="font-medium text-white">{event.name}</div>
           <div className="text-xs text-[#6A6A6A]">{formatDate(event.startDate)} – {formatDate(event.endDate)}</div>
         </div>
-        <PriceNumberInput value={earlyBird} onChange={setEarlyBird} />
-        <PriceNumberInput value={standard} onChange={setStandard} />
-        <span className="text-[#6A6A6A] text-sm">{formatDate(event.earlyBirdCutoff)}</span>
+        <PriceNumberInput value={earlyBird} onChange={onFieldChange(setEarlyBird)} />
+        <PriceNumberInput value={standard} onChange={onFieldChange(setStandard)} />
+        <CutoffDateInput value={cutoff} onChange={onFieldChange(setCutoff)} />
         <span className="text-xs text-[#6A6A6A]">
           {updatedAt ? (
             <>
@@ -158,27 +214,34 @@ function PriceRow({ event, curatorEmail, rowBg }: { event: Event; curatorEmail: 
         </div>
       </div>
 
-      {/* Mobile — 3 stacked rows: event name; early-bird; standard + cutoff + save.
-          Dates and "Last updated" dropped entirely here to stop the page from
-          scrolling horizontally on narrow screens (founder feedback, 29 Aug 2026). */}
+      {/* Mobile — stacked: event name + dates; early-bird; standard + cutoff + save.
+          "Last updated" still dropped to stop the page from scrolling
+          horizontally on narrow screens (founder feedback, 29 Aug 2026);
+          dates brought back under the event name since the curator needs
+          them to sanity-check the cutoff date, now that it's editable here
+          too (founder feedback, 29 Aug 2026). */}
       <div className="sm:hidden">
-        <div className="font-medium text-white mb-2">{event.name}</div>
+        <div className="font-medium text-white">{event.name}</div>
+        <div className="text-xs text-[#6A6A6A] mb-2">{formatDate(event.startDate)} – {formatDate(event.endDate)}</div>
         <div className="mb-2">
           <label className="block text-[10px] font-semibold tracking-widest uppercase text-[#AAFF00] mb-1">
             Early-bird
           </label>
-          <PriceNumberInput value={earlyBird} onChange={setEarlyBird} className="w-24" />
+          <PriceNumberInput value={earlyBird} onChange={onFieldChange(setEarlyBird)} className="w-24" />
         </div>
-        <div className="flex items-end gap-2 flex-wrap">
-          <div>
-            <label className="block text-[10px] font-semibold tracking-widest uppercase text-[#AAFF00] mb-1">
-              Standard
-            </label>
-            <PriceNumberInput value={standard} onChange={setStandard} className="w-24" />
-          </div>
-          <span className="text-xs text-[#6A6A6A] whitespace-nowrap pb-1.5">{formatDate(event.earlyBirdCutoff)}</span>
-          {saveButton}
+        <div className="mb-2">
+          <label className="block text-[10px] font-semibold tracking-widest uppercase text-[#AAFF00] mb-1">
+            Standard
+          </label>
+          <PriceNumberInput value={standard} onChange={onFieldChange(setStandard)} className="w-24" />
         </div>
+        <div className="mb-2">
+          <label className="block text-[10px] font-semibold tracking-widest uppercase text-[#AAFF00] mb-1">
+            Cutoff
+          </label>
+          <CutoffDateInput value={cutoff} onChange={onFieldChange(setCutoff)} />
+        </div>
+        {saveButton}
         {(saved || error) && (
           <div className="mt-1.5">
             {saved && <span className="text-xs text-[#AAFF00] font-medium">Saved</span>}
