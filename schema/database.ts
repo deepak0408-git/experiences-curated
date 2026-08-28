@@ -686,6 +686,23 @@ export const purchases = pgTable("purchases", {
   uniqueIndex("purchases_email_event_unique").on(t.email, t.sportingEventId),
 ]);
 
+// Custom Itinerary Planning — standalone, non-event paid service (US$49 one-time).
+// Deliberately separate from `purchases`, which requires a sportingEventId FK.
+export const customItineraryOrders = pgTable("custom_itinerary_orders", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: varchar("email", { length: 255 }).notNull(),
+  dodoPaymentId: varchar("dodo_payment_id", { length: 100 }).notNull().unique(),
+  dodoCustomerId: varchar("dodo_customer_id", { length: 100 }),
+  dodoProductId: varchar("dodo_product_id", { length: 100 }).notNull(),
+  pricePaid: numeric("price_paid", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).notNull(),
+  status: varchar("status", { length: 20 }).notNull().default("paid"),
+  purchasedAt: timestamp("purchased_at").notNull().defaultNow(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+}, (t) => [
+  index("custom_itinerary_orders_email_idx").on(t.email),
+]);
+
 export const userProfiles = pgTable("user_profiles", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: uuid("user_id").references(() => users.id),
