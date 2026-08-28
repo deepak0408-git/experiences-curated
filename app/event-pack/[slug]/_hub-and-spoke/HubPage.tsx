@@ -10,8 +10,11 @@ import LocalCurrencyHint from "../_components/LocalCurrencyHint";
 import FavouriteToggle from "../_components/FavouriteToggle";
 import ShareGuideButton from "../_components/ShareGuideButton";
 import RateGuideButton from "../_components/RateGuideButton";
+import AskCuratorForm from "../_components/AskCuratorForm";
+import HubPackDownload from "./_components/HubPackDownload";
 import { isEventPackSaved, getMyEventPackRating } from "../actions";
 import { getArticlesForEvent } from "@/lib/queries/blog";
+import { PDF_CONTENT_BY_EVENT } from "@/app/api/pack/pdf-hub/pdfContentRegistry";
 
 // Hub index for any hub_and_spoke-format event, rendered from
 // app/event-pack/[slug]/page.tsx when event.packFormat === "hub_and_spoke".
@@ -54,7 +57,12 @@ const FILMSTRIP_SLUGS_BY_EVENT: Record<string, string[]> = {
 // Brief). address/ticketingUrl pull from the real event record where
 // possible (see below); emergency numbers and hospital are real, sourced
 // facts for the Sepang/KLIA area, not invented — see reference memory.
-const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; value: string; href?: string; linkLabel?: string }>> = {
+// Exported (27 Aug 2026) so the Travel Brief PDF route
+// (app/api/pack/pdf-hub/route.ts) can reuse this table directly instead of
+// hand-duplicating it — avoids the exact drift risk flagged in classic
+// pack's PACK_EDITORIAL, which exists as two separately-maintained copies
+// (PackView.tsx and lib/pack-content.ts).
+export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; value: string; href?: string; linkLabel?: string }>> = {
   "singapore-grand-prix": [
     { label: "Gates open", value: "F1 hasn't published exact 2026 gate-opening times yet. Based on the confirmed 2026 session schedule — Practice 1 Fri 4:30pm, Sprint Qualifying Fri 8:30pm, Sprint Sat 5pm, Qualifying Sat 9pm, Race Sun 8pm — expect gates to open roughly 2-3 hours before each day's first session. Confirm exact times closer to race week." },
     { label: "Emergencies", value: "Police: 999. Fire/ambulance (SCDF): 995 — the same number covers both. Non-emergency ambulance: 1777. Nearest 24-hour A&E to the circuit: Raffles Hospital, 585 North Bridge Road, Singapore 188770." },
@@ -105,7 +113,8 @@ const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; value: str
   ],
 };
 
-const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: string; heroFallbackImageSlug: string; introText: string }> = {
+// Exported (27 Aug 2026) — same reasoning as QUICK_REFERENCE_BY_EVENT above.
+export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: string; heroFallbackImageSlug: string; introText: string }> = {
   "bahrain-grand-prix": {
     displayName: "Bahrain Grand Prix in Malaysia",
     venueLine: "Held at Sepang International Circuit, Malaysia — same \"Bahrain Grand Prix\" name on the calendar, a different country hosting it this year.",
@@ -211,7 +220,7 @@ export default async function HubPage({ slug }: { slug: string }) {
   } = await supabase.auth.getUser();
 
   const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(slug, event.id, event.isHidden);
-  const pricing = getPackPricing(slug, event.packCurrency);
+  const pricing = await getPackPricing(slug, event.packCurrency);
   const initiallySaved = user ? await isEventPackSaved(event.id) : false;
   const myRating = user ? await getMyEventPackRating(event.id) : null;
 
@@ -560,6 +569,56 @@ export default async function HubPage({ slug }: { slug: string }) {
           </div>
         )}
       </div>
+
+      {/* Take it offline + Ask the Curator — Pro-only, same section
+          structure as the classic pack's PackView.tsx (~line 1643): one
+          bg-[#0A0A0A] border-t wrapper, max-w-5xl container, space-y-12,
+          a divider between the two blocks. "Take it offline" only renders
+          once this event has a real PDF content bundle built (see
+          build-pro-pdf skill) — gated on PDF_CONTENT_BY_EVENT so a
+          hub-and-spoke event without one yet doesn't show a broken
+          button. Ask-the-curator renders for every hub-and-spoke event
+          regardless, same as before. */}
+      {isPro && (
+        <div className="bg-[#0A0A0A] border-t border-[#2A2A2A]">
+          <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12 space-y-12">
+
+            {slug in PDF_CONTENT_BY_EVENT && (
+              <>
+                <div className="max-w-xl">
+                  <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-3">
+                    Pro
+                  </p>
+                  <h2 className="text-lg font-black text-white mb-2">
+                    Take it offline
+                  </h2>
+                  <p className="text-sm text-[#A3A3A3] mb-6 leading-relaxed">
+                    Download the pack as a PDF — for the plane, inside the stadium, or anywhere without signal. Travel Brief is a quick-reference digest covering local travel logistics, weather and arrival information. Full Pack includes everything.
+                  </p>
+                  <HubPackDownload eventSlug={slug} />
+                </div>
+
+                <div className="border-t border-[#2A2A2A]" />
+              </>
+            )}
+
+            <div className="max-w-xl">
+              {!(slug in PDF_CONTENT_BY_EVENT) && (
+                <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-3">
+                  Pro
+                </p>
+              )}
+              <h2 className="text-lg font-black text-white mb-2">
+                Ask the curator
+              </h2>
+              <p className="text-sm text-[#A3A3A3] mb-6 leading-relaxed">
+                Something not covered in the pack? Ask anything — a specific venue, a logistics question, what&apos;s actually worth it. A human reply within 48 hours.
+              </p>
+              <AskCuratorForm eventName={displayEventName} />
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

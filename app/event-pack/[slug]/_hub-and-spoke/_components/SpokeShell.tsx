@@ -53,7 +53,7 @@ export default async function SpokeShell({
     data: { user },
   } = await supabase.auth.getUser();
   const spokes = getSpokesForEvent(eventSlug);
-  const pricing = getPackPricing(eventSlug, eventCurrency);
+  const pricing = await getPackPricing(eventSlug, eventCurrency);
 
   // "Next spoke" navigation — added 15 Aug 2026 per direct UX feedback.
   // Follows SPOKES_BY_EVENT's own declared array order (already a

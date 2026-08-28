@@ -12,6 +12,7 @@ import SportNavigator from "./_components/SportNavigator";
 import ScrollFadeInit from "./_components/ScrollFadeInit";
 import BrandHero from "./_components/BrandHero";
 import { getAuthUser } from "@/lib/supabase/server";
+import { getPackPricing } from "@/lib/packPricing";
 
 // Revalidate every 5 minutes — events and experience counts change rarely.
 // Auth (nav email, trip board CTA) gracefully falls back to unauthenticated state from cache.
@@ -33,88 +34,6 @@ const SPORT_LABELS: Record<string, string> = {
   cycling: "Cycling",
   athletics: "Athletics",
   other: "Sport",
-};
-
-
-const HOMEPAGE_PRICE_BY_EVENT: Record<string, { earlyBirdCutoff: string; early: string; standard: string }> = {
-  // Real, current key for the evergreen-slug Wimbledon event (migrated 14 Aug
-  // 2026) — the DB row's slug is now "wimbledon", not "wimbledon-2026".
-  // Hardcoded 25 Aug 2026 to match every other event's pattern below —
-  // previously the only event still reading its price display from the
-  // generic, non-Wimbledon-named NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY /
-  // NEXT_PUBLIC_STANDARD_PRICE_DISPLAY env vars (a leftover from when
-  // Wimbledon was the only live event). Those two vars are no longer read
-  // anywhere — safe to remove from .env.local/Vercel.
-  "wimbledon": {
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_WIMBLEDON_EARLY_BIRD_CUTOFF ?? "2027-06-27",
-    early: "US$10",
-    standard: "US$15",
-  },
-  "belgian-gp-2026": {
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-10",
-    early: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_PRICE_DISPLAY ?? "US$15",
-    standard: process.env.NEXT_PUBLIC_BELGIAN_GP_STANDARD_PRICE_DISPLAY ?? "US$25",
-  },
-  "us-open-2026": {
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_US_OPEN_EARLY_BIRD_CUTOFF ?? "2026-08-01",
-    early: "US$0",
-    standard: "US$10",
-  },
-  "india-in-england-cricket-2026": {
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_CRICKET_EARLY_BIRD_CUTOFF ?? "2026-06-15",
-    early: "US$9",
-    standard: "US$15",
-  },
-  "hungarian-gp-2026": {
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_HUNGARIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-17",
-    early: "US$0",
-    standard: "US$7",
-  },
-  "italian-gp-2026": {
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_ITALIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-08-25",
-    early: "US$3",
-    standard: "US$10",
-  },
-  "bmw-pga-championship-2026": {
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_BMW_PGA_EARLY_BIRD_CUTOFF ?? "2026-09-03",
-    early: "US$5",
-    standard: "US$10",
-  },
-  "australia-in-south-africa-cricket-2026": {
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_AUS_SA_EARLY_BIRD_CUTOFF ?? "2026-08-09",
-    early: "US$5",
-    standard: "US$10",
-  },
-  "bahrain-grand-prix": {
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_BAHRAIN_GP_EARLY_BIRD_CUTOFF ?? "2026-09-04",
-    early: "US$5",
-    standard: "US$10",
-  },
-  "singapore-grand-prix": {
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_SINGAPORE_GP_EARLY_BIRD_CUTOFF ?? "2026-09-01",
-    early: "US$5",
-    standard: "US$10",
-  },
-  "atp-finals": {
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_ATP_FINALS_EARLY_BIRD_CUTOFF ?? "2026-10-18",
-    early: "US$10",
-    standard: "US$15",
-  },
-  "shanghai-masters": {
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_SHANGHAI_MASTERS_EARLY_BIRD_CUTOFF ?? "2026-09-21",
-    early: "US$10",
-    standard: "US$15",
-  },
-  "australian-open": {
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_AUSTRALIAN_OPEN_EARLY_BIRD_CUTOFF ?? "2026-12-01",
-    early: "US$10",
-    standard: "US$15",
-  },
-  "new-zealand-in-australia-cricket-2026-27": {
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_NZ_AUSTRALIA_EARLY_BIRD_CUTOFF ?? "2026-11-09",
-    early: "US$5",
-    standard: "US$10",
-  },
 };
 
 
@@ -149,26 +68,27 @@ function isFreeEventSlug(slug: string): boolean {
   return new Date() <= new Date(`${entry.endDate}T23:59:59Z`);
 }
 
-function eventPriceDisplay(slug: string): string {
+// Both functions below now read from the shared lib/packPricing.ts —
+// HOMEPAGE_PRICE_BY_EVENT (a 3rd duplicate of the same display data) removed
+// 28 Aug 2026 as part of the curator-driven pack pricing design (see memory
+// project_curator_driven_pack_pricing_design.md).
+async function eventPriceDisplay(slug: string): Promise<string> {
   if (isFreeEventSlug(slug)) return "Free";
   // Fallback changed from "wimbledon-2026" to "us-open-2026" 16 Aug 2026 —
   // "wimbledon-2026" retired entirely as part of the Wimbledon evergreen-
   // slug migration (see lib/packPricing.ts and app/event-pack/[slug]/page.tsx
   // for the same change).
-  const pricing = HOMEPAGE_PRICE_BY_EVENT[slug] ?? HOMEPAGE_PRICE_BY_EVENT["us-open-2026"];
-  const isEarlyBird = new Date() < new Date(pricing.earlyBirdCutoff);
-  return isEarlyBird ? pricing.early : pricing.standard;
+  const pricing = (await getPackPricing(slug)) ?? (await getPackPricing("us-open-2026"))!;
+  return pricing.priceDisplay;
 }
 
-function earlyBirdNudge(slug: string): { show: boolean; cutoffLabel: string; standardPrice: string } {
+async function earlyBirdNudge(slug: string): Promise<{ show: boolean; cutoffLabel: string; standardPrice: string }> {
   if (isFreeEventSlug(slug)) return { show: false, cutoffLabel: "", standardPrice: "" };
-  const pricing = HOMEPAGE_PRICE_BY_EVENT[slug];
-  if (!pricing) return { show: false, cutoffLabel: "", standardPrice: "" };
-  const isEarlyBird = new Date() < new Date(pricing.earlyBirdCutoff);
-  if (!isEarlyBird) return { show: false, cutoffLabel: "", standardPrice: "" };
+  const pricing = await getPackPricing(slug);
+  if (!pricing || !pricing.isEarlyBird) return { show: false, cutoffLabel: "", standardPrice: "" };
   const d = new Date(pricing.earlyBirdCutoff);
   const cutoffLabel = d.toLocaleDateString("en-GB", { day: "numeric", month: "long" });
-  return { show: true, cutoffLabel, standardPrice: pricing.standard };
+  return { show: true, cutoffLabel, standardPrice: pricing.standardDisplay };
 }
 
 function eventState(startDate: string, endDate: string) {
@@ -248,6 +168,17 @@ export default async function HomePage() {
     }
   }
 
+  const featuredEventsForHero = await Promise.all(
+    featuredSorted.map(async (ev) => ({
+      slug: ev.slug,
+      name: ev.name,
+      sport: ev.sport,
+      startDate: ev.startDate,
+      endDate: ev.endDate,
+      isFree: (await eventPriceDisplay(ev.slug)) === "Free",
+    }))
+  );
+
   return (
     <main className="min-h-screen bg-[#0A0A0A]">
       <ScrollFadeInit />
@@ -256,14 +187,7 @@ export default async function HomePage() {
       <div className="relative">
         <HomepageNav email={user?.email ?? null} showSearch={true} overlay={true} />
         <BrandHero
-          featuredEvents={featuredSorted.map((ev) => ({
-            slug: ev.slug,
-            name: ev.name,
-            sport: ev.sport,
-            startDate: ev.startDate,
-            endDate: ev.endDate,
-            isFree: eventPriceDisplay(ev.slug) === "Free",
-          }))}
+          featuredEvents={featuredEventsForHero}
           hasCalendarEvents={calendarEvents.length > 0}
           showPlannerLink={process.env.SHOW_PLANNER_TEASER === "true"}
         />
