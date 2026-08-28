@@ -458,9 +458,35 @@ export default async function HomePage() {
         </div>
       </div>
 
+      {/* Custom Itinerary Planning strip */}
+      <div className="bg-[#141414] border-t border-[#2A2A2A]">
+        <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+          <div>
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">
+              Customized Itinerary
+            </p>
+            <p className="text-lg font-black text-white leading-snug">
+              Want an itinerary that is uniquely yours and fits your style?
+            </p>
+            <p className="mt-2 text-sm text-[#A3A3A3] leading-6">
+              Tell us your sport, dates, and budget — get a real, day-by-day itinerary back, researched to the
+              same standard as our published packs.
+            </p>
+          </div>
+          <div className="flex-shrink-0">
+            <Link
+              href="/custom-itinerary"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors whitespace-nowrap"
+            >
+              Start your itinerary →
+            </Link>
+          </div>
+        </div>
+      </div>
+
       {/* Pro strip — annual pack pitch */}
       {process.env.HIDE_PRO !== "true" && (
-        <div className="bg-[#141414] border-t border-[#2A2A2A]">
+        <div className="bg-[#0A0A0A] border-t border-[#2A2A2A]">
           <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
             <div>
               <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">

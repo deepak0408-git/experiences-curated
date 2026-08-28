@@ -4,7 +4,9 @@ import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { db } from "@/lib/db";
-import { purchases, sportingEvents, proSubscriptions, users } from "@/schema/database";
+import { purchases, sportingEvents, proSubscriptions, users, customItineraryOrders } from "@/schema/database";
+
+const CUSTOM_ITINERARY_PRODUCT_ID = "pdt_0NmN6uswSvFETzX6GUQOU";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -144,6 +146,107 @@ export async function POST(request: NextRequest) {
   // Skip pro transactions — handled by subscription events
   if (PRO_PRODUCT_IDS.includes(productId)) {
     console.log("[dodo webhook] Pro payment — handled by subscription events, skipping");
+    return NextResponse.json({ received: true });
+  }
+
+  // ── Custom Itinerary Planning — standalone, non-event product ─────────────
+  if (productId === CUSTOM_ITINERARY_PRODUCT_ID) {
+    const orderCurrency = payment.currency ?? "USD";
+    const orderPricePaid = String(payment.total_amount / 100);
+
+    try {
+      const inserted = await db
+        .insert(customItineraryOrders)
+        .values({
+          email,
+          dodoPaymentId: payment.payment_id,
+          dodoCustomerId: payment.customer.customer_id,
+          dodoProductId: productId,
+          pricePaid: orderPricePaid,
+          currency: orderCurrency,
+          status: "paid",
+        })
+        .onConflictDoNothing()
+        .returning({ id: customItineraryOrders.id });
+
+      if (inserted.length === 0) {
+        console.log("[dodo webhook] custom itinerary order already recorded (conflict), skipping email");
+        return NextResponse.json({ received: true });
+      }
+      console.log(`[dodo webhook] ✓ custom itinerary order recorded — email: ${email}`);
+    } catch (err) {
+      console.error("[dodo webhook] failed to insert custom itinerary order:", err);
+      return NextResponse.json({ error: "DB insert failed" }, { status: 500 });
+    }
+
+    try {
+      const { data: authData, error } = await supabaseAdmin.auth.admin.createUser({ email, email_confirm: true });
+      if (error && !error.message.includes("already been registered")) {
+        console.error("[dodo webhook] failed to create Supabase user:", error.message);
+      }
+      const authId = authData?.user?.id;
+      if (authId) {
+        await db.insert(users).values({ email, authId }).onConflictDoNothing();
+      }
+    } catch (err) {
+      console.error("[dodo webhook] Supabase user provisioning error:", err);
+    }
+
+    try {
+      await resend.emails.send({
+        from: "Experiences | Curated <hello@experiences-curated.com>",
+        to: email,
+        subject: "Your Custom Itinerary Planning intake form",
+        html: `
+          <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0A0A0A">
+            <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#AAFF00;margin-bottom:28px">Experiences | Curated</p>
+            <p style="font-size:20px;font-weight:900;color:#ffffff;margin-bottom:12px">You're in.</p>
+            <p style="font-size:14px;color:#A3A3A3;line-height:1.6;margin-bottom:28px">
+              Thanks for your payment. Reply to this email with the details below and we'll start planning —
+              consider this your intake form.
+            </p>
+
+            <p style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#AAFF00;margin:0 0 10px">Trip basics</p>
+            <ol style="font-size:14px;color:#A3A3A3;line-height:1.8;margin:0 0 24px;padding-left:20px">
+              <li>Which event(s) are you attending? (name + city, if more than one)</li>
+              <li>Your travel dates — or if flexible, your preferred window and trip length</li>
+              <li>Where are you flying from?</li>
+              <li>How many people are traveling, and who (solo, couple, family with kids, group)?</li>
+            </ol>
+
+            <p style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#AAFF00;margin:0 0 10px">Budget</p>
+            <ol start="5" style="font-size:14px;color:#A3A3A3;line-height:1.8;margin:0 0 24px;padding-left:20px">
+              <li>Total budget for the trip (or per person) — flights, hotel, tickets, food, local transit</li>
+              <li>Any part of that budget that's fixed or already spent (e.g. tickets already bought)?</li>
+            </ol>
+
+            <p style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#AAFF00;margin:0 0 10px">Preferences</p>
+            <ol start="7" style="font-size:14px;color:#A3A3A3;line-height:1.8;margin:0 0 24px;padding-left:20px">
+              <li>Ticket priority — best seats/hospitality vs. good value, if there's a tradeoff</li>
+              <li>Hotel style — proximity to venue vs. staying in the city center; any brand/star-level preference</li>
+              <li>Pace — packed with sightseeing, or mostly just the event with downtime</li>
+              <li>Anything you already know you want (a specific hotel, restaurant, day trip)</li>
+              <li>Anything you want to avoid (crowds, long transfers, a particular neighborhood, etc.)</li>
+            </ol>
+
+            <p style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#AAFF00;margin:0 0 10px">Logistics</p>
+            <ol start="12" style="font-size:14px;color:#A3A3A3;line-height:1.8;margin:0 0 32px;padding-left:20px">
+              <li>Any existing bookings we need to plan around (flights, hotel, other events)?</li>
+              <li>Have you already bought one of our event packs for this trip?</li>
+            </ol>
+
+            <p style="font-size:13px;color:#6A6A6A;line-height:1.6">
+              Delivery is within 5 business days of us receiving your completed details above. Questions?
+              Just reply here.
+            </p>
+          </div>
+        `,
+      });
+      console.log(`[dodo webhook] ✓ custom itinerary confirmation email sent to ${email}`);
+    } catch (err) {
+      console.error("[dodo webhook] failed to send custom itinerary confirmation email:", err);
+    }
+
     return NextResponse.json({ received: true });
   }
 
