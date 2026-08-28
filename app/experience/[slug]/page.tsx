@@ -468,7 +468,7 @@ export default async function ExperiencePage({
   // "£25" with no relationship to the real event or currency. If the resolved
   // event has no PACK_PRICING entry yet, priceDisplay is null and the gate falls
   // back to a generic "Get the full pack" CTA with no invented price.
-  const eventPricing = getPackPricing(eventPackSlug);
+  const eventPricing = await getPackPricing(eventPackSlug);
   // FREE_EVENT_SLUGS format: "slug:YYYY-MM-DD,slug:YYYY-MM-DD,slug" — a slug with
   // no :date is free with no end date; a slug with :date is free through the end
   // of that day (UTC). Must match parsing in app/event-pack/[slug]/page.tsx.

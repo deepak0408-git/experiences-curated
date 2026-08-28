@@ -13,7 +13,7 @@ import { getProDetails } from "@/lib/pro";
 import HomepageNav from "@/app/_components/HomepageNav";
 import LocalCurrencyHint from "./_components/LocalCurrencyHint";
 import { grantFreeAccess } from "./actions";
-import { PACK_PRICING } from "@/lib/packPricing";
+import { getPackPricing } from "@/lib/packPricing";
 
 export async function generateMetadata({
   params,
@@ -517,7 +517,7 @@ export default async function EventPackPage({
   // HubPage.tsx before ever reaching here) — a generic fallback for a
   // still-classic event should point at another real classic event, not a
   // hub-and-spoke one's pricing shape.
-  const pricing = PACK_PRICING[slug] ?? PACK_PRICING["us-open-2026"];
+  const pricing = (await getPackPricing(slug)) ?? (await getPackPricing("us-open-2026"))!;
   const isEarlyBird = new Date() < new Date(pricing.earlyBirdCutoff);
   const priceDisplay = freeAccessEnabled ? "Free" : isEarlyBird ? pricing.earlyBirdDisplay : pricing.standardDisplay;
   const priceId = isEarlyBird ? pricing.earlyBirdPriceId : pricing.standardPriceId;

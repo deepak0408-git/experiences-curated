@@ -1,31 +1,31 @@
-// Single source of truth for every event pack's real Dodo/Paddle price IDs,
-// early-bird cutoff, and display prices — keyed by event slug. Previously
-// duplicated: app/event-pack/[slug]/page.tsx had its own private
-// PACK_PRICING, and app/experience/[slug]/page.tsx didn't use it at all —
-// it hardcoded "wimbledon-2026" as a fallback event and read price from
-// GLOBAL env vars (NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY, defaulting to a
-// GBP figure) regardless of which event an experience actually belonged
-// to. Fixed 1 Aug 2026 after this surfaced on a Bahrain GP (USD) experience
-// page showing "£25" with no relationship to the real event or currency.
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db";
+import { sportingEvents } from "@/schema/database";
+
+// Single source of truth for every event pack's real Dodo/Paddle price IDs
+// and early-bird cutoff, keyed by event slug. Previously duplicated across
+// 3 files (this table, the hub-and-spoke pack's own copy, and app/page.tsx's
+// HOMEPAGE_PRICE_BY_EVENT) — collapsed into one here 28 Aug 2026 as part of
+// the curator-driven pack pricing design (see memory
+// project_curator_driven_pack_pricing_design.md). The hub-and-spoke pack's
+// packPricing.ts now delegates to getPackPricing() below instead of keeping
+// its own copy of this table.
 //
-// currency is read from sportingEvents.packCurrency at the DB level (see
-// getPackPricing below) — this table only holds price IDs/display strings/
-// cutoff, never currency, so there is exactly one place currency can be
-// wrong.
-export const PACK_PRICING: Record<string, {
+// Display prices (earlyBirdDisplay/standardDisplay) are NOT in this table —
+// they live on sportingEvents.earlyBirdDisplay/standardDisplay, curator-
+// editable via /curator/price, since a founder repricing in the Dodo
+// dashboard was going stale here with no warning (incident 13 Jul 2026,
+// Italian GP/BMW PGA). earlyBirdCutoff deliberately stays here (env-var-
+// driven, not curator-editable) — it gates which real Dodo product ID gets
+// charged at checkout, not just which string displays, so the founder chose
+// to keep it change-controlled via Vercel env vars rather than a curator UI.
+// currency is read from sportingEvents.packCurrency by callers — this table
+// never holds currency, so there's exactly one place it can be wrong.
+export const PACK_PRICING_CONFIG: Record<string, {
   earlyBirdPriceId: string;
   standardPriceId: string;
   earlyBirdCutoff: string;
-  earlyBirdDisplay: string;
-  standardDisplay: string;
 }> = {
-  // Real, current key post evergreen-slug migration (14 Aug 2026) — the DB
-  // row's slug is "wimbledon", not "wimbledon-2026". Was previously
-  // "wimbledon-2026" only, which silently broke app/experience/[slug]/page.tsx's
-  // price lookup for every Wimbledon experience after the migration (found
-  // and fixed 16 Aug 2026, alongside the classic-to-hub-and-spoke migration
-  // skill writeup). Uses the WIMBLEDON-prefixed Dodo/Paddle env vars, same
-  // convention as the hub-and-spoke pack's own packPricing.ts.
   "wimbledon": {
     earlyBirdPriceId:
       process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
@@ -35,17 +35,7 @@ export const PACK_PRICING: Record<string, {
       process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
         ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_WIMBLEDON_STANDARD ?? ""
         : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_STANDARD ?? "",
-    // Same 25 Aug 2026 repricing as the hub-and-spoke packPricing.ts
-    // (app/event-pack/[slug]/_hub-and-spoke/_lib/packPricing.ts) — same 2
-    // Dodo products (pdt_0NgioFcIGNbl0KLr8Ppnw Standard, pdt_0NgioNYxUTkRSjpXdeD8o
-    // Early Bird), same $5/$10, same real 2027 cutoff. Keep these two tables
-    // in sync for Wimbledon — see feedback_duplicate_config_tables memory.
-    // Hardcoded display strings (no longer reading the generic
-    // NEXT_PUBLIC_EARLY_BIRD_PRICE_DISPLAY / NEXT_PUBLIC_STANDARD_PRICE_DISPLAY
-    // env vars — those are dead now, matches app/page.tsx's own fix).
     earlyBirdCutoff: process.env.NEXT_PUBLIC_WIMBLEDON_EARLY_BIRD_CUTOFF ?? "2027-06-27",
-    earlyBirdDisplay: "US$10",
-    standardDisplay: "US$15",
   },
   "us-open-2026": {
     earlyBirdPriceId:
@@ -57,8 +47,6 @@ export const PACK_PRICING: Record<string, {
         ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_US_OPEN_STANDARD ?? ""
         : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_US_OPEN_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_US_OPEN_EARLY_BIRD_CUTOFF ?? "2026-08-01",
-    earlyBirdDisplay: "US$0",
-    standardDisplay: "US$10",
   },
   "india-in-england-cricket-2026": {
     earlyBirdPriceId:
@@ -70,68 +58,100 @@ export const PACK_PRICING: Record<string, {
         ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_CRICKET_STANDARD ?? ""
         : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_CRICKET_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_CRICKET_EARLY_BIRD_CUTOFF ?? "2026-06-15",
-    earlyBirdDisplay: "US$9",
-    standardDisplay: "US$15",
   },
   "belgian-gp-2026": {
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-10",
-    earlyBirdDisplay: "US$15",
-    standardDisplay: "US$25",
   },
   "hungarian-gp-2026": {
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_HUNGARIAN_GP_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_HUNGARIAN_GP_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_HUNGARIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-17",
-    earlyBirdDisplay: "US$0",
-    standardDisplay: "US$7",
   },
   "open-championship-2026": {
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_OPEN_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_OPEN_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_OPEN_EARLY_BIRD_CUTOFF ?? "2026-07-06",
-    earlyBirdDisplay: "US$15",
-    standardDisplay: "US$25",
   },
   "italian-gp-2026": {
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ITALIAN_GP_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ITALIAN_GP_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_ITALIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-08-25",
-    earlyBirdDisplay: "US$3",
-    standardDisplay: "US$10",
   },
   "bmw-pga-championship-2026": {
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BMW_PGA_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BMW_PGA_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_BMW_PGA_EARLY_BIRD_CUTOFF ?? "2026-09-03",
-    earlyBirdDisplay: "US$5",
-    standardDisplay: "US$10",
   },
   "australia-in-south-africa-cricket-2026": {
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_AUS_SA_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_AUS_SA_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_AUS_SA_EARLY_BIRD_CUTOFF ?? "2026-08-09",
-    earlyBirdDisplay: "US$5",
-    standardDisplay: "US$10",
   },
   "bahrain-grand-prix": {
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BAHRAIN_GP_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BAHRAIN_GP_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_BAHRAIN_GP_EARLY_BIRD_CUTOFF ?? "2026-09-04",
-    earlyBirdDisplay: "US$5",
-    standardDisplay: "US$10",
+  },
+  // Merged in from the hub-and-spoke pack's own packPricing.ts, 28 Aug 2026
+  // — these 5 events previously only existed in that duplicate table.
+  "singapore-grand-prix": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SINGAPORE_GP_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SINGAPORE_GP_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_SINGAPORE_GP_EARLY_BIRD_CUTOFF ?? "2026-09-01",
+  },
+  "atp-finals": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ATP_FINALS_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ATP_FINALS_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_ATP_FINALS_EARLY_BIRD_CUTOFF ?? "2026-10-18",
+  },
+  "shanghai-masters": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SHANGHAI_MASTERS_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SHANGHAI_MASTERS_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_SHANGHAI_MASTERS_EARLY_BIRD_CUTOFF ?? "2026-09-21",
+  },
+  "new-zealand-in-australia-cricket-2026-27": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_NZ_AUSTRALIA_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_NZ_AUSTRALIA_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_NZ_AUSTRALIA_EARLY_BIRD_CUTOFF ?? "2026-11-09",
+  },
+  "australian-open": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_AUSTRALIAN_OPEN_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_AUSTRALIAN_OPEN_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_AUSTRALIAN_OPEN_EARLY_BIRD_CUTOFF ?? "2026-12-01",
   },
 };
 
-export function getPackPricing(slug: string) {
-  const pricing = PACK_PRICING[slug];
-  if (!pricing) return null;
-  const isEarlyBird = new Date() < new Date(pricing.earlyBirdCutoff);
+// Last-resort fallback if a slug is in PACK_PRICING_CONFIG but its
+// sporting_events row hasn't been backfilled with real display strings yet
+// (should only happen for a brand-new event pack before its first
+// /curator/price save). Never silently used for an existing, priced event.
+const FALLBACK_DISPLAY = { earlyBird: "US$10", standard: "US$15" };
+
+export async function getPackPricing(slug: string) {
+  const config = PACK_PRICING_CONFIG[slug];
+  if (!config) return null;
+
+  const [event] = await db
+    .select({
+      earlyBirdDisplay: sportingEvents.earlyBirdDisplay,
+      standardDisplay: sportingEvents.standardDisplay,
+    })
+    .from(sportingEvents)
+    .where(eq(sportingEvents.slug, slug))
+    .limit(1);
+
+  const earlyBirdDisplay = event?.earlyBirdDisplay ?? FALLBACK_DISPLAY.earlyBird;
+  const standardDisplay = event?.standardDisplay ?? FALLBACK_DISPLAY.standard;
+  const isEarlyBird = new Date() < new Date(config.earlyBirdCutoff);
+
   return {
-    ...pricing,
+    ...config,
+    earlyBirdDisplay,
+    standardDisplay,
     isEarlyBird,
-    priceDisplay: isEarlyBird ? pricing.earlyBirdDisplay : pricing.standardDisplay,
-    dodoProductId: isEarlyBird ? pricing.earlyBirdPriceId : pricing.standardPriceId,
+    priceDisplay: isEarlyBird ? earlyBirdDisplay : standardDisplay,
+    dodoProductId: isEarlyBird ? config.earlyBirdPriceId : config.standardPriceId,
   };
 }

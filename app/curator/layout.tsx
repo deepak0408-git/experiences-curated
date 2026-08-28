@@ -14,16 +14,8 @@ export default function CuratorLayout({
               <Link href="/" className="text-sm font-semibold tracking-widest text-[#6A6A6A] uppercase hover:text-[#AAFF00] transition-colors">
                 Experiences | Curated
               </Link>
-              <span className="mx-2 text-[#2A2A2A]">·</span>
-              <span className="text-sm text-[#6A6A6A]">Curator Portal</span>
             </div>
             <nav className="flex items-center gap-1 flex-shrink-0">
-              <Link
-                href="/"
-                className="px-3 py-1.5 rounded-sm text-sm text-[#6A6A6A] hover:bg-[#1A1A1A] hover:text-[#AAFF00] transition-colors"
-              >
-                Home
-              </Link>
               <Link
                 href="/curator/review"
                 className="px-3 py-1.5 rounded-sm text-sm text-[#6A6A6A] hover:bg-[#1A1A1A] hover:text-[#AAFF00] transition-colors"
@@ -41,6 +33,12 @@ export default function CuratorLayout({
                 className="px-3 py-1.5 rounded-sm text-sm text-[#6A6A6A] hover:bg-[#1A1A1A] hover:text-[#AAFF00] transition-colors"
               >
                 Events
+              </Link>
+              <Link
+                href="/curator/price"
+                className="px-3 py-1.5 rounded-sm text-sm text-[#6A6A6A] hover:bg-[#1A1A1A] hover:text-[#AAFF00] transition-colors"
+              >
+                Price
               </Link>
               <Link
                 href="/curator/feedback"
