@@ -12,6 +12,30 @@ const nextConfig: NextConfig = {
   // this reproduced on unrelated pages (sign-in, curator/ranker) too, only
   // when accessed via LAN IP in dev, never on localhost or in production.
   allowedDevOrigins: ["192.168.1.2"],
+  // PostHog reverse proxy — replaces the old hand-written app/ingest/[...path]/route.ts,
+  // which hardcoded Content-Type: application/json on every forwarded request (breaking
+  // gzip/binary session-recording payloads) and never routed static/config assets to
+  // PostHog's separate assets domain. This is PostHog's own documented approach:
+  // https://posthog.com/docs/advanced/proxy/nextjs — EU region since the project is on
+  // eu.i.posthog.com. Order matters: the two /static and /array rules must come before
+  // the catch-all /ingest/:path* rule.
+  async rewrites() {
+    return [
+      {
+        source: "/ingest/static/:path*",
+        destination: "https://eu-assets.i.posthog.com/static/:path*",
+      },
+      {
+        source: "/ingest/array/:path*",
+        destination: "https://eu-assets.i.posthog.com/array/:path*",
+      },
+      {
+        source: "/ingest/:path*",
+        destination: "https://eu.i.posthog.com/:path*",
+      },
+    ];
+  },
+  skipTrailingSlashRedirect: true,
   // Evergreen-slug migration (Operations Checklist T2 #2). Permanent 301s
   // from a dated event-pack slug to its evergreen replacement — added for
   // Wimbledon's classic->hub-and-spoke conversion (14 Aug 2026), the first
