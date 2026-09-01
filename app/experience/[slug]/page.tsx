@@ -40,6 +40,32 @@ import ExperienceTracker from "./_components/ExperienceTracker";
 // spoke should reflect that referring event, not always its EXPERIENCE_TO_SPOKE
 // default).
 const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; spokeLabel: string }> = {
+  "main-grandstand-yas-marina-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "west-grandstand-yas-marina-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "abu-dhabi-hill-general-admission-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "f1-paddock-club-yas-marina-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "skybridge-terrace-w-abu-dhabi-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "yas-marina-yacht-charter-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "w-abu-dhabi-yas-island-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "atlantis-the-royal-dubai-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "park-regis-business-bay-dubai-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "ibis-deira-creekside-dubai-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "crowne-plaza-yas-island-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "beach-rotana-corniche-abu-dhabi-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "auh-vs-dxb-getting-there-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
+  "getting-around-yas-island-race-day-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+  "cipriani-yas-island-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "yas-marina-dining-walk-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "yasalam-after-parties-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+  "twilight-race-packing-guide-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+  "first-timer-orientation-abu-dhabi-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "sheikh-zayed-mosque-qasr-al-watan-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "louvre-abu-dhabi-yas-theme-parks-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "burj-khalifa-dubai-day-trip-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "dubai-mall-day-trip-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "dubai-by-night-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "yas-marina-circuit-facilities-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "map", spokeLabel: "Venue Map" },
+  "cheap-shawarma-abu-dhabi-dubai-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
   "atp-finals-ticket-guide-": { eventSlug: "atp-finals", spokeId: "tickets", spokeLabel: "Ticket Guide" },
   "atp-finals-luxury-hospitality-": { eventSlug: "atp-finals", spokeId: "luxury", spokeLabel: "Luxury Guide" },
   "atp-finals-luxury-hotels-": { eventSlug: "atp-finals", spokeId: "hotels", spokeLabel: "Where to Stay" },
@@ -60,6 +86,26 @@ const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; 
   "atp-finals-piazza-san-carlo-": { eventSlug: "atp-finals", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
   "atp-finals-turin-cathedral-": { eventSlug: "atp-finals", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
   "qizhong-forest-sports-city-arena-": { eventSlug: "shanghai-masters", spokeId: "map", spokeLabel: "Venue Map" },
+  "las-vegas-gp-main-grandstand-": { eventSlug: "las-vegas-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "las-vegas-gp-turn3-grandstand-": { eventSlug: "las-vegas-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "las-vegas-gp-west-harmon-grandstand-": { eventSlug: "las-vegas-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "las-vegas-gp-flamingo-ga-": { eventSlug: "las-vegas-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "las-vegas-gp-tmobile-sphere-": { eventSlug: "las-vegas-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "las-vegas-gp-practice-qualifying-tickets-": { eventSlug: "las-vegas-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "las-vegas-gp-paddock-club-": { eventSlug: "las-vegas-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "las-vegas-gp-getting-around-": { eventSlug: "las-vegas-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
+  "las-vegas-gp-first-timer-orientation-": { eventSlug: "las-vegas-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "las-vegas-gp-race-week-free-": { eventSlug: "las-vegas-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "las-vegas-gp-sportsbook-watch-": { eventSlug: "las-vegas-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "las-vegas-gp-trackside-hotels-": { eventSlug: "las-vegas-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "las-vegas-gp-off-strip-hotels-": { eventSlug: "las-vegas-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "las-vegas-gp-bellagio-caesars-dining-": { eventSlug: "las-vegas-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "las-vegas-gp-fremont-downtown-dining-": { eventSlug: "las-vegas-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "las-vegas-gp-fountains-sphere-": { eventSlug: "las-vegas-grand-prix", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+  "las-vegas-gp-strip-at-night-": { eventSlug: "las-vegas-grand-prix", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+  "las-vegas-gp-red-rock-canyon-": { eventSlug: "las-vegas-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "las-vegas-gp-hoover-dam-": { eventSlug: "las-vegas-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "las-vegas-gp-strip-casinos-": { eventSlug: "las-vegas-grand-prix", spokeId: "map", spokeLabel: "Venue Map" },
   "getting-to-qizhong-shanghai-masters-": { eventSlug: "shanghai-masters", spokeId: "getting-there", spokeLabel: "Getting There" },
   "where-to-stay-shanghai-masters-": { eventSlug: "shanghai-masters", spokeId: "hotels", spokeLabel: "Where to Stay" },
   "china-visa-apps-payments-guide-": { eventSlug: "shanghai-masters", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
@@ -273,6 +319,17 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "atp-finals-barolo-langhe-daytrip-": { venueCount: 4, venueNoun: "wineries" },
   "staying-in-kuala-lumpur-klcc-bukit-bintang": { venueCount: 4, venueNoun: "hotels" },
   "singapore-gp-trackside-hotels-": { venueCount: 3, venueNoun: "hotels" },
+  "las-vegas-gp-trackside-hotels-": { venueCount: 3, venueNoun: "hotels" },
+  "las-vegas-gp-off-strip-hotels-": { venueCount: 2, venueNoun: "hotels" },
+  "yas-marina-dining-walk-": { venueCount: 3, venueNoun: "restaurants" },
+  "sheikh-zayed-mosque-qasr-al-watan-": { venueCount: 2, venueNoun: "venues" },
+  "louvre-abu-dhabi-yas-theme-parks-": { venueCount: 3, venueNoun: "attractions" },
+  "dubai-by-night-": { venueCount: 1, venueNoun: "venue" },
+  "cheap-shawarma-abu-dhabi-dubai-": { venueCount: 2, venueNoun: "restaurants" },
+  "las-vegas-gp-bellagio-caesars-dining-": { venueCount: 2, venueNoun: "restaurants" },
+  "las-vegas-gp-fremont-downtown-dining-": { venueCount: 2, venueNoun: "restaurants" },
+  "las-vegas-gp-fountains-sphere-": { venueCount: 2, venueNoun: "landmarks" },
+  "las-vegas-gp-strip-casinos-": { venueCount: 3, venueNoun: "casino resorts" },
   "xiaolongbao-shanghai-guide-": { venueCount: 2, venueNoun: "restaurants" },
   "french-concession-dining-shanghai-": { venueCount: 3, venueNoun: "restaurants" },
   "singapore-gp-chinatown-stay-": { venueCount: 2, venueNoun: "hotels" },
@@ -627,6 +684,11 @@ export default async function ExperiencePage({
               slug.startsWith("sydney-harbour-beaches-city-day-") ? "object-[center_60%]" :
               slug.startsWith("rod-laver-arena-inside-main-court-") ? "lg:object-[center_75%]" :
               slug.startsWith("federation-square-cbd-laneways-") ? "lg:object-[center_68%]" :
+              slug.startsWith("las-vegas-gp-fountains-sphere-") ? "lg:object-[center_80%]" :
+              slug.startsWith("las-vegas-gp-hoover-dam-") ? "lg:object-[center_30%]" :
+              slug.startsWith("las-vegas-gp-sportsbook-watch-") ? "lg:object-[center_85%]" :
+              slug.startsWith("las-vegas-gp-strip-casinos-") ? "lg:object-[center_75%]" :
+              slug.startsWith("las-vegas-gp-main-grandstand-") ? "lg:object-[center_65%]" :
               ""
             }`}
             sizes="100vw"

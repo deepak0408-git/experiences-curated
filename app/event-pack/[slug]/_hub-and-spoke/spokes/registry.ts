@@ -90,6 +90,32 @@ import AOArrivalSpoke from "./australian-open/ArrivalSpoke";
 import AOMapSpoke from "./australian-open/MapSpoke";
 import AOLuxurySpoke from "./australian-open/LuxurySpoke";
 
+import LVCostSpoke from "./las-vegas-grand-prix/CostSpoke";
+import LVTicketsSpoke from "./las-vegas-grand-prix/TicketsSpoke";
+import LVHotelsSpoke from "./las-vegas-grand-prix/HotelsSpoke";
+import LVGettingThereSpoke from "./las-vegas-grand-prix/GettingThereSpoke";
+import LVWeatherSpoke from "./las-vegas-grand-prix/WeatherSpoke";
+import LVFirstTimerGuideSpoke from "./las-vegas-grand-prix/FirstTimerGuideSpoke";
+import LVWhereToEatSpoke from "./las-vegas-grand-prix/WhereToEatSpoke";
+import LVDayTripsSpoke from "./las-vegas-grand-prix/DayTripsSpoke";
+import LVItinerarySpoke from "./las-vegas-grand-prix/ItinerarySpoke";
+import LVArrivalSpoke from "./las-vegas-grand-prix/ArrivalSpoke";
+import LVMapSpoke from "./las-vegas-grand-prix/MapSpoke";
+import LVLuxurySpoke from "./las-vegas-grand-prix/LuxurySpoke";
+
+import ADCostSpoke from "./abu-dhabi-grand-prix/CostSpoke";
+import ADTicketsSpoke from "./abu-dhabi-grand-prix/TicketsSpoke";
+import ADHotelsSpoke from "./abu-dhabi-grand-prix/HotelsSpoke";
+import ADGettingThereSpoke from "./abu-dhabi-grand-prix/GettingThereSpoke";
+import ADWeatherSpoke from "./abu-dhabi-grand-prix/WeatherSpoke";
+import ADFirstTimerGuideSpoke from "./abu-dhabi-grand-prix/FirstTimerGuideSpoke";
+import ADWhereToEatSpoke from "./abu-dhabi-grand-prix/WhereToEatSpoke";
+import ADDayTripsSpoke from "./abu-dhabi-grand-prix/DayTripsSpoke";
+import ADItinerarySpoke from "./abu-dhabi-grand-prix/ItinerarySpoke";
+import ADArrivalSpoke from "./abu-dhabi-grand-prix/ArrivalSpoke";
+import ADMapSpoke from "./abu-dhabi-grand-prix/MapSpoke";
+import ADLuxurySpoke from "./abu-dhabi-grand-prix/LuxurySpoke";
+
 type SpokeComponent = ComponentType<{ eventSlug: string }>;
 
 // Registry mapping eventSlug -> spokeId -> component. A new hub_and_spoke
@@ -195,6 +221,34 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: AOMapSpoke,
     luxury: AOLuxurySpoke,
   },
+  "las-vegas-grand-prix": {
+    cost: LVCostSpoke,
+    tickets: LVTicketsSpoke,
+    hotels: LVHotelsSpoke,
+    "getting-there": LVGettingThereSpoke,
+    weather: LVWeatherSpoke,
+    "first-timer-guide": LVFirstTimerGuideSpoke,
+    "where-to-eat": LVWhereToEatSpoke,
+    "day-trips": LVDayTripsSpoke,
+    itinerary: LVItinerarySpoke,
+    arrival: LVArrivalSpoke,
+    map: LVMapSpoke,
+    luxury: LVLuxurySpoke,
+  },
+  "abu-dhabi-grand-prix": {
+    cost: ADCostSpoke,
+    tickets: ADTicketsSpoke,
+    hotels: ADHotelsSpoke,
+    "getting-there": ADGettingThereSpoke,
+    weather: ADWeatherSpoke,
+    "first-timer-guide": ADFirstTimerGuideSpoke,
+    "where-to-eat": ADWhereToEatSpoke,
+    "day-trips": ADDayTripsSpoke,
+    itinerary: ADItinerarySpoke,
+    arrival: ADArrivalSpoke,
+    map: ADMapSpoke,
+    luxury: ADLuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -295,5 +349,33 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Melbourne Park Arrival Guide — Australian Open",
     map: "Melbourne Park Map — Courts and Facilities",
     luxury: "Luxury Guide for the Australian Open — AO Reserve and More",
+  },
+  "las-vegas-grand-prix": {
+    cost: "How Much Does the Las Vegas Grand Prix Cost? — Budget Guide",
+    tickets: "Las Vegas GP Ticket Guide — Grandstands, GA, and Paddock Club",
+    hotels: "Where to Stay for the Las Vegas Grand Prix — Trackside vs Off-Strip",
+    "getting-there": "Getting Around Las Vegas GP Race Weekend — Closures and Monorail",
+    weather: "Las Vegas Weather in November — What to Pack for the Grand Prix",
+    "first-timer-guide": "First-Timer's Guide — Las Vegas Grand Prix",
+    "where-to-eat": "Where to Eat — Las Vegas Grand Prix Weekend",
+    "day-trips": "Best Day Trips — Las Vegas Grand Prix Weekend",
+    itinerary: "Sample Las Vegas Grand Prix Weekend Itinerary",
+    arrival: "Las Vegas Strip Circuit — Arrival Guide",
+    map: "Las Vegas Strip Circuit Map — Zones and Facilities",
+    luxury: "Luxury Guide for the Las Vegas Grand Prix — Paddock Club and More",
+  },
+  "abu-dhabi-grand-prix": {
+    cost: "How Much Does the Abu Dhabi Grand Prix Cost? — Season Finale Budget Guide",
+    tickets: "Abu Dhabi GP Ticket Guide — GA to Paddock Club",
+    hotels: "Where to Stay for the Abu Dhabi Grand Prix — Yas Island, Corniche, or Dubai",
+    "getting-there": "AUH or DXB — Getting to the Abu Dhabi Grand Prix",
+    weather: "Abu Dhabi Weather in December — What to Pack for the Twilight Race",
+    "first-timer-guide": "First-Timer's Guide — the Abu Dhabi Grand Prix Season Finale",
+    "where-to-eat": "Where to Eat — Abu Dhabi Grand Prix Weekend",
+    "day-trips": "Best Day Trips — Abu Dhabi City or Dubai",
+    itinerary: "Sample Abu Dhabi Grand Prix Season Finale Itinerary",
+    arrival: "Yas Marina Circuit — Arrival & Shuttle Guide",
+    map: "Yas Marina Circuit Map — Facilities and Accessibility",
+    luxury: "Luxury Guide for the Abu Dhabi Grand Prix — Paddock Club, Skybridge, and More",
   },
 };

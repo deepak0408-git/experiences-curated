@@ -69,6 +69,43 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         different price points for the same experience.
       </p>
 
+      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Where to actually buy your ticket</p>
+        <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
+          Buy directly from the official source first. Every F1 ticket ultimately traces back to the promoter, and
+          buying direct means no markup and no risk of a fraudulent listing.
+        </p>
+        <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
+          If official tickets are sold out, or you want a package with hospitality, hotel, or shuttle bundled in,
+          P1 Travel is a genuine authorized F1 ticket partner — named directly on Yas Marina Circuit&apos;s own
+          official reseller list and confirmed as Singapore GP&apos;s own Authorised Partner, not a random resale
+          site. It&apos;s rated 4.7 from over 10,000 reviews on Trustpilot, and has been in business since 2007.
+        </p>
+        <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
+          Steer clear of anything else claiming to be &quot;official&quot; without that kind of direct
+          confirmation — ticket fraud is real at every high-demand Grand Prix, and a listing that looks legitimate
+          isn&apos;t the same as one a circuit has actually named.
+        </p>
+        <div className="flex flex-wrap gap-4">
+          <a
+            href="https://tickets.formula1.com/en/f1-3301-singapore"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center px-4 py-2 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
+          >
+            Official Singapore GP tickets →
+          </a>
+          <a
+            href="https://www.p1travel.com/en-GB/series/formula-1-2026?organizers=grand-prix-singapore"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors"
+          >
+            P1 Travel — Singapore GP →
+          </a>
+        </div>
+      </div>
+
       <p className="hidden md:block text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Side by side</p>
       <p className="md:hidden text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Options compared</p>
       <div className="hidden md:block overflow-x-auto mb-8">

@@ -133,19 +133,17 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
         </div>
       )}
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Leaving your seat mid-session</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            At Turn 1, Stamford, and every other reserved grandstand, your seat is yours for the whole session
-            regardless of when you step out, so a food or bathroom break doesn&apos;t cost you your view. Padang is
-            the same for the seat itself, but factor in walking time back from Padang Stage if you left for the
-            concert. Zone 4 Walkabout is different: there&apos;s no reserved return to your exact spot, so treat a
-            mid-session break as a real trade-off, bring water and snacks in with you rather than planning to step
-            out and back.
-          </p>
-        </div>
-      )}
+      <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Leaving your seat mid-session</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          At Turn 1, Stamford, and every other reserved grandstand, your seat is yours for the whole session
+          regardless of when you step out, so a food or bathroom break doesn&apos;t cost you your view. Padang is
+          the same for the seat itself, but factor in walking time back from Padang Stage if you left for the
+          concert. Zone 4 Walkabout is different: there&apos;s no reserved return to your exact spot, so treat a
+          mid-session break as a real trade-off, bring water and snacks in with you rather than planning to step
+          out and back.
+        </p>
+      </div>
 
       <p className="text-xs text-[#6A6A6A] mt-8">
         Sources: official Singapore GP Circuit Park Map (singaporegp.sg, gate/zone/MRT data), formula1.com 2026

@@ -111,6 +111,25 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
     { label: "Free tram", value: "Trams 70 and 70a run free on the day of any valid Australian Open match ticket — no tap-on needed. All other Melbourne public transport requires a myki card." },
     { label: "Emergencies", value: "Australia-wide emergency number: 000 (police/fire/ambulance). Non-emergency police: 131 444." },
   ],
+  // Real, sourced facts from experience research (closure timing pattern,
+  // cashless event confirmation) — gate times genuinely not yet published
+  // for 2026, stated honestly per skill §2a-3.
+  "las-vegas-grand-prix": [
+    { label: "Road closures", value: "Soft closures from 3pm, full closures from 5pm, each day Thu 19–Sat 21 Nov, lifting into the early hours the next morning. Walking or the Monorail (running 24/7 race week) is far more reliable than driving or rideshare once closures begin." },
+    { label: "Cashless event", value: "Every food, drink, and merchandise purchase on-site is card or mobile payment only — there's no cash fallback anywhere at the circuit." },
+    { label: "Session times", value: "Practice 1 Thu 19 Nov 4:30-5:30pm PT, Practice 2 Thu 8:00-9:00pm PT, Practice 3 Fri 20 Nov 4:30-5:30pm PT, Qualifying Fri 8:00-9:00pm PT, Race Sat 21 Nov 8:00pm PT. Specific gate-opening times aren't published separately — plan around beating the road closures above, well ahead of that day's first session." },
+    { label: "Emergencies", value: "US-wide emergency number: 911. Closest 24-hour ER to the circuit: Elite Medical Center, 150 E Harmon Ave, Las Vegas, NV — right on the East Harmon Zone, tel (702) 546-0911." },
+  ],
+  // Real, sourced facts from experience research (twilight-race history,
+  // AUH/DXB airport comparison, cashless norms confirmed for UAE venues
+  // generally) — gate times genuinely not yet published for 2026, stated
+  // honestly per skill §2a-3.
+  "abu-dhabi-grand-prix": [
+    { label: "Two airports", value: "AUH (Abu Dhabi International) is 8km from the circuit — the world's closest international airport to any F1 venue, ~15 min by taxi. DXB (Dubai) is ~90 min via the E11 but carries far more international routes for many long-haul origins — see the Getting There guide for the real comparison." },
+    { label: "Gate times", value: "Not yet published for the 2026 race — expect roughly 2-3 hours before each day's first session, based on the confirmed session schedule. Confirm exact times via abudhabigp.com closer to race week." },
+    { label: "Emergencies", value: "UAE-wide emergency numbers: 999 (police), 998 (ambulance), 997 (fire) — 112 also reaches emergency services from any mobile, even with no SIM or signal. Yas Marina Circuit has its own on-site Medical Center, with National Ambulance as the exclusive emergency care provider at the venue." },
+    { label: "Tourism Infoline", value: "Abu Dhabi Department of Culture and Tourism visitor line: 800 555 (toll-free within the UAE)." },
+  ],
 };
 
 // Exported (27 Aug 2026) — same reasoning as QUICK_REFERENCE_BY_EVENT above.
@@ -196,6 +215,32 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
     heroFallbackImageSlug: "rod-laver-arena-inside-main-court-o0lvsc",
     introText:
       "The Australian Open calls itself the Happy Slam, and the description holds up: this is the loosest, most festival-like of the four majors, with a real live-music program running alongside the tennis and a home crowd that's louder and more willing to get behind an outsider than most Grand Slam galleries. Rod Laver Arena has anchored the tournament since 1988, and it still rates 4.7 from nearly 8,000 Google reviews — a rare thing for a stadium that's been standing for almost four decades.\n\nMelbourne Park is genuinely built for a full day, not just a match. A single Rod Laver Arena reserved seat also gets you into Margaret Court Arena's neighbour John Cain Arena, Show Court 3, and every outside court on the same day, and the free tram 70/70a on any match-ticket day removes the one logistical headache most first-timers worry about. What you do with the rest of the day — the outside courts in the first week, the food village, the AO Live stages — is most of what separates a good trip from a great one.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
+  // Built from real sourced facts researched during experience seeding
+  // (Liberty Media's ~$500M land/pit-building investment, the circuit's
+  // literal route past the Bellagio Fountains and Sphere, the entirely
+  // night-session structure) — not invented, matches every other
+  // hub-and-spoke event's pattern of drawing The Brief from real
+  // underlying content.
+  "las-vegas-grand-prix": {
+    displayName: "Las Vegas Grand Prix",
+    venueLine: "Held on the Las Vegas Strip Circuit — a 3.85-mile street circuit built through the middle of the Strip itself, past the Bellagio Fountains and the Sphere.",
+    heroFallbackImageSlug: "las-vegas-gp-sphere-f1-grandstands",
+    introText:
+      "Liberty Media didn't drop a circuit into Las Vegas — it spent roughly $500 million buying land and building a permanent pit and paddock facility specifically to run a Grand Prix down a street that wasn't built for one. This is the first Grand Prix Liberty has promoted itself rather than handing to a third-party promoter, and every session runs entirely at night, timed specifically to show off the Strip lit up after dark.\n\nNo other Grand Prix on the calendar lets you watch the race from a hotel balcony. The circuit runs directly past the Bellagio Fountains, the Sphere, and a stretch of the Strip's biggest resorts — three of them (Bellagio, Aria, Paris Las Vegas) sell track-view rooms that book out months ahead. This isn't a circuit you travel to; for a lot of visitors, it's one you're already standing inside the moment you leave your hotel.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
+  // Built from real sourced facts researched during experience seeding
+  // (Yas Marina Circuit's 2009 debut as the world's first F1 twilight race,
+  // the ~4,700-fixture/600-million-lumen lighting installation, the
+  // season-finale framing, the AUH/DXB dual-airport reality) — not
+  // invented, matches every other hub-and-spoke event's pattern of drawing
+  // The Brief from real underlying content.
+  "abu-dhabi-grand-prix": {
+    displayName: "Abu Dhabi Grand Prix",
+    venueLine: "Held at Yas Marina Circuit — the season finale, and the race that started F1's twilight-to-night format in 2009.",
+    heroFallbackImageSlug: "main-grandstand-yas-marina",
+    introText:
+      "Abu Dhabi closes the Formula 1 season, and it's done that every year since Yas Marina Circuit opened in 2009 as the sport's first-ever twilight race — a start in daylight, a finish under floodlights, powered by roughly 4,700 light fixtures switched on across less than 300 days of construction. Titles have been settled here more than once, and the crowd on a season-finale Sunday carries a different charge than any mid-season round.\n\nThis is also the one weekend on the F1 calendar built as much around off-track spectacle as the racing itself — Yasalam's after-race concerts run every night of the weekend on the same ticket, and the marina scene around the circuit's own superyacht harbour has become as much a part of Abu Dhabi's identity as the race. Season's-end atmosphere, headline music, and a genuine luxury layer beyond any single ticket product — all in one place.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
 };
 
