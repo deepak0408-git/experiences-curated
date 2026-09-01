@@ -87,6 +87,11 @@ const COST_MATH_BY_EVENT: Record<string, CostMathConfig> = {
   // Europe, no exclusion list — source filters flights.region === "Europe"
   // with no originMarket exclusions (unlike Wimbledon's short-hop list).
   "atp-finals": { tripNights: 3, flightRegion: "Europe", excludedOrigins: [], ticketPairingMode: "all-tier2" },
+  // North America flight region — Philadelphia excluded as a genuine seed
+  // data outlier ($415-702 vs. every other NA market topping out at $458),
+  // flagged not fixed at source, per founder direction 1 Sep 2026 (see
+  // CostSpoke.tsx's naFlights filter comment).
+  "las-vegas-grand-prix": { tripNights: 3, flightRegion: "North America", excludedOrigins: ["Philadelphia"] },
   // Real source CostSpoke.tsx doesn't destructure `flights` from
   // getSpokeData() at all — no flight-range computation exists for this
   // event's Cost spoke (it just tells the reader to check the Planner).
@@ -323,6 +328,19 @@ export async function GET(request: NextRequest) {
       ? { low: Math.min(...regionFlights.map((f) => Number(f.costLow))), high: Math.max(...regionFlights.map((f) => Number(f.costHigh))) }
       : null;
 
+    // Human-readable phrasing for the flight-range sentence — keyed off the
+    // same costMath.flightRegion used to filter flights above, so this never
+    // drifts out of sync with which region was actually queried. "Europe"
+    // was previously hardcoded here regardless of event (caught on Las
+    // Vegas GP's North America range reading "if you're traveling from
+    // within Europe" — wrong for every non-Europe event, not just Vegas).
+    const FLIGHT_REGION_LABELS: Record<string, string> = {
+      Europe: "within Europe",
+      "North America": "North America",
+      "Asia-Pacific": "Asia-Pacific",
+    };
+    const flightRegionLabel = FLIGHT_REGION_LABELS[costMath.flightRegion] ?? costMath.flightRegion;
+
     costSection = {
       intro: (content.cost as { intro?: string; h1?: string; eventName?: string }).intro ?? "",
       moderateTotal,
@@ -331,6 +349,7 @@ export async function GET(request: NextRequest) {
       categoryRows,
       bookingTimingTrap: content.cost.bookingTimingCallout ?? content.cost.bookingTimingTrap ?? { label: "", body: "" },
       flightRange,
+      flightRegionLabel,
       flightsNote: content.cost.flightsNote ?? "",
       crossLinks: content.cost.crossLinks ?? { hotels: "", tickets: "" },
       verdicts: content.cost.verdicts ?? [],

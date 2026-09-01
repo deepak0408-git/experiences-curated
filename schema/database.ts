@@ -105,10 +105,9 @@ export const packStatusEnum = pgEnum("pack_status", [
   "live",
 ]);
 
-// Drives which UI app/event-pack/[slug]/page.tsx renders. Defaults to
-// "classic" so every existing live event (Wimbledon, Belgian GP, Italian GP,
-// etc.) needs zero changes — only events deliberately built in the new
-// hub-and-spoke format (see hub-and-spoke-event-pack skill) get switched.
+// Drives which UI app/event-pack/[slug]/page.tsx renders. hub_and_spoke is
+// the default for every new event as of 29 Aug 2026 — only legacy events
+// built before that (Wimbledon, Belgian GP, Italian GP, etc.) stay "classic".
 export const packFormatEnum = pgEnum("pack_format", [
   "classic",
   "hub_and_spoke",
@@ -282,7 +281,7 @@ export const sportingEvents = pgTable("sporting_events", {
   // newsletter subscribers.
   isTestEvent: boolean("is_test_event").notNull().default(false),
   packStatus: packStatusEnum("pack_status").notNull().default("live"),
-  packFormat: packFormatEnum("pack_format").notNull().default("classic"),
+  packFormat: packFormatEnum("pack_format").notNull().default("hub_and_spoke"),
   // Real currency the event's Dodo/Paddle pack is actually priced in — the
   // single source of truth for grantFreeAccess (writes purchases.currency)
   // and LocalCurrencyHint (converts FROM this, not a hardcoded GBP

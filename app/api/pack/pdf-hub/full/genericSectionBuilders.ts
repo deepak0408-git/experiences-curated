@@ -1194,8 +1194,204 @@ function buildAustralianOpen(content: ContentBundle, lookupMany: LookupMany): Ge
   return result;
 }
 
+function buildLasVegasGrandPrix(content: ContentBundle, lookupMany: LookupMany): GenericSectionsResult {
+  const result: GenericSectionsResult = {};
+
+  if (content.tickets) {
+    const t = content.tickets;
+    result.tickets = {
+      heading: "Tickets",
+      sectionLabel: "Section 2 of 12",
+      blocks: [
+        { kind: "prose", text: t.intro },
+        { kind: "callout", label: t.officialVsResellerCallout.label, body: t.officialVsResellerCallout.body },
+        { kind: "factRows", label: t.tiersTable.label, rows: t.tiersTable.rows.map((r: { name: string; note: string }) => ({ label: r.name, value: r.note })) },
+        { kind: "experiences", label: "Every grandstand and zone, in detail", items: lookupMany(["las-vegas-gp-main-grandstand", "las-vegas-gp-turn3-grandstand", "las-vegas-gp-west-harmon-grandstand", "las-vegas-gp-flamingo-ga", "las-vegas-gp-tmobile-sphere", "las-vegas-gp-practice-qualifying-tickets"]) },
+      ],
+      verdicts: t.verdicts,
+    };
+  }
+
+  if (content.hotels) {
+    const h = content.hotels;
+    result.hotels = {
+      heading: "Hotels",
+      sectionLabel: "Section 3 of 12",
+      blocks: [
+        { kind: "prose", text: h.intro },
+        { kind: "experiences", items: lookupMany(["las-vegas-gp-trackside-hotels", "las-vegas-gp-off-strip-hotels"]) },
+        { kind: "factRows", label: h.neighborhoodsTable.label, rows: h.neighborhoodsTable.rows.map((r: { name: string; detail: string; transit: string }) => ({ label: r.name, value: `${r.detail} ${r.transit}` })) },
+        { kind: "sectionHeading", label: "Booking windows & contacts" },
+        ...h.bookingCards.map((c: { name: string; url: string; note: string }) => ({ kind: "subheading" as const, label: c.name, body: c.note })),
+        { kind: "sourcesFooter", text: h.sourcesFooter },
+      ],
+      verdicts: h.verdicts,
+    };
+  }
+
+  if (content.gettingThere) {
+    const g = content.gettingThere;
+    result.gettingThere = {
+      heading: "Getting There",
+      sectionLabel: "Section 4 of 12",
+      blocks: [
+        { kind: "prose", text: g.intro },
+        { kind: "factRows", label: g.transitOptionsTable.label, rows: g.transitOptionsTable.rows.map((r: { title: string; detail: string }) => ({ label: r.title, value: r.detail })) },
+        { kind: "subheading", label: g.monorailFareBox.label, body: g.monorailFareBox.body },
+        { kind: "callout", label: g.rideshareCallout.label, body: g.rideshareCallout.body },
+        { kind: "callout", label: g.appDownloadCallout.label, body: g.appDownloadCallout.body },
+        { kind: "experiences", items: lookupMany(["las-vegas-gp-getting-around"]) },
+        { kind: "subheading", label: g.routeWeWouldPlan.label, body: g.routeWeWouldPlan.body },
+        { kind: "sourcesFooter", text: g.sourcesFooter },
+      ],
+    };
+  }
+
+  if (content.weather) {
+    const w = content.weather;
+    result.weather = {
+      heading: "Weather",
+      sectionLabel: "Section 5 of 12",
+      blocks: [
+        { kind: "prose", text: w.intro },
+        { kind: "subheading", label: w.realNumbersCallout.label, body: w.realNumbersCallout.body },
+        { kind: "subheading", label: w.standExposureCallout.label, body: w.standExposureCallout.body },
+        { kind: "factRows", label: w.packList.label, rows: w.packList.items.map((i: { title: string; detail: string }) => ({ label: i.title, value: i.detail })) },
+        { kind: "callout", label: w.cashlessCallout.label, body: w.cashlessCallout.body },
+        { kind: "sourcesFooter", text: w.sourcesFooter },
+      ],
+    };
+  }
+
+  if (content.firstTimerGuide) {
+    const f = content.firstTimerGuide;
+    result.firstTimerGuide = {
+      heading: "First-Timer's Guide",
+      sectionLabel: "Section 6 of 12",
+      blocks: [
+        { kind: "prose", text: f.intro },
+        ...f.mistakes.map((m: { number: number; label: string; body: string }) => ({ kind: "subheading" as const, label: `${m.number}. ${m.label}`, body: m.body })),
+        { kind: "experiences", items: lookupMany(["las-vegas-gp-first-timer-orientation"]) },
+        { kind: "sectionHeading", label: f.freeSideOfWeekendLabel },
+        { kind: "experiences", items: lookupMany(["las-vegas-gp-race-week-free", "las-vegas-gp-sportsbook-watch"]) },
+        { kind: "sectionHeading", label: f.practicalEssentials.label },
+        { kind: "subheading", label: f.practicalEssentials.apps.label, body: f.practicalEssentials.apps.rows.map((r: { name: string; detail: string }) => `${r.name}: ${r.detail}`).join(" ") },
+        { kind: "subheading", label: f.practicalEssentials.accessibility.label, body: f.practicalEssentials.accessibility.body },
+        { kind: "subheading", label: f.practicalEssentials.gettingOutAfterward.label, body: f.practicalEssentials.gettingOutAfterward.body },
+        { kind: "sourcesFooter", text: f.sourcesFooter },
+      ],
+    };
+  }
+
+  if (content.whereToEat) {
+    const w = content.whereToEat;
+    result.whereToEat = {
+      heading: "Where to Eat",
+      sectionLabel: "Section 7 of 12",
+      blocks: [
+        { kind: "prose", text: w.intro },
+        { kind: "experiences", items: lookupMany(["las-vegas-gp-bellagio-caesars-dining", "las-vegas-gp-fremont-downtown-dining"]) },
+      ],
+      verdicts: w.verdicts,
+    };
+  }
+
+  if (content.dayTrips) {
+    const d = content.dayTrips;
+    result.dayTrips = {
+      heading: "Day Trips",
+      sectionLabel: "Section 8 of 12",
+      blocks: [
+        { kind: "prose", text: d.intro },
+        { kind: "experiences", items: lookupMany(["las-vegas-gp-red-rock-canyon", "las-vegas-gp-hoover-dam"]) },
+      ],
+      verdicts: d.verdicts,
+    };
+  }
+
+  if (content.itinerary) {
+    const it = content.itinerary;
+    result.itinerary = {
+      heading: "Trip Schedule",
+      sectionLabel: "Section 9 of 12",
+      blocks: [
+        { kind: "prose", text: it.intro },
+        { kind: "factRows", label: it.eventRhythm.label, rows: it.eventRhythm.days.map((d: { label: string; detail: string }) => ({ label: d.label, value: d.detail })) },
+        { kind: "sourcesFooter", text: it.eventRhythm.timezoneNote },
+        { kind: "experiences", label: "The circuit's own landmarks", items: lookupMany(["las-vegas-gp-fountains-sphere", "las-vegas-gp-strip-at-night"]) },
+      ],
+      verdicts: it.verdicts.map((v: { label: string; days: Array<{ day: string; rows: Array<{ time: string; location: string; activity: string }> }>; closingNote: { label: string; body: string } }) => ({
+        label: v.label,
+        body: [
+          ...v.days.flatMap((d) => [
+            `${d.day}:`,
+            ...d.rows.map((r) => `${r.time} — ${r.location}: ${r.activity}`),
+          ]),
+          `${v.closingNote.label}: ${v.closingNote.body}`,
+        ].join(" "),
+      })),
+    };
+  }
+
+  if (content.arrival) {
+    const a = content.arrival;
+    result.arrival = {
+      heading: "Arrival & Grandstand Guide",
+      sectionLabel: "Section 10 of 12",
+      blocks: [
+        { kind: "prose", text: a.intro },
+        { kind: "factRows", label: a.whatToExpectTable.label, rows: a.whatToExpectTable.rows.map((r: { title: string; detail: string }) => ({ label: r.title, value: r.detail })) },
+        { kind: "factRows", label: a.arrivalStrategyByTier.label, rows: a.arrivalStrategyByTier.rows.map((r: { title: string; detail: string }) => ({ label: r.title, value: r.detail })) },
+        { kind: "callout", label: a.appCallout.label, body: a.appCallout.body },
+        { kind: "experiences", label: "What General Admission gets you", items: lookupMany(["las-vegas-gp-flamingo-ga"]) },
+        { kind: "subheading", label: a.timingWeWouldPlan.label, body: a.timingWeWouldPlan.body },
+        { kind: "sourcesFooter", text: a.sourcesFooter },
+      ],
+    };
+  }
+
+  if (content.map) {
+    const m = content.map;
+    result.map = {
+      heading: "Venue Map",
+      sectionLabel: "Section 11 of 12",
+      blocks: [
+        { kind: "prose", text: m.intro },
+        { kind: "experiences", label: "The landmarks the circuit runs past", items: lookupMany(["las-vegas-gp-fountains-sphere", "las-vegas-gp-strip-casinos"]) },
+        { kind: "factRows", label: "Facilities across the circuit", rows: m.facilities.map((f: { label: string; body: string }) => ({ label: f.label, value: f.body })) },
+        { kind: "factRows", label: "Turn by turn", rows: m.turnByTurn.map((t: { zone: string; turns: string }) => ({ label: t.zone, value: t.turns })) },
+        { kind: "sourcesFooter", text: m.turnByTurnCaption },
+        { kind: "factRows", label: m.zoneStrategy.label, rows: m.zoneStrategy.rows.map((r: { title: string; detail: string }) => ({ label: r.title, value: r.detail })) },
+        { kind: "sourcesFooter", text: m.sourcesFooter },
+      ],
+    };
+  }
+
+  if (content.luxury) {
+    const lx = content.luxury;
+    result.luxury = {
+      heading: "Luxury Guide",
+      sectionLabel: "Section 12 of 12",
+      blocks: [
+        { kind: "prose", text: lx.intro },
+        { kind: "factRows", label: lx.hospitalityTiers.label, rows: lx.hospitalityTiers.rows.map((r: { title: string; detail: string }) => ({ label: r.title, value: r.detail })) },
+        { kind: "subheading", label: lx.premiumTransitCallout.label, body: lx.premiumTransitCallout.body },
+        { kind: "subheading", label: lx.afterSessionCallout.label, body: lx.afterSessionCallout.body },
+        { kind: "subheading", label: lx.luxuryHotelFactCallout.label, body: lx.luxuryHotelFactCallout.body },
+        { kind: "sectionHeading", label: lx.biggestDecisionLabel },
+        { kind: "experiences", items: lookupMany(["las-vegas-gp-paddock-club"]) },
+        { kind: "sourcesFooter", text: lx.sourcesFooter },
+      ],
+      verdicts: lx.verdicts,
+    };
+  }
+
+  return result;
+}
+
 export const GENERIC_SECTION_BUILDERS: Record<string, (content: ContentBundle, lookupMany: LookupMany) => GenericSectionsResult> = {
   "bahrain-grand-prix": buildBahrainGrandPrix,
+  "las-vegas-grand-prix": buildLasVegasGrandPrix,
   "shanghai-masters": buildShanghaiMasters,
   "singapore-grand-prix": buildSingaporeGrandPrix,
   "atp-finals": buildAtpFinals,

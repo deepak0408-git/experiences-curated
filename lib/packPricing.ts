@@ -121,6 +121,26 @@ export const PACK_PRICING_CONFIG: Record<string, {
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_AUSTRALIAN_OPEN_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_AUSTRALIAN_OPEN_EARLY_BIRD_CUTOFF ?? "2026-12-01",
   },
+  // Placeholder entry, 29 Aug 2026 — Dodo checkout not yet set up for this
+  // event (founder explicitly deferred, per hub-and-spoke skill's pre-flight
+  // BLOCKER options). Both price IDs resolve to "" until the real env vars
+  // are set, which correctly renders "Checkout coming soon" on every CTA
+  // (see SpokeShell.tsx's dodoProductId ternary) rather than a broken button.
+  "las-vegas-grand-prix": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_LAS_VEGAS_GP_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_LAS_VEGAS_GP_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_LAS_VEGAS_GP_EARLY_BIRD_CUTOFF ?? "2026-11-01",
+  },
+  // Real Dodo product IDs confirmed by the founder from the live Dodo
+  // dashboard, 30 Aug 2026: Early Bird pdt_0NmVZghnvSIFABliiVle5 (US$10),
+  // Standard pdt_0NmVZbH7WjaIcvs7FmlaM (US$15) — added to .env.local same
+  // session. Display strings/cutoff still need a real /curator/price save
+  // (falls back to FALLBACK_DISPLAY / this cutoff default until then).
+  "abu-dhabi-grand-prix": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ABU_DHABI_GP_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ABU_DHABI_GP_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_ABU_DHABI_GP_EARLY_BIRD_CUTOFF ?? "2026-11-15",
+  },
 };
 
 // Last-resort fallback if a slug is in PACK_PRICING_CONFIG but its

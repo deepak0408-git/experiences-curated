@@ -155,4 +155,51 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "map", label: "Venue Map", question: "What facilities are available at Melbourne Park?", status: "public", imageSlug: "margaret-court-john-cain-arenas-cnqerg" },
     { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Australian Open?", status: "teaser", imageSlug: "corporate-hospitality-premium-suites-qspcms" },
   ],
+  // Las Vegas GP 2026 — scaffolded 29 Aug 2026. All 20 experiences real/
+  // seeded (status: in_review), 16 of 20 hero-imaged as of this scaffolding
+  // — 4 grandstand/GA experiences (Main Grandstand, Turn 3, West Harmon,
+  // Flamingo GA) have no image yet, founder searching separately. Real
+  // imageSlug values used for the 16 image-bearing experiences; the 4
+  // ticket-tier spokes/cards without images render with no image (honest
+  // gap, not forced). Weather/Arrival/Tickets use the skill's standing
+  // cross-event default images (imageOverride), set here at
+  // config-creation time per the skill's explicit rule.
+  "las-vegas-grand-prix": [
+    { id: "cost", label: "Cost Guide", question: "How much does a Las Vegas GP weekend cost?", status: "teaser", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/las-vegas-gp-cost-spoke.jpg" },
+    { id: "tickets", label: "Ticket Guide", question: "Which Las Vegas GP ticket is the best buy?", status: "teaser", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the Las Vegas Grand Prix?", status: "teaser", imageSlug: "las-vegas-gp-trackside-hotels" },
+    { id: "getting-there", label: "Getting There", question: "How do I get around Las Vegas during race weekend?", status: "public", imageSlug: "las-vegas-gp-getting-around" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the Las Vegas GP, and what should I pack?", status: "public", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Las Vegas GP?", status: "public", imageSlug: "las-vegas-gp-first-timer-orientation" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat during Las Vegas GP race weekend?", status: "teaser", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/las-vegas-gp-where-to-eat-spoke.jpg" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips during Las Vegas GP weekend?", status: "teaser", imageSlug: "las-vegas-gp-red-rock-canyon" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does a Las Vegas GP race weekend actually look like?", status: "teaser", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/las-vegas-gp-itinerary-spoke.jpg" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at the Las Vegas Strip Circuit?", status: "public", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at the Las Vegas Strip Circuit?", status: "public", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/las-vegas-gp-map-spoke.jpg" },
+    { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Las Vegas GP?", status: "teaser", imageSlug: "las-vegas-gp-paddock-club" },
+  ],
+  // Abu Dhabi Grand Prix 2026 — classic-to-hub-and-spoke conversion,
+  // 30 Aug 2026. Slug already evergreen ("abu-dhabi-grand-prix", no year
+  // suffix) so no separate slug migration needed, per the skill's standing
+  // rule. All 26 experiences real/seeded (status: in_review — publish via
+  // /curator/review before spoke cards will render, per founder decision to
+  // build now/publish later), all 26 hero-imaged and founder-reviewed
+  // (30 Aug 2026). Real imageSlug values used directly. Weather/Arrival/
+  // Tickets use the skill's standing cross-event default images
+  // (imageOverride), set here at config-creation time per the skill's
+  // explicit rule — not deferred to a later pass.
+  "abu-dhabi-grand-prix": [
+    { id: "cost", label: "Cost Guide", question: "How much does an Abu Dhabi GP weekend cost?", status: "teaser", imageSlug: "main-grandstand-yas-marina" },
+    { id: "tickets", label: "Ticket Guide", question: "Which Abu Dhabi GP grandstand is the best buy?", status: "teaser", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the Abu Dhabi GP?", status: "teaser", imageSlug: "crowne-plaza-yas-island" },
+    { id: "getting-there", label: "Getting There", question: "AUH or DXB — which airport should I fly into for the Abu Dhabi GP?", status: "public", imageSlug: "auh-vs-dxb-getting-there" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the Abu Dhabi GP, and what should I pack?", status: "public", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Abu Dhabi GP?", status: "public", imageSlug: "first-timer-orientation-abu-dhabi" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat during Abu Dhabi GP race weekend?", status: "teaser", imageSlug: "cipriani-yas-island" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips during Abu Dhabi GP weekend — Abu Dhabi city or Dubai?", status: "teaser", imageSlug: "burj-khalifa-dubai-day-trip" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does an Abu Dhabi GP season-finale weekend actually look like?", status: "teaser", imageSlug: "yasalam-after-parties" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at Yas Marina Circuit gates?", status: "public", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at Yas Marina Circuit?", status: "public", imageSlug: "yas-marina-circuit-facilities" },
+    { id: "luxury", label: "Luxury Guide", question: "What does a genuinely luxury Abu Dhabi GP season finale look like?", status: "teaser", imageSlug: "f1-paddock-club-yas-marina" },
+  ],
 };

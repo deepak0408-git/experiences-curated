@@ -275,8 +275,55 @@ function buildAustralianOpen(content: ContentBundle, lookupBareMany: LookupBareM
   };
 }
 
+function buildLasVegasGrandPrix(content: ContentBundle, lookupBareMany: LookupBareMany): TravelBriefGenericResult {
+  const g = content.gettingThere;
+  const w = content.weather;
+  const a = content.arrival;
+  return {
+    gettingThere: g
+      ? {
+          heading: "Getting There",
+          sectionLabel: "Section 1 of 3",
+          blocks: [
+            { kind: "prose", text: g.intro },
+            { kind: "factRows", label: g.transitOptionsTable.label, rows: g.transitOptionsTable.rows.map((r: { title: string; detail: string }) => ({ label: r.title, value: r.detail })) },
+            { kind: "subheading", label: g.monorailFareBox.label, body: g.monorailFareBox.body },
+            { kind: "callout", label: g.rideshareCallout.label, body: g.rideshareCallout.body },
+            { kind: "experiences", items: lookupBareMany(["las-vegas-gp-getting-around"]) },
+          ],
+        }
+      : undefined,
+    weather: w
+      ? {
+          heading: "Weather",
+          sectionLabel: "Section 2 of 3",
+          blocks: [
+            { kind: "prose", text: w.intro },
+            { kind: "subheading", label: w.realNumbersCallout.label, body: w.realNumbersCallout.body },
+            { kind: "subheading", label: w.standExposureCallout.label, body: w.standExposureCallout.body },
+            { kind: "factRows", label: w.packList.label, rows: w.packList.items.map((i: { title: string; detail: string }) => ({ label: i.title, value: i.detail })) },
+            { kind: "callout", label: w.cashlessCallout.label, body: w.cashlessCallout.body },
+          ],
+        }
+      : undefined,
+    arrival: a
+      ? {
+          heading: "Arrival & Grandstand Guide",
+          sectionLabel: "Section 3 of 3",
+          blocks: [
+            { kind: "prose", text: a.intro },
+            { kind: "factRows", label: a.whatToExpectTable.label, rows: a.whatToExpectTable.rows.map((r: { title: string; detail: string }) => ({ label: r.title, value: r.detail })) },
+            { kind: "factRows", label: a.arrivalStrategyByTier.label, rows: a.arrivalStrategyByTier.rows.map((r: { title: string; detail: string }) => ({ label: r.title, value: r.detail })) },
+            { kind: "experiences", label: "What General Admission gets you", items: lookupBareMany(["las-vegas-gp-flamingo-ga"]) },
+          ],
+        }
+      : undefined,
+  };
+}
+
 export const TRAVEL_BRIEF_GENERIC_SECTION_BUILDERS: Record<string, (content: ContentBundle, lookupBareMany: LookupBareMany) => TravelBriefGenericResult> = {
   "bahrain-grand-prix": buildBahrainGrandPrix,
+  "las-vegas-grand-prix": buildLasVegasGrandPrix,
   "shanghai-masters": buildShanghaiMasters,
   "singapore-grand-prix": buildSingaporeGrandPrix,
   "atp-finals": buildAtpFinals,

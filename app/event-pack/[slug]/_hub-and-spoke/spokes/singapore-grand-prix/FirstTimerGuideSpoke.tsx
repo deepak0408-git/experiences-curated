@@ -100,7 +100,7 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
           proxy, since Singapore's 2026 gate rules and accessibility info are
           already published for this exact race, not inferred from a
           different event at the same venue. */}
-      <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-4 pt-10 border-t border-[#2A2A2A]">Practical essentials</p>
+      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-4 pt-10 border-t border-[#2A2A2A]">Practical essentials</p>
 
       <p className="text-sm font-bold text-white mb-2">What&apos;s not allowed through the gates</p>
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-6">

@@ -76,6 +76,19 @@ import { nzAustraliaArrivalSpokeContent } from "./content/new-zealand-in-austral
 import { nzAustraliaMapSpokeContent } from "./content/new-zealand-in-australia-cricket-2026-27/mapContent";
 import { nzAustraliaLuxurySpokeContent } from "./content/new-zealand-in-australia-cricket-2026-27/luxuryContent";
 
+import { lasVegasGpCostSpokeContent } from "./content/las-vegas-grand-prix/costContent";
+import { lasVegasGpTicketsSpokeContent } from "./content/las-vegas-grand-prix/ticketsContent";
+import { lasVegasGpHotelsSpokeContent } from "./content/las-vegas-grand-prix/hotelsContent";
+import { lasVegasGpGettingThereSpokeContent } from "./content/las-vegas-grand-prix/gettingThereContent";
+import { lasVegasGpWeatherSpokeContent } from "./content/las-vegas-grand-prix/weatherContent";
+import { lasVegasGpFirstTimerGuideSpokeContent } from "./content/las-vegas-grand-prix/firstTimerGuideContent";
+import { lasVegasGpWhereToEatSpokeContent } from "./content/las-vegas-grand-prix/whereToEatContent";
+import { lasVegasGpDayTripsSpokeContent } from "./content/las-vegas-grand-prix/dayTripsContent";
+import { lasVegasGpItinerarySpokeContent } from "./content/las-vegas-grand-prix/itineraryContent";
+import { lasVegasGpArrivalSpokeContent } from "./content/las-vegas-grand-prix/arrivalContent";
+import { lasVegasGpMapSpokeContent } from "./content/las-vegas-grand-prix/mapContent";
+import { lasVegasGpLuxurySpokeContent } from "./content/las-vegas-grand-prix/luxuryContent";
+
 import { australianOpenCostSpokeContent } from "./content/australian-open/costContent";
 import { australianOpenTicketsSpokeContent } from "./content/australian-open/ticketsContent";
 import { australianOpenHotelsSpokeContent } from "./content/australian-open/hotelsContent";
@@ -203,5 +216,19 @@ export const PDF_CONTENT_BY_EVENT: Record<string, SpokePdfContentBundle> = {
     arrival: australianOpenArrivalSpokeContent,
     map: australianOpenMapSpokeContent,
     luxury: australianOpenLuxurySpokeContent,
+  },
+  "las-vegas-grand-prix": {
+    cost: lasVegasGpCostSpokeContent,
+    tickets: lasVegasGpTicketsSpokeContent,
+    hotels: lasVegasGpHotelsSpokeContent,
+    gettingThere: lasVegasGpGettingThereSpokeContent,
+    weather: lasVegasGpWeatherSpokeContent,
+    firstTimerGuide: lasVegasGpFirstTimerGuideSpokeContent,
+    whereToEat: lasVegasGpWhereToEatSpokeContent,
+    dayTrips: lasVegasGpDayTripsSpokeContent,
+    itinerary: lasVegasGpItinerarySpokeContent,
+    arrival: lasVegasGpArrivalSpokeContent,
+    map: lasVegasGpMapSpokeContent,
+    luxury: lasVegasGpLuxurySpokeContent,
   },
 };

@@ -76,7 +76,7 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
       justPurchased={justPurchased}
       eventName="Singapore Grand Prix"
       status="teaser"
-      h1="How much does a Singapore GP weekend cost?"
+      h1="Hotel, ticket, and daily-spend numbers for race weekend"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       heroImagePosition="center 25%"

@@ -551,6 +551,7 @@ type CostSectionProps = {
   categoryRows: CategoryRow[];
   bookingTimingTrap: { label: string; body: string };
   flightRange: { low: number; high: number } | null;
+  flightRegionLabel: string;
   flightsNote: string;
   crossLinks: { hotels: string; tickets: string };
   verdicts: Verdict[];
@@ -562,7 +563,7 @@ type CostSectionProps = {
 };
 
 function CostSection({
-  intro, moderateTotal, tripNights, profiles, categoryRows, bookingTimingTrap, flightRange, flightsNote, verdicts, sectionLabel,
+  intro, moderateTotal, tripNights, profiles, categoryRows, bookingTimingTrap, flightRange, flightRegionLabel, flightsNote, verdicts, sectionLabel,
 }: CostSectionProps) {
   return (
     <View break>
@@ -613,7 +614,7 @@ function CostSection({
       <Text style={styles.sectionHeading}>What about flights?</Text>
       {flightRange && (
         <Text style={[styles.bodyText, { marginBottom: 4, fontFamily: "Helvetica-Bold", color: "#171717" }]}>
-          Roughly {money(flightRange.low, flightRange.high)} round-trip, economy, if you&apos;re traveling from within Europe.
+          {`Roughly ${money(flightRange.low, flightRange.high)} round-trip, economy, if you're traveling from ${flightRegionLabel}.`}
         </Text>
       )}
       <Text style={styles.crossLink}>{flightsNote}</Text>
