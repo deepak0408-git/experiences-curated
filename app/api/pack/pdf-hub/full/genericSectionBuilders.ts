@@ -159,7 +159,7 @@ function buildBahrainGrandPrix(content: ContentBundle, lookupMany: LookupMany): 
       heading: "Trip Schedule",
       sectionLabel: "Section 9 of 12",
       blocks: [
-        { kind: "callout", label: it.dayNightUncertaintyNote.label, body: it.dayNightUncertaintyNote.body },
+        { kind: "callout", label: it.sessionTimesNote.label, body: it.sessionTimesNote.body },
         { kind: "factRows", label: "The shape of the weekend", rows: it.days.map((d: { label: string; summary: string }) => ({ label: d.label, value: d.summary })) },
       ],
     };
