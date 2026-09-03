@@ -28,14 +28,8 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       {/* Free "Event rhythm" section — classic-pack "How the event unfolds"
           parity (see hub-and-spoke-event-pack skill §1a). Explains the
           shape of the weekend before the paid section gets tactical.
-          Deliberately avoids committing to specific session clock times —
-          see project_bahrain_gp_night_race_uncertainty.md: as of 31 Jul
-          2026 whether this is a day or night race is genuinely unresolved
-          (SIC's CEO denied a night race the same day an F1 app screenshot
-          suggested one), and F1 hasn't published an official timetable
-          either way. Day labels (Friday/Saturday/Sunday) and session order
-          are safe to state now since they follow standard F1 weekend
-          structure regardless of day/night; specific start times are not. */}
+          Session times confirmed 4 Sep 2026 — FIA-announced schedule
+          (see project_bahrain_gp_night_race_uncertainty.md, now resolved). */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
         A Grand Prix weekend runs on a fixed three-day rhythm on track — Friday is practice, Saturday is
         qualifying, Sunday is the race — but a trip built only around those three days wastes real time either
@@ -50,11 +44,8 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
         dictated by the grandstand you&apos;ve booked.
       </p>
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        One genuine open question for 2026: F1 hasn&apos;t yet published official session times for this round, and
-        whether the race itself runs in daylight or under lights is still unconfirmed — Sepang has no permanent
-        floodlights and hosted this race in the afternoon throughout its original 1999–2017 run, but reporting
-        around this relocated 2026 date has been mixed. We&apos;ll update this page the moment F1 confirms the
-        timetable; until then, the day-by-day shape below holds regardless of which way that resolves.
+        F1 has confirmed session times for the weekend: FP1 12:30pm and FP2 4pm on Friday, FP3 12:30pm and
+        qualifying 4pm on Saturday, and the race itself at 3pm local time on Sunday.
       </p>
 
       <div className="flex flex-col gap-3 mb-8">
@@ -84,7 +75,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
             rows={[
               { time: "Early morning", location: "Batu Caves", activity: "Go before 9am to beat the heat and tour groups — the 272 rainbow steps, the 42.7m gold statue, and the Temple Cave are a genuine half-day, not a full one, so this fits ahead of practice. Entry to the main cave is free; budget around RM35 if you add the Dark Cave tour." },
               { time: "Midday", location: "Sepang International Circuit", activity: "First circuit visit — find your grandstand, walk the concourse near it before race-day crowds arrive. Near the Main Grandstand, the Mall has the best food and facilities." },
-              { time: "Practice sessions", location: "Your booked grandstand", activity: "Watch FP1/FP2 — the lowest-pressure viewing of the weekend, worth using to test your seat's sightlines before qualifying and race day." },
+              { time: "12:30pm–1:30pm & 4pm–5pm", location: "Your booked grandstand", activity: "FP1 and FP2 — the lowest-pressure viewing of the weekend, worth using to test your seat's sightlines before qualifying and race day." },
               { time: "Evening", location: "Jalan Alor, Bukit Bintang", activity: "Ease into the city — loud, cheap street food, the easiest possible introduction to Kuala Lumpur after a travel day." },
             ]}
           />
@@ -94,7 +85,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
             rows={[
               { time: "Morning", location: "Putrajaya", activity: "The tighter fit at 30-45 minutes from central KL — the Pink Mosque and a lake cruise make a real morning without eating into the whole day. Check the mosque's specific non-Muslim visiting windows against your plan before you go." },
               { time: "Early afternoon", location: "En route back to Sepang", activity: "Build in real transit buffer from Putrajaya — don't cut it close against the qualifying session." },
-              { time: "Qualifying session", location: "Your booked grandstand", activity: "Watch qualifying — shorter than the race, and it sets Sunday's grid." },
+              { time: "4pm–5pm", location: "Your booked grandstand", activity: "Qualifying — shorter than the race, and it sets Sunday's grid. FP3 runs 12:30pm–1:30pm beforehand if your grandstand access covers it." },
               { time: "Evening", location: "Old China Cafe, Chinatown", activity: "A calmer sit-down dinner in a 1920s shophouse. Reserve ahead — the heritage building means genuinely limited seating." },
             ]}
           />
@@ -105,7 +96,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
               { time: "Before the gates", location: "Hill Stand (general admission)", activity: "Arrive earliest of all three stands below — no reserved return to your spot, and the best ground near the canopy fills up first." },
               { time: "Before the gates", location: "K1 grandstand", activity: "Arrive early enough to claim a block position with sight of both Turn 1 and Turn 2." },
               { time: "Before the gates", location: "Main Grandstand", activity: "Arrive before the cars roll out for the pre-race grid walk from almost pit-wall distance." },
-              { time: "Race session", location: "Your booked grandstand", activity: "The race itself." },
+              { time: "3pm start", location: "Your booked grandstand", activity: "The race itself." },
               { time: "After the chequered flag", location: "Sepang exit routes", activity: "Expect exit crowds to take real time to clear. Build slack into any same-day departure flight — if you're flying from KLIA Terminal 2, you're still only a short walk from the gates even once the circuit is at its busiest." },
             ]}
           />

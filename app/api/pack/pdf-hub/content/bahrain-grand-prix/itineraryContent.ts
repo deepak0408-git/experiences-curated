@@ -2,21 +2,16 @@
 // _hub-and-spoke/spokes/bahrain-grand-prix/ItinerarySpoke.tsx), for the Full
 // Pack PDF build. Prose half only, hand-copied not paraphrased.
 //
-// Real open question flagged in the source: day vs. night race is
-// unconfirmed for 2026. Sepang has no permanent floodlights and hosted
-// 1999-2017 in daylight, but 2026 reporting is mixed — the spoke explicitly
-// says it will update the moment F1 confirms. The day-by-day shape below
-// holds regardless of that outcome. Carry this uncertainty note into the
-// PDF verbatim — do not resolve it one way or the other.
+// Session times confirmed 4 Sep 2026 via FIA-announced schedule.
 //
 // No experience-card lookups (.find(...)) in this source spoke — it's a
 // day-by-day narrative table (ItineraryTable component), not card-driven.
 
 export const bahrainGpItinerarySpokeContent = {
-  dayNightUncertaintyNote: {
-    label: "Day or night race? Still unconfirmed",
+  sessionTimesNote: {
+    label: "Confirmed session times",
     body:
-      "Sepang has no permanent floodlights and hosted races 1999-2017 in daylight, but 2026 reporting on race timing is mixed. We'll update this the moment F1 confirms — the day-by-day shape below holds regardless.",
+      "FP1 12:30pm and FP2 4pm Friday, FP3 12:30pm and qualifying 4pm Saturday, race 3pm Sunday — all local time.",
   },
 
   days: [
