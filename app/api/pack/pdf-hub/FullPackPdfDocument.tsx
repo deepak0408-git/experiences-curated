@@ -465,8 +465,16 @@ const styles = StyleSheet.create({
   },
 });
 
+// Rounds both ends before formatting — call sites throughout this file and
+// its route.ts pass through real DB-derived decimal values (e.g. a hotel's
+// per-night cost * trip nights) unrounded, which rendered as "US$2,045.76"
+// in the PDF. Every other price display in the pack already rounds via
+// formatMoneyRange() on the web side; this brings the PDF's shared money()
+// formatter in line rather than patching each call site individually.
 function money(low: number, high: number) {
-  return low === high ? `US$${low.toLocaleString()}` : `US$${low.toLocaleString()}–US$${high.toLocaleString()}`;
+  const roundedLow = Math.round(low);
+  const roundedHigh = Math.round(high);
+  return roundedLow === roundedHigh ? `US$${roundedLow.toLocaleString()}` : `US$${roundedLow.toLocaleString()}–US$${roundedHigh.toLocaleString()}`;
 }
 
 function splitParas(text: string): string[] {

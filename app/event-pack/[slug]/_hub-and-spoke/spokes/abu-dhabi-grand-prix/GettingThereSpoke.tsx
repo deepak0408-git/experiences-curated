@@ -66,7 +66,7 @@ export default async function GettingThereSpoke({ eventSlug }: { eventSlug: stri
         <p className="text-sm text-[#A3A3A3] leading-6">
           AUH wins on pure convenience if your routing supports it. DXB wins on route choice and often on fare —
           check both before booking rather than defaulting to AUH just because it&apos;s closer to the circuit. For
-          a lot of long-haul origins, the extra 60 minutes of ground transport from Dubai is a small price for a
+          a lot of long-haul origins, the extra 75 minutes of ground transport from Dubai is a small price for a
           meaningfully better flight.
         </p>
       </div>
@@ -103,6 +103,11 @@ export default async function GettingThereSpoke({ eventSlug }: { eventSlug: stri
           <SpokeExperienceCard experience={airportGuide} isPro={isPro} />
         </div>
       )}
+
+      <p className="text-xs text-[#6A6A6A] mt-8">
+        Sources: Abu Dhabi Airports (AUH distance/transfer data), Dubai Airports (DXB distance/transfer data),
+        Google Maps drive-time estimates (E11 route).
+      </p>
     </SpokeShell>
   );
 }

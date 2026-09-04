@@ -24,6 +24,19 @@ import { bahrainGpArrivalSpokeContent } from "./content/bahrain-grand-prix/arriv
 import { bahrainGpMapSpokeContent } from "./content/bahrain-grand-prix/mapContent";
 import { bahrainGpLuxurySpokeContent } from "./content/bahrain-grand-prix/luxuryContent";
 
+import { abuDhabiGpCostSpokeContent } from "./content/abu-dhabi-grand-prix/costContent";
+import { abuDhabiGpTicketsSpokeContent } from "./content/abu-dhabi-grand-prix/ticketsContent";
+import { abuDhabiGpHotelsSpokeContent } from "./content/abu-dhabi-grand-prix/hotelsContent";
+import { abuDhabiGpGettingThereSpokeContent } from "./content/abu-dhabi-grand-prix/gettingThereContent";
+import { abuDhabiGpWeatherSpokeContent } from "./content/abu-dhabi-grand-prix/weatherContent";
+import { abuDhabiGpFirstTimerGuideSpokeContent } from "./content/abu-dhabi-grand-prix/firstTimerGuideContent";
+import { abuDhabiGpWhereToEatSpokeContent } from "./content/abu-dhabi-grand-prix/whereToEatContent";
+import { abuDhabiGpDayTripsSpokeContent } from "./content/abu-dhabi-grand-prix/dayTripsContent";
+import { abuDhabiGpItinerarySpokeContent } from "./content/abu-dhabi-grand-prix/itineraryContent";
+import { abuDhabiGpArrivalSpokeContent } from "./content/abu-dhabi-grand-prix/arrivalContent";
+import { abuDhabiGpMapSpokeContent } from "./content/abu-dhabi-grand-prix/mapContent";
+import { abuDhabiGpLuxurySpokeContent } from "./content/abu-dhabi-grand-prix/luxuryContent";
+
 import { shanghaiMastersCostSpokeContent } from "./content/shanghai-masters/costContent";
 import { shanghaiMastersTicketsSpokeContent } from "./content/shanghai-masters/ticketsContent";
 import { shanghaiMastersHotelsSpokeContent } from "./content/shanghai-masters/hotelsContent";
@@ -146,6 +159,20 @@ export const PDF_CONTENT_BY_EVENT: Record<string, SpokePdfContentBundle> = {
     arrival: bahrainGpArrivalSpokeContent,
     map: bahrainGpMapSpokeContent,
     luxury: bahrainGpLuxurySpokeContent,
+  },
+  "abu-dhabi-grand-prix": {
+    cost: abuDhabiGpCostSpokeContent,
+    tickets: abuDhabiGpTicketsSpokeContent,
+    hotels: abuDhabiGpHotelsSpokeContent,
+    gettingThere: abuDhabiGpGettingThereSpokeContent,
+    weather: abuDhabiGpWeatherSpokeContent,
+    firstTimerGuide: abuDhabiGpFirstTimerGuideSpokeContent,
+    whereToEat: abuDhabiGpWhereToEatSpokeContent,
+    dayTrips: abuDhabiGpDayTripsSpokeContent,
+    itinerary: abuDhabiGpItinerarySpokeContent,
+    arrival: abuDhabiGpArrivalSpokeContent,
+    map: abuDhabiGpMapSpokeContent,
+    luxury: abuDhabiGpLuxurySpokeContent,
   },
   "shanghai-masters": {
     cost: shanghaiMastersCostSpokeContent,

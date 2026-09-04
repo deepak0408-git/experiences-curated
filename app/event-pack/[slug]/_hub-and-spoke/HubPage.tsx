@@ -130,6 +130,17 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
     { label: "Emergencies", value: "UAE-wide emergency numbers: 999 (police), 998 (ambulance), 997 (fire) — 112 also reaches emergency services from any mobile, even with no SIM or signal. Yas Marina Circuit has its own on-site Medical Center, with National Ambulance as the exclusive emergency care provider at the venue." },
     { label: "Tourism Infoline", value: "Abu Dhabi Department of Culture and Tourism visitor line: 800 555 (toll-free within the UAE)." },
   ],
+  // Real, sourced facts from experience research (roof-closing time, the
+  // official FFT fraud-warning framing, the free tram is N/A for Paris so
+  // omitted, RATP is the real transit operator). Gate/session times
+  // genuinely not yet published for the 2027 tournament, stated honestly
+  // per skill §2a-3 rather than guessed.
+  "french-open": [
+    { label: "Gate times", value: "Not yet published for the 2027 tournament. Based on the pattern in recent years, expect gates to open around 09:00-10:00 on match days — confirm exact times via rolandgarros.com closer to the tournament." },
+    { label: "Roof closing time", value: "Court Philippe-Chatrier and Suzanne-Lenglen's retractable roofs close in about 15 minutes once rain starts — if play is suspended, stay in your seat rather than heading for cover elsewhere." },
+    { label: "Ticket resale warning", value: "The FFT publishes its own fraud warnings about counterfeit and black-market ticket resale sites. Buy only via tickets.rolandgarros.com, travel.rolandgarros.com, hospitality.rolandgarros.com, or the tournament's named official agencies — and use the FFT's own resale marketplace, not a third party, if you need a returned ticket." },
+    { label: "Emergencies", value: "France-wide emergency number: 112 (works from any phone, free, English-speaking operators available). Police: 17. Ambulance (SAMU): 15. Fire: 18." },
+  ],
 };
 
 // Exported (27 Aug 2026) — same reasoning as QUICK_REFERENCE_BY_EVENT above.
@@ -241,6 +252,19 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
     heroFallbackImageSlug: "main-grandstand-yas-marina",
     introText:
       "Abu Dhabi closes the Formula 1 season, and it's done that every year since Yas Marina Circuit opened in 2009 as the sport's first-ever twilight race — a start in daylight, a finish under floodlights, powered by roughly 4,700 light fixtures switched on across less than 300 days of construction. Titles have been settled here more than once, and the crowd on a season-finale Sunday carries a different charge than any mid-season round.\n\nThis is also the one weekend on the F1 calendar built as much around off-track spectacle as the racing itself — Yasalam's after-race concerts run every night of the weekend on the same ticket, and the marina scene around the circuit's own superyacht harbour has become as much a part of Abu Dhabi's identity as the race. Season's-end atmosphere, headline music, and a genuine luxury layer beyond any single ticket product — all in one place.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
+  // Built from real sourced facts researched during experience seeding
+  // (Chatrier's 1928 origin and 2020 retractable-roof rebuild, the red-clay
+  // surface unchanged since 1928, Philippe Chatrier's own Olympic-tennis
+  // advocacy behind the court's naming) — not invented, matches every other
+  // hub-and-spoke event's pattern of drawing The Brief from real underlying
+  // content.
+  "french-open": {
+    displayName: "French Open",
+    venueLine: "Held at Stade Roland-Garros, in the 16th arrondissement of Paris — the only Grand Slam played on red clay.",
+    heroFallbackImageSlug: "court-philippe-chatrier-suzanne-lenglen",
+    introText:
+      "Roland-Garros has been playing on the same red clay since 1928, and that surface changes everything about the tennis you're watching — higher bounces, longer rallies, a match that can run three and a half hours in the tournament's second week. Court Philippe-Chatrier still carries the name of the man who spent the 1970s and 80s fighting to get tennis back into the Olympics, and its 2020 rebuild added a retractable roof that turned this into the newest experience a 99-year-old tournament has ever created.\n\nThis isn't a tournament you can see all of from one seat. Grounds Pass holders can watch a top-10 player warm up ten feet away on a practice court before the crowds arrive, Court 14's semi-sunken bowl turns into the loudest room at the venue whenever a French player is drawn there, and the greenhouse-wrapped Court Simonne-Mathieu sits built directly into a working botanical garden. Add a city built around it — Auteuil's hidden Art Nouveau villas, Montmartre's hilltop views, a jazz cellar that's run every night since 1949 — and the tournament is only half the trip.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
 };
 

@@ -116,6 +116,19 @@ import ADArrivalSpoke from "./abu-dhabi-grand-prix/ArrivalSpoke";
 import ADMapSpoke from "./abu-dhabi-grand-prix/MapSpoke";
 import ADLuxurySpoke from "./abu-dhabi-grand-prix/LuxurySpoke";
 
+import FOCostSpoke from "./french-open/CostSpoke";
+import FOTicketsSpoke from "./french-open/TicketsSpoke";
+import FOHotelsSpoke from "./french-open/HotelsSpoke";
+import FOGettingThereSpoke from "./french-open/GettingThereSpoke";
+import FOWeatherSpoke from "./french-open/WeatherSpoke";
+import FOFirstTimerGuideSpoke from "./french-open/FirstTimerGuideSpoke";
+import FOWhereToEatSpoke from "./french-open/WhereToEatSpoke";
+import FODayTripsSpoke from "./french-open/DayTripsSpoke";
+import FOItinerarySpoke from "./french-open/ItinerarySpoke";
+import FOArrivalSpoke from "./french-open/ArrivalSpoke";
+import FOMapSpoke from "./french-open/MapSpoke";
+import FOLuxurySpoke from "./french-open/LuxurySpoke";
+
 type SpokeComponent = ComponentType<{ eventSlug: string }>;
 
 // Registry mapping eventSlug -> spokeId -> component. A new hub_and_spoke
@@ -249,6 +262,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: ADMapSpoke,
     luxury: ADLuxurySpoke,
   },
+  "french-open": {
+    cost: FOCostSpoke,
+    tickets: FOTicketsSpoke,
+    hotels: FOHotelsSpoke,
+    "getting-there": FOGettingThereSpoke,
+    weather: FOWeatherSpoke,
+    "first-timer-guide": FOFirstTimerGuideSpoke,
+    "where-to-eat": FOWhereToEatSpoke,
+    "day-trips": FODayTripsSpoke,
+    itinerary: FOItinerarySpoke,
+    arrival: FOArrivalSpoke,
+    map: FOMapSpoke,
+    luxury: FOLuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -377,5 +404,19 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Yas Marina Circuit — Arrival & Shuttle Guide",
     map: "Yas Marina Circuit Map — Facilities and Accessibility",
     luxury: "Luxury Guide for the Abu Dhabi Grand Prix — Paddock Club, Skybridge, and More",
+  },
+  "french-open": {
+    cost: "How Much Does a French Open Trip to Paris Cost? — Budget Guide",
+    tickets: "Roland-Garros Ticket Guide — Grounds Pass to Show Courts",
+    hotels: "Where to Stay for the French Open — 16th Arrondissement or Boulogne-Billancourt",
+    "getting-there": "Getting to Stade Roland-Garros — Métro, Taxi, and Driving",
+    weather: "Roland-Garros Weather in May-June — What to Pack",
+    "first-timer-guide": "First-Timer's Guide — Roland-Garros and Paris",
+    "where-to-eat": "Where to Eat — French Open Weekend and On the Grounds",
+    "day-trips": "Best Day Trips — Versailles, Auteuil, or Montmartre",
+    itinerary: "Sample French Open Trip Itinerary",
+    arrival: "Roland-Garros — Arrival & Practice Court Guide",
+    map: "Stade Roland-Garros Map — Courts and Facilities",
+    luxury: "Luxury Guide for the French Open — Official Hospitality and More",
   },
 };

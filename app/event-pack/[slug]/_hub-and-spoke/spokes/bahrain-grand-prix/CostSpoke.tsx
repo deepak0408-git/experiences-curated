@@ -91,7 +91,7 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
       heroImageUrl={heroImageUrl}
       heroImagePosition="center 75%"
       isUnlocked={isUnlocked}
-      ctaCopy="Every number above is real and free — the pack doesn't unlock more prices, it unlocks the decision. Given your budget, which hotel area and which ticket tier we'd actually pick for a first Sepang trip and why, plus the booking-timing detail that matters most for a race weekend with unusually high pent-up demand."
+      ctaCopy="Every number above is real and free — the pack doesn't unlock more prices, it unlocks the decision. For your budget, we'll tell you which hotel area and which ticket tier we'd actually pick for a first Sepang trip and why, plus the booking-timing detail that matters most for a race weekend with unusually high pent-up demand."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Sepang&apos;s hotel stock and cost of living are genuinely cheap by international standards — Kuala Lumpur
@@ -133,8 +133,10 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
                   <p className="text-lg font-black text-[#AAFF00]">
                     {total ? formatMoneyRange(total.low, total.high) : "—"}
                   </p>
-                  <p className="text-xs text-[#6A6A6A] mt-1">{p.note}</p>
-                  <p className="text-xs text-[#6A6A6A]">Ticket: {p.ticketNote}</p>
+                  <ul className="mt-1 space-y-0.5">
+                    <li className="text-xs text-[#6A6A6A] pl-3 -indent-3">• {p.note}</li>
+                    <li className="text-xs text-[#6A6A6A] pl-3 -indent-3">• Ticket: {p.ticketNote}</li>
+                  </ul>
                 </div>
               );
             })}

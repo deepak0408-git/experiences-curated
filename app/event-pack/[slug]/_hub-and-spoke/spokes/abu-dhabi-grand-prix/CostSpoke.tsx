@@ -63,8 +63,11 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
   // data (14 markets). A single blended global figure across all 5 regions
   // would span $278 to $4,602, which reads as misleading rather than useful
   // — same reasoning Bahrain GP's Cost spoke applies to its own APAC-heavy
-  // fanbase.
-  const europeFlights = flights.filter((f) => f.region === "Europe");
+  // fanbase. Zurich excluded per founder instruction, 4 Sep 2026 — its
+  // $1,429 high end sits ~$244 above the next-highest market (Madrid,
+  // $1,185.50), stretching the displayed range wider than the other 13
+  // markets actually support.
+  const europeFlights = flights.filter((f) => f.region === "Europe" && f.originMarket !== "Zurich");
   const flightRange = europeFlights.length
     ? {
         low: Math.min(...europeFlights.map((f) => Number(f.costLow))),
@@ -85,7 +88,7 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="Every number above is real and free — the pack doesn't unlock more prices, it unlocks the decision. Given your budget, which grandstand and which hotel area we'd actually pick for the season finale, and the specific booking-window detail that matters most for the one weekend on the calendar with genuinely elevated demand."
+      ctaCopy="Every number above is real and free — the pack doesn't unlock more prices, it unlocks the decision. For your budget, we'll tell you which grandstand and which hotel area we'd actually pick for the season finale, plus the booking-window detail that matters most for the one weekend on the calendar with genuinely elevated demand."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Abu Dhabi is the calendar&apos;s season finale, and pricing reflects it — this isn&apos;t the cheapest race
@@ -126,8 +129,10 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
                   <p className="text-lg font-black text-[#AAFF00]">
                     {total ? formatMoneyRange(total.low, total.high) : "—"}
                   </p>
-                  <p className="text-xs text-[#6A6A6A] mt-1">{p.note}</p>
-                  <p className="text-xs text-[#6A6A6A]">Ticket: {p.ticketNote}</p>
+                  <ul className="mt-1 space-y-0.5">
+                    <li className="text-xs text-[#6A6A6A] pl-3 -indent-3">• {p.note}</li>
+                    <li className="text-xs text-[#6A6A6A] pl-3 -indent-3">• Ticket: {p.ticketNote}</li>
+                  </ul>
                 </div>
               );
             })}
@@ -192,10 +197,10 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Which ticket tier we&apos;d pick</p>
           <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
-            For a genuine season-finale weekend, the West or Main Grandstand tier ({tier3 && formatMoneyRange(Math.round(Number(tier3.costLow)), Math.round(Number(tier3.costHigh)))}) is the strongest all-round pick —
+            For a genuine season-finale weekend, the West or Main Grandstand tier ({tier3 && formatMoneyRange(Math.round(Number(tier3.costLow)), Math.round(Number(tier3.costHigh)))}{" "}for the 4-day ticket) is the strongest all-round pick —
             real racing action or full ceremony, both covered. If the budget doesn&apos;t stretch that far, the
-            mid-tier grandstands ({tier2 && formatMoneyRange(Math.round(Number(tier2.costLow)), Math.round(Number(tier2.costHigh)))}) still put you in a reserved, covered seat for meaningfully less. Abu Dhabi
-            Hill ({tier1 && formatMoneyRange(Math.round(Number(tier1.costLow)), Math.round(Number(tier1.costHigh)))}) is the honest budget entry — genuinely no shame in it, especially for a first Abu Dhabi GP where
+            mid-tier grandstands ({tier2 && formatMoneyRange(Math.round(Number(tier2.costLow)), Math.round(Number(tier2.costHigh)))}{" "}for the 4-day ticket) still put you in a reserved, covered seat for meaningfully less. Abu Dhabi
+            Hill ({tier1 && formatMoneyRange(Math.round(Number(tier1.costLow)), Math.round(Number(tier1.costHigh)))}{" "}for the 4-day ticket) is the honest budget entry — genuinely no shame in it, especially for a first Abu Dhabi GP where
             the after-race concerts matter as much as the seat itself. The full grandstand-by-grandstand comparison
             lives in the{" "}
             <a href={`/event-pack/${eventSlug}/tickets`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
@@ -207,18 +212,18 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
           <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-4 mb-8">
             <p className="text-sm font-bold text-white mb-1.5">Book early — this is the highest-demand weekend of the F1 season</p>
             <p className="text-sm text-[#A3A3A3] leading-6">
-              Buy only via the official F1 ticketing site or abudhabi.gp — avoid resellers, a real risk at the
+              Buy only via the official F1 ticketing site — avoid resellers, a real risk at the
               calendar&apos;s single highest-demand round. Paddock Club and other top-tier hospitality
-              (from {tier4 && formatMoneyRange(Math.round(Number(tier4.costLow)), Math.round(Number(tier4.costHigh)))}) has historically sold its best packages out months ahead — book that tier first if it&apos;s
+              (from {tier4 && formatMoneyRange(Math.round(Number(tier4.costLow)), Math.round(Number(tier4.costHigh)))}{" "}for the 3-day package) has historically sold its best packages out months ahead — book that tier first if it&apos;s
               on your list at all.
             </p>
             <a
-              href="https://www.abudhabi.gp/en/tickets"
+              href="https://tickets.formula1.com/en/f1-3312-abu-dhabi"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block mt-2 text-xs text-[#AAFF00] hover:text-[#BBFF33] underline"
             >
-              abudhabi.gp — official tickets →
+              tickets.formula1.com — official tickets →
             </a>
           </div>
 

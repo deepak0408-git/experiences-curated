@@ -81,7 +81,7 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
       heroImageUrl={heroImageUrl}
       heroImagePosition="center 25%"
       isUnlocked={isUnlocked}
-      ctaCopy="Every number above is real and free — the pack doesn't unlock more prices, it unlocks the decision. Given your budget, which ticket tier and hotel area we'd actually pick for a first Singapore GP and why, plus the timing detail that matters most for a race weekend where premium tiers sell out early."
+      ctaCopy="Every number above is real and free — the pack doesn't unlock more prices, it unlocks the decision. For your budget, we'll tell you which ticket tier and hotel area we'd actually pick for a first Singapore GP and why, plus the timing detail that matters most for a race weekend where premium tiers sell out early."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Singapore is one of the pricier stops on the F1 calendar, both for tickets and hotels, but it's also one of

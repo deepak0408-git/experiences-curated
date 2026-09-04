@@ -141,6 +141,16 @@ export const PACK_PRICING_CONFIG: Record<string, {
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_ABU_DHABI_GP_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_ABU_DHABI_GP_EARLY_BIRD_CUTOFF ?? "2026-11-15",
   },
+  // Real Dodo product IDs confirmed by the founder from the live Dodo
+  // dashboard, 4 Sep 2026: Early Bird pdt_0NmqmvAYTaGqbmuN7SAc3 (US$10),
+  // Standard pdt_0Nmqn3c3miUo1oLtPVGCP (US$15) — added to .env.local same
+  // session. Cutoff will be set directly by the founder via /curator/price;
+  // env-var default below is only the last-resort fallback until then.
+  "french-open": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_FRENCH_OPEN_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_FRENCH_OPEN_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_FRENCH_OPEN_EARLY_BIRD_CUTOFF ?? "2027-04-23",
+  },
 };
 
 // Last-resort fallback if a slug is in PACK_PRICING_CONFIG but its

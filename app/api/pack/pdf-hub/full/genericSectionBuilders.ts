@@ -1389,8 +1389,218 @@ function buildLasVegasGrandPrix(content: ContentBundle, lookupMany: LookupMany):
   return result;
 }
 
+function buildAbuDhabiGrandPrix(content: ContentBundle, lookupMany: LookupMany): GenericSectionsResult {
+  const result: GenericSectionsResult = {};
+
+  if (content.tickets) {
+    const t = content.tickets;
+    result.tickets = {
+      heading: "Tickets",
+      sectionLabel: "Section 2 of 12",
+      blocks: [
+        { kind: "prose", text: t.intro },
+        { kind: "factRows", label: t.standsTable.label, rows: t.standsTable.rows.map((r: { name: string; shows: string; seating: string; exposure: string }) => ({ label: r.name, value: `${r.shows} — ${r.seating}, ${r.exposure}` })) },
+        { kind: "callout", label: t.buyOfficialOnlyWarning.label, body: t.buyOfficialOnlyWarning.body },
+        { kind: "callout", label: t.pricingConfirmedNote.label, body: t.pricingConfirmedNote.body },
+        { kind: "experiences", label: "The 3 tiers with a full write-up", items: lookupMany(["abu-dhabi-hill-general-admission", "west-grandstand-yas-marina", "main-grandstand-yas-marina"]) },
+        { kind: "prose", text: t.luxuryGuideNote },
+      ],
+      verdicts: t.verdicts,
+    };
+  }
+
+  if (content.hotels) {
+    const h = content.hotels;
+    result.hotels = {
+      heading: "Hotels",
+      sectionLabel: "Section 3 of 12",
+      blocks: [
+        { kind: "prose", text: h.intro },
+        { kind: "sectionHeading", label: h.yasIsland.label },
+        { kind: "experiences", items: lookupMany(["w-abu-dhabi-yas-island", "crowne-plaza-yas-island"]) },
+        { kind: "sectionHeading", label: h.centralAbuDhabi.label },
+        { kind: "experiences", items: lookupMany(["beach-rotana-corniche-abu-dhabi"]) },
+        { kind: "sectionHeading", label: h.dubai.label },
+        { kind: "experiences", items: lookupMany(["atlantis-the-royal-dubai", "park-regis-business-bay-dubai", "ibis-deira-creekside-dubai"]) },
+        { kind: "subheading", label: h.airbnbAlternative.label, body: h.airbnbAlternative.intro },
+        { kind: "list", items: h.airbnbAlternative.neighborhoods.map((n: { name: string; body: string }) => `${n.name}: ${n.body}`) },
+        { kind: "factRows", label: h.bookingCards.label, rows: h.bookingCards.cards.map((c: { name: string; note: string }) => ({ label: c.name, value: c.note })) },
+        { kind: "sourcesFooter", text: h.sourcesFooter },
+      ],
+      verdicts: h.verdicts,
+    };
+  }
+
+  if (content.gettingThere) {
+    const g = content.gettingThere;
+    result.gettingThere = {
+      heading: "Getting There",
+      sectionLabel: "Section 4 of 12",
+      blocks: [
+        { kind: "prose", text: g.intro },
+        { kind: "subheading", label: g.auhRow.label, body: `${g.auhRow.headline}. ${g.auhRow.body}` },
+        { kind: "factRows", rows: g.auhRow.facts },
+        { kind: "subheading", label: g.dxbRow.label, body: g.dxbRow.body },
+        { kind: "factRows", rows: g.dxbRow.facts },
+        { kind: "callout", label: g.honestFramingCallout.label, body: g.honestFramingCallout.body },
+        { kind: "factRows", label: g.appsRow.label, rows: g.appsRow.items.map((i: { name: string; body: string }) => ({ label: i.name, value: i.body })) },
+        { kind: "experiences", items: lookupMany(["auh-vs-dxb-getting-there"]) },
+        { kind: "sourcesFooter", text: g.sourcesFooter },
+      ],
+    };
+  }
+
+  if (content.weather) {
+    const w = content.weather;
+    result.weather = {
+      heading: "Weather",
+      sectionLabel: "Section 5 of 12",
+      blocks: [
+        { kind: "prose", text: w.intro },
+        { kind: "factRows", label: w.packList.label, rows: w.packList.items.map((i: { label: string; detail: string }) => ({ label: i.label, value: i.detail })) },
+        { kind: "experiences", items: lookupMany(["twilight-race-packing-guide"]) },
+        { kind: "callout", label: w.honestTakeawayCallout.label, body: w.honestTakeawayCallout.body },
+        { kind: "sourcesFooter", text: w.sourcesFooter },
+      ],
+      verdicts: w.verdicts,
+    };
+  }
+
+  if (content.firstTimerGuide) {
+    const f = content.firstTimerGuide;
+    result.firstTimerGuide = {
+      heading: "First-Timer's Guide",
+      sectionLabel: "Section 6 of 12",
+      blocks: [
+        { kind: "prose", text: f.intro },
+        ...f.mistakes.map((m: { number: number; label: string; body: string }) => ({ kind: "subheading" as const, label: `${m.number}. ${m.label}`, body: m.body })),
+        { kind: "factRows", label: f.weekendAtAGlance.label, rows: f.weekendAtAGlance.rows },
+        { kind: "factRows", label: f.essentialApps.label, rows: f.essentialApps.items.map((i: { name: string; body: string }) => ({ label: i.name, value: i.body })) },
+        { kind: "experiences", items: lookupMany(["first-timer-orientation-abu-dhabi"]) },
+        { kind: "callout", label: f.firstTimerTrapCallout.label, body: f.firstTimerTrapCallout.body },
+        { kind: "sourcesFooter", text: f.sourcesFooter },
+      ],
+      verdicts: f.verdicts,
+    };
+  }
+
+  if (content.whereToEat) {
+    const w = content.whereToEat;
+    result.whereToEat = {
+      heading: "Where to Eat",
+      sectionLabel: "Section 7 of 12",
+      blocks: [
+        { kind: "prose", text: w.intro },
+        { kind: "subheading", label: w.splurge.label },
+        { kind: "experiences", items: lookupMany(["garage-w-abu-dhabi"]) },
+        { kind: "subheading", label: w.casualMidRange.label },
+        { kind: "experiences", items: lookupMany(["yas-marina-dining-walk"]) },
+        { kind: "subheading", label: w.budget.label },
+        { kind: "experiences", items: lookupMany(["cheap-shawarma-abu-dhabi-dubai"]) },
+        { kind: "sourcesFooter", text: w.sourcesFooter },
+      ],
+      verdicts: w.verdicts,
+    };
+  }
+
+  if (content.dayTrips) {
+    const d = content.dayTrips;
+    result.dayTrips = {
+      heading: "Day Trips",
+      sectionLabel: "Section 8 of 12",
+      blocks: [
+        { kind: "prose", text: d.intro },
+        { kind: "subheading", label: d.stayingInAbuDhabi.label },
+        { kind: "experiences", items: lookupMany(["sheikh-zayed-mosque-qasr-al-watan", "louvre-abu-dhabi-yas-theme-parks"]) },
+        { kind: "subheading", label: d.runToDubai.label },
+        { kind: "experiences", items: lookupMany(["burj-khalifa-dubai-day-trip", "dubai-mall-day-trip", "dubai-by-night"]) },
+        { kind: "callout", label: d.honestLogisticsCallout.label, body: d.honestLogisticsCallout.body },
+        { kind: "factRows", label: "The deep-dive detail", rows: d.deepDives.map((dd: { name: string; body: string }) => ({ label: dd.name, value: dd.body })) },
+        { kind: "sourcesFooter", text: d.sourcesFooter },
+      ],
+      verdicts: d.verdicts,
+    };
+  }
+
+  if (content.itinerary) {
+    const it = content.itinerary;
+    result.itinerary = {
+      heading: "Trip Schedule",
+      sectionLabel: "Section 9 of 12",
+      blocks: [
+        { kind: "prose", text: it.intro },
+        { kind: "prose", text: it.intro2 },
+        { kind: "factRows", label: "The shape of the weekend", rows: it.days.map((d: { label: string; summary: string }) => ({ label: d.label, value: d.summary })) },
+        ...it.hourByHour.flatMap((day: { day: string; rows: { time: string; location: string; activity: string }[] }) => [
+          { kind: "sectionHeading" as const, label: day.day },
+          { kind: "factRows" as const, rows: day.rows.map((r) => ({ label: r.time, value: `${r.location} — ${r.activity}` })) },
+        ]),
+      ],
+    };
+  }
+
+  if (content.arrival) {
+    const a = content.arrival;
+    result.arrival = {
+      heading: "Arrival & Traffic Guide",
+      sectionLabel: "Section 10 of 12",
+      blocks: [
+        { kind: "prose", text: a.intro },
+        { kind: "subheading", label: a.shuttleSystems.label, body: a.shuttleSystems.body },
+        { kind: "subheading", label: a.trafficPeaks.label, body: a.trafficPeaks.body },
+        { kind: "experiences", items: lookupMany(["getting-around-yas-island-race-day"]) },
+        { kind: "subheading", label: a.midSessionBreak.label, body: a.midSessionBreak.body },
+        { kind: "callout", label: a.honestGapNote.label, body: a.honestGapNote.body },
+      ],
+      verdicts: a.verdicts,
+    };
+  }
+
+  if (content.map) {
+    const m = content.map;
+    result.map = {
+      heading: "Venue Map",
+      sectionLabel: "Section 11 of 12",
+      blocks: [
+        { kind: "prose", text: m.intro },
+        { kind: "subheading", label: m.grandstandPositions.label, body: m.grandstandPositions.body },
+        { kind: "factRows", label: "On-site facilities", rows: m.facilities.map((f: { label: string; body: string }) => ({ label: f.label, value: f.body })) },
+        { kind: "subheading", label: m.accessibility.label, body: `${m.accessibility.body}\n\n${m.accessibility.limitation}` },
+        { kind: "experiences", items: lookupMany(["yas-marina-circuit-facilities"]) },
+      ],
+    };
+  }
+
+  if (content.luxury) {
+    const lx = content.luxury;
+    result.luxury = {
+      heading: "Luxury Guide",
+      sectionLabel: "Section 12 of 12",
+      blocks: [
+        { kind: "prose", text: lx.intro },
+        { kind: "subheading", label: lx.skybridgeTerrace.label, body: lx.skybridgeTerrace.body },
+        { kind: "experiences", items: lookupMany(["skybridge-terrace-w-abu-dhabi"]) },
+        { kind: "subheading", label: lx.marinaScene.label, body: lx.marinaScene.body },
+        { kind: "experiences", items: lookupMany(["yas-marina-yacht-charter"]) },
+        { kind: "subheading", label: lx.afterParties.label, body: lx.afterParties.body },
+        { kind: "experiences", items: lookupMany(["yasalam-after-parties"]) },
+        { kind: "subheading", label: lx.privateTransit.label, body: `${lx.privateTransit.intro}\n\n${lx.privateTransit.ratesNote}` },
+        { kind: "subheading", label: lx.ultraLuxuryStays.label, body: lx.ultraLuxuryStays.body },
+        { kind: "sectionHeading", label: lx.verdicts[0].label, body: lx.verdicts[0].body },
+        { kind: "experiences", items: lookupMany(["f1-paddock-club-yas-marina"]) },
+        { kind: "prose", text: lx.verdicts[0].closingLine },
+        { kind: "sourcesFooter", text: lx.sourcesFooter },
+      ],
+      verdicts: lx.verdicts.slice(1),
+    };
+  }
+
+  return result;
+}
+
 export const GENERIC_SECTION_BUILDERS: Record<string, (content: ContentBundle, lookupMany: LookupMany) => GenericSectionsResult> = {
   "bahrain-grand-prix": buildBahrainGrandPrix,
+  "abu-dhabi-grand-prix": buildAbuDhabiGrandPrix,
   "las-vegas-grand-prix": buildLasVegasGrandPrix,
   "shanghai-masters": buildShanghaiMasters,
   "singapore-grand-prix": buildSingaporeGrandPrix,
