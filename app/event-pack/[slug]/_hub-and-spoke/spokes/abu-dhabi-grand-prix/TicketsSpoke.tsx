@@ -103,7 +103,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         </p>
         <div className="flex flex-wrap gap-4">
           <a
-            href="https://www.abudhabi.gp/en/tickets"
+            href="https://tickets.formula1.com/en/f1-3312-abu-dhabi"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center px-4 py-2 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
@@ -168,6 +168,16 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         ))}
       </div>
 
+      <div className="relative w-full aspect-[2400/1325] rounded-sm border border-[#2A2A2A] overflow-hidden mb-8 bg-[#141414]">
+        <Image
+          src="https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/abu-dhabi-grand-prix-grandstand-map.jpg"
+          alt="Yas Marina Circuit map showing Main, West, West Straight, North, North Straight, Marina, South grandstands, and the Abu Dhabi Hill general admission zone positioned around the track"
+          fill
+          className="object-contain"
+          sizes="(max-width: 768px) 100vw, 720px"
+        />
+      </div>
+
       <div className="flex flex-col gap-2 mb-8">
         {stands.map((s) => (
           <p key={s.slug} className="text-xs text-[#6A6A6A]">
@@ -200,12 +210,25 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
             step is moving into a genuinely covered stand (West or Main), not incrementally better GA positioning.
           </p>
 
-          <div className="grid sm:grid-cols-2 gap-4 mb-8">
+          <div className="grid sm:grid-cols-2 gap-4 mb-4">
             {hillStand && <SpokeExperienceCard experience={hillStand} isPro={isPro} />}
             {westGrandstand && <SpokeExperienceCard experience={westGrandstand} isPro={isPro} />}
-            {mainGrandstand && <SpokeExperienceCard experience={mainGrandstand} isPro={isPro} />}
-            {paddockClub && <SpokeExperienceCard experience={paddockClub} isPro={isPro} />}
+            {mainGrandstand && (
+              <div className="sm:col-span-2">
+                <SpokeExperienceCard experience={mainGrandstand} isPro={isPro} />
+              </div>
+            )}
           </div>
+
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
+            Paddock Club sits above all three of these as a genuinely different product — hospitality, not just a
+            seat. It gets the full breakdown, including real booking timing and sell-out risk for the season
+            finale, in the{" "}
+            <a href={`/event-pack/${eventSlug}/luxury`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
+              Luxury Guide
+            </a>
+            .
+          </p>
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">What each is actually like</p>
           <div className="overflow-x-auto rounded-sm border border-[#2A2A2A] mb-6">
@@ -233,7 +256,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Where to actually buy</p>
           <p className="text-sm text-[#A3A3A3] leading-7">
-            Buy only through abudhabi.gp or Formula1.com&apos;s official ticket portal — this is the calendar&apos;s
+            Buy only through Formula1.com&apos;s official ticket portal — this is the calendar&apos;s
             highest-demand weekend as the season finale, and resale/social-media listings carry real risk. Tickets
             are digital-only, delivered via the Abu Dhabi GP Tickets app closer to race weekend.
           </p>

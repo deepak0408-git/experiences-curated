@@ -321,8 +321,53 @@ function buildLasVegasGrandPrix(content: ContentBundle, lookupBareMany: LookupBa
   };
 }
 
+function buildAbuDhabiGrandPrix(content: ContentBundle, lookupBareMany: LookupBareMany): TravelBriefGenericResult {
+  const g = content.gettingThere;
+  const w = content.weather;
+  const a = content.arrival;
+  return {
+    gettingThere: g
+      ? {
+          heading: "Getting There",
+          sectionLabel: "Section 1 of 3",
+          blocks: [
+            { kind: "prose", text: g.intro },
+            { kind: "subheading", label: g.auhRow.label, body: g.auhRow.headline },
+            { kind: "subheading", label: g.dxbRow.label, body: g.dxbRow.body },
+            { kind: "callout", label: g.honestFramingCallout.label, body: g.honestFramingCallout.body },
+            { kind: "experiences", items: lookupBareMany(["auh-vs-dxb-getting-there"]) },
+          ],
+        }
+      : undefined,
+    weather: w
+      ? {
+          heading: "Weather",
+          sectionLabel: "Section 2 of 3",
+          blocks: [
+            { kind: "prose", text: w.intro },
+            { kind: "callout", label: w.honestTakeawayCallout.label, body: w.honestTakeawayCallout.body },
+            { kind: "experiences", items: lookupBareMany(["twilight-race-packing-guide"]) },
+          ],
+        }
+      : undefined,
+    arrival: a
+      ? {
+          heading: "Arrival & Traffic Guide",
+          sectionLabel: "Section 3 of 3",
+          blocks: [
+            { kind: "prose", text: a.intro },
+            { kind: "subheading", label: a.trafficPeaks.label, body: a.trafficPeaks.body },
+            { kind: "callout", label: a.honestGapNote.label, body: a.honestGapNote.body },
+            { kind: "experiences", items: lookupBareMany(["getting-around-yas-island-race-day"]) },
+          ],
+        }
+      : undefined,
+  };
+}
+
 export const TRAVEL_BRIEF_GENERIC_SECTION_BUILDERS: Record<string, (content: ContentBundle, lookupBareMany: LookupBareMany) => TravelBriefGenericResult> = {
   "bahrain-grand-prix": buildBahrainGrandPrix,
+  "abu-dhabi-grand-prix": buildAbuDhabiGrandPrix,
   "las-vegas-grand-prix": buildLasVegasGrandPrix,
   "shanghai-masters": buildShanghaiMasters,
   "singapore-grand-prix": buildSingaporeGrandPrix,

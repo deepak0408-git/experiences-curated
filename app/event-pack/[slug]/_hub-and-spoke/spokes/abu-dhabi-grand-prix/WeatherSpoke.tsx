@@ -29,9 +29,10 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Abu Dhabi&apos;s December race weekend runs consistently warm and dry — average temperatures around 26°C
         on Friday and Saturday, easing slightly to 25°C on race day, with mostly sunny skies and minimal chance of
-        rain. That sounds simple, but the twilight race format changes the real packing calculation: both
-        qualifying and the race run at 16:00 local time, meaning you&apos;re seated through the hottest part of the
-        afternoon before the sky shifts through sunset into a fully floodlit night finish.
+        rain. That sounds simple, but the twilight race format changes the real packing calculation: qualifying
+        starts at 18:00 and the race at 17:00 local time, so you&apos;re seated through the last, still-hot part of
+        the afternoon before the sky shifts through sunset — roughly 17:40 in early December — into a fully
+        floodlit finish.
       </p>
 
       <a
@@ -78,6 +79,10 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
           </p>
         </div>
       )}
+
+      <p className="text-xs text-[#6A6A6A] mt-8">
+        Sources: AccuWeather (Yas Marina Circuit December climate averages), Formula1.com (confirmed session times).
+      </p>
     </SpokeShell>
   );
 }

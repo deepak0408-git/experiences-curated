@@ -121,6 +121,11 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
           </div>
         </div>
       )}
+
+      <p className="text-xs text-[#6A6A6A] mt-8">
+        Sources: marriott.com, ihg.com, rotana.com, atlantis.com (official hotel booking channels and room-type
+        confirmation), Google Maps drive-time estimates (Yas Island and Dubai commute figures).
+      </p>
     </SpokeShell>
   );
 }

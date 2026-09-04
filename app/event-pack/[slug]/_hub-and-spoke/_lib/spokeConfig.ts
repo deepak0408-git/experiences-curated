@@ -195,11 +195,31 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "getting-there", label: "Getting There", question: "AUH or DXB — which airport should I fly into for the Abu Dhabi GP?", status: "public", imageSlug: "auh-vs-dxb-getting-there" },
     { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the Abu Dhabi GP, and what should I pack?", status: "public", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
     { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Abu Dhabi GP?", status: "public", imageSlug: "first-timer-orientation-abu-dhabi" },
-    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat during Abu Dhabi GP race weekend?", status: "teaser", imageSlug: "cipriani-yas-island" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat during Abu Dhabi GP race weekend?", status: "teaser", imageSlug: "garage-w-abu-dhabi" },
     { id: "day-trips", label: "Day Trips", question: "What are the best day trips during Abu Dhabi GP weekend — Abu Dhabi city or Dubai?", status: "teaser", imageSlug: "burj-khalifa-dubai-day-trip" },
     { id: "itinerary", label: "Trip Schedule", question: "What does an Abu Dhabi GP season-finale weekend actually look like?", status: "teaser", imageSlug: "yasalam-after-parties" },
     { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at Yas Marina Circuit gates?", status: "public", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
     { id: "map", label: "Venue Map", question: "What facilities are available at Yas Marina Circuit?", status: "public", imageSlug: "yas-marina-circuit-facilities" },
     { id: "luxury", label: "Luxury Guide", question: "What does a genuinely luxury Abu Dhabi GP season finale look like?", status: "teaser", imageSlug: "f1-paddock-club-yas-marina" },
+  ],
+  // French Open 2027 — built 4 Sep 2026. All 20 experiences real/seeded
+  // (status: in_review — publish via /curator/review before spoke cards
+  // will render), all 20 hero-imaged and founder-reviewed same session.
+  // Real imageSlug values used directly. Weather/Arrival/Tickets use the
+  // skill's standing cross-event default images (imageOverride), set here
+  // at config-creation time per the skill's explicit rule — not deferred.
+  "french-open": [
+    { id: "cost", label: "Cost Guide", question: "How much does a French Open trip to Paris cost?", status: "teaser", imageSlug: "court-philippe-chatrier-suzanne-lenglen" },
+    { id: "tickets", label: "Ticket Guide", question: "Which Roland-Garros ticket is the best buy?", status: "teaser", imageSlug: "roland-garros-grounds-pass-tickets", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for Roland-Garros?", status: "teaser", imageSlug: "ibis-boulogne-billancourt-midrange-stay" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to Stade Roland-Garros?", status: "public", imageSlug: "roland-garros-travel-official-packages" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at Roland-Garros, and what should I pack?", status: "public", imageSlug: "everyday-parisian-eating-baguette-jambon-beurre", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Roland-Garros?", status: "public", imageSlug: "paris-icons-eiffel-tower-seine-arc-de-triomphe" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat in and around Roland-Garros?", status: "teaser", imageSlug: "what-to-eat-inside-roland-garros" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips during the French Open — Versailles, Auteuil, or Montmartre?", status: "teaser", imageSlug: "versailles-day-trip" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does a French Open trip to Paris actually look like?", status: "teaser", imageSlug: "moulin-rouge-show" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at Roland-Garros gates?", status: "public", imageSlug: "roland-garros-practice-courts-outside-courts", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at Stade Roland-Garros?", status: "public", imageSlug: "roland-garros-stadium-tour-tenniseum" },
+    { id: "luxury", label: "Luxury Guide", question: "What does a genuinely luxury Roland-Garros trip look like?", status: "teaser", imageSlug: "roland-garros-official-hospitality" },
   ],
 };

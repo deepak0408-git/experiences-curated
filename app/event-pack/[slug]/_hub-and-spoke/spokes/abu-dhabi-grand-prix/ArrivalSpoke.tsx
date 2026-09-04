@@ -59,13 +59,24 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
         </div>
       )}
 
+      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Leaving your seat mid-session</p>
+      <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
+        Whether you can step out for food or the restroom and come back to the same spot depends entirely on your
+        ticket type. In a reserved grandstand (Main, West), your seat is yours for the session regardless of when
+        you return, so a break doesn&apos;t cost you your view. Abu Dhabi Hill is genuine general admission —
+        there&apos;s no reserved return to your exact spot in an open zone, so the ground you claimed can be gone by
+        the time you get back. If you&apos;re in GA, treat a mid-session break as a real trade-off: bring water and
+        snacks in with you rather than planning to step out, especially in the hour before the race start when the
+        crowd around every entrance and food stand is at its densest.
+      </p>
+
       <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8">
         <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">The honest gap here</p>
         <p className="text-sm text-[#A3A3A3] leading-6">
           Abu Dhabi hasn&apos;t published exact 2026 gate-opening times yet, and we won&apos;t invent a specific
           hour. What&apos;s reliable is the traffic pattern above — build your arrival around avoiding the two real
           peak windows (pre-race, post-concert), not just the session schedule. Confirm exact gate times via
-          abudhabi.gp closer to race week.
+          Formula1.com&apos;s official ticket portal closer to race week.
         </p>
       </div>
 

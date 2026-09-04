@@ -82,7 +82,7 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="Every number above is real and free — the pack doesn't unlock more prices, it unlocks the decision. Given your budget, which hotel and which ticket tier we'd actually pick for a first Las Vegas GP, plus the booking-timing detail that matters most on a circuit where track-view rooms sell out months ahead."
+      ctaCopy="Every number above is real and free — the pack doesn't unlock more prices, it unlocks the decision. For your budget, we'll tell you which hotel and which ticket tier we'd actually pick for a first Las Vegas GP, plus the booking-timing detail that matters most on a circuit where track-view rooms sell out months ahead."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Las Vegas is not a cheap city to visit during race weekend — hotel rates on the Strip spike hard for the

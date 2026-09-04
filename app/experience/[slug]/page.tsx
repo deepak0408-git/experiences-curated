@@ -54,9 +54,9 @@ const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; 
   "beach-rotana-corniche-abu-dhabi-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
   "auh-vs-dxb-getting-there-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
   "getting-around-yas-island-race-day-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
-  "cipriani-yas-island-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "garage-w-abu-dhabi-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
   "yas-marina-dining-walk-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "yasalam-after-parties-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+  "yasalam-after-parties-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
   "twilight-race-packing-guide-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "weather", spokeLabel: "Weather & What to Pack" },
   "first-timer-orientation-abu-dhabi-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
   "sheikh-zayed-mosque-qasr-al-watan-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
@@ -251,6 +251,27 @@ const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; 
   "melbourne-coffee-food-culture-guide-": { eventSlug: "australian-open", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
   "late-night-melbourne-park-midnight-finishes-": { eventSlug: "australian-open", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
   "grand-slam-oval-party-live-music-": { eventSlug: "australian-open", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  // French Open 2027 — spoke mapping locked with founder 4 Sep 2026.
+  "court-philippe-chatrier-suzanne-lenglen": { eventSlug: "french-open", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "roland-garros-grounds-pass-tickets": { eventSlug: "french-open", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "roland-garros-night-sessions": { eventSlug: "french-open", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "roland-garros-official-hospitality": { eventSlug: "french-open", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "hotel-molitor-paris-luxury-stay": { eventSlug: "french-open", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "french-open-luxury-dining-bois-de-boulogne": { eventSlug: "french-open", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "ibis-boulogne-billancourt-midrange-stay": { eventSlug: "french-open", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "boulogne-billancourt-short-let-budget-stay": { eventSlug: "french-open", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "roland-garros-travel-official-packages": { eventSlug: "french-open", spokeId: "getting-there", spokeLabel: "Getting There" },
+  "roland-garros-practice-courts-outside-courts": { eventSlug: "french-open", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+  "roland-garros-stadium-tour-tenniseum": { eventSlug: "french-open", spokeId: "map", spokeLabel: "Venue Map" },
+  "what-to-eat-inside-roland-garros": { eventSlug: "french-open", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "everyday-parisian-eating-baguette-jambon-beurre": { eventSlug: "french-open", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "versailles-day-trip": { eventSlug: "french-open", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "village-dauteuil-neighborhood": { eventSlug: "french-open", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "montmartre-neighborhood": { eventSlug: "french-open", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "paris-icons-eiffel-tower-seine-arc-de-triomphe": { eventSlug: "french-open", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "paris-landmarks-louvre-notre-dame": { eventSlug: "french-open", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "moulin-rouge-show": { eventSlug: "french-open", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+  "caveau-de-la-huchette-jazz": { eventSlug: "french-open", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
 };
 
 function getSpokeBackLink(slug: string) {
@@ -301,6 +322,9 @@ function isRealAffiliateLink(url: string): boolean {
 // #ratings anchor in bodyContent, where each named venue's real rating is
 // written inline. venueCount is display-only ("all 3 hotels").
 const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: string }> = {
+  "french-open-luxury-dining-bois-de-boulogne": { venueCount: 3, venueNoun: "restaurants" },
+  "paris-icons-eiffel-tower-seine-arc-de-triomphe": { venueCount: 2, venueNoun: "landmarks" },
+  "paris-landmarks-louvre-notre-dame": { venueCount: 2, venueNoun: "landmarks" },
   "where-to-stay-perth-first-test-": { venueCount: 2, venueNoun: "hotels" },
   "where-to-stay-adelaide-city-vs-north-": { venueCount: 2, venueNoun: "hotels" },
   "where-to-stay-melbourne-boxing-day-": { venueCount: 4, venueNoun: "stay options" },
@@ -324,8 +348,7 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "yas-marina-dining-walk-": { venueCount: 3, venueNoun: "restaurants" },
   "sheikh-zayed-mosque-qasr-al-watan-": { venueCount: 2, venueNoun: "venues" },
   "louvre-abu-dhabi-yas-theme-parks-": { venueCount: 3, venueNoun: "attractions" },
-  "dubai-by-night-": { venueCount: 1, venueNoun: "venue" },
-  "cheap-shawarma-abu-dhabi-dubai-": { venueCount: 2, venueNoun: "restaurants" },
+  "cheap-shawarma-abu-dhabi-dubai-": { venueCount: 3, venueNoun: "restaurants" },
   "las-vegas-gp-bellagio-caesars-dining-": { venueCount: 2, venueNoun: "restaurants" },
   "las-vegas-gp-fremont-downtown-dining-": { venueCount: 2, venueNoun: "restaurants" },
   "las-vegas-gp-fountains-sphere-": { venueCount: 2, venueNoun: "landmarks" },
@@ -689,6 +712,12 @@ export default async function ExperiencePage({
               slug.startsWith("las-vegas-gp-sportsbook-watch-") ? "lg:object-[center_85%]" :
               slug.startsWith("las-vegas-gp-strip-casinos-") ? "lg:object-[center_75%]" :
               slug.startsWith("las-vegas-gp-main-grandstand-") ? "lg:object-[center_65%]" :
+              slug.startsWith("west-grandstand-yas-marina-") ? "lg:object-[center_100%]" :
+              slug.startsWith("w-abu-dhabi-yas-island-") ? "lg:object-[center_20%]" :
+              slug.startsWith("park-regis-business-bay-dubai-") ? "lg:object-[center_85%]" :
+              slug.startsWith("crowne-plaza-yas-island-") ? "lg:object-[center_35%]" :
+              slug.startsWith("beach-rotana-corniche-abu-dhabi-") ? "lg:object-[center_28%]" :
+              slug.startsWith("burj-khalifa-dubai-day-trip-") ? "lg:object-[center_15%]" :
               ""
             }`}
             sizes="100vw"

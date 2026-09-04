@@ -76,6 +76,13 @@ type CostMathConfig = {
 const COST_MATH_BY_EVENT: Record<string, CostMathConfig> = {
   wimbledon: { tripNights: 4, flightRegion: "Europe", excludedOrigins: ["London", "Barcelona", "Amsterdam", "Zurich", "Moscow"] },
   "bahrain-grand-prix": { tripNights: 3, flightRegion: "Asia-Pacific", excludedOrigins: [] },
+  // Real 4-day (Thu-Sun) ticket structure — matches CostSpoke.tsx's own
+  // TRIP_NIGHTS = 4. Europe is this event's largest real fan-travel market
+  // for a December season finale; Zurich excluded per founder instruction
+  // 4 Sep 2026 — its $1,429 flight-cost high end sits ~$244 above the
+  // next-highest market (Madrid, $1,185.50), stretching the displayed
+  // range wider than the other 13 seeded markets actually support.
+  "abu-dhabi-grand-prix": { tripNights: 4, flightRegion: "Europe", excludedOrigins: ["Zurich"] },
   // Shanghai (same-city, seeded $0-$0 by design) and Doha/Dubai (tagged
   // Asia-Pacific in planner_origin_markets but geographically Middle East,
   // long-haul pricing closer to Europe than genuine East/SE Asia — curator
