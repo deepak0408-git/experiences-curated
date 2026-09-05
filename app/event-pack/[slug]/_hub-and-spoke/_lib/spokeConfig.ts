@@ -222,4 +222,30 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "map", label: "Venue Map", question: "What facilities are available at Stade Roland-Garros?", status: "public", imageSlug: "roland-garros-stadium-tour-tenniseum" },
     { id: "luxury", label: "Luxury Guide", question: "What does a genuinely luxury Roland-Garros trip look like?", status: "teaser", imageSlug: "roland-garros-official-hospitality" },
   ],
+  // United States Grand Prix 2026 — built 5 Sep 2026. All 20 experiences
+  // real/seeded (status: in_review — publish via /curator/review before
+  // spoke cards render), all 20 hero-imaged and founder-reviewed same
+  // session. Real imageSlug values used directly. Weather/Arrival/Tickets
+  // use the skill's standing cross-event default images (imageOverride),
+  // set here at config-creation time per the skill's explicit rule. NOTE:
+  // zero planner_hotel_tier_cost/planner_ticket_tier_cost/
+  // planner_destination_bands/planner_flight_cost rows exist for Austin as
+  // of this build — Cost and Tickets spokes ship as honest "not live yet"
+  // placeholders per the founder's explicit decision; planner-data-researcher
+  // still needs to run before launch. Spoke-to-experience mapping agreed
+  // with the founder before this build started (see project memory).
+  "united-states-grand-prix": [
+    { id: "cost", label: "Cost Guide", question: "How much does a United States GP weekend in Austin cost?", status: "teaser", imageSlug: "us-gp-main-grandstand" },
+    { id: "tickets", label: "Ticket Guide", question: "Which US GP grandstand is the best buy?", status: "teaser", imageSlug: "us-gp-turn-1-big-red", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the United States Grand Prix?", status: "teaser", imageSlug: "us-gp-where-to-stay" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to COTA, and around Austin during race weekend?", status: "public", imageSlug: "us-gp-getting-to-cota" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the US GP, and what should I pack?", status: "public", imageSlug: "us-gp-weather-what-to-pack", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Austin GP weekend?", status: "public", imageSlug: "us-gp-first-timer-guide" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat during US GP race weekend?", status: "teaser", imageSlug: "us-gp-franklin-barbecue" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips and things to do during US GP weekend?", status: "teaser", imageSlug: "us-gp-hill-country-fredericksburg" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does a US GP weekend in Austin actually look like?", status: "teaser", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/united-states-grand-prix-day-trips.jpg" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at COTA gates?", status: "public", imageSlug: "us-gp-general-admission", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at Circuit of the Americas?", status: "public", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/united-states-grand-prix-map-spoke-hero.jpg" },
+    { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the US GP?", status: "teaser", imageSlug: "us-gp-paddock-club", heroImagePosition: "center 75%" },
+  ],
 };

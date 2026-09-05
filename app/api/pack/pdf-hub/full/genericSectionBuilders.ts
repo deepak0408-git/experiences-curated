@@ -1598,6 +1598,209 @@ function buildAbuDhabiGrandPrix(content: ContentBundle, lookupMany: LookupMany):
   return result;
 }
 
+function buildUnitedStatesGrandPrix(content: ContentBundle, lookupMany: LookupMany): GenericSectionsResult {
+  const result: GenericSectionsResult = {};
+
+  if (content.tickets) {
+    const t = content.tickets;
+    result.tickets = {
+      heading: "Tickets",
+      sectionLabel: "Section 2 of 12",
+      blocks: [
+        { kind: "prose", text: t.intro },
+        { kind: "factRows", label: t.standsTable.label, rows: t.standsTable.rows.map((r: { name: string; shows: string; seating: string; exposure: string }) => ({ label: r.name, value: `${r.shows} — ${r.seating}, ${r.exposure}` })) },
+        { kind: "callout", label: t.buyOfficialOnlyWarning.label, body: t.buyOfficialOnlyWarning.body },
+        { kind: "callout", label: t.pricingConfirmedNote.label, body: t.pricingConfirmedNote.body },
+        { kind: "experiences", label: "The 4 grandstand tiers", items: lookupMany(["us-gp-main-grandstand", "us-gp-turn-1-big-red", "us-gp-turn-15-stadium", "us-gp-general-admission"]) },
+      ],
+      verdicts: t.verdicts,
+    };
+  }
+
+  if (content.hotels) {
+    const h = content.hotels;
+    result.hotels = {
+      heading: "Hotels",
+      sectionLabel: "Section 3 of 12",
+      blocks: [
+        { kind: "prose", text: h.intro },
+        { kind: "sectionHeading", label: h.threeRealPicks.label },
+        { kind: "experiences", items: lookupMany(["us-gp-where-to-stay"]) },
+        { kind: "subheading", label: h.airbnbAlternative.label, body: h.airbnbAlternative.intro },
+        { kind: "list", items: h.airbnbAlternative.neighborhoods.map((n: { name: string; body: string }) => `${n.name}: ${n.body}`) },
+        { kind: "factRows", label: h.bookingCards.label, rows: h.bookingCards.cards.map((c: { name: string; note: string }) => ({ label: c.name, value: c.note })) },
+        { kind: "sourcesFooter", text: h.sourcesFooter },
+      ],
+      verdicts: h.verdicts,
+    };
+  }
+
+  if (content.gettingThere) {
+    const g = content.gettingThere;
+    result.gettingThere = {
+      heading: "Getting There",
+      sectionLabel: "Section 4 of 12",
+      blocks: [
+        { kind: "prose", text: g.intro },
+        { kind: "subheading", label: g.fromAirport.label, body: g.fromAirport.body },
+        { kind: "factRows", rows: g.fromAirport.facts },
+        { kind: "subheading", label: g.officialShuttle.label, body: g.officialShuttle.body },
+        { kind: "subheading", label: g.rideshareOnRaceDay.label, body: g.rideshareOnRaceDay.body },
+        { kind: "factRows", rows: g.rideshareOnRaceDay.facts },
+        { kind: "callout", label: g.bestExitTacticCallout.label, body: g.bestExitTacticCallout.body },
+        { kind: "factRows", label: g.appsRow.label, rows: g.appsRow.items.map((i: { name: string; body: string }) => ({ label: i.name, value: i.body })) },
+        { kind: "experiences", items: lookupMany(["us-gp-getting-to-cota"]) },
+        { kind: "sourcesFooter", text: g.sourcesFooter },
+      ],
+    };
+  }
+
+  if (content.weather) {
+    const w = content.weather;
+    result.weather = {
+      heading: "Weather",
+      sectionLabel: "Section 5 of 12",
+      blocks: [
+        { kind: "prose", text: w.intro },
+        { kind: "subheading", label: w.rainVariable.label, body: w.rainVariable.body },
+        { kind: "factRows", label: w.packList.label, rows: w.packList.items.map((i: { label: string; detail: string }) => ({ label: i.label, value: i.detail })) },
+        { kind: "experiences", items: lookupMany(["us-gp-weather-what-to-pack"]) },
+        { kind: "sourcesFooter", text: w.sourcesFooter },
+      ],
+    };
+  }
+
+  if (content.firstTimerGuide) {
+    const f = content.firstTimerGuide;
+    result.firstTimerGuide = {
+      heading: "First-Timer's Guide",
+      sectionLabel: "Section 6 of 12",
+      blocks: [
+        { kind: "prose", text: f.intro },
+        ...f.mistakes.map((m: { number: number; label: string; body: string }) => ({ kind: "subheading" as const, label: `Mistake ${m.number} — ${m.label}`, body: m.body })),
+        { kind: "factRows", label: f.howToUseThreeDays.label, rows: f.howToUseThreeDays.rows },
+        { kind: "factRows", label: f.practicalEssentials.label, rows: f.practicalEssentials.items.map((i: { name: string; body: string }) => ({ label: i.name, value: i.body })) },
+        { kind: "callout", label: f.atmosphereCallout.label, body: f.atmosphereCallout.body },
+        { kind: "experiences", items: lookupMany(["us-gp-first-timer-guide"]) },
+        { kind: "sourcesFooter", text: f.sourcesFooter },
+      ],
+      verdicts: f.verdicts,
+    };
+  }
+
+  if (content.whereToEat) {
+    const w = content.whereToEat;
+    result.whereToEat = {
+      heading: "Where to Eat",
+      sectionLabel: "Section 7 of 12",
+      blocks: [
+        { kind: "prose", text: w.intro },
+        { kind: "subheading", label: w.eatingInsideCota.label, body: w.eatingInsideCota.body },
+        { kind: "subheading", label: w.theOneEveryoneHeardOf.label },
+        { kind: "experiences", items: lookupMany(["us-gp-franklin-barbecue"]) },
+        { kind: "subheading", label: w.threeRealAlternatives.label },
+        { kind: "experiences", items: lookupMany(["us-gp-bbq-beyond-franklin"]) },
+        { kind: "sourcesFooter", text: w.sourcesFooter },
+      ],
+      verdicts: w.verdicts,
+    };
+  }
+
+  if (content.dayTrips) {
+    const d = content.dayTrips;
+    result.dayTrips = {
+      heading: "Day Trips",
+      sectionLabel: "Section 8 of 12",
+      blocks: [
+        { kind: "prose", text: d.intro },
+        { kind: "subheading", label: d.austinsOwnNeighborhoods.label },
+        { kind: "experiences", items: lookupMany(["us-gp-south-congress", "us-gp-sixth-rainey-street", "us-gp-lady-bird-lake", "us-gp-zilker-barton-springs"]) },
+        { kind: "subheading", label: d.builtInEntertainment.label },
+        { kind: "experiences", items: lookupMany(["us-gp-super-stage-concerts"]) },
+        { kind: "subheading", label: d.beyondFestivalStage.label },
+        { kind: "experiences", items: lookupMany(["us-gp-austin-live-music"]) },
+        { kind: "subheading", label: d.twoOutOfTownOptions.label, body: d.twoOutOfTownOptions.intro },
+        { kind: "experiences", items: lookupMany(["us-gp-hill-country-fredericksburg", "us-gp-san-antonio-daytrip"]) },
+        { kind: "sourcesFooter", text: d.sourcesFooter },
+      ],
+      verdicts: d.verdicts,
+    };
+  }
+
+  if (content.itinerary) {
+    const it = content.itinerary;
+    result.itinerary = {
+      heading: "Trip Schedule",
+      sectionLabel: "Section 9 of 12",
+      blocks: [
+        { kind: "prose", text: it.intro },
+        { kind: "prose", text: it.intro2 },
+        { kind: "factRows", label: "The shape of the weekend", rows: it.days.map((d: { label: string; summary: string }) => ({ label: d.label, value: d.summary })) },
+        ...it.hourByHour.flatMap((day: { day: string; rows: { time: string; location: string; activity: string }[] }) => [
+          { kind: "sectionHeading" as const, label: day.day },
+          { kind: "factRows" as const, rows: day.rows.map((r) => ({ label: r.time, value: `${r.location} — ${r.activity}` })) },
+        ]),
+        { kind: "sourcesFooter", text: it.sourcesFooter },
+      ],
+    };
+  }
+
+  if (content.arrival) {
+    const a = content.arrival;
+    result.arrival = {
+      heading: "Arrival & Queue Guide",
+      sectionLabel: "Section 10 of 12",
+      blocks: [
+        { kind: "prose", text: a.intro },
+        { kind: "subheading", label: a.shuttleRoutes.label, body: a.shuttleRoutes.body },
+        { kind: "subheading", label: a.ticketDelivery.label, body: a.ticketDelivery.body },
+        { kind: "subheading", label: a.gettingToYourSeat.label, body: a.gettingToYourSeat.body },
+        { kind: "subheading", label: a.midSessionBreak.label, body: a.midSessionBreak.body },
+        { kind: "callout", label: a.reEntryCallout.label, body: a.reEntryCallout.body },
+        { kind: "experiences", items: lookupMany(["us-gp-general-admission"]) },
+        { kind: "sourcesFooter", text: a.sourcesFooter },
+      ],
+      verdicts: a.verdicts,
+    };
+  }
+
+  if (content.map) {
+    const m = content.map;
+    result.map = {
+      heading: "Venue Map",
+      sectionLabel: "Section 11 of 12",
+      blocks: [
+        { kind: "prose", text: m.intro },
+        { kind: "subheading", label: m.grandstandPositions.label, body: m.grandstandPositions.body },
+        { kind: "factRows", label: "On-site facilities", rows: m.facilities.map((f: { label: string; body: string }) => ({ label: f.label, value: f.body })) },
+        { kind: "subheading", label: m.accessibility.label, body: `${m.accessibility.body}\n\n${m.accessibility.additional}` },
+        { kind: "sourcesFooter", text: m.sourcesFooter },
+      ],
+    };
+  }
+
+  if (content.luxury) {
+    const lx = content.luxury;
+    result.luxury = {
+      heading: "Luxury Guide",
+      sectionLabel: "Section 12 of 12",
+      blocks: [
+        { kind: "prose", text: lx.intro },
+        { kind: "subheading", label: lx.hospitalityLadder.label, body: lx.hospitalityLadder.body },
+        { kind: "subheading", label: lx.premiumTransit.label, body: lx.premiumTransit.body },
+        { kind: "subheading", label: lx.rooftopScene.label, body: lx.rooftopScene.body },
+        { kind: "subheading", label: lx.luxuryHotelFact.label, body: lx.luxuryHotelFact.body },
+        { kind: "sectionHeading", label: lx.verdicts[0].label, body: lx.verdicts[0].body },
+        { kind: "experiences", items: lookupMany(["us-gp-paddock-club", "us-gp-champions-club"]) },
+        { kind: "sourcesFooter", text: lx.sourcesFooter },
+      ],
+      verdicts: lx.verdicts.slice(1),
+    };
+  }
+
+  return result;
+}
+
 export const GENERIC_SECTION_BUILDERS: Record<string, (content: ContentBundle, lookupMany: LookupMany) => GenericSectionsResult> = {
   "bahrain-grand-prix": buildBahrainGrandPrix,
   "abu-dhabi-grand-prix": buildAbuDhabiGrandPrix,
@@ -1607,4 +1810,5 @@ export const GENERIC_SECTION_BUILDERS: Record<string, (content: ContentBundle, l
   "atp-finals": buildAtpFinals,
   "new-zealand-in-australia-cricket-2026-27": buildNzAustralia,
   "australian-open": buildAustralianOpen,
+  "united-states-grand-prix": buildUnitedStatesGrandPrix,
 };

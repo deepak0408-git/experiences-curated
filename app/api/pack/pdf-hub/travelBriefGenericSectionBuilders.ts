@@ -365,12 +365,63 @@ function buildAbuDhabiGrandPrix(content: ContentBundle, lookupBareMany: LookupBa
   };
 }
 
+function buildUnitedStatesGrandPrix(content: ContentBundle, lookupBareMany: LookupBareMany): TravelBriefGenericResult {
+  const g = content.gettingThere;
+  const w = content.weather;
+  const a = content.arrival;
+  return {
+    gettingThere: g
+      ? {
+          heading: "Getting There",
+          sectionLabel: "Section 1 of 3",
+          blocks: [
+            { kind: "prose", text: g.intro },
+            { kind: "subheading", label: g.fromAirport.label, body: g.fromAirport.body },
+            { kind: "factRows", rows: g.fromAirport.facts },
+            { kind: "subheading", label: g.officialShuttle.label, body: g.officialShuttle.body },
+            { kind: "subheading", label: g.rideshareOnRaceDay.label, body: g.rideshareOnRaceDay.body },
+            { kind: "factRows", rows: g.rideshareOnRaceDay.facts },
+            { kind: "callout", label: g.bestExitTacticCallout.label, body: g.bestExitTacticCallout.body },
+            { kind: "experiences", items: lookupBareMany(["us-gp-getting-to-cota"]) },
+          ],
+        }
+      : undefined,
+    weather: w
+      ? {
+          heading: "Weather",
+          sectionLabel: "Section 2 of 3",
+          blocks: [
+            { kind: "prose", text: w.intro },
+            { kind: "subheading", label: w.rainVariable.label, body: w.rainVariable.body },
+            { kind: "factRows", label: w.packList.label, rows: w.packList.items.map((i: { label: string; detail: string }) => ({ label: i.label, value: i.detail })) },
+            { kind: "experiences", items: lookupBareMany(["us-gp-weather-what-to-pack"]) },
+          ],
+        }
+      : undefined,
+    arrival: a
+      ? {
+          heading: "Arrival & Queue Guide",
+          sectionLabel: "Section 3 of 3",
+          blocks: [
+            { kind: "prose", text: a.intro },
+            { kind: "subheading", label: a.shuttleRoutes.label, body: a.shuttleRoutes.body },
+            { kind: "subheading", label: a.ticketDelivery.label, body: a.ticketDelivery.body },
+            { kind: "subheading", label: a.gettingToYourSeat.label, body: a.gettingToYourSeat.body },
+            { kind: "callout", label: a.reEntryCallout.label, body: a.reEntryCallout.body },
+            { kind: "experiences", items: lookupBareMany(["us-gp-general-admission"]) },
+          ],
+        }
+      : undefined,
+  };
+}
+
 export const TRAVEL_BRIEF_GENERIC_SECTION_BUILDERS: Record<string, (content: ContentBundle, lookupBareMany: LookupBareMany) => TravelBriefGenericResult> = {
   "bahrain-grand-prix": buildBahrainGrandPrix,
   "abu-dhabi-grand-prix": buildAbuDhabiGrandPrix,
   "las-vegas-grand-prix": buildLasVegasGrandPrix,
   "shanghai-masters": buildShanghaiMasters,
   "singapore-grand-prix": buildSingaporeGrandPrix,
+  "united-states-grand-prix": buildUnitedStatesGrandPrix,
   "atp-finals": buildAtpFinals,
   "new-zealand-in-australia-cricket-2026-27": buildNzAustralia,
   "australian-open": buildAustralianOpen,

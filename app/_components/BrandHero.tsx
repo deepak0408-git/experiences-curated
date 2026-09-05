@@ -78,6 +78,7 @@ function shortEventName(name: string, slug: string): string {
     "las-vegas-grand-prix": "Las Vegas GP 2026",
     "abu-dhabi-grand-prix": "Abu Dhabi GP 2026",
     "french-open": "French Open 2027",
+    "united-states-grand-prix": "US GP 2026",
   };
   return SHORT_NAMES[slug] ?? name;
 }

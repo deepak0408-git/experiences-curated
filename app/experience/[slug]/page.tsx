@@ -272,6 +272,28 @@ const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; 
   "paris-landmarks-louvre-notre-dame": { eventSlug: "french-open", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
   "moulin-rouge-show": { eventSlug: "french-open", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
   "caveau-de-la-huchette-jazz": { eventSlug: "french-open", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+  // United States Grand Prix 2026 — added 5 Sep 2026, matches the agreed
+  // spoke-mapping table exactly (see project_us_gp_2026_experiences memory).
+  "us-gp-main-grandstand-": { eventSlug: "united-states-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "us-gp-turn-1-big-red-": { eventSlug: "united-states-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "us-gp-turn-15-stadium-": { eventSlug: "united-states-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "us-gp-general-admission-": { eventSlug: "united-states-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "us-gp-paddock-club-": { eventSlug: "united-states-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "us-gp-champions-club-": { eventSlug: "united-states-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "us-gp-where-to-stay-": { eventSlug: "united-states-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "us-gp-getting-to-cota-": { eventSlug: "united-states-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
+  "us-gp-weather-what-to-pack-": { eventSlug: "united-states-grand-prix", spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+  "us-gp-first-timer-guide-": { eventSlug: "united-states-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "us-gp-franklin-barbecue-": { eventSlug: "united-states-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "us-gp-bbq-beyond-franklin-": { eventSlug: "united-states-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "us-gp-super-stage-concerts-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "us-gp-south-congress-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "us-gp-sixth-rainey-street-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "us-gp-lady-bird-lake-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "us-gp-zilker-barton-springs-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "us-gp-hill-country-fredericksburg-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "us-gp-san-antonio-daytrip-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "us-gp-austin-live-music-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
 };
 
 function getSpokeBackLink(slug: string) {
@@ -322,6 +344,8 @@ function isRealAffiliateLink(url: string): boolean {
 // #ratings anchor in bodyContent, where each named venue's real rating is
 // written inline. venueCount is display-only ("all 3 hotels").
 const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: string }> = {
+  "us-gp-lady-bird-lake-": { venueCount: 3, venueNoun: "rental operators" },
+  "us-gp-san-antonio-daytrip-": { venueCount: 2, venueNoun: "sites" },
   "french-open-luxury-dining-bois-de-boulogne": { venueCount: 3, venueNoun: "restaurants" },
   "paris-icons-eiffel-tower-seine-arc-de-triomphe": { venueCount: 2, venueNoun: "landmarks" },
   "paris-landmarks-louvre-notre-dame": { venueCount: 2, venueNoun: "landmarks" },
@@ -375,6 +399,13 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "melbourne-coffee-food-culture-guide-": { venueCount: 3, venueNoun: "cafés" },
   "margaret-court-john-cain-arenas-": { venueCount: 2, venueNoun: "arenas" },
   "grand-slam-oval-food-village-": { venueCount: 3, venueNoun: "restaurants" },
+  // United States GP 2026 — added 5 Sep 2026
+  "us-gp-where-to-stay-": { venueCount: 3, venueNoun: "hotels" },
+  "us-gp-bbq-beyond-franklin-": { venueCount: 3, venueNoun: "restaurants" },
+  "us-gp-south-congress-": { venueCount: 2, venueNoun: "landmarks" },
+  "us-gp-sixth-rainey-street-": { venueCount: 2, venueNoun: "bars" },
+  "us-gp-hill-country-fredericksburg-": { venueCount: 2, venueNoun: "wineries" },
+  "us-gp-austin-live-music-": { venueCount: 2, venueNoun: "venues" },
 };
 
 function getMultiVenueRatings(slug: string) {
@@ -656,6 +687,12 @@ export default async function ExperiencePage({
             alt={exp.heroImageAlt ?? exp.title}
             fill
             className={`object-cover opacity-90 ${
+              slug.startsWith("us-gp-turn-15-stadium-") ? "lg:object-[center_30%]" :
+              slug.startsWith("us-gp-paddock-club-") ? "lg:object-[center_60%]" :
+              slug.startsWith("us-gp-general-admission-") ? "lg:object-[center_85%]" :
+              slug.startsWith("us-gp-super-stage-concerts-") ? "lg:object-[center_80%]" :
+              slug.startsWith("us-gp-weather-what-to-pack-") ? "lg:object-[center_60%]" :
+              slug.startsWith("us-gp-franklin-barbecue-") ? "lg:object-[center_30%]" :
               slug === "wimbledon-centre-court-mq4whguq" ? "object-[center_65%]" :
               slug.startsWith("pouhon-corner-silver3-") ? "object-[center_70%]" :
               slug.startsWith("fan-zone-raidillon-") ? "object-[center_80%]" :

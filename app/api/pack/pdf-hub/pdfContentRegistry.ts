@@ -102,6 +102,19 @@ import { lasVegasGpArrivalSpokeContent } from "./content/las-vegas-grand-prix/ar
 import { lasVegasGpMapSpokeContent } from "./content/las-vegas-grand-prix/mapContent";
 import { lasVegasGpLuxurySpokeContent } from "./content/las-vegas-grand-prix/luxuryContent";
 
+import { usGpCostSpokeContent } from "./content/united-states-grand-prix/costContent";
+import { usGpTicketsSpokeContent } from "./content/united-states-grand-prix/ticketsContent";
+import { usGpHotelsSpokeContent } from "./content/united-states-grand-prix/hotelsContent";
+import { usGpGettingThereSpokeContent } from "./content/united-states-grand-prix/gettingThereContent";
+import { usGpWeatherSpokeContent } from "./content/united-states-grand-prix/weatherContent";
+import { usGpFirstTimerGuideSpokeContent } from "./content/united-states-grand-prix/firstTimerGuideContent";
+import { usGpWhereToEatSpokeContent } from "./content/united-states-grand-prix/whereToEatContent";
+import { usGpDayTripsSpokeContent } from "./content/united-states-grand-prix/dayTripsContent";
+import { usGpItinerarySpokeContent } from "./content/united-states-grand-prix/itineraryContent";
+import { usGpArrivalSpokeContent } from "./content/united-states-grand-prix/arrivalContent";
+import { usGpMapSpokeContent } from "./content/united-states-grand-prix/mapContent";
+import { usGpLuxurySpokeContent } from "./content/united-states-grand-prix/luxuryContent";
+
 import { australianOpenCostSpokeContent } from "./content/australian-open/costContent";
 import { australianOpenTicketsSpokeContent } from "./content/australian-open/ticketsContent";
 import { australianOpenHotelsSpokeContent } from "./content/australian-open/hotelsContent";
@@ -257,5 +270,19 @@ export const PDF_CONTENT_BY_EVENT: Record<string, SpokePdfContentBundle> = {
     arrival: lasVegasGpArrivalSpokeContent,
     map: lasVegasGpMapSpokeContent,
     luxury: lasVegasGpLuxurySpokeContent,
+  },
+  "united-states-grand-prix": {
+    cost: usGpCostSpokeContent,
+    tickets: usGpTicketsSpokeContent,
+    hotels: usGpHotelsSpokeContent,
+    gettingThere: usGpGettingThereSpokeContent,
+    weather: usGpWeatherSpokeContent,
+    firstTimerGuide: usGpFirstTimerGuideSpokeContent,
+    whereToEat: usGpWhereToEatSpokeContent,
+    dayTrips: usGpDayTripsSpokeContent,
+    itinerary: usGpItinerarySpokeContent,
+    arrival: usGpArrivalSpokeContent,
+    map: usGpMapSpokeContent,
+    luxury: usGpLuxurySpokeContent,
   },
 };
