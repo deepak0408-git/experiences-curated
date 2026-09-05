@@ -141,6 +141,16 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
     { label: "Ticket resale warning", value: "The FFT publishes its own fraud warnings about counterfeit and black-market ticket resale sites. Buy only via tickets.rolandgarros.com, travel.rolandgarros.com, hospitality.rolandgarros.com, or the tournament's named official agencies — and use the FFT's own resale marketplace, not a third party, if you need a returned ticket." },
     { label: "Emergencies", value: "France-wide emergency number: 112 (works from any phone, free, English-speaking operators available). Police: 17. Ambulance (SAMU): 15. Fire: 18." },
   ],
+  // Real, sourced facts from experience research (Grand PrixView Thursday
+  // expansion, cashless-venue confirmation, physical GA wristband detail,
+  // the standard post-race congestion window). Gate times genuinely not yet
+  // published for 2026, stated honestly per skill §2a-3.
+  "united-states-grand-prix": [
+    { label: "Four-day weekend", value: "New for 2026: Grand PrixView Thursday (22 Oct) adds a standalone fourth day — F1 Academy track action and early Fan Zone access, ticketed separately from the main Fri-Sun (23-25 Oct) race weekend." },
+    { label: "Gate times", value: "Not yet published for 2026 — gates have typically opened 9:00-10:00am each day of recent race weekends. Confirm exact times via circuitoftheamericas.com closer to the event." },
+    { label: "Cashless venue", value: "COTA is entirely cashless — bring a card (Visa, Discover, Mastercard) for all food, drink, and merchandise on-site." },
+    { label: "Emergencies", value: "US-wide emergency number: 911. Austin's own general non-emergency line: 311." },
+  ],
 };
 
 // Exported (27 Aug 2026) — same reasoning as QUICK_REFERENCE_BY_EVENT above.
@@ -266,6 +276,19 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
     introText:
       "Roland-Garros has been playing on the same red clay since 1928, and that surface changes everything about the tennis you're watching — higher bounces, longer rallies, a match that can run three and a half hours in the tournament's second week. Court Philippe-Chatrier still carries the name of the man who spent the 1970s and 80s fighting to get tennis back into the Olympics, and its 2020 rebuild added a retractable roof that turned this into the newest experience a 99-year-old tournament has ever created.\n\nThis isn't a tournament you can see all of from one seat. Grounds Pass holders can watch a top-10 player warm up ten feet away on a practice court before the crowds arrive, Court 14's semi-sunken bowl turns into the loudest room at the venue whenever a French player is drawn there, and the greenhouse-wrapped Court Simonne-Mathieu sits built directly into a working botanical garden. Add a city built around it — Auteuil's hidden Art Nouveau villas, Montmartre's hilltop views, a jazz cellar that's run every night since 1949 — and the tournament is only half the trip.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
+  // Built from real sourced facts researched during experience seeding
+  // (COTA's 2012 opening, the Grand PrixView Thursday four-day expansion for
+  // 2026, the Super Stage concert lineup, COTA sitting inside Austin itself
+  // rather than needing a satellite day-trip city) — not invented, matches
+  // every other hub-and-spoke event's pattern of drawing The Brief from real
+  // underlying content.
+  "united-states-grand-prix": {
+    displayName: "United States Grand Prix",
+    venueLine: "Held at Circuit of the Americas — the only purpose-built F1 circuit in the United States, a 15-minute drive from downtown Austin.",
+    heroFallbackImageSlug: "us-gp-main-grandstand",
+    introText:
+      "Circuit of the Americas opened in 2012 as America's first purpose-built Formula 1 track in a generation, and 2026 adds a genuine first of its own: Grand PrixView Thursday, a new standalone fourth day of the race weekend built around F1 Academy track action and early Fan Zone access — on top of the usual Friday-Sunday structure. Austin didn't inherit this race from anywhere; it built the circuit specifically to bring F1 back to American soil, and the city has spent over a decade building an entire weekend's worth of culture around it.\n\nThis is also the one Grand Prix where the concerts are close to as big a draw as the racing. Maroon 5 headlines Friday night, Post Malone takes Saturday, and Alesso closes the whole weekend with a post-race set — every one included on the same race ticket, no separate purchase needed. And because COTA sits inside Austin itself rather than a satellite town, the whole city — Franklin Barbecue's line, South Congress, Sixth Street, Lady Bird Lake — is genuinely part of the trip, not a separate day-trip decision.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
 };
 
 export default async function HubPage({ slug }: { slug: string }) {
@@ -305,10 +328,16 @@ export default async function HubPage({ slug }: { slug: string }) {
   // event-specific rows (emergencies, etc.) from QUICK_REFERENCE_BY_EVENT.
   const quickReference: Array<{ label: string; value: string; href?: string; linkLabel?: string }> = [];
   if (event.venueName && event.venueAddress) {
+    // A text-search Maps URL built from name+address doesn't always resolve
+    // to the correct pin (confirmed broken for COTA, 5 Sep 2026) — per-slug
+    // override with a verified, real Google Maps place link where needed.
+    const VENUE_MAP_LINK_OVERRIDE: Record<string, string> = {
+      "united-states-grand-prix": "https://maps.app.goo.gl/zN7GPcSxKsSMYH3i6",
+    };
     quickReference.push({
       label: "Address",
       value: `${event.venueName}, ${event.venueAddress}`,
-      href: `https://maps.google.com/?q=${encodeURIComponent(`${event.venueName}, ${event.venueAddress}`)}`,
+      href: VENUE_MAP_LINK_OVERRIDE[slug] ?? `https://maps.google.com/?q=${encodeURIComponent(`${event.venueName}, ${event.venueAddress}`)}`,
       linkLabel: "Open in Maps",
     });
   }

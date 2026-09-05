@@ -167,7 +167,8 @@ export async function saveHomepageSlots(
       SET
         is_hidden = v.is_hidden,
         homepage_slot = CASE WHEN v.is_hidden THEN NULL ELSE se.homepage_slot END,
-        activated_at = COALESCE(v.activated_at, se.activated_at)
+        activated_at = COALESCE(v.activated_at, se.activated_at),
+        pack_status = CASE WHEN v.is_hidden THEN se.pack_status ELSE 'live' END
       FROM (VALUES ${sql.join(hiddenValues, sql`, `)}) AS v(id, is_hidden, activated_at)
       WHERE se.id = v.id
     `);

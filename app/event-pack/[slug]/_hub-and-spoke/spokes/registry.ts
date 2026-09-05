@@ -129,6 +129,19 @@ import FOArrivalSpoke from "./french-open/ArrivalSpoke";
 import FOMapSpoke from "./french-open/MapSpoke";
 import FOLuxurySpoke from "./french-open/LuxurySpoke";
 
+import USCostSpoke from "./united-states-grand-prix/CostSpoke";
+import USTicketsSpoke from "./united-states-grand-prix/TicketsSpoke";
+import USHotelsSpoke from "./united-states-grand-prix/HotelsSpoke";
+import USGettingThereSpoke from "./united-states-grand-prix/GettingThereSpoke";
+import USWeatherSpoke from "./united-states-grand-prix/WeatherSpoke";
+import USFirstTimerGuideSpoke from "./united-states-grand-prix/FirstTimerGuideSpoke";
+import USWhereToEatSpoke from "./united-states-grand-prix/WhereToEatSpoke";
+import USDayTripsSpoke from "./united-states-grand-prix/DayTripsSpoke";
+import USItinerarySpoke from "./united-states-grand-prix/ItinerarySpoke";
+import USArrivalSpoke from "./united-states-grand-prix/ArrivalSpoke";
+import USMapSpoke from "./united-states-grand-prix/MapSpoke";
+import USLuxurySpoke from "./united-states-grand-prix/LuxurySpoke";
+
 type SpokeComponent = ComponentType<{ eventSlug: string }>;
 
 // Registry mapping eventSlug -> spokeId -> component. A new hub_and_spoke
@@ -276,6 +289,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: FOMapSpoke,
     luxury: FOLuxurySpoke,
   },
+  "united-states-grand-prix": {
+    cost: USCostSpoke,
+    tickets: USTicketsSpoke,
+    hotels: USHotelsSpoke,
+    "getting-there": USGettingThereSpoke,
+    weather: USWeatherSpoke,
+    "first-timer-guide": USFirstTimerGuideSpoke,
+    "where-to-eat": USWhereToEatSpoke,
+    "day-trips": USDayTripsSpoke,
+    itinerary: USItinerarySpoke,
+    arrival: USArrivalSpoke,
+    map: USMapSpoke,
+    luxury: USLuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -418,5 +445,19 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Roland-Garros — Arrival & Practice Court Guide",
     map: "Stade Roland-Garros Map — Courts and Facilities",
     luxury: "Luxury Guide for the French Open — Official Hospitality and More",
+  },
+  "united-states-grand-prix": {
+    cost: "How Much Does the United States Grand Prix Cost? — Austin Budget Guide",
+    tickets: "US Grand Prix Ticket Guide — COTA Grandstands and General Admission",
+    hotels: "Where to Stay for the United States Grand Prix — Downtown vs South Congress",
+    "getting-there": "Getting to Circuit of the Americas — US Grand Prix Transit Guide",
+    weather: "Austin Weather in October — What to Pack for the US Grand Prix",
+    "first-timer-guide": "First-Timer's Guide — the United States Grand Prix in Austin",
+    "where-to-eat": "Where to Eat in Austin — US Grand Prix Weekend",
+    "day-trips": "Best Things to Do During US Grand Prix Weekend — Austin, Hill Country, and San Antonio",
+    itinerary: "Sample United States Grand Prix Weekend Itinerary",
+    arrival: "Circuit of the Americas — Arrival & Gate Guide",
+    map: "Circuit of the Americas Map — Grandstands and Facilities",
+    luxury: "Luxury Guide for the United States Grand Prix — Paddock Club, Champions Club, and More",
   },
 };
