@@ -1,6 +1,5 @@
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
-import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
 const SPOKE_ID = "weather";
 
@@ -11,9 +10,8 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
-  const nightSessions = linkedExperiences.find((e) => e.slug.includes("roland-garros-night-sessions"));
 
   return (
     <SpokeShell
@@ -38,8 +36,8 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Typical conditions</p>
       <div className="flex flex-col gap-2 mb-8">
         <FactRow label="Temperature range" value="10-21°C (50-70°F), day to night" />
-        <FactRow label="Rain" value="Showery, roughly 10 rainy days across May, usually brief rather than sustained" />
-        <FactRow label="Roofs" value="Chatrier and Lenglen close automatically in about 15 minutes; outer courts pause" />
+        <FactRow label="Rain" value="Showery, ~10 rainy days across May, usually brief, not sustained" />
+        <FactRow label="Roofs" value="Chatrier and Lenglen close in about 15 minutes; outer courts pause" />
       </div>
 
       <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8">
@@ -52,12 +50,6 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
           left luggage.
         </p>
       </div>
-
-      {nightSessions && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={nightSessions} isPro={isPro} />
-        </div>
-      )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">What to pack</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
@@ -117,9 +109,9 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
 
 function FactRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between rounded-sm border border-[#2A2A2A] bg-[#141414] px-4 py-3">
-      <span className="text-sm font-bold text-white">{label}</span>
-      <span className="text-sm text-[#A3A3A3] font-mono">{value}</span>
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4 rounded-sm border border-[#2A2A2A] bg-[#141414] px-4 py-3">
+      <span className="text-sm font-bold text-white shrink-0">{label}</span>
+      <span className="text-sm text-[#A3A3A3] font-mono sm:text-right">{value}</span>
     </div>
   );
 }

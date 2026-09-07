@@ -136,6 +136,14 @@ const COST_MATH_BY_EVENT: Record<string, CostMathConfig> = {
     luxuryFixedUsd: { low: 1017, high: 1753 },
     flightOriginAllowlist: ["Tokyo", "Seoul", "Beijing", "Shanghai", "Hong Kong", "Singapore", "Manila", "Mumbai", "Bangalore", "New Delhi"],
   },
+  // Real 4-night trip length — matches CostSpoke.tsx's own TRIP_NIGHTS = 4
+  // (a tennis Grand Slam stay, longer than the 3-day F1 weekend pattern).
+  // Europe flight region with Paris (same-city, seeded $0-$0) and Moscow
+  // (seeded $842-$2,232 — Russia-EU airspace closures forcing long
+  // connecting routes, next-highest Europe market is Milan at $135-$662)
+  // both excluded — founder decision 7 Sep 2026, same pattern as
+  // Wimbledon's London-specific outlier exclusion.
+  "french-open": { tripNights: 4, flightRegion: "Europe", excludedOrigins: ["Paris", "Moscow"] },
 };
 
 export async function GET(request: NextRequest) {

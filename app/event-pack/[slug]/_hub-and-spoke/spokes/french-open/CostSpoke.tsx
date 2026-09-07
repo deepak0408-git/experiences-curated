@@ -47,10 +47,14 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
   ].filter((p) => p.hotel);
 
   // Paris same-city origin excluded per skill §2a-2 — seeded $0-$0 by
-  // design, meaningless in an aggregate range. No further outlier exclusion
-  // needed here (unlike Wimbledon's London-specific outlier list) — the
-  // Europe band here is a naturally tight $135-$662 range.
-  const europeFlights = flights.filter((f) => f.region === "Europe" && f.originMarket !== "Paris");
+  // design, meaningless in an aggregate range. Moscow also excluded — seeded
+  // at $842-$2,232, far above every other European market (next-highest is
+  // Milan at $135-$662), a real reflection of Russia-EU airspace closures
+  // forcing long connecting routes rather than a normal short-haul Europe
+  // fare. Founder decision 7 Sep 2026: exclude from the aggregate range so
+  // it isn't misread as a typical Europe price, same pattern as Wimbledon's
+  // London-specific outlier exclusion.
+  const europeFlights = flights.filter((f) => f.region === "Europe" && f.originMarket !== "Paris" && f.originMarket !== "Moscow");
   const flightRange = europeFlights.length
     ? {
         low: Math.min(...europeFlights.map((f) => Number(f.costLow))),
@@ -71,12 +75,12 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="Every number above is real and free — the pack doesn't unlock more prices, it unlocks the decision. Which court tier is actually worth it, whether to stay near the venue or in central Paris, and the exact ballot/resale timing that decides whether you get a ticket at all."
+      ctaCopy="Every number above is real and free — the pack doesn't unlock more prices, it unlocks the decision. Which court tier is actually worth it, how to time a budget trip around the ballot's two ticket phases, whether a day or night session is the better buy, and where to spend the hotel budget."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Roland-Garros runs the same two weeks every late May and early June, so there&apos;s no shoulder-season
         discount to chase here either. The real swing in cost comes from which court tier you buy into — Grounds
-        Pass, Simonne-Mathieu, Chatrier/Lenglen, or official hospitality — and whether you stay in the 16th
+        Pass, Simonne-Mathieu, Philippe Chatrier, Suzanne Lenglen, or official hospitality — and whether you stay in the 16th
         arrondissement near the venue or take the cheaper trade-off across the Seine in Boulogne-Billancourt.
       </p>
 
@@ -213,6 +217,25 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
               Ticket Guide
             </a>
             .
+          </p>
+
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Time your trip to the ballot, not the tournament</p>
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
+            The two-phase ticket release changes what a budget trip actually looks like. If you miss the December
+            ballot, the March first-come-first-served phase is weighted toward Opening Week and outside-court access
+            for the second week — which is also the cheaper half of the tournament to attend, since the draw hasn&apos;t
+            narrowed yet and demand for outside-court tickets is lower than for a specific show-court session. Building
+            a budget trip around that March phase, rather than chasing a specific quarterfinal-or-later ticket, is the
+            single biggest lever on total cost here.
+          </p>
+
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Day sessions are the better buy early on</p>
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
+            A Chatrier night session commits the whole evening to one pre-selected match, with no rotation through
+            multiple courts the way a day session runs — so early in the tournament, before the draw has thinned, a
+            day session is the better value on a pure cost-per-hour-of-tennis basis. That relationship flips from the
+            quarterfinals onward, when a night session is reliably built around the best remaining matchup and worth
+            paying up for. If budget is the priority and you&apos;re visiting in the first week, buy day sessions.
           </p>
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Where we&apos;d spend the hotel budget</p>

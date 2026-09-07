@@ -124,9 +124,9 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
 
 function FactRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between rounded-sm border border-[#2A2A2A] bg-[#141414] px-4 py-3">
-      <span className="text-sm font-bold text-white">{label}</span>
-      <span className="text-sm text-[#A3A3A3] font-mono">{value}</span>
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4 rounded-sm border border-[#2A2A2A] bg-[#141414] px-4 py-3">
+      <span className="text-sm font-bold text-white shrink-0">{label}</span>
+      <span className="text-sm text-[#A3A3A3] font-mono sm:text-right">{value}</span>
     </div>
   );
 }

@@ -95,6 +95,25 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
         {parisLandmarks && <SpokeExperienceCard experience={parisLandmarks} isPro={isPro} />}
       </div>
 
+      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Essential apps</p>
+      <div className="flex flex-col gap-3 mb-8">
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+          <p className="text-sm font-bold text-white mb-1">Citymapper or the RATP app</p>
+          <p className="text-xs text-[#A3A3A3] leading-5">
+            Real-time Métro/RER journey planning with live disruption — matters most in the hour either side of
+            gates opening.
+          </p>
+        </div>
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+          <p className="text-sm font-bold text-white mb-1">The official Roland-Garros app</p>
+          <p className="text-xs text-[#A3A3A3] leading-5">
+            Live order of play, scores, and a grounds map — genuinely useful for deciding which outside court to
+            head to next on a Grounds Pass day. It also handles on-site meal preorders, which cuts real queue time
+            at the food stands during peak sessions.
+          </p>
+        </div>
+      </div>
+
       <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5">
         <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">A few things worth knowing upfront</p>
         <p className="text-sm text-[#A3A3A3] leading-6">
@@ -106,7 +125,7 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
       </div>
 
       <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: rolandgarros.com, tatlerasia.com and racquetmag.com (dress culture).
+        Sources: rolandgarros.com (dress culture, official app features), tatlerasia.com and racquetmag.com (dress culture).
       </p>
     </SpokeShell>
   );

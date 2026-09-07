@@ -463,6 +463,53 @@ function buildMexicoCityGrandPrix(content: ContentBundle, lookupBareMany: Lookup
   };
 }
 
+function buildFrenchOpen(content: ContentBundle, lookupBareMany: LookupBareMany): TravelBriefGenericResult {
+  const g = content.gettingThere;
+  const w = content.weather;
+  const a = content.arrival;
+  return {
+    gettingThere: g
+      ? {
+          heading: "Getting There",
+          sectionLabel: "Section 1 of 3",
+          blocks: [
+            { kind: "prose", text: g.intro },
+            { kind: "subheading", label: g.metroRoute.label, body: g.metroRoute.body },
+            { kind: "factRows", rows: g.metroRoute.facts },
+            { kind: "subheading", label: g.taxiRideshare.label, body: g.taxiRideshare.body },
+            { kind: "subheading", label: g.drivingParking.label, body: g.drivingParking.body },
+            { kind: "experiences", items: lookupBareMany(["roland-garros-travel-official-packages"]) },
+          ],
+        }
+      : undefined,
+    weather: w
+      ? {
+          heading: "Weather",
+          sectionLabel: "Section 2 of 3",
+          blocks: [
+            { kind: "prose", text: w.intro },
+            { kind: "factRows", label: w.typicalConditions.label, rows: w.typicalConditions.rows },
+            { kind: "callout", label: w.whenItRains.label, body: w.whenItRains.body },
+            { kind: "factRows", label: w.packList.label, rows: w.packList.items.map((i: { name: string; body: string }) => ({ label: i.name, value: i.body })) },
+          ],
+        }
+      : undefined,
+    arrival: a
+      ? {
+          heading: "Arrival & Queue Guide",
+          sectionLabel: "Section 3 of 3",
+          blocks: [
+            { kind: "prose", text: a.intro },
+            { kind: "subheading", label: a.whenToArrive.label },
+            ...a.whenToArrive.scenarios.map((s: { title: string; body: string }) => ({ kind: "subheading" as const, label: s.title, body: s.body })),
+            { kind: "experiences", items: lookupBareMany(["roland-garros-practice-courts-outside-courts"]) },
+            { kind: "callout", label: a.court14Callout.label, body: a.court14Callout.body },
+          ],
+        }
+      : undefined,
+  };
+}
+
 export const TRAVEL_BRIEF_GENERIC_SECTION_BUILDERS: Record<string, (content: ContentBundle, lookupBareMany: LookupBareMany) => TravelBriefGenericResult> = {
   "bahrain-grand-prix": buildBahrainGrandPrix,
   "abu-dhabi-grand-prix": buildAbuDhabiGrandPrix,
@@ -474,4 +521,5 @@ export const TRAVEL_BRIEF_GENERIC_SECTION_BUILDERS: Record<string, (content: Con
   "atp-finals": buildAtpFinals,
   "new-zealand-in-australia-cricket-2026-27": buildNzAustralia,
   "australian-open": buildAustralianOpen,
+  "french-open": buildFrenchOpen,
 };

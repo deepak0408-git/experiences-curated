@@ -49,9 +49,9 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
         <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
           <p className="text-sm font-bold text-white mb-2">For a straightforward outer-court day</p>
           <p className="text-xs text-[#A3A3A3] leading-5">
-            Gate-opening time (typically 09:00-10:00, not yet published for 2027) is early enough — there&apos;s no
-            queue-jumping advantage to arriving before gates open, since seating on the outside courts is
-            first-come but the grounds themselves aren&apos;t rationed by arrival order.
+            Gate-opening time (10am, or 9am from 18-20 May) is early enough — there&apos;s no queue-jumping advantage
+            to arriving before gates open, since seating on the outside courts is first-come but the grounds
+            themselves aren&apos;t rationed by arrival order.
           </p>
         </div>
         <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">

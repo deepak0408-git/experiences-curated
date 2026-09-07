@@ -1,6 +1,7 @@
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
 import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
+import ZoomableImage from "../../_components/ZoomableImage";
 
 const SPOKE_ID = "map";
 
@@ -49,6 +50,16 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
           <SpokeExperienceCard experience={tenniseum} isPro={isPro} />
         </div>
       )}
+
+      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Official grounds map</p>
+      <div className="max-w-md mx-auto">
+        <ZoomableImage
+          src="https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/french-open-grounds-map-v2.jpg"
+          alt="Official Roland-Garros grounds map showing court layout, gates, and facilities at Stade Roland-Garros"
+          aspectClassName="aspect-[1200/1867]"
+        />
+      </div>
+      <p className="text-xs text-[#6A6A6A] mb-8">Credit: map-of-paris.com. Click the map to zoom in.</p>
 
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
         <p className="text-sm font-bold text-white mb-2">Court 14 — the loudest room on the grounds</p>
