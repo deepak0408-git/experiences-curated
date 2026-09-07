@@ -34,7 +34,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The honest proximity-vs-price tradeoff and real named picks are free above. Unlocking adds our actual booking call — which option to choose for a dedicated tennis trip versus a longer Paris visit, and when to book before the tournament's small hotel stock near the venue disappears."
+      ctaCopy="The honest proximity-vs-price tradeoff and real named picks are free above. Unlocking adds our actual booking call, when to book before the tournament's small hotel stock near the venue disappears, and the real tax and availability tradeoffs if you're skipping a hotel for an Airbnb or hostel instead."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Roland-Garros sits in the quiet 16th arrondissement, a part of Paris with genuinely few hotels this close to
@@ -91,12 +91,35 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
             )}
           </p>
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Booking timing</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
             Roland-Garros runs the same two weeks every late May and early June, with no shoulder-season discount
             to chase — book as soon as the following year&apos;s tournament dates are confirmed, not once your
             ballot result lands. The 16th arrondissement&apos;s small hotel stock fills first; Boulogne-Billancourt
             gives more breathing room but its own well-rated options still sell out for the tournament&apos;s
             second week and finals weekend.
+          </p>
+
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">If a hotel isn&apos;t the plan — Airbnb and hostels</p>
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
+            Short-term rentals are a real option, but Paris&apos;s taxe de séjour works against an Airbnb at
+            tournament-week prices in a way most visitors don&apos;t expect: unclassified furnished rentals are
+            taxed at 5% of the per-person nightly rate (before the regional surcharge), capped at €15.93 per person
+            per night, while hotels pay a fixed rate by star rating instead — €5.53 for a 3-star, €8.45 for a
+            4-star. Once a rental&apos;s per-person nightly price passes roughly €50, which tournament-week
+            Boulogne-Billancourt and 16th arrondissement rates routinely do, an unclassified Airbnb becomes more
+            taxed per night than a 4-star hotel room — a real cost the advertised nightly rate doesn&apos;t show
+            until checkout. Every legal short-term rental must also display a 13-character registration number on
+            its listing; a listing without one is operating outside Paris&apos;s rules, which is a real risk signal
+            worth checking before booking, not just a compliance technicality.
+          </p>
+          <p className="text-sm text-[#A3A3A3] leading-7">
+            On the budget end, Paris has a genuine hostel scene rather than just one or two options, though nothing
+            sits directly beside the stadium the way the 16th arrondissement&apos;s hotels do. The 3 Ducks Eiffel
+            Tower (6 Place Étienne Pernet, 15th arrondissement) is a real, currently operating hostel — the oldest
+            private hostel in France — a short bus or one-transfer Métro ride from the Auteuil side of the venue via
+            Félix Faure (Line 8). It&apos;s the right call if a kitchen, a bar, and dorm-bed pricing matter more than
+            walking distance; check live availability directly on the hostel&apos;s own site or Hostelworld, since
+            tournament-week beds go early and quoted off-season rates won&apos;t hold.
           </p>
         </div>
       )}

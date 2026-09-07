@@ -132,11 +132,11 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
   ],
   // Real, sourced facts from experience research (roof-closing time, the
   // official FFT fraud-warning framing, the free tram is N/A for Paris so
-  // omitted, RATP is the real transit operator). Gate/session times
-  // genuinely not yet published for the 2027 tournament, stated honestly
-  // per skill §2a-3 rather than guessed.
+  // omitted, RATP is the real transit operator). Gate times confirmed
+  // directly from rolandgarros.com/en-us/page/safety-roland-garros-forbidden-objects
+  // (checked 7 Sep 2026) — no longer a "not yet published" placeholder.
   "french-open": [
-    { label: "Gate times", value: "Not yet published for the 2027 tournament. Based on the pattern in recent years, expect gates to open around 09:00-10:00 on match days — confirm exact times via rolandgarros.com closer to the tournament." },
+    { label: "Gate times", value: "Stadium gates open at 10am, except 9am from Monday 18 to Wednesday 20 May — arrive with plenty of time, as security checks (three mandatory perimeter checkpoints: PPO Auteuil, PPO Molitor, PPO Boulogne) can take a while. Bags over 15 litres aren't allowed inside and must be left at the cloakroom before the checkpoint. Source: rolandgarros.com." },
     { label: "Roof closing time", value: "Court Philippe-Chatrier and Suzanne-Lenglen's retractable roofs close in about 15 minutes once rain starts — if play is suspended, stay in your seat rather than heading for cover elsewhere." },
     { label: "Ticket resale warning", value: "The FFT publishes its own fraud warnings about counterfeit and black-market ticket resale sites. Buy only via tickets.rolandgarros.com, travel.rolandgarros.com, hospitality.rolandgarros.com, or the tournament's named official agencies — and use the FFT's own resale marketplace, not a third party, if you need a returned ticket." },
     { label: "Emergencies", value: "France-wide emergency number: 112 (works from any phone, free, English-speaking operators available). Police: 17. Ambulance (SAMU): 15. Fire: 18." },

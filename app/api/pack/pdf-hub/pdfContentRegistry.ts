@@ -115,6 +115,19 @@ import { usGpArrivalSpokeContent } from "./content/united-states-grand-prix/arri
 import { usGpMapSpokeContent } from "./content/united-states-grand-prix/mapContent";
 import { usGpLuxurySpokeContent } from "./content/united-states-grand-prix/luxuryContent";
 
+import { frenchOpenCostSpokeContent } from "./content/french-open/costContent";
+import { frenchOpenTicketsSpokeContent } from "./content/french-open/ticketsContent";
+import { frenchOpenHotelsSpokeContent } from "./content/french-open/hotelsContent";
+import { frenchOpenGettingThereSpokeContent } from "./content/french-open/gettingThereContent";
+import { frenchOpenWeatherSpokeContent } from "./content/french-open/weatherContent";
+import { frenchOpenFirstTimerGuideSpokeContent } from "./content/french-open/firstTimerGuideContent";
+import { frenchOpenWhereToEatSpokeContent } from "./content/french-open/whereToEatContent";
+import { frenchOpenDayTripsSpokeContent } from "./content/french-open/dayTripsContent";
+import { frenchOpenItinerarySpokeContent } from "./content/french-open/itineraryContent";
+import { frenchOpenArrivalSpokeContent } from "./content/french-open/arrivalContent";
+import { frenchOpenMapSpokeContent } from "./content/french-open/mapContent";
+import { frenchOpenLuxurySpokeContent } from "./content/french-open/luxuryContent";
+
 import { mexicoCityGpCostSpokeContent } from "./content/mexico-city-grand-prix/costContent";
 import { mexicoCityGpTicketsSpokeContent } from "./content/mexico-city-grand-prix/ticketsContent";
 import { mexicoCityGpHotelsSpokeContent } from "./content/mexico-city-grand-prix/hotelsContent";
@@ -311,5 +324,19 @@ export const PDF_CONTENT_BY_EVENT: Record<string, SpokePdfContentBundle> = {
     arrival: mexicoCityGpArrivalSpokeContent,
     map: mexicoCityGpMapSpokeContent,
     luxury: mexicoCityGpLuxurySpokeContent,
+  },
+  "french-open": {
+    cost: frenchOpenCostSpokeContent,
+    tickets: frenchOpenTicketsSpokeContent,
+    hotels: frenchOpenHotelsSpokeContent,
+    gettingThere: frenchOpenGettingThereSpokeContent,
+    weather: frenchOpenWeatherSpokeContent,
+    firstTimerGuide: frenchOpenFirstTimerGuideSpokeContent,
+    whereToEat: frenchOpenWhereToEatSpokeContent,
+    dayTrips: frenchOpenDayTripsSpokeContent,
+    itinerary: frenchOpenItinerarySpokeContent,
+    arrival: frenchOpenArrivalSpokeContent,
+    map: frenchOpenMapSpokeContent,
+    luxury: frenchOpenLuxurySpokeContent,
   },
 };

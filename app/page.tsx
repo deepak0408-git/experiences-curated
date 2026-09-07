@@ -101,7 +101,7 @@ function eventState(startDate: string, endDate: string) {
 
 export default async function HomePage() {
   const today = new Date().toISOString().split("T")[0];
-  const in120Days = new Date(Date.now() + 120 * 86_400_000).toISOString().split("T")[0];
+  const in365Days = new Date(Date.now() + 365 * 86_400_000).toISOString().split("T")[0];
 
   const { user } = await getAuthUser();
 
@@ -125,7 +125,7 @@ export default async function HomePage() {
     .orderBy(asc(sportingEvents.startDate));
 
   const calendarEvents = allUpcoming
-    .filter((e) => e.startDate <= in120Days && !e.isHidden);
+    .filter((e) => e.startDate <= in365Days && !e.isHidden);
 
   // Experience counts per event for calendar cards
   const expCounts = await db

@@ -38,7 +38,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The real ticket tiers and ballot calendar are free above. Unlocking adds our curated tier recommendation for a first Roland-Garros trip, plus which week to target if a specific match matters more than price."
+      ctaCopy="The real ticket tiers and ballot calendar are free above. Unlocking adds the exact combination we'd buy for a first Roland-Garros trip, whether to target the first week or pay the second-week premium, and why a day session — not a night session — is the smarter buy before the draw thins out."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Roland-Garros sells four genuinely different products. A Grounds Pass gets you into every outside court plus

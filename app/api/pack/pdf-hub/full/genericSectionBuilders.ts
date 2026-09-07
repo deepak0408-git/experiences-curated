@@ -2000,6 +2000,206 @@ function buildMexicoCityGrandPrix(content: ContentBundle, lookupMany: LookupMany
   return result;
 }
 
+function buildFrenchOpen(content: ContentBundle, lookupMany: LookupMany): GenericSectionsResult {
+  const result: GenericSectionsResult = {};
+
+  if (content.tickets) {
+    const t = content.tickets;
+    result.tickets = {
+      heading: "Tickets",
+      sectionLabel: "Section 2 of 12",
+      blocks: [
+        { kind: "prose", text: t.intro },
+        { kind: "factRows", label: "Ticket types", rows: t.ticketTypes.map((r: { fallbackLabel: string; detail: string }) => ({ label: r.fallbackLabel, value: r.detail })) },
+        { kind: "sourcesFooter", text: t.pricingNote },
+        { kind: "callout", label: t.howToBuy.label, body: t.howToBuy.body },
+        { kind: "experiences", items: lookupMany(["court-philippe-chatrier-suzanne-lenglen", "roland-garros-grounds-pass-tickets"]) },
+      ],
+      verdicts: t.verdicts,
+    };
+  }
+
+  if (content.hotels) {
+    const h = content.hotels;
+    result.hotels = {
+      heading: "Hotels",
+      sectionLabel: "Section 3 of 12",
+      blocks: [
+        { kind: "prose", text: h.intro },
+        { kind: "sectionHeading", label: h.nearTheVenue.label, body: h.nearTheVenue.body },
+        { kind: "sectionHeading", label: h.acrossTheSeine.label, body: h.acrossTheSeine.body },
+        { kind: "experiences", items: lookupMany(["ibis-boulogne-billancourt-midrange-stay", "boulogne-billancourt-short-let-budget-stay"]) },
+      ],
+      verdicts: h.verdicts,
+    };
+  }
+
+  if (content.gettingThere) {
+    const g = content.gettingThere;
+    result.gettingThere = {
+      heading: "Getting There",
+      sectionLabel: "Section 4 of 12",
+      blocks: [
+        { kind: "prose", text: g.intro },
+        { kind: "subheading", label: g.metroRoute.label, body: g.metroRoute.body },
+        { kind: "factRows", rows: g.metroRoute.facts },
+        { kind: "subheading", label: g.taxiRideshare.label, body: g.taxiRideshare.body },
+        { kind: "subheading", label: g.drivingParking.label, body: g.drivingParking.body },
+        { kind: "experiences", items: lookupMany(["roland-garros-travel-official-packages"]) },
+        { kind: "subheading", label: g.apps.label, body: g.apps.body },
+        { kind: "sourcesFooter", text: g.sourcesFooter },
+      ],
+    };
+  }
+
+  if (content.weather) {
+    const w = content.weather;
+    result.weather = {
+      heading: "Weather",
+      sectionLabel: "Section 5 of 12",
+      blocks: [
+        { kind: "prose", text: w.intro },
+        { kind: "factRows", label: w.typicalConditions.label, rows: w.typicalConditions.rows },
+        { kind: "callout", label: w.whenItRains.label, body: w.whenItRains.body },
+        { kind: "factRows", label: w.packList.label, rows: w.packList.items.map((i: { name: string; body: string }) => ({ label: i.name, value: i.body })) },
+        { kind: "sourcesFooter", text: w.sourcesFooter },
+      ],
+    };
+  }
+
+  if (content.firstTimerGuide) {
+    const f = content.firstTimerGuide;
+    result.firstTimerGuide = {
+      heading: "First-Timer's Guide",
+      sectionLabel: "Section 6 of 12",
+      blocks: [
+        { kind: "prose", text: f.intro },
+        { kind: "sectionHeading", label: f.whatMakesItDifferent.label },
+        ...f.whatMakesItDifferent.items.map((i: { title: string; body: string }) => ({ kind: "subheading" as const, label: i.title, body: i.body })),
+        { kind: "callout", label: f.commonMistakes.label, body: f.commonMistakes.body },
+        { kind: "subheading", label: f.nonMatchDay.label, body: f.nonMatchDay.intro },
+        { kind: "experiences", items: lookupMany(["paris-icons-eiffel-tower-seine-arc-de-triomphe", "paris-landmarks-louvre-notre-dame"]) },
+        { kind: "factRows", label: f.essentialApps.label, rows: f.essentialApps.items.map((i: { name: string; body: string }) => ({ label: i.name, value: i.body })) },
+        { kind: "callout", label: f.worthKnowingCallout.label, body: f.worthKnowingCallout.body },
+        { kind: "sourcesFooter", text: f.sourcesFooter },
+      ],
+    };
+  }
+
+  if (content.whereToEat) {
+    const w = content.whereToEat;
+    result.whereToEat = {
+      heading: "Where to Eat",
+      sectionLabel: "Section 7 of 12",
+      blocks: [
+        { kind: "prose", text: w.intro },
+        { kind: "subheading", label: w.onTheGrounds.label },
+        { kind: "experiences", items: lookupMany(["what-to-eat-inside-roland-garros"]) },
+        { kind: "subheading", label: w.whatParisiansActuallyEat.label, body: w.whatParisiansActuallyEat.intro },
+        { kind: "experiences", items: lookupMany(["everyday-parisian-eating-baguette-jambon-beurre"]) },
+        { kind: "callout", label: w.bringingYourOwnFood.label, body: w.bringingYourOwnFood.body },
+        { kind: "sourcesFooter", text: w.sourcesFooter },
+      ],
+      verdicts: w.verdicts,
+    };
+  }
+
+  if (content.dayTrips) {
+    const d = content.dayTrips;
+    result.dayTrips = {
+      heading: "Day Trips",
+      sectionLabel: "Section 8 of 12",
+      blocks: [
+        { kind: "prose", text: d.intro },
+        { kind: "subheading", label: d.versailles.label, body: d.versailles.body },
+        { kind: "experiences", items: lookupMany(["versailles-day-trip"]) },
+        { kind: "subheading", label: d.shorterBreakInParis.label, body: d.shorterBreakInParis.body },
+        { kind: "experiences", items: lookupMany(["village-dauteuil-neighborhood", "montmartre-neighborhood"]) },
+        { kind: "sourcesFooter", text: d.sourcesFooter },
+      ],
+      verdicts: d.verdicts,
+    };
+  }
+
+  if (content.itinerary) {
+    const it = content.itinerary;
+    result.itinerary = {
+      heading: "Trip Schedule",
+      sectionLabel: "Section 9 of 12",
+      blocks: [
+        { kind: "prose", text: it.intro },
+        { kind: "factRows", label: it.shapeOfTournament.label, rows: it.shapeOfTournament.days.map((d: { day: string; detail: string }) => ({ label: d.day, value: d.detail })) },
+        { kind: "sectionHeading", label: it.hourByHourIntro.label, body: it.hourByHourIntro.body },
+        ...it.hourByHour.flatMap((day: { day: string; rows: { time: string; location: string; activity: string }[] }) => [
+          { kind: "sectionHeading" as const, label: day.day },
+          { kind: "factRows" as const, rows: day.rows.map((r) => ({ label: r.time, value: `${r.location} — ${r.activity}` })) },
+        ]),
+        { kind: "sectionHeading", label: it.eveningsHeading },
+        { kind: "experiences", items: lookupMany(["moulin-rouge-show", "caveau-de-la-huchette-jazz"]) },
+        { kind: "sourcesFooter", text: it.sourcesFooter },
+      ],
+      verdicts: it.verdicts,
+    };
+  }
+
+  if (content.arrival) {
+    const a = content.arrival;
+    result.arrival = {
+      heading: "Arrival & Queue Guide",
+      sectionLabel: "Section 10 of 12",
+      blocks: [
+        { kind: "prose", text: a.intro },
+        { kind: "subheading", label: a.whenToArrive.label },
+        ...a.whenToArrive.scenarios.map((s: { title: string; body: string }) => ({ kind: "subheading" as const, label: s.title, body: s.body })),
+        { kind: "experiences", items: lookupMany(["roland-garros-practice-courts-outside-courts"]) },
+        { kind: "callout", label: a.court14Callout.label, body: a.court14Callout.body },
+        { kind: "sourcesFooter", text: a.sourcesFooter },
+      ],
+    };
+  }
+
+  if (content.map) {
+    const m = content.map;
+    result.map = {
+      heading: "Venue Map",
+      sectionLabel: "Section 11 of 12",
+      blocks: [
+        { kind: "prose", text: m.intro },
+        { kind: "factRows", label: m.siteFacts.label, rows: m.siteFacts.rows },
+        { kind: "experiences", items: lookupMany(["roland-garros-stadium-tour-tenniseum"]) },
+        { kind: "subheading", label: m.court14.label, body: m.court14.body },
+        { kind: "subheading", label: m.watchingOuterCourtWell.label, body: m.watchingOuterCourtWell.body },
+        { kind: "factRows", label: m.foodAndFacilities.label, rows: m.foodAndFacilities.items.map((i: { name: string; body: string }) => ({ label: i.name, value: i.body })) },
+        { kind: "sourcesFooter", text: m.sourcesFooter },
+      ],
+    };
+  }
+
+  if (content.luxury) {
+    const lx = content.luxury;
+    result.luxury = {
+      heading: "Luxury Guide",
+      sectionLabel: "Section 12 of 12",
+      blocks: [
+        { kind: "prose", text: lx.intro },
+        { kind: "subheading", label: lx.premiumTransit.label, body: lx.premiumTransit.body },
+        { kind: "subheading", label: `${lx.offVenueLuxury.label} — ${lx.offVenueLuxury.name}`, body: lx.offVenueLuxury.body },
+        { kind: "callout", label: lx.bookEarlyCallout.label, body: lx.bookEarlyCallout.body },
+        { kind: "sectionHeading", label: lx.premiumStay.label },
+        { kind: "experiences", items: lookupMany(["hotel-molitor-paris-luxury-stay"]) },
+        { kind: "sectionHeading", label: lx.luxuryDinner.label },
+        { kind: "experiences", items: lookupMany(["french-open-luxury-dining-bois-de-boulogne"]) },
+        { kind: "factRows", label: "The 3 official hospitality rooms — real cost and inclusions", rows: lx.hospitalityRooms.map((p: { name: string; price: string; detail: string }) => ({ label: `${p.name} (${p.price})`, value: p.detail })) },
+        { kind: "experiences", items: lookupMany(["roland-garros-official-hospitality"]) },
+        { kind: "sourcesFooter", text: lx.sourcesFooter },
+      ],
+      verdicts: lx.verdicts,
+    };
+  }
+
+  return result;
+}
+
 export const GENERIC_SECTION_BUILDERS: Record<string, (content: ContentBundle, lookupMany: LookupMany) => GenericSectionsResult> = {
   "bahrain-grand-prix": buildBahrainGrandPrix,
   "abu-dhabi-grand-prix": buildAbuDhabiGrandPrix,
@@ -2011,4 +2211,5 @@ export const GENERIC_SECTION_BUILDERS: Record<string, (content: ContentBundle, l
   "australian-open": buildAustralianOpen,
   "united-states-grand-prix": buildUnitedStatesGrandPrix,
   "mexico-city-grand-prix": buildMexicoCityGrandPrix,
+  "french-open": buildFrenchOpen,
 };

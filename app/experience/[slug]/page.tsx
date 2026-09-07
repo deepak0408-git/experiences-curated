@@ -332,7 +332,7 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "us-gp-lady-bird-lake-": { venueCount: 3, venueNoun: "rental operators" },
   "us-gp-san-antonio-daytrip-": { venueCount: 2, venueNoun: "sites" },
   "french-open-luxury-dining-bois-de-boulogne": { venueCount: 3, venueNoun: "restaurants" },
-  "paris-icons-eiffel-tower-seine-arc-de-triomphe": { venueCount: 2, venueNoun: "landmarks" },
+  "paris-icons-eiffel-tower-seine-arc-de-triomphe": { venueCount: 3, venueNoun: "landmarks" },
   "paris-landmarks-louvre-notre-dame": { venueCount: 2, venueNoun: "landmarks" },
   "where-to-stay-perth-first-test-": { venueCount: 2, venueNoun: "hotels" },
   "where-to-stay-adelaide-city-vs-north-": { venueCount: 2, venueNoun: "hotels" },
@@ -399,6 +399,10 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "mexico-city-pujol-contramar-": { venueCount: 2, venueNoun: "restaurants" },
   "mexico-city-zocalo-cathedral-templo-mayor-": { venueCount: 3, venueNoun: "sites" },
   "mexico-city-chapultepec-anthropology-": { venueCount: 2, venueNoun: "places" },
+  // French Open 2027 — added 7 Sep 2026
+  "everyday-parisian-eating-baguette-jambon-beurre": { venueCount: 2, venueNoun: "boulangeries" },
+  "village-dauteuil-neighborhood": { venueCount: 2, venueNoun: "hotels" },
+  "montmartre-neighborhood": { venueCount: 2, venueNoun: "landmarks" },
 };
 
 function getMultiVenueRatings(slug: string) {
@@ -756,6 +760,8 @@ export default async function ExperiencePage({
               slug.startsWith("mexico-city-pujol-contramar-") ? "lg:object-[center_60%]" :
               slug.startsWith("mexico-city-chapultepec-anthropology-") ? "lg:object-[center_35%]" :
               slug.startsWith("mexico-city-dia-de-muertos-") ? "lg:object-[center_20%]" :
+              slug === "court-philippe-chatrier-suzanne-lenglen" ? "lg:object-[center_65%]" :
+              slug === "roland-garros-travel-official-packages" ? "lg:object-[center_25%]" :
               ""
             }`}
             sizes="100vw"

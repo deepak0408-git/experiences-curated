@@ -14,7 +14,7 @@ const SPOKE_ID = "luxury";
 // luxury tradition, not a fabricated tennis-specific one (no genuine
 // Roland-Garros tea tradition found, unlike Wimbledon's Dorchester tea).
 export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) {
-  const { event, linkedExperiences, tickets } = await getSpokeData(eventSlug);
+  const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
   const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
@@ -22,21 +22,23 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
   const hospitality = linkedExperiences.find((e) => e.slug.includes("roland-garros-official-hospitality"));
   const molitor = linkedExperiences.find((e) => e.slug.includes("hotel-molitor-paris-luxury-stay"));
   const luxuryDining = linkedExperiences.find((e) => e.slug.includes("french-open-luxury-dining-bois-de-boulogne"));
-  const tier4 = tickets.find((t) => t.tier === "tier4");
 
   const packages = [
     {
       name: "Le Pavillon",
+      price: "from €350",
       detail:
         "A beach-house-styled dining room with a 500-square-metre terrace over the practice courts, built for a long, unhurried lunch between sessions. Doors 10am-5:30pm, premium Chatrier seating included.",
     },
     {
       name: "La Mezzanine",
+      price: "from €380",
       detail:
         "A brighter, more informal lounge on L'Orangerie's first floor — screens showing live play, a steady rotation of canapés rather than a seated meal. The pick for staying mobile between matches.",
     },
     {
       name: "L'Orangerie — Category 1 / Category Gold",
+      price: "from €430",
       detail:
         "L'Orangerie's own seating categories, both with premium Chatrier access and the full drinks/catering package built in — Category Gold sits closer to the court.",
     },
@@ -55,12 +57,13 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="All 3 real hospitality rooms and their real inclusions are free above — no vague 'premium experience' language. What free research can't tell you is which room fits which kind of day, and how to sequence a hospitality day so you're not queuing for a table the one day you paid not to. Unlocking adds that verdict."
+      ctaCopy="The hotel pick, premium transit, and off-venue names are free above. Unlocking adds real cost and inclusions for all 3 official hospitality rooms, which room fits which kind of day, and how to sequence a hospitality day so you're not queuing for a table the one day you paid not to."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Luxury at Roland-Garros is a stack of decisions, not one purchase — where you stay and how you eat around
         the grounds matter as much as which hospitality room you book. The tournament runs official hospitality
-        through Sodexo Live!, its sole sanctioned hospitality operator, in three genuinely different rooms.
+        through Sodexo Live!, its sole sanctioned hospitality operator, across three genuinely different rooms —
+        real cost and inclusions for each are below.
       </p>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Premium transit</p>
@@ -97,32 +100,6 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
         </p>
       </div>
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The 3 official hospitality rooms</p>
-      <div className="flex flex-col gap-3 mb-8">
-        {packages.map((pkg) => (
-          <div key={pkg.name} className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
-            <p className="text-sm font-bold text-white mb-1.5">{pkg.name}</p>
-            <p className="text-xs text-[#A3A3A3] leading-5">{pkg.detail}</p>
-          </div>
-        ))}
-      </div>
-      {tier4 && (
-        <p className="text-xs text-[#6A6A6A] -mt-4 mb-8">
-          Approx. US${Math.round(Number(tier4.costLow))}-{Math.round(Number(tier4.costHigh))} per person per day
-          depending on tier — 2027 pricing not yet published. See the{" "}
-          <Link href={`/event-pack/${eventSlug}/tickets`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
-            Ticket Guide
-          </Link>{" "}
-          for how this compares to standard tickets.
-        </p>
-      )}
-
-      {hospitality && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={hospitality} isPro={isPro} />
-        </div>
-      )}
-
       <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8">
         <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Book early — hospitality typically sells out well ahead</p>
         <p className="text-sm text-[#A3A3A3] leading-6">
@@ -148,6 +125,25 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The 3 official hospitality rooms — real cost and inclusions</p>
+          <div className="flex flex-col gap-3 mb-8">
+            {packages.map((pkg) => (
+              <div key={pkg.name} className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+                <div className="flex items-start justify-between gap-3 mb-1.5">
+                  <p className="text-sm font-bold text-white">{pkg.name}</p>
+                  <p className="text-sm text-[#AAFF00] font-mono flex-shrink-0">{pkg.price}</p>
+                </div>
+                <p className="text-xs text-[#A3A3A3] leading-5">{pkg.detail}</p>
+              </div>
+            ))}
+          </div>
+
+          {hospitality && (
+            <div className="mb-8">
+              <SpokeExperienceCard experience={hospitality} isPro={isPro} />
+            </div>
+          )}
+
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Which room we&apos;d pick</p>
           <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
             Le Pavillon is the sharper choice if lunch itself is part of the point — a real seated meal with a view
