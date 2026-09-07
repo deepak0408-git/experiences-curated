@@ -73,6 +73,7 @@ async function getSpokeDataUncached(slug: string) {
       whyItsSpecial: experiences.whyItsSpecial,
       insiderTips: experiences.insiderTips,
       whatToAvoid: experiences.whatToAvoid,
+      bookingLinks: experiences.bookingLinks,
       packRank: sportingEventExperiences.packRank,
       googleMapsRating: experiences.googleMapsRating,
       googleMapsReviewCount: experiences.googleMapsReviewCount,
@@ -250,4 +251,41 @@ export function getSpokesForEvent(slug: string): SpokeConfig[] {
 
 export function getSpokeImage(linkedExperiences: { slug: string; heroImageUrl: string | null }[], imageSlug: string): string | null {
   return linkedExperiences.find((e) => e.slug.includes(imageSlug))?.heroImageUrl ?? null;
+}
+
+// Real affiliate relationships are Booking.com and GetYourGuide only — see
+// feedback_affiliate_link_generation memory. A GetYourGuide link is a direct
+// getyourguide.com domain, easy to detect. A Booking.com affiliate link is
+// NOT hosted on booking.com itself — it goes through a Commission Junction
+// (CJ Affiliate) tracking-redirect domain (tkqlhce.com, anrdoezrs.net,
+// kqzyfj.com, and others CJ assigns), with the real booking.com destination
+// URL-encoded inside a `url=` query parameter, not visible as the link's own
+// hostname. Checking the raw href for a literal "booking.com" substring is
+// fragile — this decodes the URL and checks the real destination host
+// instead. A plain link to an official site is not an affiliate link and
+// must never carry the disclaimer, even though it legitimately lives in the
+// same bookingLinks array. Shared here (moved from the classic experience
+// page 7 Sep 2026, same logic) so hub-and-spoke spokes rendering
+// bookingLinks directly use the identical detection, not a second copy.
+const CJ_REDIRECT_HOSTS = ["tkqlhce.com", "anrdoezrs.net", "kqzyfj.com", "jdoqocy.com", "dpbolvw.net"];
+
+export function isRealAffiliateLink(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname === "getyourguide.com" || parsed.hostname.endsWith(".getyourguide.com")) return true;
+    if (CJ_REDIRECT_HOSTS.some((h) => parsed.hostname === h || parsed.hostname.endsWith(`.${h}`))) {
+      const embedded = parsed.searchParams.get("url");
+      if (embedded) {
+        try {
+          const embeddedHost = new URL(embedded).hostname;
+          return embeddedHost === "booking.com" || embeddedHost.endsWith(".booking.com");
+        } catch {
+          return false;
+        }
+      }
+    }
+    return parsed.hostname === "booking.com" || parsed.hostname.endsWith(".booking.com");
+  } catch {
+    return false;
+  }
 }

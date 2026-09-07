@@ -248,4 +248,29 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "map", label: "Venue Map", question: "What facilities are available at Circuit of the Americas?", status: "public", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/united-states-grand-prix-map-spoke-hero.jpg" },
     { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the US GP?", status: "teaser", imageSlug: "us-gp-paddock-club", heroImagePosition: "center 75%" },
   ],
+  // Mexico City Grand Prix 2026 — built 6 Sep 2026. All 21 experiences real/
+  // seeded (status: in_review — publish via /curator/review before spoke
+  // cards render), all 21 hero-imaged and founder-reviewed same session.
+  // Real imageSlug values used directly. Weather/Arrival/Tickets use the
+  // skill's standing cross-event default images (imageOverride), set here
+  // at config-creation time per the skill's explicit rule. NOTE: zero
+  // planner_ticket_tier_cost/planner_hotel_tier_cost/planner_destination_bands/
+  // planner_flight_cost rows exist for Mexico City as of this build — Cost
+  // spoke ships as an honest "not live yet" placeholder per the founder's
+  // explicit decision (6 Sep 2026); planner-data-researcher still needs to
+  // run before launch.
+  "mexico-city-grand-prix": [
+    { id: "cost", label: "Cost Guide", question: "How much does a Mexico City GP weekend cost?", status: "teaser", imageSlug: "foro-sol-mexico-city-gp-" },
+    { id: "tickets", label: "Ticket Guide", question: "Which Mexico City GP grandstand is the best buy?", status: "teaser", imageSlug: "mexico-city-gp-ticket-guide-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the Mexico City Grand Prix?", status: "teaser", imageSlug: "mexico-city-where-to-stay-roma-norte-" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to the Autódromo Hermanos Rodríguez?", status: "public", imageSlug: "mexico-city-gp-getting-there-" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the Mexico City GP, and what should I pack?", status: "public", imageSlug: "mexico-city-weather-packing-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Mexico City GP?", status: "public", imageSlug: "autodromo-hermanos-rodriguez-venue-" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat during Mexico City GP race weekend?", status: "teaser", imageSlug: "mexico-city-tacos-al-pastor-" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best things to do in Mexico City beyond the race?", status: "teaser", imageSlug: "mexico-city-teotihuacan-day-trip-" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does a Mexico City GP race weekend actually look like?", status: "teaser", imageSlug: "mexico-city-dia-de-muertos-" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at the Autódromo Hermanos Rodríguez?", status: "public", imageSlug: "mexico-city-gp-arrival-queue-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at the Autódromo Hermanos Rodríguez?", status: "public", imageSlug: "mexico-city-gp-where-to-sit-" },
+    { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Mexico City GP?", status: "teaser", imageSlug: "mexico-city-gp-paddock-club-", heroImagePosition: "center 75%" },
+  ],
 };

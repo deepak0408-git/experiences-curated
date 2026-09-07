@@ -1801,6 +1801,205 @@ function buildUnitedStatesGrandPrix(content: ContentBundle, lookupMany: LookupMa
   return result;
 }
 
+function buildMexicoCityGrandPrix(content: ContentBundle, lookupMany: LookupMany): GenericSectionsResult {
+  const result: GenericSectionsResult = {};
+
+  if (content.tickets) {
+    const t = content.tickets;
+    result.tickets = {
+      heading: "Tickets",
+      sectionLabel: "Section 2 of 12",
+      blocks: [
+        { kind: "prose", text: t.intro },
+        { kind: "subheading", label: t.whereToBuy.label, body: `${t.whereToBuy.body}\n\n${t.whereToBuy.body2}` },
+        { kind: "factRows", label: t.standsTable.label, rows: t.standsTable.rows.map((r: { name: string; shows: string; seating: string; exposure: string; priceBand: string }) => ({ label: r.name, value: `${r.shows} — ${r.seating}, ${r.exposure}. ${r.priceBand}` })) },
+        { kind: "experiences", items: lookupMany(["mexico-city-gp-ticket-guide-"]) },
+        { kind: "callout", label: t.pricingNote.label, body: t.pricingNote.body },
+        { kind: "experiences", label: "Foro Sol", items: lookupMany(["foro-sol-mexico-city-gp-"]) },
+      ],
+      verdicts: t.verdicts,
+    };
+  }
+
+  if (content.hotels) {
+    const h = content.hotels;
+    result.hotels = {
+      heading: "Hotels",
+      sectionLabel: "Section 3 of 12",
+      blocks: [
+        { kind: "prose", text: h.intro },
+        { kind: "sectionHeading", label: h.threeRealPicks.label },
+        { kind: "experiences", items: lookupMany(["mexico-city-where-to-stay-roma-norte-", "mexico-city-where-to-stay-condesa-", "mexico-city-where-to-stay-polanco-"]) },
+        { kind: "callout", label: h.bookEarlyCallout.label, body: h.bookEarlyCallout.body },
+        { kind: "factRows", label: h.bookingCards.label, rows: h.bookingCards.cards.map((c: { name: string; note: string }) => ({ label: c.name, value: c.note })) },
+      ],
+      verdicts: h.verdicts,
+    };
+  }
+
+  if (content.gettingThere) {
+    const g = content.gettingThere;
+    result.gettingThere = {
+      heading: "Getting There",
+      sectionLabel: "Section 4 of 12",
+      blocks: [
+        { kind: "prose", text: g.intro },
+        { kind: "subheading", label: g.fromAirport.label, body: g.fromAirport.body },
+        { kind: "factRows", rows: g.fromAirport.facts },
+        { kind: "callout", label: g.raceDayClosures.label, body: g.raceDayClosures.body },
+        { kind: "subheading", label: g.rideshareTrap.label, body: g.rideshareTrap.body },
+        { kind: "factRows", label: g.appsRow.label, rows: g.appsRow.items.map((i: { name: string; body: string }) => ({ label: i.name, value: i.body })) },
+        { kind: "experiences", items: lookupMany(["mexico-city-gp-getting-there-"]) },
+      ],
+    };
+  }
+
+  if (content.weather) {
+    const w = content.weather;
+    result.weather = {
+      heading: "Weather",
+      sectionLabel: "Section 5 of 12",
+      blocks: [
+        { kind: "prose", text: w.intro },
+        { kind: "callout", label: w.forecastBox.label, body: w.forecastBox.body },
+        { kind: "factRows", label: w.packList.label, rows: w.packList.items.map((i: { label: string; detail: string }) => ({ label: i.label, value: i.detail })) },
+        { kind: "subheading", label: w.honestTakeaway.label, body: w.honestTakeaway.body },
+        { kind: "experiences", items: lookupMany(["mexico-city-weather-packing-"]) },
+        { kind: "sourcesFooter", text: w.sourcesFooter },
+      ],
+      verdicts: w.verdicts,
+    };
+  }
+
+  if (content.firstTimerGuide) {
+    const f = content.firstTimerGuide;
+    result.firstTimerGuide = {
+      heading: "First-Timer's Guide",
+      sectionLabel: "Section 6 of 12",
+      blocks: [
+        { kind: "prose", text: f.intro },
+        ...f.mistakes.map((m: { number: number; label: string; body: string }) => ({ kind: "subheading" as const, label: `Mistake ${m.number} — ${m.label}`, body: m.body })),
+        { kind: "experiences", items: lookupMany(["autodromo-hermanos-rodriguez-venue-"]) },
+        { kind: "factRows", label: f.howToUseThreeDays.label, rows: f.howToUseThreeDays.rows },
+        { kind: "factRows", label: f.practicalEssentials.label, rows: f.practicalEssentials.items.map((i: { name: string; body: string }) => ({ label: i.name, value: i.body })) },
+        { kind: "callout", label: f.atmosphereCallout.label, body: f.atmosphereCallout.body },
+      ],
+      verdicts: f.verdicts,
+    };
+  }
+
+  if (content.whereToEat) {
+    const w = content.whereToEat;
+    result.whereToEat = {
+      heading: "Where to Eat",
+      sectionLabel: "Section 7 of 12",
+      blocks: [
+        { kind: "prose", text: w.intro },
+        { kind: "subheading", label: w.budgetHeading.label },
+        { kind: "experiences", items: lookupMany(["mexico-city-tacos-al-pastor-"]) },
+        { kind: "subheading", label: w.moderateHeading.label },
+        { kind: "experiences", items: lookupMany(["mexico-city-mercado-roma-"]) },
+        { kind: "subheading", label: w.splurgeHeading.label },
+        { kind: "experiences", items: lookupMany(["mexico-city-pujol-contramar-"]) },
+      ],
+      verdicts: w.verdicts,
+    };
+  }
+
+  if (content.dayTrips) {
+    const d = content.dayTrips;
+    result.dayTrips = {
+      heading: "Day Trips",
+      sectionLabel: "Section 8 of 12",
+      blocks: [
+        { kind: "prose", text: d.intro },
+        { kind: "subheading", label: d.inTheCityHeading.label },
+        { kind: "experiences", items: lookupMany(["mexico-city-zocalo-cathedral-templo-mayor-", "mexico-city-chapultepec-anthropology-", "mexico-city-frida-kahlo-museum-"]) },
+        { kind: "subheading", label: d.outOfTheCityHeading.label },
+        { kind: "experiences", items: lookupMany(["mexico-city-teotihuacan-day-trip-", "mexico-city-xochimilco-"]) },
+        { kind: "subheading", label: d.thisYearOnlyHeading.label },
+        { kind: "experiences", items: lookupMany(["mexico-city-dia-de-muertos-"]) },
+        { kind: "callout", label: d.honestLogistics.label, body: d.honestLogistics.body },
+      ],
+      verdicts: d.verdicts,
+    };
+  }
+
+  if (content.itinerary) {
+    const it = content.itinerary;
+    result.itinerary = {
+      heading: "Trip Schedule",
+      sectionLabel: "Section 9 of 12",
+      blocks: [
+        { kind: "prose", text: it.intro },
+        { kind: "prose", text: it.intro2 },
+        { kind: "factRows", label: "The shape of the weekend", rows: it.days.map((d: { label: string; summary: string }) => ({ label: d.label, value: d.summary })) },
+        ...it.hourByHour.flatMap((day: { day: string; rows: { time: string; location: string; activity: string }[] }) => [
+          { kind: "sectionHeading" as const, label: day.day },
+          { kind: "factRows" as const, rows: day.rows.map((r) => ({ label: r.time, value: `${r.location} — ${r.activity}` })) },
+        ]),
+      ],
+    };
+  }
+
+  if (content.arrival) {
+    const a = content.arrival;
+    result.arrival = {
+      heading: "Arrival & Queue Guide",
+      sectionLabel: "Section 10 of 12",
+      blocks: [
+        { kind: "prose", text: a.intro },
+        { kind: "subheading", label: a.shuttleRoutes.label, body: a.shuttleRoutes.body },
+        { kind: "factRows", rows: a.shuttleRoutes.facts },
+        { kind: "subheading", label: a.ticketDelivery.label, body: a.ticketDelivery.body },
+        { kind: "factRows", rows: a.ticketDelivery.facts },
+        { kind: "callout", label: a.reEntryCallout.label, body: a.reEntryCallout.body },
+        { kind: "subheading", label: a.gettingToYourSeat.label, body: a.gettingToYourSeat.body },
+        { kind: "experiences", items: lookupMany(["mexico-city-gp-arrival-queue-"]) },
+      ],
+      verdicts: a.verdicts,
+    };
+  }
+
+  if (content.map) {
+    const m = content.map;
+    result.map = {
+      heading: "Venue Map",
+      sectionLabel: "Section 11 of 12",
+      blocks: [
+        { kind: "prose", text: m.intro },
+        { kind: "subheading", label: m.grandstandPositions.label, body: m.grandstandPositions.body },
+        { kind: "experiences", items: lookupMany(["mexico-city-gp-where-to-sit-"]) },
+        { kind: "factRows", label: "On-site facilities", rows: m.facilities.map((f: { label: string; body: string }) => ({ label: f.label, value: f.body })) },
+        { kind: "experiences", items: lookupMany(["mexico-city-gp-fan-zone-"]) },
+        { kind: "subheading", label: m.gettingBetweenZones.label, body: m.gettingBetweenZones.body },
+        { kind: "sourcesFooter", text: m.sourcesFooter },
+      ],
+      verdicts: m.verdicts,
+    };
+  }
+
+  if (content.luxury) {
+    const lx = content.luxury;
+    result.luxury = {
+      heading: "Luxury Guide",
+      sectionLabel: "Section 12 of 12",
+      blocks: [
+        { kind: "prose", text: lx.intro },
+        { kind: "subheading", label: lx.hospitalityLadder.label, body: lx.hospitalityLadder.body },
+        { kind: "subheading", label: lx.rooftopScene.label, body: lx.rooftopScene.body },
+        { kind: "subheading", label: lx.premiumTransit.label, body: `${lx.premiumTransit.body}\n\n${lx.premiumTransit.rates}` },
+        { kind: "subheading", label: lx.luxuryHotelFact.label, body: lx.luxuryHotelFact.body },
+        { kind: "sectionHeading", label: lx.verdicts[0].label, body: lx.verdicts[0].body },
+        { kind: "experiences", items: lookupMany(["mexico-city-gp-paddock-club-"]) },
+      ],
+      verdicts: lx.verdicts.slice(1),
+    };
+  }
+
+  return result;
+}
+
 export const GENERIC_SECTION_BUILDERS: Record<string, (content: ContentBundle, lookupMany: LookupMany) => GenericSectionsResult> = {
   "bahrain-grand-prix": buildBahrainGrandPrix,
   "abu-dhabi-grand-prix": buildAbuDhabiGrandPrix,
@@ -1811,4 +2010,5 @@ export const GENERIC_SECTION_BUILDERS: Record<string, (content: ContentBundle, l
   "new-zealand-in-australia-cricket-2026-27": buildNzAustralia,
   "australian-open": buildAustralianOpen,
   "united-states-grand-prix": buildUnitedStatesGrandPrix,
+  "mexico-city-grand-prix": buildMexicoCityGrandPrix,
 };

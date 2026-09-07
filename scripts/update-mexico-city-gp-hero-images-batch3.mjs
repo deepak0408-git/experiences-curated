@@ -1,0 +1,52 @@
+import { config } from "dotenv";
+config({ path: ".env.local" });
+import { readFileSync } from "fs";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { experiences } from "../schema/database.ts";
+import { eq } from "drizzle-orm";
+
+const r2 = new S3Client({
+  region: "auto",
+  endpoint: `https://${process.env.CLOUDFLARE_R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+  credentials: {
+    accessKeyId: process.env.CLOUDFLARE_R2_ACCESS_KEY_ID,
+    secretAccessKey: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY,
+  },
+});
+
+const client = postgres(process.env.DATABASE_URL, { ssl: "require", prepare: false });
+const db = drizzle(client);
+
+async function uploadLocal(localPath, r2Key) {
+  const file = readFileSync(localPath);
+  await r2.send(new PutObjectCommand({
+    Bucket: process.env.CLOUDFLARE_R2_BUCKET_NAME,
+    Key: r2Key,
+    Body: file,
+    ContentType: "image/jpeg",
+  }));
+  return `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/${r2Key}`;
+}
+
+// #7 — Getting to the Autódromo Hermanos Rodríguez — option 2 from artifact
+const velodromoUrl = await uploadLocal(
+  "Images/Mexico City GP - Velodromo Metro Platform Thelmadatter.jpg",
+  "experiences/hero/Mexico City GP - Velodromo Metro Platform Thelmadatter.jpg"
+);
+console.log("✓ Uploaded Velódromo platform image:", velodromoUrl);
+
+const [result] = await db
+  .update(experiences)
+  .set({
+    heroImageUrl: velodromoUrl,
+    heroImageAlt: "Eastbound platform at Velódromo metro station, Line 9, Mexico City",
+    heroImageCredit: "Thelmadatter — Public domain",
+  })
+  .where(eq(experiences.slug, "mexico-city-gp-getting-there-mtpdoj0c"))
+  .returning({ id: experiences.id, title: experiences.title });
+
+console.log("Updated:", result.title, "|", result.id);
+
+await client.end();

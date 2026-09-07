@@ -109,6 +109,12 @@ const COST_MATH_BY_EVENT: Record<string, CostMathConfig> = {
   // would add $1,199 to the high end, nearly $400 above Boston, the
   // next-highest genuinely domestic market.
   "united-states-grand-prix": { tripNights: 3, flightRegion: "North America", excludedOrigins: ["Toronto", "Vancouver", "Montreal"] },
+  // Real 3-day (Fri-Sun) ticket structure — matches CostSpoke.tsx's own
+  // TRIP_NIGHTS = 3. Unlike US GP, this is a genuine international fly-in
+  // destination (not a domestic-fan-dominated event), so no market
+  // exclusions applied — the full North America flight range is shown, per
+  // the source's own comment (CostSpoke.tsx line 63-67).
+  "mexico-city-grand-prix": { tripNights: 3, flightRegion: "North America", excludedOrigins: [] },
   // Real source CostSpoke.tsx doesn't destructure `flights` from
   // getSpokeData() at all — no flight-range computation exists for this
   // event's Cost spoke (it just tells the reader to check the Planner).

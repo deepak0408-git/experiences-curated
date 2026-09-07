@@ -151,6 +151,15 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
     { label: "Cashless venue", value: "COTA is entirely cashless — bring a card (Visa, Discover, Mastercard) for all food, drink, and merchandise on-site." },
     { label: "Emergencies", value: "US-wide emergency number: 911. Austin's own general non-emergency line: 311." },
   ],
+  // Real, sourced facts from experience research (altitude, Día de Muertos
+  // overlap, race-day Metro closures). Gate times genuinely not yet
+  // published for 2026, stated honestly per skill §2a-3.
+  "mexico-city-grand-prix": [
+    { label: "Altitude", value: "The circuit sits at over 2,200m above sea level, the highest venue on the F1 calendar — sun exposure is stronger than the temperature suggests, and some visitors feel short of breath for a day or two on arrival." },
+    { label: "Día de Muertos overlap", value: "2026 race weekend (30 Oct–1 Nov) collides directly with the city's Día de Muertos Grand Parade — one of the biggest tourism weekends of the year, independent of the race. Book hotels early." },
+    { label: "Gate times", value: "Not yet published for the 2026 race — expect gates 2-3 hours before each day's first session, based on the confirmed session schedule. Confirm exact times via mexico.gp closer to race week." },
+    { label: "Emergencies", value: "Mexico-wide emergency number: 911. Ángeles Verdes (roadside/traveler assistance, 24 hours): 078." },
+  ],
 };
 
 // Exported (27 Aug 2026) — same reasoning as QUICK_REFERENCE_BY_EVENT above.
@@ -288,6 +297,19 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
     heroFallbackImageSlug: "us-gp-main-grandstand",
     introText:
       "Circuit of the Americas opened in 2012 as America's first purpose-built Formula 1 track in a generation, and 2026 adds a genuine first of its own: Grand PrixView Thursday, a new standalone fourth day of the race weekend built around F1 Academy track action and early Fan Zone access — on top of the usual Friday-Sunday structure. Austin didn't inherit this race from anywhere; it built the circuit specifically to bring F1 back to American soil, and the city has spent over a decade building an entire weekend's worth of culture around it.\n\nThis is also the one Grand Prix where the concerts are close to as big a draw as the racing. Maroon 5 headlines Friday night, Post Malone takes Saturday, and Alesso closes the whole weekend with a post-race set — every one included on the same race ticket, no separate purchase needed. And because COTA sits inside Austin itself rather than a satellite town, the whole city — Franklin Barbecue's line, South Congress, Sixth Street, Lady Bird Lake — is genuinely part of the trip, not a separate day-trip decision.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
+  // Built from real sourced facts researched during experience seeding
+  // (Foro Sol's baseball-stadium origin threaded through the circuit's
+  // final sector, the Rodríguez brothers' history behind the venue's name,
+  // the altitude, and the genuine 2026 Día de Muertos calendar collision)
+  // — not invented, matches every other hub-and-spoke event's pattern of
+  // drawing The Brief from real underlying content.
+  "mexico-city-grand-prix": {
+    displayName: "Mexico City Grand Prix",
+    venueLine: "Held at the Autódromo Hermanos Rodríguez — the highest-altitude circuit on the F1 calendar, where the final sector runs straight through a converted baseball stadium.",
+    heroFallbackImageSlug: "foro-sol-mexico-city-gp-",
+    introText:
+      "F1's return to Mexico in 2015 came with one strange new addition: a section of track diverted straight through Foro Sol, a baseball stadium built inside the circuit in the 1990s. Nobody else on the calendar races through a stadium built for another sport entirely, and the noise it produces — every seat filled, every session, not just the race — is why Mexico City is consistently named one of the loudest weekends in F1.\n\nThe circuit itself carries real weight beyond the spectacle. It's named after Ricardo and Pedro Rodríguez, Mexico's first F1 stars, both killed racing years apart — the track's own history is a genuine part of what makes race weekend here feel different. Add the highest altitude of any circuit on the calendar, and 2026's race weekend landing directly on top of the city's Día de Muertos Grand Parade — one of the biggest cultural weekends in Mexico, happening at the same time as the Grand Prix, not as a separate trip — and this is a genuinely unrepeatable version of an already distinctive race.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
 };
 
