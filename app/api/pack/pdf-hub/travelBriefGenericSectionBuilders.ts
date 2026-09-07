@@ -415,6 +415,54 @@ function buildUnitedStatesGrandPrix(content: ContentBundle, lookupBareMany: Look
   };
 }
 
+function buildMexicoCityGrandPrix(content: ContentBundle, lookupBareMany: LookupBareMany): TravelBriefGenericResult {
+  const g = content.gettingThere;
+  const w = content.weather;
+  const a = content.arrival;
+  return {
+    gettingThere: g
+      ? {
+          heading: "Getting There",
+          sectionLabel: "Section 1 of 3",
+          blocks: [
+            { kind: "prose", text: g.intro },
+            { kind: "subheading", label: g.fromAirport.label, body: g.fromAirport.body },
+            { kind: "factRows", rows: g.fromAirport.facts },
+            { kind: "callout", label: g.raceDayClosures.label, body: g.raceDayClosures.body },
+            { kind: "subheading", label: g.rideshareTrap.label, body: g.rideshareTrap.body },
+            { kind: "experiences", items: lookupBareMany(["mexico-city-gp-getting-there-"]) },
+          ],
+        }
+      : undefined,
+    weather: w
+      ? {
+          heading: "Weather",
+          sectionLabel: "Section 2 of 3",
+          blocks: [
+            { kind: "prose", text: w.intro },
+            { kind: "callout", label: w.forecastBox.label, body: w.forecastBox.body },
+            { kind: "factRows", label: w.packList.label, rows: w.packList.items.map((i: { label: string; detail: string }) => ({ label: i.label, value: i.detail })) },
+            { kind: "experiences", items: lookupBareMany(["mexico-city-weather-packing-"]) },
+          ],
+        }
+      : undefined,
+    arrival: a
+      ? {
+          heading: "Arrival & Queue Guide",
+          sectionLabel: "Section 3 of 3",
+          blocks: [
+            { kind: "prose", text: a.intro },
+            { kind: "subheading", label: a.shuttleRoutes.label, body: a.shuttleRoutes.body },
+            { kind: "factRows", rows: a.shuttleRoutes.facts },
+            { kind: "subheading", label: a.ticketDelivery.label, body: a.ticketDelivery.body },
+            { kind: "callout", label: a.reEntryCallout.label, body: a.reEntryCallout.body },
+            { kind: "experiences", items: lookupBareMany(["mexico-city-gp-arrival-queue-"]) },
+          ],
+        }
+      : undefined,
+  };
+}
+
 export const TRAVEL_BRIEF_GENERIC_SECTION_BUILDERS: Record<string, (content: ContentBundle, lookupBareMany: LookupBareMany) => TravelBriefGenericResult> = {
   "bahrain-grand-prix": buildBahrainGrandPrix,
   "abu-dhabi-grand-prix": buildAbuDhabiGrandPrix,
@@ -422,6 +470,7 @@ export const TRAVEL_BRIEF_GENERIC_SECTION_BUILDERS: Record<string, (content: Con
   "shanghai-masters": buildShanghaiMasters,
   "singapore-grand-prix": buildSingaporeGrandPrix,
   "united-states-grand-prix": buildUnitedStatesGrandPrix,
+  "mexico-city-grand-prix": buildMexicoCityGrandPrix,
   "atp-finals": buildAtpFinals,
   "new-zealand-in-australia-cricket-2026-27": buildNzAustralia,
   "australian-open": buildAustralianOpen,

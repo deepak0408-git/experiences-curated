@@ -115,6 +115,19 @@ import { usGpArrivalSpokeContent } from "./content/united-states-grand-prix/arri
 import { usGpMapSpokeContent } from "./content/united-states-grand-prix/mapContent";
 import { usGpLuxurySpokeContent } from "./content/united-states-grand-prix/luxuryContent";
 
+import { mexicoCityGpCostSpokeContent } from "./content/mexico-city-grand-prix/costContent";
+import { mexicoCityGpTicketsSpokeContent } from "./content/mexico-city-grand-prix/ticketsContent";
+import { mexicoCityGpHotelsSpokeContent } from "./content/mexico-city-grand-prix/hotelsContent";
+import { mexicoCityGpGettingThereSpokeContent } from "./content/mexico-city-grand-prix/gettingThereContent";
+import { mexicoCityGpWeatherSpokeContent } from "./content/mexico-city-grand-prix/weatherContent";
+import { mexicoCityGpFirstTimerGuideSpokeContent } from "./content/mexico-city-grand-prix/firstTimerGuideContent";
+import { mexicoCityGpWhereToEatSpokeContent } from "./content/mexico-city-grand-prix/whereToEatContent";
+import { mexicoCityGpDayTripsSpokeContent } from "./content/mexico-city-grand-prix/dayTripsContent";
+import { mexicoCityGpItinerarySpokeContent } from "./content/mexico-city-grand-prix/itineraryContent";
+import { mexicoCityGpArrivalSpokeContent } from "./content/mexico-city-grand-prix/arrivalContent";
+import { mexicoCityGpMapSpokeContent } from "./content/mexico-city-grand-prix/mapContent";
+import { mexicoCityGpLuxurySpokeContent } from "./content/mexico-city-grand-prix/luxuryContent";
+
 import { australianOpenCostSpokeContent } from "./content/australian-open/costContent";
 import { australianOpenTicketsSpokeContent } from "./content/australian-open/ticketsContent";
 import { australianOpenHotelsSpokeContent } from "./content/australian-open/hotelsContent";
@@ -284,5 +297,19 @@ export const PDF_CONTENT_BY_EVENT: Record<string, SpokePdfContentBundle> = {
     arrival: usGpArrivalSpokeContent,
     map: usGpMapSpokeContent,
     luxury: usGpLuxurySpokeContent,
+  },
+  "mexico-city-grand-prix": {
+    cost: mexicoCityGpCostSpokeContent,
+    tickets: mexicoCityGpTicketsSpokeContent,
+    hotels: mexicoCityGpHotelsSpokeContent,
+    gettingThere: mexicoCityGpGettingThereSpokeContent,
+    weather: mexicoCityGpWeatherSpokeContent,
+    firstTimerGuide: mexicoCityGpFirstTimerGuideSpokeContent,
+    whereToEat: mexicoCityGpWhereToEatSpokeContent,
+    dayTrips: mexicoCityGpDayTripsSpokeContent,
+    itinerary: mexicoCityGpItinerarySpokeContent,
+    arrival: mexicoCityGpArrivalSpokeContent,
+    map: mexicoCityGpMapSpokeContent,
+    luxury: mexicoCityGpLuxurySpokeContent,
   },
 };

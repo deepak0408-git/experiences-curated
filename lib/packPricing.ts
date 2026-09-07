@@ -163,6 +163,17 @@ export const PACK_PRICING_CONFIG: Record<string, {
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_US_GP_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_US_GP_EARLY_BIRD_CUTOFF ?? "2026-09-23",
   },
+  // Real Dodo product IDs confirmed by the founder from the live Dodo
+  // dashboard, 6 Sep 2026: Early Bird pdt_0NmzX2QKsw5ODqZmWX4Lp (US$10),
+  // Standard pdt_0NmzX6hwdagc0pyRiWfb3 (US$15) — added to .env.local same
+  // session. Cutoff confirmed by founder: 2026-09-30. Display strings/cutoff
+  // set directly on the sportingEvents row at event-creation time (this is
+  // the fallback only).
+  "mexico-city-grand-prix": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_MEXICO_CITY_GP_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_MEXICO_CITY_GP_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_MEXICO_CITY_GP_EARLY_BIRD_CUTOFF ?? "2026-09-30",
+  },
 };
 
 // Last-resort fallback if a slug is in PACK_PRICING_CONFIG but its

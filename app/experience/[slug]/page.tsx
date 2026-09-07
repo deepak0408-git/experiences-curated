@@ -12,6 +12,7 @@ import ExperienceViewGate from "./_components/ExperienceViewGate";
 import { getPackPricing } from "@/lib/packPricing";
 import SaveExperienceCTA from "./_components/SaveExperienceCTA";
 import ExperienceTracker from "./_components/ExperienceTracker";
+import { isRealAffiliateLink } from "../../event-pack/[slug]/_hub-and-spoke/_lib/getSpokeData";
 
 // Hub-and-spoke "back to spoke" link — maps an experience's slug prefix to
 // the ONE spoke it's most at home in, per explicit curator sign-off (7 Aug
@@ -294,48 +295,32 @@ const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; 
   "us-gp-hill-country-fredericksburg-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
   "us-gp-san-antonio-daytrip-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
   "us-gp-austin-live-music-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "foro-sol-mexico-city-gp-": { eventSlug: "mexico-city-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "mexico-city-gp-where-to-sit-": { eventSlug: "mexico-city-grand-prix", spokeId: "map", spokeLabel: "Venue Map" },
+  "mexico-city-gp-ticket-guide-": { eventSlug: "mexico-city-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "mexico-city-gp-paddock-club-": { eventSlug: "mexico-city-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "mexico-city-gp-fan-zone-": { eventSlug: "mexico-city-grand-prix", spokeId: "map", spokeLabel: "Venue Map" },
+  "autodromo-hermanos-rodriguez-venue-": { eventSlug: "mexico-city-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "mexico-city-gp-getting-there-": { eventSlug: "mexico-city-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
+  "mexico-city-gp-arrival-queue-": { eventSlug: "mexico-city-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+  "mexico-city-where-to-stay-roma-norte-": { eventSlug: "mexico-city-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "mexico-city-where-to-stay-condesa-": { eventSlug: "mexico-city-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "mexico-city-where-to-stay-polanco-": { eventSlug: "mexico-city-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "mexico-city-tacos-al-pastor-": { eventSlug: "mexico-city-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "mexico-city-pujol-contramar-": { eventSlug: "mexico-city-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "mexico-city-mercado-roma-": { eventSlug: "mexico-city-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "mexico-city-zocalo-cathedral-templo-mayor-": { eventSlug: "mexico-city-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "mexico-city-chapultepec-anthropology-": { eventSlug: "mexico-city-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "mexico-city-frida-kahlo-museum-": { eventSlug: "mexico-city-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "mexico-city-teotihuacan-day-trip-": { eventSlug: "mexico-city-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "mexico-city-xochimilco-": { eventSlug: "mexico-city-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "mexico-city-dia-de-muertos-": { eventSlug: "mexico-city-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "mexico-city-weather-packing-": { eventSlug: "mexico-city-grand-prix", spokeId: "weather", spokeLabel: "Weather & What to Pack" },
 };
 
 function getSpokeBackLink(slug: string) {
   const entry = Object.entries(EXPERIENCE_TO_SPOKE).find(([prefix]) => slug.startsWith(prefix));
   return entry ? entry[1] : null;
-}
-
-// Real affiliate relationships are Booking.com and GetYourGuide only — see
-// feedback_affiliate_link_generation memory. A GetYourGuide link is a direct
-// getyourguide.com domain, easy to detect. A Booking.com affiliate link is
-// NOT hosted on booking.com itself — it goes through a Commission Junction
-// (CJ Affiliate) tracking-redirect domain (tkqlhce.com, anrdoezrs.net,
-// kqzyfj.com, and others CJ assigns), with the real booking.com destination
-// URL-encoded inside a `url=` query parameter, not visible as the link's own
-// hostname. Checking the raw href for a literal "booking.com" substring is
-// fragile (works by coincidence when the encoded param happens to contain
-// the unescaped string, breaks if a network encodes it differently) — this
-// decodes the URL and checks the real destination host instead. A plain
-// link to an official site (e.g. wimbledon.com) is not an affiliate link
-// and must never carry the disclaimer, even though it legitimately lives in
-// the same bookingLinks array.
-const CJ_REDIRECT_HOSTS = ["tkqlhce.com", "anrdoezrs.net", "kqzyfj.com", "jdoqocy.com", "dpbolvw.net"];
-
-function isRealAffiliateLink(url: string): boolean {
-  try {
-    const parsed = new URL(url);
-    if (parsed.hostname === "getyourguide.com" || parsed.hostname.endsWith(".getyourguide.com")) return true;
-    if (CJ_REDIRECT_HOSTS.some((h) => parsed.hostname === h || parsed.hostname.endsWith(`.${h}`))) {
-      const embedded = parsed.searchParams.get("url");
-      if (embedded) {
-        try {
-          const embeddedHost = new URL(embedded).hostname;
-          return embeddedHost === "booking.com" || embeddedHost.endsWith(".booking.com");
-        } catch {
-          return false;
-        }
-      }
-    }
-    return parsed.hostname === "booking.com" || parsed.hostname.endsWith(".booking.com");
-  } catch {
-    return false;
-  }
 }
 
 // Multi-venue experiences (a hotel comparison, a restaurant roundup) never
@@ -406,6 +391,14 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "us-gp-sixth-rainey-street-": { venueCount: 2, venueNoun: "bars" },
   "us-gp-hill-country-fredericksburg-": { venueCount: 2, venueNoun: "wineries" },
   "us-gp-austin-live-music-": { venueCount: 2, venueNoun: "venues" },
+  // Mexico City Grand Prix 2026 — added 6 Sep 2026
+  "mexico-city-where-to-stay-roma-norte-": { venueCount: 2, venueNoun: "hotels" },
+  "mexico-city-where-to-stay-condesa-": { venueCount: 2, venueNoun: "hotels" },
+  "mexico-city-where-to-stay-polanco-": { venueCount: 2, venueNoun: "hotels" },
+  "mexico-city-tacos-al-pastor-": { venueCount: 3, venueNoun: "taquerias" },
+  "mexico-city-pujol-contramar-": { venueCount: 2, venueNoun: "restaurants" },
+  "mexico-city-zocalo-cathedral-templo-mayor-": { venueCount: 3, venueNoun: "sites" },
+  "mexico-city-chapultepec-anthropology-": { venueCount: 2, venueNoun: "places" },
 };
 
 function getMultiVenueRatings(slug: string) {
@@ -755,6 +748,14 @@ export default async function ExperiencePage({
               slug.startsWith("crowne-plaza-yas-island-") ? "lg:object-[center_35%]" :
               slug.startsWith("beach-rotana-corniche-abu-dhabi-") ? "lg:object-[center_28%]" :
               slug.startsWith("burj-khalifa-dubai-day-trip-") ? "lg:object-[center_15%]" :
+              slug.startsWith("mexico-city-gp-paddock-club-") ? "lg:object-[center_70%]" :
+              slug.startsWith("autodromo-hermanos-rodriguez-venue-") ? "lg:object-[center_40%]" :
+              slug.startsWith("mexico-city-gp-arrival-queue-") ? "lg:object-[center_85%]" :
+              slug.startsWith("mexico-city-where-to-stay-condesa-") ? "lg:object-[center_85%]" :
+              slug.startsWith("mexico-city-where-to-stay-polanco-") ? "lg:object-[center_30%]" :
+              slug.startsWith("mexico-city-pujol-contramar-") ? "lg:object-[center_60%]" :
+              slug.startsWith("mexico-city-chapultepec-anthropology-") ? "lg:object-[center_35%]" :
+              slug.startsWith("mexico-city-dia-de-muertos-") ? "lg:object-[center_20%]" :
               ""
             }`}
             sizes="100vw"

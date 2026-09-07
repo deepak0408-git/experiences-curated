@@ -142,6 +142,19 @@ import USArrivalSpoke from "./united-states-grand-prix/ArrivalSpoke";
 import USMapSpoke from "./united-states-grand-prix/MapSpoke";
 import USLuxurySpoke from "./united-states-grand-prix/LuxurySpoke";
 
+import MCCostSpoke from "./mexico-city-grand-prix/CostSpoke";
+import MCTicketsSpoke from "./mexico-city-grand-prix/TicketsSpoke";
+import MCHotelsSpoke from "./mexico-city-grand-prix/HotelsSpoke";
+import MCGettingThereSpoke from "./mexico-city-grand-prix/GettingThereSpoke";
+import MCWeatherSpoke from "./mexico-city-grand-prix/WeatherSpoke";
+import MCFirstTimerGuideSpoke from "./mexico-city-grand-prix/FirstTimerGuideSpoke";
+import MCWhereToEatSpoke from "./mexico-city-grand-prix/WhereToEatSpoke";
+import MCDayTripsSpoke from "./mexico-city-grand-prix/DayTripsSpoke";
+import MCItinerarySpoke from "./mexico-city-grand-prix/ItinerarySpoke";
+import MCArrivalSpoke from "./mexico-city-grand-prix/ArrivalSpoke";
+import MCMapSpoke from "./mexico-city-grand-prix/MapSpoke";
+import MCLuxurySpoke from "./mexico-city-grand-prix/LuxurySpoke";
+
 type SpokeComponent = ComponentType<{ eventSlug: string }>;
 
 // Registry mapping eventSlug -> spokeId -> component. A new hub_and_spoke
@@ -303,6 +316,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: USMapSpoke,
     luxury: USLuxurySpoke,
   },
+  "mexico-city-grand-prix": {
+    cost: MCCostSpoke,
+    tickets: MCTicketsSpoke,
+    hotels: MCHotelsSpoke,
+    "getting-there": MCGettingThereSpoke,
+    weather: MCWeatherSpoke,
+    "first-timer-guide": MCFirstTimerGuideSpoke,
+    "where-to-eat": MCWhereToEatSpoke,
+    "day-trips": MCDayTripsSpoke,
+    itinerary: MCItinerarySpoke,
+    arrival: MCArrivalSpoke,
+    map: MCMapSpoke,
+    luxury: MCLuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -459,5 +486,19 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Circuit of the Americas — Arrival & Gate Guide",
     map: "Circuit of the Americas Map — Grandstands and Facilities",
     luxury: "Luxury Guide for the United States Grand Prix — Paddock Club, Champions Club, and More",
+  },
+  "mexico-city-grand-prix": {
+    cost: "How Much Does the Mexico City Grand Prix Cost? — Budget Guide",
+    tickets: "Mexico City GP Ticket Guide — General Admission to Paddock Club",
+    hotels: "Where to Stay for the Mexico City Grand Prix — Roma Norte, Condesa, or Polanco",
+    "getting-there": "Getting to the Autódromo Hermanos Rodríguez — Mexico City GP Transit Guide",
+    weather: "Mexico City Weather in Late October — What to Pack for the Grand Prix",
+    "first-timer-guide": "First-Timer's Guide — the Mexico City Grand Prix",
+    "where-to-eat": "Where to Eat in Mexico City — Grand Prix Weekend",
+    "day-trips": "Best Things to Do in Mexico City — Grand Prix Weekend, Including Teotihuacán",
+    itinerary: "Sample Mexico City Grand Prix Weekend Itinerary",
+    arrival: "Autódromo Hermanos Rodríguez — Arrival & Security Guide",
+    map: "Autódromo Hermanos Rodríguez Map — Grandstands and Facilities",
+    luxury: "Luxury Guide for the Mexico City Grand Prix — Paddock Club and More",
   },
 };

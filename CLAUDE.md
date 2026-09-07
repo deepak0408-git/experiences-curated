@@ -82,6 +82,8 @@ Budapest destination:        0d01105a-1e01-40a7-91af-89299939389b
 Hungarian GP 2026 event:      a767ae5f-de6c-48a1-b6fb-fec941f3ad86
 Shanghai destination:         998a8774-05ac-4482-ba7a-4ca2a556b963
 Shanghai Masters 2026 event:  09254d18-a22f-4032-ac05-b7c26a9c3057
+Mexico City destination:      883ac422-5318-460f-819a-6ae784ac4b8c
+Mexico City GP 2026 event:    538fdb6f-0e39-49a6-ba77-32dec65d640a
 ```
 
 **Live event dates — always match `sporting_events.start_date/end_date` in the DB, and the Content Calendar (`C:\Users\HP\.claude\docs\Content Calendar.txt`) is the single source of truth. If any date below ever conflicts with the Calendar or the DB, trust the DB, fix the Calendar, then fix this list — never the reverse.**
