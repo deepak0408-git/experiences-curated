@@ -155,6 +155,19 @@ import MCArrivalSpoke from "./mexico-city-grand-prix/ArrivalSpoke";
 import MCMapSpoke from "./mexico-city-grand-prix/MapSpoke";
 import MCLuxurySpoke from "./mexico-city-grand-prix/LuxurySpoke";
 
+import BGCostSpoke from "./brazilian-grand-prix/CostSpoke";
+import BGTicketsSpoke from "./brazilian-grand-prix/TicketsSpoke";
+import BGHotelsSpoke from "./brazilian-grand-prix/HotelsSpoke";
+import BGGettingThereSpoke from "./brazilian-grand-prix/GettingThereSpoke";
+import BGWeatherSpoke from "./brazilian-grand-prix/WeatherSpoke";
+import BGFirstTimerGuideSpoke from "./brazilian-grand-prix/FirstTimerGuideSpoke";
+import BGWhereToEatSpoke from "./brazilian-grand-prix/WhereToEatSpoke";
+import BGDayTripsSpoke from "./brazilian-grand-prix/DayTripsSpoke";
+import BGItinerarySpoke from "./brazilian-grand-prix/ItinerarySpoke";
+import BGArrivalSpoke from "./brazilian-grand-prix/ArrivalSpoke";
+import BGMapSpoke from "./brazilian-grand-prix/MapSpoke";
+import BGLuxurySpoke from "./brazilian-grand-prix/LuxurySpoke";
+
 type SpokeComponent = ComponentType<{ eventSlug: string }>;
 
 // Registry mapping eventSlug -> spokeId -> component. A new hub_and_spoke
@@ -330,6 +343,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: MCMapSpoke,
     luxury: MCLuxurySpoke,
   },
+  "brazilian-grand-prix": {
+    cost: BGCostSpoke,
+    tickets: BGTicketsSpoke,
+    hotels: BGHotelsSpoke,
+    "getting-there": BGGettingThereSpoke,
+    weather: BGWeatherSpoke,
+    "first-timer-guide": BGFirstTimerGuideSpoke,
+    "where-to-eat": BGWhereToEatSpoke,
+    "day-trips": BGDayTripsSpoke,
+    itinerary: BGItinerarySpoke,
+    arrival: BGArrivalSpoke,
+    map: BGMapSpoke,
+    luxury: BGLuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -500,5 +527,19 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Autódromo Hermanos Rodríguez — Arrival & Security Guide",
     map: "Autódromo Hermanos Rodríguez Map — Grandstands and Facilities",
     luxury: "Luxury Guide for the Mexico City Grand Prix — Paddock Club and More",
+  },
+  "brazilian-grand-prix": {
+    cost: "How Much Does the Brazilian Grand Prix Cost? — São Paulo Budget Guide",
+    tickets: "Interlagos Ticket Guide — No General Admission, Grandstand by Grandstand",
+    hotels: "Where to Stay for the Brazilian Grand Prix — Jardins, Morumbi, or Self-Catered",
+    "getting-there": "Getting to Interlagos — Brazilian Grand Prix Transit Guide",
+    weather: "São Paulo Weather in November — What to Pack for the Brazilian Grand Prix",
+    "first-timer-guide": "First-Timer's Guide — the Brazilian Grand Prix and São Paulo",
+    "where-to-eat": "Where to Eat in São Paulo — Brazilian Grand Prix Weekend",
+    "day-trips": "Best Day Trips and Sightseeing — Brazilian Grand Prix Weekend",
+    itinerary: "Sample Brazilian Grand Prix Weekend Itinerary",
+    arrival: "Interlagos — Arrival & Queue Guide",
+    map: "Interlagos Circuit Map — Grandstands and Facilities",
+    luxury: "Luxury Guide for the Brazilian Grand Prix — Paddock Club, Champions Club, and More",
   },
 };

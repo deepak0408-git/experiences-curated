@@ -160,6 +160,17 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
     { label: "Gate times", value: "Not yet published for the 2026 race — expect gates 2-3 hours before each day's first session, based on the confirmed session schedule. Confirm exact times via mexico.gp closer to race week." },
     { label: "Emergencies", value: "Mexico-wide emergency number: 911. Ángeles Verdes (roadside/traveler assistance, 24 hours): 078." },
   ],
+  // Real, sourced facts from experience research (Interlagos has no General
+  // Admission tier, the Día de Muertos-adjacent November timing doesn't
+  // overlap here the way it does for Mexico City, São Paulo's variable
+  // spring rain). Gate times genuinely not yet published for 2026, stated
+  // honestly per skill §2a-3.
+  "brazilian-grand-prix": [
+    { label: "Grandstand-only", value: "Interlagos has no General Admission tier — every ticket is a reserved grandstand seat. See the Ticket Guide for the full grandstand-by-grandstand breakdown." },
+    { label: "Gate times", value: "Not yet published for the 2026 race — expect gates 2-3 hours before each day's first session, based on the confirmed session schedule. Confirm exact times via formula1.com closer to race week." },
+    { label: "Weather", value: "Late spring in São Paulo — variable, rain likely at some point across the weekend. Bring a light rain layer regardless of the forecast." },
+    { label: "Emergencies", value: "Brazil-wide emergency numbers: 190 (police), 192 (ambulance/SAMU), 193 (fire). English-speaking operators aren't guaranteed — having your hotel call on your behalf is more reliable." },
+  ],
 };
 
 // Exported (27 Aug 2026) — same reasoning as QUICK_REFERENCE_BY_EVENT above.
@@ -311,6 +322,19 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
     introText:
       "F1's return to Mexico in 2015 came with one strange new addition: a section of track diverted straight through Foro Sol, a baseball stadium built inside the circuit in the 1990s. Nobody else on the calendar races through a stadium built for another sport entirely, and the noise it produces — every seat filled, every session, not just the race — is why Mexico City is consistently named one of the loudest weekends in F1.\n\nThe circuit itself carries real weight beyond the spectacle. It's named after Ricardo and Pedro Rodríguez, Mexico's first F1 stars, both killed racing years apart — the track's own history is a genuine part of what makes race weekend here feel different. Add the highest altitude of any circuit on the calendar, and 2026's race weekend landing directly on top of the city's Día de Muertos Grand Parade — one of the biggest cultural weekends in Mexico, happening at the same time as the Grand Prix, not as a separate trip — and this is a genuinely unrepeatable version of an already distinctive race.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
+  // Built from real sourced facts researched during experience seeding
+  // (Interlagos' Senna history and the S do Senna corner, the circuit's
+  // 1990 shortening, Interlagos' no-GA grandstand-only ticket structure,
+  // São Paulo's genuine scale as a standalone city rather than a satellite
+  // town) — not invented, matches every other hub-and-spoke event's pattern
+  // of drawing The Brief from real underlying content.
+  "brazilian-grand-prix": {
+    displayName: "Brazilian Grand Prix",
+    venueLine: "Held at Autódromo José Carlos Pace (Interlagos) — one of F1's oldest and most demanding circuits, and Ayrton Senna's home track.",
+    heroFallbackImageSlug: "interlagos-autodromo-jose-carlos-pace-venue-",
+    introText:
+      "Interlagos is one of the few circuits left on the calendar that hasn't been sanitized into a modern, run-off-heavy layout — the elevation changes are real, the bowl-shaped grandstands put fans genuinely close to the cars, and the S do Senna, named for the corner where Ayrton Senna made his opening move in the 1990s, still carries the weight of Brazil's biggest sporting hero. This is his home circuit, in his home city, and the crowd treats every race weekend accordingly.\n\nSão Paulo itself is not a satellite city built around a race — it's one of the largest cities in the world, with its own neighborhoods, food scene, and day-trip country beyond the circuit gates. Interlagos sells no General Admission ticket at all; every seat here is a reserved grandstand, which changes how you should think about buying in compared to most other Grands Prix.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
 };
 
 export default async function HubPage({ slug }: { slug: string }) {
@@ -355,6 +379,7 @@ export default async function HubPage({ slug }: { slug: string }) {
     // override with a verified, real Google Maps place link where needed.
     const VENUE_MAP_LINK_OVERRIDE: Record<string, string> = {
       "united-states-grand-prix": "https://maps.app.goo.gl/zN7GPcSxKsSMYH3i6",
+      "brazilian-grand-prix": "https://maps.app.goo.gl/msfgaF4VXueyb4FX8",
     };
     quickReference.push({
       label: "Address",
@@ -382,7 +407,7 @@ export default async function HubPage({ slug }: { slug: string }) {
             src={hubHeroUrl}
             alt={displayEventName}
             fill
-            className={`object-cover opacity-90 ${slug === "shanghai-masters" ? "lg:object-[center_65%]" : ""}`}
+            className={`object-cover opacity-90 ${slug === "shanghai-masters" ? "lg:object-[center_65%]" : ""} ${slug === "brazilian-grand-prix" ? "lg:object-[center_70%]" : ""}`}
             sizes="100vw"
             priority
           />

@@ -84,6 +84,8 @@ Shanghai destination:         998a8774-05ac-4482-ba7a-4ca2a556b963
 Shanghai Masters 2026 event:  09254d18-a22f-4032-ac05-b7c26a9c3057
 Mexico City destination:      883ac422-5318-460f-819a-6ae784ac4b8c
 Mexico City GP 2026 event:    538fdb6f-0e39-49a6-ba77-32dec65d640a
+São Paulo destination:         9c01f960-ff51-45eb-8fd1-d55f05b7f8cb
+Brazilian GP 2026 event:      37e82616-34fd-4acb-a4b4-6575b0d674f4
 ```
 
 **Live event dates — always match `sporting_events.start_date/end_date` in the DB, and the Content Calendar (`C:\Users\HP\.claude\docs\Content Calendar.txt`) is the single source of truth. If any date below ever conflicts with the Calendar or the DB, trust the DB, fix the Calendar, then fix this list — never the reverse.**
@@ -96,6 +98,7 @@ US Open 2026:              30 Aug – 13 Sep 2026 (Fan Week free-admission perio
 Italian GP 2026:           4 – 6 Sep 2026
 BMW PGA Championship 2026: 17 – 20 Sep 2026
 Shanghai Masters 2026:     5 – 18 Oct 2026
+Brazilian GP 2026:         6 – 8 Nov 2026
 ```
 
 ---

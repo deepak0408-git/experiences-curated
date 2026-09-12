@@ -273,4 +273,34 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "map", label: "Venue Map", question: "What facilities are available at the Autódromo Hermanos Rodríguez?", status: "public", imageSlug: "mexico-city-gp-where-to-sit-" },
     { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Mexico City GP?", status: "teaser", imageSlug: "mexico-city-gp-paddock-club-", heroImagePosition: "center 75%" },
   ],
+  // Brazilian Grand Prix 2026 — scaffolded 12 Sep 2026. All 24 experiences
+  // real/seeded (status: in_review — publish via /curator/review before
+  // spoke cards render). Hero images: 13/24 done as of this scaffolding, 11
+  // still missing (batch scripts exist on disk, unrun) — per founder
+  // decision this session, hero images are finished in a later pass, not
+  // blocking this build, so every imageSlug below is set to the real seeded
+  // experience slug it belongs to (not the blank sentinel) even though some
+  // will render with no image until their hero image lands — an honest gap,
+  // not a placeholder. Weather/Arrival/Tickets use the skill's standing
+  // cross-event default images (imageOverride), set here at config-creation
+  // time per the skill's explicit rule. No planner_hotel_tier_cost/
+  // planner_ticket_tier_cost/planner_destination_bands/planner_flight_cost
+  // rows exist for São Paulo as of this build — Cost, Tickets, and Hotels
+  // spokes' data-driven sections will render their real "no data yet" empty
+  // states; planner-data-researcher still needs to run before launch.
+  // Interlagos has no General Admission tier — grandstand-only.
+  "brazilian-grand-prix": [
+    { id: "cost", label: "Cost Guide", question: "How much does a Brazilian Grand Prix weekend in São Paulo cost?", status: "teaser", imageSlug: "interlagos-autodromo-jose-carlos-pace-venue-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/brazilian-grand-prix-cost-spoke.jpg" },
+    { id: "tickets", label: "Ticket Guide", question: "Which Interlagos grandstand is the best buy?", status: "teaser", imageSlug: "brazilian-gp-ticket-guide-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the Brazilian Grand Prix?", status: "teaser", imageSlug: "brazilian-gp-hotel-emiliano-" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to Interlagos?", status: "public", imageSlug: "brazilian-gp-getting-to-interlagos-" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the Brazilian Grand Prix, and what should I pack?", status: "public", imageSlug: "brazilian-gp-weather-packing-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Brazilian Grand Prix?", status: "public", imageSlug: "brazilian-gp-first-timer-guide-" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat in São Paulo during race weekend?", status: "teaser", imageSlug: "brazilian-gp-figueira-rubaiyat-" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips and things to do in São Paulo during race weekend?", status: "teaser", imageSlug: "brazilian-gp-sao-roque-wine-route-" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does a Brazilian Grand Prix weekend in São Paulo actually look like?", status: "teaser", imageSlug: "brazilian-gp-bar-brahma-" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at Interlagos gates?", status: "public", imageSlug: "brazilian-gp-arrival-queue-guide-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at Interlagos?", status: "public", imageSlug: "interlagos-autodromo-jose-carlos-pace-venue-" },
+    { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Brazilian Grand Prix?", status: "teaser", imageSlug: "brazilian-gp-hospitality-paddock-club-" },
+  ],
 };

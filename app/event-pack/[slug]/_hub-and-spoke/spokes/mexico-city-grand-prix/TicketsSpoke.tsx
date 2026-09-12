@@ -71,7 +71,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The tiers, what they show, and real recent-season pricing are all free above. The pack adds our actual verdict on which grandstand we'd pick, plus the real, experience-level detail for each option — not just a summary."
+      ctaCopy="The tiers, what they show, and real recent-season pricing are all free above. The pack adds the full Ticket Guide with the complete grandstand-by-grandstand comparison, our direct verdict on Main Grandstand vs. Foro Sol for a first Mexico City GP, and the exact buying window before this notoriously fast-selling race locks you out."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         The Autódromo Hermanos Rodríguez sells a genuine range, from flexible general admission up through full
@@ -170,12 +170,6 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         ))}
       </div>
 
-      {ticketGuide && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={ticketGuide} isPro={isPro} />
-        </div>
-      )}
-
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
         <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">On pricing</p>
         <p className="text-sm text-[#A3A3A3] leading-6">
@@ -188,6 +182,12 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
+          {ticketGuide && (
+            <div className="mb-8">
+              <SpokeExperienceCard experience={ticketGuide} isPro={isPro} />
+            </div>
+          )}
+
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Which tier we&apos;d pick</p>
           <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
             For a genuine first Mexico City GP, Main Grandstand or Grandstand 10/11 are the sharpest picks if racing
