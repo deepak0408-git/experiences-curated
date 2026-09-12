@@ -45,7 +45,7 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
       eventCurrency={event.packCurrency}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
-      eventName="Brazilian Grand Prix"
+      eventName="São Paulo Grand Prix"
       status="public"
       h1="A bowl-shaped circuit between two reservoirs, shortened once in 1990"
       question={spoke.question}

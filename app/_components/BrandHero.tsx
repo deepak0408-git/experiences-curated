@@ -80,7 +80,7 @@ function shortEventName(name: string, slug: string): string {
     "french-open": "French Open 2027",
     "united-states-grand-prix": "US GP 2026",
     "mexico-city-grand-prix": "Mexico City GP 2026",
-    "brazilian-grand-prix": "Brazilian GP 2026",
+    "brazilian-grand-prix": "São Paulo GP 2026",
   };
   return SHORT_NAMES[slug] ?? name;
 }

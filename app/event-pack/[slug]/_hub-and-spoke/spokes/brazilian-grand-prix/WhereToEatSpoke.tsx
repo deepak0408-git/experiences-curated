@@ -27,7 +27,7 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
       eventCurrency={event.packCurrency}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
-      eventName="Brazilian Grand Prix"
+      eventName="São Paulo Grand Prix"
       status="teaser"
       h1="From a US$10 ramen bowl to a Michelin-star tasting menu, under the same fig tree"
       question={spoke.question}

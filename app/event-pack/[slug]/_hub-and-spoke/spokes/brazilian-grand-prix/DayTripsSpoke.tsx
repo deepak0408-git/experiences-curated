@@ -32,7 +32,7 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
       eventCurrency={event.packCurrency}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
-      eventName="Brazilian Grand Prix"
+      eventName="São Paulo Grand Prix"
       status="teaser"
       h1="A car-free Sunday avenue in the city, or a mountain town two hours out"
       question={spoke.question}

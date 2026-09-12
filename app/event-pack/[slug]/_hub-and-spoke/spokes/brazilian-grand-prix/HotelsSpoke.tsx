@@ -29,7 +29,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       eventCurrency={event.packCurrency}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
-      eventName="Brazilian Grand Prix"
+      eventName="São Paulo Grand Prix"
       status="teaser"
       h1="Jardins luxury, Morumbi value, or a self-catered stay across three neighborhoods"
       question={spoke.question}
@@ -38,7 +38,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       ctaCopy="You've got the real hotel picks and neighborhood breakdown above — what you don't have yet is our direct verdict on which specific stay to book if Hotel Emiliano is sold out, plus our honest read on Airbnb and hostel options for race week, a gap most guides skip entirely. The pack adds both, plus this same level of tactical detail across all 12 guides — tickets, food, transit, the whole trip planned out."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        Where to stay for the Brazilian Grand Prix is a genuine tradeoff between polish and proximity. Jardins puts
+        Where to stay for the São Paulo Grand Prix is a genuine tradeoff between polish and proximity. Jardins puts
         you in São Paulo&apos;s most fashionable, food-forward neighborhood, a real transit ride from Interlagos.
         Morumbi and Campo Belo sit much closer to the circuit itself, trading boutique character for a shorter
         commute and a real price break. A self-catered apartment across Jardins, Itaim Bibi, or Vila Nova

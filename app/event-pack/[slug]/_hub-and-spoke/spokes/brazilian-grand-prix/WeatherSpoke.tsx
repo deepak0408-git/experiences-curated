@@ -25,7 +25,7 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
       eventCurrency={event.packCurrency}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
-      eventName="Brazilian Grand Prix"
+      eventName="São Paulo Grand Prix"
       status="public"
       h1="27°C highs, a 48% daily chance of rain, and an umbrella ban at the gate"
       question={spoke.question}
