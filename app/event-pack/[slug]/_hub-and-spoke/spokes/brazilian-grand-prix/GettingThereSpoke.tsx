@@ -24,7 +24,7 @@ export default async function GettingThereSpoke({ eventSlug }: { eventSlug: stri
       eventCurrency={event.packCurrency}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
-      eventName="Brazilian Grand Prix"
+      eventName="São Paulo Grand Prix"
       status="public"
       h1="Metrô Line 9 to Autódromo — one line, no transfers, from most of race weekend's hotel base"
       question={spoke.question}

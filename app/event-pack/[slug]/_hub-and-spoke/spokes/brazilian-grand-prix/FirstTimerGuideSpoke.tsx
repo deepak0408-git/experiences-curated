@@ -27,7 +27,7 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
       eventCurrency={event.packCurrency}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
-      eventName="Brazilian Grand Prix"
+      eventName="São Paulo Grand Prix"
       status="public"
       h1="5 mistakes first-time visitors make in São Paulo"
       question={spoke.question}

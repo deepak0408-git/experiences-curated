@@ -23,7 +23,7 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
       eventCurrency={event.packCurrency}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
-      eventName="Brazilian Grand Prix"
+      eventName="São Paulo Grand Prix"
       status="public"
       h1="Gates open 08:00, bag checks at every entrance, and no re-entry once you're in"
       question={spoke.question}

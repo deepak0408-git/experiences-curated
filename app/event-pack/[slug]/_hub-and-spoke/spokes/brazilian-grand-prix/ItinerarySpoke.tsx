@@ -32,7 +32,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       eventCurrency={event.packCurrency}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
-      eventName="Brazilian Grand Prix"
+      eventName="São Paulo Grand Prix"
       status="teaser"
       h1="A standard 3-day weekend — no Sprint format this year at Interlagos"
       question={spoke.question}

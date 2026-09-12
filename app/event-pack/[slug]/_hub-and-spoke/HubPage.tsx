@@ -329,7 +329,7 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
   // town) — not invented, matches every other hub-and-spoke event's pattern
   // of drawing The Brief from real underlying content.
   "brazilian-grand-prix": {
-    displayName: "Brazilian Grand Prix",
+    displayName: "São Paulo Grand Prix",
     venueLine: "Held at Autódromo José Carlos Pace (Interlagos) — one of F1's oldest and most demanding circuits, and Ayrton Senna's home track.",
     heroFallbackImageSlug: "interlagos-autodromo-jose-carlos-pace-venue-",
     introText:

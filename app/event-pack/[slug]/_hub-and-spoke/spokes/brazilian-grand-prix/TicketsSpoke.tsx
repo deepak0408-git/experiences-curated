@@ -66,7 +66,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       eventCurrency={event.packCurrency}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
-      eventName="Brazilian Grand Prix"
+      eventName="São Paulo Grand Prix"
       status="teaser"
       h1="No General Admission — every seat here is a fixed grandstand letter"
       question={spoke.question}
@@ -102,7 +102,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
             rel="noopener noreferrer"
             className="inline-flex items-center px-4 py-2 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
           >
-            Official Brazilian GP tickets →
+            Official São Paulo GP tickets →
           </a>
           <a
             href="https://www.p1travel.com/en/series/formula-1-2026?organizers=grand-prix-brasil"
@@ -110,7 +110,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
             rel="noopener noreferrer"
             className="inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors"
           >
-            P1 Travel — Brazilian GP →
+            P1 Travel — São Paulo GP →
           </a>
         </div>
       </div>
