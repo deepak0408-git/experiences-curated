@@ -5,6 +5,13 @@ import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
 const SPOKE_ID = "map";
 
+// "On-site facilities" expanded 12 Sep 2026 to match Bahrain/Brazilian GP's
+// MapSpoke pattern (food/payment, access policy, accessibility, phone
+// signal, noise) instead of just Fan Zone + a generic food blurb. Real facts
+// verified via mexico.gp's "At the Circuit"/rules-for-visitors pages and
+// corroborating spectator-guide sources, 12 Sep 2026: Citibanamex Cashless
+// system, no outside food/drink, no pass-outs/re-entry, Green/Blue Zone
+// accessible seating, alcohol service hours, 12 free water stations.
 export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
@@ -76,11 +83,43 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
           </p>
         </div>
         <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
-          <p className="text-sm font-bold text-white mb-1">Food & concessions</p>
+          <p className="text-sm font-bold text-white mb-1">Food & drink — cashless only, no outside food</p>
           <p className="text-sm text-[#A3A3A3] leading-6">
-            Spread across temporary stalls and food trucks in different zones rather than one central food court —
-            expect a genuine range from quick street-food-style options to more considered offerings, consistent
-            with the city&apos;s wider food culture.
+            More than 50 food options run across temporary stalls and food trucks — tacos, seafood, pizza, churros,
+            and more — but you can&apos;t bring your own food or drink onto the circuit, and every purchase goes
+            through the Citibanamex Cashless card system rather than cash-in-hand. Load the card before you&apos;re
+            actually hungry. Beer is sold 11:00-19:00 and spirits 12:00-19:00; up to 12 free water stations are
+            spread across the fan zones if you just need to refill.
+          </p>
+        </div>
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
+          <p className="text-sm font-bold text-white mb-1">No pass-outs</p>
+          <p className="text-sm text-[#A3A3A3] leading-6">
+            Once you leave the circuit, you can&apos;t re-enter that same day — treat this as a one-way gate for
+            the full session, not a venue you can duck out of for a break.
+          </p>
+        </div>
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
+          <p className="text-sm font-bold text-white mb-1">Accessibility</p>
+          <p className="text-sm text-[#A3A3A3] leading-6">
+            Designated accessible seating sits in the Green Zone and Blue Zone specifically, with accessible
+            facilities built into those areas — worth confirming directly with the ticketing team if this matters
+            to your booking, since it&apos;s not evenly spread across every grandstand.
+          </p>
+        </div>
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
+          <p className="text-sm font-bold text-white mb-1">Phone signal on race day</p>
+          <p className="text-sm text-[#A3A3A3] leading-6">
+            Mobile networks genuinely struggle under race-weekend crowds, Sunday worst of all — agree a physical
+            meeting point with anyone you might get separated from rather than counting on being able to call or
+            message them.
+          </p>
+        </div>
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
+          <p className="text-sm font-bold text-white mb-1">Noise — bring earplugs if you're close to the track</p>
+          <p className="text-sm text-[#A3A3A3] leading-6">
+            The standard grandstands are loud but manageable; anywhere genuinely close to the cars is not, and
+            earplugs are a real, practical add rather than overcaution — worth it for kids specifically.
           </p>
         </div>
       </div>

@@ -316,6 +316,31 @@ const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; 
   "mexico-city-xochimilco-": { eventSlug: "mexico-city-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
   "mexico-city-dia-de-muertos-": { eventSlug: "mexico-city-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
   "mexico-city-weather-packing-": { eventSlug: "mexico-city-grand-prix", spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+  "brazilian-gp-ticket-guide-": { eventSlug: "brazilian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "brazilian-gp-grandstand-a-": { eventSlug: "brazilian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "brazilian-gp-grandstand-m-": { eventSlug: "brazilian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "brazilian-gp-hotel-emiliano-": { eventSlug: "brazilian-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "brazilian-gp-budget-hotels-morumbi-": { eventSlug: "brazilian-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "brazilian-gp-jardins-itaim-neighborhoods-": { eventSlug: "brazilian-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "brazilian-gp-getting-to-interlagos-": { eventSlug: "brazilian-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
+  "brazilian-gp-weather-packing-": { eventSlug: "brazilian-grand-prix", spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+  "brazilian-gp-first-timer-guide-": { eventSlug: "brazilian-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "interlagos-autodromo-jose-carlos-pace-venue-": { eventSlug: "brazilian-grand-prix", spokeId: "map", spokeLabel: "Venue Map" },
+  "brazilian-gp-figueira-rubaiyat-": { eventSlug: "brazilian-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "brazilian-gp-mani-": { eventSlug: "brazilian-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "brazilian-gp-liberdade-japanese-dining-": { eventSlug: "brazilian-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "brazilian-gp-vila-madalena-food-crawl-": { eventSlug: "brazilian-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "brazilian-gp-ibirapuera-park-": { eventSlug: "brazilian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "brazilian-gp-paulista-masp-": { eventSlug: "brazilian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "brazilian-gp-beco-do-batman-": { eventSlug: "brazilian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "brazilian-gp-feira-da-liberdade-": { eventSlug: "brazilian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "brazilian-gp-sao-roque-wine-route-": { eventSlug: "brazilian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "brazilian-gp-santos-guaruja-daytrip-": { eventSlug: "brazilian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "brazilian-gp-campos-do-jordao-daytrip-": { eventSlug: "brazilian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "brazilian-gp-bar-brahma-": { eventSlug: "brazilian-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "brazilian-gp-arrival-queue-guide-": { eventSlug: "brazilian-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+  "brazilian-gp-hospitality-paddock-club-": { eventSlug: "brazilian-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "brazilian-gp-heineken-village-": { eventSlug: "brazilian-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
 };
 
 function getSpokeBackLink(slug: string) {
@@ -329,6 +354,13 @@ function getSpokeBackLink(slug: string) {
 // #ratings anchor in bodyContent, where each named venue's real rating is
 // written inline. venueCount is display-only ("all 3 hotels").
 const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: string }> = {
+  "brazilian-gp-jardins-itaim-neighborhoods-": { venueCount: 5, venueNoun: "restaurants" },
+  "brazilian-gp-budget-hotels-morumbi-": { venueCount: 2, venueNoun: "hotels" },
+  "brazilian-gp-vila-madalena-food-crawl-": { venueCount: 2, venueNoun: "bars" },
+  "brazilian-gp-liberdade-japanese-dining-": { venueCount: 2, venueNoun: "ramen shops" },
+  "brazilian-gp-sao-roque-wine-route-": { venueCount: 4, venueNoun: "wineries" },
+  "brazilian-gp-santos-guaruja-daytrip-": { venueCount: 2, venueNoun: "attractions" },
+  "brazilian-gp-campos-do-jordao-daytrip-": { venueCount: 2, venueNoun: "attractions" },
   "us-gp-lady-bird-lake-": { venueCount: 3, venueNoun: "rental operators" },
   "us-gp-san-antonio-daytrip-": { venueCount: 2, venueNoun: "sites" },
   "french-open-luxury-dining-bois-de-boulogne": { venueCount: 3, venueNoun: "restaurants" },
@@ -684,6 +716,13 @@ export default async function ExperiencePage({
             alt={exp.heroImageAlt ?? exp.title}
             fill
             className={`object-cover opacity-90 ${
+              slug.startsWith("brazilian-gp-arrival-queue-guide-") ? "lg:object-[center_20%]" :
+              slug.startsWith("brazilian-gp-hotel-emiliano-") ? "lg:object-[center_35%]" :
+              slug.startsWith("brazilian-gp-budget-hotels-morumbi-") ? "lg:object-[center_20%]" :
+              slug.startsWith("brazilian-gp-ibirapuera-park-") ? "lg:object-[center_75%]" :
+              slug.startsWith("brazilian-gp-paulista-masp-") ? "lg:object-[center_60%]" :
+              slug.startsWith("brazilian-gp-feira-da-liberdade-") ? "lg:object-[center_60%]" :
+              slug.startsWith("brazilian-gp-campos-do-jordao-daytrip-") ? "lg:object-[center_10%]" :
               slug.startsWith("us-gp-turn-15-stadium-") ? "lg:object-[center_30%]" :
               slug.startsWith("us-gp-paddock-club-") ? "lg:object-[center_60%]" :
               slug.startsWith("us-gp-general-admission-") ? "lg:object-[center_85%]" :

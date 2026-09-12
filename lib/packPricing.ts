@@ -174,6 +174,11 @@ export const PACK_PRICING_CONFIG: Record<string, {
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_MEXICO_CITY_GP_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_MEXICO_CITY_GP_EARLY_BIRD_CUTOFF ?? "2026-09-30",
   },
+  "brazilian-grand-prix": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BRAZILIAN_GP_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BRAZILIAN_GP_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_BRAZILIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-09-30",
+  },
 };
 
 // Last-resort fallback if a slug is in PACK_PRICING_CONFIG but its
