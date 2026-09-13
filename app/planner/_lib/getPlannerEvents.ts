@@ -43,6 +43,7 @@ async function getPlannerEventsUnsafe(tripLengthDays: number, originMarket: stri
       startDate: sportingEvents.startDate,
       endDate: sportingEvents.endDate,
       packStatus: sportingEvents.packStatus,
+      isHidden: sportingEvents.isHidden,
       destinationId: sportingEvents.destinationId,
       destinationName: destinations.name,
       heroImageUrl: sportingEvents.heroImageUrl,
@@ -174,6 +175,7 @@ async function getPlannerEventsUnsafe(tripLengthDays: number, originMarket: stri
       dateRange,
       startDate: event.startDate,
       packStatus: event.packStatus,
+      isHidden: event.isHidden,
       lineItems,
       heroImageUrl: event.heroImageUrl,
     });
