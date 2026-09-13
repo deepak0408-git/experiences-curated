@@ -156,7 +156,10 @@ export default function ComparisonView({
     ...e,
     totalLow: sumLineItems(e.lineItems, "low"),
     totalHigh: sumLineItems(e.lineItems, "high"),
-    isBuilt: e.packStatus === "live" || e.packStatus === "built_hidden",
+    // isHidden must gate this alongside packStatus — see the matching fix in
+    // ShortlistResults.tsx for why (built_hidden alone doesn't mean the
+    // curator has activated the pack for public discovery).
+    isBuilt: (e.packStatus === "live" || e.packStatus === "built_hidden") && !e.isHidden,
   }));
 
   // Find the single biggest delta line item across all compared events
