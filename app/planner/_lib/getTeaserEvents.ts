@@ -138,6 +138,11 @@ async function getTeaserEventsUnsafe(
       dateRange,
       startDate: event.startDate,
       packStatus: event.packStatus,
+      // Hardcoded false, not read from the DB — this teaser is a fixed demo
+      // that must never depend on operational status fields (see the
+      // no-status-filter rule in this file's own top comment). MockEvent
+      // requires isHidden, but nothing downstream in the teaser reads it.
+      isHidden: false,
       lineItems,
       heroImageUrl: event.heroImageUrl,
     });

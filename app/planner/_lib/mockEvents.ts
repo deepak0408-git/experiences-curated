@@ -31,6 +31,7 @@ export type MockEvent = {
   dateRange: string;
   startDate: string; // ISO date, real Date field for time-window filtering — dateRange is display-only text, not safe to parse
   packStatus: "live" | "built_hidden" | "planned" | "building";
+  isHidden: boolean;
   lineItems: CostLineItem[];
   heroImageUrl: string | null;
 };
