@@ -1,0 +1,42 @@
+{
+  "origin": "Sao_Paulo",
+  "googleFlights": {
+    "sorted": [
+      1450,
+      1510,
+      1522,
+      1608,
+      1682,
+      1688,
+      1731,
+      1806,
+      1851,
+      1856,
+      1876
+    ],
+    "rawCount": 22
+  },
+  "kayak": {
+    "sorted": [
+      1428,
+      1580,
+      1590,
+      1601,
+      1619,
+      1631
+    ],
+    "rawCount": 22
+  },
+  "combined": {
+    "low": 1428,
+    "high": 1876,
+    "excludedLow": [],
+    "excludedHigh": [],
+    "gfLow": 1450,
+    "gfHigh": 1876,
+    "kyLow": 1428,
+    "kyHigh": 1631
+  },
+  "finalCostLow": 1439,
+  "finalCostHigh": 1754
+}

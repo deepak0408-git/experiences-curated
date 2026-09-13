@@ -1,0 +1,54 @@
+{
+  "origin": "Vancouver",
+  "googleFlights": {
+    "sorted": [
+      312,
+      364,
+      389,
+      439,
+      449,
+      475,
+      506,
+      511,
+      516,
+      523,
+      540,
+      562,
+      573,
+      585,
+      607,
+      634,
+      642,
+      652,
+      667,
+      679,
+      697,
+      712,
+      725,
+      809,
+      842,
+      844,
+      930
+    ],
+    "rawCount": 43
+  },
+  "kayak": {
+    "sorted": [
+      311,
+      391
+    ],
+    "rawCount": 9
+  },
+  "combined": {
+    "low": 311,
+    "high": 930,
+    "excludedLow": [],
+    "excludedHigh": [],
+    "gfLow": 312,
+    "gfHigh": 930,
+    "kyLow": 311,
+    "kyHigh": 391
+  },
+  "finalCostLow": 312,
+  "finalCostHigh": 661
+}

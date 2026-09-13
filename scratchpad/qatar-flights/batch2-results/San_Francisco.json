@@ -1,0 +1,54 @@
+{
+  "origin": "San_Francisco",
+  "googleFlights": {
+    "sorted": [
+      1213,
+      1329,
+      1423,
+      1845,
+      1898,
+      1909,
+      1953,
+      1964,
+      2003,
+      2040,
+      2058,
+      2073,
+      2180,
+      10259
+    ],
+    "rawCount": 32
+  },
+  "kayak": {
+    "sorted": [
+      1085,
+      1243
+    ],
+    "rawCount": 11
+  },
+  "combined": {
+    "low": 1085,
+    "high": 1329,
+    "excludedLow": [],
+    "excludedHigh": [
+      1423,
+      1845,
+      1898,
+      1909,
+      1953,
+      1964,
+      2003,
+      2040,
+      2058,
+      2073,
+      2180,
+      10259
+    ],
+    "gfLow": 1213,
+    "gfHigh": 1329,
+    "kyLow": 1085,
+    "kyHigh": 1243
+  },
+  "finalCostLow": 1149,
+  "finalCostHigh": 1286
+}

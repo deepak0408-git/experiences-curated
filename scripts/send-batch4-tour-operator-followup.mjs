@@ -34,18 +34,28 @@ console.log();
 
 const subject = `Following up — travel guides for your customers`;
 
-const body = `Hi there,
+const html = `
+  <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0A0A0A">
+    <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#AAFF00;margin-bottom:28px">Experiences | Curated</p>
 
-We reached out a little while ago about Experiences | Curated — we build destination-research guides for major sporting events (F1 Grand Prix weekends, Grand Slams, major golf and cricket tours), covering the gaps that ticket-only research usually misses: getting from circuit to city, where to actually stay, real day-trip options around the event. In addition, we offer customized trip planning services, if that's a better fit for how you work with your customers.
+    <p style="font-size:14px;color:#A3A3A3;line-height:1.6;margin-bottom:16px">Hi there,</p>
 
-Wanted to circle back in case it got buried. We think there could be a genuine fit for your customers — either as a value-add you point people to, or something more structured if that's of interest.
+    <p style="font-size:14px;color:#A3A3A3;line-height:1.6;margin-bottom:16px">
+      We reached out a little while ago about Experiences | Curated — we build destination-research guides for major sporting events (F1 Grand Prix weekends, Grand Slams, major golf and cricket tours), covering the gaps that ticket-only research usually misses: getting from circuit to city, where to actually stay, real day-trip options around the event. In addition, we offer customized trip planning services, if that's a better fit for how you work with your customers.
+    </p>
 
-Happy to send over a sample guide for one of your upcoming destinations, or jump on a quick call if that's easier. Either way, no pressure — just didn't want to let it drop without a nudge.
+    <p style="font-size:14px;color:#A3A3A3;line-height:1.6;margin-bottom:16px">
+      Wanted to circle back in case it got buried. We think there could be a genuine fit for your customers — either as a value-add you point people to, or something more structured if that's of interest.
+    </p>
 
-Best,
-Deepak
-Experiences | Curated
-experiences-curated.com`;
+    <p style="font-size:14px;color:#A3A3A3;line-height:1.6;margin-bottom:32px">
+      Happy to send over a sample guide for one of your upcoming destinations, or jump on a quick call if that's easier. Either way, no pressure — just didn't want to let it drop without a nudge.
+    </p>
+
+    <p style="font-size:14px;color:#ffffff;font-weight:900;margin-bottom:4px">Deepak</p>
+    <p style="font-size:11px;color:#6A6A6A">Experiences | Curated — experiences-curated.com</p>
+  </div>
+`;
 
 let sent = 0;
 
@@ -55,7 +65,7 @@ for (const email of recipients) {
       from: "Experiences | Curated <hello@experiences-curated.com>",
       to: email,
       subject: TEST_MODE ? `[TEST] ${subject}` : subject,
-      text: body,
+      html,
     });
 
     console.log(`✓ Sent to ${email}`);

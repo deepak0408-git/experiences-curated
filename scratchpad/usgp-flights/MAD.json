@@ -1,0 +1,42 @@
+{
+  "origin": "Madrid",
+  "googleFlights": {
+    "sorted": [
+      995,
+      1152,
+      1221,
+      1225,
+      1250,
+      1337,
+      1408,
+      1747,
+      1823
+    ],
+    "rawCount": 10
+  },
+  "kayak": {
+    "sorted": [
+      1029,
+      1038,
+      1057,
+      1062,
+      1065
+    ],
+    "rawCount": 26
+  },
+  "combined": {
+    "low": 995,
+    "high": 1408,
+    "excludedLow": [],
+    "excludedHigh": [
+      1747,
+      1823
+    ],
+    "gfLow": 995,
+    "gfHigh": 1408,
+    "kyLow": 1029,
+    "kyHigh": 1065
+  },
+  "finalCostLow": 1012,
+  "finalCostHigh": 1237
+}

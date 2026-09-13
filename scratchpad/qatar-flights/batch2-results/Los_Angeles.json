@@ -1,0 +1,48 @@
+{
+  "origin": "Los_Angeles",
+  "googleFlights": {
+    "sorted": [
+      1213,
+      1221,
+      1329,
+      1366,
+      1404,
+      1479,
+      1498,
+      1537,
+      1557,
+      1568,
+      1615,
+      1706,
+      1733,
+      1743,
+      2656,
+      2811,
+      2882
+    ],
+    "rawCount": 31
+  },
+  "kayak": {
+    "sorted": [
+      1193,
+      1205
+    ],
+    "rawCount": 10
+  },
+  "combined": {
+    "low": 1193,
+    "high": 1743,
+    "excludedLow": [],
+    "excludedHigh": [
+      2656,
+      2811,
+      2882
+    ],
+    "gfLow": 1213,
+    "gfHigh": 1743,
+    "kyLow": 1193,
+    "kyHigh": 1205
+  },
+  "finalCostLow": 1203,
+  "finalCostHigh": 1474
+}

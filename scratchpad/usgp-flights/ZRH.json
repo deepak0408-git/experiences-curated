@@ -1,0 +1,46 @@
+{
+  "origin": "Zurich",
+  "googleFlights": {
+    "sorted": [
+      892,
+      929,
+      942,
+      955,
+      1025,
+      1095,
+      1153,
+      1188,
+      1195,
+      1235,
+      1238,
+      1335,
+      1340,
+      1364,
+      1474,
+      1698
+    ],
+    "rawCount": 22
+  },
+  "kayak": {
+    "sorted": [
+      897,
+      981,
+      1012
+    ],
+    "rawCount": 8
+  },
+  "combined": {
+    "low": 892,
+    "high": 1474,
+    "excludedLow": [],
+    "excludedHigh": [
+      1698
+    ],
+    "gfLow": 892,
+    "gfHigh": 1474,
+    "kyLow": 897,
+    "kyHigh": 1012
+  },
+  "finalCostLow": 895,
+  "finalCostHigh": 1243
+}

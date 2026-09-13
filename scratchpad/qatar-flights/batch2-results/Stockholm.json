@@ -1,0 +1,53 @@
+{
+  "origin": "Stockholm",
+  "googleFlights": {
+    "sorted": [
+      420,
+      576,
+      938,
+      944,
+      1023,
+      1161
+    ],
+    "rawCount": 17
+  },
+  "kayak": {
+    "sorted": [
+      412,
+      430,
+      434,
+      435,
+      445,
+      478,
+      537,
+      556,
+      582,
+      603,
+      610,
+      615,
+      646,
+      664,
+      672,
+      691,
+      705
+    ],
+    "rawCount": 31
+  },
+  "combined": {
+    "low": 412,
+    "high": 705,
+    "excludedLow": [],
+    "excludedHigh": [
+      938,
+      944,
+      1023,
+      1161
+    ],
+    "gfLow": 420,
+    "gfHigh": 576,
+    "kyLow": 412,
+    "kyHigh": 705
+  },
+  "finalCostLow": 416,
+  "finalCostHigh": 641
+}

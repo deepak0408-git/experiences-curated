@@ -1,0 +1,48 @@
+{
+  "origin": "Atlanta",
+  "googleFlights": {
+    "sorted": [
+      1034,
+      1096,
+      1433,
+      2076,
+      2113,
+      2124,
+      2156,
+      2203,
+      2268,
+      2343,
+      2458
+    ],
+    "rawCount": 34
+  },
+  "kayak": {
+    "sorted": [
+      936,
+      989,
+      1020,
+      1021,
+      1023,
+      1064,
+      1096,
+      1246,
+      1247,
+      1346
+    ],
+    "rawCount": 44
+  },
+  "combined": {
+    "low": 936,
+    "high": 2343,
+    "excludedLow": [],
+    "excludedHigh": [
+      2458
+    ],
+    "gfLow": 1034,
+    "gfHigh": 2343,
+    "kyLow": 936,
+    "kyHigh": 1346
+  },
+  "finalCostLow": 985,
+  "finalCostHigh": 1845
+}

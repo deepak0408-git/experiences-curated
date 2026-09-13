@@ -1,0 +1,52 @@
+researching: Atlanta (ATL) -> Austin
+done: Atlanta -> $133-412
+researching: Boston (BOS) -> Austin
+done: Boston -> $423-828
+researching: Chicago (ORD) -> Austin
+done: Chicago -> $312-686
+researching: Dallas (DFW) -> Austin
+done: Dallas (error/incomplete, see file)
+researching: Los Angeles (LAX) -> Austin
+done: Los Angeles -> $251-728
+researching: Miami (MIA) -> Austin
+done: Miami -> $265-792
+researching: Montreal (YUL) -> Austin
+done: Montreal -> $641-969
+skip (already done): New York City
+researching: Philadelphia (PHL) -> Austin
+done: Philadelphia -> $322-776
+researching: San Francisco (SFO) -> Austin
+done: San Francisco -> $267-534
+researching: Toronto (YYZ) -> Austin
+done: Toronto -> $286-1199
+researching: Vancouver (YVR) -> Austin
+done: Vancouver -> $312-661
+researching: Washington D.C. (IAD) -> Austin
+done: Washington D.C. -> $408-594
+researching: Amsterdam (AMS) -> Austin
+done: Amsterdam -> $1146-1567
+researching: Barcelona (BCN) -> Austin
+done: Barcelona -> $1088-1299
+researching: Berlin (BER) -> Austin
+done: Berlin -> $1046-1461
+researching: Dublin (DUB) -> Austin
+done: Dublin -> $1030-1331
+researching: London (LHR) -> Austin
+done: London -> $987-1560
+researching: Madrid (MAD) -> Austin
+done: Madrid -> $1012-1237
+researching: Manchester (MAN) -> Austin
+done: Manchester -> $1158-1570
+researching: Milan (MXP) -> Austin
+done: Milan -> $1104-1496
+researching: Moscow (SVO) -> Austin
+FAILED: Moscow (SVO) - spawnSync node ETIMEDOUT
+researching: Munich (MUC) -> Austin
+done: Munich -> $846-1069
+researching: Paris (CDG) -> Austin
+done: Paris -> $1062-1347
+researching: Rome (FCO) -> Austin
+done: Rome -> $1184-1543
+researching: Stockholm (ARN) -> Austin
+done: Stockholm -> $949-1031
+researching: Zurich (ZRH) -> Austin

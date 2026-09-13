@@ -1,0 +1,47 @@
+{
+  "origin": "Rio de Janeiro",
+  "googleFlights": {
+    "sorted": [
+      1136,
+      1251,
+      1313,
+      1390,
+      1392,
+      1478,
+      1524,
+      1544,
+      1879
+    ],
+    "rawCount": 10
+  },
+  "kayak": {
+    "sorted": [
+      1073,
+      1131,
+      1136,
+      1162,
+      1193,
+      1221,
+      1223,
+      1225,
+      1230,
+      1235,
+      1252
+    ],
+    "rawCount": 21
+  },
+  "combined": {
+    "low": 1073,
+    "high": 1544,
+    "excludedLow": [],
+    "excludedHigh": [
+      1879
+    ],
+    "gfLow": 1136,
+    "gfHigh": 1544,
+    "kyLow": 1073,
+    "kyHigh": 1252
+  },
+  "finalCostLow": 1105,
+  "finalCostHigh": 1398
+}

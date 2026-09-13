@@ -1,0 +1,611 @@
+{
+  "url": "https://www.booking.com/searchresults.html?ss=Mexico+City&checkin=2026-10-28&checkout=2026-11-04&group_adults=2&no_rooms=1&group_children=0&order=review_score_and_price&nflt=review_score%3D70%3Bht_id%3D204&selected_currency=USD&lang=en-us",
+  "checkin": "2026-10-28",
+  "checkout": "2026-11-04",
+  "rawHotelCount": 75,
+  "qualifyingHotelCount": 51,
+  "hotels": [
+    {
+      "name": "Kukun Edition El Angel",
+      "price": "US$2,173",
+      "reviewScore": 9.7,
+      "reviewCount": 72,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "The Amsterdam by Viadora",
+      "price": "US$4,320",
+      "reviewScore": 9.5,
+      "reviewCount": 237,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Isabella by Viadora",
+      "price": "US$5,540",
+      "reviewScore": 9.5,
+      "reviewCount": 66,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "AUTO HOTEL LEGARIA",
+      "price": "US$389",
+      "reviewScore": 9,
+      "reviewCount": 555,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Hotel Aranjuez",
+      "price": "US$850",
+      "reviewScore": 9.1,
+      "reviewCount": 379,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Be Local Lofts & Coworking",
+      "price": "US$755",
+      "reviewScore": 9.1,
+      "reviewCount": 163,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Suites Perisur Apartamentos Amueblados",
+      "price": "US$813",
+      "reviewScore": 9.3,
+      "reviewCount": 671,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Fiesta Americana Ciudad de México Satélite",
+      "price": "US$978",
+      "reviewScore": 9.2,
+      "reviewCount": 445,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Hotel Kavia Lagunilla CDMX",
+      "price": "US$862",
+      "reviewScore": 9,
+      "reviewCount": 79,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Econo Express Hotel by Nokte Inn",
+      "price": "US$905",
+      "reviewScore": 9.1,
+      "reviewCount": 2009,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Punto Lofts Periférico Sur",
+      "price": "US$926",
+      "reviewScore": 9.3,
+      "reviewCount": 320,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Suites Coben Apartamentos Amueblados",
+      "price": "US$931",
+      "reviewScore": 9.4,
+      "reviewCount": 96,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "VOS Condesa",
+      "price": "US$963",
+      "reviewScore": 9,
+      "reviewCount": 1242,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Antigua Hotel Boutique",
+      "price": "US$992",
+      "reviewScore": 9,
+      "reviewCount": 143,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Fairfield Inn & Suites by Marriott Mexico City Vallejo",
+      "price": "US$1,148",
+      "reviewScore": 9.1,
+      "reviewCount": 750,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Courtyard by Marriott Mexico City Vallejo",
+      "price": "US$1,164",
+      "reviewScore": 9.2,
+      "reviewCount": 431,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Holiday Inn Express - Mexico Basilica by IHG",
+      "price": "US$1,209",
+      "reviewScore": 9.1,
+      "reviewCount": 1123,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "OM 686 URBAN LOFTS Narvarte",
+      "price": "US$1,118",
+      "reviewScore": 9,
+      "reviewCount": 254,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "KALI La Raza Mexico City",
+      "price": "US$1,119",
+      "reviewScore": 9.1,
+      "reviewCount": 730,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Holiday Inn Express Mexico- Toreo by IHG",
+      "price": "US$1,282",
+      "reviewScore": 9.2,
+      "reviewCount": 303,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Holiday Inn Mexico City - Trade Center by IHG",
+      "price": "US$1,301",
+      "reviewScore": 9.1,
+      "reviewCount": 237,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Holiday Inn Mexico City-Plaza Universidad by IHG",
+      "price": "US$1,341",
+      "reviewScore": 9.2,
+      "reviewCount": 421,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Hacienda Peña Pobre",
+      "price": "US$1,237",
+      "reviewScore": 9.3,
+      "reviewCount": 595,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Hotel VIVE MX wtc CDMX, Trademark Collection by Wyndham",
+      "price": "US$1,240",
+      "reviewScore": 9.2,
+      "reviewCount": 802,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Hotel Novit",
+      "price": "US$1,288",
+      "reviewScore": 9.2,
+      "reviewCount": 690,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "KALI Escandón Mexico City",
+      "price": "US$1,359",
+      "reviewScore": 9,
+      "reviewCount": 1390,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Novotel Mexico City Toreo",
+      "price": "US$1,583",
+      "reviewScore": 9,
+      "reviewCount": 385,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Galeria Plaza San Jeronimo",
+      "price": "US$1,409",
+      "reviewScore": 9.3,
+      "reviewCount": 739,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Hotel VIVE MX cuauhtémoc CDMX, Trademark by Wyndham",
+      "price": "US$1,482",
+      "reviewScore": 9,
+      "reviewCount": 708,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Fiesta Americana Mexico Toreo",
+      "price": "US$1,749",
+      "reviewScore": 9.2,
+      "reviewCount": 712,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Kukun Grand Chapultepec",
+      "price": "US$1,546",
+      "reviewScore": 9,
+      "reviewCount": 160,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "ULIV Antara",
+      "price": "US$1,600",
+      "reviewScore": 9.1,
+      "reviewCount": 293,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Casa Olea",
+      "price": "US$1,635",
+      "reviewScore": 9.3,
+      "reviewCount": 487,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Casa Corp Boutique Suites in Condesa",
+      "price": "US$1,887",
+      "reviewScore": 9,
+      "reviewCount": 151,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Suites Copérnico Polanco Anzures",
+      "price": "US$1,732",
+      "reviewScore": 9.2,
+      "reviewCount": 383,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Hotel Elements by Marquis",
+      "price": "US$1,733",
+      "reviewScore": 9,
+      "reviewCount": 486,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Canada Central",
+      "price": "US$1,825",
+      "reviewScore": 9.3,
+      "reviewCount": 831,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Hive Nápoles by G Hotels",
+      "price": "US$1,956",
+      "reviewScore": 9,
+      "reviewCount": 1032,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Xolo stays",
+      "price": "US$2,073",
+      "reviewScore": 9,
+      "reviewCount": 322,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "LaiLa Hotel Mexico City Reforma",
+      "price": "US$2,082",
+      "reviewScore": 9.1,
+      "reviewCount": 1222,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Holiday Inn Express Mexico Aeropuerto by IHG",
+      "price": "US$2,432",
+      "reviewScore": 9.2,
+      "reviewCount": 2112,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Nido Roma",
+      "price": "US$2,119",
+      "reviewScore": 9.1,
+      "reviewCount": 448,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Suites MINE",
+      "price": "US$2,569",
+      "reviewScore": 9.1,
+      "reviewCount": 271,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Holiday Inn Mexico Dali Airport by IHG",
+      "price": "US$2,589",
+      "reviewScore": 9.2,
+      "reviewCount": 495,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Las Suites Campos Eliseos",
+      "price": "US$2,716",
+      "reviewScore": 9,
+      "reviewCount": 525,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Atrio Polanco",
+      "price": "US$2,498",
+      "reviewScore": 9.1,
+      "reviewCount": 320,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Tanat Art Apartments",
+      "price": "US$2,501",
+      "reviewScore": 9.2,
+      "reviewCount": 123,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Nomu Mexico City by Lumina",
+      "price": "US$3,021",
+      "reviewScore": 9,
+      "reviewCount": 59,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Nido x Neuchatel Polanco",
+      "price": "US$2,683",
+      "reviewScore": 9,
+      "reviewCount": 64,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "El Alfonsa",
+      "price": "US$2,927",
+      "reviewScore": 9.2,
+      "reviewCount": 342,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Hotel Catedral",
+      "price": "US$3,172",
+      "reviewScore": 9.2,
+      "reviewCount": 4472,
+      "starRating": 4,
+      "address": null
+    }
+  ],
+  "rejectedForLowReviewCount": [
+    {
+      "name": "Myla Magnolia",
+      "price": "US$1,395",
+      "reviewScore": 10,
+      "reviewCount": 3,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Casa Tabacalera",
+      "price": "US$1,395",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "University Tower by Kukun Apartments",
+      "price": "US$1,892",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Ambulan Mexico City",
+      "price": "US$3,266",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "LIV Reforma by Kukun Apartments",
+      "price": "US$3,646",
+      "reviewScore": 10,
+      "reviewCount": 5,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "El Cortés, Member of Relais & Châteaux",
+      "price": "US$6,156",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Casa Tasman",
+      "price": "US$7,946",
+      "reviewScore": 10,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "SanRafa Mx",
+      "price": "US$1,181",
+      "reviewScore": 9.5,
+      "reviewCount": 32,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "RM Palmas by RUZ",
+      "price": "US$1,376",
+      "reviewScore": 9.9,
+      "reviewCount": 9,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Casa Grijalva by Kukun Apartments",
+      "price": "US$2,933",
+      "reviewScore": 9.5,
+      "reviewCount": 4,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Insurgentes 724 Ciudad de México",
+      "price": "US$4,211",
+      "reviewScore": 9.5,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Las Alcobas, a Luxury Collection Hotel, Mexico City",
+      "price": "US$7,307",
+      "reviewScore": 9.7,
+      "reviewCount": 28,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Casa Talavera by Tasman",
+      "price": "US$8,753",
+      "reviewScore": 9.7,
+      "reviewCount": 3,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Capitalia Parque Lincoln",
+      "price": "US$12,060",
+      "reviewScore": 9.5,
+      "reviewCount": 27,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Suites Petit Polanco",
+      "price": "US$16,990",
+      "reviewScore": null,
+      "reviewCount": null,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Motel Éxtasis",
+      "price": "US$340",
+      "reviewScore": 9,
+      "reviewCount": 4,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Mariano Hospitality By VH",
+      "price": "US$451",
+      "reviewScore": 9.4,
+      "reviewCount": 5,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Grupo Kings Suites - Bosques de Duraznos 78",
+      "price": "US$609",
+      "reviewScore": 9.3,
+      "reviewCount": 21,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Hotel Luure Bosque Real",
+      "price": "US$891",
+      "reviewScore": 9.3,
+      "reviewCount": 7,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Casa SanRafa",
+      "price": "US$1,181",
+      "reviewScore": 9.3,
+      "reviewCount": 9,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Apartamento de 2 habitaciones junto al WTC",
+      "price": "US$1,559",
+      "reviewScore": 9,
+      "reviewCount": 11,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Altata by Oolena",
+      "price": "US$2,210",
+      "reviewScore": 9.3,
+      "reviewCount": 25,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Maximo Mexico Roma",
+      "price": "US$2,703",
+      "reviewScore": 9.4,
+      "reviewCount": 10,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Ubicuo Mexico City",
+      "price": "US$2,751",
+      "reviewScore": 9.4,
+      "reviewCount": 15,
+      "starRating": 4,
+      "address": null
+    }
+  ]
+}

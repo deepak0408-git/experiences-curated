@@ -1,0 +1,51 @@
+{
+  "origin": "Sao Paulo",
+  "googleFlights": {
+    "sorted": [
+      817,
+      891,
+      903,
+      924,
+      951,
+      965,
+      986,
+      1007,
+      1036,
+      1098,
+      1114,
+      1215,
+      1223,
+      1316,
+      1637,
+      1709,
+      1873,
+      1985
+    ],
+    "rawCount": 35
+  },
+  "kayak": {
+    "sorted": [
+      927,
+      1093,
+      1120
+    ],
+    "rawCount": 5
+  },
+  "combined": {
+    "low": 817,
+    "high": 1316,
+    "excludedLow": [],
+    "excludedHigh": [
+      1637,
+      1709,
+      1873,
+      1985
+    ],
+    "gfLow": 817,
+    "gfHigh": 1316,
+    "kyLow": 927,
+    "kyHigh": 1120
+  },
+  "finalCostLow": 872,
+  "finalCostHigh": 1218
+}

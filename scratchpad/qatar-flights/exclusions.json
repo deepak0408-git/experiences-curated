@@ -1,0 +1,606 @@
+[
+  {
+    "origin": "Amsterdam",
+    "excludedLowCount": 0,
+    "excludedHighCount": 1,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1900
+    ],
+    "lowBound": 431,
+    "highBound": 1056
+  },
+  {
+    "origin": "Bangalore",
+    "excludedLowCount": 0,
+    "excludedHighCount": 1,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1265
+    ],
+    "lowBound": 348,
+    "highBound": 909
+  },
+  {
+    "origin": "Barcelona",
+    "excludedLowCount": 0,
+    "excludedHighCount": 2,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1261,
+      1283
+    ],
+    "lowBound": 597,
+    "highBound": 1028
+  },
+  {
+    "origin": "Beijing",
+    "excludedLowCount": 0,
+    "excludedHighCount": 1,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1724
+    ],
+    "lowBound": 644,
+    "highBound": 1256
+  },
+  {
+    "origin": "Berlin",
+    "excludedLowCount": 0,
+    "excludedHighCount": 1,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      2222
+    ],
+    "lowBound": 418,
+    "highBound": 885
+  },
+  {
+    "origin": "Cairo",
+    "excludedLowCount": 0,
+    "excludedHighCount": 1,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1787
+    ],
+    "lowBound": 348,
+    "highBound": 756
+  },
+  {
+    "origin": "Casablanca",
+    "excludedLowCount": 0,
+    "excludedHighCount": 0,
+    "excludedLowVals": [],
+    "excludedHighVals": [],
+    "lowBound": 545,
+    "highBound": 984
+  },
+  {
+    "origin": "Dubai",
+    "excludedLowCount": 0,
+    "excludedHighCount": 4,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1359,
+      1406,
+      2250,
+      2737
+    ],
+    "lowBound": 297,
+    "highBound": 811
+  },
+  {
+    "origin": "Dublin",
+    "excludedLowCount": 0,
+    "excludedHighCount": 2,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1382,
+      2367
+    ],
+    "lowBound": 541,
+    "highBound": 1030
+  },
+  {
+    "origin": "Hong_Kong",
+    "excludedLowCount": 1,
+    "excludedHighCount": 5,
+    "excludedLowVals": [
+      436
+    ],
+    "excludedHighVals": [
+      1118,
+      1985,
+      2158,
+      2180,
+      4103
+    ],
+    "lowBound": 744,
+    "highBound": 960
+  },
+  {
+    "origin": "Johannesburg",
+    "excludedLowCount": 0,
+    "excludedHighCount": 2,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1131,
+      1333
+    ],
+    "lowBound": 567,
+    "highBound": 918
+  },
+  {
+    "origin": "London",
+    "excludedLowCount": 0,
+    "excludedHighCount": 6,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1816,
+      2301,
+      2681,
+      2785,
+      3302,
+      10547
+    ],
+    "lowBound": 604,
+    "highBound": 1094
+  },
+  {
+    "origin": "Madrid",
+    "excludedLowCount": 0,
+    "excludedHighCount": 1,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1281
+    ],
+    "lowBound": 493,
+    "highBound": 1032
+  },
+  {
+    "origin": "Manchester",
+    "excludedLowCount": 0,
+    "excludedHighCount": 1,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1148
+    ],
+    "lowBound": 633,
+    "highBound": 1020
+  },
+  {
+    "origin": "Manila",
+    "excludedLowCount": 0,
+    "excludedHighCount": 0,
+    "excludedLowVals": [],
+    "excludedHighVals": [],
+    "lowBound": 616,
+    "highBound": 1348
+  },
+  {
+    "origin": "Melbourne",
+    "excludedLowCount": 0,
+    "excludedHighCount": 0,
+    "excludedLowVals": [],
+    "excludedHighVals": [],
+    "lowBound": 1128,
+    "highBound": 1935
+  },
+  {
+    "origin": "Mumbai",
+    "excludedLowCount": 0,
+    "excludedHighCount": 0,
+    "excludedLowVals": [],
+    "excludedHighVals": [],
+    "lowBound": 299,
+    "highBound": 710
+  },
+  {
+    "origin": "Nairobi",
+    "excludedLowCount": 0,
+    "excludedHighCount": 1,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      920
+    ],
+    "lowBound": 374,
+    "highBound": 779
+  },
+  {
+    "origin": "New_Delhi",
+    "excludedLowCount": 0,
+    "excludedHighCount": 1,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1416
+    ],
+    "lowBound": 341,
+    "highBound": 853
+  },
+  {
+    "origin": "Seoul",
+    "excludedLowCount": 0,
+    "excludedHighCount": 7,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1519,
+      1771,
+      1783,
+      2047,
+      2076,
+      2145,
+      2563
+    ],
+    "lowBound": 892,
+    "highBound": 1236
+  },
+  {
+    "origin": "Shanghai",
+    "excludedLowCount": 0,
+    "excludedHighCount": 1,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1134
+    ],
+    "lowBound": 527,
+    "highBound": 863
+  },
+  {
+    "origin": "Singapore",
+    "excludedLowCount": 0,
+    "excludedHighCount": 10,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1142,
+      1257,
+      1399,
+      1451,
+      1525,
+      1642,
+      1945,
+      1959,
+      1983,
+      2014
+    ],
+    "lowBound": 501,
+    "highBound": 836
+  },
+  {
+    "origin": "Sydney",
+    "excludedLowCount": 0,
+    "excludedHighCount": 0,
+    "excludedLowVals": [],
+    "excludedHighVals": [],
+    "lowBound": 1248,
+    "highBound": 1804
+  },
+  {
+    "origin": "Tokyo",
+    "excludedLowCount": 0,
+    "excludedHighCount": 13,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      2253,
+      2258,
+      2408,
+      2512,
+      2576,
+      3299,
+      3587,
+      3590,
+      3664,
+      5157,
+      7341,
+      7890,
+      9287
+    ],
+    "lowBound": 1114,
+    "highBound": 1758
+  },
+  {
+    "origin": "Atlanta",
+    "excludedLowCount": 0,
+    "excludedHighCount": 1,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      2458
+    ],
+    "lowBound": 985,
+    "highBound": 1845
+  },
+  {
+    "origin": "Boston",
+    "excludedLowCount": 0,
+    "excludedHighCount": 10,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1426,
+      1576,
+      1677,
+      1682,
+      1746,
+      1757,
+      1772,
+      1776,
+      1787,
+      1982
+    ],
+    "lowBound": 942,
+    "highBound": 1201
+  },
+  {
+    "origin": "Buenos_Aires",
+    "excludedLowCount": 0,
+    "excludedHighCount": 11,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1912,
+      2379,
+      2554,
+      2557,
+      3207,
+      3578,
+      3789,
+      4455,
+      5020,
+      5036,
+      8831
+    ]
+  },
+  {
+    "origin": "Chicago",
+    "excludedLowCount": 0,
+    "excludedHighCount": 4,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1888,
+      3757,
+      3943,
+      10259
+    ],
+    "lowBound": 880,
+    "highBound": 1509
+  },
+  {
+    "origin": "Dallas",
+    "excludedLowCount": 0,
+    "excludedHighCount": 2,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      9566,
+      11120
+    ],
+    "lowBound": 914,
+    "highBound": 1444
+  },
+  {
+    "origin": "Los_Angeles",
+    "excludedLowCount": 0,
+    "excludedHighCount": 3,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      2656,
+      2811,
+      2882
+    ],
+    "lowBound": 1203,
+    "highBound": 1474
+  },
+  {
+    "origin": "Mexico_City",
+    "excludedLowCount": 0,
+    "excludedHighCount": 1,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      2184
+    ],
+    "lowBound": 1649,
+    "highBound": 1799
+  },
+  {
+    "origin": "Miami",
+    "excludedLowCount": 0,
+    "excludedHighCount": 0,
+    "excludedLowVals": [],
+    "excludedHighVals": [],
+    "lowBound": 861,
+    "highBound": 1779
+  },
+  {
+    "origin": "Milan",
+    "excludedLowCount": 0,
+    "excludedHighCount": 0,
+    "excludedLowVals": [],
+    "excludedHighVals": [],
+    "lowBound": 336,
+    "highBound": 1369
+  },
+  {
+    "origin": "Montreal",
+    "excludedLowCount": 0,
+    "excludedHighCount": 0,
+    "excludedLowVals": [],
+    "excludedHighVals": [],
+    "lowBound": 925,
+    "highBound": 1741
+  },
+  {
+    "origin": "Moscow",
+    "excludedLowCount": 0,
+    "excludedHighCount": 0,
+    "excludedLowVals": [],
+    "excludedHighVals": []
+  },
+  {
+    "origin": "Munich",
+    "excludedLowCount": 0,
+    "excludedHighCount": 2,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      2247,
+      4983
+    ],
+    "lowBound": 383,
+    "highBound": 944
+  },
+  {
+    "origin": "New_York_City",
+    "excludedLowCount": 0,
+    "excludedHighCount": 2,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      2411,
+      4330
+    ],
+    "lowBound": 932,
+    "highBound": 1598
+  },
+  {
+    "origin": "Paris",
+    "excludedLowCount": 0,
+    "excludedHighCount": 4,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1707,
+      2055,
+      2494,
+      2607
+    ],
+    "lowBound": 480,
+    "highBound": 1247
+  },
+  {
+    "origin": "Philadelphia",
+    "excludedLowCount": 0,
+    "excludedHighCount": 2,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      4449,
+      8529
+    ],
+    "lowBound": 1049,
+    "highBound": 1446
+  },
+  {
+    "origin": "Rio_de_Janeiro",
+    "excludedLowCount": 0,
+    "excludedHighCount": 3,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      2166,
+      3494,
+      4131
+    ],
+    "lowBound": 1392,
+    "highBound": 1926
+  },
+  {
+    "origin": "Rome",
+    "excludedLowCount": 0,
+    "excludedHighCount": 1,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      2625
+    ],
+    "lowBound": 336,
+    "highBound": 1318
+  },
+  {
+    "origin": "San_Francisco",
+    "excludedLowCount": 0,
+    "excludedHighCount": 12,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1423,
+      1845,
+      1898,
+      1909,
+      1953,
+      1964,
+      2003,
+      2040,
+      2058,
+      2073,
+      2180,
+      10259
+    ],
+    "lowBound": 1149,
+    "highBound": 1286
+  },
+  {
+    "origin": "Sao_Paulo",
+    "excludedLowCount": 0,
+    "excludedHighCount": 0,
+    "excludedLowVals": [],
+    "excludedHighVals": [],
+    "lowBound": 1439,
+    "highBound": 1754
+  },
+  {
+    "origin": "Stockholm",
+    "excludedLowCount": 0,
+    "excludedHighCount": 4,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      938,
+      944,
+      1023,
+      1161
+    ],
+    "lowBound": 416,
+    "highBound": 641
+  },
+  {
+    "origin": "Toronto",
+    "excludedLowCount": 0,
+    "excludedHighCount": 4,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1938,
+      1946,
+      1948,
+      3582
+    ],
+    "lowBound": 997,
+    "highBound": 1577
+  },
+  {
+    "origin": "Vancouver",
+    "excludedLowCount": 0,
+    "excludedHighCount": 4,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      2001,
+      2160,
+      2308,
+      2464
+    ],
+    "lowBound": 1231,
+    "highBound": 1571
+  },
+  {
+    "origin": "Washington_DC",
+    "excludedLowCount": 0,
+    "excludedHighCount": 4,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      2160,
+      2196,
+      3223,
+      12864
+    ],
+    "lowBound": 954,
+    "highBound": 1527
+  },
+  {
+    "origin": "Zurich",
+    "excludedLowCount": 0,
+    "excludedHighCount": 1,
+    "excludedLowVals": [],
+    "excludedHighVals": [
+      1628
+    ],
+    "lowBound": 465,
+    "highBound": 1190
+  }
+]

@@ -1,0 +1,478 @@
+[
+  {
+    "origin": "Amsterdam",
+    "gfRange": "419-1900",
+    "gfN": 42,
+    "kyRange": "443-855",
+    "kyN": 38,
+    "finalLow": 431,
+    "finalHigh": 1056,
+    "singleSource": false
+  },
+  {
+    "origin": "Atlanta",
+    "gfRange": "1034-2458",
+    "gfN": 34,
+    "kyRange": "936-1346",
+    "kyN": 44,
+    "finalLow": 985,
+    "finalHigh": 1845,
+    "singleSource": false
+  },
+  {
+    "origin": "Bangalore",
+    "gfRange": "333-1265",
+    "gfN": 65,
+    "kyRange": "362-566",
+    "kyN": 54,
+    "finalLow": 348,
+    "finalHigh": 909,
+    "singleSource": false
+  },
+  {
+    "origin": "Barcelona",
+    "gfRange": "604-1283",
+    "gfN": 30,
+    "kyRange": "590-932",
+    "kyN": 31,
+    "finalLow": 597,
+    "finalHigh": 1028,
+    "singleSource": false
+  },
+  {
+    "origin": "Beijing",
+    "gfRange": "643-1062",
+    "gfN": 8,
+    "kyRange": "645-1724",
+    "kyN": 20,
+    "finalLow": 644,
+    "finalHigh": 1256,
+    "singleSource": false
+  },
+  {
+    "origin": "Berlin",
+    "gfRange": "411-2222",
+    "gfN": 33,
+    "kyRange": "424-761",
+    "kyN": 37,
+    "finalLow": 418,
+    "finalHigh": 885,
+    "singleSource": false
+  },
+  {
+    "origin": "Boston",
+    "gfRange": "1013-1982",
+    "gfN": 38,
+    "kyRange": "871-1187",
+    "kyN": 19,
+    "finalLow": 942,
+    "finalHigh": 1201,
+    "singleSource": false
+  },
+  {
+    "origin": "Buenos_Aires",
+    "gfRange": "2379-8831",
+    "gfN": 14,
+    "kyRange": "1651-1912",
+    "kyN": 15,
+    "singleSource": false
+  },
+  {
+    "origin": "Cairo",
+    "gfRange": "367-1787",
+    "gfN": 59,
+    "kyRange": "328-412",
+    "kyN": 61,
+    "finalLow": 348,
+    "finalHigh": 756,
+    "singleSource": false
+  },
+  {
+    "origin": "Casablanca",
+    "gfRange": "562-1219",
+    "gfN": 12,
+    "kyRange": "528-749",
+    "kyN": 61,
+    "finalLow": 545,
+    "finalHigh": 984,
+    "singleSource": false
+  },
+  {
+    "origin": "Chicago",
+    "gfRange": "885-10259",
+    "gfN": 42,
+    "kyRange": "875-1345",
+    "kyN": 16,
+    "finalLow": 880,
+    "finalHigh": 1509,
+    "singleSource": false
+  },
+  {
+    "origin": "Dallas",
+    "gfRange": "950-11120",
+    "gfN": 35,
+    "kyRange": "878-1345",
+    "kyN": 12,
+    "finalLow": 914,
+    "finalHigh": 1444,
+    "singleSource": false
+  },
+  {
+    "origin": "Dubai",
+    "gfRange": "257-2737",
+    "gfN": 68,
+    "kyRange": "337-489",
+    "kyN": 35,
+    "finalLow": 297,
+    "finalHigh": 811,
+    "singleSource": false
+  },
+  {
+    "origin": "Dublin",
+    "gfRange": "572-2367",
+    "gfN": 29,
+    "kyRange": "510-799",
+    "kyN": 56,
+    "finalLow": 541,
+    "finalHigh": 1030,
+    "singleSource": false
+  },
+  {
+    "origin": "Hong_Kong",
+    "gfRange": "751-4103",
+    "gfN": 38,
+    "kyRange": "436-884",
+    "kyN": 59,
+    "finalLow": 744,
+    "finalHigh": 960,
+    "singleSource": false
+  },
+  {
+    "origin": "Johannesburg",
+    "gfRange": "580-1333",
+    "gfN": 29,
+    "kyRange": "554-816",
+    "kyN": 55,
+    "finalLow": 567,
+    "finalHigh": 918,
+    "singleSource": false
+  },
+  {
+    "origin": "London",
+    "gfRange": "572-3302",
+    "gfN": 110,
+    "kyRange": "635-10547",
+    "kyN": 60,
+    "finalLow": 604,
+    "finalHigh": 1094,
+    "singleSource": false
+  },
+  {
+    "origin": "Los_Angeles",
+    "gfRange": "1213-2882",
+    "gfN": 31,
+    "kyRange": "1193-1205",
+    "kyN": 10,
+    "finalLow": 1203,
+    "finalHigh": 1474,
+    "singleSource": false
+  },
+  {
+    "origin": "Madrid",
+    "gfRange": "483-1281",
+    "gfN": 28,
+    "kyRange": "502-883",
+    "kyN": 38,
+    "finalLow": 493,
+    "finalHigh": 1032,
+    "singleSource": false
+  },
+  {
+    "origin": "Manchester",
+    "gfRange": "605-1148",
+    "gfN": 34,
+    "kyRange": "661-933",
+    "kyN": 28,
+    "finalLow": 633,
+    "finalHigh": 1020,
+    "singleSource": false
+  },
+  {
+    "origin": "Manila",
+    "gfRange": "702-1737",
+    "gfN": 52,
+    "kyRange": "530-959",
+    "kyN": 48,
+    "finalLow": 616,
+    "finalHigh": 1348,
+    "singleSource": false
+  },
+  {
+    "origin": "Melbourne",
+    "gfRange": "1413-2017",
+    "gfN": 21,
+    "kyRange": "843-1852",
+    "kyN": 54,
+    "finalLow": 1128,
+    "finalHigh": 1935,
+    "singleSource": false
+  },
+  {
+    "origin": "Mexico_City",
+    "gfRange": "1807-2184",
+    "gfN": 26,
+    "kyRange": "1491-1545",
+    "kyN": 9,
+    "finalLow": 1649,
+    "finalHigh": 1799,
+    "singleSource": false
+  },
+  {
+    "origin": "Miami",
+    "gfRange": "848-1817",
+    "gfN": 54,
+    "kyRange": "874-1740",
+    "kyN": 38,
+    "finalLow": 861,
+    "finalHigh": 1779,
+    "singleSource": false
+  },
+  {
+    "origin": "Milan",
+    "gfRange": "348-1557",
+    "gfN": 67,
+    "kyRange": "324-1181",
+    "kyN": 57,
+    "finalLow": 336,
+    "finalHigh": 1369,
+    "singleSource": false
+  },
+  {
+    "origin": "Montreal",
+    "gfRange": "924-1923",
+    "gfN": 44,
+    "kyRange": "925-1558",
+    "kyN": 37,
+    "finalLow": 925,
+    "finalHigh": 1741,
+    "singleSource": false
+  },
+  {
+    "origin": "Moscow",
+    "gfRange": "694-1343",
+    "gfN": 45,
+    "kyRange": "—",
+    "kyN": 0,
+    "singleSource": true
+  },
+  {
+    "origin": "Mumbai",
+    "gfRange": "319-1019",
+    "gfN": 82,
+    "kyRange": "278-400",
+    "kyN": 51,
+    "finalLow": 299,
+    "finalHigh": 710,
+    "singleSource": false
+  },
+  {
+    "origin": "Munich",
+    "gfRange": "372-4983",
+    "gfN": 38,
+    "kyRange": "393-772",
+    "kyN": 41,
+    "finalLow": 383,
+    "finalHigh": 944,
+    "singleSource": false
+  },
+  {
+    "origin": "Nairobi",
+    "gfRange": "393-920",
+    "gfN": 18,
+    "kyRange": "355-711",
+    "kyN": 57,
+    "finalLow": 374,
+    "finalHigh": 779,
+    "singleSource": false
+  },
+  {
+    "origin": "New_Delhi",
+    "gfRange": "337-1416",
+    "gfN": 84,
+    "kyRange": "345-461",
+    "kyN": 45,
+    "finalLow": 341,
+    "finalHigh": 853,
+    "singleSource": false
+  },
+  {
+    "origin": "New_York_City",
+    "gfRange": "848-4330",
+    "gfN": 80,
+    "kyRange": "1015-1527",
+    "kyN": 18,
+    "finalLow": 932,
+    "finalHigh": 1598,
+    "singleSource": false
+  },
+  {
+    "origin": "Paris",
+    "gfRange": "492-2607",
+    "gfN": 72,
+    "kyRange": "468-930",
+    "kyN": 50,
+    "finalLow": 480,
+    "finalHigh": 1247,
+    "singleSource": false
+  },
+  {
+    "origin": "Philadelphia",
+    "gfRange": "1214-8529",
+    "gfN": 25,
+    "kyRange": "884-1219",
+    "kyN": 10,
+    "finalLow": 1049,
+    "finalHigh": 1446,
+    "singleSource": false
+  },
+  {
+    "origin": "Rio_de_Janeiro",
+    "gfRange": "1472-4131",
+    "gfN": 41,
+    "kyRange": "1311-1766",
+    "kyN": 35,
+    "finalLow": 1392,
+    "finalHigh": 1926,
+    "singleSource": false
+  },
+  {
+    "origin": "Rome",
+    "gfRange": "348-2625",
+    "gfN": 37,
+    "kyRange": "324-1159",
+    "kyN": 47,
+    "finalLow": 336,
+    "finalHigh": 1318,
+    "singleSource": false
+  },
+  {
+    "origin": "San_Francisco",
+    "gfRange": "1213-10259",
+    "gfN": 32,
+    "kyRange": "1085-1243",
+    "kyN": 11,
+    "finalLow": 1149,
+    "finalHigh": 1286,
+    "singleSource": false
+  },
+  {
+    "origin": "Sao_Paulo",
+    "gfRange": "1450-1876",
+    "gfN": 22,
+    "kyRange": "1428-1631",
+    "kyN": 22,
+    "finalLow": 1439,
+    "finalHigh": 1754,
+    "singleSource": false
+  },
+  {
+    "origin": "Seoul",
+    "gfRange": "971-2563",
+    "gfN": 14,
+    "kyRange": "813-1238",
+    "kyN": 62,
+    "finalLow": 892,
+    "finalHigh": 1236,
+    "singleSource": false
+  },
+  {
+    "origin": "Shanghai",
+    "gfRange": "558-1134",
+    "gfN": 6,
+    "kyRange": "495-855",
+    "kyN": 55,
+    "finalLow": 527,
+    "finalHigh": 863,
+    "singleSource": false
+  },
+  {
+    "origin": "Singapore",
+    "gfRange": "482-2014",
+    "gfN": 47,
+    "kyRange": "519-679",
+    "kyN": 58,
+    "finalLow": 501,
+    "finalHigh": 836,
+    "singleSource": false
+  },
+  {
+    "origin": "Stockholm",
+    "gfRange": "420-1161",
+    "gfN": 17,
+    "kyRange": "412-705",
+    "kyN": 31,
+    "finalLow": 416,
+    "finalHigh": 641,
+    "singleSource": false
+  },
+  {
+    "origin": "Sydney",
+    "gfRange": "1229-2007",
+    "gfN": 21,
+    "kyRange": "1267-1600",
+    "kyN": 55,
+    "finalLow": 1248,
+    "finalHigh": 1804,
+    "singleSource": false
+  },
+  {
+    "origin": "Tokyo",
+    "gfRange": "1133-9287",
+    "gfN": 55,
+    "kyRange": "1095-1489",
+    "kyN": 52,
+    "finalLow": 1114,
+    "finalHigh": 1758,
+    "singleSource": false
+  },
+  {
+    "origin": "Toronto",
+    "gfRange": "1022-3582",
+    "gfN": 68,
+    "kyRange": "972-1447",
+    "kyN": 14,
+    "finalLow": 997,
+    "finalHigh": 1577,
+    "singleSource": false
+  },
+  {
+    "origin": "Vancouver",
+    "gfRange": "1249-2464",
+    "gfN": 22,
+    "kyRange": "1213-1411",
+    "kyN": 45,
+    "finalLow": 1231,
+    "finalHigh": 1571,
+    "singleSource": false
+  },
+  {
+    "origin": "Washington_DC",
+    "gfRange": "1004-2196",
+    "gfN": 58,
+    "kyRange": "904-12864",
+    "kyN": 32,
+    "finalLow": 954,
+    "finalHigh": 1527,
+    "singleSource": false
+  },
+  {
+    "origin": "Zurich",
+    "gfRange": "442-1628",
+    "gfN": 25,
+    "kyRange": "488-1115",
+    "kyN": 36,
+    "finalLow": 465,
+    "finalHigh": 1190,
+    "singleSource": false
+  }
+]

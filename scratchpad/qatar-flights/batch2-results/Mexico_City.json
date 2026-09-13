@@ -1,0 +1,36 @@
+{
+  "origin": "Mexico_City",
+  "googleFlights": {
+    "sorted": [
+      1807,
+      1839,
+      1883,
+      1978,
+      1984,
+      2052,
+      2184
+    ],
+    "rawCount": 26
+  },
+  "kayak": {
+    "sorted": [
+      1491,
+      1545
+    ],
+    "rawCount": 9
+  },
+  "combined": {
+    "low": 1491,
+    "high": 2052,
+    "excludedLow": [],
+    "excludedHigh": [
+      2184
+    ],
+    "gfLow": 1807,
+    "gfHigh": 2052,
+    "kyLow": 1491,
+    "kyHigh": 1545
+  },
+  "finalCostLow": 1649,
+  "finalCostHigh": 1799
+}

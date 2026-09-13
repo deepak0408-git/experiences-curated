@@ -179,6 +179,15 @@ export const PACK_PRICING_CONFIG: Record<string, {
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BRAZILIAN_GP_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_BRAZILIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-09-30",
   },
+  // Real Dodo product IDs confirmed by the founder from the live Dodo
+  // dashboard, 13 Sep 2026: Early Bird pdt_0NnUVxpKwxueKwwzCIDYD (US$10),
+  // Standard pdt_0NnUW2JSZzHleqnAHK8OM (US$15). Cutoff confirmed by founder:
+  // 2026-10-31.
+  "qatar-grand-prix": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_QATAR_GP_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_QATAR_GP_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_QATAR_GP_EARLY_BIRD_CUTOFF ?? "2026-10-31",
+  },
 };
 
 // Last-resort fallback if a slug is in PACK_PRICING_CONFIG but its

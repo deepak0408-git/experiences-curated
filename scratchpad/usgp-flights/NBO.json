@@ -1,0 +1,38 @@
+{
+  "origin": "Nairobi",
+  "googleFlights": {
+    "sorted": [
+      1858,
+      1954,
+      2096,
+      3629,
+      3841
+    ],
+    "rawCount": 6
+  },
+  "kayak": {
+    "sorted": [
+      1320,
+      1357,
+      1418,
+      1433
+    ],
+    "rawCount": 55
+  },
+  "combined": {
+    "low": 1320,
+    "high": 1433,
+    "excludedLow": [],
+    "excludedHigh": [
+      1858,
+      1954,
+      2096,
+      3629,
+      3841
+    ],
+    "gfLow": null,
+    "gfHigh": null,
+    "kyLow": 1320,
+    "kyHigh": 1433
+  }
+}
