@@ -160,7 +160,14 @@ export default function ShortlistResults({
       <div className="space-y-4">
         {matching.map((event, index) => {
           const isExpanded = expandedSlug === event.slug;
-          const isBuilt = event.packStatus === "live" || event.packStatus === "built_hidden";
+          // isHidden must gate this alongside packStatus — built_hidden alone
+          // makes the pack technically loadable at /event-pack/[slug], but
+          // isHidden:true means the curator hasn't activated it for public
+          // discovery yet. Matches /calendar's getCtaState() gate (lib/
+          // queries/calendar.ts), which already checks both; this file
+          // previously checked packStatus only, showing "View full guide"
+          // for a still-hidden pack. Fixed alongside ComparisonView.tsx.
+          const isBuilt = (event.packStatus === "live" || event.packStatus === "built_hidden") && !event.isHidden;
           const overage = Math.max(0, event.totalMid - budgetMax);
 
           return (
