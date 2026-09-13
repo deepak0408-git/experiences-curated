@@ -1,0 +1,61 @@
+{
+  "origin": "Hong_Kong",
+  "googleFlights": {
+    "sorted": [
+      751,
+      819,
+      822,
+      858,
+      874,
+      901,
+      1008,
+      1036,
+      1118,
+      1985,
+      2158,
+      2180,
+      4103
+    ],
+    "rawCount": 38
+  },
+  "kayak": {
+    "sorted": [
+      436,
+      736,
+      761,
+      771,
+      822,
+      844,
+      848,
+      852,
+      854,
+      857,
+      861,
+      863,
+      864,
+      881,
+      884
+    ],
+    "rawCount": 59
+  },
+  "combined": {
+    "low": 736,
+    "high": 1036,
+    "excludedLow": [
+      436
+    ],
+    "excludedHigh": [
+      1118,
+      1985,
+      2158,
+      2180,
+      4103
+    ],
+    "gfLow": 751,
+    "gfHigh": 1036,
+    "kyLow": 736,
+    "kyHigh": 884
+  },
+  "finalCostLow": 744,
+  "finalCostHigh": 960
+}

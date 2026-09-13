@@ -1,0 +1,21 @@
+{
+  "origin": "Nairobi",
+  "googleFlights": {
+    "sorted": [],
+    "rawCount": 0
+  },
+  "kayak": {
+    "sorted": [
+      1385,
+      1388,
+      1399,
+      1402,
+      1436,
+      1450,
+      1499,
+      1817,
+      2020
+    ],
+    "rawCount": 22
+  }
+}

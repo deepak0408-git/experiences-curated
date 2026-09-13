@@ -1,0 +1,32 @@
+{
+  "origin": "Casablanca",
+  "googleFlights": {
+    "sorted": [
+      2593
+    ],
+    "rawCount": 1
+  },
+  "kayak": {
+    "sorted": [
+      1173,
+      1204,
+      1217,
+      1254,
+      1268,
+      1271
+    ],
+    "rawCount": 17
+  },
+  "combined": {
+    "low": 1173,
+    "high": 1271,
+    "excludedLow": [],
+    "excludedHigh": [
+      2593
+    ],
+    "gfLow": null,
+    "gfHigh": null,
+    "kyLow": 1173,
+    "kyHigh": 1271
+  }
+}

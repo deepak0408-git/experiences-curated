@@ -16,6 +16,7 @@
 > **Currency — USD only, site-wide:** Site-wide currency migration completed 1 Aug 2026. Every event pack price and Pro subscription price is USD, displayed as `US$` (never a bare `$`, which is ambiguous against AUD/CAD/SGD readers). This applies to *our own* pricing only — real local-price facts in editorial copy (e.g. "£2.50 for strawberries at Wimbledon") and third-party pricing we don't control (e.g. F1 Experiences' own EUR hospitality tiers) stay in their real, original currency; never convert those. Paddle's pricing block on `/pro` intentionally stays GBP (dormant, blocked on bank/KYB) — not part of this migration. See `project_usd_only_currency_migration` memory for the full before/after and the sourcing rule.
 > **DB is the master source, always — never `docs\Content Calendar.txt` for live/current state:** For any question about how many events are live, which packs are activated, blog article counts/status, experience counts, or any other "what's the current real state" question — query the DB directly (`sportingEvents`, `experiences`, `blogArticles`, etc.), never the Content Calendar file or a memory file. The Calendar and memory files can go stale the moment DB state changes after they were written; the DB cannot. This applies even when a memory file *looks* authoritative or was recently updated — verify against the DB before asserting live counts as fact. This includes validating any event before starting work on it (does it exist, what's its `pack_status`/`is_hidden`, does it already have experiences) — query `sportingEvents`/`experiences` directly, never infer event status from the Content Calendar.
 > **Research — never delegate to a subagent:** Do all web research (event experience lists, venue/hotel/restaurant verification, pricing, ticket resellers, etc.) directly, not via the Agent tool. Keeps sourcing and judgment calls in-line and reviewable turn-by-turn rather than black-boxed in a subagent report.
+> **New sporting events — `event-builder` skill ONLY, never a script or manual/inline DB write:** Creating a new `sporting_events` row (and its `destinations` row, if new) must always go through the `hub-and-spoke-event-pack` skill's event-creation flow (or whichever skill currently owns new-event creation — hub-and-spoke is the mandatory default as of 1 Aug 2026) — never a standalone `scripts/seed-*.mjs` written ad hoc, and never a raw SQL/`db.insert` run once and discarded. **Incident, 12 Sep 2026:** Qatar GP 2026 was created via a hand-written one-off script that copied São Paulo GP's column list instead of going through the skill, and silently dropped the `recurrence` column (São Paulo and Mexico City GP have the same gap, from the same shortcut) — copying a sibling event's row as "the pattern" just carries forward whatever that row was already missing, instead of checking against the full schema the way the skill's own flow does. The skill exists precisely to force that full-schema, full-checklist path every time; treat "run it through the skill" as a hard gate with no exceptions, the same way `experience-seeder` is a hard gate for experience inserts.
 > **Skill maintenance — fortnightly full read-through:** Reinforce skills with new gates proactively as real incidents happen, without waiting for the founder to confirm each addition. Roughly every 2 weeks (or whenever a skill file is next touched, if that's sooner), read the whole skill top to bottom in one pass — not just the section being edited — looking for: redundant/overlapping rules that could be merged, incidents that are now stale/superseded, and any rule that could be tightened into a clearer gate instead of prose. The goal is a skill file that gets stronger and more concise over time, not one that only grows. Never let the "add a new incident note" habit alone bloat a file — every addition is also a prompt to check whether something nearby can be tightened or removed.
 
 ---
@@ -86,6 +87,8 @@ Mexico City destination:      883ac422-5318-460f-819a-6ae784ac4b8c
 Mexico City GP 2026 event:    538fdb6f-0e39-49a6-ba77-32dec65d640a
 São Paulo destination:         9c01f960-ff51-45eb-8fd1-d55f05b7f8cb
 Brazilian GP 2026 event:      37e82616-34fd-4acb-a4b4-6575b0d674f4
+Doha destination:              4e53af71-7526-4d55-bf81-5d57d6f22136
+Qatar GP 2026 event:           8ab4460a-122e-4c1b-bcfe-81f93359c899
 ```
 
 **Live event dates — always match `sporting_events.start_date/end_date` in the DB, and the Content Calendar (`C:\Users\HP\.claude\docs\Content Calendar.txt`) is the single source of truth. If any date below ever conflicts with the Calendar or the DB, trust the DB, fix the Calendar, then fix this list — never the reverse.**
@@ -99,6 +102,7 @@ Italian GP 2026:           4 – 6 Sep 2026
 BMW PGA Championship 2026: 17 – 20 Sep 2026
 Shanghai Masters 2026:     5 – 18 Oct 2026
 Brazilian GP 2026:         6 – 8 Nov 2026
+Qatar GP 2026:             27 – 29 Nov 2026
 ```
 
 ---

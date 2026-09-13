@@ -1,0 +1,211 @@
+{
+  "url": "https://www.booking.com/searchresults.html?ss=Mexico+City&checkin=2026-10-28&checkout=2026-11-04&group_adults=2&no_rooms=1&group_children=0&order=review_score_and_price&nflt=review_score%3D70%3Bht_id%3D204&selected_currency=USD&lang=en-us&offset=25",
+  "checkin": "2026-10-28",
+  "checkout": "2026-11-04",
+  "rawHotelCount": 25,
+  "qualifyingHotelCount": 7,
+  "hotels": [
+    {
+      "name": "Kukun Edition El Angel",
+      "price": "US$2,173",
+      "reviewScore": 9.7,
+      "reviewCount": 72,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "The Amsterdam by Viadora",
+      "price": "US$4,320",
+      "reviewScore": 9.5,
+      "reviewCount": 237,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Isabella by Viadora",
+      "price": "US$5,540",
+      "reviewScore": 9.5,
+      "reviewCount": 66,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "AUTO HOTEL LEGARIA",
+      "price": "US$389",
+      "reviewScore": 9,
+      "reviewCount": 555,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Hotel Aranjuez",
+      "price": "US$850",
+      "reviewScore": 9.1,
+      "reviewCount": 379,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Be Local Lofts & Coworking",
+      "price": "US$707",
+      "reviewScore": 9.1,
+      "reviewCount": 163,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Suites Perisur Apartamentos Amueblados",
+      "price": "US$813",
+      "reviewScore": 9.3,
+      "reviewCount": 671,
+      "starRating": 4,
+      "address": null
+    }
+  ],
+  "rejectedForLowReviewCount": [
+    {
+      "name": "Myla Magnolia",
+      "price": "US$1,395",
+      "reviewScore": 10,
+      "reviewCount": 3,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Casa Tabacalera",
+      "price": "US$1,395",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "University Tower by Kukun Apartments",
+      "price": "US$1,892",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Ambulan Mexico City",
+      "price": "US$3,266",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "LIV Reforma by Kukun Apartments",
+      "price": "US$3,646",
+      "reviewScore": 10,
+      "reviewCount": 5,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "El Cortés, Member of Relais & Châteaux",
+      "price": "US$6,156",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Casa Tasman",
+      "price": "US$7,946",
+      "reviewScore": 10,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "SanRafa Mx",
+      "price": "US$1,181",
+      "reviewScore": 9.5,
+      "reviewCount": 32,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "RM Palmas by RUZ",
+      "price": "US$1,376",
+      "reviewScore": 9.9,
+      "reviewCount": 9,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Casa Grijalva by Kukun Apartments",
+      "price": "US$2,933",
+      "reviewScore": 9.5,
+      "reviewCount": 4,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Insurgentes 724 Ciudad de México",
+      "price": "US$4,211",
+      "reviewScore": 9.5,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Las Alcobas, a Luxury Collection Hotel, Mexico City",
+      "price": "US$7,307",
+      "reviewScore": 9.7,
+      "reviewCount": 28,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Casa Talavera by Tasman",
+      "price": "US$6,149",
+      "reviewScore": 9.7,
+      "reviewCount": 3,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Capitalia Parque Lincoln",
+      "price": "US$12,060",
+      "reviewScore": 9.5,
+      "reviewCount": 27,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Suites Petit Polanco",
+      "price": "US$16,990",
+      "reviewScore": null,
+      "reviewCount": null,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Motel Éxtasis",
+      "price": "US$340",
+      "reviewScore": 9,
+      "reviewCount": 4,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Mariano Hospitality By VH",
+      "price": "US$451",
+      "reviewScore": 9.4,
+      "reviewCount": 5,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Grupo Kings Suites - Bosques de Duraznos 78",
+      "price": "US$609",
+      "reviewScore": 9.3,
+      "reviewCount": 21,
+      "starRating": null,
+      "address": null
+    }
+  ]
+}

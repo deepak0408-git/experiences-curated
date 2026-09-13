@@ -1,0 +1,211 @@
+{
+  "url": "https://www.booking.com/searchresults.html?ss=Del+Valle%2C+Texas&checkin=2026-10-21&checkout=2026-10-28&group_adults=2&no_rooms=1&group_children=0&order=review_score_and_price&nflt=review_score%3D70%3Bht_id%3D204&selected_currency=USD&lang=en-us",
+  "checkin": "2026-10-21",
+  "checkout": "2026-10-28",
+  "rawHotelCount": 25,
+  "qualifyingHotelCount": 22,
+  "hotels": [
+    {
+      "name": "Homewood Suites By Hilton Austin Airport",
+      "price": "US$1,969",
+      "reviewScore": 9,
+      "reviewCount": 87,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Home2 Suites By Hilton Austin Downtown East Side",
+      "price": "US$2,313",
+      "reviewScore": 9.2,
+      "reviewCount": 170,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Atwell Suites Austin Airport by IHG",
+      "price": "US$2,568",
+      "reviewScore": 9.1,
+      "reviewCount": 320,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Holiday Inn Express & Suites Austin Airport East by IHG",
+      "price": "US$2,749",
+      "reviewScore": 9.1,
+      "reviewCount": 349,
+      "starRating": 2,
+      "address": null
+    },
+    {
+      "name": "Home2 Suites By Hilton Austin Airport",
+      "price": "US$2,964",
+      "reviewScore": 9.2,
+      "reviewCount": 63,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Candlewood Suites - Austin Airport by IHG",
+      "price": "US$2,188",
+      "reviewScore": 8.9,
+      "reviewCount": 86,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Tru By Hilton Austin Airport, Tx",
+      "price": "US$2,550",
+      "reviewScore": 8.6,
+      "reviewCount": 426,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Hilton Garden Inn Austin Airport",
+      "price": "US$2,778",
+      "reviewScore": 8.9,
+      "reviewCount": 112,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Residence Inn by Marriott Austin Airport",
+      "price": "US$2,961",
+      "reviewScore": 8.6,
+      "reviewCount": 81,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Studio Haus East 6th Austin By Kasa",
+      "price": "US$2,939",
+      "reviewScore": 8.5,
+      "reviewCount": 71,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Homewood Suites by Hilton Austin Downtown",
+      "price": "US$3,034",
+      "reviewScore": 8.8,
+      "reviewCount": 283,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Hampton Inn by Hilton Austin Downtown East Side",
+      "price": "US$3,284",
+      "reviewScore": 8.8,
+      "reviewCount": 254,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Homewood Suites by Hilton Austin South",
+      "price": "US$3,293",
+      "reviewScore": 8.9,
+      "reviewCount": 92,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Placemakr Austin Downtown, Apartments by Hilton",
+      "price": "US$3,754",
+      "reviewScore": 8.5,
+      "reviewCount": 976,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Hilton Austin Airport",
+      "price": "US$3,867",
+      "reviewScore": 8.6,
+      "reviewCount": 377,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Hyatt Place Austin Airport",
+      "price": "US$4,345",
+      "reviewScore": 8.5,
+      "reviewCount": 378,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "ARRIVE Austin",
+      "price": "US$5,742",
+      "reviewScore": 8.9,
+      "reviewCount": 353,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Hotel Van Zandt",
+      "price": "US$6,290",
+      "reviewScore": 8.9,
+      "reviewCount": 549,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "La Quinta Inn & Suites by Wyndham Austin South",
+      "price": "US$1,763",
+      "reviewScore": 8.3,
+      "reviewCount": 217,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "SpringHill Suites Austin South",
+      "price": "US$2,173",
+      "reviewScore": 8.1,
+      "reviewCount": 305,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Microtel Inn & Suites by Wyndham Austin Airport",
+      "price": "US$2,464",
+      "reviewScore": 8.1,
+      "reviewCount": 1065,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Holiday Inn Austin -Town Lake by IHG",
+      "price": "US$2,575",
+      "reviewScore": 8.1,
+      "reviewCount": 1075,
+      "starRating": 3,
+      "address": null
+    }
+  ],
+  "rejectedForLowReviewCount": [
+    {
+      "name": "Dog-friendly getaway on Rainey Street with rooftop pool and gym",
+      "price": "US$6,638",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Austin Marriott South",
+      "price": "US$3,810",
+      "reviewScore": 9,
+      "reviewCount": 34,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Residence Inn Austin South",
+      "price": "US$2,596",
+      "reviewScore": 8,
+      "reviewCount": 37,
+      "starRating": 3,
+      "address": null
+    }
+  ]
+}

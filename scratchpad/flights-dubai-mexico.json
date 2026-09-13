@@ -1,0 +1,50 @@
+{
+  "origin": "Dubai",
+  "googleFlights": {
+    "sorted": [
+      2015,
+      2021,
+      2114,
+      2353,
+      2576,
+      2582,
+      2881
+    ],
+    "rawCount": 9
+  },
+  "kayak": {
+    "sorted": [
+      1386,
+      1388,
+      1441,
+      1456,
+      1485,
+      1493,
+      1541,
+      1551,
+      1602,
+      1637,
+      1745,
+      1781,
+      2015
+    ],
+    "rawCount": 23
+  },
+  "combined": {
+    "low": 1386,
+    "high": 2114,
+    "excludedLow": [],
+    "excludedHigh": [
+      2353,
+      2576,
+      2582,
+      2881
+    ],
+    "gfLow": 2015,
+    "gfHigh": 2114,
+    "kyLow": 1386,
+    "kyHigh": 2015
+  },
+  "finalCostLow": 1701,
+  "finalCostHigh": 2065
+}

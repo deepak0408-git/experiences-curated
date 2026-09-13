@@ -1,0 +1,50 @@
+{
+  "origin": "Melbourne",
+  "googleFlights": {
+    "sorted": [
+      1619,
+      1991,
+      2193,
+      2497,
+      9316
+    ],
+    "rawCount": 11
+  },
+  "kayak": {
+    "sorted": [
+      1349,
+      1350,
+      1402,
+      1407,
+      1426,
+      1431,
+      1526,
+      1551,
+      1598,
+      1622,
+      1647,
+      1964,
+      2236
+    ],
+    "rawCount": 48
+  },
+  "combined": {
+    "low": 1349,
+    "high": 1647,
+    "excludedLow": [],
+    "excludedHigh": [
+      1964,
+      1991,
+      2193,
+      2236,
+      2497,
+      9316
+    ],
+    "gfLow": 1619,
+    "gfHigh": 1619,
+    "kyLow": 1349,
+    "kyHigh": 1647
+  },
+  "finalCostLow": 1484,
+  "finalCostHigh": 1633
+}

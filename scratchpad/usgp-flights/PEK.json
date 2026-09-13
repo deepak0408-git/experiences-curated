@@ -1,0 +1,49 @@
+{
+  "origin": "Beijing",
+  "googleFlights": {
+    "sorted": [
+      1574,
+      1684,
+      1892
+    ],
+    "rawCount": 5
+  },
+  "kayak": {
+    "sorted": [
+      959,
+      1055,
+      1200,
+      1233,
+      1246,
+      1247,
+      1248,
+      1280,
+      1281,
+      1285,
+      1291,
+      1295,
+      1303,
+      1314,
+      1318,
+      1348,
+      1351,
+      1373,
+      1461
+    ],
+    "rawCount": 59
+  },
+  "combined": {
+    "low": 959,
+    "high": 1461,
+    "excludedLow": [],
+    "excludedHigh": [
+      1574,
+      1684,
+      1892
+    ],
+    "gfLow": null,
+    "gfHigh": null,
+    "kyLow": 959,
+    "kyHigh": 1461
+  }
+}

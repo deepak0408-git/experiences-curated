@@ -1,0 +1,49 @@
+Origin,GF Range,GF n,Kayak Range,Kayak n,Proposed Final Range,Exclusions/Notes
+Amsterdam,419-1900,42,443-855,38,431-1056,standard density exclusion applied
+Atlanta,1034-2458,34,936-1346,44,985-1845,standard density exclusion applied
+Bangalore,333-1265,65,362-566,54,348-909,standard density exclusion applied
+Barcelona,604-1283,30,590-932,31,597-1028,standard density exclusion applied
+Beijing,643-1062,8,645-1724,20,644-1256,standard density exclusion applied
+Berlin,411-2222,33,424-761,37,418-885,standard density exclusion applied
+Boston,1013-1982,38,871-1187,19,942-1201,standard density exclusion applied
+Buenos Aires,2379-8831,14,1651-1912,15,FLAG - see note,No qualifying dense cluster (max density 3, threshold is 4) - GF and Kayak samples do not overlap at all (651-1912 vs 379-8831) - needs manual decision
+Cairo,367-1787,59,328-412,61,348-756,standard density exclusion applied
+Casablanca,562-1219,12,528-749,61,545-984,standard density exclusion applied
+Chicago,885-10259,42,875-1345,16,880-1509,standard density exclusion applied
+Dallas,950-11120,35,878-1345,12,914-1444,standard density exclusion applied
+Dubai,257-2737,68,337-489,35,297-811,standard density exclusion applied
+Dublin,572-2367,29,510-799,56,541-1030,standard density exclusion applied
+Hong Kong,751-4103,38,436-884,59,744-960,standard density exclusion applied
+Johannesburg,580-1333,29,554-816,55,567-918,standard density exclusion applied
+London,572-3302,110,635-10547,60,604-1094,standard density exclusion applied
+Los Angeles,1213-2882,31,1193-1205,10,1203-1474,standard density exclusion applied
+Madrid,483-1281,28,502-883,38,493-1032,standard density exclusion applied
+Manchester,605-1148,34,661-933,28,633-1020,standard density exclusion applied
+Manila,702-1737,52,530-959,48,616-1348,standard density exclusion applied
+Melbourne,1413-2017,21,843-1852,54,1128-1935,standard density exclusion applied
+Mexico City,1807-2184,26,1491-1545,9,1649-1799,standard density exclusion applied
+Miami,848-1817,54,874-1740,38,861-1779,standard density exclusion applied
+Milan,348-1557,67,324-1181,57,336-1369,standard density exclusion applied
+Montreal,924-1923,44,925-1558,37,925-1741,standard density exclusion applied
+Moscow,694-1343,45,—,0,694-1343,Single-source (Kayak 0 results, confirmed known gap) — Google Flights only, no gaps found, full dense run
+Mumbai,319-1019,82,278-400,51,299-710,standard density exclusion applied
+Munich,372-4983,38,393-772,41,383-944,standard density exclusion applied
+Nairobi,393-920,18,355-711,57,374-779,standard density exclusion applied
+New Delhi,337-1416,84,345-461,45,341-853,standard density exclusion applied
+New York City,848-4330,80,1015-1527,18,932-1598,standard density exclusion applied
+Paris,492-2607,72,468-930,50,480-1247,standard density exclusion applied
+Philadelphia,1214-8529,25,884-1219,10,1049-1446,standard density exclusion applied
+Rio de Janeiro,1472-4131,41,1311-1766,35,1392-1926,standard density exclusion applied
+Rome,348-2625,37,324-1159,47,336-1318,standard density exclusion applied
+San Francisco,1213-10259,32,1085-1243,11,1149-1286,standard density exclusion applied
+Sao Paulo,1450-1876,22,1428-1631,22,1439-1754,standard density exclusion applied
+Seoul,971-2563,14,813-1238,62,892-1236,standard density exclusion applied
+Shanghai,558-1134,6,495-855,55,527-863,standard density exclusion applied
+Singapore,482-2014,47,519-679,58,501-836,standard density exclusion applied
+Stockholm,420-1161,17,412-705,31,416-641,standard density exclusion applied
+Sydney,1229-2007,21,1267-1600,55,1248-1804,standard density exclusion applied
+Tokyo,1133-9287,55,1095-1489,52,1114-1758,standard density exclusion applied
+Toronto,1022-3582,68,972-1447,14,997-1577,standard density exclusion applied
+Vancouver,1249-2464,22,1213-1411,45,1231-1571,standard density exclusion applied
+Washington DC,1004-2196,58,904-12864,32,954-1527,standard density exclusion applied
+Zurich,442-1628,25,488-1115,36,465-1190,standard density exclusion applied

@@ -1,0 +1,148 @@
+<title>Qatar GP Flight Research</title>
+<style>
+:root{
+  --bg:#fafafa; --surface:#fff; --border:#e5e5e5; --text:#1a1a1a; --muted:#666;
+  --accent:#0a7a3d; --accent-bg:#eafaf0; --warn:#b45309; --warn-bg:#fef3e2;
+  --head-bg:#f3f3f3;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f0f0f; --surface:#1a1a1a; --border:#2c2c2c; --text:#f0f0f0; --muted:#999;
+    --accent:#4ade80; --accent-bg:#0f2318; --warn:#fbbf24; --warn-bg:#2b2107;
+    --head-bg:#202020;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f0f0f; --surface:#1a1a1a; --border:#2c2c2c; --text:#f0f0f0; --muted:#999;
+  --accent:#4ade80; --accent-bg:#0f2318; --warn:#fbbf24; --warn-bg:#2b2107;
+  --head-bg:#202020;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; margin:0; padding-block:24px; font-size:14px}
+.wrap{max-width:1200px; margin:0 auto; padding-inline:16px}
+h1{font-size:22px; font-weight:800; margin:0 0 4px}
+.sub{color:var(--muted); font-size:13px; margin:0 0 20px; line-height:1.5}
+.flag-box{background:var(--warn-bg); border:1px solid var(--warn); border-radius:8px; padding:14px 16px; margin-bottom:20px; font-size:13px; line-height:1.5}
+.flag-box strong{color:var(--warn)}
+.table-wrap{overflow-x:auto; border:1px solid var(--border); border-radius:8px}
+table{border-collapse:collapse; width:100%; min-width:900px}
+th{background:var(--head-bg); text-align:left; padding:10px 12px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.02em; color:var(--muted); border-bottom:1px solid var(--border); white-space:nowrap; position:sticky; top:0}
+td{padding:9px 12px; border-bottom:1px solid var(--border); white-space:nowrap; font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--accent-bg)}
+.origin{font-weight:700}
+.final{font-weight:700; color:var(--accent)}
+.flagged{color:var(--warn); font-weight:700}
+.n{color:var(--muted); font-size:12px}
+.note{font-size:12px; color:var(--muted); max-width:280px; white-space:normal}
+.single{display:inline-block; font-size:10px; font-weight:700; padding:1px 6px; border-radius:4px; background:var(--warn-bg); color:var(--warn); margin-left:6px}
+footer{margin-top:20px; text-align:center; color:var(--muted); font-size:12px}
+</style>
+
+<div class="wrap">
+<h1>Qatar GP 2026 — Flight Cost Research</h1>
+<p class="sub">48 origin markets → Doha, round-trip economy ≤1 stop, 22 Nov – 4 Dec 2026 window (event dates ±5 days). Google Flights + Kayak, combined-dataset density-boundary outlier exclusion per planner-data-researcher skill methodology. Doha itself is excluded (same-city rule: $0/$0, no flight needed). All figures USD.</p>
+
+<div class="flag-box">
+<strong>⚠ Buenos Aires needs your decision before seeding.</strong> Google Flights ($2,379–8,831, n=14) and Kayak ($1,651–1,912, n=15) samples don't overlap at all — a real $467 gap between the two sites' entire ranges. The density-boundary test found no cluster meeting the ≥4-neighbor threshold anywhere in the merged data (max density reached was 3, at $1,717). This isn't a normal outlier case — it may reflect a genuinely thin, volatile route. Options: (a) use Kayak's range alone ($1,651–1,912) as the more internally consistent set, (b) treat as single-source per-site like Moscow but pick a side, or (c) flag as unseedable pending a fresh, later re-check. Your call.
+</div>
+
+<div class="table-wrap">
+<table id="tbl">
+<thead>
+<tr>
+  <th>Origin</th>
+  <th>GF Range</th>
+  <th>GF n</th>
+  <th>Kayak Range</th>
+  <th>Kayak n</th>
+  <th>Proposed Final</th>
+  <th>Exclusions</th>
+</tr>
+</thead>
+<tbody id="tbody"></tbody>
+</table>
+</div>
+</div>
+
+<footer>Experiences | Curated — Qatar GP 2026 planner data, flights pass 1 (initial seeding), 13 Sep 2026</footer>
+
+<script>
+// Exclusions column: [excludedLowCount, excludedHighCount, excludedHighRange or null]
+const ROWS = [
+["Amsterdam","419-1900","42","443-855","38","431-1056", [0,1,"1900"]],
+["Atlanta","1034-2458","34","936-1346","44","985-1845", [0,1,"2458"]],
+["Bangalore","333-1265","65","362-566","54","348-909", [0,1,"1265"]],
+["Barcelona","604-1283","30","590-932","31","597-1028", [0,2,"1261-1283"]],
+["Beijing","643-1062","8","645-1724","20","644-1256", [0,1,"1724"]],
+["Berlin","411-2222","33","424-761","37","418-885", [0,1,"2222"]],
+["Boston","1013-1982","38","871-1187","19","942-1201", [0,10,"1426-1982"]],
+["Buenos Aires","2379-8831","14","1651-1912","15","FLAGGED", [0,11,"1912-8831 — but see notice: no cluster ever reached the density threshold, this exclusion count is not reliable here"]],
+["Cairo","367-1787","59","328-412","61","348-756", [0,1,"1787"]],
+["Casablanca","562-1219","12","528-749","61","545-984", [0,0,null]],
+["Chicago","885-10259","42","875-1345","16","880-1509", [0,4,"1888-10259"]],
+["Dallas","950-11120","35","878-1345","12","914-1444", [0,2,"9566-11120"]],
+["Dubai","257-2737","68","337-489","35","297-811", [0,4,"1359-2737"]],
+["Dublin","572-2367","29","510-799","56","541-1030", [0,2,"1382-2367"]],
+["Hong Kong","751-4103","38","436-884","59","744-960", [1,5,"1118-4103"]],
+["Johannesburg","580-1333","29","554-816","55","567-918", [0,2,"1131-1333"]],
+["London","572-3302","110","635-10547","60","604-1094", [0,6,"1816-10547"]],
+["Los Angeles","1213-2882","31","1193-1205","10","1203-1474", [0,3,"2656-2882"]],
+["Madrid","483-1281","28","502-883","38","493-1032", [0,1,"1281"]],
+["Manchester","605-1148","34","661-933","28","633-1020", [0,1,"1148"]],
+["Manila","702-1737","52","530-959","48","616-1348", [0,0,null]],
+["Melbourne","1413-2017","21","843-1852","54","1128-1935", [0,0,null]],
+["Mexico City","1807-2184","26","1491-1545","9","1649-1799", [0,1,"2184"]],
+["Miami","848-1817","54","874-1740","38","861-1779", [0,0,null]],
+["Milan","348-1557","67","324-1181","57","336-1369", [0,0,null]],
+["Montreal","924-1923","44","925-1558","37","925-1741", [0,0,null]],
+["Moscow","694-1343","45","—","0","694-1343", "SINGLE_SOURCE"],
+["Mumbai","319-1019","82","278-400","51","299-710", [0,0,null]],
+["Munich","372-4983","38","393-772","41","383-944", [0,2,"2247-4983"]],
+["Nairobi","393-920","18","355-711","57","374-779", [0,1,"920"]],
+["New Delhi","337-1416","84","345-461","45","341-853", [0,1,"1416"]],
+["New York City","848-4330","80","1015-1527","18","932-1598", [0,2,"2411-4330"]],
+["Paris","492-2607","72","468-930","50","480-1247", [0,4,"1707-2607"]],
+["Philadelphia","1214-8529","25","884-1219","10","1049-1446", [0,2,"4449-8529"]],
+["Rio de Janeiro","1472-4131","41","1311-1766","35","1392-1926", [0,3,"2166-4131"]],
+["Rome","348-2625","37","324-1159","47","336-1318", [0,1,"2625"]],
+["San Francisco","1213-10259","32","1085-1243","11","1149-1286", [0,12,"1423-10259"]],
+["Sao Paulo","1450-1876","22","1428-1631","22","1439-1754", [0,0,null]],
+["Seoul","971-2563","14","813-1238","62","892-1236", [0,7,"1519-2563"]],
+["Shanghai","558-1134","6","495-855","55","527-863", [0,1,"1134"]],
+["Singapore","482-2014","47","519-679","58","501-836", [0,10,"1142-2014"]],
+["Stockholm","420-1161","17","412-705","31","416-641", [0,4,"938-1161"]],
+["Sydney","1229-2007","21","1267-1600","55","1248-1804", [0,0,null]],
+["Tokyo","1133-9287","55","1095-1489","52","1114-1758", [0,13,"2253-9287"]],
+["Toronto","1022-3582","68","972-1447","14","997-1577", [0,4,"1938-3582"]],
+["Vancouver","1249-2464","22","1213-1411","45","1231-1571", [0,4,"2001-2464"]],
+["Washington DC","1004-2196","58","904-12864","32","954-1527", [0,4,"2160-12864"]],
+["Zurich","442-1628","25","488-1115","36","465-1190", [0,1,"1628"]],
+];
+
+function formatExclusion(e) {
+  if (e === "SINGLE_SOURCE") return "SINGLE-SOURCE — Kayak returned 0 results (known recurring gap for this origin). Google Flights only; 0 excluded, one continuous dense run end to end.";
+  const [lowCount, highCount, highRange] = e;
+  const parts = [];
+  parts.push(lowCount > 0 ? `${lowCount} low outlier${lowCount>1?'s':''}` : "0 low excluded");
+  parts.push(highCount > 0 ? `${highCount} high outlier${highCount>1?'s':''} (sparse tail $${highRange})` : "0 high excluded — full continuous dense run");
+  return parts.join(" · ");
+}
+
+const tbody = document.getElementById("tbody");
+tbody.innerHTML = ROWS.sort((a,b) => a[0].localeCompare(b[0])).map(r => {
+  const [origin, gfRange, gfN, kyRange, kyN, final, excl] = r;
+  const isFlagged = final === "FLAGGED";
+  const isSingle = excl === "SINGLE_SOURCE";
+  const exclText = formatExclusion(excl);
+  return `<tr>
+    <td class="origin">${origin}</td>
+    <td>$${gfRange}</td>
+    <td class="n">${gfN}</td>
+    <td>${kyRange === "—" ? "—" : "$" + kyRange}</td>
+    <td class="n">${kyN}</td>
+    <td class="${isFlagged ? 'flagged' : 'final'}">${isFlagged ? '⚠ needs decision' : '$' + final}${isSingle ? '<span class="single">single-source</span>' : ''}</td>
+    <td class="note">${exclText}</td>
+  </tr>`;
+}).join("");
+</script>

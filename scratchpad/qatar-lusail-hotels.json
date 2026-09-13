@@ -1,0 +1,611 @@
+{
+  "url": "https://www.booking.com/searchresults.html?ss=Lusail%2C+Qatar&checkin=2026-11-25&checkout=2026-12-02&group_adults=2&no_rooms=1&group_children=0&order=review_score_and_price&nflt=review_score%3D70%3Bht_id%3D204&selected_currency=USD&lang=en-us",
+  "checkin": "2026-11-25",
+  "checkout": "2026-12-02",
+  "rawHotelCount": 75,
+  "qualifyingHotelCount": 73,
+  "hotels": [
+    {
+      "name": "Century Marina Hotel - Lusail",
+      "price": "US$2,649",
+      "reviewScore": 8.5,
+      "reviewCount": 3503,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "J 22 Residence",
+      "price": "US$2,115",
+      "reviewScore": 7.1,
+      "reviewCount": 63,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "21 High Street Residence By The Torch",
+      "price": "US$2,103",
+      "reviewScore": 9.5,
+      "reviewCount": 790,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Staybridge Suites - Doha Lusail by IHG",
+      "price": "US$2,156",
+      "reviewScore": 9.1,
+      "reviewCount": 394,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Mondrian Doha",
+      "price": "US$3,729",
+      "reviewScore": 9,
+      "reviewCount": 3839,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Agora, Doha, Autograph Collection",
+      "price": "US$4,074",
+      "reviewScore": 9.1,
+      "reviewCount": 758,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "The St. Regis Doha",
+      "price": "US$4,437",
+      "reviewScore": 9.2,
+      "reviewCount": 2351,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "The St. Regis Marsa Arabia Island, The Pearl Qatar",
+      "price": "US$4,907",
+      "reviewScore": 9.2,
+      "reviewCount": 1040,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Raffles Doha",
+      "price": "US$6,647",
+      "reviewScore": 9,
+      "reviewCount": 900,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Le Royal Méridien Place Vendôme Lusail",
+      "price": "US$7,532",
+      "reviewScore": 9,
+      "reviewCount": 2337,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Katara Hills Doha, Lxr Hotels & Resorts",
+      "price": "US$13,440",
+      "reviewScore": 9.1,
+      "reviewCount": 76,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Velero Hotel Doha Lusail",
+      "price": "US$2,162",
+      "reviewScore": 8.7,
+      "reviewCount": 2484,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Grand Hyatt Doha Hotel & Villas",
+      "price": "US$4,992",
+      "reviewScore": 8.5,
+      "reviewCount": 755,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "The OQ",
+      "price": "US$5,869",
+      "reviewScore": 8.8,
+      "reviewCount": 2245,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "The Muse",
+      "price": "US$6,015",
+      "reviewScore": 8.7,
+      "reviewCount": 452,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Ezdan Palace Hotel",
+      "price": "US$1,751",
+      "reviewScore": 9.5,
+      "reviewCount": 3642,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Al Safa Royal Suites",
+      "price": "US$1,154",
+      "reviewScore": 9,
+      "reviewCount": 118,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Warwick Doha",
+      "price": "US$1,337",
+      "reviewScore": 9.1,
+      "reviewCount": 3780,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Riviera Rayhaan by Rotana Doha",
+      "price": "US$1,382",
+      "reviewScore": 9,
+      "reviewCount": 1827,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Four Points by Sheraton Doha",
+      "price": "US$1,876",
+      "reviewScore": 9,
+      "reviewCount": 912,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "The Plaza Doha, LXR Hotels & Resorts",
+      "price": "US$1,955",
+      "reviewScore": 9.2,
+      "reviewCount": 992,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Abesq Doha Hotel and Residences, an IHG Hotel",
+      "price": "US$1,982",
+      "reviewScore": 9,
+      "reviewCount": 1958,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Thirty Five Westbay Luxury Apartments",
+      "price": "US$2,104",
+      "reviewScore": 9.3,
+      "reviewCount": 53,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Kempinski Residences & Suites, Doha",
+      "price": "US$2,746",
+      "reviewScore": 9,
+      "reviewCount": 1360,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Banyan Tree Doha At La Cigale Mushaireb",
+      "price": "US$2,766",
+      "reviewScore": 9,
+      "reviewCount": 1678,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Swissôtel Corniche Park Towers Doha",
+      "price": "US$3,405",
+      "reviewScore": 9.2,
+      "reviewCount": 600,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Park Hyatt Doha, Msheireb Downtown",
+      "price": "US$3,885",
+      "reviewScore": 9.3,
+      "reviewCount": 1531,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "W Doha",
+      "price": "US$3,959",
+      "reviewScore": 9.4,
+      "reviewCount": 1785,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Four Seasons Hotel Doha",
+      "price": "US$4,751",
+      "reviewScore": 9.4,
+      "reviewCount": 1005,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Mandarin Oriental, Doha",
+      "price": "US$5,172",
+      "reviewScore": 9.3,
+      "reviewCount": 1580,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Asherij Hotel",
+      "price": "US$577",
+      "reviewScore": 8.5,
+      "reviewCount": 1815,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Royal Mansoura Residence Hotel",
+      "price": "US$554",
+      "reviewScore": 8.5,
+      "reviewCount": 1706,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Premier Inn Doha Airport",
+      "price": "US$742",
+      "reviewScore": 8.5,
+      "reviewCount": 7890,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Holiday Inn - Doha - The Business Park by IHG",
+      "price": "US$1,040",
+      "reviewScore": 8.5,
+      "reviewCount": 1040,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "West Walk Retaj Hotel",
+      "price": "US$799",
+      "reviewScore": 8.9,
+      "reviewCount": 2784,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Millennium Plaza Doha",
+      "price": "US$1,201",
+      "reviewScore": 8.5,
+      "reviewCount": 4791,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "ibis Doha",
+      "price": "US$1,295",
+      "reviewScore": 8.7,
+      "reviewCount": 3712,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "DoubleTree By Hilton Doha - Al Sadd",
+      "price": "US$1,307",
+      "reviewScore": 8.6,
+      "reviewCount": 1992,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "dusitD2 Salwa Doha",
+      "price": "US$1,335",
+      "reviewScore": 8.5,
+      "reviewCount": 7357,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Millennium Hotel Doha",
+      "price": "US$1,363",
+      "reviewScore": 8.6,
+      "reviewCount": 2841,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Sapphire Plaza Hotel",
+      "price": "US$1,033",
+      "reviewScore": 8.8,
+      "reviewCount": 5988,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Radisson Blu Hotel, Doha",
+      "price": "US$1,446",
+      "reviewScore": 8.5,
+      "reviewCount": 7069,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Hampton By Hilton Doha Old Town",
+      "price": "US$1,447",
+      "reviewScore": 8.6,
+      "reviewCount": 4149,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Souq Waqif Boutique Hotels - Tivoli",
+      "price": "US$1,298",
+      "reviewScore": 8.5,
+      "reviewCount": 2222,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Mina Hotel and Residences By The Torch",
+      "price": "US$1,305",
+      "reviewScore": 8.9,
+      "reviewCount": 1393,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Marriott Executive Apartments Doha, Le Mirage City Walk",
+      "price": "US$1,544",
+      "reviewScore": 8.6,
+      "reviewCount": 2711,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Shaza Doha",
+      "price": "US$966",
+      "reviewScore": 8.9,
+      "reviewCount": 4137,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Adagio Doha",
+      "price": "US$1,600",
+      "reviewScore": 8.7,
+      "reviewCount": 1771,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Millennium Place Doha",
+      "price": "US$1,626",
+      "reviewScore": 8.9,
+      "reviewCount": 5044,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Qabila Westbay Hotel",
+      "price": "US$1,712",
+      "reviewScore": 8.7,
+      "reviewCount": 2806,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Best Plaza West Bay Hotel",
+      "price": "US$1,511",
+      "reviewScore": 8.6,
+      "reviewCount": 1955,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "AlRayyan Hotel Doha, Curio Collection by Hilton",
+      "price": "US$1,746",
+      "reviewScore": 8.7,
+      "reviewCount": 977,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Fraser Suites Doha",
+      "price": "US$1,807",
+      "reviewScore": 8.9,
+      "reviewCount": 2282,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Aleph Doha Residences, Curio Collection By Hilton",
+      "price": "US$1,825",
+      "reviewScore": 8.8,
+      "reviewCount": 3069,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "K108 Hotel Doha",
+      "price": "US$1,615",
+      "reviewScore": 8.6,
+      "reviewCount": 669,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Somerset West Bay Doha",
+      "price": "US$1,844",
+      "reviewScore": 8.7,
+      "reviewCount": 1019,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "DoubleTree by Hilton Doha Old Town",
+      "price": "US$1,859",
+      "reviewScore": 8.8,
+      "reviewCount": 3559,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Steigenberger Hotel Doha",
+      "price": "US$1,653",
+      "reviewScore": 8.6,
+      "reviewCount": 2949,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Al Najada Doha Hotel by Tivoli",
+      "price": "US$1,749",
+      "reviewScore": 8.9,
+      "reviewCount": 2696,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Steigenberger Residence Doha",
+      "price": "US$1,860",
+      "reviewScore": 8.6,
+      "reviewCount": 1354,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "The Bentley Luxury Hotel & Suites",
+      "price": "US$1,891",
+      "reviewScore": 8.7,
+      "reviewCount": 8848,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "InterContinental Doha The City by IHG",
+      "price": "US$2,197",
+      "reviewScore": 8.7,
+      "reviewCount": 2383,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "voco Doha West Bay Suites by IHG",
+      "price": "US$2,239",
+      "reviewScore": 8.9,
+      "reviewCount": 1161,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Al Liwan Suites Rawdat Al Khail",
+      "price": "US$1,979",
+      "reviewScore": 8.5,
+      "reviewCount": 2317,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Al Aziziyah Boutique Hotel By The Torch",
+      "price": "US$2,403",
+      "reviewScore": 8.8,
+      "reviewCount": 1188,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "The Westin Doha Hotel & Spa by Marriott",
+      "price": "US$2,442",
+      "reviewScore": 8.9,
+      "reviewCount": 1122,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Wyndham Grand Doha West Bay Beach",
+      "price": "US$2,450",
+      "reviewScore": 8.9,
+      "reviewCount": 9322,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Hyatt Regency Oryx Doha",
+      "price": "US$2,499",
+      "reviewScore": 8.8,
+      "reviewCount": 3284,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Dusit Doha Hotel",
+      "price": "US$2,581",
+      "reviewScore": 8.5,
+      "reviewCount": 5617,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "The Torch Doha",
+      "price": "US$2,595",
+      "reviewScore": 8.9,
+      "reviewCount": 825,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Rixos Gulf Hotel Doha",
+      "price": "US$2,635",
+      "reviewScore": 8.8,
+      "reviewCount": 2170,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Delta Hotels by Marriott City Center Doha",
+      "price": "US$2,698",
+      "reviewScore": 8.6,
+      "reviewCount": 1592,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Andaz Doha, by Hyatt",
+      "price": "US$2,705",
+      "reviewScore": 8.7,
+      "reviewCount": 313,
+      "starRating": 5,
+      "address": null
+    }
+  ],
+  "rejectedForLowReviewCount": [
+    {
+      "name": "Artan Residence & Suites Al Sadd",
+      "price": "US$1,158",
+      "reviewScore": 9.9,
+      "reviewCount": 49,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "فندق أجنحة أبراج",
+      "price": "US$704",
+      "reviewScore": 9,
+      "reviewCount": 3,
+      "starRating": null,
+      "address": null
+    }
+  ]
+}

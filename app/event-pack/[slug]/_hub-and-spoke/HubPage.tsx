@@ -171,6 +171,20 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
     { label: "Weather", value: "Late spring in São Paulo — variable, rain likely at some point across the weekend. Bring a light rain layer regardless of the forecast." },
     { label: "Emergencies", value: "Brazil-wide emergency numbers: 190 (police), 192 (ambulance/SAMU), 193 (fire). English-speaking operators aren't guaranteed — having your hotel call on your behalf is more reliable." },
   ],
+  // Real, sourced facts from experience research (GA sellout by late Aug
+  // 2026, the free metro/shuttle transit link, Qatar's cashless-friendly
+  // but still-conservative dress norms). Session times are real and
+  // confirmed (founder-supplied screenshot, formula1.com/en/racing/2026/qatar,
+  // 13 Sep 2026) — only gate-opening times themselves remain unpublished,
+  // stated honestly per skill §2a-3.
+  "qatar-grand-prix": [
+    { label: "Night sessions", value: "Every 2026 session lands in the afternoon or evening: Friday P1 16:30, P2 20:00; Saturday P3 17:30, Qualifying 21:00; Sunday's race starts at 19:00. There is no morning on-track activity across the whole weekend." },
+    { label: "GA sold out", value: "General Admission (Lusail Hill) reportedly sold out on the official ticketing platform by late Aug 2026 — every remaining ticket for this race is a reserved grandstand or hospitality seat. Confirm current availability before planning around a GA ticket." },
+    { label: "Free transit", value: "The Doha Metro Red Line to Lusail Station, plus the ticket-holder shuttle from the station to the circuit, is free with any race ticket — no separate transport cost to budget for." },
+    { label: "Gate times", value: "Not yet published for the 2026 race — expect gates 2-3 hours before each day's first session, based on the confirmed session schedule above. Confirm exact times via formula1.com closer to race week." },
+    { label: "Dress norms", value: "Qatar is a conservative Gulf state — shoulders and knees covered is the safe default in public areas outside the circuit itself (inside the venue, standard race-day clothing is fine). Alcohol is served at licensed hotel bars and select hospitality areas, not casually in public." },
+    { label: "Emergencies", value: "Qatar-wide emergency number: 999. Hamad International Airport and major hotels have English-speaking staff on call; Hamad Medical Corporation runs the country's main public hospitals." },
+  ],
 };
 
 // Exported (27 Aug 2026) — same reasoning as QUICK_REFERENCE_BY_EVENT above.
@@ -334,6 +348,19 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
     heroFallbackImageSlug: "interlagos-autodromo-jose-carlos-pace-venue-",
     introText:
       "Interlagos is one of the few circuits left on the calendar that hasn't been sanitized into a modern, run-off-heavy layout — the elevation changes are real, the bowl-shaped grandstands put fans genuinely close to the cars, and the S do Senna, named for the corner where Ayrton Senna made his opening move in the 1990s, still carries the weight of Brazil's biggest sporting hero. This is his home circuit, in his home city, and the crowd treats every race weekend accordingly.\n\nSão Paulo itself is not a satellite city built around a race — it's one of the largest cities in the world, with its own neighborhoods, food scene, and day-trip country beyond the circuit gates. Interlagos sells no General Admission ticket at all; every seat here is a reserved grandstand, which changes how you should think about buying in compared to most other Grands Prix.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
+  // Built from real sourced facts researched during experience seeding
+  // (Lusail's 2004 MotoGP-era origin and the 2023 rebuild into a
+  // 52,000-capacity venue, the world's-longest pit lane building fact, the
+  // free metro-and-shuttle transit link, GA's real sellout by late Aug
+  // 2026) — not invented, matches every other hub-and-spoke event's pattern
+  // of drawing The Brief from real underlying content.
+  "qatar-grand-prix": {
+    displayName: "Qatar Grand Prix",
+    venueLine: "Held at Lusail International Circuit — a 2004 motorcycle track rebuilt into the world's longest pit lane building, on the outskirts of Doha.",
+    heroFallbackImageSlug: "qatar-gp-inside-lusail-circuit-mtymp2ma",
+    introText:
+      "Lusail ran real motorsport history — MotoGP's first-ever night race — nearly two decades before F1 arrived. The 2023 rebuild that turned it into today's 52,000-capacity venue, with a 402-metre pit lane building and 50 pit boxes, the largest on the calendar, didn't touch the layout underneath it. You're racing on a track that earned its reputation before this sport ever noticed it.\n\nThis is also a genuinely affordable race by F1 standards, or it was — General Admission on Lusail Hill reportedly sold out on the official platform by late Aug 2026, which tells you something about how this race is being discovered. Getting to the circuit costs nothing extra either: the Doha Metro Red Line plus the ticket-holder shuttle is free with any race ticket, a rarity on this calendar.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
 };
 

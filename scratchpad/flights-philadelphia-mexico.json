@@ -1,0 +1,55 @@
+{
+  "origin": "Philadelphia",
+  "googleFlights": {
+    "sorted": [
+      652,
+      688,
+      727,
+      757,
+      759,
+      760,
+      775,
+      786,
+      804,
+      808,
+      815,
+      822,
+      847,
+      854,
+      902,
+      932,
+      1018,
+      1052,
+      1072,
+      1082,
+      1265,
+      1484,
+      2532
+    ],
+    "rawCount": 59
+  },
+  "kayak": {
+    "sorted": [
+      605,
+      833,
+      857
+    ],
+    "rawCount": 9
+  },
+  "combined": {
+    "low": 605,
+    "high": 1082,
+    "excludedLow": [],
+    "excludedHigh": [
+      1265,
+      1484,
+      2532
+    ],
+    "gfLow": 652,
+    "gfHigh": 1082,
+    "kyLow": 605,
+    "kyHigh": 857
+  },
+  "finalCostLow": 629,
+  "finalCostHigh": 970
+}

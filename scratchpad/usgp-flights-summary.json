@@ -1,0 +1,447 @@
+[
+  {
+    "iata": "AMS",
+    "origin": "Amsterdam",
+    "gfLow": 1146,
+    "gfHigh": 2340,
+    "gfN": 26,
+    "kyLow": 1146,
+    "kyHigh": 1245,
+    "kyN": 50,
+    "finalLow": 1146,
+    "finalHigh": 1567,
+    "exLow": [],
+    "exHigh": [
+      1905,
+      2340
+    ]
+  },
+  {
+    "iata": "ATL",
+    "origin": "Atlanta",
+    "gfLow": 133,
+    "gfHigh": 869,
+    "gfN": 83,
+    "kyLow": 133,
+    "kyHigh": 257,
+    "kyN": 10,
+    "finalLow": 133,
+    "finalHigh": 563,
+    "exLow": [],
+    "exHigh": []
+  },
+  {
+    "iata": "BLR",
+    "origin": "Bangalore",
+    "gfLow": 5591,
+    "gfHigh": 5591,
+    "gfN": 1,
+    "kyLow": 993,
+    "kyHigh": 1427,
+    "kyN": 46,
+    "exLow": [],
+    "exHigh": [
+      5591
+    ]
+  },
+  {
+    "iata": "BCN",
+    "origin": "Barcelona",
+    "gfLow": 1181,
+    "gfHigh": 3019,
+    "gfN": 26,
+    "kyLow": 994,
+    "kyHigh": 1255,
+    "kyN": 29,
+    "finalLow": 1088,
+    "finalHigh": 1370,
+    "exLow": [],
+    "exHigh": [
+      1865,
+      2308,
+      2428,
+      3019
+    ]
+  },
+  {
+    "iata": "BER",
+    "origin": "Berlin",
+    "gfLow": 1233,
+    "gfHigh": 2705,
+    "gfN": 14,
+    "kyLow": 859,
+    "kyHigh": 1286,
+    "kyN": 51,
+    "finalLow": 1046,
+    "finalHigh": 1486,
+    "exLow": [],
+    "exHigh": [
+      1855,
+      1971,
+      2705
+    ]
+  },
+  {
+    "iata": "BOS",
+    "origin": "Boston",
+    "gfLow": 420,
+    "gfHigh": 1049,
+    "gfN": 82,
+    "kyLow": 426,
+    "kyHigh": 607,
+    "kyN": 11,
+    "finalLow": 423,
+    "finalHigh": 828,
+    "exLow": [],
+    "exHigh": []
+  },
+  {
+    "iata": "ORD",
+    "origin": "Chicago",
+    "gfLow": 262,
+    "gfHigh": 910,
+    "gfN": 105,
+    "kyLow": 361,
+    "kyHigh": 462,
+    "kyN": 9,
+    "finalLow": 312,
+    "finalHigh": 686,
+    "exLow": [],
+    "exHigh": []
+  },
+  {
+    "iata": "DFW",
+    "origin": "Dallas",
+    "gfLow": 217,
+    "gfHigh": 20131,
+    "gfN": 61,
+    "kyLow": null,
+    "kyHigh": null,
+    "kyN": 0,
+    "exLow": [],
+    "exHigh": []
+  },
+  {
+    "iata": "DUB",
+    "origin": "Dublin",
+    "gfLow": 1071,
+    "gfHigh": 2447,
+    "gfN": 35,
+    "kyLow": 989,
+    "kyHigh": 1134,
+    "kyN": 28,
+    "finalLow": 1030,
+    "finalHigh": 1357,
+    "exLow": [],
+    "exHigh": [
+      1747,
+      2040,
+      2198,
+      2249,
+      2447
+    ]
+  },
+  {
+    "iata": "LHR",
+    "origin": "London",
+    "gfLow": 1004,
+    "gfHigh": 7873,
+    "gfN": 60,
+    "kyLow": 970,
+    "kyHigh": 1195,
+    "kyN": 31,
+    "finalLow": 987,
+    "finalHigh": 1560,
+    "exLow": [],
+    "exHigh": [
+      2022,
+      2829,
+      4144,
+      7873
+    ]
+  },
+  {
+    "iata": "LAX",
+    "origin": "Los Angeles",
+    "gfLow": 251,
+    "gfHigh": 1105,
+    "gfN": 64,
+    "kyLow": 251,
+    "kyHigh": 350,
+    "kyN": 11,
+    "finalLow": 251,
+    "finalHigh": 728,
+    "exLow": [],
+    "exHigh": []
+  },
+  {
+    "iata": "MAD",
+    "origin": "Madrid",
+    "gfLow": 995,
+    "gfHigh": 1823,
+    "gfN": 10,
+    "kyLow": 1029,
+    "kyHigh": 1065,
+    "kyN": 26,
+    "finalLow": 1012,
+    "finalHigh": 1237,
+    "exLow": [],
+    "exHigh": [
+      1747,
+      1823
+    ]
+  },
+  {
+    "iata": "MAN",
+    "origin": "Manchester",
+    "gfLow": 1187,
+    "gfHigh": 4317,
+    "gfN": 17,
+    "kyLow": 1129,
+    "kyHigh": 1300,
+    "kyN": 49,
+    "finalLow": 1158,
+    "finalHigh": 1570,
+    "exLow": [],
+    "exHigh": [
+      4264,
+      4317
+    ]
+  },
+  {
+    "iata": "MIA",
+    "origin": "Miami",
+    "gfLow": 265,
+    "gfHigh": 9269,
+    "gfN": 135,
+    "kyLow": 265,
+    "kyHigh": 375,
+    "kyN": 11,
+    "finalLow": 265,
+    "finalHigh": 792,
+    "exLow": [],
+    "exHigh": [
+      1228,
+      6454,
+      9234,
+      9269
+    ]
+  },
+  {
+    "iata": "MXP",
+    "origin": "Milan",
+    "gfLow": 1254,
+    "gfHigh": 2117,
+    "gfN": 17,
+    "kyLow": 953,
+    "kyHigh": 1072,
+    "kyN": 12,
+    "finalLow": 1104,
+    "finalHigh": 1496,
+    "exLow": [],
+    "exHigh": [
+      2054,
+      2117
+    ]
+  },
+  {
+    "iata": "YUL",
+    "origin": "Montreal",
+    "gfLow": 613,
+    "gfHigh": 1405,
+    "gfN": 51,
+    "kyLow": 650,
+    "kyHigh": 858,
+    "kyN": 24,
+    "finalLow": 632,
+    "finalHigh": 969,
+    "exLow": [],
+    "exHigh": [
+      1348,
+      1405
+    ]
+  },
+  {
+    "iata": "MUC",
+    "origin": "Munich",
+    "gfLow": 880,
+    "gfHigh": 1906,
+    "gfN": 25,
+    "kyLow": 811,
+    "kyHigh": 899,
+    "kyN": 22,
+    "finalLow": 846,
+    "finalHigh": 1069,
+    "exLow": [],
+    "exHigh": [
+      1391,
+      1761,
+      1807,
+      1906
+    ]
+  },
+  {
+    "iata": "JFK",
+    "origin": "New York City",
+    "gfLow": 280,
+    "gfHigh": 738,
+    "gfN": 16,
+    "kyLow": 517,
+    "kyHigh": 570,
+    "kyN": 9,
+    "finalLow": 479,
+    "finalHigh": 654,
+    "exLow": [
+      280
+    ],
+    "exHigh": []
+  },
+  {
+    "iata": "CDG",
+    "origin": "Paris",
+    "gfLow": 1076,
+    "gfHigh": 1955,
+    "gfN": 10,
+    "kyLow": 1048,
+    "kyHigh": 1160,
+    "kyN": 21,
+    "finalLow": 1062,
+    "finalHigh": 1347,
+    "exLow": [],
+    "exHigh": [
+      1624,
+      1955
+    ]
+  },
+  {
+    "iata": "PHL",
+    "origin": "Philadelphia",
+    "gfLow": 281,
+    "gfHigh": 1184,
+    "gfN": 67,
+    "kyLow": 362,
+    "kyHigh": 539,
+    "kyN": 11,
+    "finalLow": 322,
+    "finalHigh": 776,
+    "exLow": [],
+    "exHigh": [
+      1184
+    ]
+  },
+  {
+    "iata": "FCO",
+    "origin": "Rome",
+    "gfLow": 1294,
+    "gfHigh": 2237,
+    "gfN": 11,
+    "kyLow": 1074,
+    "kyHigh": 1313,
+    "kyN": 40,
+    "finalLow": 1184,
+    "finalHigh": 1543,
+    "exLow": [],
+    "exHigh": [
+      1936,
+      2237
+    ]
+  },
+  {
+    "iata": "SFO",
+    "origin": "San Francisco",
+    "gfLow": 267,
+    "gfHigh": 1345,
+    "gfN": 78,
+    "kyLow": 267,
+    "kyHigh": 367,
+    "kyN": 10,
+    "finalLow": 267,
+    "finalHigh": 534,
+    "exLow": [],
+    "exHigh": [
+      920,
+      1345
+    ]
+  },
+  {
+    "iata": "ARN",
+    "origin": "Stockholm",
+    "gfLow": 968,
+    "gfHigh": 2600,
+    "gfN": 7,
+    "kyLow": 930,
+    "kyHigh": 1034,
+    "kyN": 36,
+    "finalLow": 949,
+    "finalHigh": 1031,
+    "exLow": [],
+    "exHigh": [
+      1956,
+      2600
+    ]
+  },
+  {
+    "iata": "SVO",
+    "error": "spawnSync node ETIMEDOUT"
+  },
+  {
+    "iata": "YYZ",
+    "origin": "Toronto",
+    "gfLow": 292,
+    "gfHigh": 1231,
+    "gfN": 112,
+    "kyLow": 279,
+    "kyHigh": 1166,
+    "kyN": 21,
+    "finalLow": 286,
+    "finalHigh": 1199,
+    "exLow": [],
+    "exHigh": []
+  },
+  {
+    "iata": "YVR",
+    "origin": "Vancouver",
+    "gfLow": 312,
+    "gfHigh": 930,
+    "gfN": 43,
+    "kyLow": 311,
+    "kyHigh": 391,
+    "kyN": 9,
+    "finalLow": 312,
+    "finalHigh": 661,
+    "exLow": [],
+    "exHigh": []
+  },
+  {
+    "iata": "IAD",
+    "origin": "Washington D.C.",
+    "gfLow": 278,
+    "gfHigh": 815,
+    "gfN": 14,
+    "kyLow": 538,
+    "kyHigh": 622,
+    "kyN": 6,
+    "finalLow": 408,
+    "finalHigh": 594,
+    "exLow": [],
+    "exHigh": [
+      815
+    ]
+  },
+  {
+    "iata": "ZRH",
+    "origin": "Zurich",
+    "gfLow": 892,
+    "gfHigh": 1698,
+    "gfN": 22,
+    "kyLow": 897,
+    "kyHigh": 1012,
+    "kyN": 8,
+    "finalLow": 895,
+    "finalHigh": 1243,
+    "exLow": [],
+    "exHigh": [
+      1698
+    ]
+  }
+]

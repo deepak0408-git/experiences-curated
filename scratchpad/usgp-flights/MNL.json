@@ -1,0 +1,44 @@
+{
+  "origin": "Manila",
+  "googleFlights": {
+    "sorted": [
+      1524,
+      1561,
+      1635,
+      2354
+    ],
+    "rawCount": 10
+  },
+  "kayak": {
+    "sorted": [
+      943,
+      980,
+      1024,
+      1027,
+      1072,
+      1098,
+      1108,
+      1133,
+      1134,
+      1139,
+      1145,
+      1262
+    ],
+    "rawCount": 57
+  },
+  "combined": {
+    "low": 943,
+    "high": 1262,
+    "excludedLow": [],
+    "excludedHigh": [
+      1524,
+      1561,
+      1635,
+      2354
+    ],
+    "gfLow": null,
+    "gfHigh": null,
+    "kyLow": 943,
+    "kyHigh": 1262
+  }
+}
