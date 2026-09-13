@@ -1,0 +1,42 @@
+{
+  "origin": "Doha",
+  "googleFlights": {
+    "sorted": [
+      1954,
+      2014,
+      2066,
+      2323
+    ],
+    "rawCount": 10
+  },
+  "kayak": {
+    "sorted": [
+      1287,
+      1534,
+      1543,
+      1560,
+      1668,
+      1680,
+      1691,
+      1703,
+      1753,
+      1820
+    ],
+    "rawCount": 56
+  },
+  "combined": {
+    "low": 1287,
+    "high": 2014,
+    "excludedLow": [],
+    "excludedHigh": [
+      2066,
+      2323
+    ],
+    "gfLow": 1954,
+    "gfHigh": 2014,
+    "kyLow": 1287,
+    "kyHigh": 1820
+  },
+  "finalCostLow": 1621,
+  "finalCostHigh": 1917
+}

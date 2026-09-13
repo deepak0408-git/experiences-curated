@@ -1,0 +1,51 @@
+{
+  "origin": "Singapore",
+  "googleFlights": {
+    "sorted": [
+      1093,
+      1551,
+      1666,
+      1721,
+      1894,
+      2434,
+      2596,
+      2669
+    ],
+    "rawCount": 15
+  },
+  "kayak": {
+    "sorted": [
+      1090,
+      1096,
+      1100,
+      1101,
+      1123,
+      1157,
+      1394,
+      1965
+    ],
+    "rawCount": 20
+  },
+  "combined": {
+    "low": 1090,
+    "high": 1157,
+    "excludedLow": [],
+    "excludedHigh": [
+      1394,
+      1551,
+      1666,
+      1721,
+      1894,
+      1965,
+      2434,
+      2596,
+      2669
+    ],
+    "gfLow": 1093,
+    "gfHigh": 1093,
+    "kyLow": 1090,
+    "kyHigh": 1157
+  },
+  "finalCostLow": 1092,
+  "finalCostHigh": 1125
+}

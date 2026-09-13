@@ -1,0 +1,50 @@
+{
+  "origin": "Manchester",
+  "googleFlights": {
+    "sorted": [
+      605,
+      701,
+      708,
+      724,
+      861,
+      867,
+      878,
+      890,
+      893,
+      942,
+      950,
+      1106,
+      1148
+    ],
+    "rawCount": 34
+  },
+  "kayak": {
+    "sorted": [
+      661,
+      686,
+      724,
+      828,
+      837,
+      844,
+      855,
+      921,
+      930,
+      933
+    ],
+    "rawCount": 28
+  },
+  "combined": {
+    "low": 605,
+    "high": 1106,
+    "excludedLow": [],
+    "excludedHigh": [
+      1148
+    ],
+    "gfLow": 605,
+    "gfHigh": 1106,
+    "kyLow": 661,
+    "kyHigh": 933
+  },
+  "finalCostLow": 633,
+  "finalCostHigh": 1020
+}

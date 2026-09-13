@@ -1,0 +1,53 @@
+{
+  "origin": "Chicago",
+  "googleFlights": {
+    "sorted": [
+      885,
+      895,
+      1206,
+      1214,
+      1238,
+      1241,
+      1288,
+      1289,
+      1292,
+      1372,
+      1473,
+      1503,
+      1540,
+      1672,
+      1888,
+      3757,
+      3943,
+      10259
+    ],
+    "rawCount": 42
+  },
+  "kayak": {
+    "sorted": [
+      875,
+      915,
+      1031,
+      1150,
+      1345
+    ],
+    "rawCount": 16
+  },
+  "combined": {
+    "low": 875,
+    "high": 1672,
+    "excludedLow": [],
+    "excludedHigh": [
+      1888,
+      3757,
+      3943,
+      10259
+    ],
+    "gfLow": 885,
+    "gfHigh": 1672,
+    "kyLow": 875,
+    "kyHigh": 1345
+  },
+  "finalCostLow": 880,
+  "finalCostHigh": 1509
+}

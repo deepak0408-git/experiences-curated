@@ -1,0 +1,13 @@
+{
+  "origin": "Moscow",
+  "googleFlights": {
+    "sorted": [
+      2806,
+      3019,
+      3287
+    ],
+    "rawCount": 5
+  },
+  "singleSource": true,
+  "reason": "Kayak returns zero/timeout for Moscow routes — known gap per planner-data-researcher skill"
+}

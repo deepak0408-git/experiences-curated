@@ -1,0 +1,211 @@
+{
+  "url": "https://www.booking.com/searchresults.html?ss=Downtown+Austin%2C+Texas&checkin=2026-10-21&checkout=2026-10-28&group_adults=2&no_rooms=1&group_children=0&order=review_score_and_price&nflt=review_score%3D70%3Bht_id%3D204&selected_currency=USD&lang=en-us",
+  "checkin": "2026-10-21",
+  "checkout": "2026-10-28",
+  "rawHotelCount": 25,
+  "qualifyingHotelCount": 23,
+  "hotels": [
+    {
+      "name": "Austin Proper Hotel, a Member of Design Hotels",
+      "price": "US$19,205",
+      "reviewScore": 9.2,
+      "reviewCount": 94,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Hampton Inn and Suites Austin University Capitol",
+      "price": "US$3,510",
+      "reviewScore": 8.9,
+      "reviewCount": 475,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Placemakr Austin Downtown, Apartments by Hilton",
+      "price": "US$3,754",
+      "reviewScore": 8.5,
+      "reviewCount": 976,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "DoubleTree Suites by Hilton Austin Downtown Capitol",
+      "price": "US$3,923",
+      "reviewScore": 8.5,
+      "reviewCount": 175,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Tommie Austin, JDV by Hyatt",
+      "price": "US$4,216",
+      "reviewScore": 8.5,
+      "reviewCount": 298,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Kasa Downtown Austin",
+      "price": "US$4,200",
+      "reviewScore": 8.6,
+      "reviewCount": 83,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "The Stephen F Austin Royal Sonesta Hotel",
+      "price": "US$4,305",
+      "reviewScore": 8.7,
+      "reviewCount": 290,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Hyatt House Austin/Downtown",
+      "price": "US$4,433",
+      "reviewScore": 8.6,
+      "reviewCount": 1614,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Omni Austin Hotel Downtown",
+      "price": "US$4,594",
+      "reviewScore": 8.9,
+      "reviewCount": 448,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Hyatt Place Austin Downtown",
+      "price": "US$5,072",
+      "reviewScore": 8.5,
+      "reviewCount": 913,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Hampton Inn & Suites Austin - Downtown",
+      "price": "US$5,095",
+      "reviewScore": 8.6,
+      "reviewCount": 746,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Renaissance Austin Downtown Hotel",
+      "price": "US$5,553",
+      "reviewScore": 8.7,
+      "reviewCount": 545,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "The Cabins at East Austin Hotel",
+      "price": "US$2,910",
+      "reviewScore": 8,
+      "reviewCount": 95,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "citizenM Austin Downtown",
+      "price": "US$3,809",
+      "reviewScore": 8.4,
+      "reviewCount": 2190,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Hilton Garden Inn Austin University Capitol District",
+      "price": "US$4,093",
+      "reviewScore": 8.4,
+      "reviewCount": 415,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Kasa 2nd Street Austin",
+      "price": "US$4,509",
+      "reviewScore": 8.3,
+      "reviewCount": 198,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Hyatt Centric Congress Avenue Austin",
+      "price": "US$5,053",
+      "reviewScore": 8,
+      "reviewCount": 317,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "The Driskill",
+      "price": "US$8,131",
+      "reviewScore": 8.1,
+      "reviewCount": 283,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "The LINE Austin",
+      "price": "US$7,878",
+      "reviewScore": 7.8,
+      "reviewCount": 324,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Hilton Garden Inn Austin Downtown",
+      "price": "US$4,264",
+      "reviewScore": 7.2,
+      "reviewCount": 322,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Drury Inn & Suites Austin North",
+      "price": "US$1,928",
+      "reviewScore": 9.1,
+      "reviewCount": 1097,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Homewood Suites By Hilton Austin Airport",
+      "price": "US$1,969",
+      "reviewScore": 9,
+      "reviewCount": 87,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Home2 Suites By Hilton Austin Downtown East Side",
+      "price": "US$2,313",
+      "reviewScore": 9.2,
+      "reviewCount": 170,
+      "starRating": 3,
+      "address": null
+    }
+  ],
+  "rejectedForLowReviewCount": [
+    {
+      "name": "Tru By Hilton Austin University Capitol District",
+      "price": "US$3,018",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Dog-friendly getaway on Rainey Street with rooftop pool and gym",
+      "price": "US$6,638",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "origin": "Paris",
+  "googleFlights": {
+    "sorted": [
+      1076,
+      1184,
+      1271,
+      1382,
+      1387,
+      1493,
+      1533,
+      1624,
+      1955
+    ],
+    "rawCount": 10
+  },
+  "kayak": {
+    "sorted": [
+      1048,
+      1065,
+      1070,
+      1089,
+      1108,
+      1113,
+      1115,
+      1132,
+      1160
+    ],
+    "rawCount": 21
+  },
+  "combined": {
+    "low": 1048,
+    "high": 1533,
+    "excludedLow": [],
+    "excludedHigh": [
+      1624,
+      1955
+    ],
+    "gfLow": 1076,
+    "gfHigh": 1533,
+    "kyLow": 1048,
+    "kyHigh": 1160
+  },
+  "finalCostLow": 1062,
+  "finalCostHigh": 1347
+}

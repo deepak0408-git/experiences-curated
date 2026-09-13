@@ -1,0 +1,50 @@
+{
+  "origin": "Rome",
+  "googleFlights": {
+    "sorted": [
+      1294,
+      1385,
+      1406,
+      1418,
+      1543,
+      1690,
+      1763,
+      1773,
+      1936,
+      2237
+    ],
+    "rawCount": 11
+  },
+  "kayak": {
+    "sorted": [
+      1074,
+      1080,
+      1116,
+      1151,
+      1190,
+      1191,
+      1192,
+      1193,
+      1194,
+      1195,
+      1223,
+      1313
+    ],
+    "rawCount": 40
+  },
+  "combined": {
+    "low": 1074,
+    "high": 1773,
+    "excludedLow": [],
+    "excludedHigh": [
+      1936,
+      2237
+    ],
+    "gfLow": 1294,
+    "gfHigh": 1773,
+    "kyLow": 1074,
+    "kyHigh": 1313
+  },
+  "finalCostLow": 1184,
+  "finalCostHigh": 1543
+}

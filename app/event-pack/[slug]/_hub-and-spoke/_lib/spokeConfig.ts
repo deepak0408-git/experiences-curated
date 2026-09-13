@@ -303,4 +303,29 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "map", label: "Venue Map", question: "What facilities are available at Interlagos?", status: "public", imageSlug: "interlagos-autodromo-jose-carlos-pace-venue-" },
     { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the São Paulo Grand Prix?", status: "teaser", imageSlug: "brazilian-gp-hospitality-paddock-club-" },
   ],
+  // Qatar Grand Prix 2026 — scaffolded 13 Sep 2026. All 22 experiences real/
+  // seeded (status: in_review — publish via /curator/review before spoke
+  // cards render), all 22 already hero-imaged (63 candidates researched,
+  // curator review in progress as of this scaffolding — see project memory).
+  // Real imageSlug values used directly since images already exist, per the
+  // skill's §3 rule for packs where hero images predate spoke-building.
+  // Weather/Arrival/Tickets use the skill's standing cross-event default
+  // images (imageOverride), set here at config-creation time per the
+  // skill's explicit rule. Spoke-mapping agreed with the founder 13 Sep
+  // 2026: sightseeing (museums, Pearl/Katara, Souq Waqif, desert safari)
+  // all on Day Trips; Fan Zone on Arrival (not Tickets).
+  "qatar-grand-prix": [
+    { id: "cost", label: "Cost Guide", question: "How much does a Qatar Grand Prix weekend cost?", status: "teaser", imageSlug: "qatar-gp-inside-lusail-circuit-mtymp2ma" },
+    { id: "tickets", label: "Ticket Guide", question: "Which Lusail grandstand is the best buy?", status: "teaser", imageSlug: "qatar-gp-ticket-guide-mtymjjwm", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the Qatar Grand Prix?", status: "teaser", imageSlug: "qatar-gp-lusail-marina-hotels-mtymsd31" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to Lusail Circuit?", status: "public", imageSlug: "qatar-gp-getting-there-mtymqst2" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the Qatar Grand Prix, and what should I pack?", status: "public", imageSlug: "qatar-gp-khor-al-adaid-mtyn3hq9", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Qatar Grand Prix?", status: "public", imageSlug: "qatar-gp-pearl-katara-mtyn4luu" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat in Doha during Qatar Grand Prix race weekend?", status: "teaser", imageSlug: "qatar-gp-qatari-cuisine-souq-mtymxb0w" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best things to do in Doha beyond the race?", status: "teaser", imageSlug: "qatar-gp-museum-islamic-art-mtyn1cdh" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does a Qatar Grand Prix race weekend actually look like?", status: "teaser", imageSlug: "qatar-gp-doha-fan-city-tour-mtyn7fqi" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at Lusail Circuit gates?", status: "public", imageSlug: "qatar-gp-fan-zone-mtympq8u", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at Lusail International Circuit?", status: "public", imageSlug: "qatar-gp-inside-lusail-circuit-mtymp2ma" },
+    { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Qatar Grand Prix?", status: "teaser", imageSlug: "qatar-gp-paddock-champions-club-mtymkynt" },
+  ],
 };

@@ -1,0 +1,38 @@
+{
+  "origin": "New Delhi",
+  "googleFlights": {
+    "sorted": [
+      1324,
+      1426,
+      1825
+    ],
+    "rawCount": 9
+  },
+  "kayak": {
+    "sorted": [
+      1281,
+      1287,
+      1307,
+      1318,
+      1342,
+      1394,
+      1409,
+      1421
+    ],
+    "rawCount": 37
+  },
+  "combined": {
+    "low": 1281,
+    "high": 1426,
+    "excludedLow": [],
+    "excludedHigh": [
+      1825
+    ],
+    "gfLow": 1324,
+    "gfHigh": 1426,
+    "kyLow": 1281,
+    "kyHigh": 1421
+  },
+  "finalCostLow": 1303,
+  "finalCostHigh": 1424
+}

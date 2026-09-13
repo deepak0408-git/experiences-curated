@@ -1,0 +1,12 @@
+import { config } from "dotenv";
+config({ path: ".env.local" });
+import postgres from "postgres";
+const sql = postgres(process.env.DATABASE_URL, { ssl: "require", prepare: false });
+const rows = await sql`SELECT id, body_content, why_its_special, insider_tips, what_to_avoid, practical_info FROM experiences WHERE slug = 'autodromo-hermanos-rodriguez-venue-mtpdn8im'`;
+console.log("ID:", rows[0].id);
+console.log("\nBODY:\n", rows[0].body_content);
+console.log("\nWHY SPECIAL:\n", rows[0].why_its_special);
+console.log("\nINSIDER TIPS:\n", JSON.stringify(rows[0].insider_tips, null, 2));
+console.log("\nWHAT TO AVOID:\n", rows[0].what_to_avoid);
+console.log("\nPRACTICAL INFO:\n", JSON.stringify(rows[0].practical_info, null, 2));
+await sql.end();
