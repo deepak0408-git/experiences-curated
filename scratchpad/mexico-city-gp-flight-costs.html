@@ -1,0 +1,596 @@
+<!doctype html>
+<title>Mexico City GP Flight Costs</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0A0A0A;
+    --surface: #141414;
+    --surface-2: #1A1A1A;
+    --border: #2A2A2A;
+    --muted: #A3A3A3;
+    --fg: #FFFFFF;
+    --accent: #AAFF00;
+    --dim: #6A6A6A;
+    --warn-bg: #2A2200;
+    --warn-border: #6A5A00;
+    --warn-text: #E8D44D;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, sans-serif;
+    line-height: 1.5;
+  }
+
+  header {
+    padding: 28px 32px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 6px;
+  }
+  h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: clamp(20px, 3vw, 26px);
+    margin: 0 0 6px;
+  }
+  .sub {
+    color: var(--muted);
+    font-size: 13px;
+    margin: 0;
+    max-width: 70ch;
+  }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 14px 32px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .legend b { color: var(--fg); }
+
+  main {
+    padding: 24px 32px 60px;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    min-width: 920px;
+  }
+
+  thead th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--dim);
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+  }
+  tbody tr:hover {
+    background: var(--surface);
+  }
+  tbody tr.single-source {
+    background: rgba(232, 212, 77, 0.04);
+  }
+
+  td {
+    padding: 9px 12px;
+    vertical-align: top;
+  }
+
+  .origin {
+    font-weight: 700;
+    color: var(--fg);
+    white-space: nowrap;
+  }
+  .badge {
+    display: inline-block;
+    margin-left: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--warn-text);
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    padding: 2px 6px;
+    border-radius: 2px;
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+    color: var(--muted);
+  }
+  .num.muted { color: var(--dim); text-align: right; }
+  .num.final { color: var(--accent); font-weight: 700; }
+
+  .exclusions {
+    color: var(--dim);
+    font-size: 12px;
+    max-width: 320px;
+  }
+
+  footer {
+    padding: 20px 32px 50px;
+    color: var(--dim);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+  }
+</style>
+
+<header>
+  <p class="eyebrow">Experiences | Curated · Planner Data Research</p>
+  <h1>Mexico City GP 2026 — Flight Cost Research</h1>
+  <p class="sub">49 origin markets, round-trip economy ≤1 stop, 25 Oct–6 Nov 2026 search window. Google Flights + Kayak, combined-dataset density-boundary outlier exclusion. Awaiting approval before any DB write.</p>
+</header>
+
+<div class="legend">
+  <span><b>GF</b> = Google Flights raw range / sample count</span>
+  <span><b>Kayak</b> = Kayak raw range / sample count</span>
+  <span><b>Proposed Final Range</b> = average of both sites' in-range low/high after outlier exclusion</span>
+  <span><span class="badge" style="margin:0">single-source</span> = only one site returned usable data for this route</span>
+</div>
+
+<main>
+  <table>
+    <thead>
+      <tr>
+        <th>Origin</th>
+        <th>GF Range</th>
+        <th>GF n</th>
+        <th>Kayak Range</th>
+        <th>Kayak n</th>
+        <th>Proposed Final Range</th>
+        <th>Exclusions</th>
+      </tr>
+    </thead>
+    <tbody>
+  <tr>
+    <td class="origin">Amsterdam</td>
+    <td class="num">$1,139–4,513</td>
+    <td class="num muted">52</td>
+    <td class="num">$1,162–1,400</td>
+    <td class="num muted">12</td>
+    <td class="num final">$1,151–1,619</td>
+    <td class="exclusions">11 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Atlanta</td>
+    <td class="num">$471–3,377</td>
+    <td class="num muted">63</td>
+    <td class="num">$407–774</td>
+    <td class="num muted">34</td>
+    <td class="num final">$439–1,044</td>
+    <td class="exclusions">2 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Bangalore</td>
+    <td class="num">$3,068–3,068</td>
+    <td class="num muted">1</td>
+    <td class="num">$1,651–2,109</td>
+    <td class="num muted">57</td>
+    <td class="num final">$1,651–2,109</td>
+    <td class="exclusions">1 high outlier (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Barcelona</td>
+    <td class="num">$1,225–3,751</td>
+    <td class="num muted">49</td>
+    <td class="num">$1,302–3,362</td>
+    <td class="num muted">13</td>
+    <td class="num final">$1,264–1,677</td>
+    <td class="exclusions">11 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Beijing</td>
+    <td class="num">$2,092–4,648</td>
+    <td class="num muted">6</td>
+    <td class="num">$1,215–2,292</td>
+    <td class="num muted">60</td>
+    <td class="num final">$1,215–1,565</td>
+    <td class="exclusions">8 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Berlin</td>
+    <td class="num">$1,400–2,928</td>
+    <td class="num muted">31</td>
+    <td class="num">$1,003–1,187</td>
+    <td class="num muted">11</td>
+    <td class="num final">$1,202–1,532</td>
+    <td class="exclusions">5 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Boston</td>
+    <td class="num">$642–2,543</td>
+    <td class="num muted">60</td>
+    <td class="num">$618–1,175</td>
+    <td class="num muted">10</td>
+    <td class="num final">$630–1,257</td>
+    <td class="exclusions">4 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Buenos Aires</td>
+    <td class="num">$1,874–4,712</td>
+    <td class="num muted">44</td>
+    <td class="num">$938–2,374</td>
+    <td class="num muted">42</td>
+    <td class="num final">$938–1,546</td>
+    <td class="exclusions">33 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Cairo</td>
+    <td class="num">$1,950–3,089</td>
+    <td class="num muted">11</td>
+    <td class="num">$1,112–1,731</td>
+    <td class="num muted">53</td>
+    <td class="num final">$1,112–1,476</td>
+    <td class="exclusions">9 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Casablanca</td>
+    <td class="num">$1,599–2,336</td>
+    <td class="num muted">9</td>
+    <td class="num">$1,326–1,760</td>
+    <td class="num muted">55</td>
+    <td class="num final">$1,463–1,793</td>
+    <td class="exclusions">3 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Chicago</td>
+    <td class="num">$540–3,940</td>
+    <td class="num muted">105</td>
+    <td class="num">$334–596</td>
+    <td class="num muted">59</td>
+    <td class="num final">$437–1,064</td>
+    <td class="exclusions">6 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Dallas</td>
+    <td class="num">$383–2,253</td>
+    <td class="num muted">77</td>
+    <td class="num">$293–509</td>
+    <td class="num muted">46</td>
+    <td class="num final">$338–1,137</td>
+    <td class="exclusions">3 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Doha</td>
+    <td class="num">$2,214–3,043</td>
+    <td class="num muted">10</td>
+    <td class="num">$1,630–2,015</td>
+    <td class="num muted">53</td>
+    <td class="num final">$1,922–2,115</td>
+    <td class="exclusions">4 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Dubai</td>
+    <td class="num">$2,015–2,881</td>
+    <td class="num muted">9</td>
+    <td class="num">$1,386–2,015</td>
+    <td class="num muted">23</td>
+    <td class="num final">$1,701–2,065</td>
+    <td class="exclusions">4 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Dublin</td>
+    <td class="num">$1,116–3,000</td>
+    <td class="num muted">35</td>
+    <td class="num">$1,141–1,361</td>
+    <td class="num muted">12</td>
+    <td class="num final">$1,129–1,636</td>
+    <td class="exclusions">5 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Hong Kong</td>
+    <td class="num">$1,605–6,922</td>
+    <td class="num muted">33</td>
+    <td class="num">$1,133–1,734</td>
+    <td class="num muted">52</td>
+    <td class="num final">$1,369–2,169</td>
+    <td class="exclusions">17 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Johannesburg</td>
+    <td class="num">$1,716–2,865</td>
+    <td class="num muted">13</td>
+    <td class="num">$1,399–1,617</td>
+    <td class="num muted">60</td>
+    <td class="num final">$1,558–2,241</td>
+    <td class="exclusions">none</td>
+  </tr>
+  <tr>
+    <td class="origin">London</td>
+    <td class="num">$1,000–4,167</td>
+    <td class="num muted">79</td>
+    <td class="num">$1,017–1,143</td>
+    <td class="num muted">11</td>
+    <td class="num final">$1,009–1,753</td>
+    <td class="exclusions">7 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Los Angeles</td>
+    <td class="num">$553–5,781</td>
+    <td class="num muted">74</td>
+    <td class="num">$287–683</td>
+    <td class="num muted">49</td>
+    <td class="num final">$420–942</td>
+    <td class="exclusions">5 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Madrid</td>
+    <td class="num">$1,074–3,579</td>
+    <td class="num muted">54</td>
+    <td class="num">$1,141–1,770</td>
+    <td class="num muted">17</td>
+    <td class="num final">$1,108–2,154</td>
+    <td class="exclusions">5 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Manchester</td>
+    <td class="num">$1,410–8,490</td>
+    <td class="num muted">19</td>
+    <td class="num">$1,230–1,403</td>
+    <td class="num muted">17</td>
+    <td class="num final">$1,320–1,703</td>
+    <td class="exclusions">5 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Manila</td>
+    <td class="num">$1,704–6,921</td>
+    <td class="num muted">8</td>
+    <td class="num">$1,172–1,575</td>
+    <td class="num muted">57</td>
+    <td class="num final">$1,438–1,640</td>
+    <td class="exclusions">6 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Melbourne</td>
+    <td class="num">$1,619–9,316</td>
+    <td class="num muted">11</td>
+    <td class="num">$1,349–2,236</td>
+    <td class="num muted">48</td>
+    <td class="num final">$1,484–1,633</td>
+    <td class="exclusions">6 high outliers (sparse tail)</td>
+  </tr>
+  <tr class="single-source">
+    <td class="origin">Mexico City<span class="badge">N/A</span></td>
+    <td class="num">—</td>
+    <td class="num muted">0</td>
+    <td class="num">—</td>
+    <td class="num muted">0</td>
+    <td class="num final">$0–0</td>
+    <td class="exclusions">Same-city origin — no research, $0 direct seed per standing rule</td>
+  </tr>
+  <tr>
+    <td class="origin">Miami</td>
+    <td class="num">$484–2,929</td>
+    <td class="num muted">111</td>
+    <td class="num">$387–779</td>
+    <td class="num muted">36</td>
+    <td class="num final">$436–1,069</td>
+    <td class="exclusions">9 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Milan</td>
+    <td class="num">$1,133–5,262</td>
+    <td class="num muted">58</td>
+    <td class="num">$1,061–1,233</td>
+    <td class="num muted">9</td>
+    <td class="num final">$1,097–1,601</td>
+    <td class="exclusions">14 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Montreal</td>
+    <td class="num">$736–6,040</td>
+    <td class="num muted">54</td>
+    <td class="num">$732–993</td>
+    <td class="num muted">17</td>
+    <td class="num final">$734–1,065</td>
+    <td class="exclusions">9 high outliers (sparse tail)</td>
+  </tr>
+  <tr class="single-source">
+    <td class="origin">Moscow<span class="badge">GF only</span></td>
+    <td class="num">$2,806–3,287</td>
+    <td class="num muted">5</td>
+    <td class="num">—</td>
+    <td class="num muted">0</td>
+    <td class="num final">$2,806–3,287</td>
+    <td class="exclusions">Kayak timeout (known route gap) — Google Flights only, all 3 points used</td>
+  </tr>
+  <tr>
+    <td class="origin">Mumbai</td>
+    <td class="num">$1,894–3,179</td>
+    <td class="num muted">7</td>
+    <td class="num">$1,354–1,672</td>
+    <td class="num muted">34</td>
+    <td class="num final">$1,354–1,672</td>
+    <td class="exclusions">7 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Munich</td>
+    <td class="num">$999–5,328</td>
+    <td class="num muted">46</td>
+    <td class="num">$1,100–1,228</td>
+    <td class="num muted">12</td>
+    <td class="num final">$1,050–1,703</td>
+    <td class="exclusions">11 high outliers (sparse tail)</td>
+  </tr>
+  <tr class="single-source">
+    <td class="origin">Nairobi<span class="badge">Kayak only</span></td>
+    <td class="num">—</td>
+    <td class="num muted">0</td>
+    <td class="num">$1,385–2,020</td>
+    <td class="num muted">22</td>
+    <td class="num final">$1,385–1,499</td>
+    <td class="exclusions">GF returned 0 results — Kayak-only; density-boundary applied manually (1817, 2020 excluded as sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">New Delhi</td>
+    <td class="num">$1,633–3,646</td>
+    <td class="num muted">14</td>
+    <td class="num">$1,429–1,872</td>
+    <td class="num muted">34</td>
+    <td class="num final">$1,531–1,817</td>
+    <td class="exclusions">9 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">New York City</td>
+    <td class="num">$624–4,356</td>
+    <td class="num muted">175</td>
+    <td class="num">$476–853</td>
+    <td class="num muted">9</td>
+    <td class="num final">$550–1,126</td>
+    <td class="exclusions">10 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Paris</td>
+    <td class="num">$1,319–5,470</td>
+    <td class="num muted">71</td>
+    <td class="num">$1,178–1,429</td>
+    <td class="num muted">13</td>
+    <td class="num final">$1,249–1,812</td>
+    <td class="exclusions">8 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Philadelphia</td>
+    <td class="num">$652–2,532</td>
+    <td class="num muted">59</td>
+    <td class="num">$605–857</td>
+    <td class="num muted">9</td>
+    <td class="num final">$629–970</td>
+    <td class="exclusions">3 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Rio de Janeiro</td>
+    <td class="num">$1,136–1,879</td>
+    <td class="num muted">10</td>
+    <td class="num">$1,073–1,252</td>
+    <td class="num muted">21</td>
+    <td class="num final">$1,105–1,398</td>
+    <td class="exclusions">1 high outlier (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">San Francisco</td>
+    <td class="num">$548–5,865</td>
+    <td class="num muted">76</td>
+    <td class="num">$504–670</td>
+    <td class="num muted">8</td>
+    <td class="num final">$526–941</td>
+    <td class="exclusions">4 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Sao Paulo</td>
+    <td class="num">$1,197–3,187</td>
+    <td class="num muted">43</td>
+    <td class="num">$676–1,366</td>
+    <td class="num muted">33</td>
+    <td class="num final">$1,103–1,553</td>
+    <td class="exclusions">1 low outlier, 5 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Seoul</td>
+    <td class="num">$1,335–8,092</td>
+    <td class="num muted">35</td>
+    <td class="num">$1,303–2,869</td>
+    <td class="num muted">23</td>
+    <td class="num final">$1,319–1,578</td>
+    <td class="exclusions">21 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Shanghai</td>
+    <td class="num">$2,188–6,569</td>
+    <td class="num muted">7</td>
+    <td class="num">$1,328–1,684</td>
+    <td class="num muted">62</td>
+    <td class="num final">$1,328–1,684</td>
+    <td class="exclusions">7 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Singapore</td>
+    <td class="num">$1,836–5,947</td>
+    <td class="num muted">21</td>
+    <td class="num">$1,292–1,555</td>
+    <td class="num muted">62</td>
+    <td class="num final">$1,564–2,083</td>
+    <td class="exclusions">9 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Sydney</td>
+    <td class="num">$1,858–3,486</td>
+    <td class="num muted">13</td>
+    <td class="num">$1,231–2,225</td>
+    <td class="num muted">62</td>
+    <td class="num final">$1,231–1,649</td>
+    <td class="exclusions">9 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Tokyo</td>
+    <td class="num">$2,279–11,063</td>
+    <td class="num muted">58</td>
+    <td class="num">$1,222–2,120</td>
+    <td class="num muted">57</td>
+    <td class="num final">$1,222–1,873</td>
+    <td class="exclusions">36 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Toronto</td>
+    <td class="num">$437–7,258</td>
+    <td class="num muted">66</td>
+    <td class="num">$408–562</td>
+    <td class="num muted">42</td>
+    <td class="num final">$423–1,031</td>
+    <td class="exclusions">5 high outliers (sparse tail)</td>
+  </tr>
+  <tr>
+    <td class="origin">Vancouver</td>
+    <td class="num">$412–1,281</td>
+    <td class="num muted">34</td>
+    <td class="num">$368–689</td>
+    <td class="num muted">47</td>
+    <td class="num final">$390–985</td>
+    <td class="exclusions">none</td>
+  </tr>
+  <tr>
+    <td class="origin">Washington D.C.</td>
+    <td class="num">$665–2,585</td>
+    <td class="num muted">164</td>
+    <td class="num">$480–1,548</td>
+    <td class="num muted">10</td>
+    <td class="num final">$573–1,555</td>
+    <td class="exclusions">10 high outliers (sparse tail)</td>
+  </tr></tbody>
+  </table>
+</main>
+
+<footer>
+  Sourced via the planner-data-researcher skill's locked Flights methodology — every figure traces to a real, named fetch (Google Flights + Kayak), nothing fabricated. Currency: USD throughout.
+</footer>

@@ -1,0 +1,239 @@
+<title>Qatar GP Hero Images</title>
+<style>
+:root{
+  --bg:#fafafa; --surface:#fff; --border:#e5e5e5; --text:#1a1a1a; --muted:#666;
+  --accent:#0a7a3d; --accent-bg:#eafaf0; --warn:#b45309; --warn-bg:#fef3e2;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f0f0f; --surface:#1a1a1a; --border:#2c2c2c; --text:#f0f0f0; --muted:#999;
+    --accent:#4ade80; --accent-bg:#0f2318; --warn:#fbbf24; --warn-bg:#2b2107;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f0f0f; --surface:#1a1a1a; --border:#2c2c2c; --text:#f0f0f0; --muted:#999;
+  --accent:#4ade80; --accent-bg:#0f2318; --warn:#fbbf24; --warn-bg:#2b2107;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; margin:0; padding-block:24px}
+.wrap{max-width:1100px; margin:0 auto; padding-inline:16px}
+header{margin-bottom:28px}
+h1{font-size:22px; font-weight:800; margin:0 0 4px}
+.sub{color:var(--muted); font-size:14px; margin:0}
+.progress{position:sticky; top:0; background:var(--bg); padding:12px 0; margin-bottom:8px; border-bottom:1px solid var(--border); z-index:10; display:flex; align-items:center; gap:12px; font-size:13px}
+.bar{flex:1; height:6px; background:var(--border); border-radius:3px; overflow:hidden}
+.bar-fill{height:100%; background:var(--accent); width:0%; transition:width .2s}
+.count{font-weight:700; white-space:nowrap}
+.exp{background:var(--surface); border:1px solid var(--border); border-radius:8px; margin-bottom:20px; overflow:hidden}
+.exp-head{padding:14px 16px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap}
+.exp-title{font-weight:700; font-size:15px}
+.exp-num{color:var(--muted); font-weight:500; margin-right:6px}
+.exp-status{font-size:12px; padding:3px 10px; border-radius:99px; background:var(--border); color:var(--muted); white-space:nowrap}
+.exp-status.picked{background:var(--accent-bg); color:var(--accent)}
+.options{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border)}
+@media (max-width:700px){.options{grid-template-columns:1fr}}
+.opt{background:var(--surface); padding:12px; cursor:pointer; position:relative; transition:background .15s}
+.opt:hover{background:var(--accent-bg)}
+.opt.selected{background:var(--accent-bg); box-shadow:inset 0 0 0 2px var(--accent)}
+.opt img{width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:4px; background:var(--border); display:block}
+.opt-meta{margin-top:8px; font-size:11.5px; color:var(--muted); line-height:1.5}
+.opt-source{font-weight:700; color:var(--text)}
+.opt-what{margin-top:6px; font-size:12px; color:var(--text); line-height:1.4}
+.flag{display:inline-block; font-size:10px; font-weight:700; padding:1px 6px; border-radius:4px; margin-top:6px}
+.flag.generic{background:var(--warn-bg); color:var(--warn)}
+.flag.caveat{background:var(--warn-bg); color:var(--warn)}
+.pick-badge{position:absolute; top:8px; right:8px; background:var(--accent); color:#fff; font-size:10px; font-weight:800; padding:3px 8px; border-radius:99px; display:none}
+.opt.selected .pick-badge{display:block}
+.links{margin-top:8px; font-size:11px}
+.links a{color:var(--accent); text-decoration:none}
+.links a:hover{text-decoration:underline}
+.suggested{font-size:11px; color:var(--muted); font-style:italic; padding:8px 16px; background:var(--accent-bg); border-top:1px dashed var(--border)}
+footer{margin-top:24px; text-align:center; color:var(--muted); font-size:12px}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>Qatar GP 2026 — Hero Image Review</h1>
+  <p class="sub">21 experiences × 3 candidates each. Click an image to mark your pick — selections are saved in this browser only. Sources: Wikimedia Commons, Unsplash, Pexels, Flickr. Yellow flags mark generic/non-Qatar or resolution/location caveats — read before picking.</p>
+</header>
+
+<div class="progress">
+  <span>Picked:</span>
+  <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+  <span class="count"><span id="pickedCount">0</span>/21</span>
+</div>
+
+<div id="experiences"></div>
+</div>
+
+<footer>Experiences | Curated — Qatar Grand Prix 2026 hero image sourcing, generated 13 Sep 2026</footer>
+
+<script>
+const DATA = [
+  {n:1, title:"Where to Sit — Grandstand & Ticket Guide", suggested:1, opts:[
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/f/f4/Grand_Stand.JPG", page:"https://commons.wikimedia.org/wiki/File:Grand_Stand.JPG", credit:"Trinidade", licence:"CC BY-SA 3.0", res:"2,422×1,816", what:"Spectators at 2013 MotoGP, Losail Circuit — venue-specific, night race atmosphere.", flag:null},
+    {src:"Pexels", url:"https://images.pexels.com/photos/32282045/pexels-photo-32282045.jpeg", page:"https://www.pexels.com/photo/exciting-formula-1-event-at-imola-circuit-32282045/", credit:"Mattia Linari", licence:"Pexels Licence", res:"unconfirmed", what:"F1 grandstand fans at Imola — not Qatar-specific.", flag:"generic"},
+    {src:"Unsplash", url:"https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1200", page:"https://unsplash.com/photos/people-on-grandstand-5OF5voVTK1s", credit:"capnsnap", licence:"Unsplash Licence", res:"unconfirmed", what:"Crowd in grandstand — not Qatar-specific, clean composition.", flag:"generic"},
+  ]},
+  {n:2, title:"Paddock Club & Champions Club", suggested:1, opts:[
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/7/7c/Circuit_Zandvoort_-_Tarzanbocht_en_Paddock_Club.JPG", page:"https://commons.wikimedia.org/wiki/File:Circuit_Zandvoort_-_Tarzanbocht_en_Paddock_Club.JPG", credit:"Ymnes", licence:"CC BY-SA 4.0", res:"3,264×2,448", what:"Real F1 Paddock Club setting at Zandvoort — not Qatar, but genuine branding.", flag:"generic"},
+    {src:"Unsplash", url:"https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1200", page:"https://unsplash.com/photos/people-on-a-modern-balcony-overlooking-a-spacious-building-interior-GBUv_8VJAJs", credit:"Jezael Melgoza", licence:"Unsplash Licence", res:"unconfirmed", what:"Modern glass balcony overlooking interior — reads as hospitality terrace.", flag:"generic"},
+    {src:"Unsplash", url:"https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=1200", page:"https://unsplash.com/photos/rows-of-champagne-glasses-filled-with-bubbly-liquid-vig8sbqk_qg", credit:"Vlad Deep", licence:"Unsplash Licence", res:"unconfirmed", what:"Rows of champagne flutes — premium hospitality detail shot.", flag:"generic"},
+  ]},
+  {n:3, title:"Lusail Hill Lounge", suggested:1, opts:[
+    {src:"Pexels", url:"https://images.pexels.com/photos/12532098/pexels-photo-12532098.jpeg", page:"https://www.pexels.com/photo/aerial-view-of-race-track-12532098/", credit:"jonathan emili", licence:"Pexels Licence", res:"unconfirmed", what:"Aerial of winding race track — matches elevated-viewing concept.", flag:"generic"},
+    {src:"Pexels", url:"https://images.pexels.com/photos/29072379/pexels-photo-29072379.jpeg", page:"https://www.pexels.com/photo/trendy-friends-posing-on-rooftop-terrace-29072379/", credit:"César O'neill", licence:"Pexels Licence", res:"unconfirmed", what:"Guests on rooftop terrace with city view — elevated-lounge atmosphere.", flag:"generic"},
+    {src:"Unsplash", url:"https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=1200", page:"https://unsplash.com/photos/sprint-cars-racing-on-a-dirt-track-at-night-pOeIAmOoBXY", credit:"Jamie Webster", licence:"Unsplash Licence", res:"unconfirmed", what:"Cars racing at night — reflects Qatar GP's night-race format.", flag:"generic"},
+  ]},
+  {n:4, title:"Main Grandstand", suggested:2, opts:[
+    {src:"Unsplash", url:"https://images.unsplash.com/photo-1610509406618-0f0b3b3b3b3b?w=1200", page:"https://unsplash.com/photos/a-crowd-of-people-watching-a-race-on-a-track-8ZuvlHnrZc4", credit:"Frankie Cordoba", licence:"Unsplash Licence", res:"unconfirmed", what:"Spectators in grandstand watching race — not Qatar-specific.", flag:"generic"},
+    {src:"Unsplash", url:"https://images.unsplash.com/photo-1533661899869-79ac93bff461?w=1200", page:"https://unsplash.com/photos/race-fans-watch-a-car-race-from-the-stands-fsXdPsXS4Do", credit:"Reid Zura", licence:"Unsplash Licence", res:"unconfirmed", what:"Spectators at Michigan Int'l Speedway — strong main-grandstand composition.", flag:"generic"},
+    {src:"Pexels", url:"https://images.pexels.com/photos/159524/stadium-bleachers-seats-grandstand-159524.jpeg", page:"https://www.pexels.com/photo/empty-sports-stadium-seats-during-day-159524/", credit:"Bahram Jamalov", licence:"Pexels Licence", res:"unconfirmed", what:"Colourful empty stadium seating — structural illustration.", flag:"generic"},
+  ]},
+  {n:5, title:"North Grandstand", suggested:3, opts:[
+    {src:"Pexels", url:"https://images.pexels.com/photos/10106451/pexels-photo-10106451.jpeg", page:"https://www.pexels.com/photo/an-empty-race-track-10106451/", credit:"Nick", licence:"Pexels Licence", res:"unconfirmed", what:"B&W empty track and grandstand — moody, not Qatar-specific.", flag:"generic"},
+    {src:"Unsplash", url:"https://images.unsplash.com/photo-1541773367336-d3f7b6f2b3ec?w=1200", page:"https://unsplash.com/photos/a-group-of-people-standing-around-a-race-track-JCaT-Lf1Qxk", credit:"Hans", licence:"Unsplash Licence", res:"unconfirmed", what:"Fans trackside at Le Mans — general crowd atmosphere.", flag:"generic"},
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/f/f4/Grand_Stand.JPG", page:"https://commons.wikimedia.org/wiki/File:Grand_Stand.JPG", credit:"Trinidade", licence:"CC BY-SA 3.0", res:"2,422×1,816", what:"Losail Circuit grandstand at night (2013 MotoGP) — Qatar-specific, same file as Exp.1.", flag:"caveat — duplicate of Exp.1"},
+  ]},
+  {n:6, title:"Inside Lusail Circuit", suggested:1, opts:[
+    {src:"Pexels", url:"https://images.pexels.com/photos/29255728/pexels-photo-29255728.jpeg", page:"https://www.pexels.com/photo/aerial-view-of-interlagos-race-track-event-29255728/", credit:"Jonathan Borba", licence:"Pexels Licence", res:"4,083px wide", what:"Aerial of Interlagos circuit layout — not Qatar, strong establishing shot.", flag:"generic"},
+    {src:"Pexels", url:"https://images.pexels.com/photos/29255759/pexels-photo-29255759.jpeg", page:"https://www.pexels.com/photo/formula-1-pit-lane-and-garage-scene-29255759/", credit:"Jonathan Borba", licence:"Pexels Licence", res:"unconfirmed", what:"F1 pit lane and garage scene — genuine pit-building activity.", flag:"generic"},
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/c/c7/Lusail_International_Circuit_2023.svg", page:"https://commons.wikimedia.org/wiki/File:Lusail_International_Circuit_2023.svg", credit:"Derived by Gpmat, orig. Will Pittenger", licence:"CC BY-SA 3.0", res:"SVG vector", what:"Official Lusail circuit layout diagram — Qatar-specific but a map, not a photo.", flag:"caveat — diagram not photo"},
+  ]},
+  {n:7, title:"Fan Zone", suggested:1, opts:[
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/a/af/Zone_1_F1_Village_-_panoramio.jpg", page:"https://commons.wikimedia.org/wiki/File:Zone_1_F1_Village_-_panoramio.jpg", credit:"Ong Chi Hang", licence:"CC BY-SA 3.0", res:"2,048×1,536", what:"F1 Village fan zone, Singapore GP 2012 — genuine F1 fan-zone setting.", flag:"generic"},
+    {src:"Pexels", url:"https://images.pexels.com/photos/4005325/pexels-photo-4005325.jpeg", page:"https://www.pexels.com/photo/anonymous-boy-playing-car-racing-simulator-near-mother-and-sibling-4005325/", credit:"Vidal Balielo Jr.", licence:"Pexels Licence", res:"unconfirmed", what:"Child on racing simulator — matches \"simulators\" activity directly.", flag:"generic"},
+    {src:"Unsplash", url:"https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200", page:"https://unsplash.com/photos/crowd-of-people-walking-through-a-sunny-outdoor-festival-4mY4PA450SI", credit:"Manoa Angelo", licence:"Unsplash Licence", res:"unconfirmed", what:"Crowd at Oktoberfest — general daytime fan-zone energy only.", flag:"generic"},
+  ]},
+  {n:8, title:"Getting to Lusail Circuit", suggested:1, opts:[
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/9/94/Qatar_Lusail_metro_station_asv2024-10_img1.jpg", page:"https://commons.wikimedia.org/wiki/File:Qatar_Lusail_metro_station_asv2024-10_img1.jpg", credit:"A.Savin", licence:"Free Art License", res:"4,430×5,537", what:"Lusail Metro Station, Oct 2024 — Qatar-specific, modern architecture.", flag:null},
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/7/77/Lusail_metro_station_and_Lusail_Stadium_construction_in_October_2020.jpg", page:"https://commons.wikimedia.org/wiki/File:Lusail_metro_station_and_Lusail_Stadium_construction_in_October_2020.jpg", credit:"bobbyqat (Mapillary)", licence:"CC BY-SA 4.0", res:"1,901×905", what:"Lusail Metro Station exterior, 2020 (Stadium under construction, now complete).", flag:"caveat — dated photo"},
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/4/41/Doha_Metro_Red_Line.jpg", page:"https://commons.wikimedia.org/wiki/File:Doha_Metro_Red_Line.jpg", credit:"Randwick", licence:"CC0 1.0", res:"2,048×1,536", what:"Doha Metro Red Line train — the line serving Lusail.", flag:null},
+  ]},
+  {n:9, title:"Raffles Doha & Fairmont Doha", suggested:2, opts:[
+    {src:"Unsplash", url:"https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1200", page:"https://unsplash.com/photos/city-skyline-across-body-of-water-during-daytime-KUpxfPfQ_-E", credit:"tarek suman", licence:"Unsplash Licence", res:"unconfirmed", what:"Doha waterfront skyline, daytime — not the Katara Towers building itself.", flag:"caveat — not exact building"},
+    {src:"Pexels", url:"https://images.pexels.com/photos/36246789/pexels-photo-36246789.jpeg", page:"https://www.pexels.com/photo/stunning-night-skyline-of-doha-qatar-36246789/", credit:"Travel with Lenses", licence:"Pexels Licence", res:"unconfirmed", what:"Doha illuminated night skyline with reflections — luxury hotel mood.", flag:"caveat — not exact building"},
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/5/51/Lusail_skyline_with_the_Lusail_Marina_Iconic_Development_in_the_center.jpg", page:"https://commons.wikimedia.org/wiki/File:Lusail_skyline_with_the_Lusail_Marina_Iconic_Development_in_the_center.jpg", credit:"km2bp (Mapillary)", licence:"CC BY-SA 4.0", res:"2,048×1,431", what:"Lusail Marina district visible centre-frame — photographed 2020, under construction then.", flag:"caveat — dated, under construction"},
+  ]},
+  {n:10, title:"Staybridge Suites Lusail", suggested:1, opts:[
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/2/22/High_rises_on_Al_Seenar_St_in_Lusail.jpg", page:"https://commons.wikimedia.org/wiki/File:High_rises_on_Al_Seenar_St_in_Lusail.jpg", credit:"bobbyqat (Mapillary)", licence:"CC BY-SA 4.0", res:"1,534×1,058", what:"Modern apartment towers, Al Seenar St, Lusail — matches district brief closely.", flag:null},
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/4/45/Lusail_city_%281%29.jpg", page:"https://commons.wikimedia.org/wiki/File:Lusail_city_(1).jpg", credit:"Preacher lad", licence:"CC BY-SA 4.0", res:"3,788×2,422", what:"General Lusail cityscape — high resolution, good banner composition.", flag:null},
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/1/18/Lusail_City%2C_Qatar_%2811031322003%29.jpg", page:"https://commons.wikimedia.org/wiki/File:Lusail_City,_Qatar_(11031322003).jpg", credit:"Paul Trafford", licence:"CC BY 2.0", res:"2,178×1,413", what:"Lusail City with Katara Hospitality building, under construction.", flag:"caveat — dated, under construction"},
+  ]},
+  {n:11, title:"Marsa Malaz Kempinski, The Pearl", suggested:1, opts:[
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/9/95/Beach_at_Marsa_Malaz_Kempinski_at_The_Pearl-Qatar.jpg", page:"https://commons.wikimedia.org/wiki/File:Beach_at_Marsa_Malaz_Kempinski_at_The_Pearl-Qatar.jpg", credit:"km2bp (Mapillary)", licence:"CC BY-SA 4.0", res:"2,048×1,048", what:"The hotel's own private beach — exact match.", flag:null},
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/6/6f/View_of_colorful_apartment_buildings_from_a_pier_at_Marsa_Malaz_Kempinski.jpg", page:"https://commons.wikimedia.org/wiki/File:View_of_colorful_apartment_buildings_from_a_pier_at_Marsa_Malaz_Kempinski.jpg", credit:"km2bp (Mapillary)", licence:"CC BY-SA 4.0", res:"2,048×1,536", what:"View from hotel pier toward The Pearl's colourful buildings.", flag:null},
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/2/26/The_Pearl_Marina_in_Nov_2013.jpg", page:"https://commons.wikimedia.org/wiki/File:The_Pearl_Marina_in_Nov_2013.jpg", credit:"Alex Sergeev", licence:"CC BY-SA 3.0/GFDL", res:"1,634×1,087", what:"Boats docked at The Pearl Marina, 2013 — wider island establishing shot.", flag:"caveat — below res minimum"},
+  ]},
+  {n:12, title:"Four Seasons Hotel Doha, West Bay", suggested:1, opts:[
+    {src:"Unsplash", url:"https://images.unsplash.com/photo-1546412414-8035e1776c9a?w=1200", page:"https://unsplash.com/photos/a-city-skyline-with-a-full-moon-in-the-sky-Q8NuHm4PbXc", credit:"Akbar Nemati", licence:"Unsplash Licence", res:"unconfirmed", what:"Doha night skyline from Fraser Suites rooftop, full moon — strong luxury mood.", flag:"caveat — not exact building"},
+    {src:"Unsplash", url:"https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1200", page:"https://unsplash.com/photos/a-view-of-a-beach-and-a-city-in-the-distance-3L5MK7AFI7M", credit:"Visit Qatar", licence:"Unsplash Licence", res:"unconfirmed", what:"West Bay Doha beach/shoreline with skyline — official Visit Qatar account.", flag:null},
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/d/da/West_Bay_Skyline%2C_Doha%2C_State_of_Qatar.jpg", page:"https://commons.wikimedia.org/wiki/File:West_Bay_Skyline,_Doha,_State_of_Qatar.jpg", credit:"Gregory Hawken Kramer", licence:"CC BY-SA 4.0", res:"3,456×2,304", what:"West Bay Doha skyline with boats in foreground.", flag:null},
+  ]},
+  {n:13, title:"Qatari Cuisine in Souq Waqif", suggested:1, opts:[
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/8/81/Machboos.JPG", page:"https://commons.wikimedia.org/wiki/File:Machboos.JPG", credit:"Miansari66", licence:"CC0 1.0", res:"2,816×2,112", what:"Machboos — Qatar's national dish, genuine dish shot.", flag:null},
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/a/a7/Doha_Qatar_-_Souq_Waqif.jpg", page:"https://commons.wikimedia.org/wiki/File:Doha_Qatar_-_Souq_Waqif.jpg", credit:"Chainwit.", licence:"CC BY-SA 4.0", res:"4,032×3,024", what:"Souq Waqif marketplace scene — strong establishing shot, not a food close-up.", flag:null},
+    {src:"Pexels", url:"https://images.pexels.com/photos/5863641/pexels-photo-5863641.jpeg", page:"https://www.pexels.com/photo/snacks-laid-out-on-table-5863641/", credit:"Rachel Claire", licence:"Pexels Licence", res:"unconfirmed", what:"Mediterranean appetizers — plausible mezze-style stand-in, not Qatar-specific.", flag:"generic"},
+  ]},
+  {n:14, title:"Sawa by Sanad", suggested:1, opts:[
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/3/37/Msheireb_Downtown_Doha_tram_at_night.jpg", page:"https://commons.wikimedia.org/wiki/File:Msheireb_Downtown_Doha_tram_at_night.jpg", credit:"Michael Coghlan", licence:"CC BY-SA 2.0", res:"2,399×1,640", what:"Msheireb Tram at night, Sawa's actual district — strong atmospheric shot.", flag:null},
+    {src:"Pexels", url:"https://images.pexels.com/photos/5944/food-plate-restaurant-dinner.jpg", page:"https://www.pexels.com/photo/lunch-5944/", credit:"Karolina Grabowska", licence:"Pexels/CC0", res:"unconfirmed", what:"Middle Eastern mezze platter — Levantine sharing-plate match, not Qatar-specific.", flag:"generic"},
+    {src:"Unsplash", url:"https://images.unsplash.com/photo-1571197119282-7c4c96e35942?w=1200", page:"https://unsplash.com/photos/a-bowl-of-hummus-with-a-garnish-on-top-yr-sW_x9aHk", credit:"Ludovic Avice", licence:"Unsplash Licence", res:"unconfirmed", what:"Bowl of hummus, detail shot — not Qatar-specific.", flag:"generic"},
+  ]},
+  {n:15, title:"Parisa — Souq Waqif Atmosphere Dining", suggested:1, opts:[
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/4/40/Iranian_Tiles_1.JPG", page:"https://commons.wikimedia.org/wiki/File:Iranian_Tiles_1.JPG", credit:"مانفی (Monfie)", licence:"CC BY-SA 3.0/GFDL", res:"2,511×3,648", what:"Ornate Iranian tilework, Sheikh Lotfollah Mosque, Isfahan — matches décor style exactly.", flag:"generic — Persian not Qatar"},
+    {src:"Unsplash", url:"https://images.unsplash.com/photo-1614088685112-0a760b71a3ca?w=1200", page:"https://unsplash.com/photos/ornate-geometric-ceiling-with-floral-patterns-v8ozpxh7cSg", credit:"Mohammad Amiri", licence:"Unsplash Licence", res:"unconfirmed", what:"Ornate geometric ceiling, floral Persian patterns — atmospheric.", flag:"generic"},
+    {src:"Pexels", url:"https://images.pexels.com/photos/2504911/pexels-photo-2504911.jpeg", page:"https://www.pexels.com/photo/interior-of-a-classic-restaurant-2504911/", credit:"Rene Terp", licence:"Pexels Licence", res:"unconfirmed", what:"Luxurious dining room, chandeliers — plausible ornate-interior stand-in.", flag:"generic"},
+  ]},
+  {n:16, title:"Museum of Islamic Art", suggested:1, opts:[
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/e/e4/Doha_-_Museum_of_Islamic_Art.jpg", page:"https://commons.wikimedia.org/wiki/File:Doha_-_Museum_of_Islamic_Art.jpg", credit:"Marek Śliwecki (Slimark)", licence:"CC BY-SA 4.0", res:"5,154×4,016", what:"Doha skyline as seen from MIA's own grounds — strong establishing shot.", flag:null},
+    {src:"Pexels", url:"https://images.pexels.com/photos/28782711/pexels-photo-28782711.jpeg", page:"https://www.pexels.com/photo/museum-of-islamic-art-architecture-in-doha-28782711/", credit:"Pham Ngoc Anh", licence:"Pexels Licence", res:"unconfirmed", what:"MIA's modern architecture, Doha, Qatar.", flag:null},
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/2/2d/Museum_of_Islamic_Art%2C_Doha_-_54726299556.jpg", page:"https://commons.wikimedia.org/wiki/File:Museum_of_Islamic_Art,_Doha_-_54726299556.jpg", credit:"Ninara", licence:"CC BY 4.0", res:"4,532×3,969", what:"Ottoman cavalry armour on display inside MIA — interior, not exterior.", flag:"caveat — interior, not building"},
+  ]},
+  {n:17, title:"National Museum of Qatar", suggested:1, opts:[
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/0/02/Doha_National_Museum_of_Qatar_Sheikh_Abdullah_bin_Jassim_Al_Thani_Palace_Panoramic_View_3.jpg", page:"https://commons.wikimedia.org/wiki/File:Doha_National_Museum_of_Qatar_Sheikh_Abdullah_bin_Jassim_Al_Thani_Palace_Panoramic_View_3.jpg", credit:"Zairon", licence:"CC BY 4.0", res:"4,542×2,632", what:"Panoramic exterior of the disk architecture, high resolution.", flag:null},
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/7/73/National_Museum_of_Qatar_building_and_skyline_of_Old_Salata.jpg", page:"https://commons.wikimedia.org/wiki/File:National_Museum_of_Qatar_building_and_skyline_of_Old_Salata.jpg", credit:"Michael Coghlan", licence:"CC BY-SA 2.0", res:"2,385×1,867", what:"Museum building against the Old Salata skyline — scale and context.", flag:null},
+    {src:"Pexels", url:"https://images.pexels.com/photos/3789026/pexels-photo-3789026.jpeg", page:"https://www.pexels.com/photo/a-building-of-national-museum-in-qatar-3789026/", credit:"Abdullah Ghatasheh", licence:"Pexels Licence", res:"unconfirmed", what:"Desert rose architecture, confirmed exterior shot.", flag:null},
+  ]},
+  {n:18, title:"Khor Al Adaid (Inland Sea) Desert Safari", suggested:1, opts:[
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/5/56/Khor_Al_Adaid_Inland_Sea_and_desert_in_Katar.jpg", page:"https://commons.wikimedia.org/wiki/File:Khor_Al_Adaid_Inland_Sea_and_desert_in_Katar.jpg", credit:"FLASHPACKER TRAVELGUIDE", licence:"CC BY-SA 2.0", res:"4,032×3,024", what:"The actual Khor Al Adaid Inland Sea and desert — genuine subject match.", flag:null},
+    {src:"Flickr", url:"https://live.staticflickr.com/65535/53308904961_b3ab5a3c3f_b.jpg", page:"https://www.flickr.com/photos/youngshanahan/53308904961", credit:"young shanahan", licence:"CC BY 2.0", res:"2,363×648", what:"\"The Inland Sea, Qatar\" wide panoramic — resolution fails short-edge gate.", flag:"caveat — low resolution"},
+    {src:"Unsplash", url:"https://images.unsplash.com/photo-1739500534360-f7b1e0ef16b7?w=1200", page:"https://unsplash.com/photos/sandy-desert-dunes-meet-the-blue-ocean-waves-zS3N4upvJe0", credit:"Nir Himi", licence:"Unsplash Licence", res:"unconfirmed", what:"Visually matches \"dunes meet sea\" — but this is Namibia, NOT Qatar.", flag:"generic — wrong location (Namibia)"},
+  ]},
+  {n:19, title:"The Pearl-Qatar & Katara Cultural Village", suggested:1, opts:[
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/4/42/Doha_Katara_Cultural_Village_Plaza_1.jpg", page:"https://commons.wikimedia.org/wiki/File:Doha_Katara_Cultural_Village_Plaza_1.jpg", credit:"Zairon", licence:"CC BY 4.0", res:"4,376×3,102", what:"Open plaza at Katara Cultural Village, high resolution.", flag:null},
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/d/d2/Doha_-_Katara_Cultural_Village_Entrance.jpg", page:"https://commons.wikimedia.org/wiki/File:Doha_-_Katara_Cultural_Village_Entrance.jpg", credit:"Chainwit.", licence:"CC BY-SA 4.0", res:"4,032×3,024", what:"Entrance to Katara Cultural Village, high resolution.", flag:null},
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/2/26/The_Pearl_Marina_in_Nov_2013.jpg", page:"https://commons.wikimedia.org/wiki/File:The_Pearl_Marina_in_Nov_2013.jpg", credit:"Alex Sergeev", licence:"CC BY-SA 3.0/GFDL", res:"1,634×1,087", what:"The Pearl-Qatar's marina — only real Pearl-specific candidate found.", flag:"caveat — below res minimum"},
+  ]},
+  {n:20, title:"Souq Waqif", suggested:1, opts:[
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/9/91/Souq_Waqif%2C_Doha%2C_Catar%2C_2013-08-05%2C_DD_11.jpg", page:"https://commons.wikimedia.org/wiki/File:Souq_Waqif,_Doha,_Catar,_2013-08-05,_DD_11.jpg", credit:"Diego Delso", licence:"CC BY-SA 3.0", res:"3,173×4,725", what:"Vibrant alley with colourful umbrella canopy — visually distinctive.", flag:null},
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/a/a7/Doha_Qatar_-_Souq_Waqif.jpg", page:"https://commons.wikimedia.org/wiki/File:Doha_Qatar_-_Souq_Waqif.jpg", credit:"Chainwit.", licence:"CC BY-SA 4.0", res:"4,032×3,024", what:"Traditional architecture — Wikimedia \"Quality image.\"", flag:null},
+    {src:"Unsplash", url:"https://images.unsplash.com/photo-1580746738099-05b4c3fb0a9b?w=1200", page:"https://unsplash.com/photos/a-wooden-bench-sitting-in-front-of-a-white-building-JEpalfGz844", credit:"Emre", licence:"Unsplash Licence", res:"unconfirmed", what:"Quieter architectural corner of Souq Waqif, location-confirmed.", flag:null},
+  ]},
+  {n:21, title:"Doha City Highlights Tour", suggested:1, opts:[
+    {src:"Wikimedia Commons", url:"https://upload.wikimedia.org/wikipedia/commons/e/e3/Skyline_View_from_Corniche_-_Doha_-_Qatar_%2834483735151%29.jpg", page:"https://commons.wikimedia.org/wiki/File:Skyline_View_from_Corniche_-_Doha_-_Qatar_(34483735151).jpg", credit:"Adam Jones", licence:"CC BY-SA 2.0", res:"3,648×2,736", what:"Doha skyline from the Corniche — classic establishing shot.", flag:null},
+    {src:"Unsplash", url:"https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1200", page:"https://unsplash.com/photos/city-skyline-across-body-of-water-during-daytime-KUpxfPfQ_-E", credit:"tarek suman", licence:"Unsplash Licence", res:"unconfirmed", what:"Al Corniche Street, Doha, daytime skyline — location-confirmed.", flag:null},
+    {src:"Pexels", url:"https://images.pexels.com/photos/30522277/pexels-photo-30522277.jpeg", page:"https://www.pexels.com/photo/sunset-over-doha-skyline-with-waterfront-view-30522277/", credit:"Mohamed Akram", licence:"Pexels Licence", res:"unconfirmed", what:"Sunset over Doha skyline from waterfront — warm evening alternative.", flag:null},
+  ]},
+];
+
+const STORAGE_KEY = "qatar-gp-hero-picks";
+let picks = {};
+try { picks = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch(e) {}
+
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(picks)); } catch(e) {}
+  updateProgress();
+}
+
+function updateProgress() {
+  const count = Object.keys(picks).length;
+  document.getElementById("pickedCount").textContent = count;
+  document.getElementById("barFill").style.width = (count/21*100) + "%";
+}
+
+function render() {
+  const container = document.getElementById("experiences");
+  container.innerHTML = DATA.map(exp => {
+    const pickedIdx = picks[exp.n];
+    const optsHtml = exp.opts.map((o, i) => {
+      const selected = pickedIdx === i ? "selected" : "";
+      const flagHtml = o.flag ? `<span class="flag ${o.flag.startsWith('caveat') ? 'caveat' : 'generic'}">${o.flag}</span>` : "";
+      return `
+        <div class="opt ${selected}" onclick="pick(${exp.n},${i})">
+          <span class="pick-badge">✓ PICKED</span>
+          <img src="${o.url}" alt="${o.what}" loading="lazy" onerror="this.style.opacity=0.2">
+          <div class="opt-meta">
+            <span class="opt-source">${o.src}</span> · ${o.licence} · ${o.res}<br>
+            Credit: ${o.credit}
+          </div>
+          <div class="opt-what">${o.what}</div>
+          ${flagHtml}
+          <div class="links"><a href="${o.page}" target="_blank" rel="noopener">Photo page ↗</a></div>
+        </div>`;
+    }).join("");
+    return `
+      <div class="exp">
+        <div class="exp-head">
+          <div class="exp-title"><span class="exp-num">${exp.n}.</span>${exp.title}</div>
+          <div class="exp-status ${pickedIdx !== undefined ? 'picked' : ''}">${pickedIdx !== undefined ? 'Option ' + (pickedIdx+1) + ' picked' : 'Not picked yet'}</div>
+        </div>
+        <div class="suggested">Researcher's suggested pick: Option ${exp.suggested}</div>
+        <div class="options">${optsHtml}</div>
+      </div>`;
+  }).join("");
+}
+
+function pick(expNum, optIdx) {
+  if (picks[expNum] === optIdx) {
+    delete picks[expNum];
+  } else {
+    picks[expNum] = optIdx;
+  }
+  save();
+  render();
+}
+
+render();
+updateProgress();
+</script>

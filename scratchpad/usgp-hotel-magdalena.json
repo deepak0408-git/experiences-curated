@@ -1,0 +1,211 @@
+{
+  "url": "https://www.booking.com/searchresults.html?ss=Hotel+Magdalena+Austin&checkin=2026-10-21&checkout=2026-10-28&group_adults=2&no_rooms=1&group_children=0&order=review_score_and_price&nflt=review_score%3D70%3Bht_id%3D204&selected_currency=USD&lang=en-us",
+  "checkin": "2026-10-21",
+  "checkout": "2026-10-28",
+  "rawHotelCount": 25,
+  "qualifyingHotelCount": 21,
+  "hotels": [
+    {
+      "name": "Homewood Suites By Hilton Austin/Cedar Park-Lakeline, Tx",
+      "price": "US$823",
+      "reviewScore": 9.2,
+      "reviewCount": 193,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "avid hotel Austin NW - Lakeline by IHG",
+      "price": "US$1,059",
+      "reviewScore": 9.2,
+      "reviewCount": 179,
+      "starRating": 2,
+      "address": null
+    },
+    {
+      "name": "Holiday Inn Express Hotel & Suites Austin NW - Arboretum Area by IHG",
+      "price": "US$1,539",
+      "reviewScore": 9.2,
+      "reviewCount": 149,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Element by Marriott North Austin Tech Ridge",
+      "price": "US$1,855",
+      "reviewScore": 9.3,
+      "reviewCount": 64,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Drury Inn & Suites Austin North",
+      "price": "US$1,928",
+      "reviewScore": 9.1,
+      "reviewCount": 1097,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Homewood Suites By Hilton Austin Airport",
+      "price": "US$1,969",
+      "reviewScore": 9,
+      "reviewCount": 87,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Residence Inn by Marriott Austin Lake Austin/River Place",
+      "price": "US$2,053",
+      "reviewScore": 9.1,
+      "reviewCount": 64,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Home2 Suites By Hilton Austin Downtown East Side",
+      "price": "US$2,313",
+      "reviewScore": 9.2,
+      "reviewCount": 170,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Cambria Hotel Austin Uptown near the Domain",
+      "price": "US$2,432",
+      "reviewScore": 9.2,
+      "reviewCount": 244,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Courtyard by Marriott Austin Pflugerville",
+      "price": "US$2,548",
+      "reviewScore": 9.1,
+      "reviewCount": 78,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Atwell Suites Austin Airport by IHG",
+      "price": "US$2,568",
+      "reviewScore": 9.1,
+      "reviewCount": 320,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Holiday Inn Express & Suites Austin Airport East by IHG",
+      "price": "US$2,749",
+      "reviewScore": 9.1,
+      "reviewCount": 349,
+      "starRating": 2,
+      "address": null
+    },
+    {
+      "name": "Home2 Suites By Hilton Austin Airport",
+      "price": "US$2,964",
+      "reviewScore": 9.2,
+      "reviewCount": 63,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "The Code Hotel",
+      "price": "US$4,432",
+      "reviewScore": 9.2,
+      "reviewCount": 86,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Austin Proper Hotel, a Member of Design Hotels",
+      "price": "US$19,205",
+      "reviewScore": 9.2,
+      "reviewCount": 94,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Holiday Inn Express & Suites Austin NW - Four Points by IHG",
+      "price": "US$882",
+      "reviewScore": 8.6,
+      "reviewCount": 442,
+      "starRating": 2,
+      "address": null
+    },
+    {
+      "name": "Hampton Inn & Suites Austin Cedar Park-Lakeline",
+      "price": "US$1,114",
+      "reviewScore": 8.6,
+      "reviewCount": 142,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "avid hotel Austin - Tech Ridge by IHG",
+      "price": "US$1,439",
+      "reviewScore": 8.7,
+      "reviewCount": 442,
+      "starRating": 2,
+      "address": null
+    },
+    {
+      "name": "Hilton Garden Inn Cedar Park Austin",
+      "price": "US$1,493",
+      "reviewScore": 8.8,
+      "reviewCount": 184,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Hilton Garden Inn Austin NorthWest/Arboretum",
+      "price": "US$1,515",
+      "reviewScore": 8.7,
+      "reviewCount": 255,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Tru By Hilton Austin Nw Arboretum, Tx",
+      "price": "US$1,570",
+      "reviewScore": 8.6,
+      "reviewCount": 284,
+      "starRating": 3,
+      "address": null
+    }
+  ],
+  "rejectedForLowReviewCount": [
+    {
+      "name": "Tru By Hilton Austin University Capitol District",
+      "price": "US$3,018",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Dog-friendly getaway on Rainey Street with rooftop pool and gym",
+      "price": "US$6,638",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Austin Marriott South",
+      "price": "US$3,810",
+      "reviewScore": 9,
+      "reviewCount": 34,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Hawthorn Extended Stay Austin North - Round Rock",
+      "price": "US$1,343",
+      "reviewScore": 8.5,
+      "reviewCount": 24,
+      "starRating": 2,
+      "address": null
+    }
+  ]
+}

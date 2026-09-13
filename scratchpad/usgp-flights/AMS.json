@@ -1,0 +1,48 @@
+{
+  "origin": "Amsterdam",
+  "googleFlights": {
+    "sorted": [
+      1146,
+      1194,
+      1218,
+      1272,
+      1293,
+      1443,
+      1510,
+      1548,
+      1590,
+      1688,
+      1698,
+      1700,
+      1888,
+      1905,
+      2340
+    ],
+    "rawCount": 26
+  },
+  "kayak": {
+    "sorted": [
+      1146,
+      1150,
+      1155,
+      1178,
+      1245
+    ],
+    "rawCount": 50
+  },
+  "combined": {
+    "low": 1146,
+    "high": 1888,
+    "excludedLow": [],
+    "excludedHigh": [
+      1905,
+      2340
+    ],
+    "gfLow": 1146,
+    "gfHigh": 1888,
+    "kyLow": 1146,
+    "kyHigh": 1245
+  },
+  "finalCostLow": 1146,
+  "finalCostHigh": 1567
+}

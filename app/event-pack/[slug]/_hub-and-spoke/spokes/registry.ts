@@ -168,6 +168,19 @@ import BGArrivalSpoke from "./brazilian-grand-prix/ArrivalSpoke";
 import BGMapSpoke from "./brazilian-grand-prix/MapSpoke";
 import BGLuxurySpoke from "./brazilian-grand-prix/LuxurySpoke";
 
+import QGCostSpoke from "./qatar-grand-prix/CostSpoke";
+import QGTicketsSpoke from "./qatar-grand-prix/TicketsSpoke";
+import QGHotelsSpoke from "./qatar-grand-prix/HotelsSpoke";
+import QGGettingThereSpoke from "./qatar-grand-prix/GettingThereSpoke";
+import QGWeatherSpoke from "./qatar-grand-prix/WeatherSpoke";
+import QGFirstTimerGuideSpoke from "./qatar-grand-prix/FirstTimerGuideSpoke";
+import QGWhereToEatSpoke from "./qatar-grand-prix/WhereToEatSpoke";
+import QGDayTripsSpoke from "./qatar-grand-prix/DayTripsSpoke";
+import QGItinerarySpoke from "./qatar-grand-prix/ItinerarySpoke";
+import QGArrivalSpoke from "./qatar-grand-prix/ArrivalSpoke";
+import QGMapSpoke from "./qatar-grand-prix/MapSpoke";
+import QGLuxurySpoke from "./qatar-grand-prix/LuxurySpoke";
+
 type SpokeComponent = ComponentType<{ eventSlug: string }>;
 
 // Registry mapping eventSlug -> spokeId -> component. A new hub_and_spoke
@@ -357,6 +370,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: BGMapSpoke,
     luxury: BGLuxurySpoke,
   },
+  "qatar-grand-prix": {
+    cost: QGCostSpoke,
+    tickets: QGTicketsSpoke,
+    hotels: QGHotelsSpoke,
+    "getting-there": QGGettingThereSpoke,
+    weather: QGWeatherSpoke,
+    "first-timer-guide": QGFirstTimerGuideSpoke,
+    "where-to-eat": QGWhereToEatSpoke,
+    "day-trips": QGDayTripsSpoke,
+    itinerary: QGItinerarySpoke,
+    arrival: QGArrivalSpoke,
+    map: QGMapSpoke,
+    luxury: QGLuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -541,5 +568,19 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Interlagos — Arrival & Queue Guide",
     map: "Interlagos Circuit Map — Grandstands and Facilities",
     luxury: "Luxury Guide for the São Paulo Grand Prix — Paddock Club, Champions Club, and More",
+  },
+  "qatar-grand-prix": {
+    cost: "How Much Does the Qatar Grand Prix Cost? — Budget Guide",
+    tickets: "Qatar Grand Prix Ticket Guide — General Admission Sold Out, Grandstand by Grandstand",
+    hotels: "Where to Stay for the Qatar Grand Prix — Lusail Marina, The Pearl, or West Bay",
+    "getting-there": "Getting to Lusail Circuit — Qatar Grand Prix Transit Guide",
+    weather: "Doha Weather in November — What to Pack for the Qatar Grand Prix",
+    "first-timer-guide": "First-Timer's Guide — the Qatar Grand Prix and Doha Travel Basics",
+    "where-to-eat": "Where to Eat in Doha — Qatar Grand Prix Weekend",
+    "day-trips": "Best Things to Do in Doha — Qatar Grand Prix Weekend",
+    itinerary: "Sample Qatar Grand Prix Weekend Itinerary",
+    arrival: "Lusail Circuit — Arrival & Fan Zone Guide",
+    map: "Lusail International Circuit Map — Facilities and Capacity",
+    luxury: "Luxury Guide for the Qatar Grand Prix — Paddock Club, Champions Club, and More",
   },
 };

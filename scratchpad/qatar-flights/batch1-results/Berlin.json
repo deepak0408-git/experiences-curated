@@ -1,0 +1,52 @@
+{
+  "origin": "Berlin",
+  "googleFlights": {
+    "sorted": [
+      411,
+      419,
+      449,
+      572,
+      579,
+      757,
+      773,
+      824,
+      868,
+      1006,
+      1009,
+      2222
+    ],
+    "rawCount": 33
+  },
+  "kayak": {
+    "sorted": [
+      424,
+      440,
+      581,
+      596,
+      612,
+      639,
+      648,
+      666,
+      670,
+      676,
+      684,
+      740,
+      761
+    ],
+    "rawCount": 37
+  },
+  "combined": {
+    "low": 411,
+    "high": 1009,
+    "excludedLow": [],
+    "excludedHigh": [
+      2222
+    ],
+    "gfLow": 411,
+    "gfHigh": 1009,
+    "kyLow": 424,
+    "kyHigh": 761
+  },
+  "finalCostLow": 418,
+  "finalCostHigh": 885
+}

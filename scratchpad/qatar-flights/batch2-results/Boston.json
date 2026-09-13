@@ -1,0 +1,55 @@
+{
+  "origin": "Boston",
+  "googleFlights": {
+    "sorted": [
+      1013,
+      1104,
+      1192,
+      1214,
+      1426,
+      1576,
+      1677,
+      1682,
+      1746,
+      1757,
+      1772,
+      1776,
+      1787,
+      1982
+    ],
+    "rawCount": 38
+  },
+  "kayak": {
+    "sorted": [
+      871,
+      997,
+      1133,
+      1168,
+      1187
+    ],
+    "rawCount": 19
+  },
+  "combined": {
+    "low": 871,
+    "high": 1214,
+    "excludedLow": [],
+    "excludedHigh": [
+      1426,
+      1576,
+      1677,
+      1682,
+      1746,
+      1757,
+      1772,
+      1776,
+      1787,
+      1982
+    ],
+    "gfLow": 1013,
+    "gfHigh": 1214,
+    "kyLow": 871,
+    "kyHigh": 1187
+  },
+  "finalCostLow": 942,
+  "finalCostHigh": 1201
+}

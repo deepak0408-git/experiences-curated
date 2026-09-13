@@ -1,0 +1,50 @@
+{
+  "origin": "Mumbai",
+  "googleFlights": {
+    "sorted": [
+      1822,
+      2795
+    ],
+    "rawCount": 3
+  },
+  "kayak": {
+    "sorted": [
+      1016,
+      1052,
+      1077,
+      1113,
+      1123,
+      1177,
+      1184,
+      1213,
+      1226,
+      1239,
+      1240,
+      1245,
+      1254,
+      1261,
+      1268,
+      1274,
+      1280,
+      1290,
+      1298,
+      1391,
+      1612
+    ],
+    "rawCount": 57
+  },
+  "combined": {
+    "low": 1016,
+    "high": 1391,
+    "excludedLow": [],
+    "excludedHigh": [
+      1612,
+      1822,
+      2795
+    ],
+    "gfLow": null,
+    "gfHigh": null,
+    "kyLow": 1016,
+    "kyHigh": 1391
+  }
+}

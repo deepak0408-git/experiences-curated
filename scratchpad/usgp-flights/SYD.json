@@ -1,0 +1,41 @@
+{
+  "origin": "Sydney",
+  "googleFlights": {
+    "sorted": [
+      1337,
+      1346,
+      1356,
+      9027
+    ],
+    "rawCount": 21
+  },
+  "kayak": {
+    "sorted": [
+      1054,
+      1248,
+      1282,
+      1303,
+      1312,
+      1332,
+      1333,
+      1334,
+      1335,
+      1388
+    ],
+    "rawCount": 58
+  },
+  "combined": {
+    "low": 1054,
+    "high": 1388,
+    "excludedLow": [],
+    "excludedHigh": [
+      9027
+    ],
+    "gfLow": 1337,
+    "gfHigh": 1356,
+    "kyLow": 1054,
+    "kyHigh": 1388
+  },
+  "finalCostLow": 1196,
+  "finalCostHigh": 1372
+}

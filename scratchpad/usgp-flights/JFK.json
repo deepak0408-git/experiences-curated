@@ -1,0 +1,41 @@
+{
+  "origin": "New York City",
+  "googleFlights": {
+    "sorted": [
+      280,
+      441,
+      445,
+      447,
+      457,
+      527,
+      528,
+      543,
+      578,
+      587,
+      658,
+      738
+    ],
+    "rawCount": 16
+  },
+  "kayak": {
+    "sorted": [
+      517,
+      570
+    ],
+    "rawCount": 9
+  },
+  "combined": {
+    "low": 441,
+    "high": 738,
+    "excludedLow": [
+      280
+    ],
+    "excludedHigh": [],
+    "gfLow": 441,
+    "gfHigh": 738,
+    "kyLow": 517,
+    "kyHigh": 570
+  },
+  "finalCostLow": 479,
+  "finalCostHigh": 654
+}

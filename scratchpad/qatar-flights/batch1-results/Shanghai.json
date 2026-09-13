@@ -1,0 +1,47 @@
+{
+  "origin": "Shanghai",
+  "googleFlights": {
+    "sorted": [
+      558,
+      626,
+      717,
+      871,
+      1134
+    ],
+    "rawCount": 6
+  },
+  "kayak": {
+    "sorted": [
+      495,
+      532,
+      542,
+      598,
+      693,
+      706,
+      707,
+      734,
+      787,
+      847,
+      849,
+      852,
+      853,
+      854,
+      855
+    ],
+    "rawCount": 55
+  },
+  "combined": {
+    "low": 495,
+    "high": 871,
+    "excludedLow": [],
+    "excludedHigh": [
+      1134
+    ],
+    "gfLow": 558,
+    "gfHigh": 871,
+    "kyLow": 495,
+    "kyHigh": 855
+  },
+  "finalCostLow": 527,
+  "finalCostHigh": 863
+}
