@@ -171,18 +171,15 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
     { label: "Weather", value: "Late spring in São Paulo — variable, rain likely at some point across the weekend. Bring a light rain layer regardless of the forecast." },
     { label: "Emergencies", value: "Brazil-wide emergency numbers: 190 (police), 192 (ambulance/SAMU), 193 (fire). English-speaking operators aren't guaranteed — having your hotel call on your behalf is more reliable." },
   ],
-  // Real, sourced facts from experience research (GA sellout by late Aug
-  // 2026, the free metro/shuttle transit link, Qatar's cashless-friendly
-  // but still-conservative dress norms). Session times are real and
-  // confirmed (founder-supplied screenshot, formula1.com/en/racing/2026/qatar,
-  // 13 Sep 2026) — only gate-opening times themselves remain unpublished,
-  // stated honestly per skill §2a-3.
+  // Real, sourced facts from experience research (the free metro/shuttle
+  // transit link). Session times are real and confirmed (founder-supplied
+  // screenshot, formula1.com/en/racing/2026/qatar, 13 Sep 2026) — only
+  // gate-opening times themselves remain unpublished, stated honestly per
+  // skill §2a-3.
   "qatar-grand-prix": [
     { label: "Night sessions", value: "Every 2026 session lands in the afternoon or evening: Friday P1 16:30, P2 20:00; Saturday P3 17:30, Qualifying 21:00; Sunday's race starts at 19:00. There is no morning on-track activity across the whole weekend." },
-    { label: "GA sold out", value: "General Admission (Lusail Hill) reportedly sold out on the official ticketing platform by late Aug 2026 — every remaining ticket for this race is a reserved grandstand or hospitality seat. Confirm current availability before planning around a GA ticket." },
     { label: "Free transit", value: "The Doha Metro Red Line to Lusail Station, plus the ticket-holder shuttle from the station to the circuit, is free with any race ticket — no separate transport cost to budget for." },
-    { label: "Gate times", value: "Not yet published for the 2026 race — expect gates 2-3 hours before each day's first session, based on the confirmed session schedule above. Confirm exact times via formula1.com closer to race week." },
-    { label: "Dress norms", value: "Qatar is a conservative Gulf state — shoulders and knees covered is the safe default in public areas outside the circuit itself (inside the venue, standard race-day clothing is fine). Alcohol is served at licensed hotel bars and select hospitality areas, not casually in public." },
+    { label: "Gate times", value: "Not yet officially published for 2026 — based on the confirmed session schedule above, expect roughly: Friday gates ~13:30-14:30 (P1 16:30), Saturday gates ~14:30-15:30 (P3 17:30), Sunday gates ~16:00-17:00 (race 19:00). Confirm exact times via formula1.com closer to race week." },
     { label: "Emergencies", value: "Qatar-wide emergency number: 999. Hamad International Airport and major hotels have English-speaking staff on call; Hamad Medical Corporation runs the country's main public hospitals." },
   ],
 };
