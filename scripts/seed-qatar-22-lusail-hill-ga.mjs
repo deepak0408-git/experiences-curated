@@ -62,7 +62,7 @@ const insiderTips = [
 const whatToAvoid = "Don't assume grandstand seating is automatically the better view — Lusail Hill's elevation clears the Turn 1 fence and gravel trap for a sightline down the front straight that several of the circuit's paid grandstands can't match. Don't bring a folding chair expecting to use it — they're not permitted on the hill, and turning up without a blanket means sitting directly on grass that gets genuinely buggy once the floodlights come on.";
 
 const practicalInfo = {
-  hours: "Gates open ahead of each day's on-track session, Fri 27 – Sun 29 Nov 2026",
+  hours: "Gates open ahead of each day's on-track session, Fri 27 – Sun 29 Nov 2026. 2026 session times (local/Doha, AST): Practice 1 Fri 4:30-5:30pm, Practice 2 Fri 8-9pm, Practice 3 Sat 5:30-6:30pm, Qualifying Sat 9-10pm, Race Sun 7pm.",
   costRange: "General Admission (Lusail Hill) sold out on the official F1 ticket store by late Aug 2026 — last listed around QAR 600 for the 3-day pass on secondary sources, unconfirmed against the official site directly. The official site no longer lists a standard GA product, only a separately named, much more expensive 'Lusail Hill' hospitality club product — do not confuse the two.",
   bookingMethod: "Sold via the official F1 ticket store (tickets.formula1.com) as a 3-day Friday–Sunday pass — no single-day GA option exists. It sold out on the official platform by late August 2026 for the 2026 race; check the official site directly for any releases or resale before assuming it's unavailable.",
   website: "https://tickets.formula1.com/en/f1-56257-qatar",

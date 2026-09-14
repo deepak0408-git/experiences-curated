@@ -30,7 +30,7 @@ The mid-range stands at Turn 2, Turn 3, and Turn 16 run QAR 1,000 (about US$274)
 
 General Admission, sold as Lusail Hill, is the cheapest ticket at QAR 600 (about US$165) — and it's already gone. GA sold out on the official ticket platform before the race weekend arrived, alongside one section of the Main Grandstand and the entire Paddock Club allocation. For a race that's historically been one of the more affordable weekends on the calendar, that's a real shift, and it means anyone still shopping for tickets is choosing between the paid grandstand tiers or the resale market, not the once-reliable cheap seat.
 
-The weekend itself is a standard format, no sprint race: practice runs Friday (1:30-2:30pm and 5-6pm local), practice and qualifying Saturday (2:30-3:30pm and 6-7pm), and the race goes green Sunday at 4pm — timed so the final laps run fully under the floodlights regardless of session slippage.`;
+The weekend itself is a standard format, no sprint race: practice runs Friday (4:30-5:30pm and 8-9pm local), practice continues Saturday (5:30-6:30pm) ahead of qualifying at 9-10pm, and the race goes green Sunday at 7pm — timed so the final laps run fully under the floodlights regardless of session slippage.`;
 
 const whyItsSpecial = `Lusail is one of the few circuits where the ticket tier genuinely changes what kind of race you watch, not just how comfortable you are watching it. The front straight and Turn 1 tell the start-and-finish story; the mid-corner stands tell the overtaking story. Neither is objectively better, but they're different trips, and most fans buying blind end up at the Main Grandstand by default because it sounds premium, when a Turn 2 or Turn 3 ticket at less than half the price often delivers more actual racing.
 
@@ -42,10 +42,10 @@ const insiderTips = [
   "North Grandstand has no assigned seating — arrive at gate-open, not race-start, if you want a front-row spot within the stand.",
 ];
 
-const whatToAvoid = "Don't assume General Admission will still be biddable at the gate the way it has been at some other circuits — Lusail's GA sold out entirely on the official platform ahead of the weekend, so anyone without a ticket already is looking at resale markup, not a walk-up option. Don't book Main Grandstand purely for the podium view if you actually want to watch overtaking — the front straight shows start-finish drama well but very little of the corner-to-corner racing that decides most of the result.";
+const whatToAvoid = "Don't leave North Grandstand entry until close to a session start — seating there is unallocated, so a late arrival on a sold-out race weekend means standing or a compromised sightline, not just a worse-but-guaranteed seat. Don't book Main Grandstand purely for the podium view if you actually want to watch overtaking — the front straight shows start-finish drama well but very little of the corner-to-corner racing that decides most of the result.";
 
 const practicalInfo = {
-  hours: "Gates open several hours before first session each day; exact times published closer to the race weekend",
+  hours: "Gates open several hours before first session each day. 2026 session times (local/Doha, AST): Practice 1 Fri 4:30-5:30pm, Practice 2 Fri 8-9pm, Practice 3 Sat 5:30-6:30pm, Qualifying Sat 9-10pm, Race Sun 7pm.",
   costRange: "QAR 600–2,000 (approx. US$165–548) for a 3-day ticket, tier-dependent — GA sold out",
   bookingMethod: "Official tickets via tickets.formula1.com or the Lusail International Circuit ticket portal. Most tiers still open as of Sep 2026 except General Admission and one Main Grandstand section, both sold out.",
   website: "https://www.formula1.com/en/racing/2026/qatar",

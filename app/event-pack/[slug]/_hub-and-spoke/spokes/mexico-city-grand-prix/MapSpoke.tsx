@@ -141,18 +141,16 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
         </p>
       </div>
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually check before buying</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            If racing action is the priority, confirm your grandstand sits in the Blue Zone (turns 1-3) before
-            buying — the seating chart alone doesn&apos;t always make this obvious. If you specifically want the
-            Foro Sol atmosphere, understand you&apos;re trading racing quality for crowd energy, not getting both;
-            neither Foro Sol stand gets you close to the pit lane or paddock, so if garage proximity matters, look at
-            Grandstands 1 and 2 on the front straight instead.
-          </p>
-        </div>
-      )}
+      <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually check before buying</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          If racing action is the priority, confirm your grandstand sits in the Blue Zone (turns 1-3) before
+          buying — the seating chart alone doesn&apos;t always make this obvious. If you specifically want the
+          Foro Sol atmosphere, understand you&apos;re trading racing quality for crowd energy, not getting both;
+          neither Foro Sol stand gets you close to the pit lane or paddock, so if garage proximity matters, look at
+          Grandstands 1 and 2 on the front straight instead.
+        </p>
+      </div>
     </SpokeShell>
   );
 }

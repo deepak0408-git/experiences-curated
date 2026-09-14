@@ -28,13 +28,13 @@ const insiderTips = [
   "The shuttle's peak-time travel window (up to 40 minutes vs. a normal 20) tends to hit hardest right after the race ends, when the whole crowd exits at once — if you can wait 30-45 minutes after the chequered flag before heading to the shuttle stop, you'll likely move faster than joining the immediate rush.",
 ];
 
-const whatToAvoid = "Don't rely on Uber for your return trip from the circuit — it's fine for getting there but doesn't reliably pick up from the venue itself, and Karwa is the dependable option for departures. Don't drive the Al Khor Coastal Road past the Wadi Al Wasah junction on race days — it's a known congestion point specifically flagged by circuit route guidance, and the signed alternative via Exit 29B avoids it entirely.";
+const whatToAvoid = "Don't assume free parking means guaranteed parking — spaces are limited, and arriving without a plan for a full lot means circling or a longer walk than expected on the day everyone else drives too. Don't drive the Al Khor Coastal Road past the Wadi Al Wasah junction on race days — it's a known congestion point specifically flagged by circuit route guidance, and the signed alternative via Exit 29B avoids it entirely.";
 
 const practicalInfo = {
   hours: "Shuttle: Fri 11:45am-1am, Sat 1:15pm-1am, Sun 11:45am-2am",
   costRange: "Metro + shuttle: free with race ticket. Taxi: approx. QAR 35 (~US$10) one-way from central Doha, +50% after midnight.",
   bookingMethod: "Metro/shuttle pass included automatically with any valid race ticket. Taxis via Karwa (metered, 24/7) or Uber (arrival only, not recommended for departure).",
-  website: "https://gpdestinations.com/how-to-get-to-lusail-circuit-qatar-grand-prix/",
+  website: "https://visitqatar.com/intl-en/plan-your-trip/getting-around/doha-metro",
   howToBook: "",
 };
 

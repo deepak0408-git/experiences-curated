@@ -93,17 +93,15 @@ export default async function GettingThereSpoke({ eventSlug }: { eventSlug: stri
         </div>
       )}
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually do</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            On race day specifically, head straight to Velódromo regardless of your actual gate assignment — it&apos;s
-            the one station guaranteed to stay open, and the extra walk from there is a smaller cost than discovering
-            your usual station is closed once you&apos;re already underway. On Friday and Saturday, use your real
-            gate-matched station and don&apos;t overthink it.
-          </p>
-        </div>
-      )}
+      <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually do</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          On race day specifically, head straight to Velódromo regardless of your actual gate assignment — it&apos;s
+          the one station guaranteed to stay open, and the extra walk from there is a smaller cost than discovering
+          your usual station is closed once you&apos;re already underway. On Friday and Saturday, use your real
+          gate-matched station and don&apos;t overthink it.
+        </p>
+      </div>
     </SpokeShell>
   );
 }

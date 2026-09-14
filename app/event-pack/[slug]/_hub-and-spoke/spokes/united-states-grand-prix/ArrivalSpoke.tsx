@@ -94,20 +94,18 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
         </div>
       )}
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually do</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            For race day specifically — the single heaviest-traffic day of the weekend — book the Downtown shuttle
-            over driving yourself if you&apos;re staying centrally; the drop-off right at the Grand Plaza gates
-            beats the walk from any COTA-run parking lot, and it removes the parking-sellout risk (see the
-            First-Timer Guide) entirely. If you&apos;re on General Admission and Turn 1 is your target spot, treat
-            gate-opening time as a hard deadline, not a suggestion — arrive at the gate itself, not just at COTA,
-            by the time it opens, since the walk from the shuttle drop-off or parking lot to Turn 1 already eats
-            into that early-arrival advantage.
-          </p>
-        </div>
-      )}
+      <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually do</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          For race day specifically — the single heaviest-traffic day of the weekend — book the Downtown shuttle
+          over driving yourself if you&apos;re staying centrally; the drop-off right at the Grand Plaza gates
+          beats the walk from any COTA-run parking lot, and it removes the parking-sellout risk (see the
+          First-Timer Guide) entirely. If you&apos;re on General Admission and Turn 1 is your target spot, treat
+          gate-opening time as a hard deadline, not a suggestion — arrive at the gate itself, not just at COTA,
+          by the time it opens, since the walk from the shuttle drop-off or parking lot to Turn 1 already eats
+          into that early-arrival advantage.
+        </p>
+      </div>
 
       <p className="text-xs text-[#6A6A6A] mt-8">
         Sources: help.thecircuit.com, circuitoftheamericas.com (shuttle pricing and schedule), kvue.com, kxan.com.

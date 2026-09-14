@@ -144,18 +144,16 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
         </div>
       )}
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What actually matters most, first time</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            Book your parking or shuttle pass the moment your tickets are confirmed, not closer to race weekend —
-            this is the single most common regret among first-timers, more than any seat choice. If you&apos;re
-            going General Admission, head straight for the Turn 1 hill rather than treating GA as a fallback plan;
-            it&apos;s a genuinely strong vantage point in its own right, not a discount version of a grandstand
-            seat.
-          </p>
-        </div>
-      )}
+      <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What actually matters most, first time</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          Book your parking or shuttle pass the moment your tickets are confirmed, not closer to race weekend —
+          this is the single most common regret among first-timers, more than any seat choice. If you&apos;re
+          going General Admission, head straight for the Turn 1 hill rather than treating GA as a fallback plan;
+          it&apos;s a genuinely strong vantage point in its own right, not a discount version of a grandstand
+          seat.
+        </p>
+      </div>
 
       <p className="text-xs text-[#6A6A6A] mt-8">
         Sources: circuitoftheamericas.com, austin.gp, Formula1.com, Mercedes-AMG F1.

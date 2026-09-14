@@ -39,34 +39,27 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       ctaCopy="You've got the real hotel picks and neighborhood breakdown above — what you don't have yet is our direct verdict on which specific stay to book, plus our honest read on Airbnb and budget apartment options for race week, a gap most guides skip entirely. The pack adds both, plus this same level of tactical detail across all 12 guides — tickets, food, transit, the whole trip planned out."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        Where to stay for the Qatar Grand Prix is a genuine choice between four different kinds of trip. Lusail
-        Marina puts you closest to the circuit itself. The Pearl trades that proximity for a real resort holiday.
-        West Bay puts you in the actual city, on Doha&apos;s central Corniche. All four are real, bookable hotels —
-        this isn&apos;t a one-size guide.
+        Where to stay for the Qatar Grand Prix is a genuine choice between three different kinds of trip. Lusail
+        Marina puts you closest to the circuit itself, with a five-star tower and a value-play apartment option both
+        in the same neighborhood. The Pearl trades that proximity for a real resort holiday. West Bay puts you in
+        the actual city, on Doha&apos;s central Corniche. All four hotels below are real and bookable — this
+        isn&apos;t a one-size guide.
       </p>
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Raffles & Fairmont Doha — Lusail Marina, closest to the circuit</p>
-      {marinaHotels && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={marinaHotels} isPro={isPro} hideProCtas />
-        </div>
-      )}
+      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Lusail Marina, closest to the circuit</p>
+      <div className="grid sm:grid-cols-2 gap-4 mb-8">
+        {marinaHotels && <SpokeExperienceCard experience={marinaHotels} isPro={isPro} hideProCtas />}
+        {staybridge && <SpokeExperienceCard experience={staybridge} isPro={isPro} hideProCtas />}
+      </div>
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Staybridge Suites Lusail — the value play, same neighborhood</p>
-      {staybridge && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={staybridge} isPro={isPro} hideProCtas />
-        </div>
-      )}
-
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Marsa Malaz Kempinski — The Pearl, a real resort base</p>
+      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The Pearl, a real resort base</p>
       {pearlHotel && (
         <div className="mb-8">
           <SpokeExperienceCard experience={pearlHotel} isPro={isPro} hideProCtas />
         </div>
       )}
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Four Seasons Doha — West Bay, the city base</p>
+      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">West Bay, the city base</p>
       {westBayHotel && (
         <div className="mb-8">
           <SpokeExperienceCard experience={westBayHotel} isPro={isPro} hideProCtas />
@@ -103,8 +96,8 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Which specific stay we&apos;d pick</p>
           <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
             Within the Lusail Marina tower, Raffles&apos; all-suite floors (132 suites, no standard rooms, a
-            personal butler with every stay) are the pick if the trip is a genuine splurge — its 4.6/1,848-review
-            Google rating and #2-of-12 TripAdvisor ranking in Lusail both back that up. Fairmont, sharing the same
+            personal butler with every stay) are the pick if the trip is a genuine splurge — its 4.6 Google rating
+            and #2-of-12 TripAdvisor ranking in Lusail both back that up. Fairmont, sharing the same
             building, is the more standard five-star option one price tier down if Raffles is sold out or above
             budget. At The Pearl, Marsa Malaz Kempinski&apos;s private-island setting and nearly 500-foot beach are
             the real draw over any comparable Doha resort — book the beach-facing room category specifically if a

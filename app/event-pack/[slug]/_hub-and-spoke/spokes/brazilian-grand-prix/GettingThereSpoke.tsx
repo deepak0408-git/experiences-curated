@@ -107,17 +107,15 @@ export default async function GettingThereSpoke({ eventSlug }: { eventSlug: stri
         </div>
       )}
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually do</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            Take the metro over the F1 Express shuttle if you&apos;re staying anywhere near a Line 9-connected
-            neighborhood — it&apos;s the same route the shuttle ultimately funnels toward, but on your own schedule
-            rather than a fixed departure window. Buy your Bilhete Único the day before, at a quiet station, and
-            you&apos;ve removed the one real friction point in an otherwise straightforward commute.
-          </p>
-        </div>
-      )}
+      <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually do</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          Take the metro over the F1 Express shuttle if you&apos;re staying anywhere near a Line 9-connected
+          neighborhood — it&apos;s the same route the shuttle ultimately funnels toward, but on your own schedule
+          rather than a fixed departure window. Buy your Bilhete Único the day before, at a quiet station, and
+          you&apos;ve removed the one real friction point in an otherwise straightforward commute.
+        </p>
+      </div>
     </SpokeShell>
   );
 }

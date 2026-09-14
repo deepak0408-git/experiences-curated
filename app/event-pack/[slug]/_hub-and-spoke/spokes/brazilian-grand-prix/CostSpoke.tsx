@@ -56,7 +56,9 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
     { label: "Luxury", hotel: luxuryHotel, ticket: tier4, note: "Hotel Emiliano-tier Jardins luxury stays", ticketNote: "Paddock Club / Champions Club" },
   ].filter((p) => p.hotel);
 
-  const saFlights = flights.filter((f) => f.region === "South America");
+  const saFlights = flights.filter(
+    (f) => f.region === "Latin America" && f.originMarket !== "Sao Paulo" && f.originMarket !== "Mexico City"
+  );
   const flightRange = saFlights.length
     ? {
         low: Math.min(...saFlights.map((f) => Number(f.costLow))),
@@ -177,7 +179,7 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
         {flightRange ? (
           <p className="text-sm text-white font-bold mb-2">
             Roughly {formatMoneyRange(flightRange.low, flightRange.high)}{" "}
-            round-trip, economy, if you&apos;re flying from within South America.
+            round-trip, economy, if you&apos;re flying from within Latin America.
           </p>
         ) : (
           <p className="text-sm text-[#A3A3A3] leading-6 mb-2">

@@ -89,17 +89,15 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
         start when crowds around every entrance and food stand peak.
       </p>
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually do</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            Arrive right as gates open on any day you genuinely care about your seat or sightline, especially at
-            Foro Sol where good spots fill on merit rather than assigned arrival windows. On race day specifically —
-            the single heaviest-traffic day of the weekend, with several Metro stations closing to manage crowd flow
-            — build in real buffer time beyond what worked on practice or qualifying days.
-          </p>
-        </div>
-      )}
+      <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually do</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          Arrive right as gates open on any day you genuinely care about your seat or sightline, especially at
+          Foro Sol where good spots fill on merit rather than assigned arrival windows. On race day specifically —
+          the single heaviest-traffic day of the weekend, with several Metro stations closing to manage crowd flow
+          — build in real buffer time beyond what worked on practice or qualifying days.
+        </p>
+      </div>
     </SpokeShell>
   );
 }

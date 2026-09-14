@@ -38,7 +38,7 @@ const insiderTips = [
 const whatToAvoid = "Don't wait to inquire about Paddock Club specifically — it's already sold out for 2026, and F1 Experiences and its resellers will point you toward Champions Club or Lusail Hill Lounge as the remaining hospitality tiers. Don't assume Champions Club's Turn 1 location means worse racing views than Paddock Club's pit-straight position — Turn 1 sees genuine overtaking and braking-zone action that the front straight often doesn't, so the tradeoff is really about extras and food service, not view quality.";
 
 const practicalInfo = {
-  hours: "Hospitality suites open ahead of first session each day, close after the race concert programme ends",
+  hours: "Hospitality suites open ahead of first session each day, close after the race concert programme ends. 2026 session times (local/Doha, AST): Practice 1 Fri 4:30-5:30pm, Practice 2 Fri 8-9pm, Practice 3 Sat 5:30-6:30pm, Qualifying Sat 9-10pm, Race Sun 7pm.",
   costRange: "Champions Club from approx. US$5,459 (3-day); Paddock Club from approx. US$7,599 (3-day, sold out for 2026)",
   bookingMethod: "Champions Club and remaining hospitality tiers via f1experiences.com or authorized resellers (Edge Global Events, ZK Sports & Entertainment, Race Experiences). Paddock Club sold out as of September 2026 — inquire on the waitlist or check resale.",
   website: "https://f1experiences.com/2026-qatar-grand-prix, https://www.lusail.gp/en/ticket-info/paddock-club-3",

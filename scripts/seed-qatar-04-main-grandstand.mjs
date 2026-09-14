@@ -19,7 +19,7 @@ The stand runs opposite the pit lane, split into six zones lettered A through F,
 
 The roof only covers the back half of the stand — a partial shade structure, not full cover, so a front-row seat in a "covered" grandstand can still mean full sun during a hot practice session. Seating is individual plastic chairs, and the stand was renovated ahead of the 2023 race, bringing it up to a modern standard. Four large screens mounted on the opposite pit buildings fill in whatever your seat's sightline misses — useful given how much of the lap happens well outside the front straight.
 
-Race day temperatures cool fast once the sun goes down, and by the time Sunday's 4pm race reaches its closing laps under floodlights, the evening chill is real — pack a layer regardless of how warm the afternoon felt.`;
+Race day temperatures cool fast once the sun goes down, and by the time Sunday's 7pm race reaches its closing laps under floodlights, the evening chill is real — pack a layer regardless of how warm the afternoon felt.`;
 
 const whyItsSpecial = `The zone-and-row system here rewards actually thinking about what you want to watch, which most grandstands don't offer — you either get a seat or you don't. Someone who wants the ceremony (grid walk, podium, trophy presentation) should book differently than someone who wants Turn 1 braking duels, and Main Grandstand is specific enough that both of those are real, distinct bookable choices within the same stand rather than a coin flip.
 
@@ -30,10 +30,10 @@ const insiderTips = [
   "Zone A gives the best podium/finish-line view but the weakest Turn 1 sightline — decide which matters more before booking, since the zones genuinely trade one for the other rather than one zone being simply \"better.\"",
 ];
 
-const whatToAvoid = "Don't assume the whole stand is covered because it's advertised with a roof — only the back half actually has shade, and a front-row seat can mean full sun through a Friday afternoon practice session. Don't book Zone A expecting strong Turn 1 racing views — it's the ceremonial end of the stand, and the corner action is genuinely better from Zones D and E.";
+const whatToAvoid = "Don't assume paying the most for a grandstand ticket means you'll see the whole lap live — Main Grandstand still relies on the venue's big screens to cover corners outside the front straight, the same as every other stand. Don't expect a premium physical seat to match the price — Main Grandstand is the most expensive grandstand ticket at Lusail, but seating throughout is individual plastic chairs, the same seating standard as the cheaper corner stands. Don't book Zone A expecting strong Turn 1 racing views — it's the ceremonial end of the stand, and the corner action is genuinely better from Zones D and E.";
 
 const practicalInfo = {
-  hours: "Gates open several hours before first session; exact times published closer to race weekend",
+  hours: "Gates open several hours before first session. 2026 session times (local/Doha, AST): Practice 1 Fri 4:30-5:30pm, Practice 2 Fri 8-9pm, Practice 3 Sat 5:30-6:30pm, Qualifying Sat 9-10pm, Race Sun 7pm.",
   costRange: "QAR 2,000 (approx. US$548) for the 3-day ticket",
   bookingMethod: "Official tickets via tickets.formula1.com or the Lusail International Circuit ticket portal — assigned seating, zone and row selected at purchase.",
   website: "https://www.formula1.com/en/racing/2026/qatar",

@@ -8,6 +8,17 @@ const SPOKE_ID = "where-to-eat";
 // (Shay Al Shomous + Al Aker Sweets, multi-venue), Sawa by Sanad (modern
 // Levantine, Msheireb), and Parisa (Persian atmosphere dining, Souq
 // Waqif). All sourced 13 Sep 2026.
+//
+// Gated section, 14 Sep 2026: founder flagged the unlocked content as too
+// thin to justify the paywall — no closed-day fact exists for any of these
+// 3 venues (all run daily, unlike São Paulo's Maní/Mondays), so instead
+// this adds a real, verified bookable add-on matching São Paulo's pattern —
+// GetYourGuide's "Souq Waqif Guided Tour with Authentic Arabic Food
+// Tasting" (Falcon Souq, food-market tasting stop, guided Souq Waqif walk,
+// ~2hrs), confirmed live via screenshot (founder, 14 Sep 2026): 4.8/11
+// reviews, From ₹3,822 → ₹3,058/person, free cancellation 24hrs ahead.
+// Price converted INR→USD at the day's rate (₹95.59 = $1) and rounded up
+// to US$32 per standing pricing rules — not a fabricated figure.
 export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string }) {
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
@@ -32,7 +43,7 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="Three real picks, three real price points, all free above. What the pack adds is which one to book on which night — the reservation windows that actually matter, and our direct read on whether Sawa's tasting menu or à la carte gets you the better trolley-theatre experience."
+      ctaCopy="Three real picks, three real price points, all free above. What the pack adds is which one to book on which night, our direct read on Sawa's tasting menu versus à la carte, and a bookable guided food tour through Souq Waqif and the Falcon Souq for anyone who'd rather not navigate the market alone."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Doha&apos;s food scene runs from genuinely inexpensive souq stalls to Michelin-listed fine dining, often
@@ -41,26 +52,15 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
         booking.
       </p>
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Qatari Cuisine in Souq Waqif — genuinely inexpensive, genuinely local</p>
-      {qatariCuisine && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={qatariCuisine} isPro={isPro} />
-        </div>
-      )}
-
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Sawa by Sanad — Michelin-listed, Msheireb Downtown</p>
-      {sawa && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={sawa} isPro={isPro} />
-        </div>
-      )}
-
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Parisa — Persian atmosphere dining, Souq Waqif</p>
-      {parisa && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={parisa} isPro={isPro} />
-        </div>
-      )}
+      <div className="grid sm:grid-cols-2 gap-4 mb-8">
+        {qatariCuisine && <SpokeExperienceCard experience={qatariCuisine} isPro={isPro} />}
+        {sawa && <SpokeExperienceCard experience={sawa} isPro={isPro} />}
+        {parisa && (
+          <div className="sm:col-span-2">
+            <SpokeExperienceCard experience={parisa} isPro={isPro} />
+          </div>
+        )}
+      </div>
 
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
         <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Book ahead for the two sit-down picks</p>
@@ -84,11 +84,27 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
           </p>
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Our direct read on Sawa</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
             Order à la carte and lean into the sharing format rather than a fixed tasting menu — the trolley-service
             dishes are built to land in the middle of the table, and a tasting menu&apos;s smaller, individually
             plated courses undercut exactly what makes Sawa&apos;s dinner service worth booking in the first place.
           </p>
+
+          <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5">
+            <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
+              Prefer a guided introduction to the souq over navigating it alone? A ~2-hour tour covers Falcon Souq,
+              a local food-market stop with tasting included, and a guided walk through Souq Waqif itself — from
+              around US$32 per person, free cancellation up to 24 hours ahead.
+            </p>
+            <a
+              href="https://www.getyourguide.com/doha-l1885/souq-waqif-guided-tour-with-authentic-arabic-food-tasting-t1126405/?partner_id=HCNITTS&utm_medium=online_publisher"
+              target="_blank"
+              rel="noopener noreferrer nofollow sponsored"
+              className="inline-flex items-center px-4 py-2 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
+            >
+              Book the Souq Waqif Guided Food Tour →
+            </a>
+          </div>
         </div>
       )}
     </SpokeShell>

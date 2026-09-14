@@ -33,11 +33,11 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       justPurchased={justPurchased}
       eventName="Qatar Grand Prix"
       status="teaser"
-      h1="Paddock Club is sold out — Champions Club and Lusail Hill Lounge are the real remaining top tiers"
+      h1="Paddock Club, Champions Club, and Lusail Hill Lounge — the real top-tier hospitality options at Lusail"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The hospitality tiers, transit, and rooftop pick above are all free. What the pack adds is the real, verified contact for Paddock Club's late-release inventory — the one lead that can still get you into a sold-out tier — plus our direct verdict on Champions Club vs. Lusail Hill Lounge for a first-time luxury Lusail weekend."
+      ctaCopy="What's real is free above — the overview of all three hospitality tiers, premium transit, and the off-circuit rooftop pick. The pack adds the full Paddock Club, Champions Club, and Lusail Hill Lounge experience cards, our direct verdict on which one to actually book, and the real, verified resale contact for Paddock Club when official sales close out."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         A genuinely luxury Qatar Grand Prix weekend is a stack of decisions, not one purchase — which hospitality
@@ -45,19 +45,15 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
         the real range, not just the best-known product.
       </p>
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Hospitality tiers — three real options, one already sold out</p>
-      <div className="grid sm:grid-cols-2 gap-4 mb-4">
-        {lusailHillLounge && <SpokeExperienceCard experience={lusailHillLounge} isPro={isPro} />}
-        {paddockChampions && <SpokeExperienceCard experience={paddockChampions} isPro={isPro} />}
-      </div>
-      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
-        <p className="text-sm text-[#A3A3A3] leading-6">
-          Paddock Club, the top tier, sold out as of September 2026 — demand for this race, positioned as the
-          penultimate round of the season, ran ahead of supply. Champions Club and Lusail Hill Lounge both still had
-          real availability at time of research. Report current availability honestly if you&apos;re checking closer
-          to race week — hospitality inventory moves fast in the final weeks before any Grand Prix.
-        </p>
-      </div>
+      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Hospitality tiers — three real products, not one</p>
+      <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
+        F1 Paddock Club sits directly above the team garages on the main straight, looking down at pit lane and the
+        start-finish line — curated menus, an open bar, a guided paddock tour, and real proximity to the sport
+        itself. Champions Club sits one tier below and isn&apos;t a diluted version of it — its own open bar, food
+        service, a Saturday grid walk, and a trophy photo op that Paddock Club doesn&apos;t offer at any price.
+        Lusail Hill Lounge is the third real option, trading pit-lane proximity for one of the circuit&apos;s best
+        natural viewpoints at Turn 1/Turn 2, at meaningfully less than either of the other two.
+      </p>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Premium transit</p>
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
@@ -84,12 +80,49 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">If Paddock Club is genuinely what you want</p>
+          {paddockChampions && (
+            <>
+              <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The single biggest luxury decision: Paddock Club & Champions Club</p>
+              <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
+                Champions Club isn&apos;t simply &quot;Paddock Club but cheaper&quot; — it&apos;s a genuinely
+                different package built around the Saturday grid walk and trophy photo rather than Paddock
+                Club&apos;s pit-lane proximity and all-weekend access. Pick based on which specific experience you
+                actually want, not price alone.
+              </p>
+
+              <div className="mb-8">
+                <SpokeExperienceCard experience={paddockChampions} isPro={isPro} />
+              </div>
+
+              <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
+                A grandstand sells you one great view of the racing. Paddock Club or Champions Club sells you the
+                whole day around it — food, bars, and real proximity to the sport itself, not just a better seat.
+              </p>
+            </>
+          )}
+
+          {lusailHillLounge && (
+            <>
+              <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The mid-luxury alternative: Lusail Hill Lounge</p>
+              <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
+                If pit-lane proximity isn&apos;t the priority, Lusail Hill Lounge is the real third option — not a
+                grandstand seat, but a proper premium product in its own right, sitting on genuinely one of the
+                circuit&apos;s best natural viewpoints at Turn 1/Turn 2, at meaningfully less than either Champions
+                Club or Paddock Club.
+              </p>
+
+              <div className="mb-8">
+                <SpokeExperienceCard experience={lusailHillLounge} isPro={isPro} />
+              </div>
+            </>
+          )}
+
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">If Paddock Club is showing sold out</p>
           <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
-            Don&apos;t rely on the main booking page — it&apos;s showing sold out and will keep showing that. Call
-            Race Experiences directly at +31 50 205 78 01 or email info@raceexperiences.com and ask specifically
-            about late-release or cancellation inventory — this reseller has historically had access to returned
-            Paddock Club allocations closer to race week that never make it back onto the public site.
+            Don&apos;t rely on the main booking page alone if it&apos;s showing sold out — call Race Experiences
+            directly at +31 50 205 78 01 or email info@raceexperiences.com and ask specifically about late-release
+            or cancellation inventory. This reseller has historically had access to returned Paddock Club
+            allocations closer to race week that never make it back onto the public site.
           </p>
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Champions Club vs. Lusail Hill Lounge — our verdict</p>
@@ -99,8 +132,7 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
             offer at any price. If food quality is the bigger factor, ask the reseller for the exact current menu
             before committing — Champions Club&apos;s food service has varied year to year between canapés-only and
             a fuller sit-down dinner. Lusail Hill Lounge is the better pick if the Turn 1/Turn 2 sightline itself is
-            the priority — it sits on genuinely one of the circuit&apos;s best natural viewpoints, at meaningfully
-            less than either Champions Club or Paddock Club.
+            the priority.
           </p>
         </div>
       )}

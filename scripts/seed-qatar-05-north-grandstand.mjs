@@ -33,7 +33,7 @@ const insiderTips = [
 const whatToAvoid = "Don't expect to see the full Turn 1 corner unwind — a building on the inside of the corner blocks the apex and exit from this stand's sightline, so you're watching the braking and entry only, not the whole corner. Don't skip a jacket assuming an uncovered stand only matters for sun exposure — Qatar's night-race format means the real risk here is the evening temperature drop, not heat.";
 
 const practicalInfo = {
-  hours: "Gates open several hours before first session; exact times published closer to race weekend",
+  hours: "Gates open several hours before first session. 2026 session times (local/Doha, AST): Practice 1 Fri 4:30-5:30pm, Practice 2 Fri 8-9pm, Practice 3 Sat 5:30-6:30pm, Qualifying Sat 9-10pm, Race Sun 7pm.",
   costRange: "QAR 1,500 (approx. US$411) for the 3-day ticket — includes Lusail Hill general admission access",
   bookingMethod: "Official tickets via tickets.formula1.com or the Lusail International Circuit ticket portal. No assigned seating — first-come, first-served within the stand.",
   website: "https://www.formula1.com/en/racing/2026/qatar",

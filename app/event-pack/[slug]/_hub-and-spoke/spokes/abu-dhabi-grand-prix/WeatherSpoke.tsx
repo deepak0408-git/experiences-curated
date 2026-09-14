@@ -67,18 +67,16 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
         </p>
       </div>
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually bring</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            A packable, genuinely lightweight jacket beats a heavier layer here — the evening drop is moderate
-            (roughly 25-26°C throughout, easing only slightly after dark), not a sharp cold-weather shift, so
-            over-packing for cold is its own real mistake. A portable phone charger is worth including too — between
-            the ticket app, photos, and staying connected through the after-race concert, battery life is a genuine,
-            common problem across a full race day.
-          </p>
-        </div>
-      )}
+      <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually bring</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          A packable, genuinely lightweight jacket beats a heavier layer here — the evening drop is moderate
+          (roughly 25-26°C throughout, easing only slightly after dark), not a sharp cold-weather shift, so
+          over-packing for cold is its own real mistake. A portable phone charger is worth including too — between
+          the ticket app, photos, and staying connected through the after-race concert, battery life is a genuine,
+          common problem across a full race day.
+        </p>
+      </div>
 
       <p className="text-xs text-[#6A6A6A] mt-8">
         Sources: AccuWeather (Yas Marina Circuit December climate averages), Formula1.com (confirmed session times).

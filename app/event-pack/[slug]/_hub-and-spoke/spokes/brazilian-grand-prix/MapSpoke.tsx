@@ -173,18 +173,16 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
         </div>
       </div>
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually check before buying</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            If racing action and sightlines matter most, confirm your grandstand sits near Turn 1 or the main
-            straight rather than assuming any covered stand gives you the same view — Grandstand M and Grandstand
-            B are the two that actually put you on top of the circuit&apos;s real drama. If atmosphere matters
-            more than sightline quality, Grandstand A&apos;s bowl-shaped position into the infield trades comfort
-            for genuine crowd energy that some of the quieter covered stands don&apos;t have.
-          </p>
-        </div>
-      )}
+      <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually check before buying</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          If racing action and sightlines matter most, confirm your grandstand sits near Turn 1 or the main
+          straight rather than assuming any covered stand gives you the same view — Grandstand M and Grandstand
+          B are the two that actually put you on top of the circuit&apos;s real drama. If atmosphere matters
+          more than sightline quality, Grandstand A&apos;s bowl-shaped position into the infield trades comfort
+          for genuine crowd energy that some of the quieter covered stands don&apos;t have.
+        </p>
+      </div>
     </SpokeShell>
   );
 }

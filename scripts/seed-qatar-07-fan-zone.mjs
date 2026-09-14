@@ -28,13 +28,10 @@ const insiderTips = [
   "Post-race concerts are included with every ticket tier, not just premium ones — worth factoring into which day you prioritize attending if the lineup announcement favors one night over another.",
 ];
 
-const whatToAvoid = "Don't expect the concert headliners to be confirmed far in advance — lineup announcements for this event have historically landed close to the race weekend, so don't plan your travel dates around a specific act until it's officially confirmed. Don't assume driver appearances happen on a fixed public schedule — they rotate through the weekend without advance notice of exact times, so treat any sighting as a bonus rather than something to plan your day around.";
+const whatToAvoid = "Don't expect a quick in-and-out visit right before the race or right after the concert — the Fan Zone sits directly against the circuit's main entrance and parking, exactly where arrival and post-race crowds bottleneck hardest. Don't assume driver appearances happen on a fixed public schedule — they rotate through the weekend without advance notice of exact times, so treat any sighting as a bonus rather than something to plan your day around.";
 
 const practicalInfo = {
-  hours: "Opens with circuit gates each race day, runs through the post-race concert programme",
-  costRange: "Included with any valid race ticket — no separate cost",
-  bookingMethod: "No separate booking — automatic access with any Qatar Grand Prix ticket.",
-  website: "https://www.formula1.com/en/racing/2026/qatar",
+  hours: "Opens with circuit gates each race day, runs through the post-race concert programme. 2026 session times (local/Doha, AST): Practice 1 Fri 4:30-5:30pm, Practice 2 Fri 8-9pm, Practice 3 Sat 5:30-6:30pm, Qualifying Sat 9-10pm, Race Sun 7pm.",
   howToBook: "",
 };
 

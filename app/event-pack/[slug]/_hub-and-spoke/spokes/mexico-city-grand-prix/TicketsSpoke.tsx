@@ -91,9 +91,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
           If official tickets are sold out, or you want a package with hospitality, hotel, or shuttle bundled in, P1
           Travel is a genuine authorized F1 ticket partner — named directly on multiple circuits&apos; own official
-          reseller lists, rated 4.7 from over 10,000 reviews on Trustpilot, and in business since 2007. Motorsport
-          Tickets, sometimes seen advertised for this race, ceased trading and entered liquidation in 2026 — avoid it
-          regardless of what a listing claims.
+          reseller lists, rated 4.7 from over 10,000 reviews on Trustpilot, and in business since 2007.
         </p>
         <div className="flex flex-wrap gap-4">
           <a
