@@ -160,19 +160,17 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
         </p>
       </div>
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What actually matters most, first time</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            Plan your evening around catching the headline concert act specifically — most first-timers don&apos;t
-            realize until they&apos;re already there that it&apos;s bundled into every ticket tier, and it&apos;s a
-            genuine part of the Abu Dhabi identity, not an optional add-on. If you&apos;re also chasing the full
-            race-day experience, build in real walking-time buffers between your seat, amenities, and the concert
-            stage rather than a tight back-to-back schedule — a rushed transition is the single most common way
-            first-timers miss part of the show.
-          </p>
-        </div>
-      )}
+      <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What actually matters most, first time</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          Plan your evening around catching the headline concert act specifically — most first-timers don&apos;t
+          realize until they&apos;re already there that it&apos;s bundled into every ticket tier, and it&apos;s a
+          genuine part of the Abu Dhabi identity, not an optional add-on. If you&apos;re also chasing the full
+          race-day experience, build in real walking-time buffers between your seat, amenities, and the concert
+          stage rather than a tight back-to-back schedule — a rushed transition is the single most common way
+          first-timers miss part of the show.
+        </p>
+      </div>
 
       <p className="text-xs text-[#6A6A6A] mt-8">
         Sources: yasmarinacircuit.com and Formula1.com (twilight race format, lighting installation, session

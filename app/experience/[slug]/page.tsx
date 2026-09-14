@@ -341,6 +341,28 @@ const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; 
   "brazilian-gp-arrival-queue-guide-": { eventSlug: "brazilian-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
   "brazilian-gp-hospitality-paddock-club-": { eventSlug: "brazilian-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
   "brazilian-gp-heineken-village-": { eventSlug: "brazilian-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "qatar-gp-ticket-guide-": { eventSlug: "qatar-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "qatar-gp-main-grandstand-": { eventSlug: "qatar-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "qatar-gp-north-grandstand-": { eventSlug: "qatar-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "qatar-gp-lusail-hill-general-admission-": { eventSlug: "qatar-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "qatar-gp-lusail-hill-lounge-": { eventSlug: "qatar-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "qatar-gp-paddock-champions-club-": { eventSlug: "qatar-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "qatar-gp-west-bay-hotel-": { eventSlug: "qatar-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "qatar-gp-pearl-hotel-": { eventSlug: "qatar-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "qatar-gp-lusail-marina-hotels-": { eventSlug: "qatar-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "qatar-gp-staybridge-suites-lusail-": { eventSlug: "qatar-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "qatar-gp-getting-there-": { eventSlug: "qatar-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
+  "qatar-gp-inside-lusail-circuit-": { eventSlug: "qatar-grand-prix", spokeId: "map", spokeLabel: "Venue Map" },
+  "qatar-gp-fan-zone-": { eventSlug: "qatar-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+  "qatar-gp-khor-al-adaid-": { eventSlug: "qatar-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "qatar-gp-museum-islamic-art-": { eventSlug: "qatar-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "qatar-gp-national-museum-qatar-": { eventSlug: "qatar-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "qatar-gp-souq-waqif-": { eventSlug: "qatar-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "qatar-gp-pearl-katara-": { eventSlug: "qatar-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "qatar-gp-doha-fan-city-tour-": { eventSlug: "qatar-grand-prix", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+  "qatar-gp-parisa-atmosphere-dining-": { eventSlug: "qatar-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "qatar-gp-qatari-cuisine-souq-": { eventSlug: "qatar-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "qatar-gp-sawa-by-sanad-": { eventSlug: "qatar-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
 };
 
 function getSpokeBackLink(slug: string) {
@@ -804,6 +826,10 @@ export default async function ExperiencePage({
               slug.startsWith("mexico-city-dia-de-muertos-") ? "lg:object-[center_20%]" :
               slug === "court-philippe-chatrier-suzanne-lenglen" ? "lg:object-[center_65%]" :
               slug === "roland-garros-travel-official-packages" ? "lg:object-[center_25%]" :
+              slug.startsWith("qatar-gp-north-grandstand-") ? "lg:object-[center_70%]" :
+              slug.startsWith("qatar-gp-fan-zone-") ? "lg:object-[center_35%]" :
+              slug.startsWith("qatar-gp-getting-there-") ? "lg:object-[center_70%]" :
+              slug.startsWith("qatar-gp-parisa-atmosphere-dining-") ? "lg:object-[center_75%]" :
               ""
             }`}
             sizes="100vw"

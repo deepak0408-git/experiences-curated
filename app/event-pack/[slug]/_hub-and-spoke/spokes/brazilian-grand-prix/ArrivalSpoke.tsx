@@ -68,17 +68,15 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
         </div>
       )}
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually do</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            Because bag checks happen at every entrance with no fast-track beyond packing light, arrive with your
-            gates-open target in mind rather than session-start time — an 08:00 gate opening with security lines
-            building fast means getting there right at open is genuinely worth the earlier morning, especially on
-            race day when the crowd is at its largest all weekend.
-          </p>
-        </div>
-      )}
+      <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually do</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          Because bag checks happen at every entrance with no fast-track beyond packing light, arrive with your
+          gates-open target in mind rather than session-start time — an 08:00 gate opening with security lines
+          building fast means getting there right at open is genuinely worth the earlier morning, especially on
+          race day when the crowd is at its largest all weekend.
+        </p>
+      </div>
     </SpokeShell>
   );
 }

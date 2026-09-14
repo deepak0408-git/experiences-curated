@@ -17,7 +17,7 @@ const bodyContent = `Staybridge Suites Doha Lusail is the value play in a neighb
 
 Every unit is a one, two, or three-bedroom apartment with a fully equipped kitchen (full-size fridge/freezer, microwave, cookware, dishes), a washer, a separate dining area, and a dedicated workspace — closer to renting a flat than booking a hotel room. That matters most for anyone traveling as a group or family: splitting a two- or three-bedroom apartment across several people brings the effective per-person cost down well below anything else in Lusail, and having a real kitchen means at least some meals don't have to happen at circuit or restaurant prices.
 
-The property backs that value pitch up with a genuinely strong Google rating — 4.7 from 703 reviews. [See live rating and reviews on Google Maps](https://maps.google.com/?cid=12120076132753572246&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA) A 24-hour convenience store on-site (The Pantry) backs up the self-catering pitch further, alongside a fitness centre and pool. Breakfast, WiFi, and parking are all included free — a real difference from the five-star towers nearby, where each of those is typically an add-on charge.
+A 24-hour convenience store on-site (The Pantry) backs up the self-catering pitch further, alongside a fitness centre and pool. Breakfast, WiFi, and parking are all included free — a real difference from the five-star towers nearby, where each of those is typically an add-on charge.
 
 It sits about 10 minutes from downtown Doha and roughly 30 minutes from Hamad International Airport — a genuinely central Lusail location, just without the marina-front premium of Raffles or Fairmont a short distance away.`;
 

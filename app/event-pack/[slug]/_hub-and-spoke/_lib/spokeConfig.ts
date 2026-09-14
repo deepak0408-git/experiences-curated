@@ -315,10 +315,10 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
   // 2026: sightseeing (museums, Pearl/Katara, Souq Waqif, desert safari)
   // all on Day Trips; Fan Zone on Arrival (not Tickets).
   "qatar-grand-prix": [
-    { id: "cost", label: "Cost Guide", question: "How much does a Qatar Grand Prix weekend cost?", status: "teaser", imageSlug: "qatar-gp-inside-lusail-circuit-mtymp2ma" },
+    { id: "cost", label: "Cost Guide", question: "How much does a Qatar Grand Prix weekend cost?", status: "teaser", imageSlug: "qatar-gp-inside-lusail-circuit-mtymp2ma", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/qatar-grand-prix-cost-spoke.jpg" },
     { id: "tickets", label: "Ticket Guide", question: "Which Lusail grandstand is the best buy?", status: "teaser", imageSlug: "qatar-gp-ticket-guide-mtymjjwm", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
     { id: "hotels", label: "Where to Stay", question: "Where should I stay for the Qatar Grand Prix?", status: "teaser", imageSlug: "qatar-gp-lusail-marina-hotels-mtymsd31" },
-    { id: "getting-there", label: "Getting There", question: "How do I get to Lusail Circuit?", status: "public", imageSlug: "qatar-gp-getting-there-mtymqst2" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to Lusail Circuit?", status: "public", imageSlug: "qatar-gp-getting-there-mtymqst2", heroImagePosition: "center 75%" },
     { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the Qatar Grand Prix, and what should I pack?", status: "public", imageSlug: "qatar-gp-khor-al-adaid-mtyn3hq9", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
     { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Qatar Grand Prix?", status: "public", imageSlug: "qatar-gp-pearl-katara-mtyn4luu" },
     { id: "where-to-eat", label: "Where to Eat", question: "Where to eat in Doha during Qatar Grand Prix race weekend?", status: "teaser", imageSlug: "qatar-gp-qatari-cuisine-souq-mtymxb0w" },

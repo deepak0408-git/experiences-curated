@@ -158,19 +158,17 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
         </p>
       </div>
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What actually matters most, first time</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            Book your hotel and tickets earlier than you would for a typical Grand Prix — both the Día de Muertos
-            overlap and this race&apos;s own history of selling out within a single day compound into a genuinely
-            higher-stakes planning window than most other stops on the calendar. Everything else — the altitude
-            adjustment, the packing layers, the Metro station logistics — is manageable with the detail already in
-            this pack; the one irreversible mistake is waiting too long on the two things that can actually sell out
-            entirely.
-          </p>
-        </div>
-      )}
+      <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What actually matters most, first time</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          Book your hotel and tickets earlier than you would for a typical Grand Prix — both the Día de Muertos
+          overlap and this race&apos;s own history of selling out within a single day compound into a genuinely
+          higher-stakes planning window than most other stops on the calendar. Everything else — the altitude
+          adjustment, the packing layers, the Metro station logistics — is manageable with the detail already in
+          this pack; the one irreversible mistake is waiting too long on the two things that can actually sell out
+          entirely.
+        </p>
+      </div>
     </SpokeShell>
   );
 }

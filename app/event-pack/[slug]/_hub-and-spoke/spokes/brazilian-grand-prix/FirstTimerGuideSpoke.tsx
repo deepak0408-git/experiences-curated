@@ -166,17 +166,15 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
         </p>
       </div>
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What actually matters most, first time</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            Book your ticket and hotel earlier than you'd think necessary — several grandstands, including Turn
-            1's Grandstand M, have sold out months ahead of the 2026 race, and there's no GA fallback if your first
-            choice sells out. Everything else — the rideshare habits, the rain-jacket-not-umbrella rule, the
-            neighborhood choice — is manageable with the detail already in this pack.
-          </p>
-        </div>
-      )}
+      <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What actually matters most, first time</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          Book your ticket and hotel earlier than you'd think necessary — several grandstands, including Turn
+          1's Grandstand M, have sold out months ahead of the 2026 race, and there's no GA fallback if your first
+          choice sells out. Everything else — the rideshare habits, the rain-jacket-not-umbrella rule, the
+          neighborhood choice — is manageable with the detail already in this pack.
+        </p>
+      </div>
     </SpokeShell>
   );
 }

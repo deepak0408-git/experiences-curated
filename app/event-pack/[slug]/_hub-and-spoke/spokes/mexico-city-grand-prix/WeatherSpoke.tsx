@@ -72,18 +72,16 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
         </p>
       </div>
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually bring</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            A genuinely packable jacket beats a heavier coat — the evening drop is real but not extreme (8-12°C, not
-            freezing), so over-packing for cold wastes bag space you&apos;ll want for the day&apos;s warmer hours.
-            If you feel unusually tired or short of breath in your first day or two, that&apos;s normal altitude
-            adjustment, not a sign something&apos;s wrong — pace your first day&apos;s walking and hydrate more than
-            usual rather than pushing through at your normal-elevation pace.
-          </p>
-        </div>
-      )}
+      <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually bring</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          A genuinely packable jacket beats a heavier coat — the evening drop is real but not extreme (8-12°C, not
+          freezing), so over-packing for cold wastes bag space you&apos;ll want for the day&apos;s warmer hours.
+          If you feel unusually tired or short of breath in your first day or two, that&apos;s normal altitude
+          adjustment, not a sign something&apos;s wrong — pace your first day&apos;s walking and hydrate more than
+          usual rather than pushing through at your normal-elevation pace.
+        </p>
+      </div>
 
       <p className="text-xs text-[#6A6A6A] mt-8">Sources: AccuWeather, Weather-and-Climate.com, Volaris Blog.</p>
     </SpokeShell>

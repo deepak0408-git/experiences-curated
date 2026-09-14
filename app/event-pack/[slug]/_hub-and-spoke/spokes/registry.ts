@@ -571,7 +571,7 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
   },
   "qatar-grand-prix": {
     cost: "How Much Does the Qatar Grand Prix Cost? — Budget Guide",
-    tickets: "Qatar Grand Prix Ticket Guide — General Admission Sold Out, Grandstand by Grandstand",
+    tickets: "Qatar Grand Prix Ticket Guide — Grandstand by Grandstand",
     hotels: "Where to Stay for the Qatar Grand Prix — Lusail Marina, The Pearl, or West Bay",
     "getting-there": "Getting to Lusail Circuit — Qatar Grand Prix Transit Guide",
     weather: "Doha Weather in November — What to Pack for the Qatar Grand Prix",

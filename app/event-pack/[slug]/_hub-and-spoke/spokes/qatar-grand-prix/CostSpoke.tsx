@@ -50,19 +50,22 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
   const moderateTotal = tripTotal(moderateHotel, tier2);
 
   const profiles = [
-    { label: "Budget", hotel: budgetHotel, ticket: tier1, note: "A well-reviewed budget stay in Doha or Lusail", ticketNote: "Lusail Hill GA (sold out — see note below)" },
-    { label: "Moderate", hotel: moderateHotel, ticket: tier2, note: "A solid 3-4 star hotel in Doha or Lusail Marina", ticketNote: "North Grandstand" },
-    { label: "Splurge", hotel: splurgeHotel, ticket: tier3, note: "An upscale hotel with real amenities and a better location", ticketNote: "Lusail Hill Lounge" },
-    { label: "Luxury", hotel: luxuryHotel, ticket: tier4, note: "Raffles/Four Seasons-tier Doha luxury stays", ticketNote: "Paddock Club / Champions Club" },
+    { label: "Budget", hotel: budgetHotel, ticket: tier1, note: "A well-reviewed budget stay in Doha or Lusail", ticketNote: "Lusail Hill GA (sold out)" },
+    { label: "Moderate", hotel: moderateHotel, ticket: tier2, note: "A solid 3-4 star hotel in Doha or Lusail Marina", ticketNote: "T16 Grandstand" },
+    { label: "Splurge", hotel: splurgeHotel, ticket: tier3, note: "An upscale hotel with real amenities and a better location", ticketNote: "North Grandstand or Main Grandstand" },
+    { label: "Luxury", hotel: luxuryHotel, ticket: tier4, note: "Raffles/Four Seasons-tier Doha luxury stays", ticketNote: "Lusail Hill Lounge / Champions Club" },
   ].filter((p) => p.hotel);
 
   // No "Middle East" region exists in planner_origin_markets — Doha itself
   // sits under "Asia-Pacific" (correctly seeded as a $0 same-city row, which
-  // must be excluded from any aggregate range per skill §2a-2). Africa is
-  // geographically the closest real region with seeded rows, so this uses
-  // Africa alone rather than folding in the much longer Asia-Pacific hauls
-  // (Sydney, Tokyo), which would misleadingly widen the "nearby" range.
-  const nearbyFlights = flights.filter((f) => f.region === "Africa" && f.originMarket !== "Doha");
+  // must be excluded from any aggregate range per skill §2a-2). Africa plus
+  // Dubai (Asia-Pacific-tagged but geographically Middle East) are the
+  // closest real markets with seeded rows, so this folds Dubai in alongside
+  // Africa rather than the much longer Asia-Pacific hauls (Sydney, Tokyo),
+  // which would misleadingly widen the "nearby" range.
+  const nearbyFlights = flights.filter(
+    (f) => (f.region === "Africa" || f.originMarket === "Dubai") && f.originMarket !== "Doha"
+  );
   const flightRange = nearbyFlights.length
     ? {
         low: Math.min(...nearbyFlights.map((f) => Number(f.costLow))),
@@ -99,7 +102,7 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
             {formatMoneyRange(moderateTotal.low, moderateTotal.high)}
           </p>
           <p className="text-xs text-[#6A6A6A] mt-1">
-            A 3-4 star hotel, food, local transport, and a North Grandstand 3-day ticket, for {TRIP_NIGHTS} nights.{" "}
+            A 3-4 star hotel, food, local transport, and a T16 Grandstand 3-day ticket, for {TRIP_NIGHTS} nights.{" "}
             <span className="text-[#AAFF00]">Excludes flights</span>,{" "}
             <a href="#flights" className="text-[#AAFF00] hover:text-[#BBFF33] underline">
               see why ↓
@@ -141,23 +144,16 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
               );
             })}
           </div>
-          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4 mb-8">
-            <p className="text-sm text-[#A3A3A3] leading-6">
-              The Budget profile&apos;s ticket figure (Lusail Hill GA, roughly $219–265) is the founder&apos;s
-              recalled price, not confirmed live on the official site — GA is no longer listed for purchase there as
-              of this writing. Treat it as an estimate of what the tier cost before selling out, not a current price.
-            </p>
-          </div>
         </>
       )}
 
       {(tier2 || moderateHotel || destinationBand) && (
         <>
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-1">Where the money goes</p>
-          <p className="text-xs text-[#6A6A6A] mb-3">For the Moderate trip above — 3-4 star hotel, North Grandstand ticket.</p>
+          <p className="text-xs text-[#6A6A6A] mb-3">For the Moderate trip above — 3-4 star hotel, T16 Grandstand ticket.</p>
           <div className="flex flex-col gap-2 mb-8">
             {tier2 && (
-              <CategoryRow label="Ticket (North Grandstand)" low={Math.round(Number(tier2.costLow))} high={Math.round(Number(tier2.costHigh))} unit="3-day" />
+              <CategoryRow label="Ticket (T16 Grandstand)" low={Math.round(Number(tier2.costLow))} high={Math.round(Number(tier2.costHigh))} unit="3-day" />
             )}
             {moderateHotel && (
               <CategoryRow label="Hotel" low={Number(moderateHotel.costLow) * TRIP_NIGHTS} high={Number(moderateHotel.costHigh) * TRIP_NIGHTS} unit={`for ${TRIP_NIGHTS} nights`} />
@@ -190,7 +186,7 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
         {flightRange ? (
           <p className="text-sm text-white font-bold mb-2">
             Roughly {formatMoneyRange(flightRange.low, flightRange.high)}{" "}
-            round-trip, economy, if you&apos;re flying from within Africa.
+            round-trip, economy, if you&apos;re flying from within Middle East and Africa.
           </p>
         ) : (
           <p className="text-sm text-[#A3A3A3] leading-6 mb-2">

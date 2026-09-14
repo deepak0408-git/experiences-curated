@@ -13,7 +13,7 @@ export const mexicoCityGpTicketsSpokeContent = {
     body:
       "Buy directly from the official source first, and be ready the moment sales open — this race has sold out within a single day in recent seasons. Every F1 ticket ultimately traces back to the promoter, and buying direct means no markup and no risk of a fraudulent listing.",
     body2:
-      "If official tickets are sold out, or you want a package with hospitality, hotel, or shuttle bundled in, P1 Travel is a genuine authorized F1 ticket partner — named directly on multiple circuits' own official reseller lists, rated 4.7 from over 10,000 reviews on Trustpilot, and in business since 2007. Motorsport Tickets, sometimes seen advertised for this race, ceased trading and entered liquidation in 2026 — avoid it regardless of what a listing claims.",
+      "If official tickets are sold out, or you want a package with hospitality, hotel, or shuttle bundled in, P1 Travel is a genuine authorized F1 ticket partner — named directly on multiple circuits' own official reseller lists, rated 4.7 from over 10,000 reviews on Trustpilot, and in business since 2007.",
     officialUrl: "https://tickets.formula1.com/en/f1-4861-mexico",
     resellerUrl: "https://www.p1travel.com/en/organizer/grand-prix-mexico",
   },

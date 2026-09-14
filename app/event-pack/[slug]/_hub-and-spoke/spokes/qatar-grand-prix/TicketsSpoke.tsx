@@ -22,6 +22,13 @@ const TIER_META = [
   },
   {
     tierKey: "tier2",
+    name: "T16 Grandstand",
+    shows: "Turn 16, the final corner leading onto the main straight",
+    seating: "Not assigned — claim on arrival",
+    exposure: "Uncovered",
+  },
+  {
+    tierKey: "tier3",
     name: "North Grandstand",
     shows: "Start line and Turn 1 braking zone, opposite the pit lane exit",
     seating: "Not assigned — eight sections, claim on arrival",
@@ -29,6 +36,13 @@ const TIER_META = [
   },
   {
     tierKey: "tier3",
+    name: "Main Grandstand",
+    shows: "The main straight and pit lane, with a zone-and-row system that changes the view — Zone A closest to the finish line and podium, Zones D and E angled furthest toward Turn 1",
+    seating: "Assigned — zone and row selected at purchase, the only stand at Lusail with allocated seats",
+    exposure: "Partial — roof covers the back half of the stand only",
+  },
+  {
+    tierKey: "tier4",
     name: "Lusail Hill Lounge",
     shows: "Turn 1 and Turn 2, plus a long look back down the main straight — the circuit's best natural viewpoint, with real seating added",
     seating: "Tiered open-air terrace — day lounges, tables and chairs, cabana seating",
@@ -93,8 +107,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
           If official tickets are sold out for the tier you want, or you want a package with hospitality, hotel, or
           shuttle bundled in, P1 Travel is a genuine authorized F1 ticket partner — named directly on multiple
           circuits&apos; own official reseller lists, rated 4.7 from over 10,000 reviews on Trustpilot, and in
-          business since 2007. Motorsport Tickets, sometimes seen advertised for this race, ceased trading and
-          entered liquidation in 2026 — avoid it regardless of what a listing claims.
+          business since 2007.
         </p>
         <div className="flex flex-wrap gap-4">
           <a
@@ -163,16 +176,6 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         ))}
       </div>
 
-      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">On pricing</p>
-        <p className="text-sm text-[#A3A3A3] leading-6">
-          North Grandstand, Lusail Hill Lounge, and Champions Club/Paddock Club prices above are confirmed 2026
-          figures. General Admission&apos;s $219–265 range is the founder&apos;s recalled figure from before it sold
-          out — the official site no longer lists it for sale, so treat this one number as an estimate, not a
-          current price.
-        </p>
-      </div>
-
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
           {ticketGuide && (
@@ -197,7 +200,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
             {mainGrandstand && <SpokeExperienceCard experience={mainGrandstand} isPro={isPro} />}
           </div>
 
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What GA used to get you</p>
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What GA generally gets you</p>
           <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
             General Admission on Lusail Hill is worth understanding even sold out — it&apos;s the tier every
             remaining option is now measured against. The elevated grass banking above the Turn 1 gravel trap gave a

@@ -29,6 +29,7 @@ export default async function GettingThereSpoke({ eventSlug }: { eventSlug: stri
       h1="The Doha Metro Red Line to Lusail Station, then a free shuttle — no extra cost with any race ticket"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
+      heroImagePosition={spoke.heroImagePosition}
       isUnlocked={isUnlocked}
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
@@ -113,18 +114,16 @@ export default async function GettingThereSpoke({ eventSlug }: { eventSlug: stri
         </div>
       )}
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually do</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            Take the metro and free shuttle on the way in — it&apos;s genuinely free, direct from the airport if
-            you&apos;re arriving that day, and there&apos;s no real reason to pay for a taxi when the included option
-            is this straightforward. On the way out, especially after a night race finishing well past dark, switch
-            to Karwa rather than fighting the post-race shuttle crowd — the 50%-after-midnight surcharge is a small
-            price for skipping what can be a genuinely long wait for the last shuttles of the night.
-          </p>
-        </div>
-      )}
+      <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually do</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          Take the metro and free shuttle on the way in — it&apos;s genuinely free, direct from the airport if
+          you&apos;re arriving that day, and there&apos;s no real reason to pay for a taxi when the included option
+          is this straightforward. On the way out, especially after a night race finishing well past dark, switch
+          to Karwa rather than fighting the post-race shuttle crowd — the 50%-after-midnight surcharge is a small
+          price for skipping what can be a genuinely long wait for the last shuttles of the night.
+        </p>
+      </div>
     </SpokeShell>
   );
 }

@@ -33,7 +33,7 @@ const insiderTips = [
 const whatToAvoid = "Don't book this expecting Champions Club-style formal dining or a paddock tour — the format here is a street-food bar and standing/lounge seating, a genuinely different, more casual hospitality style. Don't assume walk-up availability late in the season — with GA already sold out at the same location, the Lounge is likely to see spillover demand from fans who missed the cheaper ticket.";
 
 const practicalInfo = {
-  hours: "Opens ahead of first session each day, through the post-race concert programme",
+  hours: "Opens ahead of first session each day, through the post-race concert programme. 2026 session times (local/Doha, AST): Practice 1 Fri 4:30-5:30pm, Practice 2 Fri 8-9pm, Practice 3 Sat 5:30-6:30pm, Qualifying Sat 9-10pm, Race Sun 7pm.",
   costRange: "Approx. £3,449 per person (roughly US$4,300+) for the 3-day package",
   bookingMethod: "Book via hospitality.lcsc.qa or by phone (+44 020 8068 5205 / +1.833.233.4624) — pricing and availability aren't published live online, requires direct inquiry.",
   website: "https://hospitality.lcsc.qa/2026-f1-qatar-grand-prix/lusail-hill-lounge-3-days",

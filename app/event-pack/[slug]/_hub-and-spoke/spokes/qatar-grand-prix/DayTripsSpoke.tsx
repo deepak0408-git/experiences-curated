@@ -66,13 +66,21 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
       </div>
 
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Only one guided tour if you're short on time</p>
-        <p className="text-sm text-[#A3A3A3] leading-6">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Consider a guided tour if you're short on time</p>
+        <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
           Multiple operators run a single 4-hour guided loop covering the Corniche, Souq Waqif, Katara, and The
           Pearl in one afternoon, with hotel pickup included, from around $29 per person shared. It won&apos;t
           replace visiting each place properly, but it&apos;s a real option if you&apos;re flying in purely for the
           race and worried about missing the city entirely.
         </p>
+        <a
+          href="https://www.getyourguide.com/doha-l1885/doha-city-tour-from-hotel-airport-cruise-ship-port-t521518/?partner_id=HCNITTS&utm_medium=online_publisher"
+          target="_blank"
+          rel="noopener noreferrer nofollow sponsored"
+          className="inline-flex items-center px-4 py-2 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
+        >
+          Book the Doha City Tour →
+        </a>
       </div>
 
       {isUnlocked && (

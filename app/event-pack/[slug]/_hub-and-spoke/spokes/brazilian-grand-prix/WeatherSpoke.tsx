@@ -79,18 +79,16 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
         </p>
       </div>
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually bring</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            A genuinely packable rain jacket that folds down small — you'll want the bag space for other things,
-            and given the umbrella ban, this is the one item on this list that isn't optional if you're in an
-            uncovered grandstand. Check the actual short-range forecast the day before each session rather than
-            packing purely off the seasonal averages above; São Paulo's afternoon storms are frequent enough that
-            a same-day check genuinely changes what you'd bring.
-          </p>
-        </div>
-      )}
+      <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually bring</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          A genuinely packable rain jacket that folds down small — you'll want the bag space for other things,
+          and given the umbrella ban, this is the one item on this list that isn't optional if you're in an
+          uncovered grandstand. Check the actual short-range forecast the day before each session rather than
+          packing purely off the seasonal averages above; São Paulo's afternoon storms are frequent enough that
+          a same-day check genuinely changes what you'd bring.
+        </p>
+      </div>
     </SpokeShell>
   );
 }

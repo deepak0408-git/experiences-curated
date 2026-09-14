@@ -80,18 +80,16 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
         </p>
       </div>
 
-      {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually do</p>
-          <p className="text-sm text-[#A3A3A3] leading-7">
-            For race day specifically — the single heaviest-traffic day of the weekend — arrive several hours
-            before lights-out rather than just before, both if you&apos;re driving in from off-island and if
-            you&apos;re relying on the shuttle network. If commuting from off-island (Downtown Abu Dhabi or Dubai),
-            leave real buffer time beyond what worked on Friday or Saturday — race-day congestion around Yas
-            Island&apos;s approach roads is meaningfully heavier than any practice or qualifying day.
-          </p>
-        </div>
-      )}
+      <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What we&apos;d actually do</p>
+        <p className="text-sm text-[#A3A3A3] leading-7">
+          For race day specifically — the single heaviest-traffic day of the weekend — arrive several hours
+          before lights-out rather than just before, both if you&apos;re driving in from off-island and if
+          you&apos;re relying on the shuttle network. If commuting from off-island (Downtown Abu Dhabi or Dubai),
+          leave real buffer time beyond what worked on Friday or Saturday — race-day congestion around Yas
+          Island&apos;s approach roads is meaningfully heavier than any practice or qualifying day.
+        </p>
+      </div>
     </SpokeShell>
   );
 }
