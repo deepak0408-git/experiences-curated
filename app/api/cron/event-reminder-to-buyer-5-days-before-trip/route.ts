@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
-import { and, eq, isNull, isNotNull, gt } from "drizzle-orm";
+import { and, eq, isNull, isNotNull, gt, inArray } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { purchases, proSubscriptions, sportingEvents, eventRemindersSent } from "@/schema/database";
 
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
 
   for (const event of events) {
     // Direct purchasers who haven't had this reminder yet
-    const buyers = await db
+    const buyerRows = await db
       .select({ id: purchases.id, email: purchases.email })
       .from(purchases)
       .where(and(
@@ -82,6 +82,22 @@ export async function GET(request: NextRequest) {
         eq(purchases.status, "active"),
         isNull(purchases.preTripReminderSentAt),
       ));
+
+    // Mini-packs pilot — a buyer can now hold multiple purchases rows for
+    // the same (email, event) (e.g. tickets_guide + full_pack), so dedupe
+    // by email before sending — one reminder per person, not per product
+    // row. Every row for that email still gets preTripReminderSentAt
+    // stamped below so a later run doesn't re-pick the un-stamped sibling.
+    const seenBuyerEmails = new Set<string>();
+    const buyers = buyerRows.filter((r) => {
+      if (seenBuyerEmails.has(r.email)) return false;
+      seenBuyerEmails.add(r.email);
+      return true;
+    });
+    const buyerRowIdsByEmail = new Map<string, string[]>();
+    for (const r of buyerRows) {
+      buyerRowIdsByEmail.set(r.email, [...(buyerRowIdsByEmail.get(r.email) ?? []), r.id]);
+    }
 
     // Annual Pro members with an active subscription — free access, no purchases row
     const annualProMembers = await db
@@ -122,10 +138,11 @@ export async function GET(request: NextRequest) {
           html: buildEmailHtml(event.name, event.venueName, linkData.properties.action_link),
         });
 
+        const idsToStamp = buyerRowIdsByEmail.get(buyer.email) ?? [buyer.id];
         await db
           .update(purchases)
           .set({ preTripReminderSentAt: now })
-          .where(eq(purchases.id, buyer.id));
+          .where(inArray(purchases.id, idsToStamp));
 
         console.log(`[event-reminder-5-days] ✓ sent to ${buyer.email} — ${event.name}`);
         sent++;

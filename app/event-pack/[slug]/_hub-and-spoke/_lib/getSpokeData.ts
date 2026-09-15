@@ -179,6 +179,27 @@ const JUST_PURCHASED_WINDOW_MS = 5 * 60 * 1000;
 // never true for the Annual Pro branch, since that subscriber may have
 // had access for months and showing a "you're in" banner on every visit
 // would be wrong, not just redundant.
+// Mini-packs pilot (Bahrain GP / Singapore GP / Shanghai Masters, Sep 2026)
+// — maps a spoke id to the productType that unlocks it individually. Only
+// the 3 piloted spokes appear here; every other spoke id has no mini-pack
+// and is gated on hasPurchased (full pack) alone. Kept as a single source
+// of truth so the checkout route, webhook, and spoke components all agree
+// on the mapping.
+export const MINI_PACK_PRODUCT_TYPE_BY_SPOKE: Record<string, "tickets_guide" | "hotels_guide" | "itinerary_guide"> = {
+  tickets: "tickets_guide",
+  hotels: "hotels_guide",
+  itinerary: "itinerary_guide",
+};
+
+export function isSpokeUnlocked(
+  spokeId: string,
+  purchaseStatus: { hasPurchased: boolean; purchasedProductTypes: Set<string> }
+): boolean {
+  if (purchaseStatus.hasPurchased) return true;
+  const productType = MINI_PACK_PRODUCT_TYPE_BY_SPOKE[spokeId];
+  return productType != null && purchaseStatus.purchasedProductTypes.has(productType);
+}
+
 export async function getPurchaseStatus(slug: string, eventId: string, isHidden: boolean) {
   const supabase = await createClient();
   const {
@@ -187,6 +208,15 @@ export async function getPurchaseStatus(slug: string, eventId: string, isHidden:
 
   let hasPurchased = false;
   let justPurchased = false;
+  // Mini-packs pilot — which product the "you're in" banner should credit.
+  // A generic "the whole event pack is unlocked" banner is wrong for a
+  // mini-pack-only buyer (caught live by the founder, 15 Sep 2026 — buying
+  // just the Tickets Guide showed "Bahrain Grand Prix... is unlocked",
+  // implying the full pack). Defaults to "full_pack" so the free-access and
+  // Annual-Pro branches below (which never set this explicitly) still read
+  // correctly as a full-pack unlock.
+  let justPurchasedProductType: string = "full_pack";
+  const purchasedProductTypes = new Set<string>();
 
   // isPro is computed unconditionally, once, regardless of purchase status —
   // mirrors the classic pack (app/event-pack/[slug]/page.tsx, ~line 479-481).
@@ -199,15 +229,24 @@ export async function getPurchaseStatus(slug: string, eventId: string, isHidden:
     : { isPro: false, isAnnual: false, currentPeriodEnd: null };
 
   if (user?.email) {
-    const [purchase] = await db
-      .select({ id: purchases.id, createdAt: purchases.createdAt })
+    // Fetch every active purchase row for this (email, event) — mini-packs
+    // pilot allows more than one (e.g. tickets_guide + hotels_guide), so
+    // this can no longer assume/limit to a single row the way it did before
+    // productType existed.
+    const rows = await db
+      .select({ id: purchases.id, createdAt: purchases.createdAt, productType: purchases.productType })
       .from(purchases)
       .where(and(eq(purchases.email, user.email), eq(purchases.sportingEventId, eventId), eq(purchases.status, "active")))
-      .orderBy(purchases.createdAt)
-      .limit(1);
-    if (purchase) {
-      hasPurchased = true;
-      justPurchased = Date.now() - new Date(purchase.createdAt).getTime() < JUST_PURCHASED_WINDOW_MS;
+      .orderBy(purchases.createdAt);
+
+    for (const row of rows) {
+      purchasedProductTypes.add(row.productType);
+      if (row.productType === "full_pack") hasPurchased = true;
+    }
+    if (rows.length > 0) {
+      const mostRecent = rows[rows.length - 1];
+      justPurchased = Date.now() - new Date(mostRecent.createdAt).getTime() < JUST_PURCHASED_WINDOW_MS;
+      justPurchasedProductType = mostRecent.productType;
     }
   }
 
@@ -215,6 +254,7 @@ export async function getPurchaseStatus(slug: string, eventId: string, isHidden:
     await grantFreeAccess(user.email, eventId);
     hasPurchased = true;
     justPurchased = true;
+    purchasedProductTypes.add("full_pack");
   }
 
   if (!hasPurchased) {
@@ -224,7 +264,7 @@ export async function getPurchaseStatus(slug: string, eventId: string, isHidden:
     }
   }
 
-  return { hasPurchased, justPurchased, isPro, userEmail: user?.email ?? null };
+  return { hasPurchased, justPurchased, justPurchasedProductType, isPro, userEmail: user?.email ?? null, purchasedProductTypes };
 }
 
 export type SpokeStatus = "public" | "teaser" | "gated";

@@ -13,6 +13,10 @@ interface DodoCheckoutProps {
   successUrl: string;
   buttonClassName?: string;
   label?: string;
+  // Mini-packs pilot — omitted for the full pack, so the checkout route's
+  // existing full-pack behavior (and the webhook's "full_pack" default)
+  // still apply for every purchase that predates this prop.
+  productType?: "tickets_guide" | "hotels_guide" | "itinerary_guide";
 }
 
 let dodoInitialised = false;
@@ -26,6 +30,7 @@ export default function DodoCheckout({
   successUrl,
   buttonClassName,
   label = "Get the Pack",
+  productType,
 }: DodoCheckoutProps) {
   const [loading, setLoading] = useState(false);
 
@@ -65,7 +70,7 @@ export default function DodoCheckout({
       const res = await fetch("/api/checkout/dodo", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId, sportingEventId, priceTier, successUrl }),
+        body: JSON.stringify({ productId, sportingEventId, priceTier, productType, successUrl }),
       });
       const { checkout_url, error } = await res.json();
       if (error || !checkout_url) {

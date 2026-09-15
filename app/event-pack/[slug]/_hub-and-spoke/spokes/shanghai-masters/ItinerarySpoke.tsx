@@ -1,4 +1,5 @@
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
@@ -20,8 +21,12 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, isPro, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.itinerary;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "itinerary_guide" as const, owned: purchasedProductTypes.has("itinerary_guide") }
+    : undefined;
 
   const crowds = linkedExperiences.find((e) => e.slug.includes("shanghai-masters-crowds-atmosphere"));
   const liNaZheng = linkedExperiences.find((e) => e.slug.includes("li-na-zheng-qinwen-generations"));
@@ -34,94 +39,118 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       eventCurrency={event.packCurrency}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="Shanghai Masters"
       status="teaser"
       h1="A real match schedule, plus how the crowds and culture fit around it"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The week's shape above is free. The pack adds the full hour-by-hour itinerary — sequenced against real shuttle times, a day-trip window, and Federer exhibition-day booking timing for whichever days you're actually there."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the full hour-by-hour itinerary, the Federer/crowds/culture detail, and the day-trip and exhibition-day booking timing for whichever days you're actually there."
     >
-      {/* Free "Event rhythm" section — built on the real, confirmed 2026
-          schedule (qualifying Oct 5-6, R1/R2 Oct 7-10, R3/R4 Oct 11-14, QF
-          Oct 15-16, SF Oct 17, Final Oct 18), not an assumed generic
-          template. Early rounds carry more matches spread across more
-          courts (including Court 17 practice sessions); later rounds
-          concentrate onto Center Court with fewer, higher-stakes matches. */}
-      <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
-        Unlike the Finals in November, this is a standard Masters 1000 single-elimination draw — 96 players, one
-        loss and you&apos;re out. That shapes the week very differently: qualifying and the first two rounds (5-10
-        October) run the most matches across the most courts, including the outer showcourts and Court 17&apos;s
-        practice sessions, so this is genuinely the best window for close-up access to a wide range of players.
-        Third and fourth rounds (11-14 October) narrow things further, then quarterfinals (15-16 October) through
-        the semifinals (17 October) and final (18 October) concentrate onto Center Court and Grandstand 2 — fewer
-        matches, but each one carries more weight.
-      </p>
-      <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        This year, Roger Federer continues his &quot;Roger &amp; Friends&quot; exhibition tradition, returning to
-        Shanghai for a celebrity doubles match on 16 October — inside this window, but not part of the tournament
-        draw. A Grounds Pass doesn&apos;t automatically cover it, but there&apos;s also no separate Federer ticket to
-        buy: whichever day-session ticket you hold for that date is what gets you in, so book 16 October specifically
-        rather than any other day if seeing him is the priority (see the{" "}
-        <a href={`/event-pack/${eventSlug}/tickets`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
-          Ticket Guide
-        </a>
-        ). A multi-day trip has real flexibility to build a Suzhou or Hangzhou day trip into the early-rounds
-        stretch, since missing one first-week match day doesn&apos;t cost you the way missing a quarterfinal or
-        semifinal would later in the week.
-      </p>
-      {federer && (
-        <div className="mb-8">
-          <SpokeExperienceCard experience={federer} isPro={isPro} />
-        </div>
-      )}
+      {/* Free teaser — the tournament's basic round structure only (dates,
+          no day-by-day planning logic). Everything with real planning
+          value (the rhythm essay, the tentative-week DayCards — which
+          name the exact Federer exhibition date and day-trip timing —
+          the Federer/crowds/culture paragraphs and cards, and the
+          hour-by-hour tables) is gated behind isUnlocked (full pack or
+          the Itinerary Guide mini-pack).
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">A tentative week, built around that rhythm</p>
-      <div className="flex flex-col gap-3 mb-8">
-        <DayCard day="Arrival (before 5 Oct)" detail="Settle in, install Amap and Didi, and get oriented — an evening at the Bund is a good first night, well before Qizhong crowds build." />
-        <DayCard day="Qualifying & early rounds (5-10 Oct)" detail="The most matches on the most courts, including Court 17 practice sessions — the best window for close-up access. Build in a city day or the Suzhou/Hangzhou day trip on whichever day suits your session tickets least." />
-        <DayCard day="Third/fourth rounds (11-14 Oct)" detail="The draw has narrowed — a good stretch to prioritize specific players you want to see before the field thins further." />
-        <DayCard day="Federer exhibition (16 Oct)" detail="No separate ticket exists — a normal day-session ticket for 16 October is what gets you in. Book that specific date early, since exhibition-day sessions sell through faster than an average day." />
-        <DayCard day="Quarterfinals through the final (15-18 Oct)" detail="Matches concentrate onto Center Court and Grandstand 2 — protect these days if you have tickets, since the draw has narrowed to fewer, higher-stakes matches." />
-      </div>
-
-      <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Session times can still shift</p>
-        <p className="text-sm text-[#A3A3A3] leading-6">
-          The round-by-round dates above are the real, confirmed 2026 schedule — but exact daily session start times
-          and any weather-driven adjustments aren&apos;t set until closer to the tournament. Check the official
-          day-by-day order of play once it&apos;s published.
+          !isUnlocked gate tightened 15 Sep 2026 — the previous version
+          left the full rhythm essay AND all 5 DayCard summaries free,
+          which the founder correctly flagged as giving away the actual
+          week-planning logic (including which exact date the Federer
+          exhibition falls on and when to slot the day trip) — the
+          "trimmed to a short teaser" comment this replaced had wrongly
+          judged those DayCards as already minimal. Same fix as Bahrain
+          GP and Singapore GP's Itinerary spokes. */}
+      {!isUnlocked && (
+        <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
+          This is a standard Masters 1000 single-elimination draw — 96 players, one
+          loss and you&apos;re out, run across qualifying, four rounds, and finals weekend from 5-18 October.
         </p>
-      </div>
-
-      <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
-        Recent editions have drawn over 220,000 spectators across the tournament, more than 70% of them traveling in
-        from outside Shanghai — a genuine national draw, not a local event with a big venue. That scale is exactly
-        why booking early matters here, and it collides directly with China&apos;s National Day Golden Week (1-7
-        October), which runs right before the tournament starts and puts real pressure on hotel and transport
-        availability in the same window (see the{" "}
-        <a href={`/event-pack/${eventSlug}/cost`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
-          Cost Guide
-        </a>
-        ).
-      </p>
-      {crowds && (
-        <div className="mb-6">
-          <SpokeExperienceCard experience={crowds} isPro={isPro} />
-        </div>
       )}
 
-      <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
-        Shanghai&apos;s crowds skew both younger and older at once, and two careers explain why: Li Na&apos;s 2011
-        French Open win made her the first Chinese Grand Slam singles champion and the reason an older generation
-        started following tennis at all, while Zheng Qinwen&apos;s 2024 Olympic gold is doing the same for a much
-        younger generation discovering the sport now. Federer&apos;s exhibition partner this year is Li Na herself —
-        a real link between the tournament&apos;s past and its present.
-      </p>
-      {liNaZheng && (
-        <div className="mb-6">
-          <SpokeExperienceCard experience={liNaZheng} isPro={isPro} />
-        </div>
+      {isUnlocked && (
+        <>
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
+            This is a standard Masters 1000 single-elimination draw — 96 players, one
+            loss and you&apos;re out. That shapes the week very differently: qualifying and the first two rounds (5-10
+            October) run the most matches across the most courts, including the outer showcourts and Court 17&apos;s
+            practice sessions, so this is genuinely the best window for close-up access to a wide range of players.
+            Third and fourth rounds (11-14 October) narrow things further, then quarterfinals (15-16 October) through
+            the semifinals (17 October) and final (18 October) concentrate onto Center Court and Grandstand 2 — fewer
+            matches, but each one carries more weight.
+          </p>
+
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">A tentative week, built around that rhythm</p>
+          <div className="flex flex-col gap-3 mb-8">
+            <DayCard day="Arrival (before 5 Oct)" detail="Settle in, install Amap and Didi, and get oriented — an evening at the Bund is a good first night, well before Qizhong crowds build." />
+            <DayCard day="Qualifying & early rounds (5-10 Oct)" detail="The most matches on the most courts, including Court 17 practice sessions — the best window for close-up access. Build in a city day or the Suzhou/Hangzhou day trip on whichever day suits your session tickets least." />
+            <DayCard day="Third/fourth rounds (11-14 Oct)" detail="The draw has narrowed — a good stretch to prioritize specific players you want to see before the field thins further." />
+            <DayCard day="Federer exhibition (16 Oct)" detail="No separate ticket exists — a normal day-session ticket for 16 October is what gets you in. Book that specific date early, since exhibition-day sessions sell through faster than an average day." />
+            <DayCard day="Quarterfinals through the final (15-18 Oct)" detail="Matches concentrate onto Center Court and Grandstand 2 — protect these days if you have tickets, since the draw has narrowed to fewer, higher-stakes matches." />
+          </div>
+
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
+            This year, Roger Federer continues his &quot;Roger &amp; Friends&quot; exhibition tradition, returning to
+            Shanghai for a celebrity doubles match on 16 October — inside this window, but not part of the tournament
+            draw. A Grounds Pass doesn&apos;t automatically cover it, but there&apos;s also no separate Federer ticket to
+            buy: whichever day-session ticket you hold for that date is what gets you in, so book 16 October specifically
+            rather than any other day if seeing him is the priority (see the{" "}
+            <a href={`/event-pack/${eventSlug}/tickets`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
+              Ticket Guide
+            </a>
+            ). A multi-day trip has real flexibility to build a Suzhou or Hangzhou day trip into the early-rounds
+            stretch, since missing one first-week match day doesn&apos;t cost you the way missing a quarterfinal or
+            semifinal would later in the week.
+          </p>
+          {federer && (
+            <div className="mb-8">
+              <SpokeExperienceCard experience={federer} isPro={isPro} />
+            </div>
+          )}
+
+          <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Session times can still shift</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">
+              The round-by-round dates above are the real, confirmed 2026 schedule — but exact daily session start times
+              and any weather-driven adjustments aren&apos;t set until closer to the tournament. Check the official
+              day-by-day order of play once it&apos;s published.
+            </p>
+          </div>
+
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
+            Recent editions have drawn over 220,000 spectators across the tournament, more than 70% of them traveling in
+            from outside Shanghai — a genuine national draw, not a local event with a big venue. That scale is exactly
+            why booking early matters here, and it collides directly with China&apos;s National Day Golden Week (1-7
+            October), which runs right before the tournament starts and puts real pressure on hotel and transport
+            availability in the same window (see the{" "}
+            <a href={`/event-pack/${eventSlug}/cost`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
+              Cost Guide
+            </a>
+            ).
+          </p>
+          {crowds && (
+            <div className="mb-6">
+              <SpokeExperienceCard experience={crowds} isPro={isPro} />
+            </div>
+          )}
+
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
+            Shanghai&apos;s crowds skew both younger and older at once, and two careers explain why: Li Na&apos;s 2011
+            French Open win made her the first Chinese Grand Slam singles champion and the reason an older generation
+            started following tennis at all, while Zheng Qinwen&apos;s 2024 Olympic gold is doing the same for a much
+            younger generation discovering the sport now. Federer&apos;s exhibition partner this year is Li Na herself —
+            a real link between the tournament&apos;s past and its present.
+          </p>
+          {liNaZheng && (
+            <div className="mb-6">
+              <SpokeExperienceCard experience={liNaZheng} isPro={isPro} />
+            </div>
+          )}
+        </>
       )}
 
       {isUnlocked && (

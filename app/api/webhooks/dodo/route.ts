@@ -127,7 +127,7 @@ export async function POST(request: NextRequest) {
     currency: string;
     total_amount: number;
     customer: { customer_id: string; email: string };
-    metadata?: { sporting_event_id?: string; price_tier?: string };
+    metadata?: { sporting_event_id?: string; price_tier?: string; product_type?: string };
   };
 
   const productId = payment.product_cart?.[0]?.product_id ?? null;
@@ -276,6 +276,10 @@ export async function POST(request: NextRequest) {
   const priceTier = payment.metadata?.price_tier ?? "standard";
   const pricePaid = String(payment.total_amount / 100);
   const currency = payment.currency ?? "GBP";
+  // Mini-packs pilot — absent on every checkout that predates this field,
+  // so it defaults to the same full-pack behavior as before.
+  const productType = (payment.metadata?.product_type ?? "full_pack") as
+    "full_pack" | "tickets_guide" | "hotels_guide" | "itinerary_guide";
 
   try {
     const inserted = await db
@@ -283,6 +287,7 @@ export async function POST(request: NextRequest) {
       .values({
         email,
         sportingEventId,
+        productType,
         paddleOrderId: payment.payment_id,
         paddleCustomerId: payment.customer.customer_id,
         paddlePriceId: productId,
@@ -327,21 +332,33 @@ export async function POST(request: NextRequest) {
   const formattedAmount = (payment.total_amount / 100).toFixed(2);
   const currencySymbol = currency === "GBP" ? "£" : currency === "USD" ? "US$" : currency === "EUR" ? "€" : currency + " ";
 
+  // Mini-packs pilot — a mini-pack buyer must never be told they got the
+  // full pack. Product label + destination link both branch on productType;
+  // everything else in the email template is unchanged.
+  const MINI_PACK_LABEL: Record<string, string> = {
+    tickets_guide: "Ticket Guide",
+    hotels_guide: "Where to Stay Guide",
+    itinerary_guide: "Itinerary Guide",
+  };
+  const isFullPack = productType === "full_pack";
+  const productLabel = isFullPack ? `${sportingEvent.name} pack` : `${sportingEvent.name} ${MINI_PACK_LABEL[productType]}`;
+  const productSpokeUrl = isFullPack ? packUrl : `${packUrl}/${productType === "tickets_guide" ? "tickets" : productType === "hotels_guide" ? "hotels" : "itinerary"}`;
+
   try {
     await resend.emails.send({
       from: "Experiences | Curated <hello@experiences-curated.com>",
       to: email,
-      subject: `Your ${sportingEvent.name} pack is ready`,
+      subject: `Your ${productLabel} is ready`,
       html: `
         <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;color:#171717">
           <p style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#a3a3a3;margin-bottom:32px">Experiences | Curated</p>
-          <h1 style="font-size:22px;font-weight:700;margin-bottom:12px">Your pack is ready</h1>
+          <h1 style="font-size:22px;font-weight:700;margin-bottom:12px">Your ${isFullPack ? "pack" : "guide"} is ready</h1>
           <p style="font-size:14px;color:#525252;line-height:1.6;margin-bottom:32px">
-            Thanks for your purchase. Your ${sportingEvent.name} event pack is now unlocked — click below to access it.
+            Thanks for your purchase. Your ${productLabel} is now unlocked — click below to access it.
           </p>
-          <a href="${packUrl}"
+          <a href="${productSpokeUrl}"
              style="display:inline-block;background:#171717;color:#fff;text-decoration:none;padding:14px 28px;border-radius:10px;font-size:14px;font-weight:600;margin-bottom:40px">
-            Open your pack
+            Open your ${isFullPack ? "pack" : "guide"}
           </a>
           <table style="width:100%;border-top:1px solid #e5e5e5;padding-top:24px;font-size:13px;color:#525252;border-collapse:collapse">
             <tr>
@@ -349,8 +366,8 @@ export async function POST(request: NextRequest) {
               <td style="padding:6px 0;text-align:right;color:#171717;font-family:monospace;font-size:12px">${payment.payment_id}</td>
             </tr>
             <tr>
-              <td style="padding:6px 0">Pack</td>
-              <td style="padding:6px 0;text-align:right;color:#171717">${sportingEvent.name}</td>
+              <td style="padding:6px 0">${isFullPack ? "Pack" : "Guide"}</td>
+              <td style="padding:6px 0;text-align:right;color:#171717">${productLabel}</td>
             </tr>
             <tr>
               <td style="padding:6px 0">Amount paid</td>

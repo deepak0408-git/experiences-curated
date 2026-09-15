@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, isNull, inArray } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { purchases, sportingEvents } from "@/schema/database";
 
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
   const targetDate = twoDaysAgo.toISOString().split("T")[0];
 
   // Find all active purchases for events that ended 2 days ago, not yet emailed
-  const candidates = await db
+  const rows = await db
     .select({
       id: purchases.id,
       email: purchases.email,
@@ -43,6 +43,25 @@ export async function GET(request: NextRequest) {
       isNull(purchases.postTripEmailSentAt),
       eq(sportingEvents.isTestEvent, false),
     ));
+
+  // Mini-packs pilot — a buyer can now hold multiple purchases rows for the
+  // same (email, event) (e.g. tickets_guide + full_pack), so this query can
+  // return more than one row per person. This is a person-level touchpoint
+  // (one "how was the trip" email per person, not per product), so dedupe
+  // by email before sending — keeping only the first row's id to loop over,
+  // but stamping postTripEmailSentAt on EVERY row for that email below so a
+  // later run doesn't re-pick the un-stamped sibling row and send a
+  // duplicate anyway.
+  const seenEmails = new Set<string>();
+  const candidates = rows.filter((r) => {
+    if (seenEmails.has(r.email)) return false;
+    seenEmails.add(r.email);
+    return true;
+  });
+  const rowIdsByEmail = new Map<string, string[]>();
+  for (const r of rows) {
+    rowIdsByEmail.set(r.email, [...(rowIdsByEmail.get(r.email) ?? []), r.id]);
+  }
 
   if (candidates.length === 0) {
     console.log("[post-trip-feedback] no candidates for", targetDate);
@@ -109,10 +128,11 @@ export async function GET(request: NextRequest) {
         `,
       });
 
+      const idsToStamp = rowIdsByEmail.get(purchase.email) ?? [purchase.id];
       await db
         .update(purchases)
         .set({ postTripEmailSentAt: now })
-        .where(eq(purchases.id, purchase.id));
+        .where(inArray(purchases.id, idsToStamp));
 
       console.log(`[post-trip-feedback] ✓ sent to ${purchase.email} — ${eventName}`);
       sent++;

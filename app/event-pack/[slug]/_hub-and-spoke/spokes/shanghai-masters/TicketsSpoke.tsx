@@ -1,4 +1,5 @@
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
@@ -17,8 +18,12 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
   const { event, linkedExperiences, tickets } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, isPro, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.tickets;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "tickets_guide" as const, owned: purchasedProductTypes.has("tickets_guide") }
+    : undefined;
   const federer = linkedExperiences.find((e) => e.slug.includes("roger-friends-federer-exhibition"));
   const ticketGuide = linkedExperiences.find((e) => e.slug.includes("shanghai-masters-ticket-guide"));
   const centerCourt = linkedExperiences.find((e) => e.slug.includes("qizhong-center-court"));
@@ -34,14 +39,22 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       eventCurrency={event.packCurrency}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="Shanghai Masters"
       status="teaser"
       h1="Three tiers, a shared day/night ticket, and Court 17 included free"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The pack above gives you the real ticket structure and how to flex around the draw for free. Unlocking adds our curated seat-tier recommendation — including which stretch of the 14-day draw to book it for — and the Federer exhibition-day booking timing that actually matters."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Ticket Guide alone, or the full Event Pack, to unlock real per-tier pricing, the day/night session and Court 17 detail, our curated seat-tier recommendation — including which stretch of the 14-day draw to book it for — and the Federer exhibition-day booking timing that actually matters."
     >
+      {/* Free teaser — court names + what each gets you only, no pricing,
+          no Court 17/session detail, no experience cards, no verdict.
+          Everything else in this spoke is gated behind isUnlocked (full
+          pack or the Ticket Guide mini-pack) — whole-spoke gating per the
+          mini-packs pilot design, replacing the previous "free factual
+          content + gated verdict" split this spoke used before. */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Qizhong runs three showcourts — Center Court (13,779 seats), Grandstand 2 (5,000 seats), and Grandstand 3
         (3,000 seats) — plus dozens of outer practice and qualifying courts across the wider 80-hectare complex.
@@ -49,64 +62,86 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         trip.
       </p>
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Ticket types</p>
-      <div className="flex flex-col gap-3 mb-8">
-        {tier1 && (
-          <TicketRow
-            label={tier1.eventTierLabel ?? "Grounds Pass"}
-            detail="Access to outer courts and practice areas — watch top-20 players warm up close, with none of the Center Court queueing."
-            price={`US$${Math.round(Number(tier1.costLow))}`}
-          />
-        )}
-        {tier2 && (
-          <TicketRow
-            label={tier2.eventTierLabel ?? "Grandstand"}
-            detail="A numbered seat in a showcourt — price varies by round and seating tier."
-            price={`US$${Math.round(Number(tier2.costLow))}-${Math.round(Number(tier2.costHigh))}`}
-          />
-        )}
-        {tier3 && (
-          <TicketRow
-            label={tier3.eventTierLabel ?? "Center Court"}
-            detail="A numbered seat on the tournament's marquee court — price climbs steeply as the draw narrows toward the quarterfinals and beyond."
-            price={`US$${Math.round(Number(tier3.costLow))}-${Math.round(Number(tier3.costHigh))}`}
-          />
-        )}
-      </div>
-      <p className="text-xs text-[#6A6A6A] -mt-4 mb-8">
-        Single-day prices, converted from the official CNY listing at the live rate on the day we checked — see the{" "}
-        <a href={`/event-pack/${eventSlug}/cost`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
-          Cost Guide
-        </a>{" "}
-        for the full breakdown, and the{" "}
-        <a href={`/event-pack/${eventSlug}/luxury`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
-          Luxury Guide
-        </a>{" "}
-        for ATP House Hospitality.
-      </p>
+      {/* !isUnlocked gate added 15 Sep 2026 — redundant once the full
+          "Ticket types" breakdown below is visible, and the founder wants
+          a purchaser's page to match production exactly with no added
+          content once unlocked. */}
+      {!isUnlocked && (
+        <div className="flex flex-col gap-2 mb-8">
+          <p className="text-sm text-[#A3A3A3]">
+            <span className="text-white font-bold">{tier1?.eventTierLabel ?? "Grounds Pass"}:</span>{" "}access to outer courts and practice areas, watch top-20 players warm up close
+          </p>
+          <p className="text-sm text-[#A3A3A3]">
+            <span className="text-white font-bold">{tier2?.eventTierLabel ?? "Grandstand"}:</span>{" "}a numbered seat in a showcourt
+          </p>
+          <p className="text-sm text-[#A3A3A3]">
+            <span className="text-white font-bold">{tier3?.eventTierLabel ?? "Center Court"}:</span>{" "}a numbered seat on the tournament&apos;s marquee court
+          </p>
+        </div>
+      )}
 
-      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
-        <p className="text-sm font-bold text-white mb-2">One ticket, both sessions</p>
-        <p className="text-sm text-[#A3A3A3] leading-6">
-          Sessions run day and night — one daily ticket covers both, so a single day pass gets you a full day of
-          tennis rather than a single match window.
-        </p>
-      </div>
+      {isUnlocked && (
+        <>
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Ticket types</p>
+          <div className="flex flex-col gap-3 mb-8">
+            {tier1 && (
+              <TicketRow
+                label={tier1.eventTierLabel ?? "Grounds Pass"}
+                detail="Access to outer courts and practice areas — watch top-20 players warm up close, with none of the Center Court queueing."
+                price={`US$${Math.round(Number(tier1.costLow))}`}
+              />
+            )}
+            {tier2 && (
+              <TicketRow
+                label={tier2.eventTierLabel ?? "Grandstand"}
+                detail="A numbered seat in a showcourt — price varies by round and seating tier."
+                price={`US$${Math.round(Number(tier2.costLow))}-${Math.round(Number(tier2.costHigh))}`}
+              />
+            )}
+            {tier3 && (
+              <TicketRow
+                label={tier3.eventTierLabel ?? "Center Court"}
+                detail="A numbered seat on the tournament's marquee court — price climbs steeply as the draw narrows toward the quarterfinals and beyond."
+                price={`US$${Math.round(Number(tier3.costLow))}-${Math.round(Number(tier3.costHigh))}`}
+              />
+            )}
+          </div>
+          <p className="text-xs text-[#6A6A6A] -mt-4 mb-8">
+            Single-day prices, converted from the official CNY listing at the live rate on the day we checked — see the{" "}
+            <a href={`/event-pack/${eventSlug}/cost`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
+              Cost Guide
+            </a>{" "}
+            for the full breakdown, and the{" "}
+            <a href={`/event-pack/${eventSlug}/luxury`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
+              Luxury Guide
+            </a>{" "}
+            for ATP House Hospitality.
+          </p>
 
-      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
-        <p className="text-sm font-bold text-white mb-2">Court 17 practice sessions are included, not extra</p>
-        <p className="text-sm text-[#A3A3A3] leading-6">
-          Court 17, the purpose-built 1,200-seat practice stadium, is covered by any Grounds Pass or higher ticket
-          tier — no separate booking needed. It&apos;s a real reason the Grounds Pass is worth considering even if
-          you can afford Center Court: on a single afternoon it can put two or three top-20 players on the same
-          practice court within a few hours of each other.
-        </p>
-      </div>
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
+            <p className="text-sm font-bold text-white mb-2">One ticket, both sessions</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">
+              Sessions run day and night — one daily ticket covers both, so a single day pass gets you a full day of
+              tennis rather than a single match window.
+            </p>
+          </div>
 
-      <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {ticketGuide && <SpokeExperienceCard experience={ticketGuide} isPro={isPro} />}
-        {centerCourt && <SpokeExperienceCard experience={centerCourt} isPro={isPro} />}
-      </div>
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
+            <p className="text-sm font-bold text-white mb-2">Court 17 practice sessions are included, not extra</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">
+              Court 17, the purpose-built 1,200-seat practice stadium, is covered by any Grounds Pass or higher ticket
+              tier — no separate booking needed. It&apos;s a real reason the Grounds Pass is worth considering even if
+              you can afford Center Court: on a single afternoon it can put two or three top-20 players on the same
+              practice court within a few hours of each other.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-4 mb-8">
+            {ticketGuide && <SpokeExperienceCard experience={ticketGuide} isPro={isPro} />}
+            {centerCourt && <SpokeExperienceCard experience={centerCourt} isPro={isPro} />}
+          </div>
+        </>
+      )}
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
@@ -151,11 +186,6 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
           )}
         </div>
       )}
-
-      <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: tennistours.com, koobit.com, sportsmatik.com, ATP Tour official site. Google Places rating for
-        Qizhong verified 9 Aug 2026 (4.5, 57 reviews).
-      </p>
     </SpokeShell>
   );
 }

@@ -94,6 +94,17 @@ export const purchaseStatusEnum = pgEnum("purchase_status", [
   "disputed",
 ]);
 
+// Mini-packs pilot (Bahrain GP / Singapore GP / Shanghai Masters, Sep 2026) —
+// a user can now hold multiple purchases for the same sportingEventId, one
+// per productType (see purchases_email_event_unique below). Every purchase
+// row prior to this defaults to "full_pack" via the column default.
+export const purchaseProductTypeEnum = pgEnum("purchase_product_type", [
+  "full_pack",
+  "tickets_guide",
+  "hotels_guide",
+  "itinerary_guide",
+]);
+
 // Richer than isHidden — adds a state for "event is calendared (e.g. on
 // the Content Calendar / for the season planner) but no pack has been
 // built yet," which isHidden alone can't represent (it only distinguishes
@@ -663,6 +674,12 @@ export const purchases = pgTable("purchases", {
   // Email captured by Paddle — primary link key before account exists
   email: varchar("email", { length: 255 }).notNull(),
   sportingEventId: uuid("sporting_event_id").notNull().references(() => sportingEvents.id),
+  // Which product this row represents — full pack (default, matches every
+  // purchase before the mini-packs pilot) or one of the 3 single-spoke
+  // mini-packs. See purchases_email_event_unique below: a user can hold one
+  // row per (event, productType), so a mini-pack purchase never collides
+  // with a later full-pack purchase for the same event.
+  productType: purchaseProductTypeEnum("product_type").notNull().default("full_pack"),
   // Paddle references (stored for refunds, disputes, and audit)
   paddleOrderId: varchar("paddle_order_id", { length: 100 }).notNull().unique(),
   paddleCustomerId: varchar("paddle_customer_id", { length: 100 }),
@@ -682,7 +699,7 @@ export const purchases = pgTable("purchases", {
   index("purchases_user_idx").on(t.userId),
   index("purchases_email_idx").on(t.email),
   index("purchases_event_idx").on(t.sportingEventId),
-  uniqueIndex("purchases_email_event_unique").on(t.email, t.sportingEventId),
+  uniqueIndex("purchases_email_event_unique").on(t.email, t.sportingEventId, t.productType),
 ]);
 
 // Custom Itinerary Planning — standalone, non-event paid service (US$49 one-time).
