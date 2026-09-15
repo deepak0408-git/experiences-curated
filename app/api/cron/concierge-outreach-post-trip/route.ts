@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, isNull, inArray } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { purchases, sportingEvents } from "@/schema/database";
 
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
   const fiveDaysAgo = new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000);
   const targetDate = fiveDaysAgo.toISOString().split("T")[0];
 
-  const candidates = await db
+  const rows = await db
     .select({
       id: purchases.id,
       email: purchases.email,
@@ -37,6 +37,20 @@ export async function GET(request: NextRequest) {
       isNull(purchases.conciergeOutreachPostTripSentAt),
       eq(sportingEvents.isTestEvent, false),
     ));
+
+  // Mini-packs pilot — dedupe by email (one concierge offer per person, not
+  // per product row); every row for that email still gets stamped below so
+  // a later run doesn't re-pick the un-stamped sibling.
+  const seenEmails = new Set<string>();
+  const candidates = rows.filter((r) => {
+    if (seenEmails.has(r.email)) return false;
+    seenEmails.add(r.email);
+    return true;
+  });
+  const rowIdsByEmail = new Map<string, string[]>();
+  for (const r of rows) {
+    rowIdsByEmail.set(r.email, [...(rowIdsByEmail.get(r.email) ?? []), r.id]);
+  }
 
   if (candidates.length === 0) {
     console.log("[concierge-outreach-post-trip] no candidates for", targetDate);
@@ -66,10 +80,11 @@ export async function GET(request: NextRequest) {
         `,
       });
 
+      const idsToStamp = rowIdsByEmail.get(purchase.email) ?? [purchase.id];
       await db
         .update(purchases)
         .set({ conciergeOutreachPostTripSentAt: now })
-        .where(eq(purchases.id, purchase.id));
+        .where(inArray(purchases.id, idsToStamp));
 
       console.log(`[concierge-outreach-post-trip] ✓ sent to ${purchase.email} — ${purchase.eventName}`);
       sent++;

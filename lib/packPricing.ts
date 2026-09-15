@@ -190,6 +190,41 @@ export const PACK_PRICING_CONFIG: Record<string, {
   },
 };
 
+// Mini-packs pilot (Bahrain GP / Singapore GP / Shanghai Masters, Sep 2026)
+// — Tickets/Hotels/Itinerary sold individually alongside the full pack.
+// Deliberately NOT merged into PACK_PRICING_CONFIG above: mini-packs have a
+// single fixed price each (no early-bird/standard split, no curator-editable
+// display string — see project_curator_driven_pack_pricing_design.md
+// decision to keep these hardcoded for the pilot), so reusing that table's
+// shape would carry fields that don't apply. Real Dodo product IDs are not
+// yet created — every entry resolves to "" until the founder provides them
+// and the env vars below are set, same fallback behavior SpokeShell.tsx
+// already gives an empty dodoProductId ("Checkout coming soon").
+type MiniPackSpokeId = "tickets" | "hotels" | "itinerary";
+type MiniPackPricingEntry = { dodoProductId: string; priceDisplay: string; label: string };
+
+export const MINI_PACK_PRICING: Record<string, Record<MiniPackSpokeId, MiniPackPricingEntry>> = {
+  "bahrain-grand-prix": {
+    tickets: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BAHRAIN_GP_TICKETS_GUIDE ?? "", priceDisplay: "US$7", label: "Ticket Guide" },
+    hotels: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BAHRAIN_GP_HOTELS_GUIDE ?? "", priceDisplay: "US$5", label: "Where to Stay Guide" },
+    itinerary: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BAHRAIN_GP_ITINERARY_GUIDE ?? "", priceDisplay: "US$5", label: "Itinerary Guide" },
+  },
+  "singapore-grand-prix": {
+    tickets: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SINGAPORE_GP_TICKETS_GUIDE ?? "", priceDisplay: "US$7", label: "Ticket Guide" },
+    hotels: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SINGAPORE_GP_HOTELS_GUIDE ?? "", priceDisplay: "US$5", label: "Where to Stay Guide" },
+    itinerary: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SINGAPORE_GP_ITINERARY_GUIDE ?? "", priceDisplay: "US$5", label: "Itinerary Guide" },
+  },
+  "shanghai-masters": {
+    tickets: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SHANGHAI_MASTERS_TICKETS_GUIDE ?? "", priceDisplay: "US$7", label: "Ticket Guide" },
+    hotels: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SHANGHAI_MASTERS_HOTELS_GUIDE ?? "", priceDisplay: "US$5", label: "Where to Stay Guide" },
+    itinerary: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SHANGHAI_MASTERS_ITINERARY_GUIDE ?? "", priceDisplay: "US$5", label: "Itinerary Guide" },
+  },
+};
+
+export function getMiniPackPricing(slug: string): Record<MiniPackSpokeId, MiniPackPricingEntry> | null {
+  return MINI_PACK_PRICING[slug] ?? null;
+}
+
 // Last-resort fallback if a slug is in PACK_PRICING_CONFIG but its
 // sporting_events row hasn't been backfilled with real display strings yet
 // (should only happen for a brand-new event pack before its first

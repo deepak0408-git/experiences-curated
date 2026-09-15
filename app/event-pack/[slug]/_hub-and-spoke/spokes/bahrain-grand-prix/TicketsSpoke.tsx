@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
 import { formatMoneyRange } from "@/app/planner/_lib/mockEvents";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
@@ -51,8 +52,12 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
   const { event, linkedExperiences, tickets } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, isPro, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.tickets;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "tickets_guide" as const, owned: purchasedProductTypes.has("tickets_guide") }
+    : undefined;
 
   const tierByKey = new Map(tickets.map((t) => [t.tier, t]));
   const priceBandFor = (tierKey: (typeof STANDS)[number]["tier"]) => {
@@ -73,136 +78,164 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       eventCurrency={event.packCurrency}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="Bahrain Grand Prix"
       status="teaser"
       h1="Sepang grandstand vs general admission — what's the difference?"
       question="Which grandstand ticket is the best buy for Sepang?"
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The tiers, what they show, and real 3-day pricing are all free above. The Event Pack adds our actual verdict — which stand we'd pick for a first Sepang weekend and why — plus the real, experience-level detail (what it's genuinely like to sit there, block-by-block advice) for every stand, not just a summary."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Ticket Guide alone, or the full Event Pack, to unlock which stand we'd actually pick for a first Sepang weekend, real 3-day pricing for every tier, the block-by-block buying detail, and experience-level detail for every stand — not just which ticket types exist."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Sepang has four named ticket options, and they&apos;re built around genuinely different ideas of what&apos;s
-        worth watching — not just different price points for the same experience. Real 3-day pricing is now
-        confirmed, so this guide covers both what each ticket actually gets you and what it costs.
+        worth watching — not just different price points for the same experience.
       </p>
 
-      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Where to actually buy your ticket</p>
-        <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-          Buy directly from the official source first. Every F1 ticket ultimately traces back to the promoter, and
-          buying direct means no markup and no risk of a fraudulent listing.
-        </p>
-        <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-          If official tickets are sold out, or you want a package with hospitality, hotel, or shuttle bundled in,
-          P1 Travel is a genuine authorized F1 ticket partner — named directly on Yas Marina Circuit&apos;s own
-          official reseller list and confirmed as Singapore GP&apos;s own Authorised Partner, not a random resale
-          site. It&apos;s rated 4.7 from over 10,000 reviews on Trustpilot, and has been in business since 2007.
-        </p>
-        <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-          Steer clear of anything else claiming to be &quot;official&quot; without that kind of direct
-          confirmation — ticket fraud is real at every high-demand Grand Prix, and a listing that looks legitimate
-          isn&apos;t the same as one a circuit has actually named.
-        </p>
-        <div className="flex flex-wrap gap-4">
-          <a
-            href="https://tickets.formula1.com/en/f1-83069-bahrain-in-malaysia"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center px-4 py-2 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
-          >
-            Official Bahrain GP tickets →
-          </a>
-          <a
-            href="https://www.p1travel.com/en-GB/series/formula-1-2026?organizers=grand-prix-bahrain"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors"
-          >
-            P1 Travel — Bahrain GP →
-          </a>
+      {/* Free teaser — stand names + what each shows only, no pricing, no
+          buying detail, no verdict. Everything else in this spoke (real
+          pricing, comparison table, buy links, verdict, experience detail)
+          is gated behind isUnlocked (full pack or the Ticket Guide
+          mini-pack) — whole-spoke gating per the mini-packs pilot design,
+          replacing the previous "free factual content + gated verdict"
+          split this spoke used before.
+
+          !isUnlocked gate added 15 Sep 2026 — this list is redundant once
+          the full comparison table below is visible, and the founder
+          wants a purchaser's page to match production exactly with no
+          added content once unlocked. So this only shows as the locked
+          preview, not permanently. */}
+      {!isUnlocked && (
+        <div className="flex flex-col gap-2 mb-8">
+          {STANDS.map((s) => (
+            <p key={s.slug} className="text-sm text-[#A3A3A3]">
+              <span className="text-white font-bold">{s.name}:</span> {s.shows}
+            </p>
+          ))}
         </div>
-      </div>
+      )}
 
-      {/* Comparison table — free, factual columns only. Desktop/tablet gets
-          the real side-by-side table; mobile (below md) switches to stacked
-          cards instead of a horizontally-scrolling table, since a 4-column
-          comparison genuinely doesn't fit a phone width without either
-          clipping or cramming text unreadably. Heading text differs per
-          breakpoint since "Side by side" describes a layout mobile no
-          longer uses — "Options compared" stays accurate either way. */}
-      <p className="hidden md:block text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Side by side</p>
-      <p className="md:hidden text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Options compared</p>
-      <div className="hidden md:block overflow-x-auto mb-8">
-        <table className="w-full text-sm border-collapse table-fixed">
-          <thead>
-            <tr className="border-b border-[#2A2A2A]">
-              <th className="w-1/5 text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Stand</th>
-              <th className="w-2/5 text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">What it shows</th>
-              <th className="w-1/5 text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Seating</th>
-              <th className="w-1/5 text-left py-2 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Weather cover</th>
-            </tr>
-          </thead>
-          <tbody>
-            {STANDS.map((s) => (
-              <tr key={s.slug} className="border-b border-[#2A2A2A] last:border-0">
-                <td className="py-3 pr-4 text-white font-bold align-top">{s.name}</td>
-                <td className="py-3 pr-4 text-[#A3A3A3] align-top">{s.shows}</td>
-                <td className="py-3 pr-4 text-[#A3A3A3] align-top">{s.seating}</td>
-                <td className="py-3 text-[#A3A3A3] align-top">{s.exposure}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="md:hidden flex flex-col gap-3 mb-8">
-        {STANDS.map((s) => (
-          <div key={s.slug} className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
-            <p className="text-sm font-bold text-white mb-2">{s.name}</p>
-            <div className="flex flex-col gap-1.5">
-              <p className="text-sm text-[#A3A3A3] leading-6">
-                <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">What it shows: </span>
-                {s.shows}
-              </p>
-              <p className="text-sm text-[#A3A3A3] leading-6">
-                <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Seating: </span>
-                {s.seating}
-              </p>
-              <p className="text-sm text-[#A3A3A3] leading-6">
-                <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Weather cover: </span>
-                {s.exposure}
-              </p>
+      {isUnlocked && (
+        <>
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Where to actually buy your ticket</p>
+            <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
+              Buy directly from the official source first. Every F1 ticket ultimately traces back to the promoter, and
+              buying direct means no markup and no risk of a fraudulent listing.
+            </p>
+            <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
+              If official tickets are sold out, or you want a package with hospitality, hotel, or shuttle bundled in,
+              P1 Travel is a genuine authorized F1 ticket partner — named directly on Yas Marina Circuit&apos;s own
+              official reseller list and confirmed as Singapore GP&apos;s own Authorised Partner, not a random resale
+              site. It&apos;s rated 4.7 from over 10,000 reviews on Trustpilot, and has been in business since 2007.
+            </p>
+            <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
+              Steer clear of anything else claiming to be &quot;official&quot; without that kind of direct
+              confirmation — ticket fraud is real at every high-demand Grand Prix, and a listing that looks legitimate
+              isn&apos;t the same as one a circuit has actually named.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <a
+                href="https://tickets.formula1.com/en/f1-83069-bahrain-in-malaysia"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
+              >
+                Official Bahrain GP tickets →
+              </a>
+              <a
+                href="https://www.p1travel.com/en-GB/series/formula-1-2026?organizers=grand-prix-bahrain"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors"
+              >
+                P1 Travel — Bahrain GP →
+              </a>
             </div>
           </div>
-        ))}
-      </div>
 
-      <div className="relative w-full aspect-[1464/1035] rounded-sm border border-[#2A2A2A] overflow-hidden mb-8 bg-[#141414]">
-        <Image
-          src="https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/bahrain-grand-prix-grandstand-map.jpg"
-          alt="Sepang International Circuit map showing the Main Grandstand, K1 Grandstand, Grandstand F, and Hill Stand (C2 General Admission) positioned around the track"
-          fill
-          className="object-contain"
-          sizes="(max-width: 768px) 100vw, 720px"
-        />
-      </div>
+          {/* Comparison table — desktop/tablet gets the real side-by-side
+              table; mobile (below md) switches to stacked cards instead of
+              a horizontally-scrolling table, since a 4-column comparison
+              genuinely doesn't fit a phone width without either clipping or
+              cramming text unreadably. Heading text differs per breakpoint
+              since "Side by side" describes a layout mobile no longer uses
+              — "Options compared" stays accurate either way. */}
+          <p className="hidden md:block text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Side by side</p>
+          <p className="md:hidden text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Options compared</p>
+          <div className="hidden md:block overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse table-fixed">
+              <thead>
+                <tr className="border-b border-[#2A2A2A]">
+                  <th className="w-1/5 text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Stand</th>
+                  <th className="w-2/5 text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">What it shows</th>
+                  <th className="w-1/5 text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Seating</th>
+                  <th className="w-1/5 text-left py-2 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Weather cover</th>
+                </tr>
+              </thead>
+              <tbody>
+                {STANDS.map((s) => (
+                  <tr key={s.slug} className="border-b border-[#2A2A2A] last:border-0">
+                    <td className="py-3 pr-4 text-white font-bold align-top">{s.name}</td>
+                    <td className="py-3 pr-4 text-[#A3A3A3] align-top">{s.shows}</td>
+                    <td className="py-3 pr-4 text-[#A3A3A3] align-top">{s.seating}</td>
+                    <td className="py-3 text-[#A3A3A3] align-top">{s.exposure}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-      <div className="flex flex-col gap-2 mb-8">
-        {stands.map((s) => (
-          <p key={s.slug} className="text-xs text-[#6A6A6A]">
-            <span className="text-[#AAFF00]">{s.name}:</span> {s.priceBand}
-          </p>
-        ))}
-      </div>
+          <div className="md:hidden flex flex-col gap-3 mb-8">
+            {STANDS.map((s) => (
+              <div key={s.slug} className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+                <p className="text-sm font-bold text-white mb-2">{s.name}</p>
+                <div className="flex flex-col gap-1.5">
+                  <p className="text-sm text-[#A3A3A3] leading-6">
+                    <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">What it shows: </span>
+                    {s.shows}
+                  </p>
+                  <p className="text-sm text-[#A3A3A3] leading-6">
+                    <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Seating: </span>
+                    {s.seating}
+                  </p>
+                  <p className="text-sm text-[#A3A3A3] leading-6">
+                    <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Weather cover: </span>
+                    {s.exposure}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
 
-      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">3-day pricing, confirmed</p>
-        <p className="text-sm text-[#A3A3A3] leading-6">
-          Figures above are real 3-day grandstand pricing for this race. A Paddock Club hospitality tier also
-          exists above these four public stands — see the Cost Guide for that figure.
-        </p>
-      </div>
+          <div className="relative w-full aspect-[1464/1035] rounded-sm border border-[#2A2A2A] overflow-hidden mb-8 bg-[#141414]">
+            <Image
+              src="https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/bahrain-grand-prix-grandstand-map.jpg"
+              alt="Sepang International Circuit map showing the Main Grandstand, K1 Grandstand, Grandstand F, and Hill Stand (C2 General Admission) positioned around the track"
+              fill
+              className="object-contain"
+              sizes="(max-width: 768px) 100vw, 720px"
+            />
+          </div>
+
+          <div className="flex flex-col gap-2 mb-8">
+            {stands.map((s) => (
+              <p key={s.slug} className="text-xs text-[#6A6A6A]">
+                <span className="text-[#AAFF00]">{s.name}:</span> {s.priceBand}
+              </p>
+            ))}
+          </div>
+
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">3-day pricing, confirmed</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">
+              Figures above are real 3-day grandstand pricing for this race. A Paddock Club hospitality tier also
+              exists above these four public stands — see the Cost Guide for that figure.
+            </p>
+          </div>
+        </>
+      )}
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">

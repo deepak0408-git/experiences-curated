@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
-import { and, eq, gte, isNull, lt, or } from "drizzle-orm";
+import { and, eq, gte, isNull, lt, or, inArray } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { purchases, sportingEvents } from "@/schema/database";
 
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
   // Caught live: a curator's own Singapore GP preview grant (still
   // isHidden:true) triggered a "your pack is ready" rescue email 2 hours
   // later, despite the event never having gone public.
-  const candidates = await db
+  const rows = await db
     .select({
       id: purchases.id,
       email: purchases.email,
@@ -53,6 +53,23 @@ export async function GET(request: NextRequest) {
       or(isNull(sportingEvents.isTestEvent), eq(sportingEvents.isTestEvent, false)),
       eq(sportingEvents.isHidden, false),
     ));
+
+  // Mini-packs pilot — a buyer can now hold multiple purchases rows for the
+  // same (email, event) within this window (e.g. tickets_guide bought, then
+  // full_pack bought minutes later), so dedupe by email before sending —
+  // one rescue email per person, not per product row. Every row for that
+  // email still gets rescueSentAt stamped below so a later run doesn't
+  // re-pick the un-stamped sibling.
+  const seenEmails = new Set<string>();
+  const candidates = rows.filter((r) => {
+    if (seenEmails.has(r.email)) return false;
+    seenEmails.add(r.email);
+    return true;
+  });
+  const rowIdsByEmail = new Map<string, string[]>();
+  for (const r of rows) {
+    rowIdsByEmail.set(r.email, [...(rowIdsByEmail.get(r.email) ?? []), r.id]);
+  }
 
   if (candidates.length === 0) {
     console.log("[stuck-buyer-rescue] no candidates found");
@@ -120,11 +137,13 @@ export async function GET(request: NextRequest) {
         `,
       });
 
-      // Stamp rescueSentAt so we never email this purchase again
+      // Stamp rescueSentAt on every purchase row for this email so we
+      // never email this person again for this rescue window
+      const idsToStamp = rowIdsByEmail.get(purchase.email) ?? [purchase.id];
       await db
         .update(purchases)
         .set({ rescueSentAt: now })
-        .where(eq(purchases.id, purchase.id));
+        .where(inArray(purchases.id, idsToStamp));
 
       console.log(`[stuck-buyer-rescue] ✓ rescued ${purchase.email} — ${eventName}`);
       rescued++;

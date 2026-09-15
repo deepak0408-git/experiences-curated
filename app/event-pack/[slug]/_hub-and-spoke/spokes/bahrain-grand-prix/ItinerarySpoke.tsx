@@ -1,4 +1,5 @@
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 
 const SPOKE_ID = "itinerary";
@@ -7,8 +8,12 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.itinerary;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "itinerary_guide" as const, owned: purchasedProductTypes.has("itinerary_guide") }
+    : undefined;
 
   return (
     <SpokeShell
@@ -17,48 +22,80 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       eventCurrency={event.packCurrency}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="Bahrain Grand Prix"
       status="teaser"
       h1="A sample race weekend, hour by hour"
       question="What does a Sepang F1 race weekend actually look like?"
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The weekend shape above is free. The pack adds the full hour-by-hour itinerary — sequenced against real transit times and opening hours for everywhere it sends you."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the full hour-by-hour itinerary — sequenced against real transit times and opening hours for everywhere it sends you, day by day from arrival to departure."
     >
-      {/* Free "Event rhythm" section — classic-pack "How the event unfolds"
-          parity (see hub-and-spoke-event-pack skill §1a). Explains the
-          shape of the weekend before the paid section gets tactical.
-          Session times confirmed 4 Sep 2026 — FIA-announced schedule
-          (see project_bahrain_gp_night_race_uncertainty.md, now resolved). */}
-      <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
-        A Grand Prix weekend runs on a fixed three-day rhythm on track — Friday is practice, Saturday is
-        qualifying, Sunday is the race — but a trip built only around those three days wastes real time either
-        side of it. Flying in the day before practice starts gives you a genuine first evening in Kuala Lumpur
-        with nothing else competing for it; staying an extra day after the race turns Genting Highlands from a
-        rushed detour into a real, unhurried day out instead of skipping it. Within the three race days
-        themselves, each has a different job. Friday is still light on track commitments — practice sessions
-        don&apos;t fill a whole day — so it&apos;s the one day with real room for a half-day trip before you need
-        to be trackside. Saturday is the pivot day: qualifying decides Sunday&apos;s grid, and because it&apos;s a
-        single, shorter session rather than a full race, there&apos;s a genuine window either side of it. Sunday
-        is the race itself, and everything about that day — when you arrive, where you sit, how you leave — is
-        dictated by the grandstand you&apos;ve booked.
-      </p>
-      <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        F1 has confirmed session times for the weekend: FP1 12:30pm and FP2 4pm on Friday, FP3 12:30pm and
-        qualifying 4pm on Saturday, and the race itself at 3pm local time on Sunday.
-      </p>
+      {/* Free teaser — the weekend's basic 3+2 day shape only (day names,
+          no specific activities/times). Everything with real planning
+          value (the rhythm essay, confirmed session times, the day-by-day
+          summaries, and the hour-by-hour tables) is gated behind
+          isUnlocked (full pack or the Itinerary Guide mini-pack).
 
-      <div className="flex flex-col gap-3 mb-8">
-        <DayCard day="Thursday — Arrival" summary="Land, settle in, and use the evening for the Petronas Twin Towers and central KL" />
-        <DayCard day="Friday — Practice" summary="A Batu Caves half-day trip in the morning, practice sessions and the circuit the rest of the day" />
-        <DayCard day="Saturday — Qualifying" summary="Putrajaya in the morning, qualifying session, evening in the city" />
-        <DayCard day="Sunday — Race" summary="Arrival timing by grandstand, the race itself, post-race food and departure planning" />
-        <DayCard day="Monday — Optional" summary="If you've stayed the extra day, a full unhurried Genting Highlands day trip before flying home" />
-      </div>
+          !isUnlocked gate tightened 15 Sep 2026 — the previous version
+          left the full rhythm essay, confirmed session times, and all 5
+          DayCard summaries (each with real, specific activities) free to
+          everyone, which the founder correctly flagged as still giving
+          away most of the guide's actual value; only the hour-by-hour
+          table was behind the paywall. This spoke needed the same
+          trimming as Tickets/Hotels, contrary to the initial build's
+          assumption that it was "already teaser-shaped." */}
+      {!isUnlocked && (
+        <div className="flex flex-col gap-2 mb-8">
+          <p className="text-sm text-[#A3A3A3]">A Sepang race weekend runs Thursday arrival through Sunday race day, with an optional Monday.</p>
+          <p className="text-sm text-[#A3A3A3]">
+            <span className="text-white font-bold">Thursday:</span>{" "}Arrival
+          </p>
+          <p className="text-sm text-[#A3A3A3]">
+            <span className="text-white font-bold">Friday:</span>{" "}Practice
+          </p>
+          <p className="text-sm text-[#A3A3A3]">
+            <span className="text-white font-bold">Saturday:</span>{" "}Qualifying
+          </p>
+          <p className="text-sm text-[#A3A3A3]">
+            <span className="text-white font-bold">Sunday:</span>{" "}Race Day
+          </p>
+          <p className="text-sm text-[#A3A3A3]">
+            <span className="text-white font-bold">Monday (Optional):</span>{" "}Extra Day Out
+          </p>
+        </div>
+      )}
 
       {isUnlocked && (
-        <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-4">
+        <div className="mt-2">
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
+            A Grand Prix weekend runs on a fixed three-day rhythm on track — Friday is practice, Saturday is
+            qualifying, Sunday is the race — but a trip built only around those three days wastes real time either
+            side of it. Flying in the day before practice starts gives you a genuine first evening in Kuala Lumpur
+            with nothing else competing for it; staying an extra day after the race turns Genting Highlands from a
+            rushed detour into a real, unhurried day out instead of skipping it. Within the three race days
+            themselves, each has a different job. Friday is still light on track commitments — practice sessions
+            don&apos;t fill a whole day — so it&apos;s the one day with real room for a half-day trip before you need
+            to be trackside. Saturday is the pivot day: qualifying decides Sunday&apos;s grid, and because it&apos;s a
+            single, shorter session rather than a full race, there&apos;s a genuine window either side of it. Sunday
+            is the race itself, and everything about that day — when you arrive, where you sit, how you leave — is
+            dictated by the grandstand you&apos;ve booked.
+          </p>
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
+            F1 has confirmed session times for the weekend: FP1 12:30pm and FP2 4pm on Friday, FP3 12:30pm and
+            qualifying 4pm on Saturday, and the race itself at 3pm local time on Sunday.
+          </p>
+
+          <div className="flex flex-col gap-3 mb-8">
+            <DayCard day="Thursday — Arrival" summary="Land, settle in, and use the evening for the Petronas Twin Towers and central KL" />
+            <DayCard day="Friday — Practice" summary="A Batu Caves half-day trip in the morning, practice sessions and the circuit the rest of the day" />
+            <DayCard day="Saturday — Qualifying" summary="Putrajaya in the morning, qualifying session, evening in the city" />
+            <DayCard day="Sunday — Race" summary="Arrival timing by grandstand, the race itself, post-race food and departure planning" />
+            <DayCard day="Monday — Optional" summary="If you've stayed the extra day, a full unhurried Genting Highlands day trip before flying home" />
+          </div>
+
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-4 pt-10 border-t border-[#2A2A2A]">
             The full itinerary, hour by hour
           </p>
 

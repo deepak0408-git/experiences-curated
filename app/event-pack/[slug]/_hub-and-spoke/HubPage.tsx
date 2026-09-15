@@ -2,9 +2,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import HomepageNav from "@/app/_components/HomepageNav";
-import { getSpokeData, getSpokesForEvent, getSpokeImage, getPurchaseStatus } from "./_lib/getSpokeData";
+import { getSpokeData, getSpokesForEvent, getSpokeImage, getPurchaseStatus, isSpokeUnlocked, MINI_PACK_PRODUCT_TYPE_BY_SPOKE } from "./_lib/getSpokeData";
 import { getPackPricing } from "./_lib/packPricing";
-import { STATUS_LABEL } from "./_components/SpokeShell";
+import { getMiniPackPricing } from "@/lib/packPricing";
+
+// Mini-packs pilot — one short (<10 word) description per guide, shown on
+// the "Or just what you need" cards below. Same 3 spoke ids across every
+// piloted event, so this is generic rather than per-event.
+const MINI_PACK_DESCRIPTION: Record<"tickets" | "hotels" | "itinerary", string> = {
+  tickets: "Which grandstand to buy, and where to buy it",
+  hotels: "Where to stay, and which area actually suits you",
+  itinerary: "The full hour-by-hour shape of the trip",
+};
+
+import { STATUS_LABEL, MINI_PACK_LABEL_BY_PRODUCT_TYPE, MINI_PACK_UNLOCK_DESCRIPTION_BY_PRODUCT_TYPE } from "./_components/SpokeShell";
 import DodoCheckout from "../_components/DodoCheckout";
 import LocalCurrencyHint from "../_components/LocalCurrencyHint";
 import FavouriteToggle from "../_components/FavouriteToggle";
@@ -381,8 +392,12 @@ export default async function HubPage({ slug }: { slug: string }) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(slug, event.id, event.isHidden);
+  const { hasPurchased, justPurchased, justPurchasedProductType, isPro, purchasedProductTypes } = await getPurchaseStatus(slug, event.id, event.isHidden);
   const pricing = await getPackPricing(slug, event.packCurrency);
+  // Mini-packs pilot — null for every event outside the 3 piloted slugs, so
+  // the "OR JUST WHAT YOU NEED" block and per-spoke tile badges below both
+  // no-op automatically for every other hub-and-spoke event.
+  const miniPackPricing = getMiniPackPricing(slug);
   const initiallySaved = user ? await isEventPackSaved(event.id) : false;
   const myRating = user ? await getMyEventPackRating(event.id) : null;
 
@@ -458,11 +473,31 @@ export default async function HubPage({ slug }: { slug: string }) {
             getPurchaseStatus), never from a client-controlled query param.
             A ?purchased=1-style flag would be trivially fakeable by hand-
             editing the URL; this can't be, since it's checked against our
-            own DB write. */}
+            own DB write.
+
+            Mini-packs pilot — copy now branches on justPurchasedProductType
+            instead of always claiming the whole event pack is unlocked.
+            Caught live by the founder, 15 Sep 2026: buying only the Ticket
+            Guide showed "Bahrain Grand Prix... is unlocked", which wrongly
+            implied Hotels/Itinerary and everything else was unlocked too. */}
         {justPurchased && (
           <div className="mb-8 rounded-sm border border-[#AAFF00]/40 bg-[#AAFF00]/10 px-5 py-4 max-w-2xl">
-            <p className="text-sm font-black text-[#AAFF00]">🎉 You&apos;re in — {displayEventName} is unlocked</p>
-            <p className="text-xs text-[#A3A3A3] mt-1">Every spoke below now shows our full curated picks and booking detail.</p>
+            {justPurchasedProductType === "full_pack" ? (
+              <>
+                <p className="text-sm font-black text-[#AAFF00]">🎉 You&apos;re in — {displayEventName} is unlocked</p>
+                <p className="text-xs text-[#A3A3A3] mt-1">Every guide below now shows our full curated picks and booking detail.</p>
+              </>
+            ) : (
+              <>
+                <p className="text-sm font-black text-[#AAFF00]">
+                  🎉 You&apos;re in — {MINI_PACK_LABEL_BY_PRODUCT_TYPE[justPurchasedProductType] ?? "your guide"} is unlocked
+                </p>
+                <p className="text-xs text-[#A3A3A3] mt-1">
+                  That guide now shows {MINI_PACK_UNLOCK_DESCRIPTION_BY_PRODUCT_TYPE[justPurchasedProductType] ?? "our full curated picks and booking detail"}. Every other guide stays as it was —
+                  get the full Event Pack for everything at once.
+                </p>
+              </>
+            )}
           </div>
         )}
 
@@ -575,6 +610,82 @@ export default async function HubPage({ slug }: { slug: string }) {
           )}
         </div>
 
+        {/* Mini-packs pilot (Bahrain GP / Singapore GP / Shanghai Masters,
+            Sep 2026) — 3 individual-spoke guides sold alongside the full
+            pack. Deliberately pulled OUT of the 2-column intro/CTA grid
+            above and rendered as its own full-width strip — that grid is a
+            CSS Grid row, and stacking these 3 rows inside the sidebar
+            column made it taller than the intro-text column, which Grid
+            then stretched to match, leaving a large dead gap in the intro
+            column before "Plan your trip" (caught live by the founder, 15
+            Sep 2026 screenshot). This section has no such pairing to
+            stretch against, so it can't reproduce that bug. Only renders
+            for a slug in MINI_PACK_PRICING; every other hub-and-spoke
+            event's layout here is unchanged. Each card swaps its buy
+            button for an owned/coming-soon state — same per-product logic
+            as before, just relaid out as cards instead of list rows.
+
+            !hasPurchased gate added 15 Sep 2026 — a full-pack owner already
+            has every mini-pack's content unlocked (isSpokeUnlocked treats
+            hasPurchased as unlocking all 3), so offering to buy them
+            individually here was a real bug, not just visual clutter: a
+            full-pack buyer's own account still showed 3 "Get the Guide"
+            buttons for content they already owned. Matches the exact gate
+            the full-pack box above already uses. */}
+        {miniPackPricing && !hasPurchased && (
+          <div className="mt-10">
+            <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-4">Or just what you need</p>
+            {/* Deliberately quieter than "Unlock the full guide" above —
+                plain dark surface (no green tint/border), muted label
+                instead of a green uppercase eyebrow, outline button instead
+                of solid fill. First pass matched the full-pack box's
+                styling exactly, which made all 4 boxes compete as equals
+                and read as cluttered (caught live by the founder, 15 Sep
+                2026 screenshot) — lightening these 3 restores "one clear
+                primary offer, three quiet secondary ones" without changing
+                the underlying Option C layout (still its own full-width
+                section, not nested in the sidebar grid). */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {(Object.keys(miniPackPricing) as Array<keyof typeof miniPackPricing>).map((spokeId) => {
+                const entry = miniPackPricing[spokeId];
+                const productType = MINI_PACK_PRODUCT_TYPE_BY_SPOKE[spokeId];
+                const owned = purchasedProductTypes.has(productType);
+                return (
+                  <div key={spokeId} className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4 flex flex-col gap-2">
+                    <div>
+                      <p className="text-sm font-semibold text-white mb-1">{entry.label}</p>
+                      <p className="text-xs text-[#6A6A6A] leading-5">{MINI_PACK_DESCRIPTION[spokeId]}</p>
+                    </div>
+                    <p className="text-base font-black text-white mt-1">
+                      {entry.priceDisplay}
+                      <LocalCurrencyHint baseAmount={parseFloat(entry.priceDisplay.replace(/[^0-9.]/g, ""))} baseCurrency={pricing?.currency ?? "USD"} />
+                    </p>
+                    {owned ? (
+                      <span className="text-xs font-black text-[#AAFF00]">✓ You have this</span>
+                    ) : entry.dodoProductId ? (
+                      <DodoCheckout
+                        productId={entry.dodoProductId}
+                        sportingEventId={event.id}
+                        eventSlug={slug}
+                        eventName={displayEventName}
+                        priceTier="standard"
+                        productType={productType}
+                        successUrl={user?.email
+                          ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/${spokeId}`
+                          : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
+                        buttonClassName="w-full inline-flex items-center justify-center px-4 py-2 rounded-sm border border-[#AAFF00]/50 text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00]/10 transition-colors"
+                        label="Get the Guide"
+                      />
+                    ) : (
+                      <span className="text-xs text-[#6A6A6A]">Checkout coming soon.</span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mt-10 mb-4">Plan your trip</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {spokes.map((spoke) => {
@@ -584,7 +695,7 @@ export default async function HubPage({ slug }: { slug: string }) {
                 key={spoke.id}
                 href={`/event-pack/${slug}/${spoke.id}`}
                 className={`group relative rounded-sm overflow-hidden border transition-colors min-h-[180px] flex flex-col justify-end ${
-                  hasPurchased ? "border-[#AAFF00]/60 hover:border-[#AAFF00]" : "border-[#2A2A2A] hover:border-[#AAFF00]"
+                  isSpokeUnlocked(spoke.id, { hasPurchased, purchasedProductTypes }) ? "border-[#AAFF00]/60 hover:border-[#AAFF00]" : "border-[#2A2A2A] hover:border-[#AAFF00]"
                 }`}
               >
                 {imageUrl && (
@@ -604,20 +715,48 @@ export default async function HubPage({ slug }: { slug: string }) {
                     visibly read as transformed post-purchase, not just
                     individual spoke pages. Solid fill (not just an outline)
                     is the deliberate visual difference from the free-state
-                    badges below. */}
-                {hasPurchased ? (
+                    badges below.
+
+                    Mini-packs pilot — for tickets/hotels/itinerary only,
+                    isSpokeUnlocked also treats owning just that spoke's own
+                    mini-pack as unlocked, so a Tickets-Guide-only buyer sees
+                    that one tile read "✓ Unlocked" while Hotels/Itinerary
+                    (and everything else) still show the locked badge. For
+                    every other spoke id this is identical to hasPurchased. */}
+                {isSpokeUnlocked(spoke.id, { hasPurchased, purchasedProductTypes }) ? (
                   <span className="absolute top-3 right-3 text-[9px] font-black tracking-widest uppercase rounded-sm px-2 py-0.5 bg-[#AAFF00] text-black">
                     ✓ Unlocked
                   </span>
                 ) : (
                   <span
                     className={`absolute top-3 right-3 text-[9px] font-black tracking-widest uppercase rounded-sm px-2 py-0.5 border backdrop-blur-sm ${
-                      spoke.status === "teaser"
+                      miniPackPricing && MINI_PACK_PRODUCT_TYPE_BY_SPOKE[spoke.id]
+                        ? "text-amber-400 border-amber-400/50 bg-black/30"
+                        : spoke.status === "teaser"
                         ? "text-[#AAFF00] border-[#AAFF00]/50 bg-black/30"
                         : "text-white/70 border-white/20 bg-black/30"
                     }`}
                   >
-                    {STATUS_LABEL[spoke.status]}
+                    {/* Mini-packs pilot — STATUS_LABEL's "teaser" copy
+                        ("Free · Pack unlocks more") is now wrong for
+                        Tickets/Hotels/Itinerary: whole-spoke gating means
+                        these 3 are no longer free at all (caught live by
+                        the founder, 15 Sep 2026 — tile still read "Free"
+                        after the content itself had already been locked).
+                        Show the real mini-pack price instead whenever one
+                        exists for this spoke; every other teaser/public
+                        spoke keeps the original STATUS_LABEL copy.
+
+                        Amber instead of the usual green accent — the green
+                        text at 9px could blend into a busy hero image
+                        behind it (flagged by the founder, 15 Sep 2026).
+                        Amber is already this page's own "needs attention"
+                        color (see the Pre-trip brief live-state block
+                        below), reused here rather than introducing a new
+                        off-brand color like red. */}
+                    {miniPackPricing && MINI_PACK_PRODUCT_TYPE_BY_SPOKE[spoke.id]
+                      ? `Unlock for ${miniPackPricing[spoke.id as keyof typeof miniPackPricing].priceDisplay}`
+                      : STATUS_LABEL[spoke.status]}
                   </span>
                 )}
 

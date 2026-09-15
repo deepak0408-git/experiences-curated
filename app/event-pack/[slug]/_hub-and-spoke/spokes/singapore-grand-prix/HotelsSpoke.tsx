@@ -1,4 +1,5 @@
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
@@ -8,8 +9,12 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, isPro, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.hotels;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "hotels_guide" as const, owned: purchasedProductTypes.has("hotels_guide") }
+    : undefined;
   const trackHotels = linkedExperiences.find((e) => e.slug.includes("singapore-gp-trackside-hotels"));
   const clarkeQuay = linkedExperiences.find((e) => e.slug.includes("singapore-gp-clarke-quay-stay"));
   const chinatown = linkedExperiences.find((e) => e.slug.includes("singapore-gp-chinatown-stay"));
@@ -21,28 +26,58 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       eventCurrency={event.packCurrency}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="Singapore Grand Prix"
       status="teaser"
       h1="Trackside, riverside, or value — the real Singapore stay decision"
       question="Where should I stay for the Singapore GP?"
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="Every hotel and rating above is real and free. The pack adds our actual recommendation for your specific priorities — trackside, riverside, or value — plus the exact room category to request at each property and direct booking notes, since a couple of these genuinely sell out during race week."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Pack, to unlock hotel ratings, our actual recommendation for your priorities — trackside, riverside, or value — plus the exact room category to request at each property and direct booking notes."
     >
+      {/* Free teaser — the three-way decision framed, no hotel cards, no
+          ratings, no booking detail. Everything else in this spoke is gated
+          behind isUnlocked (full pack or the Where to Stay Guide mini-pack)
+          — whole-spoke gating per the mini-packs pilot design, replacing the
+          previous "free factual content + gated verdict" split this spoke
+          used before. */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Marina Bay Street Circuit wraps around downtown Singapore, so unlike most Grand Prix venues, this genuinely
         is a three-way decision, not a default.
       </p>
 
-      <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {trackHotels && (
-          <div className="sm:col-span-2">
-            <SpokeExperienceCard experience={trackHotels} isPro={isPro} hideProCtas />
+      {/* !isUnlocked gate added 15 Sep 2026 — redundant once the full
+          hotel cards below are visible, and the founder wants a
+          purchaser's page to match production exactly with no added
+          content once unlocked. */}
+      {!isUnlocked && (
+        <div className="flex flex-col gap-2 mb-8">
+          <p className="text-sm text-[#A3A3A3]">
+            <span className="text-white font-bold">Trackside (Marina Bay):</span>{" "}a genuine circuit view from your room, if that matters enough to pay the premium
+          </p>
+          <p className="text-sm text-[#A3A3A3]">
+            <span className="text-white font-bold">Clarke Quay:</span>{" "}a short MRT ride from the circuit with a completely different evening on offer
+          </p>
+          <p className="text-sm text-[#A3A3A3]">
+            <span className="text-white font-bold">Chinatown:</span>{" "}real neighbourhood character, two MRT lines to the circuit, roughly half the trackside rate
+          </p>
+        </div>
+      )}
+
+      {isUnlocked && (
+        <>
+          <div className="grid sm:grid-cols-2 gap-4 mb-8">
+            {trackHotels && (
+              <div className="sm:col-span-2">
+                <SpokeExperienceCard experience={trackHotels} isPro={isPro} hideProCtas />
+              </div>
+            )}
+            {clarkeQuay && <SpokeExperienceCard experience={clarkeQuay} isPro={isPro} hideProCtas />}
+            {chinatown && <SpokeExperienceCard experience={chinatown} isPro={isPro} hideProCtas />}
           </div>
-        )}
-        {clarkeQuay && <SpokeExperienceCard experience={clarkeQuay} isPro={isPro} hideProCtas />}
-        {chinatown && <SpokeExperienceCard experience={chinatown} isPro={isPro} hideProCtas />}
-      </div>
+        </>
+      )}
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
@@ -67,11 +102,6 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
           </div>
         </div>
       )}
-
-      <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: Google Maps (live ratings, linked from each hotel's own experience page), Booking.com (direct
-        booking links). Verified 7 Aug 2026.
-      </p>
     </SpokeShell>
   );
 }

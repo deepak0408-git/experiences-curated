@@ -10,7 +10,7 @@ const client = new DodoPayments({
 export async function POST(request: NextRequest) {
   const { user } = await getAuthUser();
 
-  const { productId, sportingEventId, priceTier, successUrl } = await request.json();
+  const { productId, sportingEventId, priceTier, productType, successUrl } = await request.json();
 
   if (!productId || !sportingEventId) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -23,6 +23,10 @@ export async function POST(request: NextRequest) {
       metadata: {
         sporting_event_id: sportingEventId,
         price_tier: priceTier ?? "standard",
+        // Mini-packs pilot — omitted (undefined) for the full pack, so the
+        // webhook's existing `?? "full_pack"` default still applies for
+        // every checkout that predates this field.
+        ...(productType ? { product_type: productType } : {}),
       },
       return_url: successUrl,
     });

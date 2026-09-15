@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 
 const SPOKE_ID = "itinerary";
@@ -8,8 +9,12 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.itinerary;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "itinerary_guide" as const, owned: purchasedProductTypes.has("itinerary_guide") }
+    : undefined;
 
   const waterfrontWalk = linkedExperiences.find((e) => e.slug.includes("singapore-gp-waterfront-walk"));
   const gardensByTheBay = linkedExperiences.find((e) => e.slug.includes("singapore-gp-gardens-by-the-bay"));
@@ -35,41 +40,70 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       eventCurrency={event.packCurrency}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="Singapore Grand Prix"
       status="teaser"
       h1="A sample race weekend, hour by hour"
       question="What does a Singapore GP race weekend actually look like?"
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The weekend shape above is free. The pack adds the full hour-by-hour itinerary for all four days — exact session times, which grandstand to be at when, the concert set to catch after, and the transit move to make next, so you're never guessing what to do between sessions."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the full hour-by-hour itinerary for all four days — exact session times, which grandstand to be at when, the concert set to catch after, and the transit move to make next, so you're never guessing what to do between sessions."
     >
-      {/* Free "Event rhythm" section — classic-pack "How the event unfolds"
-          parity (hub-and-spoke-event-pack skill §1a). Unlike Bahrain GP,
-          Singapore's night-race format and 2026 concert lineup are
-          confirmed facts, not open questions — safe to commit to specifics. */}
-      <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
-        2026 is a Sprint weekend, not the classic three-day format — there&apos;s no FP2 or FP3. Friday is Practice 1
-        and Sprint Qualifying, Saturday is the Sprint race and full Qualifying, Sunday is the Grand Prix itself.
-        Singapore adds a second rhythm on top of that: every evening ends with a headline concert on the Padang
-        Stage, so a full race day here genuinely runs from afternoon sessions through to a late-night set, all
-        under the same floodlights. This is F1&apos;s only true night race, run entirely after dark.
-      </p>
-      <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        The night format also means real daytime is available before each day&apos;s sessions start, worth using
-        for Gardens by the Bay, Sentosa, or the Marina Bay waterfront walk rather than sitting in a hotel room
-        waiting for the evening.
-      </p>
+      {/* Free teaser — the weekend's basic 4-day shape only (day names, no
+          specific activities/times/concert acts). Everything with real
+          planning value (the rhythm essay, session times, concert lineup,
+          day-by-day summaries, hour-by-hour tables) is gated behind
+          isUnlocked (full pack or the Itinerary Guide mini-pack).
 
-      <div className="flex flex-col gap-3 mb-8">
-        <DayCard day="Thursday — Arrival" summary="Land, settle in, and do the Marina Bay Waterfront Walk — Merlion Park to the Flyer doubles as real circuit-area orientation" />
-        <DayCard day="Friday — Practice 1 & Sprint Qualifying" summary="Gardens by the Bay in the daytime, Practice 1 (4:30-5:30pm) then Sprint Qualifying (8:30-9:14pm), JJ Lin and CORTIS on the Padang Stage after" />
-        <DayCard day="Saturday — Sprint & Qualifying" summary="Sentosa in the daytime, the Sprint race (5-6pm) then full Qualifying (9-10pm) sets Sunday's grid, The Killers and Zara Larsson close out the night" />
-        <DayCard day="Sunday — Race" summary="Arrival timing by grandstand, the Grand Prix itself at 8pm, Lana Del Rey's Singapore debut after the chequered flag" />
-      </div>
+          !isUnlocked gate tightened 15 Sep 2026 — the previous version
+          left the full rhythm essay and all 4 DayCard summaries (each
+          naming real session times AND the specific headline acts — JJ
+          Lin, CORTIS, The Killers, Zara Larsson, Lana Del Rey) free to
+          everyone, which the founder correctly flagged as giving away
+          most of the guide's real value; only the hour-by-hour table was
+          behind the paywall. Same fix as Bahrain GP's Itinerary spoke. */}
+      {!isUnlocked && (
+        <div className="flex flex-col gap-2 mb-8">
+          <p className="text-sm text-[#A3A3A3]">A Singapore GP weekend runs Thursday arrival through Sunday race day — a Sprint format with concerts every night.</p>
+          <p className="text-sm text-[#A3A3A3]">
+            <span className="text-white font-bold">Thursday:</span>{" "}Arrival
+          </p>
+          <p className="text-sm text-[#A3A3A3]">
+            <span className="text-white font-bold">Friday:</span>{" "}Practice 1 &amp; Sprint Qualifying
+          </p>
+          <p className="text-sm text-[#A3A3A3]">
+            <span className="text-white font-bold">Saturday:</span>{" "}Sprint Race &amp; Qualifying
+          </p>
+          <p className="text-sm text-[#A3A3A3]">
+            <span className="text-white font-bold">Sunday:</span>{" "}The Grand Prix Itself
+          </p>
+        </div>
+      )}
 
       {isUnlocked && (
-        <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
-          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-4">
+        <div className="mt-2">
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
+            2026 is a Sprint weekend, not the classic three-day format — there&apos;s no FP2 or FP3. Friday is Practice 1
+            and Sprint Qualifying, Saturday is the Sprint race and full Qualifying, Sunday is the Grand Prix itself.
+            Singapore adds a second rhythm on top of that: every evening ends with a headline concert on the Padang
+            Stage, so a full race day here genuinely runs from afternoon sessions through to a late-night set, all
+            under the same floodlights. This is F1&apos;s only true night race, run entirely after dark.
+          </p>
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
+            The night format also means real daytime is available before each day&apos;s sessions start, worth using
+            for Gardens by the Bay, Sentosa, or the Marina Bay waterfront walk rather than sitting in a hotel room
+            waiting for the evening.
+          </p>
+
+          <div className="flex flex-col gap-3 mb-8">
+            <DayCard day="Thursday — Arrival" summary="Land, settle in, and do the Marina Bay Waterfront Walk — Merlion Park to the Flyer doubles as real circuit-area orientation" />
+            <DayCard day="Friday — Practice 1 & Sprint Qualifying" summary="Gardens by the Bay in the daytime, Practice 1 (4:30-5:30pm) then Sprint Qualifying (8:30-9:14pm), JJ Lin and CORTIS on the Padang Stage after" />
+            <DayCard day="Saturday — Sprint & Qualifying" summary="Sentosa in the daytime, the Sprint race (5-6pm) then full Qualifying (9-10pm) sets Sunday's grid, The Killers and Zara Larsson close out the night" />
+            <DayCard day="Sunday — Race" summary="Arrival timing by grandstand, the Grand Prix itself at 8pm, Lana Del Rey's Singapore debut after the chequered flag" />
+          </div>
+
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-4 pt-10 border-t border-[#2A2A2A]">
             The full itinerary, hour by hour
           </p>
 
@@ -115,12 +149,6 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
           />
         </div>
       )}
-
-      <p className="text-xs text-[#6A6A6A] mt-8">
-        Session times confirmed via the official F1 2026 calendar (formula1.com), Singapore local time — exact gate
-        and Fan Zone opening times not yet published, see the hub page&apos;s Quick Reference for the latest. Sunday
-        brunch/shopping options sourced from marinabaysands.com, hungrygowhere.com, sethlui.com. Verified 3 Aug 2026.
-      </p>
     </SpokeShell>
   );
 }
