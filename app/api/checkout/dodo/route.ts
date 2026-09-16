@@ -8,9 +8,10 @@ const client = new DodoPayments({
 });
 
 export async function POST(request: NextRequest) {
-  const { user } = await getAuthUser();
-
-  const { productId, sportingEventId, priceTier, productType, successUrl } = await request.json();
+  const [{ user }, { productId, sportingEventId, priceTier, productType, successUrl }] = await Promise.all([
+    getAuthUser(),
+    request.json(),
+  ]);
 
   if (!productId || !sportingEventId) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
