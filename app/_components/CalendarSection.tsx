@@ -185,7 +185,7 @@ export default function CalendarSection({ events }: { events: CalendarEvent[] })
                     price/checkout lives on the event pack page itself). */}
                 <div className="mt-5">
                   <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm bg-[#AAFF00] text-black text-sm font-black tracking-wide group-hover:bg-[#BBFF33] transition-colors whitespace-nowrap">
-                    Get the pack
+                    Get the guide
                   </span>
                 </div>
 

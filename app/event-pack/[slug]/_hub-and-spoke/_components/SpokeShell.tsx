@@ -231,14 +231,14 @@ export default async function SpokeShell({
                         ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${eventSlug}/${spokeId}`
                         : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${eventSlug}/welcome?spoke=${spokeId}`}
                       buttonClassName="flex-shrink-0 inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00]/50 text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00]/10 transition-colors"
-                      label="Get the Pack"
+                      label="Get the Guide"
                     />
                   ) : (
                     <Link
                       href={`/event-pack/${eventSlug}`}
                       className="flex-shrink-0 inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00]/50 text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00]/10 transition-colors"
                     >
-                      Get the Pack
+                      Get the Guide
                     </Link>
                   )}
                 </div>
@@ -292,14 +292,14 @@ export default async function SpokeShell({
                         ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${eventSlug}/${spokeId}`
                         : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${eventSlug}/welcome?spoke=${spokeId}`}
                       buttonClassName="inline-flex items-center px-5 py-2.5 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors"
-                      label="Get the Pack →"
+                      label="Get the Guide →"
                     />
                   ) : (
                     <Link
                       href={`/event-pack/${eventSlug}`}
                       className="inline-flex items-center px-5 py-2.5 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors"
                     >
-                      Get the Event Pack →
+                      Get the Guide →
                     </Link>
                   )}
                 </div>

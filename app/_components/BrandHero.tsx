@@ -146,10 +146,10 @@ export default function BrandHero({
       <div className="absolute bottom-0 left-0 right-0 px-6 sm:px-10 pb-14 sm:pb-16">
         <div className="max-w-5xl mx-auto">
           <h1 className="text-2xl sm:text-5xl font-black text-white leading-tight tracking-tight max-w-2xl">
-            Insider travel guides for the world&apos;s greatest sporting events
+            Plan the trip. Live the event.
           </h1>
           <p className="mt-4 text-sm sm:text-base text-white/60 leading-relaxed font-light sm:whitespace-nowrap">
-            Guides built around the event, not just the city. Save and plan what fits your trip. Show up ready.
+            Research-driven sports travel planning for the world&apos;s greatest sporting events.
           </p>
 
           <div className="mt-8">
@@ -177,7 +177,7 @@ export default function BrandHero({
                     href={`/event-pack/${ev.slug}`}
                     className="inline-flex items-center justify-center w-52 py-1.5 rounded-sm bg-[#AAFF00] text-black text-xs font-black tracking-wide hover:bg-[#BBFF33] transition-colors"
                   >
-                    Get the pack →
+                    Get the guide →
                   </Link>
                 </div>
               ))}
