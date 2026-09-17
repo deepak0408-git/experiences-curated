@@ -4,6 +4,12 @@ import { useState, useEffect, useRef } from "react";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { DodoPayments } = require("dodopayments-checkout");
 
+declare global {
+  interface Window {
+    DodoCheckoutWebSDK?: unknown;
+  }
+}
+
 interface DodoCheckoutProps {
   productId: string;
   sportingEventId: string;
@@ -137,7 +143,38 @@ export default function DodoCheckout({
         priceTier,
         setLoading: (v) => setLoadingRef.current(v),
       };
-      await DodoPayments.Checkout.open({ checkoutUrl: checkout_url });
+      // The SDK is a true singleton with internal iframe/container state that
+      // only clears on a clean checkout.closed postMessage from its own
+      // iframe. A client-side route change between spoke pages (no full
+      // reload) can leave that internal state stale from a previous click,
+      // and open() silently no-ops with just a console.warn("Checkout is
+      // already open") in that case — no error event fires, so our loading
+      // state still resets and the button looks normal, but no overlay ever
+      // appears. Forcing a close() first guarantees a clean slate.
+      if (DodoPayments.Checkout.isOpen()) {
+        DodoPayments.Checkout.close();
+      }
+      // window.DodoCheckoutWebSDK is set by the external Dodo script that
+      // Initialize() depends on internally. If that script failed to load
+      // (blocked by an extension, network issue, CDN outage) Initialize()
+      // still "succeeds" from our side (it's just registering config), and
+      // open() then does nothing visible — no thrown error, no onEvent call
+      // at all, ever, for the whole page session. Caught live 17-18 Sep 2026:
+      // a real user's PostHog replay showed 5 consecutive clicks across 3
+      // different mini-guide buttons and a page navigation, none of which
+      // ever opened the overlay — a total, session-wide failure rather than
+      // the narrower single-click race this file used to only guard against.
+      // This check turns that silent dead end into a visible, logged failure
+      // so it's diagnosable instead of invisible in our own telemetry.
+      if (typeof window !== "undefined" && !window.DodoCheckoutWebSDK) {
+        console.error("[dodo checkout] SDK script not loaded — window.DodoCheckoutWebSDK is missing");
+        import("@/lib/posthog-events").then(({ phEvent }) =>
+          phEvent.checkoutSdkMissing({ eventSlug, eventName, priceTier })
+        );
+        setLoading(false);
+        return;
+      }
+      DodoPayments.Checkout.open({ checkoutUrl: checkout_url });
     } catch (err) {
       console.error("[dodo checkout] unexpected error:", err);
       setLoading(false);
