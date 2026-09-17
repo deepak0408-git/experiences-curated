@@ -68,6 +68,21 @@ export default function InlineDodoCheckout({
           setStatus("error");
           return;
         }
+        // The Dodo SDK is a page-lifetime singleton (window.DodoCheckoutWebSDK),
+        // not scoped to this component or this route. A Next.js client-side
+        // navigation back to this page (e.g. clicking "Back to Bahrain...",
+        // then a different mini-guide CTA) unmounts the previous checkout's
+        // DOM node but never sends the SDK a clean checkout.closed handshake
+        // — so $.iframe/$.container on the SDK's internal state still point
+        // at a now-detached element. open() then silently no-ops with only a
+        // console.warn("Checkout is already open"), checkout.opened never
+        // fires, and the page is stuck on "Loading checkout..." forever.
+        // Forcing a close() first guarantees a clean slate. Caught live 18
+        // Sep 2026: second mini-guide checkout stuck loading after going
+        // back from the first one without completing payment.
+        if (DodoPayments.Checkout.isOpen()) {
+          DodoPayments.Checkout.close();
+        }
         DodoPayments.Checkout.open({ checkoutUrl: checkout_url, elementId: ELEMENT_ID });
       } catch (err) {
         console.error("[dodo inline checkout] unexpected error:", err);
