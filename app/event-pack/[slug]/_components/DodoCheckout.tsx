@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { DodoPayments } = require("dodopayments-checkout");
 
@@ -23,6 +24,17 @@ interface DodoCheckoutProps {
   // existing full-pack behavior (and the webhook's "full_pack" default)
   // still apply for every purchase that predates this prop.
   productType?: "tickets_guide" | "hotels_guide" | "itinerary_guide";
+  // Routes to /event-pack/[eventSlug]/checkout (Dodo "inline" display mode,
+  // an iframe embedded directly in our own DOM) instead of calling the
+  // overlay SDK's Checkout.open() in this component. Overlay mode behaves
+  // enough like a popup that Instagram/Facebook's in-app browser silently
+  // blocks it — the SDK still reports checkout.opened, so our telemetry
+  // looks healthy, but the iframe never becomes visible. Confirmed live 18
+  // Sep 2026 on Bahrain GP's mini-guides, opened from an Instagram/Facebook
+  // in-app browser. Inline mode never behaves like a popup, so it isn't
+  // subject to that block. Default false — every caller that hasn't opted
+  // in keeps today's overlay behavior unchanged.
+  useInlineCheckout?: boolean;
 }
 
 // The Dodo SDK is a true global singleton (one `window.DodoCheckoutWebSDK`,
@@ -97,14 +109,26 @@ export default function DodoCheckout({
   buttonClassName,
   label = "Get the Pack",
   productType,
+  useInlineCheckout = false,
 }: DodoCheckoutProps) {
   const [loading, setLoading] = useState(false);
   const setLoadingRef = useRef(setLoading);
   setLoadingRef.current = setLoading;
+  const router = useRouter();
 
   useEffect(() => {
-    ensureDodoInitialised();
-  }, []);
+    if (!useInlineCheckout) ensureDodoInitialised();
+  }, [useInlineCheckout]);
+
+  const handleInlineClick = () => {
+    setLoading(true);
+    import("@/lib/posthog-events").then(({ phEvent }) =>
+      phEvent.packCtaClicked({ eventSlug, eventName, priceTier, label })
+    );
+    const params = new URLSearchParams({ productId, priceTier, successUrl });
+    if (productType) params.set("productType", productType);
+    router.push(`/event-pack/${eventSlug}/checkout?${params.toString()}`);
+  };
 
   const handleClick = async () => {
     setLoading(true);
@@ -186,7 +210,7 @@ export default function DodoCheckout({
 
   return (
     <button
-      onClick={handleClick}
+      onClick={useInlineCheckout ? handleInlineClick : handleClick}
       disabled={loading}
       className={buttonClassName ?? defaultClass}
     >

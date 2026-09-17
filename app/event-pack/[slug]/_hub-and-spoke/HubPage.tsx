@@ -676,6 +676,7 @@ export default async function HubPage({ slug }: { slug: string }) {
                           : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
                         buttonClassName="w-full inline-flex items-center justify-center px-4 py-2 rounded-sm border border-[#AAFF00]/50 text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00]/10 transition-colors"
                         label="Get the Guide"
+                        useInlineCheckout
                       />
                     ) : (
                       <span className="text-xs text-[#6A6A6A]">Checkout coming soon.</span>
