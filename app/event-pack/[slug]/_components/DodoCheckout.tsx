@@ -33,9 +33,14 @@ interface DodoCheckoutProps {
   // order summary. Overlay mode renders this itself inside the Dodo iframe;
   // inline mode doesn't, so without these the user sees a payment form with
   // no visible price at all before entering their details. Only used when
-  // useInlineCheckout is true.
+  // useInlineCheckout is true. priceCurrency (default USD, matching every
+  // event's packCurrency) drives the same LocalCurrencyHint conversion shown
+  // next to the price everywhere else on the pack page — dropping it here
+  // would silently regress that for non-USD visitors at checkout, the exact
+  // moment it matters most.
   productLabel?: string;
   priceDisplay?: string;
+  priceCurrency?: string;
 }
 
 // The Dodo SDK is a true global singleton (one `window.DodoCheckoutWebSDK`,
@@ -113,6 +118,7 @@ export default function DodoCheckout({
   useInlineCheckout = false,
   productLabel,
   priceDisplay,
+  priceCurrency,
 }: DodoCheckoutProps) {
   const [loading, setLoading] = useState(false);
   const setLoadingRef = useRef(setLoading);
@@ -128,10 +134,11 @@ export default function DodoCheckout({
     import("@/lib/posthog-events").then(({ phEvent }) =>
       phEvent.packCtaClicked({ eventSlug, eventName, priceTier, label })
     );
-    const params = new URLSearchParams({ productId, priceTier, successUrl });
+    const params = new URLSearchParams({ productId, priceTier, successUrl, eventName });
     if (productType) params.set("productType", productType);
     if (productLabel) params.set("productLabel", productLabel);
     if (priceDisplay) params.set("priceDisplay", priceDisplay);
+    if (priceCurrency) params.set("priceCurrency", priceCurrency);
     router.push(`/event-pack/${eventSlug}/checkout?${params.toString()}`);
   };
 
