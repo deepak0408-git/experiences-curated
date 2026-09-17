@@ -20,9 +20,6 @@ export const phEvent = {
   checkoutRedirected: (props: { eventSlug: string; priceTier: string }) =>
     posthog.capture("checkout_redirected", props),
 
-  checkoutSdkMissing: (props: { eventSlug: string; eventName?: string; priceTier: string }) =>
-    posthog.capture("checkout_sdk_missing", props),
-
   purchaseCompleted: (props: { eventSlug: string }) =>
     posthog.capture("purchase_completed", props),
 
