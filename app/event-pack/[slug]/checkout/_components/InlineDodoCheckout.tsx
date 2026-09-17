@@ -10,6 +10,8 @@ interface InlineDodoCheckoutProps {
   priceTier: "early_bird" | "standard";
   successUrl: string;
   productType?: "tickets_guide" | "hotels_guide" | "itinerary_guide";
+  eventSlug: string;
+  eventName: string;
 }
 
 const ELEMENT_ID = "dodo-inline-checkout";
@@ -32,6 +34,8 @@ export default function InlineDodoCheckout({
   priceTier,
   successUrl,
   productType,
+  eventSlug,
+  eventName,
 }: InlineDodoCheckoutProps) {
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const initialisedRef = useRef(false);
@@ -44,12 +48,20 @@ export default function InlineDodoCheckout({
       mode: (process.env.NEXT_PUBLIC_DODO_MODE === "test_mode" ? "test" : "live") as "test" | "live",
       displayType: "inline",
       onEvent: (event: { event_type: string; data?: { message?: string } }) => {
-        if (event.event_type === "checkout.opened") setStatus("ready");
+        if (event.event_type === "checkout.opened") {
+          setStatus("ready");
+          import("@/lib/posthog-events").then(({ phEvent }) =>
+            phEvent.checkoutOpened({ eventSlug, eventName, priceTier })
+          );
+        }
         if (event.event_type === "checkout.error") {
           setStatus("error");
           console.error("[dodo inline checkout]", event.data?.message);
         }
         if (event.event_type === "checkout.redirect") {
+          import("@/lib/posthog-events").then(({ phEvent }) =>
+            phEvent.checkoutRedirected({ eventSlug, priceTier })
+          );
           setTimeout(() => { window.location.href = successUrl; }, 2500);
         }
       },
