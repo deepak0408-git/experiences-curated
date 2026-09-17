@@ -5,12 +5,6 @@ import { useRouter } from "next/navigation";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { DodoPayments } = require("dodopayments-checkout");
 
-declare global {
-  interface Window {
-    DodoCheckoutWebSDK?: unknown;
-  }
-}
-
 interface DodoCheckoutProps {
   productId: string;
   sportingEventId: string;
@@ -35,6 +29,13 @@ interface DodoCheckoutProps {
   // subject to that block. Default false — every caller that hasn't opted
   // in keeps today's overlay behavior unchanged.
   useInlineCheckout?: boolean;
+  // Product name + display price shown on the inline checkout page's own
+  // order summary. Overlay mode renders this itself inside the Dodo iframe;
+  // inline mode doesn't, so without these the user sees a payment form with
+  // no visible price at all before entering their details. Only used when
+  // useInlineCheckout is true.
+  productLabel?: string;
+  priceDisplay?: string;
 }
 
 // The Dodo SDK is a true global singleton (one `window.DodoCheckoutWebSDK`,
@@ -110,6 +111,8 @@ export default function DodoCheckout({
   label = "Get the Pack",
   productType,
   useInlineCheckout = false,
+  productLabel,
+  priceDisplay,
 }: DodoCheckoutProps) {
   const [loading, setLoading] = useState(false);
   const setLoadingRef = useRef(setLoading);
@@ -127,6 +130,8 @@ export default function DodoCheckout({
     );
     const params = new URLSearchParams({ productId, priceTier, successUrl });
     if (productType) params.set("productType", productType);
+    if (productLabel) params.set("productLabel", productLabel);
+    if (priceDisplay) params.set("priceDisplay", priceDisplay);
     router.push(`/event-pack/${eventSlug}/checkout?${params.toString()}`);
   };
 
@@ -177,26 +182,6 @@ export default function DodoCheckout({
       // appears. Forcing a close() first guarantees a clean slate.
       if (DodoPayments.Checkout.isOpen()) {
         DodoPayments.Checkout.close();
-      }
-      // window.DodoCheckoutWebSDK is set by the external Dodo script that
-      // Initialize() depends on internally. If that script failed to load
-      // (blocked by an extension, network issue, CDN outage) Initialize()
-      // still "succeeds" from our side (it's just registering config), and
-      // open() then does nothing visible — no thrown error, no onEvent call
-      // at all, ever, for the whole page session. Caught live 17-18 Sep 2026:
-      // a real user's PostHog replay showed 5 consecutive clicks across 3
-      // different mini-guide buttons and a page navigation, none of which
-      // ever opened the overlay — a total, session-wide failure rather than
-      // the narrower single-click race this file used to only guard against.
-      // This check turns that silent dead end into a visible, logged failure
-      // so it's diagnosable instead of invisible in our own telemetry.
-      if (typeof window !== "undefined" && !window.DodoCheckoutWebSDK) {
-        console.error("[dodo checkout] SDK script not loaded — window.DodoCheckoutWebSDK is missing");
-        import("@/lib/posthog-events").then(({ phEvent }) =>
-          phEvent.checkoutSdkMissing({ eventSlug, eventName, priceTier })
-        );
-        setLoading(false);
-        return;
       }
       DodoPayments.Checkout.open({ checkoutUrl: checkout_url });
     } catch (err) {

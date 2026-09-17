@@ -12,6 +12,8 @@ interface PageProps {
     priceTier?: string;
     productType?: string;
     successUrl?: string;
+    productLabel?: string;
+    priceDisplay?: string;
   }>;
 }
 
@@ -19,7 +21,7 @@ const VALID_PRODUCT_TYPES = ["tickets_guide", "hotels_guide", "itinerary_guide"]
 
 export default async function EventPackCheckoutPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
-  const { productId, priceTier, productType, successUrl } = await searchParams;
+  const { productId, priceTier, productType, successUrl, productLabel, priceDisplay } = await searchParams;
 
   if (!productId || !successUrl) notFound();
 
@@ -42,7 +44,16 @@ export default async function EventPackCheckoutPage({ params, searchParams }: Pa
         <Link href={`/event-pack/${slug}`} className="text-xs text-[#6A6A6A] hover:text-[#AAFF00] transition-colors">
           ← Back to {event.name}
         </Link>
-        <div className="mt-6 rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+        {(productLabel || priceDisplay) && (
+          <div className="mt-6 rounded-sm border border-[#2A2A2A] bg-[#141414] p-4 flex items-center justify-between">
+            <div>
+              <p className="text-xs text-[#6A6A6A]">{event.name}</p>
+              {productLabel && <p className="text-sm font-semibold text-white">{productLabel}</p>}
+            </div>
+            {priceDisplay && <p className="text-lg font-black text-white">{priceDisplay}</p>}
+          </div>
+        )}
+        <div className="mt-4 rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
           <InlineDodoCheckout
             productId={productId}
             sportingEventId={event.id}
