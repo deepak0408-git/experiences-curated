@@ -84,13 +84,14 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
       <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8">
         <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">A real circuit map</p>
         <p className="text-sm text-[#A3A3A3] leading-6">
-          Sepang has published detailed spectator guide PDFs for recent race weekends — car parks, gates, and
-          grandstands together in one diagram — for its MotoGP events, which run at the same venue.{" "}
-          <a href="https://www.sepangcircuit.com/media/wysiwyg/pdf/MGP25_Spectator_Guide_v3.pdf" target="_blank" rel="noopener noreferrer" className="text-[#AAFF00] hover:text-[#BBFF33] underline">
-            See the 2025 MotoGP spectator guide (PDF)
+          Bahrain GP has now published its own official 2026 event overview for this race, with confirmed
+          grandstand-by-grandstand detail for Sepang — what each stand actually looks onto, not a generic circuit
+          diagram.{" "}
+          <a href="https://www.bahraingp.com/blog/events/event-overview-2026/" target="_blank" rel="noopener noreferrer" className="text-[#AAFF00] hover:text-[#BBFF33] underline">
+            See the official 2026 event overview
           </a>{" "}
-          for a real sense of the layout — treat it as a guide to the venue&apos;s shape, not a confirmed 2026 F1
-          document, since Sepang hasn&apos;t published race-specific materials for this relocated Grand Prix yet.
+          for the confirmed layout — this is real 2026 F1-specific material, not a MotoGP guide repurposed for this
+          relocated Grand Prix.
         </p>
       </div>
 
