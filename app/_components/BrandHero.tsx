@@ -67,6 +67,11 @@ function shortEventName(name: string, slug: string): string {
     "belgian-gp-2026": "Belgian GP 2026",
     "us-open-2026": "US Open 2026",
     "hungarian-gp-2026": "Hungarian GP 2026",
+    // Real key for the evergreen-slug event (migrated Sep 2026), rolled
+    // forward to the 2027 edition in the same migration.
+    "italian-grand-prix": "Italian GP 2027",
+    // Kept for consistency with the other permanent-fallback tables (see
+    // "wimbledon-2026" above) — no live row uses this key anymore.
     "italian-gp-2026": "Italian GP 2026",
     "bmw-pga-championship-2026": "BMW PGA 2026",
     "australia-in-south-africa-cricket-2026": "Aus in S. Afr. 2026",
