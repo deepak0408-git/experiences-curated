@@ -15,7 +15,13 @@ const TEASER_BUDGET_MAX = 3500;
 const TEASER_TRIP_LENGTH_DAYS = 4;
 const TEASER_ORIGIN_MARKET = "Paris";
 
-const TEASER_ITALIAN_GP_SLUG = "italian-gp-2026";
+// Slug renamed to "italian-grand-prix" during the classic->hub-and-spoke
+// evergreen-slug migration (migrate-from-classic-to-hub-spoke skill) — this
+// constant is a deliberately hardcoded lookup (getTeaserEvents queries by
+// slug directly), not a dynamic query, so it needed its own explicit fix
+// here or this section would have silently gone blank the moment the DB
+// slug changed (per the `!italianGp` guard below).
+const TEASER_ITALIAN_GP_SLUG = "italian-grand-prix";
 const TEASER_SINGAPORE_GP_SLUG = "singapore-grand-prix";
 
 export default async function PlannerTeaser() {

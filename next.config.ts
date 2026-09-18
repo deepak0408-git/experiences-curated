@@ -54,6 +54,16 @@ const nextConfig: NextConfig = {
         destination: "/event-pack/wimbledon/:spoke",
         permanent: true,
       },
+      {
+        source: "/event-pack/italian-gp-2026",
+        destination: "/event-pack/italian-grand-prix",
+        permanent: true,
+      },
+      {
+        source: "/event-pack/italian-gp-2026/:spoke",
+        destination: "/event-pack/italian-grand-prix/:spoke",
+        permanent: true,
+      },
     ];
   },
   async headers() {

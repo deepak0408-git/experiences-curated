@@ -273,7 +273,10 @@ const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: strin
         "The Unisphere, Queens Museum, and a rest-day route through Corona Park and beyond for when you need a break from the tennis",
     },
   ],
-  "italian-gp-2026": [
+  // Renamed from "italian-gp-2026" during the classic->hub-and-spoke evergreen-
+  // slug migration (migrate-from-classic-to-hub-spoke skill) — this section
+  // list is only reached while the event stays packFormat: "classic".
+  "italian-grand-prix": [
     {
       label: "At the Circuit",
       description:
