@@ -56,8 +56,22 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
         <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
           <p className="text-sm font-bold text-white mb-1">A real skyline venue in KL</p>
           <p className="text-sm text-[#A3A3A3] leading-6">
-            A confirmed Petronas Twin Towers view from a rooftop infinity pool and lounge — a genuine luxury venue
-            in the city, not an official F1 tie-in.
+            A genuine 30-plus-floor rooftop bar in the city, with an infinity pool and a confirmed, unobstructed
+            Petronas Twin Towers view — not a hotel rooftop dressed up for the occasion, and not an official F1
+            tie-in either, just a real luxury venue that happens to be there on race weekend. Worth booking ahead
+            rather than walking in: KL gets busier than usual with race weekend visitors, and a table with that
+            view is a draw on any given night regardless. The pack has the exact venue name, floor, and how to
+            actually reserve a table for race weekend.
+          </p>
+        </div>
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+          <p className="text-sm font-bold text-white mb-1">If you&apos;d rather skip the circuit concert</p>
+          <p className="text-sm text-[#A3A3A3] leading-6">
+            Sepang runs its own post-race concerts — Axwell on Saturday, Martin Garrix on Sunday — but both are
+            separate, capacity-limited upgrades on top of a race ticket (see the Ticket Guide), not a given. If
+            that doesn&apos;t come through for Saturday, KL has real off-circuit nightlife the same night —{" "}
+            <a href="https://www.ticketmelon.com/evolutionasia/blak2026" target="_blank" rel="noopener noreferrer" className="text-[#AAFF00] hover:text-[#BBFF33] underline">Blak Malaysia</a>, a techno/rave night, and{" "}
+            <a href="https://www.ticketmelon.com/evenifyoubuy/brighterdaze002" target="_blank" rel="noopener noreferrer" className="text-[#AAFF00] hover:text-[#BBFF33] underline">Brighter Daze</a>, a day-into-night house rave (4pm–3am) on Mantra Bar &amp; Lounge&apos;s KL rooftop. Neither is an official F1 event — treat them as a genuine alternative for the night, not a consolation prize.
           </p>
         </div>
       </div>

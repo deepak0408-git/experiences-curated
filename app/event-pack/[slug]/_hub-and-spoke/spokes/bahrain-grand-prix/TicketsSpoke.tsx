@@ -64,8 +64,18 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
     const t = tierByKey.get(tierKey);
     return t ? `3-day: ${formatMoneyRange(Math.round(Number(t.costLow)), Math.round(Number(t.costHigh)))}` : "3-day: pricing unavailable";
   };
+  // K1 and Grandstand F share one seeded planner_ticket_tier_cost row
+  // ("K1 / F Grandstand", tier2, US$320–US$343) — K1 sits at the low end,
+  // Grandstand F at the high end, per the founder's per-stand breakout.
+  const priceBandForStand = (slug: (typeof STANDS)[number]["slug"], tierKey: (typeof STANDS)[number]["tier"]) => {
+    const t = tierByKey.get(tierKey);
+    if (!t) return "3-day: pricing unavailable";
+    if (slug === "k1-grandstand-sepang-turn-1") return `3-day: ~${formatMoneyRange(Math.round(Number(t.costLow)), Math.round(Number(t.costLow)))}`;
+    if (slug === "grandstand-f-sepang-panoramic") return `3-day: ~${formatMoneyRange(Math.round(Number(t.costHigh)), Math.round(Number(t.costHigh)))}`;
+    return priceBandFor(tierKey);
+  };
 
-  const stands = STANDS.map((s) => ({ ...s, exp: linkedExperiences.find((e) => e.slug.includes(s.slug)), priceBand: priceBandFor(s.tier) }));
+  const stands = STANDS.map((s) => ({ ...s, exp: linkedExperiences.find((e) => e.slug.includes(s.slug)), priceBand: priceBandForStand(s.slug, s.tier) }));
   const mainGrandstand = linkedExperiences.find((e) => e.slug.includes("main-grandstand-sepang-start-finish"));
   const k1 = linkedExperiences.find((e) => e.slug.includes("k1-grandstand-sepang-turn-1"));
   const grandstandF = linkedExperiences.find((e) => e.slug.includes("grandstand-f-sepang-panoramic"));
@@ -234,6 +244,22 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
               exists above these four public stands — see the Cost Guide for that figure.
             </p>
           </div>
+
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Post-race concerts: Axwell &amp; Martin Garrix</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">
+              Two post-race concerts run at the circuit this weekend — Axwell (Swedish House Mafia) on Saturday
+              3 October, Martin Garrix on Sunday 4 October — and neither is bundled into any of the four grandstand
+              tiers above. Both are separate paid upgrades on top of a race weekend ticket, sold directly through
+              Bahraingp.com: US$50 per person for the Axwell upgrade, US$100 per person for the Martin Garrix
+              upgrade, each capacity-limited and offered first-come, first-served rather than guaranteed to every
+              ticket holder. A concert ticket is only valid alongside a matching F1 race weekend ticket — buying
+              one without the other gets it cancelled. If you want to be at either show rather than just in the
+              vicinity, buy your race weekend ticket early and watch your inbox and the official ticketing site for
+              the upgrade window — it&apos;s run separately from grandstand sales, not something you can add at
+              the gate on race day.
+            </p>
+          </div>
         </>
       )}
 
@@ -244,7 +270,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
             For a genuine first Malaysian GP, the Main Grandstand ({priceBandFor("tier3")}) is the right call — it
             teaches you the shape of a full race weekend in one seat, and the roof matters more here than at almost
             any other circuit given how fast Sepang&apos;s weather turns. If you already know you want to watch
-            racing rather than ceremony, K1 ({priceBandFor("tier2")}) is the sharper pick — real, repeated
+            racing rather than ceremony, K1 ({priceBandForStand("k1-grandstand-sepang-turn-1", "tier2")}) is the sharper pick — real, repeated
             overtaking at Turn 1, not a highlight-reel moment. We wouldn&apos;t spend the jump from Hill Stand
             ({priceBandFor("tier1")}) to a mid-tier grandstand just for a marginally better view; the real
             difference in what you actually experience is general admission versus any covered stand, not one
