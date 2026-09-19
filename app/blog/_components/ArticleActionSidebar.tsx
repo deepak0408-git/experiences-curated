@@ -1,4 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { subscribeToNewsletter } from "@/app/newsletter/actions";
 
 // Shared "This event" action block — two real states (live pack /
 // coming-soon) plus an optional series/related block. Per Blog Design
@@ -15,6 +19,11 @@ import Link from "next/link";
 // or a genuine mapping from "one event" to a budget search, neither of
 // which exists yet — out of scope for the blog for now. See Blog Design
 // Document.txt.
+//
+// Guide-coming notify state (19 Sep 2026) — ported from the Experience
+// page's ExperienceActionSidebar / Calendar's NotifyMeButton: same
+// subscribeToNewsletter(email, source) pattern, no new per-event interest
+// table. userEmail pre-fills the input for a signed-in reader.
 
 type SiblingLink = { slug: string; title: string; seriesPosition?: number | null };
 
@@ -28,6 +37,7 @@ export default function ArticleActionSidebar({
   relatedLabel,
   categoryHref,
   categoryLabel,
+  userEmail,
 }: {
   eventSlug?: string | null;
   eventName?: string | null;
@@ -38,6 +48,7 @@ export default function ArticleActionSidebar({
   relatedLabel: string;
   categoryHref: string;
   categoryLabel: string;
+  userEmail: string | null;
 }) {
   const hasEventContext = !!eventSlug;
   const hasSiblings = siblings.length > 0;
@@ -102,13 +113,7 @@ export default function ArticleActionSidebar({
               </span>
             </Link>
           ) : (
-            <div className="flex items-center gap-2.5 py-3">
-              <span className="text-base flex-shrink-0 w-5 text-center">🔔</span>
-              <span className="flex-1">
-                <span className="block text-sm font-bold text-[#6A6A6A]">Guide coming — get notified</span>
-                <span className="block text-xs text-[#6A6A6A] mt-0.5">We&apos;ll email you when it&apos;s live</span>
-              </span>
-            </div>
+            <NotifyMeRow eventPackName={eventName ?? "event"} userEmail={userEmail} />
           )}
         </div>
       )}
@@ -162,5 +167,72 @@ export default function ArticleActionSidebar({
         </div>
       )}
     </div>
+  );
+}
+
+function NotifyMeRow({ eventPackName, userEmail }: { eventPackName: string; userEmail: string | null }) {
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState(userEmail ?? "");
+  const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
+
+  if (status === "done") {
+    return (
+      <div className="flex items-center gap-2.5 py-3">
+        <span className="text-base flex-shrink-0 w-5 text-center">✓</span>
+        <span className="text-sm font-bold text-[#AAFF00]">You&apos;re on the list</span>
+      </div>
+    );
+  }
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="w-full flex items-center gap-2.5 py-3 text-left hover:opacity-80 transition-opacity"
+      >
+        <span className="text-base flex-shrink-0 w-5 text-center">🔔</span>
+        <span className="flex-1">
+          <span className="block text-sm font-bold text-[#6A6A6A]">Guide coming — get notified</span>
+          <span className="block text-xs text-[#6A6A6A] mt-0.5">We&apos;ll email you when it&apos;s live</span>
+        </span>
+      </button>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={async (e) => {
+        e.preventDefault();
+        setStatus("loading");
+        const result = await subscribeToNewsletter(email, "blog_article");
+        setStatus(result.ok ? "done" : "error");
+      }}
+      className="py-3"
+    >
+      <p className="text-xs text-[#6A6A6A] mb-2">We&apos;ll email you when the {eventPackName} guide is live.</p>
+      <div className="flex items-center gap-2">
+        <input
+          type="email"
+          required
+          autoFocus
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="you@example.com"
+          aria-label={`Get notified when the ${eventPackName} guide is live`}
+          className="w-0 flex-1 min-w-0 rounded-sm bg-[#1A1A1A] border border-[#2A2A2A] px-2.5 py-1.5 text-xs text-white placeholder:text-[#6A6A6A] focus:outline-none focus:border-[#AAFF00] transition-colors"
+        />
+        <button
+          type="submit"
+          disabled={status === "loading"}
+          className="flex-shrink-0 rounded-sm bg-[#AAFF00] text-black text-xs font-black px-3 py-1.5 hover:bg-[#BBFF33] transition-colors disabled:opacity-60"
+        >
+          {status === "loading" ? "..." : "Notify me"}
+        </button>
+      </div>
+      {status === "error" && (
+        <p className="text-xs text-red-400 mt-1.5">Something went wrong — try again.</p>
+      )}
+    </form>
   );
 }
