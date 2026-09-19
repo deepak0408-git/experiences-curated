@@ -208,6 +208,7 @@ export default async function BlogArticlePage({
               relatedLabel={relatedLabel}
               categoryHref={`/blog?category=${article.contentCategory}`}
               categoryLabel={categoryLabel}
+              userEmail={user?.email ?? null}
             />
           </div>
         </div>
