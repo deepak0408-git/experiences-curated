@@ -6,6 +6,7 @@ import { getSpokesForEvent, type SpokeStatus } from "../_lib/getSpokeData";
 import { getPackPricing } from "../_lib/packPricing";
 import DodoCheckout from "../../_components/DodoCheckout";
 import LocalCurrencyHint from "../../_components/LocalCurrencyHint";
+import SpokeActionSidebar from "./SpokeActionSidebar";
 
 // Shared shell for every spoke page — slug-driven so it works for any
 // hub_and_spoke event, not just one. Structure copied from the pilot;
@@ -96,7 +97,7 @@ export default async function SpokeShell({
         </div>
       )}
 
-      <div className="max-w-3xl mx-auto px-6 py-12">
+      <div className="max-w-5xl mx-auto px-6 py-12">
         <nav className="flex items-center justify-between gap-2 text-xs text-[#6A6A6A] mb-6">
           <Link href={`/event-pack/${eventSlug}`} className="text-[#AAFF00] hover:text-[#BBFF33] transition-colors">
             ← All {spokes.length} {eventName} planning guides
@@ -107,6 +108,9 @@ export default async function SpokeShell({
             </Link>
           )}
         </nav>
+
+        <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-start">
+        <article className="max-w-3xl">
 
         {/* One-time celebratory banner — justPurchased is derived server-side
             from the real purchases.createdAt timestamp (see
@@ -319,6 +323,12 @@ export default async function SpokeShell({
             )}
           </div>
         )}
+        </article>
+
+        <div className="lg:sticky lg:top-8 lg:mt-6">
+          <SpokeActionSidebar eventSlug={eventSlug} />
+        </div>
+        </div>
 
         {/* Bottom back-link — mirrors the one at the top so a reader who
             finishes the page doesn't have to scroll all the way back up

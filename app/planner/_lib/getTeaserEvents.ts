@@ -49,6 +49,7 @@ async function getTeaserEventsUnsafe(
       startDate: sportingEvents.startDate,
       endDate: sportingEvents.endDate,
       packStatus: sportingEvents.packStatus,
+      editionYear: sportingEvents.editionYear,
       destinationId: sportingEvents.destinationId,
       destinationName: destinations.name,
       heroImageUrl: sportingEvents.heroImageUrl,
@@ -80,11 +81,13 @@ async function getTeaserEventsUnsafe(
   for (const event of events) {
     if (!event.destinationId) continue;
 
+    // edition_year filter added 19-20 Sep 2026 (planner cost edition-year
+    // migration) — see memory project_planner_cost_edition_year_migration.
     const hotelRow = allHotelRows
-      .filter((r) => r.destinationId === event.destinationId)
+      .filter((r) => r.destinationId === event.destinationId && r.editionYear === event.editionYear)
       .find((r) => r.tier === "moderate");
 
-    const ticketRowsForEvent = allTicketRows.filter((r) => r.sportingEventId === event.id);
+    const ticketRowsForEvent = allTicketRows.filter((r) => r.sportingEventId === event.id && r.editionYear === event.editionYear);
     const ticketRow =
       ticketRowsForEvent.find((r) => r.tier === "tier2") ??
       ["tier1", "tier3", "tier4"]
@@ -97,7 +100,7 @@ async function getTeaserEventsUnsafe(
       .toLocaleDateString("en-US", { month: "short" })
       .toLowerCase();
 
-    const flightRowsForDest = allFlightRows.filter((r) => r.destinationId === event.destinationId);
+    const flightRowsForDest = allFlightRows.filter((r) => r.destinationId === event.destinationId && r.editionYear === event.editionYear);
     const flightRow =
       flightRowsForDest.find((r) => r.originMarket === originMarket && r.seasonalBand === eventSeasonalBand) ??
       flightRowsForDest.find((r) => r.originMarket === "unspecified" && r.seasonalBand === eventSeasonalBand);

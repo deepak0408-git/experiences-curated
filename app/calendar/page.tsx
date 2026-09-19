@@ -68,7 +68,7 @@ export default async function CalendarPage({
           <YearFilter />
         </div>
 
-        <CalendarEventList events={events} jsonLdUrl="/calendar" />
+        <CalendarEventList events={events} jsonLdUrl="/calendar" userEmail={user?.email ?? null} />
       </div>
     </div>
   );

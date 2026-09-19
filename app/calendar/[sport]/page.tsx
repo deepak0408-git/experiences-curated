@@ -109,7 +109,7 @@ export default async function CalendarSportPage({
           <YearFilter />
         </div>
 
-        <CalendarEventList events={events} jsonLdUrl={`/calendar/${sport}`} />
+        <CalendarEventList events={events} jsonLdUrl={`/calendar/${sport}`} userEmail={user?.email ?? null} />
       </div>
     </div>
   );

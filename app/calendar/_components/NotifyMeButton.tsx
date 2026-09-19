@@ -9,9 +9,14 @@ import { subscribeToNewsletter } from "@/app/newsletter/actions";
 // (source: "calendar") rather than a new per-event interest mechanism —
 // confirmed as the right reuse target since newsletter_subscribers has no
 // per-event granularity and the design doc doesn't ask for one.
-export default function NotifyMeButton({ eventName }: { eventName: string }) {
+//
+// userEmail pre-fills the input for a signed-in visitor (mirrors the
+// Planner's GateModal defaultEmail pattern) so they don't have to retype
+// an email we already know — fixed 19 Sep 2026 after this was caught live
+// as a glitch: a logged-in user still had to type their email by hand.
+export default function NotifyMeButton({ eventName, userEmail }: { eventName: string; userEmail: string | null }) {
   const [open, setOpen] = useState(false);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(userEmail ?? "");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
 
   if (status === "done") {
