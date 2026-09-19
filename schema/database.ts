@@ -947,6 +947,17 @@ export const plannerFlightCost = pgTable("planner_flight_cost", {
   // adding/adjusting markets doesn't require a migration.
   originMarket: varchar("origin_market", { length: 100 }).notNull(),
   seasonalBand: varchar("seasonal_band", { length: 20 }).notNull(), // e.g. "jan", "feb" ... or a quarterly code
+  // Which edition of a recurring event this price is for — same field name
+  // as sportingEvents.editionYear, since a destination's cost band is only
+  // ever meaningful in the context of one specific edition of the event(s)
+  // that bring travelers there in that season. NOT NULL, no default — every
+  // insert must state its edition explicitly. Added 19-20 Sep 2026 after
+  // Italian GP's rollover to its 2027 editionYear silently left 2026 ticket
+  // pricing displayed as if it were current: seasonalBand alone (month-only)
+  // can't distinguish "2026 September Milan prices" from "2027 September
+  // Milan prices" once the same destination/season gets re-seeded for a
+  // later edition. See project_planner_cost_edition_year_migration memory.
+  editionYear: smallint("edition_year").notNull(),
   costLow: numeric("cost_low", { precision: 10, scale: 2 }).notNull(),
   costHigh: numeric("cost_high", { precision: 10, scale: 2 }).notNull(),
   // All planner cost data is USD-only, no exceptions — standing rule added
@@ -957,7 +968,7 @@ export const plannerFlightCost = pgTable("planner_flight_cost", {
   refreshPass: plannerRefreshPassEnum("refresh_pass").notNull().default("initial"),
   lastUpdated: timestamp("last_updated").notNull().defaultNow(),
 }, (t) => [
-  uniqueIndex("planner_flight_cost_route_season_unique").on(t.destinationId, t.originMarket, t.seasonalBand),
+  uniqueIndex("planner_flight_cost_route_season_edition_unique").on(t.destinationId, t.originMarket, t.seasonalBand, t.editionYear),
 ]);
 
 // Hotel tier cost — keyed by destination, not event (a budget hotel in Monza
@@ -972,6 +983,12 @@ export const plannerHotelTierCost = pgTable("planner_hotel_tier_cost", {
   // Dec/Jan) needs separate price data per season, added 22 Jul 2026 after
   // this exact gap was caught.
   seasonalBand: varchar("seasonal_band", { length: 20 }).notNull(),
+  // Same field, same reasoning as plannerFlightCost.editionYear — a
+  // destination+season pair can be re-seeded for a later edition of the
+  // event that brings travelers there (e.g. Milan/Sep for Italian GP 2026
+  // vs 2027), and without this the later seed either collides with the
+  // unique constraint or silently overwrites the wrong edition's prices.
+  editionYear: smallint("edition_year").notNull(),
   costLow: numeric("cost_low", { precision: 10, scale: 2 }).notNull(),
   costHigh: numeric("cost_high", { precision: 10, scale: 2 }).notNull(),
   // All planner cost data is USD-only, no exceptions — see the same note on
@@ -980,7 +997,7 @@ export const plannerHotelTierCost = pgTable("planner_hotel_tier_cost", {
   refreshPass: plannerRefreshPassEnum("refresh_pass").notNull().default("initial"),
   lastUpdated: timestamp("last_updated").notNull().defaultNow(),
 }, (t) => [
-  uniqueIndex("planner_hotel_tier_cost_dest_tier_season_unique").on(t.destinationId, t.tier, t.seasonalBand),
+  uniqueIndex("planner_hotel_tier_cost_dest_tier_season_edition_unique").on(t.destinationId, t.tier, t.seasonalBand, t.editionYear),
 ]);
 
 // Sport-level default tier labels — real per-sport vocabulary (e.g. F1's
@@ -1011,6 +1028,18 @@ export const plannerTicketTierCost = pgTable("planner_ticket_tier_cost", {
   // Plain string for V1, not structured — see design doc "Ticket tier
   // structure" section (19 Jul 2026) for why.
   eventTierLabel: varchar("event_tier_label", { length: 255 }),
+  // Which edition of a recurring event this price is for. Critical for
+  // evergreen-slug events (sportingEventId stays the SAME row across
+  // editions — see sportingEvents.editionYear/sportingEventArchives) — a
+  // ticket price keyed only on sportingEventId+tier gets silently
+  // overwritten or misattributed the moment a second edition's price is
+  // seeded, since the row's own editionYear may have already rolled
+  // forward by the time this cost data catches up. Confirmed live 19 Sep
+  // 2026: Italian GP's row showed editionYear 2027 while its only seeded
+  // ticket prices were still 2026's. See
+  // project_planner_cost_edition_year_migration memory for the full
+  // incident and the per-row backfill decisions.
+  editionYear: smallint("edition_year").notNull(),
   costLow: numeric("cost_low", { precision: 10, scale: 2 }).notNull(),
   costHigh: numeric("cost_high", { precision: 10, scale: 2 }).notNull(),
   // All planner cost data is USD-only, no exceptions — see the same note on
@@ -1018,7 +1047,7 @@ export const plannerTicketTierCost = pgTable("planner_ticket_tier_cost", {
   currency: varchar("currency", { length: 3 }).notNull().default("USD"),
   lastUpdated: timestamp("last_updated").notNull().defaultNow(),
 }, (t) => [
-  uniqueIndex("planner_ticket_tier_cost_event_tier_unique").on(t.sportingEventId, t.tier),
+  uniqueIndex("planner_ticket_tier_cost_event_tier_edition_unique").on(t.sportingEventId, t.tier, t.editionYear),
 ]);
 
 // Local travel and food/daily spend — simplified per-destination bands, not

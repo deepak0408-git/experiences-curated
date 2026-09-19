@@ -44,6 +44,7 @@ async function getPlannerEventsUnsafe(tripLengthDays: number, originMarket: stri
       endDate: sportingEvents.endDate,
       packStatus: sportingEvents.packStatus,
       isHidden: sportingEvents.isHidden,
+      editionYear: sportingEvents.editionYear,
       destinationId: sportingEvents.destinationId,
       destinationName: destinations.name,
       heroImageUrl: sportingEvents.heroImageUrl,
@@ -81,12 +82,20 @@ async function getPlannerEventsUnsafe(tripLengthDays: number, originMarket: stri
   for (const event of events) {
     if (!event.destinationId) continue;
 
+    // edition_year filter added 19-20 Sep 2026 (planner cost edition-year
+    // migration) — a shared destination or a rolled-over recurring event
+    // can now legitimately have more than one row per (destination, tier)
+    // or (event, tier), one per edition. Always match to event.editionYear,
+    // the edition this event row currently represents, or a re-seeded
+    // second edition's row could win the .find() nondeterministically. See
+    // memory project_planner_cost_edition_year_migration.
+
     // Screen 2 assumes Moderate hotel tier and tier2 (Grandstand-equivalent)
     // ticket tier as its defaults — real, purchasable rows, not a synthetic
     // blend, confirmed 19 Jul 2026. This is what makes the Tradeoff Engine's
     // "current tier" a known fact rather than an inference.
     const hotelRow = allHotelRows
-      .filter((r) => r.destinationId === event.destinationId)
+      .filter((r) => r.destinationId === event.destinationId && r.editionYear === event.editionYear)
       .find((r) => r.tier === "moderate");
 
     // Fall back through tier1→tier4 when tier2 doesn't exist for this event
@@ -94,7 +103,7 @@ async function getPlannerEventsUnsafe(tripLengthDays: number, originMarket: stri
     // missing default tier must never mean no price shown at all. Caught 21
     // Jul 2026 on the Australia-in-South-Africa cricket event, which only has
     // real General Admission (tier1) and Hospitality (tier3) products.
-    const ticketRowsForEvent = allTicketRows.filter((r) => r.sportingEventId === event.id);
+    const ticketRowsForEvent = allTicketRows.filter((r) => r.sportingEventId === event.id && r.editionYear === event.editionYear);
     const ticketRow =
       ticketRowsForEvent.find((r) => r.tier === "tier2") ??
       ["tier1", "tier3", "tier4"]
@@ -110,7 +119,7 @@ async function getPlannerEventsUnsafe(tripLengthDays: number, originMarket: stri
       .toLocaleDateString("en-US", { month: "short" })
       .toLowerCase();
 
-    const flightRowsForDest = allFlightRows.filter((r) => r.destinationId === event.destinationId);
+    const flightRowsForDest = allFlightRows.filter((r) => r.destinationId === event.destinationId && r.editionYear === event.editionYear);
     const flightRow =
       flightRowsForDest.find((r) => r.originMarket === originMarket && r.seasonalBand === eventSeasonalBand) ??
       flightRowsForDest.find((r) => r.originMarket === "unspecified" && r.seasonalBand === eventSeasonalBand);

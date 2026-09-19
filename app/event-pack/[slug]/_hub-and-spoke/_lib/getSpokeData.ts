@@ -89,10 +89,16 @@ async function getSpokeDataUncached(slug: string) {
     )
     .orderBy(sportingEventExperiences.packRank);
 
+  // edition_year filter added 19-20 Sep 2026 (planner cost edition-year
+  // migration) — without it, a re-seeded second edition's rows (or a
+  // shared destination's other event) return alongside this event's own,
+  // duplicating/misattributing prices. Always filter to event.editionYear,
+  // the edition currently being viewed on this page. See memory
+  // project_planner_cost_edition_year_migration.
   const hotels = event.destinationId
-    ? await db.select().from(plannerHotelTierCost).where(eq(plannerHotelTierCost.destinationId, event.destinationId))
+    ? await db.select().from(plannerHotelTierCost).where(and(eq(plannerHotelTierCost.destinationId, event.destinationId), eq(plannerHotelTierCost.editionYear, event.editionYear)))
     : [];
-  const tickets = await db.select().from(plannerTicketTierCost).where(eq(plannerTicketTierCost.sportingEventId, event.id));
+  const tickets = await db.select().from(plannerTicketTierCost).where(and(eq(plannerTicketTierCost.sportingEventId, event.id), eq(plannerTicketTierCost.editionYear, event.editionYear)));
   const [destinationBand] = event.destinationId
     ? await db.select().from(plannerDestinationBands).where(eq(plannerDestinationBands.destinationId, event.destinationId))
     : [];
@@ -106,7 +112,7 @@ async function getSpokeDataUncached(slug: string) {
         })
         .from(plannerFlightCost)
         .innerJoin(plannerOriginMarkets, eq(plannerOriginMarkets.city, plannerFlightCost.originMarket))
-        .where(eq(plannerFlightCost.destinationId, event.destinationId))
+        .where(and(eq(plannerFlightCost.destinationId, event.destinationId), eq(plannerFlightCost.editionYear, event.editionYear)))
     : [];
 
   return {

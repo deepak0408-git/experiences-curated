@@ -71,7 +71,17 @@ export default function ShortlistResults({
   // Ranking (budget-fit + sort) lives in rankEvents() (mockEvents.ts) — single
   // source of truth shared with the Compare screen, so the two can never show
   // events in a different order from each other.
-  const matching = rankEvents(filtered, budgetMin, budgetMax).slice(0, 5);
+  //
+  // No top-5 cap — removed 19 Sep 2026 per explicit founder instruction.
+  // Originally capped to the top 5 closest-to-budget matches (design doc
+  // "Season Budget Planner Tool G3", decided 17 Jul 2026) to keep the
+  // shortlist tight; the founder later judged that a full-coverage catalog
+  // (11 live F1 events alone) meant a hard 5-item cap was hiding real,
+  // correctly-matched events (e.g. Bahrain GP ranked 6th+) rather than just
+  // trimming a long tail. Every event still shows in its closest-to-budget
+  // order via rankEvents() — this only removes the truncation, not the
+  // ranking itself.
+  const matching = rankEvents(filtered, budgetMin, budgetMax);
 
   const maxCompare = Math.min(matching.length, 3);
   const compareLimitReached = compareSlugs.length >= maxCompare;

@@ -22,7 +22,7 @@ function daysUntil(dateStr: string): number {
   return Math.ceil((new Date(dateStr).getTime() - Date.now()) / 86_400_000);
 }
 
-function ctaContent(cta: CalendarCtaState, eventName: string) {
+function ctaContent(cta: CalendarCtaState, eventName: string, userEmail: string | null) {
   if (cta.type === "live_guide") {
     return (
       <Link
@@ -34,7 +34,7 @@ function ctaContent(cta: CalendarCtaState, eventName: string) {
     );
   }
   if (cta.type === "guide_coming") {
-    return <NotifyMeButton eventName={eventName} />;
+    return <NotifyMeButton eventName={eventName} userEmail={userEmail} />;
   }
   return null;
 }
@@ -43,10 +43,12 @@ export default function CalendarEventRow({
   event,
   cta,
   isPast,
+  userEmail,
 }: {
   event: Awaited<ReturnType<typeof getCalendarEvents>>[number];
   cta: CalendarCtaState;
   isPast: boolean;
+  userEmail: string | null;
 }) {
   const inDays = isPast ? null : daysUntil(event.startDate);
 
@@ -88,7 +90,7 @@ export default function CalendarEventRow({
             original right-aligned side-by-side layout. Fixed 16 Aug 2026
             per direct mobile screenshot feedback. */}
         <div className="flex flex-col items-start gap-1.5 mt-2 sm:items-end sm:mt-0 sm:flex-shrink-0">
-          {ctaContent(cta, event.name)}
+          {ctaContent(cta, event.name, userEmail)}
           {!isPast && canPlanCosts(event) && (
             <Link
               href="/planner"

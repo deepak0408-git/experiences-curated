@@ -35,9 +35,11 @@ function buildJsonLd(events: Awaited<ReturnType<typeof getCalendarEvents>>, base
 export default function CalendarEventList({
   events,
   jsonLdUrl,
+  userEmail,
 }: {
   events: Awaited<ReturnType<typeof getCalendarEvents>>;
   jsonLdUrl: string;
+  userEmail: string | null;
 }) {
   const today = new Date().toISOString().slice(0, 10);
   const upcoming = events.filter((e) => e.endDate >= today);
@@ -76,7 +78,7 @@ export default function CalendarEventList({
             </h2>
             <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] px-5">
               {group.rows.map((event) => (
-                <CalendarEventRow key={event.id} event={event} cta={getCtaState(event)} isPast={false} />
+                <CalendarEventRow key={event.id} event={event} cta={getCtaState(event)} isPast={false} userEmail={userEmail} />
               ))}
             </div>
           </div>
@@ -90,7 +92,7 @@ export default function CalendarEventList({
           </summary>
           <div className="mt-4 rounded-sm border border-[#2A2A2A] bg-[#141414] px-5">
             {past.map((event) => (
-              <CalendarEventRow key={event.id} event={event} cta={getCtaState(event)} isPast={true} />
+              <CalendarEventRow key={event.id} event={event} cta={getCtaState(event)} isPast={true} userEmail={userEmail} />
             ))}
           </div>
         </details>

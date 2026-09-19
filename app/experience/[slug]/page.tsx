@@ -12,6 +12,7 @@ import ExperienceViewGate from "./_components/ExperienceViewGate";
 import { getPackPricing } from "@/lib/packPricing";
 import SaveExperienceCTA from "./_components/SaveExperienceCTA";
 import ExperienceTracker from "./_components/ExperienceTracker";
+import ExperienceActionSidebar from "./_components/ExperienceActionSidebar";
 import { isRealAffiliateLink } from "../../event-pack/[slug]/_hub-and-spoke/_lib/getSpokeData";
 
 // Hub-and-spoke "back to spoke" link — maps an experience's slug prefix to
@@ -363,6 +364,28 @@ const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; 
   "qatar-gp-parisa-atmosphere-dining-": { eventSlug: "qatar-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
   "qatar-gp-qatari-cuisine-souq-": { eventSlug: "qatar-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
   "qatar-gp-sawa-by-sanad-": { eventSlug: "qatar-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "italian-gp-grandstand-1-centrale-": { eventSlug: "italian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "italian-gp-grandstand-5-piscina-": { eventSlug: "italian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "italian-gp-ga-lesmo-ascari-": { eventSlug: "italian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "grandstand-22-parabolica-corner-": { eventSlug: "italian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "grandstand-26-pit-lane-grid-podium-": { eventSlug: "italian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "curva-grande-general-admission-": { eventSlug: "italian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
+  "paddock-club-champions-club-hospitality-": { eventSlug: "italian-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  "monza-inside-the-venue-": { eventSlug: "italian-grand-prix", spokeId: "map", spokeLabel: "Venue Map" },
+  "history-of-monza-walking-old-banking-": { eventSlug: "italian-grand-prix", spokeId: "map", spokeLabel: "Venue Map" },
+  "italian-gp-first-timer-guide-": { eventSlug: "italian-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "the-tifosi-ferraris-red-army-": { eventSlug: "italian-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  "italian-gp-arrival-queue-guide-": { eventSlug: "italian-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+  "the-fan-zone-ascari-to-parabolica-": { eventSlug: "italian-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+  "getting-to-the-circuit-monza-": { eventSlug: "italian-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
+  "hotel-de-la-ville-monza-": { eventSlug: "italian-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "staying-in-milan-city-base-strategy-": { eventSlug: "italian-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
+  "eating-in-milan-serious-italians-": { eventSlug: "italian-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "eating-in-monza-risotto-luganega-": { eventSlug: "italian-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "aperitivo-before-the-race-milan-ritual-": { eventSlug: "italian-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  "monza-town-royal-villa-": { eventSlug: "italian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "alfa-romeo-museum-arese-": { eventSlug: "italian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+  "lake-como-race-weekend-from-the-lake-": { eventSlug: "italian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
 };
 
 function getSpokeBackLink(slug: string) {
@@ -573,13 +596,62 @@ export default async function ExperiencePage({
       let eventPackSlug = "wimbledon";
       let eventPackName = "Wimbledon";
       let eventPackFormat: string | null = null;
-      if (exp.sportingEventId) {
+      let hasLivePack = false;
+      // The breadcrumb's "← Back to <spoke>" link and the sidebar's "Get the
+      // full guide" CTA must always agree — they're both "which event pack
+      // does this experience belong to," just two different UI surfaces for
+      // the same fact. getSpokeBackLink() (EXPERIENCE_TO_SPOKE) is the real
+      // source of truth for that whenever an entry exists — it's curator-
+      // confirmed per-experience, unlike exp.sportingEventId, which is only
+      // the PRIMARY owning event and can disagree for an experience shared
+      // into a second event via sporting_event_experiences (see the shared-
+      // experience comment block above EXPERIENCE_TO_SPOKE). Caught live 19
+      // Sep 2026: Eton/Windsor's sportingEventId points to BMW PGA
+      // Championship, but EXPERIENCE_TO_SPOKE correctly maps them to
+      // Wimbledon's Day Trips spoke — the sidebar was showing BMW PGA while
+      // the breadcrumb correctly showed Wimbledon. Only fall back to
+      // sportingEventId when no EXPERIENCE_TO_SPOKE entry exists (the
+      // common case — most experiences aren't shared).
+      const spokeBackLinkForEventPack = getSpokeBackLink(s);
+      const eventPackLookupSlug = spokeBackLinkForEventPack?.eventSlug;
+      if (eventPackLookupSlug) {
         const [ev] = await db
-          .select({ slug: sportingEvents.slug, name: sportingEvents.name, packFormat: sportingEvents.packFormat })
+          .select({
+            slug: sportingEvents.slug,
+            name: sportingEvents.name,
+            packFormat: sportingEvents.packFormat,
+            packStatus: sportingEvents.packStatus,
+            isHidden: sportingEvents.isHidden,
+          })
+          .from(sportingEvents)
+          .where(eq(sportingEvents.slug, eventPackLookupSlug))
+          .limit(1);
+        if (ev) {
+          eventPackSlug = ev.slug;
+          eventPackName = ev.name;
+          eventPackFormat = ev.packFormat;
+          hasLivePack = (ev.packStatus === "live" || ev.packStatus === "built_hidden") && ev.isHidden === false;
+        }
+      } else if (exp.sportingEventId) {
+        const [ev] = await db
+          .select({
+            slug: sportingEvents.slug,
+            name: sportingEvents.name,
+            packFormat: sportingEvents.packFormat,
+            packStatus: sportingEvents.packStatus,
+            isHidden: sportingEvents.isHidden,
+          })
           .from(sportingEvents)
           .where(eq(sportingEvents.id, exp.sportingEventId))
           .limit(1);
-        if (ev) { eventPackSlug = ev.slug; eventPackName = ev.name; eventPackFormat = ev.packFormat; }
+        if (ev) {
+          eventPackSlug = ev.slug;
+          eventPackName = ev.name;
+          eventPackFormat = ev.packFormat;
+          // Live-pack determination mirrors the blog article page's identical
+          // logic — reachability, not purchase status.
+          hasLivePack = (ev.packStatus === "live" || ev.packStatus === "built_hidden") && ev.isHidden === false;
+        }
       }
 
       const related = await db
@@ -604,13 +676,13 @@ export default async function ExperiencePage({
         )
         .limit(3);
 
-      return { exp, ratingRow, eventPackSlug, eventPackName, eventPackFormat, related };
+      return { exp, ratingRow, eventPackSlug, eventPackName, eventPackFormat, hasLivePack, related };
     },
     ["experience-page"],
     { revalidate: 3600 }
   );
 
-  const { exp, ratingRow, eventPackSlug, eventPackName, eventPackFormat, related } = await getExperienceData(slug);
+  const { exp, ratingRow, eventPackSlug, eventPackName, eventPackFormat, hasLivePack, related } = await getExperienceData(slug);
 
   const avgRating = ratingRow?.avgRating ?? null;
   const ratingCount = ratingRow?.ratingCount ?? 0;
@@ -764,6 +836,7 @@ export default async function ExperiencePage({
               slug.startsWith("open-liverpool-day-trip-") ? "object-[center_35%]" :
               slug.startsWith("open-vincent-hotel-") ? "object-[center_70%]" :
               slug.startsWith("grandstand-22-parabolica-corner-") ? "object-[center_80%]" :
+              slug.startsWith("monza-inside-the-venue-") ? "lg:object-[center_65%]" :
               slug.startsWith("staying-in-milan-city-base-strategy-") ? "object-[center_20%]" :
               slug.startsWith("alfa-romeo-museum-arese-") ? "object-[center_15%]" :
               slug.startsWith("paddock-club-champions-club-hospitality-") ? "object-[center_10%]" :
@@ -846,7 +919,7 @@ export default async function ExperiencePage({
       )}
 
       {/* ── Content ── */}
-      <div className="max-w-3xl mx-auto px-6 py-12">
+      <div className="max-w-5xl mx-auto px-6 py-12">
 
         {/* Breadcrumb */}
         <nav className="flex items-center justify-between gap-2 text-xs text-[#6A6A6A] mb-6">
@@ -873,6 +946,9 @@ export default async function ExperiencePage({
             ) : null;
           })()}
         </nav>
+
+        <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-start">
+        <article className="max-w-3xl">
 
         {/* Type badge */}
         <div className="mb-4 flex items-center justify-between gap-3 flex-wrap">
@@ -1157,6 +1233,17 @@ export default async function ExperiencePage({
             isLoggedIn={isLoggedIn}
             isSaved={isSaved}
           />
+        </div>
+        </article>
+
+        <div className="lg:sticky lg:top-8 lg:mt-11">
+          <ExperienceActionSidebar
+            eventPackSlug={eventPackSlug}
+            eventPackName={eventPackName}
+            hasLivePack={hasLivePack}
+            userEmail={authUser?.email ?? null}
+          />
+        </div>
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
-import { externalCalendarEvents, sportingEvents } from "@/schema/database";
-import { and, asc, eq, or, sql, type SQL } from "drizzle-orm";
+import { externalCalendarEvents, sportingEvents, plannerTicketTierCost } from "@/schema/database";
+import { and, asc, eq, inArray, or, sql, type SQL } from "drizzle-orm";
 
 // Master data source for the Sports Calendar page family (/calendar,
 // /calendar/[sport]) — see docs/Sports Calendar - Design Document.txt.
@@ -36,13 +36,42 @@ export async function getCalendarEvents(sport?: string, years?: number[]) {
       matchedEventName: sportingEvents.name,
       packStatus: sportingEvents.packStatus,
       isHidden: sportingEvents.isHidden,
+      matchedEventId: sportingEvents.id,
+      matchedEventEditionYear: sportingEvents.editionYear,
     })
     .from(externalCalendarEvents)
     .leftJoin(sportingEvents, eq(externalCalendarEvents.matchedSportingEventId, sportingEvents.id))
     .where(conditions.length > 0 ? and(...conditions) : undefined)
     .orderBy(asc(externalCalendarEvents.startDate));
 
-  return rows;
+  // Real, row-existence-based check for "Plan costs for this trip" — added
+  // 19-20 Sep 2026 after canPlanCosts()'s packStatus-only heuristic kept
+  // showing the link for Italian GP's 2027 row even though its only real
+  // cost data is 2026 pricing (see project_planner_cost_edition_year_migration
+  // memory). packStatus alone can never express "cost data exists for the
+  // edition currently displayed" — only a real query against the cost
+  // tables, filtered by edition_year, can. Batched into one query (same
+  // pattern as getPlannerEvents.ts) rather than N+1 per row. Checking
+  // ticket-tier cost alone as the proxy for "has real planner data" is
+  // sufficient — every event seeded so far has all 3 categories seeded
+  // together in the same pass (see planner-data-researcher skill).
+  const matchedEventIds = [...new Set(rows.map((r) => r.matchedEventId).filter((id): id is string => id !== null))];
+  const costRows = matchedEventIds.length > 0
+    ? await db
+        .select({ sportingEventId: plannerTicketTierCost.sportingEventId, editionYear: plannerTicketTierCost.editionYear })
+        .from(plannerTicketTierCost)
+        .where(inArray(plannerTicketTierCost.sportingEventId, matchedEventIds))
+    : [];
+  const costEditionsByEvent = new Map<string, Set<number>>();
+  for (const c of costRows) {
+    if (!costEditionsByEvent.has(c.sportingEventId)) costEditionsByEvent.set(c.sportingEventId, new Set());
+    costEditionsByEvent.get(c.sportingEventId)!.add(c.editionYear);
+  }
+
+  return rows.map((r) => ({
+    ...r,
+    hasRealCostData: !!r.matchedEventId && !!r.matchedEventEditionYear && (costEditionsByEvent.get(r.matchedEventId)?.has(r.matchedEventEditionYear) ?? false),
+  }));
 }
 
 // Three real CTA states, exactly per the design doc — computed here so
@@ -75,22 +104,19 @@ export function getCtaState(row: Awaited<ReturnType<typeof getCalendarEvents>>[n
 }
 
 // The "Plan costs for this trip" link only makes sense for an event that
-// could plausibly have real Planner cost data. "planned" is deliberately
-// EXCLUDED here even though getPlannerEvents.ts's own filter includes it
-// (app/planner/_lib/getPlannerEvents.ts) — "planned" is the DB default for
-// a sportingEvents row that's been created but has no real build work done
-// yet, meaning zero chance of real planner_ticket_tier_cost/hotel_tier_cost
-// rows existing. Confirmed live 16 Aug 2026: Border-Gavaskar Trophy 2027 and
-// The Ashes 2027 both sat at packStatus "planned" with zero real ticket-cost
-// rows, yet the calendar showed "Plan costs for this trip" for both — the
-// getPlannerEvents.ts filter is a genuinely different, looser check (used to
-// decide which events appear in the Planner's own event picker at all,
-// including ones a curator is actively scoping) and was never meant to be
-// reused as the stricter "does real cost data plausibly exist" gate this
-// function needs. "building" is kept since scoping/research work may already
-// be seeding real planner tables even before packStatus advances further.
-const PLANNER_ELIGIBLE_STATUSES = new Set(["building", "built_hidden", "live"]);
-
+// ACTUALLY has real Planner cost data for the edition currently displayed —
+// not just one whose packStatus makes that plausible. Originally a
+// packStatus-only heuristic (excluding "planned", the DB default for a row
+// with no real build work yet — confirmed live 16 Aug 2026: Border-Gavaskar
+// Trophy 2027 and The Ashes 2027 both sat at "planned" with zero real
+// ticket-cost rows yet showed this link). That heuristic broke again 19-20
+// Sep 2026: Italian GP's row is "live" (packStatus alone says yes) but its
+// editionYear had rolled to 2027 while its only real cost rows are still
+// 2026's — packStatus can never express "for THIS edition," only a real
+// row-existence check can. hasRealCostData is computed in getCalendarEvents()
+// via a real query against planner_ticket_tier_cost, filtered by
+// edition_year — see that function's comment and
+// project_planner_cost_edition_year_migration memory.
 export function canPlanCosts(row: Awaited<ReturnType<typeof getCalendarEvents>>[number]): boolean {
-  return !!row.matchedEventSlug && PLANNER_ELIGIBLE_STATUSES.has(row.packStatus ?? "");
+  return row.hasRealCostData;
 }

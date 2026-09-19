@@ -4,7 +4,7 @@ import {
   plannerHotelTierCost,
   plannerTicketTierCost,
 } from "@/schema/database";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 // Real per-tier data for one event, fetched on demand when a user expands
 // "See how to make this fit" on Screen 2 — deliberately separate from
@@ -55,7 +55,7 @@ async function getTradeoffOptionsUnsafe(eventId: string, tripLengthDays: number)
   const days = Math.max(1, tripLengthDays || 1);
 
   const [event] = await db
-    .select({ destinationId: sportingEvents.destinationId, sport: sportingEvents.sport })
+    .select({ destinationId: sportingEvents.destinationId, sport: sportingEvents.sport, editionYear: sportingEvents.editionYear })
     .from(sportingEvents)
     .where(eq(sportingEvents.id, eventId));
 
@@ -63,11 +63,13 @@ async function getTradeoffOptionsUnsafe(eventId: string, tripLengthDays: number)
     return { hotel: { current: null, cheaperOptions: [] }, tickets: { current: null, cheaperOptions: [] } };
   }
 
+  // edition_year filter added 19-20 Sep 2026 (planner cost edition-year
+  // migration) — see memory project_planner_cost_edition_year_migration.
   // Hotel — keyed by destination, all 4 real tiers
   const hotelRows = await db
     .select()
     .from(plannerHotelTierCost)
-    .where(eq(plannerHotelTierCost.destinationId, event.destinationId));
+    .where(and(eq(plannerHotelTierCost.destinationId, event.destinationId), eq(plannerHotelTierCost.editionYear, event.editionYear)));
 
   const hotelCurrentRow = hotelRows.find((r) => r.tier === HOTEL_DEFAULT_TIER);
   const hotelCurrentIndex = hotelCurrentRow ? HOTEL_TIER_ORDER.indexOf(hotelCurrentRow.tier) : -1;
@@ -91,7 +93,7 @@ async function getTradeoffOptionsUnsafe(eventId: string, tripLengthDays: number)
   const ticketRows = await db
     .select()
     .from(plannerTicketTierCost)
-    .where(eq(plannerTicketTierCost.sportingEventId, eventId));
+    .where(and(eq(plannerTicketTierCost.sportingEventId, eventId), eq(plannerTicketTierCost.editionYear, event.editionYear)));
 
   // Fall back through the tier order when tier2 doesn't exist for this event
   // (e.g. no real "Reserved Stand"-equivalent product at the venue) — must
