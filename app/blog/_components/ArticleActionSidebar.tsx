@@ -68,6 +68,28 @@ export default function ArticleActionSidebar({
             </span>
           </Link>
 
+          <Link
+            href="/planner"
+            className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+          >
+            <span className="text-base flex-shrink-0 w-5 text-center">💰</span>
+            <span className="flex-1">
+              <span className="block text-sm font-bold text-[#A3A3A3]">Budget your trip</span>
+              <span className="block text-xs text-[#6A6A6A] mt-0.5">Real flight, hotel and ticket costs</span>
+            </span>
+          </Link>
+
+          <Link
+            href="/custom-itinerary"
+            className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+          >
+            <span className="text-base flex-shrink-0 w-5 text-center">🧭</span>
+            <span className="flex-1">
+              <span className="block text-sm font-bold text-[#A3A3A3]">Build a custom itinerary</span>
+              <span className="block text-xs text-[#6A6A6A] mt-0.5">Tell us your trip, we&apos;ll shape it</span>
+            </span>
+          </Link>
+
           {hasLivePack ? (
             <Link
               href={`/event-pack/${eventSlug}`}
