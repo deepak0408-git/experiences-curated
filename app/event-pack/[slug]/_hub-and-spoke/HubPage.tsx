@@ -772,6 +772,43 @@ export default async function HubPage({ slug }: { slug: string }) {
           })}
         </div>
 
+        {/* Want to see more — bordered mini-panel linking to site-wide tools
+            (Planner, Custom Itinerary), not pack content. Deliberately
+            styled to match the Quick reference bordered-box directly below
+            it, so it reads as a sibling module rather than loose text (a
+            plain text-link version tested too easy to miss — founder
+            feedback, 19 Sep 2026; option 3 of 4 mocked in an artifact).
+            Same two destinations/labels as ArticleActionSidebar's blog
+            sidebar (commit 7264415) for consistency. /planner has no
+            deep-linking yet (eventId isn't read by /planner/results, see
+            that component's note from 8 Aug 2026) — plain links only,
+            no query params. */}
+        <div className="mt-10">
+          <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-3">Planning tools</p>
+          <div className="rounded-sm border border-[#2A2A2A] overflow-hidden grid grid-cols-1 sm:grid-cols-2">
+            <Link
+              href="/planner"
+              className="flex items-center justify-between gap-3 px-4 sm:px-5 py-4 sm:py-[18px] sm:border-r border-[#2A2A2A] hover:bg-[#141414] transition-colors"
+            >
+              <span>
+                <span className="block text-sm font-bold text-white">Budget your trip</span>
+                <span className="block text-xs text-[#6A6A6A] mt-0.5">Real flight, hotel and ticket costs</span>
+              </span>
+              <span className="text-[#AAFF00] text-base flex-shrink-0">→</span>
+            </Link>
+            <Link
+              href="/custom-itinerary"
+              className="flex items-center justify-between gap-3 px-4 sm:px-5 py-4 sm:py-[18px] border-t sm:border-t-0 border-[#2A2A2A] hover:bg-[#141414] transition-colors"
+            >
+              <span>
+                <span className="block text-sm font-bold text-white">Build a custom itinerary</span>
+                <span className="block text-xs text-[#6A6A6A] mt-0.5">Tell us your trip, we&apos;ll shape it</span>
+              </span>
+              <span className="text-[#AAFF00] text-base flex-shrink-0">→</span>
+            </Link>
+          </div>
+        </div>
+
         {/* Quick reference — compact fact strip. Address/ticketing link are
             real event-record data; other rows are real, sourced facts (see
             QUICK_REFERENCE_BY_EVENT above) — never invented. Moved below
