@@ -73,14 +73,14 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Kuala Lumpur — KLCC &amp; Bukit Bintang (45-60 min from Sepang)</p>
           {klGuide && (
             <div className="mb-8">
-              <SpokeExperienceCard experience={klGuide} isPro={isPro} hideProCtas />
+              <SpokeExperienceCard eventSlug={eventSlug} experience={klGuide} isPro={isPro} hideProCtas />
             </div>
           )}
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Right at the airport</p>
           {samaSama && (
             <div className="mb-8">
-              <SpokeExperienceCard experience={samaSama} isPro={isPro} />
+              <SpokeExperienceCard eventSlug={eventSlug} experience={samaSama} isPro={isPro} />
             </div>
           )}
 

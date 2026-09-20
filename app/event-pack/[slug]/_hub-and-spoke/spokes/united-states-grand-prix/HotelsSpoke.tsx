@@ -39,7 +39,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Three real picks, three budgets</p>
       {whereToStay && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={whereToStay} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={whereToStay} isPro={isPro} hideProCtas />
         </div>
       )}
 

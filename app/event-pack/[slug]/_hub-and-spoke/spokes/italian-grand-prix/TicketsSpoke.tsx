@@ -207,16 +207,16 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
           </p>
 
           <div className="grid sm:grid-cols-2 gap-4 mb-8">
-            {grandstand26 && <SpokeExperienceCard experience={grandstand26} isPro={isPro} />}
-            {grandstand1 && <SpokeExperienceCard experience={grandstand1} isPro={isPro} />}
+            {grandstand26 && <SpokeExperienceCard eventSlug={eventSlug} experience={grandstand26} isPro={isPro} />}
+            {grandstand1 && <SpokeExperienceCard eventSlug={eventSlug} experience={grandstand1} isPro={isPro} />}
           </div>
           <div className="grid sm:grid-cols-2 gap-4 mb-8">
-            {gaLesmoAscari && <SpokeExperienceCard experience={gaLesmoAscari} isPro={isPro} />}
-            {curvaGrande && <SpokeExperienceCard experience={curvaGrande} isPro={isPro} />}
+            {gaLesmoAscari && <SpokeExperienceCard eventSlug={eventSlug} experience={gaLesmoAscari} isPro={isPro} />}
+            {curvaGrande && <SpokeExperienceCard eventSlug={eventSlug} experience={curvaGrande} isPro={isPro} />}
           </div>
           <div className="grid sm:grid-cols-2 gap-4 mb-8">
-            {grandstand5 && <SpokeExperienceCard experience={grandstand5} isPro={isPro} />}
-            {grandstand22 && <SpokeExperienceCard experience={grandstand22} isPro={isPro} />}
+            {grandstand5 && <SpokeExperienceCard eventSlug={eventSlug} experience={grandstand5} isPro={isPro} />}
+            {grandstand22 && <SpokeExperienceCard eventSlug={eventSlug} experience={grandstand22} isPro={isPro} />}
           </div>
 
           <p className="text-sm text-[#A3A3A3] leading-7 mb-8">

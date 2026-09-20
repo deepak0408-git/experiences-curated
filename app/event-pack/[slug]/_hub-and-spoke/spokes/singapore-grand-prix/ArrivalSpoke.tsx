@@ -79,10 +79,10 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Arrival strategy actually differs by stand</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-4">
-        {turn1 && <SpokeExperienceCard experience={turn1} isPro={isPro} />}
-        {stamford && <SpokeExperienceCard experience={stamford} isPro={isPro} />}
-        {padang && <SpokeExperienceCard experience={padang} isPro={isPro} />}
-        {walkabout && <SpokeExperienceCard experience={walkabout} isPro={isPro} />}
+        {turn1 && <SpokeExperienceCard eventSlug={eventSlug} experience={turn1} isPro={isPro} />}
+        {stamford && <SpokeExperienceCard eventSlug={eventSlug} experience={stamford} isPro={isPro} />}
+        {padang && <SpokeExperienceCard eventSlug={eventSlug} experience={padang} isPro={isPro} />}
+        {walkabout && <SpokeExperienceCard eventSlug={eventSlug} experience={walkabout} isPro={isPro} />}
       </div>
 
       <div className="flex flex-col gap-3 mb-8">
@@ -113,7 +113,7 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
       {f1Village && (
         <div className="mb-8">
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">What's actually in the Fan Zone</p>
-          <SpokeExperienceCard experience={f1Village} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={f1Village} isPro={isPro} />
         </div>
       )}
 
@@ -129,7 +129,7 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
       {orientation && (
         <div className="mb-8">
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">First time at Marina Bay?</p>
-          <SpokeExperienceCard experience={orientation} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={orientation} isPro={isPro} />
         </div>
       )}
 

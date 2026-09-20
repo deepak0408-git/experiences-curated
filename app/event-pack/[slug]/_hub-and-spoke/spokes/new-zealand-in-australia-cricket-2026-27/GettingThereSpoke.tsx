@@ -53,7 +53,7 @@ export default async function GettingThereSpoke({ eventSlug }: { eventSlug: stri
 
       {transitGuide && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={transitGuide} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={transitGuide} isPro={isPro} />
         </div>
       )}
 

@@ -46,7 +46,7 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
               integrated directly into the venue, genuinely walkable food and bar precincts inside the concourse,
               and a design that keeps every seat closer to the action than most modern stadiums manage.
             </p>
-            <SpokeExperienceCard experience={perthStadium} isPro={isPro} />
+            <SpokeExperienceCard eventSlug={eventSlug} experience={perthStadium} isPro={isPro} />
           </div>
         )}
 
@@ -58,7 +58,7 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
               Peter&apos;s Cathedral rises directly behind the northern end, and the heritage scoreboard remains in
               active use alongside modern digital screens.
             </p>
-            <SpokeExperienceCard experience={adelaideOval} isPro={isPro} />
+            <SpokeExperienceCard eventSlug={eventSlug} experience={adelaideOval} isPro={isPro} />
           </div>
         )}
 
@@ -70,7 +70,7 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
               National Sports Museum sits inside the ground itself, worth building time around if you&apos;re
               there outside match hours.
             </p>
-            <SpokeExperienceCard experience={mcg} isPro={isPro} />
+            <SpokeExperienceCard eventSlug={eventSlug} experience={mcg} isPro={isPro} />
           </div>
         )}
 
@@ -82,7 +82,7 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
               Pavilion (1886) still stands, and the ground&apos;s own real character sits closer to a traditional
               English cricket ground than any of the other three, more modern venues.
             </p>
-            <SpokeExperienceCard experience={scg} isPro={isPro} />
+            <SpokeExperienceCard eventSlug={eventSlug} experience={scg} isPro={isPro} />
           </div>
         )}
       </div>

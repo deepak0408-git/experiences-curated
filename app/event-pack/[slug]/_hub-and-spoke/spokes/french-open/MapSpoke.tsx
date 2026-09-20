@@ -47,7 +47,7 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
 
       {tenniseum && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={tenniseum} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={tenniseum} isPro={isPro} />
         </div>
       )}
 

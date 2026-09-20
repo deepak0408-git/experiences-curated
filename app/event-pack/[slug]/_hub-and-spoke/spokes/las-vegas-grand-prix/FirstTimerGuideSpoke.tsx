@@ -84,14 +84,14 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
 
       {orientation && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={orientation} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={orientation} isPro={isPro} />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">You don&apos;t need a circuit ticket to be part of the weekend</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {raceWeekFree && <SpokeExperienceCard experience={raceWeekFree} isPro={isPro} />}
-        {sportsbook && <SpokeExperienceCard experience={sportsbook} isPro={isPro} />}
+        {raceWeekFree && <SpokeExperienceCard eventSlug={eventSlug} experience={raceWeekFree} isPro={isPro} />}
+        {sportsbook && <SpokeExperienceCard eventSlug={eventSlug} experience={sportsbook} isPro={isPro} />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-4 pt-10 border-t border-[#2A2A2A]">Practical essentials</p>

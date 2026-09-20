@@ -94,12 +94,12 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
 
       {centreCourt && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={centreCourt} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={centreCourt} isPro={isPro} />
         </div>
       )}
       {no1Court && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={no1Court} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={no1Court} isPro={isPro} />
         </div>
       )}
 

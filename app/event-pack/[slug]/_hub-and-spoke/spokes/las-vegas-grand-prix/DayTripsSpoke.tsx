@@ -37,8 +37,8 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
       </p>
 
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {redRock && <SpokeExperienceCard experience={redRock} isPro={isPro} />}
-        {hooverDam && <SpokeExperienceCard experience={hooverDam} isPro={isPro} />}
+        {redRock && <SpokeExperienceCard eventSlug={eventSlug} experience={redRock} isPro={isPro} />}
+        {hooverDam && <SpokeExperienceCard eventSlug={eventSlug} experience={hooverDam} isPro={isPro} />}
       </div>
 
       {isUnlocked && (

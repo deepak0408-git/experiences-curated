@@ -49,20 +49,20 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Khor Al Adaid — the Inland Sea desert safari</p>
       {desertSafari && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={desertSafari} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={desertSafari} isPro={isPro} />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Doha's two landmark museums</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {miaExp && <SpokeExperienceCard experience={miaExp} isPro={isPro} />}
-        {nmoqExp && <SpokeExperienceCard experience={nmoqExp} isPro={isPro} />}
+        {miaExp && <SpokeExperienceCard eventSlug={eventSlug} experience={miaExp} isPro={isPro} />}
+        {nmoqExp && <SpokeExperienceCard eventSlug={eventSlug} experience={nmoqExp} isPro={isPro} />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Two city districts, both best in the evening</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {pearlKatara && <SpokeExperienceCard experience={pearlKatara} isPro={isPro} />}
-        {souqWaqif && <SpokeExperienceCard experience={souqWaqif} isPro={isPro} />}
+        {pearlKatara && <SpokeExperienceCard eventSlug={eventSlug} experience={pearlKatara} isPro={isPro} />}
+        {souqWaqif && <SpokeExperienceCard eventSlug={eventSlug} experience={souqWaqif} isPro={isPro} />}
       </div>
 
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">

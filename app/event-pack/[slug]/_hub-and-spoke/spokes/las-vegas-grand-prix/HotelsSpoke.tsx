@@ -36,8 +36,8 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       </p>
 
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {trackside && <SpokeExperienceCard experience={trackside} isPro={isPro} />}
-        {offStrip && <SpokeExperienceCard experience={offStrip} isPro={isPro} />}
+        {trackside && <SpokeExperienceCard eventSlug={eventSlug} experience={trackside} isPro={isPro} />}
+        {offStrip && <SpokeExperienceCard eventSlug={eventSlug} experience={offStrip} isPro={isPro} />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Self-catered and value neighborhoods</p>

@@ -44,25 +44,25 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
         {perth && (
           <div>
             <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Perth — First Test</p>
-            <SpokeExperienceCard experience={perth} isPro={isPro} />
+            <SpokeExperienceCard eventSlug={eventSlug} experience={perth} isPro={isPro} />
           </div>
         )}
         {adelaide && (
           <div>
             <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Adelaide — Second Test</p>
-            <SpokeExperienceCard experience={adelaide} isPro={isPro} />
+            <SpokeExperienceCard eventSlug={eventSlug} experience={adelaide} isPro={isPro} />
           </div>
         )}
         {melbourne && (
           <div>
             <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Melbourne — Boxing Day Test</p>
-            <SpokeExperienceCard experience={melbourne} isPro={isPro} />
+            <SpokeExperienceCard eventSlug={eventSlug} experience={melbourne} isPro={isPro} />
           </div>
         )}
         {sydney && (
           <div>
             <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Sydney — Fourth Test</p>
-            <SpokeExperienceCard experience={sydney} isPro={isPro} />
+            <SpokeExperienceCard eventSlug={eventSlug} experience={sydney} isPro={isPro} />
           </div>
         )}
       </div>

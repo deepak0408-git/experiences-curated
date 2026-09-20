@@ -48,7 +48,7 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
           <div className="grid sm:grid-cols-2 gap-4 mb-8">
             {inCityHighlights.map((exp, i) => (
               <div key={exp.slug} className={inCityHighlights.length % 2 === 1 && i === inCityHighlights.length - 1 ? "sm:col-span-2" : undefined}>
-                <SpokeExperienceCard experience={exp} isPro={isPro} />
+                <SpokeExperienceCard eventSlug={eventSlug} experience={exp} isPro={isPro} />
               </div>
             ))}
           </div>
@@ -61,7 +61,7 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
           <div className="grid sm:grid-cols-2 gap-4 mb-8">
             {outOfCityTrips.map((exp, i) => (
               <div key={exp.slug} className={outOfCityTrips.length % 2 === 1 && i === outOfCityTrips.length - 1 ? "sm:col-span-2" : undefined}>
-                <SpokeExperienceCard experience={exp} isPro={isPro} />
+                <SpokeExperienceCard eventSlug={eventSlug} experience={exp} isPro={isPro} />
               </div>
             ))}
           </div>

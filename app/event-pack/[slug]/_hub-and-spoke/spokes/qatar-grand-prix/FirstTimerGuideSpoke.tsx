@@ -144,7 +144,7 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Get oriented — the honest entry point if you're unsure where to start</p>
       {dohaTour && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={dohaTour} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={dohaTour} isPro={isPro} />
         </div>
       )}
 

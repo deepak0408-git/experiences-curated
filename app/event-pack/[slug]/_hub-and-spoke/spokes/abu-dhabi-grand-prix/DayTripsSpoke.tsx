@@ -40,18 +40,18 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Staying in Abu Dhabi — culture and thrills</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {mosque && <SpokeExperienceCard experience={mosque} isPro={isPro} hideProCtas />}
-        {louvreThemeParks && <SpokeExperienceCard experience={louvreThemeParks} isPro={isPro} hideProCtas />}
+        {mosque && <SpokeExperienceCard eventSlug={eventSlug} experience={mosque} isPro={isPro} hideProCtas />}
+        {louvreThemeParks && <SpokeExperienceCard eventSlug={eventSlug} experience={louvreThemeParks} isPro={isPro} hideProCtas />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Making the run to Dubai</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {burjKhalifa && <SpokeExperienceCard experience={burjKhalifa} isPro={isPro} hideProCtas />}
-        {dubaiMall && <SpokeExperienceCard experience={dubaiMall} isPro={isPro} hideProCtas />}
+        {burjKhalifa && <SpokeExperienceCard eventSlug={eventSlug} experience={burjKhalifa} isPro={isPro} hideProCtas />}
+        {dubaiMall && <SpokeExperienceCard eventSlug={eventSlug} experience={dubaiMall} isPro={isPro} hideProCtas />}
       </div>
       {dubaiNight && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={dubaiNight} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={dubaiNight} isPro={isPro} hideProCtas />
         </div>
       )}
 

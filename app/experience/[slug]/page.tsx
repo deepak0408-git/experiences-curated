@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import { db } from "@/lib/db";
-import { experiences, savedItems, users, userProfiles, travelLogs, purchases, sportingEvents } from "@/schema/database";
+import { experiences, savedItems, users, userProfiles, travelLogs, purchases, sportingEvents, sportingEventExperiences } from "@/schema/database";
 import { and, eq, ne, inArray, count, sql } from "drizzle-orm";
 import { getAuthUser } from "@/lib/supabase/server";
 import { hasProSubscription } from "@/lib/pro";
@@ -16,10 +16,11 @@ import ExperienceActionSidebar from "./_components/ExperienceActionSidebar";
 import { isRealAffiliateLink } from "../../event-pack/[slug]/_hub-and-spoke/_lib/getSpokeData";
 
 // Hub-and-spoke "back to spoke" link — maps an experience's slug prefix to
-// the ONE spoke it's most at home in, per explicit curator sign-off (7 Aug
-// 2026). Where an experience is referenced by more than one spoke (e.g.
-// atp-finals-luxury-hotels- appears in both Hotels and Luxury), this picks
-// its true home, not every spoke that happens to link to it.
+// the spoke it's most at home in for a given event, per explicit curator
+// sign-off (7 Aug 2026, restructured by-event 20 Sep 2026). Where an
+// experience is referenced by more than one spoke within the SAME event
+// (e.g. atp-finals-luxury-hotels- appears in both Hotels and Luxury), this
+// picks its true home, not every spoke that happens to link to it.
 //
 // Rendering no longer gates on eventPackFormat === "hub_and_spoke" (fixed
 // 16 Aug 2026) — that flag is derived from experiences.sportingEventId, a
@@ -29,181 +30,235 @@ import { isRealAffiliateLink } from "../../event-pack/[slug]/_hub-and-spoke/_lib
 // sportingEventId still points to BMW PGA Championship (packFormat:
 // "classic") even though they're also linked into Wimbledon's Day Trips
 // spoke — the old gate silently hid their otherwise-correct
-// EXPERIENCE_TO_SPOKE entries. getSpokeBackLink() is a pure, static,
-// slug-based lookup that already only returns non-null for experiences
-// explicitly mapped to a real hub-and-spoke event/spoke, so checking its
-// result directly is both sufficient and correct — no separate format
-// check needed, and eventPackFormat/eventPackSlug/eventPackName (which
-// drive checkout/pricing) are deliberately left untouched, still resolved
-// from the experience's primary sportingEventId as before. See memory
-// project_shared_experience_backlink_gap for the fuller design context
-// (a `?from=` referrer-based fix is still pending for the OPPOSITE case —
-// an experience reached from its non-primary event's pack whose target
-// spoke should reflect that referring event, not always its EXPERIENCE_TO_SPOKE
-// default).
-const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; spokeLabel: string }> = {
-  "main-grandstand-yas-marina-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "west-grandstand-yas-marina-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "abu-dhabi-hill-general-admission-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "f1-paddock-club-yas-marina-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "skybridge-terrace-w-abu-dhabi-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "yas-marina-yacht-charter-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "w-abu-dhabi-yas-island-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "atlantis-the-royal-dubai-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "park-regis-business-bay-dubai-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "ibis-deira-creekside-dubai-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "crowne-plaza-yas-island-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "beach-rotana-corniche-abu-dhabi-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "auh-vs-dxb-getting-there-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
-  "getting-around-yas-island-race-day-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
-  "garage-w-abu-dhabi-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "yas-marina-dining-walk-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "yasalam-after-parties-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "twilight-race-packing-guide-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "weather", spokeLabel: "Weather & What to Pack" },
-  "first-timer-orientation-abu-dhabi-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "sheikh-zayed-mosque-qasr-al-watan-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "louvre-abu-dhabi-yas-theme-parks-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "burj-khalifa-dubai-day-trip-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "dubai-mall-day-trip-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "dubai-by-night-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "yas-marina-circuit-facilities-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "map", spokeLabel: "Venue Map" },
-  "cheap-shawarma-abu-dhabi-dubai-": { eventSlug: "abu-dhabi-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "atp-finals-ticket-guide-": { eventSlug: "atp-finals", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "atp-finals-luxury-hospitality-": { eventSlug: "atp-finals", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "atp-finals-luxury-hotels-": { eventSlug: "atp-finals", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "atp-finals-porta-nuova-neighborhood-": { eventSlug: "atp-finals", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "atp-finals-airport-to-city-": { eventSlug: "atp-finals", spokeId: "getting-there", spokeLabel: "Getting There" },
-  "atp-finals-getting-to-inalpi-arena-": { eventSlug: "atp-finals", spokeId: "getting-there", spokeLabel: "Getting There" },
-  "atp-finals-aperitivo-vermouth-": { eventSlug: "atp-finals", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "atp-finals-caffe-bicerin-": { eventSlug: "atp-finals", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "atp-finals-gianduja-chocolate-": { eventSlug: "atp-finals", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "atp-finals-piedmontese-dining-": { eventSlug: "atp-finals", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "atp-finals-barolo-langhe-daytrip-": { eventSlug: "atp-finals", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "atp-finals-juventus-museum-": { eventSlug: "atp-finals", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "atp-finals-practice-courts-": { eventSlug: "atp-finals", spokeId: "map", spokeLabel: "Venue Map" },
-  "atp-finals-inalpi-arena-": { eventSlug: "atp-finals", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
-  "atp-finals-mole-antonelliana-": { eventSlug: "atp-finals", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "atp-finals-museo-egizio-": { eventSlug: "atp-finals", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "atp-finals-royal-palace-": { eventSlug: "atp-finals", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "atp-finals-piazza-san-carlo-": { eventSlug: "atp-finals", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "atp-finals-turin-cathedral-": { eventSlug: "atp-finals", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "qizhong-forest-sports-city-arena-": { eventSlug: "shanghai-masters", spokeId: "map", spokeLabel: "Venue Map" },
-  "las-vegas-gp-main-grandstand-": { eventSlug: "las-vegas-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "las-vegas-gp-turn3-grandstand-": { eventSlug: "las-vegas-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "las-vegas-gp-west-harmon-grandstand-": { eventSlug: "las-vegas-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "las-vegas-gp-flamingo-ga-": { eventSlug: "las-vegas-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "las-vegas-gp-tmobile-sphere-": { eventSlug: "las-vegas-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "las-vegas-gp-practice-qualifying-tickets-": { eventSlug: "las-vegas-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "las-vegas-gp-paddock-club-": { eventSlug: "las-vegas-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "las-vegas-gp-getting-around-": { eventSlug: "las-vegas-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
-  "las-vegas-gp-first-timer-orientation-": { eventSlug: "las-vegas-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "las-vegas-gp-race-week-free-": { eventSlug: "las-vegas-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "las-vegas-gp-sportsbook-watch-": { eventSlug: "las-vegas-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "las-vegas-gp-trackside-hotels-": { eventSlug: "las-vegas-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "las-vegas-gp-off-strip-hotels-": { eventSlug: "las-vegas-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "las-vegas-gp-bellagio-caesars-dining-": { eventSlug: "las-vegas-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "las-vegas-gp-fremont-downtown-dining-": { eventSlug: "las-vegas-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "las-vegas-gp-fountains-sphere-": { eventSlug: "las-vegas-grand-prix", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
-  "las-vegas-gp-strip-at-night-": { eventSlug: "las-vegas-grand-prix", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
-  "las-vegas-gp-red-rock-canyon-": { eventSlug: "las-vegas-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "las-vegas-gp-hoover-dam-": { eventSlug: "las-vegas-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "las-vegas-gp-strip-casinos-": { eventSlug: "las-vegas-grand-prix", spokeId: "map", spokeLabel: "Venue Map" },
-  "getting-to-qizhong-shanghai-masters-": { eventSlug: "shanghai-masters", spokeId: "getting-there", spokeLabel: "Getting There" },
-  "where-to-stay-shanghai-masters-": { eventSlug: "shanghai-masters", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "china-visa-apps-payments-guide-": { eventSlug: "shanghai-masters", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "shanghai-masters-ticket-guide-": { eventSlug: "shanghai-masters", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "qizhong-center-court-": { eventSlug: "shanghai-masters", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "the-bund-shanghai-dusk-": { eventSlug: "shanghai-masters", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "yu-garden-old-city-shanghai-": { eventSlug: "shanghai-masters", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "french-concession-tianzifang-shanghai-": { eventSlug: "shanghai-masters", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "xiaolongbao-shanghai-guide-": { eventSlug: "shanghai-masters", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "lujiazui-skyline-shanghai-": { eventSlug: "shanghai-masters", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "hangzhou-west-lake-day-trip-": { eventSlug: "shanghai-masters", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "suzhou-classical-gardens-day-trip-": { eventSlug: "shanghai-masters", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "shanghai-masters-crowds-atmosphere-": { eventSlug: "shanghai-masters", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
-  "li-na-zheng-qinwen-generations-": { eventSlug: "shanghai-masters", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
-  "french-concession-dining-shanghai-": { eventSlug: "shanghai-masters", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "shanghai-maglev-airport-question-": { eventSlug: "shanghai-masters", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
-  "luxury-shanghai-peninsula-bulgari-": { eventSlug: "shanghai-masters", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "roger-friends-federer-exhibition-": { eventSlug: "shanghai-masters", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
-  "main-grandstand-sepang-start-finish": { eventSlug: "bahrain-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "k1-grandstand-sepang-turn-1": { eventSlug: "bahrain-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "grandstand-f-sepang-panoramic": { eventSlug: "bahrain-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "hill-stand-c2-sepang-general-admission": { eventSlug: "bahrain-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "f1-paddock-club-sepang-hospitality": { eventSlug: "bahrain-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "getting-to-sepang-circuit-klia": { eventSlug: "bahrain-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
-  "staying-in-kuala-lumpur-klcc-bukit-bintang": { eventSlug: "bahrain-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "sama-sama-hotel-klia-sepang": { eventSlug: "bahrain-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "jalan-alor-night-food-street-kl": { eventSlug: "bahrain-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "old-china-cafe-heritage-nyonya-chinatown": { eventSlug: "bahrain-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "petronas-twin-towers-kl-skybridge": { eventSlug: "bahrain-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "malaysia-f1-fans-nostalgia-2026-return": { eventSlug: "bahrain-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "sepang-circuit-history-f1-return": { eventSlug: "bahrain-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "batu-caves-kuala-lumpur-hindu-shrine": { eventSlug: "bahrain-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "genting-highlands-day-trip-cool-climate": { eventSlug: "bahrain-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "putrajaya-day-trip-pink-mosque-capital": { eventSlug: "bahrain-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "singapore-gp-turn1-grandstand-": { eventSlug: "singapore-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "singapore-gp-stamford-grandstand-": { eventSlug: "singapore-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "singapore-gp-padang-grandstand-": { eventSlug: "singapore-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "singapore-gp-zone4-walkabout-": { eventSlug: "singapore-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "singapore-gp-ticket-guide-": { eventSlug: "singapore-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "singapore-gp-paddock-club-": { eventSlug: "singapore-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "singapore-gp-getting-around-": { eventSlug: "singapore-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
-  "singapore-gp-trackside-hotels-": { eventSlug: "singapore-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "singapore-gp-clarke-quay-stay-": { eventSlug: "singapore-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "singapore-gp-chinatown-stay-": { eventSlug: "singapore-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "singapore-gp-lau-pa-sat-": { eventSlug: "singapore-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "singapore-gp-maxwell-food-centre-": { eventSlug: "singapore-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "singapore-gp-bayfront-hawkers-": { eventSlug: "singapore-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "singapore-gp-sentosa-": { eventSlug: "singapore-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "singapore-gp-gardens-by-the-bay-": { eventSlug: "singapore-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "singapore-gp-waterfront-walk-": { eventSlug: "singapore-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "singapore-gp-first-timer-orientation-": { eventSlug: "singapore-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Gate Guide" },
-  "singapore-gp-f1-village-": { eventSlug: "singapore-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Gate Guide" },
-  "singapore-gp-padang-stage-concerts-": { eventSlug: "singapore-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+// EXPERIENCE_TO_SPOKE_BY_EVENT entries. getSpokeBackLink() is a pure,
+// static, slug-based lookup that already only returns non-null for
+// experiences explicitly mapped to a real hub-and-spoke event/spoke, so
+// checking its result directly is both sufficient and correct — no separate
+// format check needed.
+//
+// The OPPOSITE case — an experience reached from its non-default event's
+// pack, where the back-link/CTA should reflect that referring event instead
+// of always the static table's default — is fixed as of 20 Sep 2026 via the
+// page's ?from=<eventSlug> query param (see resolvedFromEventSlug in the
+// page component and the referrer-validation query above it). Once
+// resolvedFromEventSlug is set, it drives eventPackFormat/eventPackSlug/
+// eventPackName/hasLivePack too, not just the spoke lookup — both surfaces
+// (breadcrumb + sidebar CTA) must always agree on which event pack is being
+// shown. See memory project_shared_experience_backlink_gap for full history.
+// Nested by event (Record<eventSlug, Record<slugPrefix, entry>>) — restructured
+// 20 Sep 2026 from a flat Record<slug, entry> as part of the shared-experience
+// back-link fix (project_shared_experience_backlink_gap memory). A flat table
+// could only ever point a shared experience (linked to more than one event via
+// sporting_event_experiences) at ONE event, so a visitor reaching it from its
+// non-default pack saw a back-link/CTA for the wrong event. getSpokeBackLink()
+// now resolves per-event when a validated ?from=<eventSlug> referrer is present,
+// falling back to a flat scan (first match across all events) to preserve the
+// existing no-referrer default for direct links/search/saved items.
+const EXPERIENCE_TO_SPOKE_BY_EVENT: Record<string, Record<string, { spokeId: string; spokeLabel: string }>> = {
+  "abu-dhabi-grand-prix": {
+    "main-grandstand-yas-marina-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "west-grandstand-yas-marina-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "abu-dhabi-hill-general-admission-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "f1-paddock-club-yas-marina-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "skybridge-terrace-w-abu-dhabi-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "yas-marina-yacht-charter-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "w-abu-dhabi-yas-island-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "atlantis-the-royal-dubai-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "park-regis-business-bay-dubai-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "ibis-deira-creekside-dubai-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "crowne-plaza-yas-island-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "beach-rotana-corniche-abu-dhabi-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "auh-vs-dxb-getting-there-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "getting-around-yas-island-race-day-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "garage-w-abu-dhabi-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "yas-marina-dining-walk-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "yasalam-after-parties-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "twilight-race-packing-guide-": { spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+    "first-timer-orientation-abu-dhabi-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "sheikh-zayed-mosque-qasr-al-watan-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "louvre-abu-dhabi-yas-theme-parks-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "burj-khalifa-dubai-day-trip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "dubai-mall-day-trip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "dubai-by-night-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "yas-marina-circuit-facilities-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "cheap-shawarma-abu-dhabi-dubai-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  },
+  "atp-finals": {
+    "atp-finals-ticket-guide-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "atp-finals-luxury-hospitality-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "atp-finals-luxury-hotels-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "atp-finals-porta-nuova-neighborhood-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "atp-finals-airport-to-city-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "atp-finals-getting-to-inalpi-arena-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "atp-finals-aperitivo-vermouth-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "atp-finals-caffe-bicerin-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "atp-finals-gianduja-chocolate-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "atp-finals-piedmontese-dining-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "atp-finals-barolo-langhe-daytrip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "atp-finals-juventus-museum-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "atp-finals-practice-courts-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "atp-finals-inalpi-arena-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "atp-finals-mole-antonelliana-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "atp-finals-museo-egizio-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "atp-finals-royal-palace-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "atp-finals-piazza-san-carlo-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "atp-finals-turin-cathedral-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  },
+  "shanghai-masters": {
+    "qizhong-forest-sports-city-arena-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "getting-to-qizhong-shanghai-masters-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "where-to-stay-shanghai-masters-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "china-visa-apps-payments-guide-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "shanghai-masters-ticket-guide-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "qizhong-center-court-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "the-bund-shanghai-dusk-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "yu-garden-old-city-shanghai-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "french-concession-tianzifang-shanghai-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "xiaolongbao-shanghai-guide-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "lujiazui-skyline-shanghai-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "hangzhou-west-lake-day-trip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "suzhou-classical-gardens-day-trip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "shanghai-masters-crowds-atmosphere-": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+    "li-na-zheng-qinwen-generations-": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+    "french-concession-dining-shanghai-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "shanghai-maglev-airport-question-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "luxury-shanghai-peninsula-bulgari-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "roger-friends-federer-exhibition-": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+  },
+  "las-vegas-grand-prix": {
+    "las-vegas-gp-main-grandstand-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "las-vegas-gp-turn3-grandstand-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "las-vegas-gp-west-harmon-grandstand-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "las-vegas-gp-flamingo-ga-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "las-vegas-gp-tmobile-sphere-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "las-vegas-gp-practice-qualifying-tickets-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "las-vegas-gp-paddock-club-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "las-vegas-gp-getting-around-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "las-vegas-gp-first-timer-orientation-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "las-vegas-gp-race-week-free-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "las-vegas-gp-sportsbook-watch-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "las-vegas-gp-trackside-hotels-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "las-vegas-gp-off-strip-hotels-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "las-vegas-gp-bellagio-caesars-dining-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "las-vegas-gp-fremont-downtown-dining-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "las-vegas-gp-fountains-sphere-": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+    "las-vegas-gp-strip-at-night-": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+    "las-vegas-gp-red-rock-canyon-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "las-vegas-gp-hoover-dam-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "las-vegas-gp-strip-casinos-": { spokeId: "map", spokeLabel: "Venue Map" },
+  },
+  "bahrain-grand-prix": {
+    "main-grandstand-sepang-start-finish": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "k1-grandstand-sepang-turn-1": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "grandstand-f-sepang-panoramic": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "hill-stand-c2-sepang-general-admission": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "f1-paddock-club-sepang-hospitality": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "getting-to-sepang-circuit-klia": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "staying-in-kuala-lumpur-klcc-bukit-bintang": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "sama-sama-hotel-klia-sepang": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "jalan-alor-night-food-street-kl": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "old-china-cafe-heritage-nyonya-chinatown": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "petronas-twin-towers-kl-skybridge": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "malaysia-f1-fans-nostalgia-2026-return": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "sepang-circuit-history-f1-return": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "batu-caves-kuala-lumpur-hindu-shrine": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "genting-highlands-day-trip-cool-climate": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "putrajaya-day-trip-pink-mosque-capital": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+  },
+  "singapore-grand-prix": {
+    "singapore-gp-turn1-grandstand-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "singapore-gp-stamford-grandstand-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "singapore-gp-padang-grandstand-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "singapore-gp-zone4-walkabout-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "singapore-gp-ticket-guide-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "singapore-gp-paddock-club-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "singapore-gp-getting-around-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "singapore-gp-trackside-hotels-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "singapore-gp-clarke-quay-stay-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "singapore-gp-chinatown-stay-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "singapore-gp-lau-pa-sat-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "singapore-gp-maxwell-food-centre-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "singapore-gp-bayfront-hawkers-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "singapore-gp-sentosa-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "singapore-gp-gardens-by-the-bay-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "singapore-gp-waterfront-walk-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "singapore-gp-first-timer-orientation-": { spokeId: "arrival", spokeLabel: "Arrival & Gate Guide" },
+    "singapore-gp-f1-village-": { spokeId: "arrival", spokeLabel: "Arrival & Gate Guide" },
+    "singapore-gp-padang-stage-concerts-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  },
+  "wimbledon": {
   // Wimbledon — added 14 Aug 2026 for the classic-to-hub-and-spoke
   // conversion. True-home spoke matches where each experience's
   // SpokeExperienceCard actually renders (see spokes/wimbledon/*.tsx) —
   // "wimbledon-cannizaro-house-" appears in both Hotels and Luxury, so its
   // true home here is Hotels, matching the ATP Finals precedent for a
   // dual-appearing experience.
-  "wimbledon-centre-court-": { eventSlug: "wimbledon", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "the-hill-wimbledon-": { eventSlug: "wimbledon", spokeId: "map", spokeLabel: "Venue Map" },
-  "wimbledon-eating-": { eventSlug: "wimbledon", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "wimbledon-no1-court-": { eventSlug: "wimbledon", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "wimbledon-museum-private-tour-": { eventSlug: "wimbledon", spokeId: "map", spokeLabel: "Venue Map" },
-  "wimbledon-practice-courts-": { eventSlug: "wimbledon", spokeId: "map", spokeLabel: "Venue Map" },
-  "wimbledon-the-lawn-hospitality-": { eventSlug: "wimbledon", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "the-wimbledon-queue-": { eventSlug: "wimbledon", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
-  "dinner-at-the-crooked-billet-": { eventSlug: "wimbledon", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "traveling-to-the-all-england-club-": { eventSlug: "wimbledon", spokeId: "getting-there", spokeLabel: "Getting There" },
-  "wimbledon-when-it-rains-": { eventSlug: "wimbledon", spokeId: "weather", spokeLabel: "Weather & What to Pack" },
-  "dinner-at-the-black-lamb-": { eventSlug: "wimbledon", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "wimbledon-outer-courts-": { eventSlug: "wimbledon", spokeId: "map", spokeLabel: "Venue Map" },
-  "preparing-for-your-wimbledon-visit-": { eventSlug: "wimbledon", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "sw19-during-the-fortnight-": { eventSlug: "wimbledon", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
-  "london-rest-day-": { eventSlug: "wimbledon", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "brixton-village-market-row-": { eventSlug: "wimbledon", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "wimbledon-cannizaro-house-": { eventSlug: "wimbledon", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "wimbledon-rose-crown-": { eventSlug: "wimbledon", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "park-plaza-county-hall-london-": { eventSlug: "wimbledon", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "nox-waterloo-": { eventSlug: "wimbledon", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "eton-across-river-windsor-": { eventSlug: "wimbledon", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "windsor-castle-long-walk-": { eventSlug: "wimbledon", spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "wimbledon-centre-court-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "the-hill-wimbledon-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "wimbledon-eating-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "wimbledon-no1-court-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "wimbledon-museum-private-tour-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "wimbledon-practice-courts-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "wimbledon-the-lawn-hospitality-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "the-wimbledon-queue-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "dinner-at-the-crooked-billet-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "traveling-to-the-all-england-club-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "wimbledon-when-it-rains-": { spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+    "dinner-at-the-black-lamb-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "wimbledon-outer-courts-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "preparing-for-your-wimbledon-visit-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "sw19-during-the-fortnight-": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+    "london-rest-day-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "brixton-village-market-row-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "wimbledon-cannizaro-house-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "wimbledon-rose-crown-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "park-plaza-county-hall-london-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "nox-waterloo-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "eton-across-river-windsor-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "windsor-castle-long-walk-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+  },
+  "new-zealand-in-australia-cricket-2026-27": {
   // New Zealand tour of Australia 2026-27 — mapping locked with the curator
   // before seeding (see project_nz_in_australia_experiences memory).
-  "perth-stadium-series-opener-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "map", spokeLabel: "Venue Map" },
-  "adelaide-oval-most-beautiful-ground-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "map", spokeLabel: "Venue Map" },
-  "mcg-boxing-day-test-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "map", spokeLabel: "Venue Map" },
-  "scg-fourth-test-sydney-summer-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "map", spokeLabel: "Venue Map" },
-  "nz-australia-series-ticket-guide-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "mcg-boxing-day-seating-comparison-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "adelaide-oval-hill-vs-reserve-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "mcg-corporate-boxes-boxing-day-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "adelaide-oval-stadium-club-deck-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "scg-luxury-invincibles-lounge-members-pavilion-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "where-to-stay-perth-first-test-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "where-to-stay-adelaide-city-vs-north-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "perth-stadium-series-opener-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "adelaide-oval-most-beautiful-ground-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "mcg-boxing-day-test-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "scg-fourth-test-sydney-summer-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "nz-australia-series-ticket-guide-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "mcg-boxing-day-seating-comparison-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "adelaide-oval-hill-vs-reserve-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "mcg-corporate-boxes-boxing-day-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "adelaide-oval-stadium-club-deck-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "scg-luxury-invincibles-lounge-members-pavilion-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "where-to-stay-perth-first-test-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "where-to-stay-adelaide-city-vs-north-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "where-to-stay-sydney-fourth-test-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "fremantle-day-trip-from-perth-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "mclaren-vale-adelaide-wine-daytrip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "blue-mountains-day-trip-from-sydney-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "sydney-harbour-beaches-city-day-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "wildlife-down-under-featherdale-phillip-island-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "beige-brigade-nz-traveling-support-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "where-nz-fans-actually-eat-city-guide-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "getting-between-four-cities-flights-not-trains-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    // Added 20 Sep 2026 as part of the shared-experience back-link fix
+    // (project_shared_experience_backlink_gap). These 4 are genuinely
+    // reused from Australian Open 2027 and actually render in this event's
+    // DayTripsSpoke.tsx/HotelsSpoke.tsx (confirmed by reading those files),
+    // matching their real sporting_event_experiences join rows to this
+    // event — previously this event had NO entries for them here at all,
+    // so a ?from=new-zealand-in-australia-cricket-2026-27 referrer fell
+    // through to the flat scan and still resolved to Australian Open.
+    // where-to-stay-melbourne-boxing-day- already has its OWN top-level
+    // entry under "australian-open" above (the curator's explicit no-
+    // referrer default) — this is a second, event-scoped entry for the
+    // SAME experience slug, which the nested-by-event structure supports.
+    "melbourne-laneways-coffee-city-day-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "great-ocean-road-twelve-apostles-daytrip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "yarra-valley-melbourne-wine-daytrip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "where-to-stay-melbourne-boxing-day-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+  },
+  "australian-open": {
   // Tactically pointed at AO2027's hotels spoke instead of the cricket pack,
   // 26 Aug 2026 — the founder's explicit call for this one shared experience
   // for now. Object.entries().find() only returns the first prefix match,
@@ -213,16 +268,7 @@ const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; 
   // in project_shared_experience_backlink_gap, just flipped which event loses
   // its correct backlink. Still not a real fix; the ?from=eventSlug design
   // is the real fix, tracked in Ops Checklist P1 T3 #4.
-  "where-to-stay-melbourne-boxing-day-": { eventSlug: "australian-open", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "where-to-stay-sydney-fourth-test-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "fremantle-day-trip-from-perth-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "mclaren-vale-adelaide-wine-daytrip-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "blue-mountains-day-trip-from-sydney-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "sydney-harbour-beaches-city-day-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "wildlife-down-under-featherdale-phillip-island-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "beige-brigade-nz-traveling-support-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "where-nz-fans-actually-eat-city-guide-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "getting-between-four-cities-flights-not-trains-": { eventSlug: "new-zealand-in-australia-cricket-2026-27", spokeId: "getting-there", spokeLabel: "Getting There" },
+    "where-to-stay-melbourne-boxing-day-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
   // Australian Open 2027 — added 24 Aug 2026. Only the 16 experiences
   // unique to this event get an entry here — 4 Melbourne experiences are
   // reused from the NZ-in-Australia cricket pack and can only show ONE
@@ -234,163 +280,192 @@ const EXPERIENCE_TO_SPOKE: Record<string, { eventSlug: string; spokeId: string; 
   // daytrip-, melbourne-laneways-coffee-city-day-) were flipped to AO2027 on
   // 26 Aug 2026 per founder request — the cricket pack now loses its back-link
   // on these 3 until the real ?from=eventSlug + nested-lookup fix is built.
-  "great-ocean-road-twelve-apostles-daytrip-": { eventSlug: "australian-open", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "yarra-valley-melbourne-wine-daytrip-": { eventSlug: "australian-open", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "melbourne-laneways-coffee-city-day-": { eventSlug: "australian-open", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "rod-laver-arena-inside-main-court-": { eventSlug: "australian-open", spokeId: "map", spokeLabel: "Venue Map" },
-  "margaret-court-john-cain-arenas-": { eventSlug: "australian-open", spokeId: "map", spokeLabel: "Venue Map" },
-  "outside-courts-grounds-pass-strategy-": { eventSlug: "australian-open", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "practice-week-national-tennis-centre-": { eventSlug: "australian-open", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
-  "grand-slam-oval-food-village-": { eventSlug: "australian-open", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "ao-ticket-guide-grounds-session-finals-": { eventSlug: "australian-open", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "rod-laver-arena-seating-comparison-": { eventSlug: "australian-open", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "corporate-hospitality-premium-suites-": { eventSlug: "australian-open", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "getting-to-melbourne-park-transit-": { eventSlug: "australian-open", spokeId: "getting-there", spokeLabel: "Getting There" },
-  "melbourne-january-heat-what-to-pack-": { eventSlug: "australian-open", spokeId: "weather", spokeLabel: "Weather & What to Pack" },
-  "first-timers-guide-etiquette-crowd-culture-": { eventSlug: "australian-open", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "federation-square-cbd-laneways-": { eventSlug: "australian-open", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "st-kilda-beaches-melbourne-park-": { eventSlug: "australian-open", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "melbourne-coffee-food-culture-guide-": { eventSlug: "australian-open", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "late-night-melbourne-park-midnight-finishes-": { eventSlug: "australian-open", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
-  "grand-slam-oval-party-live-music-": { eventSlug: "australian-open", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "great-ocean-road-twelve-apostles-daytrip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "yarra-valley-melbourne-wine-daytrip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "melbourne-laneways-coffee-city-day-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "rod-laver-arena-inside-main-court-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "margaret-court-john-cain-arenas-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "outside-courts-grounds-pass-strategy-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "practice-week-national-tennis-centre-": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+    "grand-slam-oval-food-village-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "ao-ticket-guide-grounds-session-finals-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "rod-laver-arena-seating-comparison-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "corporate-hospitality-premium-suites-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "getting-to-melbourne-park-transit-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "melbourne-january-heat-what-to-pack-": { spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+    "first-timers-guide-etiquette-crowd-culture-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "federation-square-cbd-laneways-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "st-kilda-beaches-melbourne-park-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "melbourne-coffee-food-culture-guide-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "late-night-melbourne-park-midnight-finishes-": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+    "grand-slam-oval-party-live-music-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+  },
+  "french-open": {
   // French Open 2027 — spoke mapping locked with founder 4 Sep 2026.
-  "court-philippe-chatrier-suzanne-lenglen": { eventSlug: "french-open", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "roland-garros-grounds-pass-tickets": { eventSlug: "french-open", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "roland-garros-night-sessions": { eventSlug: "french-open", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "roland-garros-official-hospitality": { eventSlug: "french-open", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "hotel-molitor-paris-luxury-stay": { eventSlug: "french-open", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "french-open-luxury-dining-bois-de-boulogne": { eventSlug: "french-open", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "ibis-boulogne-billancourt-midrange-stay": { eventSlug: "french-open", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "boulogne-billancourt-short-let-budget-stay": { eventSlug: "french-open", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "roland-garros-travel-official-packages": { eventSlug: "french-open", spokeId: "getting-there", spokeLabel: "Getting There" },
-  "roland-garros-practice-courts-outside-courts": { eventSlug: "french-open", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
-  "roland-garros-stadium-tour-tenniseum": { eventSlug: "french-open", spokeId: "map", spokeLabel: "Venue Map" },
-  "what-to-eat-inside-roland-garros": { eventSlug: "french-open", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "everyday-parisian-eating-baguette-jambon-beurre": { eventSlug: "french-open", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "versailles-day-trip": { eventSlug: "french-open", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "village-dauteuil-neighborhood": { eventSlug: "french-open", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "montmartre-neighborhood": { eventSlug: "french-open", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "paris-icons-eiffel-tower-seine-arc-de-triomphe": { eventSlug: "french-open", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "paris-landmarks-louvre-notre-dame": { eventSlug: "french-open", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "moulin-rouge-show": { eventSlug: "french-open", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
-  "caveau-de-la-huchette-jazz": { eventSlug: "french-open", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+    "court-philippe-chatrier-suzanne-lenglen": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "roland-garros-grounds-pass-tickets": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "roland-garros-night-sessions": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "roland-garros-official-hospitality": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "hotel-molitor-paris-luxury-stay": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "french-open-luxury-dining-bois-de-boulogne": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "ibis-boulogne-billancourt-midrange-stay": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "boulogne-billancourt-short-let-budget-stay": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "roland-garros-travel-official-packages": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "roland-garros-practice-courts-outside-courts": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "roland-garros-stadium-tour-tenniseum": { spokeId: "map", spokeLabel: "Venue Map" },
+    "what-to-eat-inside-roland-garros": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "everyday-parisian-eating-baguette-jambon-beurre": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "versailles-day-trip": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "village-dauteuil-neighborhood": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "montmartre-neighborhood": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "paris-icons-eiffel-tower-seine-arc-de-triomphe": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "paris-landmarks-louvre-notre-dame": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "moulin-rouge-show": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+    "caveau-de-la-huchette-jazz": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+  },
+  "united-states-grand-prix": {
   // United States Grand Prix 2026 — added 5 Sep 2026, matches the agreed
   // spoke-mapping table exactly (see project_us_gp_2026_experiences memory).
-  "us-gp-main-grandstand-": { eventSlug: "united-states-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "us-gp-turn-1-big-red-": { eventSlug: "united-states-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "us-gp-turn-15-stadium-": { eventSlug: "united-states-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "us-gp-general-admission-": { eventSlug: "united-states-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "us-gp-paddock-club-": { eventSlug: "united-states-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "us-gp-champions-club-": { eventSlug: "united-states-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "us-gp-where-to-stay-": { eventSlug: "united-states-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "us-gp-getting-to-cota-": { eventSlug: "united-states-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
-  "us-gp-weather-what-to-pack-": { eventSlug: "united-states-grand-prix", spokeId: "weather", spokeLabel: "Weather & What to Pack" },
-  "us-gp-first-timer-guide-": { eventSlug: "united-states-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "us-gp-franklin-barbecue-": { eventSlug: "united-states-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "us-gp-bbq-beyond-franklin-": { eventSlug: "united-states-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "us-gp-super-stage-concerts-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "us-gp-south-congress-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "us-gp-sixth-rainey-street-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "us-gp-lady-bird-lake-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "us-gp-zilker-barton-springs-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "us-gp-hill-country-fredericksburg-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "us-gp-san-antonio-daytrip-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "us-gp-austin-live-music-": { eventSlug: "united-states-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "foro-sol-mexico-city-gp-": { eventSlug: "mexico-city-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "mexico-city-gp-where-to-sit-": { eventSlug: "mexico-city-grand-prix", spokeId: "map", spokeLabel: "Venue Map" },
-  "mexico-city-gp-ticket-guide-": { eventSlug: "mexico-city-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "mexico-city-gp-paddock-club-": { eventSlug: "mexico-city-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "mexico-city-gp-fan-zone-": { eventSlug: "mexico-city-grand-prix", spokeId: "map", spokeLabel: "Venue Map" },
-  "autodromo-hermanos-rodriguez-venue-": { eventSlug: "mexico-city-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "mexico-city-gp-getting-there-": { eventSlug: "mexico-city-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
-  "mexico-city-gp-arrival-queue-": { eventSlug: "mexico-city-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
-  "mexico-city-where-to-stay-roma-norte-": { eventSlug: "mexico-city-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "mexico-city-where-to-stay-condesa-": { eventSlug: "mexico-city-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "mexico-city-where-to-stay-polanco-": { eventSlug: "mexico-city-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "mexico-city-tacos-al-pastor-": { eventSlug: "mexico-city-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "mexico-city-pujol-contramar-": { eventSlug: "mexico-city-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "mexico-city-mercado-roma-": { eventSlug: "mexico-city-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "mexico-city-zocalo-cathedral-templo-mayor-": { eventSlug: "mexico-city-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "mexico-city-chapultepec-anthropology-": { eventSlug: "mexico-city-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "mexico-city-frida-kahlo-museum-": { eventSlug: "mexico-city-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "mexico-city-teotihuacan-day-trip-": { eventSlug: "mexico-city-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "mexico-city-xochimilco-": { eventSlug: "mexico-city-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "mexico-city-dia-de-muertos-": { eventSlug: "mexico-city-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "mexico-city-weather-packing-": { eventSlug: "mexico-city-grand-prix", spokeId: "weather", spokeLabel: "Weather & What to Pack" },
-  "brazilian-gp-ticket-guide-": { eventSlug: "brazilian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "brazilian-gp-grandstand-a-": { eventSlug: "brazilian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "brazilian-gp-grandstand-m-": { eventSlug: "brazilian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "brazilian-gp-hotel-emiliano-": { eventSlug: "brazilian-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "brazilian-gp-budget-hotels-morumbi-": { eventSlug: "brazilian-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "brazilian-gp-jardins-itaim-neighborhoods-": { eventSlug: "brazilian-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "brazilian-gp-getting-to-interlagos-": { eventSlug: "brazilian-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
-  "brazilian-gp-weather-packing-": { eventSlug: "brazilian-grand-prix", spokeId: "weather", spokeLabel: "Weather & What to Pack" },
-  "brazilian-gp-first-timer-guide-": { eventSlug: "brazilian-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "interlagos-autodromo-jose-carlos-pace-venue-": { eventSlug: "brazilian-grand-prix", spokeId: "map", spokeLabel: "Venue Map" },
-  "brazilian-gp-figueira-rubaiyat-": { eventSlug: "brazilian-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "brazilian-gp-mani-": { eventSlug: "brazilian-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "brazilian-gp-liberdade-japanese-dining-": { eventSlug: "brazilian-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "brazilian-gp-vila-madalena-food-crawl-": { eventSlug: "brazilian-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "brazilian-gp-ibirapuera-park-": { eventSlug: "brazilian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "brazilian-gp-paulista-masp-": { eventSlug: "brazilian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "brazilian-gp-beco-do-batman-": { eventSlug: "brazilian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "brazilian-gp-feira-da-liberdade-": { eventSlug: "brazilian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "brazilian-gp-sao-roque-wine-route-": { eventSlug: "brazilian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "brazilian-gp-santos-guaruja-daytrip-": { eventSlug: "brazilian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "brazilian-gp-campos-do-jordao-daytrip-": { eventSlug: "brazilian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "brazilian-gp-bar-brahma-": { eventSlug: "brazilian-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "brazilian-gp-arrival-queue-guide-": { eventSlug: "brazilian-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
-  "brazilian-gp-hospitality-paddock-club-": { eventSlug: "brazilian-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "brazilian-gp-heineken-village-": { eventSlug: "brazilian-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "qatar-gp-ticket-guide-": { eventSlug: "qatar-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "qatar-gp-main-grandstand-": { eventSlug: "qatar-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "qatar-gp-north-grandstand-": { eventSlug: "qatar-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "qatar-gp-lusail-hill-general-admission-": { eventSlug: "qatar-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "qatar-gp-lusail-hill-lounge-": { eventSlug: "qatar-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "qatar-gp-paddock-champions-club-": { eventSlug: "qatar-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "qatar-gp-west-bay-hotel-": { eventSlug: "qatar-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "qatar-gp-pearl-hotel-": { eventSlug: "qatar-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "qatar-gp-lusail-marina-hotels-": { eventSlug: "qatar-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "qatar-gp-staybridge-suites-lusail-": { eventSlug: "qatar-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "qatar-gp-getting-there-": { eventSlug: "qatar-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
-  "qatar-gp-inside-lusail-circuit-": { eventSlug: "qatar-grand-prix", spokeId: "map", spokeLabel: "Venue Map" },
-  "qatar-gp-fan-zone-": { eventSlug: "qatar-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
-  "qatar-gp-khor-al-adaid-": { eventSlug: "qatar-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "qatar-gp-museum-islamic-art-": { eventSlug: "qatar-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "qatar-gp-national-museum-qatar-": { eventSlug: "qatar-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "qatar-gp-souq-waqif-": { eventSlug: "qatar-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "qatar-gp-pearl-katara-": { eventSlug: "qatar-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "qatar-gp-doha-fan-city-tour-": { eventSlug: "qatar-grand-prix", spokeId: "itinerary", spokeLabel: "Trip Schedule" },
-  "qatar-gp-parisa-atmosphere-dining-": { eventSlug: "qatar-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "qatar-gp-qatari-cuisine-souq-": { eventSlug: "qatar-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "qatar-gp-sawa-by-sanad-": { eventSlug: "qatar-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "italian-gp-grandstand-1-centrale-": { eventSlug: "italian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "italian-gp-grandstand-5-piscina-": { eventSlug: "italian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "italian-gp-ga-lesmo-ascari-": { eventSlug: "italian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "grandstand-22-parabolica-corner-": { eventSlug: "italian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "grandstand-26-pit-lane-grid-podium-": { eventSlug: "italian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "curva-grande-general-admission-": { eventSlug: "italian-grand-prix", spokeId: "tickets", spokeLabel: "Ticket Guide" },
-  "paddock-club-champions-club-hospitality-": { eventSlug: "italian-grand-prix", spokeId: "luxury", spokeLabel: "Luxury Guide" },
-  "monza-inside-the-venue-": { eventSlug: "italian-grand-prix", spokeId: "map", spokeLabel: "Venue Map" },
-  "history-of-monza-walking-old-banking-": { eventSlug: "italian-grand-prix", spokeId: "map", spokeLabel: "Venue Map" },
-  "italian-gp-first-timer-guide-": { eventSlug: "italian-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "the-tifosi-ferraris-red-army-": { eventSlug: "italian-grand-prix", spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
-  "italian-gp-arrival-queue-guide-": { eventSlug: "italian-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
-  "the-fan-zone-ascari-to-parabolica-": { eventSlug: "italian-grand-prix", spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
-  "getting-to-the-circuit-monza-": { eventSlug: "italian-grand-prix", spokeId: "getting-there", spokeLabel: "Getting There" },
-  "hotel-de-la-ville-monza-": { eventSlug: "italian-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "staying-in-milan-city-base-strategy-": { eventSlug: "italian-grand-prix", spokeId: "hotels", spokeLabel: "Where to Stay" },
-  "eating-in-milan-serious-italians-": { eventSlug: "italian-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "eating-in-monza-risotto-luganega-": { eventSlug: "italian-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "aperitivo-before-the-race-milan-ritual-": { eventSlug: "italian-grand-prix", spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
-  "monza-town-royal-villa-": { eventSlug: "italian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "alfa-romeo-museum-arese-": { eventSlug: "italian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
-  "lake-como-race-weekend-from-the-lake-": { eventSlug: "italian-grand-prix", spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "us-gp-main-grandstand-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "us-gp-turn-1-big-red-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "us-gp-turn-15-stadium-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "us-gp-general-admission-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "us-gp-paddock-club-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "us-gp-champions-club-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "us-gp-where-to-stay-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "us-gp-getting-to-cota-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "us-gp-weather-what-to-pack-": { spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+    "us-gp-first-timer-guide-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "us-gp-franklin-barbecue-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "us-gp-bbq-beyond-franklin-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "us-gp-super-stage-concerts-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "us-gp-south-congress-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "us-gp-sixth-rainey-street-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "us-gp-lady-bird-lake-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "us-gp-zilker-barton-springs-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "us-gp-hill-country-fredericksburg-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "us-gp-san-antonio-daytrip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "us-gp-austin-live-music-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+  },
+  "mexico-city-grand-prix": {
+    "foro-sol-mexico-city-gp-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "mexico-city-gp-where-to-sit-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "mexico-city-gp-ticket-guide-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "mexico-city-gp-paddock-club-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "mexico-city-gp-fan-zone-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "autodromo-hermanos-rodriguez-venue-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "mexico-city-gp-getting-there-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "mexico-city-gp-arrival-queue-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "mexico-city-where-to-stay-roma-norte-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "mexico-city-where-to-stay-condesa-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "mexico-city-where-to-stay-polanco-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "mexico-city-tacos-al-pastor-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "mexico-city-pujol-contramar-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "mexico-city-mercado-roma-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "mexico-city-zocalo-cathedral-templo-mayor-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "mexico-city-chapultepec-anthropology-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "mexico-city-frida-kahlo-museum-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "mexico-city-teotihuacan-day-trip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "mexico-city-xochimilco-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "mexico-city-dia-de-muertos-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "mexico-city-weather-packing-": { spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+  },
+  "brazilian-grand-prix": {
+    "brazilian-gp-ticket-guide-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "brazilian-gp-grandstand-a-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "brazilian-gp-grandstand-m-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "brazilian-gp-hotel-emiliano-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "brazilian-gp-budget-hotels-morumbi-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "brazilian-gp-jardins-itaim-neighborhoods-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "brazilian-gp-getting-to-interlagos-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "brazilian-gp-weather-packing-": { spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+    "brazilian-gp-first-timer-guide-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "interlagos-autodromo-jose-carlos-pace-venue-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "brazilian-gp-figueira-rubaiyat-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "brazilian-gp-mani-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "brazilian-gp-liberdade-japanese-dining-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "brazilian-gp-vila-madalena-food-crawl-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "brazilian-gp-ibirapuera-park-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "brazilian-gp-paulista-masp-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "brazilian-gp-beco-do-batman-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "brazilian-gp-feira-da-liberdade-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "brazilian-gp-sao-roque-wine-route-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "brazilian-gp-santos-guaruja-daytrip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "brazilian-gp-campos-do-jordao-daytrip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "brazilian-gp-bar-brahma-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "brazilian-gp-arrival-queue-guide-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "brazilian-gp-hospitality-paddock-club-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "brazilian-gp-heineken-village-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  },
+  "qatar-grand-prix": {
+    "qatar-gp-ticket-guide-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "qatar-gp-main-grandstand-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "qatar-gp-north-grandstand-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "qatar-gp-lusail-hill-general-admission-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "qatar-gp-lusail-hill-lounge-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "qatar-gp-paddock-champions-club-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "qatar-gp-west-bay-hotel-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "qatar-gp-pearl-hotel-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "qatar-gp-lusail-marina-hotels-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "qatar-gp-staybridge-suites-lusail-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "qatar-gp-getting-there-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "qatar-gp-inside-lusail-circuit-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "qatar-gp-fan-zone-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "qatar-gp-khor-al-adaid-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "qatar-gp-museum-islamic-art-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "qatar-gp-national-museum-qatar-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "qatar-gp-souq-waqif-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "qatar-gp-pearl-katara-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "qatar-gp-doha-fan-city-tour-": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+    "qatar-gp-parisa-atmosphere-dining-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "qatar-gp-qatari-cuisine-souq-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "qatar-gp-sawa-by-sanad-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+  },
+  "italian-grand-prix": {
+    "italian-gp-grandstand-1-centrale-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "italian-gp-grandstand-5-piscina-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "italian-gp-ga-lesmo-ascari-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "grandstand-22-parabolica-corner-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "grandstand-26-pit-lane-grid-podium-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "curva-grande-general-admission-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "paddock-club-champions-club-hospitality-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "monza-inside-the-venue-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "history-of-monza-walking-old-banking-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "italian-gp-first-timer-guide-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "the-tifosi-ferraris-red-army-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "italian-gp-arrival-queue-guide-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "the-fan-zone-ascari-to-parabolica-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "getting-to-the-circuit-monza-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "hotel-de-la-ville-monza-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "staying-in-milan-city-base-strategy-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "eating-in-milan-serious-italians-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "eating-in-monza-risotto-luganega-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "aperitivo-before-the-race-milan-ritual-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "monza-town-royal-villa-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "alfa-romeo-museum-arese-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "lake-como-race-weekend-from-the-lake-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+  },
 };
 
-function getSpokeBackLink(slug: string) {
-  const entry = Object.entries(EXPERIENCE_TO_SPOKE).find(([prefix]) => slug.startsWith(prefix));
-  return entry ? entry[1] : null;
+// fromEventSlug should already be validated against sporting_event_experiences
+// by the caller (getExperienceData) before being passed in here — this function
+// trusts it blindly. When present and it has a matching entry, resolution is
+// scoped to that event only. Otherwise falls back to a flat scan across every
+// event's table (first slug-prefix match wins) — the original, unscoped
+// behavior, preserved as the no-referrer default.
+function getSpokeBackLink(slug: string, fromEventSlug?: string | null) {
+  if (fromEventSlug) {
+    const eventTable = EXPERIENCE_TO_SPOKE_BY_EVENT[fromEventSlug];
+    if (eventTable) {
+      const prefix = Object.keys(eventTable).find((p) => slug.startsWith(p));
+      if (prefix) return { eventSlug: fromEventSlug, ...eventTable[prefix] };
+    }
+  }
+  for (const [eventSlug, eventTable] of Object.entries(EXPERIENCE_TO_SPOKE_BY_EVENT)) {
+    const prefix = Object.keys(eventTable).find((p) => slug.startsWith(p));
+    if (prefix) return { eventSlug, ...eventTable[prefix] };
+  }
+  return null;
 }
 
 // Multi-venue experiences (a hotel comparison, a restaurant roundup) never
@@ -581,10 +656,13 @@ function estimateReadingTime(bodyContent: string | null, whyItsSpecial: string |
 
 export default async function ExperiencePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ from?: string }>;
 }) {
   const { slug } = await params;
+  const { from: fromEventSlug } = await searchParams;
 
   // Cache experience content, ratings, and related for 1 hour — only auth runs per-request
   const getExperienceData = unstable_cache(
@@ -606,18 +684,22 @@ export default async function ExperiencePage({
       // The breadcrumb's "← Back to <spoke>" link and the sidebar's "Get the
       // full guide" CTA must always agree — they're both "which event pack
       // does this experience belong to," just two different UI surfaces for
-      // the same fact. getSpokeBackLink() (EXPERIENCE_TO_SPOKE) is the real
-      // source of truth for that whenever an entry exists — it's curator-
-      // confirmed per-experience, unlike exp.sportingEventId, which is only
-      // the PRIMARY owning event and can disagree for an experience shared
-      // into a second event via sporting_event_experiences (see the shared-
-      // experience comment block above EXPERIENCE_TO_SPOKE). Caught live 19
-      // Sep 2026: Eton/Windsor's sportingEventId points to BMW PGA
-      // Championship, but EXPERIENCE_TO_SPOKE correctly maps them to
+      // the same fact. getSpokeBackLink() (EXPERIENCE_TO_SPOKE_BY_EVENT) is
+      // the real source of truth for that whenever an entry exists — it's
+      // curator-confirmed per-experience, unlike exp.sportingEventId, which
+      // is only the PRIMARY owning event and can disagree for an experience
+      // shared into a second event via sporting_event_experiences (see the
+      // shared-experience comment block above EXPERIENCE_TO_SPOKE_BY_EVENT).
+      // Caught live 19 Sep 2026: Eton/Windsor's sportingEventId points to BMW
+      // PGA Championship, but EXPERIENCE_TO_SPOKE correctly maps them to
       // Wimbledon's Day Trips spoke — the sidebar was showing BMW PGA while
       // the breadcrumb correctly showed Wimbledon. Only fall back to
-      // sportingEventId when no EXPERIENCE_TO_SPOKE entry exists (the
-      // common case — most experiences aren't shared).
+      // sportingEventId when no EXPERIENCE_TO_SPOKE_BY_EVENT entry exists
+      // (the common case — most experiences aren't shared). This resolution
+      // is deliberately still unaware of any ?from= referrer — that value is
+      // per-request and can't live inside this unstable_cache'd function
+      // (see resolveReferrerEventPack below, applied to this result after
+      // the cache read).
       const spokeBackLinkForEventPack = getSpokeBackLink(s);
       const eventPackLookupSlug = spokeBackLinkForEventPack?.eventSlug;
       if (eventPackLookupSlug) {
@@ -688,7 +770,58 @@ export default async function ExperiencePage({
     { revalidate: 3600 }
   );
 
-  const { exp, ratingRow, eventPackSlug, eventPackName, eventPackFormat, hasLivePack, related } = await getExperienceData(slug);
+  const cached = await getExperienceData(slug);
+  const { exp, ratingRow, related } = cached;
+  let { eventPackSlug, eventPackName, eventPackFormat, hasLivePack } = cached;
+
+  // Resolve the referring event pack for a shared experience — per-request,
+  // so it can't live inside getExperienceData's unstable_cache. Only trust
+  // fromEventSlug once it's confirmed against the real sporting_event_experiences
+  // join table (never take an unvalidated query param at face value); on any
+  // miss (bad slug, stale link, or an event/experience pair never actually
+  // linked) silently keep the cached default resolved above. See
+  // project_shared_experience_backlink_gap memory — this is the "?from=" fix.
+  let resolvedFromEventSlug: string | null = null;
+  let suppressSpokeBackLink = false;
+  if (fromEventSlug) {
+    const [linkedEvent] = await db
+      .select({
+        slug: sportingEvents.slug,
+        name: sportingEvents.name,
+        packFormat: sportingEvents.packFormat,
+        packStatus: sportingEvents.packStatus,
+        isHidden: sportingEvents.isHidden,
+      })
+      .from(sportingEventExperiences)
+      .innerJoin(sportingEvents, eq(sportingEventExperiences.sportingEventId, sportingEvents.id))
+      .where(
+        and(
+          eq(sportingEventExperiences.experienceId, exp.id),
+          eq(sportingEvents.slug, fromEventSlug)
+        )
+      )
+      .limit(1);
+    if (linkedEvent) {
+      eventPackSlug = linkedEvent.slug;
+      eventPackName = linkedEvent.name;
+      eventPackFormat = linkedEvent.packFormat;
+      hasLivePack = (linkedEvent.packStatus === "live" || linkedEvent.packStatus === "built_hidden") && linkedEvent.isHidden === false;
+      // Only feed the referrer into getSpokeBackLink when it's a hub-and-
+      // spoke event — a classic pack (e.g. BMW PGA Championship) has no
+      // spokes, so there's nothing to link back to. Leaving
+      // resolvedFromEventSlug null here means getSpokeBackLink falls through
+      // to its flat, all-events scan, which would incorrectly resurface
+      // Eton/Windsor's Wimbledon spoke entry for a visitor who actually came
+      // from BMW PGA's classic pack. The breadcrumb is hidden instead
+      // (see spokeLink render check) rather than showing a spoke link for a
+      // pack format that doesn't have spokes.
+      if (linkedEvent.packFormat === "hub_and_spoke") {
+        resolvedFromEventSlug = linkedEvent.slug;
+      } else {
+        suppressSpokeBackLink = true;
+      }
+    }
+  }
 
   const avgRating = ratingRow?.avgRating ?? null;
   const ratingCount = ratingRow?.ratingCount ?? 0;
@@ -909,6 +1042,9 @@ export default async function ExperiencePage({
               slug.startsWith("qatar-gp-fan-zone-") ? "lg:object-[center_35%]" :
               slug.startsWith("qatar-gp-getting-there-") ? "lg:object-[center_70%]" :
               slug.startsWith("qatar-gp-parisa-atmosphere-dining-") ? "lg:object-[center_75%]" :
+              slug.startsWith("piastri-grandstand-albert-park-") ? "lg:object-[center_20%]" :
+              slug.startsWith("albert-park-circuit-inside-the-track-") ? "lg:object-[center_40%]" :
+              slug.startsWith("lakeside-festival-albert-park-") ? "lg:object-[center_40%]" :
               ""
             }`}
             sizes="100vw"
@@ -941,7 +1077,7 @@ export default async function ExperiencePage({
             )}
           </div>
           {(() => {
-            const spokeLink = getSpokeBackLink(exp.slug);
+            const spokeLink = suppressSpokeBackLink ? null : getSpokeBackLink(exp.slug, resolvedFromEventSlug);
             return spokeLink ? (
               <Link
                 href={`/event-pack/${spokeLink.eventSlug}/${spokeLink.spokeId}`}

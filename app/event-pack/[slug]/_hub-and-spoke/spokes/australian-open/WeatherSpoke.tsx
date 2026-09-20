@@ -54,7 +54,7 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
 
       {packingGuide && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={packingGuide} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={packingGuide} isPro={isPro} />
         </div>
       )}
 

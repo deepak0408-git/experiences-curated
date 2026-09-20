@@ -74,14 +74,14 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
 
       {sw19Village && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={sw19Village} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={sw19Village} isPro={isPro} />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">SW19 — 2 real picks</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {cannizaro && <SpokeExperienceCard experience={cannizaro} isPro={isPro} />}
-        {roseAndCrown && <SpokeExperienceCard experience={roseAndCrown} isPro={isPro} />}
+        {cannizaro && <SpokeExperienceCard eventSlug={eventSlug} experience={cannizaro} isPro={isPro} />}
+        {roseAndCrown && <SpokeExperienceCard eventSlug={eventSlug} experience={roseAndCrown} isPro={isPro} />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Central London — 2 real picks near Waterloo</p>
@@ -94,8 +94,8 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
         ), so you keep the same fast route even basing yourself centrally.
       </p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {noxWaterloo && <SpokeExperienceCard experience={noxWaterloo} isPro={isPro} />}
-        {parkPlaza && <SpokeExperienceCard experience={parkPlaza} isPro={isPro} />}
+        {noxWaterloo && <SpokeExperienceCard eventSlug={eventSlug} experience={noxWaterloo} isPro={isPro} />}
+        {parkPlaza && <SpokeExperienceCard eventSlug={eventSlug} experience={parkPlaza} isPro={isPro} />}
       </div>
 
       {isUnlocked && (

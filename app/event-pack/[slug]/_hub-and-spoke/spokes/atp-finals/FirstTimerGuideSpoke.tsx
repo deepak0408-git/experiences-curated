@@ -117,13 +117,13 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Five sights worth the walk</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {moleAntonelliana && <SpokeExperienceCard experience={moleAntonelliana} isPro={isPro} />}
-        {museoEgizio && <SpokeExperienceCard experience={museoEgizio} isPro={isPro} />}
-        {royalPalace && <SpokeExperienceCard experience={royalPalace} isPro={isPro} />}
-        {turinCathedral && <SpokeExperienceCard experience={turinCathedral} isPro={isPro} />}
+        {moleAntonelliana && <SpokeExperienceCard eventSlug={eventSlug} experience={moleAntonelliana} isPro={isPro} />}
+        {museoEgizio && <SpokeExperienceCard eventSlug={eventSlug} experience={museoEgizio} isPro={isPro} />}
+        {royalPalace && <SpokeExperienceCard eventSlug={eventSlug} experience={royalPalace} isPro={isPro} />}
+        {turinCathedral && <SpokeExperienceCard eventSlug={eventSlug} experience={turinCathedral} isPro={isPro} />}
         {piazzaSanCarlo && (
           <div className="sm:col-span-2">
-            <SpokeExperienceCard experience={piazzaSanCarlo} isPro={isPro} />
+            <SpokeExperienceCard eventSlug={eventSlug} experience={piazzaSanCarlo} isPro={isPro} />
           </div>
         )}
       </div>

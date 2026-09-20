@@ -41,21 +41,21 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Roma Norte — walkable and food-forward</p>
       {romaNorte && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={romaNorte} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={romaNorte} isPro={isPro} hideProCtas />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Condesa — quieter, park-adjacent</p>
       {condesa && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={condesa} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={condesa} isPro={isPro} hideProCtas />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Polanco — polished, secure, furthest from the circuit</p>
       {polanco && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={polanco} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={polanco} isPro={isPro} hideProCtas />
         </div>
       )}
 

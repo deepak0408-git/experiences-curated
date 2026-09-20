@@ -84,7 +84,7 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
       {flamingoGA && (
         <div className="mb-8">
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">What General Admission gets you</p>
-          <SpokeExperienceCard experience={flamingoGA} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={flamingoGA} isPro={isPro} />
         </div>
       )}
 

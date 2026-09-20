@@ -68,7 +68,7 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
 
       {whereToSit && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={whereToSit} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={whereToSit} isPro={isPro} />
         </div>
       )}
 
@@ -126,7 +126,7 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
 
       {fanZone && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={fanZone} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={fanZone} isPro={isPro} hideProCtas />
         </div>
       )}
 

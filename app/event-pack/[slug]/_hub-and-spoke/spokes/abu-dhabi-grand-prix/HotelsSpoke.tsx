@@ -43,25 +43,25 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Yas Island — real walking distance to the gates</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {wAbuDhabi && <SpokeExperienceCard experience={wAbuDhabi} isPro={isPro} hideProCtas />}
-        {crownePlaza && <SpokeExperienceCard experience={crownePlaza} isPro={isPro} hideProCtas />}
+        {wAbuDhabi && <SpokeExperienceCard eventSlug={eventSlug} experience={wAbuDhabi} isPro={isPro} hideProCtas />}
+        {crownePlaza && <SpokeExperienceCard eventSlug={eventSlug} experience={crownePlaza} isPro={isPro} hideProCtas />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Central Abu Dhabi — the city, at the cost of a commute</p>
       {beachRotana && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={beachRotana} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={beachRotana} isPro={isPro} hideProCtas />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Basing out of Dubai instead</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {atlantis && <SpokeExperienceCard experience={atlantis} isPro={isPro} hideProCtas />}
-        {parkRegis && <SpokeExperienceCard experience={parkRegis} isPro={isPro} hideProCtas />}
+        {atlantis && <SpokeExperienceCard eventSlug={eventSlug} experience={atlantis} isPro={isPro} hideProCtas />}
+        {parkRegis && <SpokeExperienceCard eventSlug={eventSlug} experience={parkRegis} isPro={isPro} hideProCtas />}
       </div>
       {ibisDeira && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={ibisDeira} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={ibisDeira} isPro={isPro} hideProCtas />
         </div>
       )}
 

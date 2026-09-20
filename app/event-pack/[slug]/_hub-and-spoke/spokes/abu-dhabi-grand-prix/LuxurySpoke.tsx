@@ -52,7 +52,7 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       </p>
       {skybridge && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={skybridge} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={skybridge} isPro={isPro} />
         </div>
       )}
 
@@ -65,7 +65,7 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       </p>
       {yachtCharter && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={yachtCharter} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={yachtCharter} isPro={isPro} />
         </div>
       )}
 
@@ -84,7 +84,7 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       </p>
       {afterParties && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={afterParties} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={afterParties} isPro={isPro} hideProCtas />
         </div>
       )}
 
@@ -132,7 +132,7 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
               </p>
 
               <div className="mb-8">
-                <SpokeExperienceCard experience={paddockClub} isPro={isPro} />
+                <SpokeExperienceCard eventSlug={eventSlug} experience={paddockClub} isPro={isPro} />
               </div>
 
               <p className="text-sm text-[#A3A3A3] leading-7 mb-8">

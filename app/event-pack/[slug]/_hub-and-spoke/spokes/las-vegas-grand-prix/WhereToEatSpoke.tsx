@@ -37,8 +37,8 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
       </p>
 
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {bellagioCaesars && <SpokeExperienceCard experience={bellagioCaesars} isPro={isPro} />}
-        {fremontDining && <SpokeExperienceCard experience={fremontDining} isPro={isPro} />}
+        {bellagioCaesars && <SpokeExperienceCard eventSlug={eventSlug} experience={bellagioCaesars} isPro={isPro} />}
+        {fremontDining && <SpokeExperienceCard eventSlug={eventSlug} experience={fremontDining} isPro={isPro} />}
       </div>
 
       {isUnlocked && (

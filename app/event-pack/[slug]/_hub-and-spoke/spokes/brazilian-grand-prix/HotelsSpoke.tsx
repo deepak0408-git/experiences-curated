@@ -48,21 +48,21 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Hotel Emiliano — Jardins boutique luxury</p>
       {hotelEmiliano && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={hotelEmiliano} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={hotelEmiliano} isPro={isPro} hideProCtas />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Budget & mid-range — Morumbi and Campo Belo</p>
       {budgetHotels && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={budgetHotels} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={budgetHotels} isPro={isPro} hideProCtas />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Self-catered — Jardins, Itaim Bibi & Vila Nova Conceição</p>
       {neighborhoods && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={neighborhoods} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={neighborhoods} isPro={isPro} hideProCtas />
         </div>
       )}
 

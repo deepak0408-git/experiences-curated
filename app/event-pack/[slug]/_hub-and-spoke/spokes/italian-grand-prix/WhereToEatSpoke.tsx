@@ -44,21 +44,21 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Milan — a trattoria and a Michelin star, ten minutes apart</p>
       {eatingInMilan && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={eatingInMilan} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={eatingInMilan} isPro={isPro} hideProCtas />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Aperitivo — the Milan ritual before you head to the race</p>
       {aperitivo && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={aperitivo} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={aperitivo} isPro={isPro} hideProCtas />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Monza — risotto, luganega, and the Brianza table</p>
       {eatingInMonza && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={eatingInMonza} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={eatingInMonza} isPro={isPro} hideProCtas />
         </div>
       )}
 

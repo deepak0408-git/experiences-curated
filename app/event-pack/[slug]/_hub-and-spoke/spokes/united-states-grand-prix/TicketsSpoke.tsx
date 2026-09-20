@@ -213,10 +213,10 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
           </p>
 
           <div className="grid sm:grid-cols-2 gap-4 mb-4">
-            {mainGrandstand && <SpokeExperienceCard experience={mainGrandstand} isPro={isPro} />}
-            {turn1 && <SpokeExperienceCard experience={turn1} isPro={isPro} />}
-            {turn15 && <SpokeExperienceCard experience={turn15} isPro={isPro} />}
-            {generalAdmission && <SpokeExperienceCard experience={generalAdmission} isPro={isPro} />}
+            {mainGrandstand && <SpokeExperienceCard eventSlug={eventSlug} experience={mainGrandstand} isPro={isPro} />}
+            {turn1 && <SpokeExperienceCard eventSlug={eventSlug} experience={turn1} isPro={isPro} />}
+            {turn15 && <SpokeExperienceCard eventSlug={eventSlug} experience={turn15} isPro={isPro} />}
+            {generalAdmission && <SpokeExperienceCard eventSlug={eventSlug} experience={generalAdmission} isPro={isPro} />}
           </div>
 
           <p className="text-sm text-[#A3A3A3] leading-7 mb-8">

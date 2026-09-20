@@ -137,8 +137,8 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4 mb-8">
-            {ticketGuide && <SpokeExperienceCard experience={ticketGuide} isPro={isPro} />}
-            {centerCourt && <SpokeExperienceCard experience={centerCourt} isPro={isPro} />}
+            {ticketGuide && <SpokeExperienceCard eventSlug={eventSlug} experience={ticketGuide} isPro={isPro} />}
+            {centerCourt && <SpokeExperienceCard eventSlug={eventSlug} experience={centerCourt} isPro={isPro} />}
           </div>
         </>
       )}
@@ -180,7 +180,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
                 16 October ticket first, before anything else.
               </p>
               <div className="mb-6">
-                <SpokeExperienceCard experience={federer} isPro={isPro} />
+                <SpokeExperienceCard eventSlug={eventSlug} experience={federer} isPro={isPro} />
               </div>
             </>
           )}
