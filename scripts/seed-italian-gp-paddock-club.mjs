@@ -32,9 +32,9 @@ House 44 selling out before the weekend even started is the detail that tells th
 const practicalInfo = {
   hours: "Friday–Sunday, 4–6 Sep 2026, circuit opening hours; Paddock Club and House 44 are 3-day only, Champions Club Centrale is available as a 2-day (Sat–Sun) or full weekend package.",
   costRange: "Champions Club (Centrale, 2-day) around €2,600pp; Paddock Club (3-day) roughly €4,500–€6,500pp depending on season and demand; House 44 pricing not published, sold out for 2026 at time of writing.",
-  bookingMethod: "Champions Club and Paddock Club are sold through F1Italy.com, Formula1.com, or F1 Experiences; House 44 is sold directly through F1 Paddock Club and Soho House and tends to sell out fastest of the three.",
+  bookingMethod: "Champions Club and Paddock Club are sold through Monzanet.it, Formula1.com, or F1 Experiences; House 44 is sold directly through F1 Paddock Club and Soho House and tends to sell out fastest of the three.",
   howToBook: "For a client who wants paddock access without the House 44 premium, book standard Paddock Club directly through f1experiences.com or an authorized reseller like Motorsport Tickets — it moves slower than House 44 and typically still has availability into the summer of the race year. If a client specifically wants House 44, they need to move in Q1: it sold out for Monza 2026 well ahead of the weekend, and Soho House's own event notes describe it as one of a handful of races on the 2026 world tour, so allocation is tight everywhere it appears, not just at Monza. Champions Club Centrale is the more forgiving booking window of the three and a sensible fallback recommendation if Paddock Club sells out. For corporate or group bookings across any tier, F1 Experiences and GP Tours both handle multi-seat allocations and can sometimes secure inventory that's gone from the public-facing sites.",
-  website: "https://www.f1italy.com/en/ticket-info/paddock-club-7",
+  website: "https://www.monzanet.it/en/tickets/",
   reservationsRequired: true,
 };
 

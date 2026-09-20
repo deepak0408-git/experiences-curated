@@ -18,7 +18,7 @@ const bodyContent = `Monza is not like other F1 circuits. You don't drive there.
 
 The trains are S8, S9, and S11 suburban services from Milano Porta Garibaldi. Journey time is 20–25 minutes. Pre-purchase your ticket at the station or via the Trenord app — €3.10 each way. On race day the trains run every 5–10 minutes and fill up fast after 09:00; aim to board before then. Allow 90 minutes total from central Milan to your seat.
 
-From Biassono-Lesmo Parco station, you have two options. The Black Line shuttle bus runs directly to the circuit gates (check f1italy.com for 2026 schedule and fares). Or walk — the 20-minute path through Parco di Monza is tree-lined, shaded, and the crowd walking it together is already part of the Italian GP atmosphere. Take the walk at least once.
+From Biassono-Lesmo Parco station, you have two options. The Black Line shuttle bus runs directly to the circuit gates (check monzanet.it for 2026 schedule and fares). Or walk — the 20-minute path through Parco di Monza is tree-lined, shaded, and the crowd walking it together is already part of the Italian GP atmosphere. Take the walk at least once.
 
 Driving is an option but the wrong one on race day. Parking lots (Blue and Red zones) sell out months before the event and traffic around the park is severe for 3–4 hours post-race. If you drive, budget 2 hours to exit the area after the chequered flag. The train takes 25 minutes back to Milan and you're on the first one home.
 
@@ -30,9 +30,9 @@ The park itself is something. 688 hectares of woodland, paths, and the Villa Rea
 
 const practicalInfo = {
   hours: "Trains run from approximately 06:00 daily; race-day services increase to every 5–10 minutes from Milano Porta Garibaldi",
-  costRange: "€3.10 each way (Trenord suburban train); Black Line shuttle additional cost (see f1italy.com)",
+  costRange: "€3.10 each way (Trenord suburban train); Black Line shuttle additional cost (see monzanet.it)",
   bookingMethod: "Buy Trenord tickets at the station or via the Trenord app; no advance booking required but buy before boarding.",
-  howToBook: "No advance booking needed for the train itself — €3.10 single on the Trenord suburban network. The Black Line shuttle does require a ticket; check f1italy.com for 2026 pricing and schedule, typically released 4–6 weeks before race weekend. If driving: Blue and Red parking zones are sold through the official Italian GP ticketing site (f1italy.com) and sell out well before the event — book at the same time as your grandstand ticket. On Location Experiences and F1 Experiences packages often include transport from Milan as part of the hospitality bundle, which removes the train logistics entirely.",
+  howToBook: "No advance booking needed for the train itself — €3.10 single on the Trenord suburban network. The Black Line shuttle does require a ticket; check monzanet.it for 2026 pricing and schedule, typically released 4–6 weeks before race weekend. If driving: Blue and Red parking zones are sold through the official Italian GP ticketing site (monzanet.it) and sell out well before the event — book at the same time as your grandstand ticket. On Location Experiences and F1 Experiences packages often include transport from Milan as part of the hospitality bundle, which removes the train logistics entirely.",
   website: "https://www.trenord.it/en/",
   reservationsRequired: false,
 };

@@ -50,10 +50,12 @@ export async function getSpokeData() {
     .where(and(eq(sportingEventExperiences.sportingEventId, event.id), eq(experiences.status, "published")))
     .orderBy(sportingEventExperiences.packRank);
 
+  // edition_year filter added 19-20 Sep 2026 (planner cost edition-year
+  // migration) — see memory project_planner_cost_edition_year_migration.
   const hotels = event.destinationId
-    ? await db.select().from(plannerHotelTierCost).where(eq(plannerHotelTierCost.destinationId, event.destinationId))
+    ? await db.select().from(plannerHotelTierCost).where(and(eq(plannerHotelTierCost.destinationId, event.destinationId), eq(plannerHotelTierCost.editionYear, event.editionYear)))
     : [];
-  const tickets = await db.select().from(plannerTicketTierCost).where(eq(plannerTicketTierCost.sportingEventId, event.id));
+  const tickets = await db.select().from(plannerTicketTierCost).where(and(eq(plannerTicketTierCost.sportingEventId, event.id), eq(plannerTicketTierCost.editionYear, event.editionYear)));
   const [destinationBand] = event.destinationId
     ? await db.select().from(plannerDestinationBands).where(eq(plannerDestinationBands.destinationId, event.destinationId))
     : [];
