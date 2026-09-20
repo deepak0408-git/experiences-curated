@@ -32,16 +32,25 @@ export default function SpokeExperienceCard({
   experience,
   isPro,
   hideProCtas = false,
+  eventSlug,
 }: {
   experience: SpokeExperienceCardExperience;
   isPro: boolean;
   hideProCtas?: boolean;
+  // The event pack this card is rendered inside — passed through as ?from=
+  // so the experience page can tell which pack the visitor came from when
+  // an experience is shared across more than one event via
+  // sporting_event_experiences. Without it, a shared experience's back-link/
+  // CTA always shows whichever event won the static EXPERIENCE_TO_SPOKE_BY_EVENT
+  // default, even when reached from its other, equally valid pack. See
+  // memory project_shared_experience_backlink_gap.
+  eventSlug: string;
 }) {
   const howToBook = experience.practicalInfo?.howToBook;
 
   return (
     <div className="group rounded-sm border border-[#2A2A2A] bg-[#141414] overflow-hidden hover:border-[#AAFF00] transition-colors">
-      <Link href={`/experience/${experience.slug}`} className="block">
+      <Link href={`/experience/${experience.slug}?from=${eventSlug}`} className="block">
         {experience.heroImageUrl && (
           <div className="relative h-48 overflow-hidden bg-[#1A1A1A]">
             <Image

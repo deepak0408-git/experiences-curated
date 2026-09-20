@@ -53,7 +53,7 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
 
       {eating && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={eating} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={eating} isPro={isPro} />
         </div>
       )}
 
@@ -88,8 +88,8 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Two real village picks</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {crookedBillet && <SpokeExperienceCard experience={crookedBillet} isPro={isPro} />}
-        {blackLamb && <SpokeExperienceCard experience={blackLamb} isPro={isPro} />}
+        {crookedBillet && <SpokeExperienceCard eventSlug={eventSlug} experience={crookedBillet} isPro={isPro} />}
+        {blackLamb && <SpokeExperienceCard eventSlug={eventSlug} experience={blackLamb} isPro={isPro} />}
       </div>
 
       {isUnlocked && (

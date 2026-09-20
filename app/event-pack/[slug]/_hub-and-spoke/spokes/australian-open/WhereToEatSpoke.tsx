@@ -37,7 +37,7 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
 
       {foodVillage && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={foodVillage} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={foodVillage} isPro={isPro} />
         </div>
       )}
 
@@ -48,7 +48,7 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
       </p>
       {coffeeGuide && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={coffeeGuide} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={coffeeGuide} isPro={isPro} />
         </div>
       )}
 

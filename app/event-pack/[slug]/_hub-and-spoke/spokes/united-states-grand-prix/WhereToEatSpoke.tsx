@@ -54,14 +54,14 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The one everyone's heard of</p>
       {franklin && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={franklin} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={franklin} isPro={isPro} />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Three real alternatives, same seriousness</p>
       {bbqBeyond && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={bbqBeyond} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={bbqBeyond} isPro={isPro} />
         </div>
       )}
 

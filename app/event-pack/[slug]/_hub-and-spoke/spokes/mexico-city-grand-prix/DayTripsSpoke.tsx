@@ -43,25 +43,25 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">In the city — history and culture</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {zocalo && <SpokeExperienceCard experience={zocalo} isPro={isPro} hideProCtas />}
-        {chapultepec && <SpokeExperienceCard experience={chapultepec} isPro={isPro} hideProCtas />}
+        {zocalo && <SpokeExperienceCard eventSlug={eventSlug} experience={zocalo} isPro={isPro} hideProCtas />}
+        {chapultepec && <SpokeExperienceCard eventSlug={eventSlug} experience={chapultepec} isPro={isPro} hideProCtas />}
       </div>
       {fridaMuseum && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={fridaMuseum} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={fridaMuseum} isPro={isPro} hideProCtas />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Out of the city — real day trips</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {teotihuacan && <SpokeExperienceCard experience={teotihuacan} isPro={isPro} hideProCtas />}
-        {xochimilco && <SpokeExperienceCard experience={xochimilco} isPro={isPro} hideProCtas />}
+        {teotihuacan && <SpokeExperienceCard eventSlug={eventSlug} experience={teotihuacan} isPro={isPro} hideProCtas />}
+        {xochimilco && <SpokeExperienceCard eventSlug={eventSlug} experience={xochimilco} isPro={isPro} hideProCtas />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">This year only — Día de Muertos</p>
       {diaDeMuertos && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={diaDeMuertos} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={diaDeMuertos} isPro={isPro} hideProCtas />
         </div>
       )}
 

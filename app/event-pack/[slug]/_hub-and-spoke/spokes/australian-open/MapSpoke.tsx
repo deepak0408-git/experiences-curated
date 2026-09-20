@@ -55,8 +55,8 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
       <p className="text-xs text-[#6A6A6A] mb-8">Map: austadiums.com</p>
 
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {rodLaver && <SpokeExperienceCard experience={rodLaver} isPro={isPro} />}
-        {otherArenas && <SpokeExperienceCard experience={otherArenas} isPro={isPro} />}
+        {rodLaver && <SpokeExperienceCard eventSlug={eventSlug} experience={rodLaver} isPro={isPro} />}
+        {otherArenas && <SpokeExperienceCard eventSlug={eventSlug} experience={otherArenas} isPro={isPro} />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Facilities across the grounds</p>

@@ -69,7 +69,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       {ticketGuide && (
         <div className="mb-8">
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The full ticket guide</p>
-          <SpokeExperienceCard experience={ticketGuide} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={ticketGuide} isPro={isPro} />
           <a
             href="https://tickets.nittoatpfinals.com/en"
             target="_blank"

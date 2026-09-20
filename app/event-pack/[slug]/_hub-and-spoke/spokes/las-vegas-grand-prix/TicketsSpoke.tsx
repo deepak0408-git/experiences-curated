@@ -100,12 +100,12 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Every grandstand and zone, in detail</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {mainGrandstand && <SpokeExperienceCard experience={mainGrandstand} isPro={isPro} />}
-        {turn3 && <SpokeExperienceCard experience={turn3} isPro={isPro} />}
-        {westHarmon && <SpokeExperienceCard experience={westHarmon} isPro={isPro} />}
-        {flamingo && <SpokeExperienceCard experience={flamingo} isPro={isPro} />}
-        {tmobile && <SpokeExperienceCard experience={tmobile} isPro={isPro} />}
-        {practiceQualifying && <SpokeExperienceCard experience={practiceQualifying} isPro={isPro} />}
+        {mainGrandstand && <SpokeExperienceCard eventSlug={eventSlug} experience={mainGrandstand} isPro={isPro} />}
+        {turn3 && <SpokeExperienceCard eventSlug={eventSlug} experience={turn3} isPro={isPro} />}
+        {westHarmon && <SpokeExperienceCard eventSlug={eventSlug} experience={westHarmon} isPro={isPro} />}
+        {flamingo && <SpokeExperienceCard eventSlug={eventSlug} experience={flamingo} isPro={isPro} />}
+        {tmobile && <SpokeExperienceCard eventSlug={eventSlug} experience={tmobile} isPro={isPro} />}
+        {practiceQualifying && <SpokeExperienceCard eventSlug={eventSlug} experience={practiceQualifying} isPro={isPro} />}
       </div>
 
       {isUnlocked && (

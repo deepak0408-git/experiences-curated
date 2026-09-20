@@ -50,7 +50,7 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
         {cards.map((exp, i) =>
           exp ? (
             <div key={exp.id} className={i === cards.length - 1 && cards.length % 2 !== 0 ? "sm:col-span-2" : ""}>
-              <SpokeExperienceCard experience={exp} isPro={isPro} />
+              <SpokeExperienceCard eventSlug={eventSlug} experience={exp} isPro={isPro} />
             </div>
           ) : null
         )}

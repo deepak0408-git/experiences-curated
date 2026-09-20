@@ -67,8 +67,8 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
         real accommodation options here run meaningfully below what the 16th arrondissement charges.
       </p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {ibis && <SpokeExperienceCard experience={ibis} isPro={isPro} />}
-        {shortLet && <SpokeExperienceCard experience={shortLet} isPro={isPro} />}
+        {ibis && <SpokeExperienceCard eventSlug={eventSlug} experience={ibis} isPro={isPro} />}
+        {shortLet && <SpokeExperienceCard eventSlug={eventSlug} experience={shortLet} isPro={isPro} />}
       </div>
 
       {isUnlocked && (

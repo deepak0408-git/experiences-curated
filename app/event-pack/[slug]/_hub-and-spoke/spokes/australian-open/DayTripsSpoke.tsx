@@ -44,13 +44,13 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
       </p>
 
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {greatOceanRoad && <SpokeExperienceCard experience={greatOceanRoad} isPro={isPro} />}
-        {yarraValley && <SpokeExperienceCard experience={yarraValley} isPro={isPro} />}
-        {stKilda && <SpokeExperienceCard experience={stKilda} isPro={isPro} />}
-        {fedSquare && <SpokeExperienceCard experience={fedSquare} isPro={isPro} />}
+        {greatOceanRoad && <SpokeExperienceCard eventSlug={eventSlug} experience={greatOceanRoad} isPro={isPro} />}
+        {yarraValley && <SpokeExperienceCard eventSlug={eventSlug} experience={yarraValley} isPro={isPro} />}
+        {stKilda && <SpokeExperienceCard eventSlug={eventSlug} experience={stKilda} isPro={isPro} />}
+        {fedSquare && <SpokeExperienceCard eventSlug={eventSlug} experience={fedSquare} isPro={isPro} />}
         {melbourneCityDay && (
           <div className="sm:col-span-2">
-            <SpokeExperienceCard experience={melbourneCityDay} isPro={isPro} />
+            <SpokeExperienceCard eventSlug={eventSlug} experience={melbourneCityDay} isPro={isPro} />
           </div>
         )}
       </div>

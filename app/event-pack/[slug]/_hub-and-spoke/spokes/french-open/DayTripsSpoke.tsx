@@ -46,7 +46,7 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
         with a nearby-city day-trip anchor.
       </p>
       <div className="mb-8">
-        {versailles && <SpokeExperienceCard experience={versailles} isPro={isPro} />}
+        {versailles && <SpokeExperienceCard eventSlug={eventSlug} experience={versailles} isPro={isPro} />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Or a shorter break inside Paris</p>
@@ -56,8 +56,8 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
         a genuine cross-city trip to the hilltop neighborhood where modern art actually happened.
       </p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {auteuil && <SpokeExperienceCard experience={auteuil} isPro={isPro} />}
-        {montmartre && <SpokeExperienceCard experience={montmartre} isPro={isPro} />}
+        {auteuil && <SpokeExperienceCard eventSlug={eventSlug} experience={auteuil} isPro={isPro} />}
+        {montmartre && <SpokeExperienceCard eventSlug={eventSlug} experience={montmartre} isPro={isPro} />}
       </div>
 
       {isUnlocked && (

@@ -77,8 +77,8 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
         Principi di Piemonte's top-floor rooms carry the same Alpine-arch views that make Piano35 worth visiting.
       </p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {luxuryHotels && <SpokeExperienceCard experience={luxuryHotels} isPro={isPro} />}
-        {luxuryHospitality && <SpokeExperienceCard experience={luxuryHospitality} isPro={isPro} />}
+        {luxuryHotels && <SpokeExperienceCard eventSlug={eventSlug} experience={luxuryHotels} isPro={isPro} />}
+        {luxuryHospitality && <SpokeExperienceCard eventSlug={eventSlug} experience={luxuryHospitality} isPro={isPro} />}
       </div>
 
       {isUnlocked && (

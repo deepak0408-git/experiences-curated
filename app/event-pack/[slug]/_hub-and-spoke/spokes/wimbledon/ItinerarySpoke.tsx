@@ -51,7 +51,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
 
       {sw19 && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={sw19} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={sw19} isPro={isPro} />
         </div>
       )}
 

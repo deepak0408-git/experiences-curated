@@ -37,8 +37,8 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       </p>
 
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {luxuryHotels && <SpokeExperienceCard experience={luxuryHotels} isPro={isPro} />}
-        {portaNuova && <SpokeExperienceCard experience={portaNuova} isPro={isPro} />}
+        {luxuryHotels && <SpokeExperienceCard eventSlug={eventSlug} experience={luxuryHotels} isPro={isPro} />}
+        {portaNuova && <SpokeExperienceCard eventSlug={eventSlug} experience={portaNuova} isPro={isPro} />}
       </div>
 
       <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8">

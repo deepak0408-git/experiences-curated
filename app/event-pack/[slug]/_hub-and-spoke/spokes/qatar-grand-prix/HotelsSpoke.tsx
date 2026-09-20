@@ -48,21 +48,21 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Lusail Marina, closest to the circuit</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {marinaHotels && <SpokeExperienceCard experience={marinaHotels} isPro={isPro} hideProCtas />}
-        {staybridge && <SpokeExperienceCard experience={staybridge} isPro={isPro} hideProCtas />}
+        {marinaHotels && <SpokeExperienceCard eventSlug={eventSlug} experience={marinaHotels} isPro={isPro} hideProCtas />}
+        {staybridge && <SpokeExperienceCard eventSlug={eventSlug} experience={staybridge} isPro={isPro} hideProCtas />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The Pearl, a real resort base</p>
       {pearlHotel && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={pearlHotel} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={pearlHotel} isPro={isPro} hideProCtas />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">West Bay, the city base</p>
       {westBayHotel && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={westBayHotel} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={westBayHotel} isPro={isPro} hideProCtas />
         </div>
       )}
 

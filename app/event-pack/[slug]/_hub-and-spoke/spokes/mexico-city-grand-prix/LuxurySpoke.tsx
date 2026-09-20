@@ -97,7 +97,7 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
               </p>
 
               <div className="mb-8">
-                <SpokeExperienceCard experience={paddockClub} isPro={isPro} />
+                <SpokeExperienceCard eventSlug={eventSlug} experience={paddockClub} isPro={isPro} />
               </div>
 
               <p className="text-sm text-[#A3A3A3] leading-7 mb-8">

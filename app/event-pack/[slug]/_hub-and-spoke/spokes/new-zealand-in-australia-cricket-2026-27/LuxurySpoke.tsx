@@ -39,11 +39,11 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Three real hospitality products</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {mcgBoxes && <SpokeExperienceCard experience={mcgBoxes} isPro={isPro} />}
-        {adelaideClub && <SpokeExperienceCard experience={adelaideClub} isPro={isPro} />}
+        {mcgBoxes && <SpokeExperienceCard eventSlug={eventSlug} experience={mcgBoxes} isPro={isPro} />}
+        {adelaideClub && <SpokeExperienceCard eventSlug={eventSlug} experience={adelaideClub} isPro={isPro} />}
         {scgLuxury && (
           <div className="sm:col-span-2">
-            <SpokeExperienceCard experience={scgLuxury} isPro={isPro} />
+            <SpokeExperienceCard eventSlug={eventSlug} experience={scgLuxury} isPro={isPro} />
           </div>
         )}
       </div>

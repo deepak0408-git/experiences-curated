@@ -128,8 +128,8 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mt-10 mb-4">Two evenings worth building the trip around</p>
           <div className="grid sm:grid-cols-2 gap-4">
-            {moulinRouge && <SpokeExperienceCard experience={moulinRouge} isPro={isPro} />}
-            {caveau && <SpokeExperienceCard experience={caveau} isPro={isPro} />}
+            {moulinRouge && <SpokeExperienceCard eventSlug={eventSlug} experience={moulinRouge} isPro={isPro} />}
+            {caveau && <SpokeExperienceCard eventSlug={eventSlug} experience={caveau} isPro={isPro} />}
           </div>
         </div>
       )}

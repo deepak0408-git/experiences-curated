@@ -39,10 +39,10 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
       </p>
 
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {perthStadium && <SpokeExperienceCard experience={perthStadium} isPro={isPro} />}
-        {adelaideOval && <SpokeExperienceCard experience={adelaideOval} isPro={isPro} />}
-        {mcg && <SpokeExperienceCard experience={mcg} isPro={isPro} />}
-        {scg && <SpokeExperienceCard experience={scg} isPro={isPro} />}
+        {perthStadium && <SpokeExperienceCard eventSlug={eventSlug} experience={perthStadium} isPro={isPro} />}
+        {adelaideOval && <SpokeExperienceCard eventSlug={eventSlug} experience={adelaideOval} isPro={isPro} />}
+        {mcg && <SpokeExperienceCard eventSlug={eventSlug} experience={mcg} isPro={isPro} />}
+        {scg && <SpokeExperienceCard eventSlug={eventSlug} experience={scg} isPro={isPro} />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Boxing Day at the MCG is a different scale of arrival</p>

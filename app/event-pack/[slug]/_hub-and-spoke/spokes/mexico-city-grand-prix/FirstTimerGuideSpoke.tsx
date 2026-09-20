@@ -86,7 +86,7 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
 
       {venueGuide && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={venueGuide} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={venueGuide} isPro={isPro} hideProCtas />
         </div>
       )}
 

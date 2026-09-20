@@ -44,14 +44,14 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Monza Town & the Royal Villa — 2km from the circuit</p>
       {monzaTown && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={monzaTown} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={monzaTown} isPro={isPro} hideProCtas />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Two real excursions</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-4">
-        {alfaRomeoMuseum && <SpokeExperienceCard experience={alfaRomeoMuseum} isPro={isPro} hideProCtas />}
-        {lakeComo && <SpokeExperienceCard experience={lakeComo} isPro={isPro} hideProCtas />}
+        {alfaRomeoMuseum && <SpokeExperienceCard eventSlug={eventSlug} experience={alfaRomeoMuseum} isPro={isPro} hideProCtas />}
+        {lakeComo && <SpokeExperienceCard eventSlug={eventSlug} experience={lakeComo} isPro={isPro} hideProCtas />}
       </div>
 
       <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8 mt-4">

@@ -77,7 +77,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
         <>
           {stayGuide && (
             <div className="mb-8">
-              <SpokeExperienceCard experience={stayGuide} isPro={isPro} />
+              <SpokeExperienceCard eventSlug={eventSlug} experience={stayGuide} isPro={isPro} />
             </div>
           )}
 
@@ -134,7 +134,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       {isUnlocked && luxuryGuide && (
         <div className="mt-8 pt-8 border-t border-[#2A2A2A]">
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Splurging? Here&apos;s where</p>
-          <SpokeExperienceCard experience={luxuryGuide} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={luxuryGuide} isPro={isPro} />
         </div>
       )}
     </SpokeShell>

@@ -48,19 +48,19 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">In the city — a half-day at a time</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-4">
-        {ibirapuera && <SpokeExperienceCard experience={ibirapuera} isPro={isPro} hideProCtas />}
-        {paulistaMasp && <SpokeExperienceCard experience={paulistaMasp} isPro={isPro} hideProCtas />}
-        {becoDoBatman && <SpokeExperienceCard experience={becoDoBatman} isPro={isPro} hideProCtas />}
-        {feiraLiberdade && <SpokeExperienceCard experience={feiraLiberdade} isPro={isPro} hideProCtas />}
+        {ibirapuera && <SpokeExperienceCard eventSlug={eventSlug} experience={ibirapuera} isPro={isPro} hideProCtas />}
+        {paulistaMasp && <SpokeExperienceCard eventSlug={eventSlug} experience={paulistaMasp} isPro={isPro} hideProCtas />}
+        {becoDoBatman && <SpokeExperienceCard eventSlug={eventSlug} experience={becoDoBatman} isPro={isPro} hideProCtas />}
+        {feiraLiberdade && <SpokeExperienceCard eventSlug={eventSlug} experience={feiraLiberdade} isPro={isPro} hideProCtas />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3 mt-8">Out of the city — real day trips</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-4">
-        {saoRoque && <SpokeExperienceCard experience={saoRoque} isPro={isPro} hideProCtas />}
-        {santosGuaruja && <SpokeExperienceCard experience={santosGuaruja} isPro={isPro} hideProCtas />}
+        {saoRoque && <SpokeExperienceCard eventSlug={eventSlug} experience={saoRoque} isPro={isPro} hideProCtas />}
+        {santosGuaruja && <SpokeExperienceCard eventSlug={eventSlug} experience={santosGuaruja} isPro={isPro} hideProCtas />}
         {camposDoJordao && (
           <div className="sm:col-span-2">
-            <SpokeExperienceCard experience={camposDoJordao} isPro={isPro} hideProCtas />
+            <SpokeExperienceCard eventSlug={eventSlug} experience={camposDoJordao} isPro={isPro} hideProCtas />
           </div>
         )}
       </div>

@@ -62,7 +62,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
 
       {ticketGuide && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={ticketGuide} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={ticketGuide} isPro={isPro} />
         </div>
       )}
 
@@ -75,8 +75,8 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         General Admission versus Reserve above already covers what you need to know for those two.
       </p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {mcgComparison && <SpokeExperienceCard experience={mcgComparison} isPro={isPro} />}
-        {adelaideComparison && <SpokeExperienceCard experience={adelaideComparison} isPro={isPro} />}
+        {mcgComparison && <SpokeExperienceCard eventSlug={eventSlug} experience={mcgComparison} isPro={isPro} />}
+        {adelaideComparison && <SpokeExperienceCard eventSlug={eventSlug} experience={adelaideComparison} isPro={isPro} />}
       </div>
 
       {isUnlocked && (

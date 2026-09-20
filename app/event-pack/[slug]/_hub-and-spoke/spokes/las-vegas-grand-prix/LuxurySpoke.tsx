@@ -90,7 +90,7 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The single biggest luxury decision</p>
       {paddockClub && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={paddockClub} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={paddockClub} isPro={isPro} />
         </div>
       )}
 

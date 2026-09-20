@@ -36,7 +36,7 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
 
       {circuitHistory && (
         <div className="mb-6">
-          <SpokeExperienceCard experience={circuitHistory} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={circuitHistory} isPro={isPro} />
         </div>
       )}
 
@@ -86,7 +86,7 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
 
       {fanNostalgia && (
         <div className="mb-10">
-          <SpokeExperienceCard experience={fanNostalgia} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={fanNostalgia} isPro={isPro} />
         </div>
       )}
 
@@ -186,7 +186,7 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
           <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-4 pt-10 mt-6 border-t border-[#2A2A2A]">
             The city, not just the circuit
           </p>
-          <SpokeExperienceCard experience={petronas} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={petronas} isPro={isPro} />
         </>
       )}
 

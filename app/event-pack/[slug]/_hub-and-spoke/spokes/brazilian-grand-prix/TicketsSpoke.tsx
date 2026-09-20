@@ -173,7 +173,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
           {ticketGuide && (
             <div className="mb-8">
-              <SpokeExperienceCard experience={ticketGuide} isPro={isPro} />
+              <SpokeExperienceCard eventSlug={eventSlug} experience={ticketGuide} isPro={isPro} />
             </div>
           )}
 
@@ -187,8 +187,8 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
           </p>
 
           <div className="grid sm:grid-cols-2 gap-4 mb-8">
-            {grandstandM && <SpokeExperienceCard experience={grandstandM} isPro={isPro} />}
-            {grandstandA && <SpokeExperienceCard experience={grandstandA} isPro={isPro} />}
+            {grandstandM && <SpokeExperienceCard eventSlug={eventSlug} experience={grandstandM} isPro={isPro} />}
+            {grandstandA && <SpokeExperienceCard eventSlug={eventSlug} experience={grandstandA} isPro={isPro} />}
           </div>
 
           <p className="text-sm text-[#A3A3A3] leading-7 mb-8">

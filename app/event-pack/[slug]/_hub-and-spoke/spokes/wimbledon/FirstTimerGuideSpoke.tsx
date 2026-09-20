@@ -100,8 +100,8 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {preparing && <SpokeExperienceCard experience={preparing} isPro={isPro} />}
-        {theQueue && <SpokeExperienceCard experience={theQueue} isPro={isPro} />}
+        {preparing && <SpokeExperienceCard eventSlug={eventSlug} experience={preparing} isPro={isPro} />}
+        {theQueue && <SpokeExperienceCard eventSlug={eventSlug} experience={theQueue} isPro={isPro} />}
       </div>
 
       <p className="text-sm font-bold text-white mb-2">What&apos;s not allowed through the gates</p>

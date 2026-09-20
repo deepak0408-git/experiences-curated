@@ -69,8 +69,8 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
       <p className="text-xs text-[#6A6A6A] mb-8">Credit: wimbledon.org.</p>
 
       <div className="grid sm:grid-cols-2 gap-6 mb-8">
-        {theHill && <SpokeExperienceCard experience={theHill} isPro={isPro} />}
-        {outerCourts && <SpokeExperienceCard experience={outerCourts} isPro={isPro} />}
+        {theHill && <SpokeExperienceCard eventSlug={eventSlug} experience={theHill} isPro={isPro} />}
+        {outerCourts && <SpokeExperienceCard eventSlug={eventSlug} experience={outerCourts} isPro={isPro} />}
       </div>
 
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
@@ -83,8 +83,8 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
       </div>
 
       <div className="grid sm:grid-cols-2 gap-6 mb-8">
-        {practiceCourts && <SpokeExperienceCard experience={practiceCourts} isPro={isPro} />}
-        {museum && <SpokeExperienceCard experience={museum} isPro={isPro} />}
+        {practiceCourts && <SpokeExperienceCard eventSlug={eventSlug} experience={practiceCourts} isPro={isPro} />}
+        {museum && <SpokeExperienceCard eventSlug={eventSlug} experience={museum} isPro={isPro} />}
       </div>
 
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">

@@ -91,8 +91,8 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
         the city.
       </p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {parisIcons && <SpokeExperienceCard experience={parisIcons} isPro={isPro} />}
-        {parisLandmarks && <SpokeExperienceCard experience={parisLandmarks} isPro={isPro} />}
+        {parisIcons && <SpokeExperienceCard eventSlug={eventSlug} experience={parisIcons} isPro={isPro} />}
+        {parisLandmarks && <SpokeExperienceCard eventSlug={eventSlug} experience={parisLandmarks} isPro={isPro} />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Essential apps</p>

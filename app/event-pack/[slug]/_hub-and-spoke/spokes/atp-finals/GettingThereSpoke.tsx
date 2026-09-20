@@ -43,8 +43,8 @@ export default async function GettingThereSpoke({ eventSlug }: { eventSlug: stri
       </p>
 
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {airportGuide && <SpokeExperienceCard experience={airportGuide} isPro={isPro} />}
-        {tramGuide && <SpokeExperienceCard experience={tramGuide} isPro={isPro} />}
+        {airportGuide && <SpokeExperienceCard eventSlug={eventSlug} experience={airportGuide} isPro={isPro} />}
+        {tramGuide && <SpokeExperienceCard eventSlug={eventSlug} experience={tramGuide} isPro={isPro} />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Around the city</p>

@@ -61,8 +61,8 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The circuit's own landmarks</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {fountainsSphere && <SpokeExperienceCard experience={fountainsSphere} isPro={isPro} />}
-        {stripAtNight && <SpokeExperienceCard experience={stripAtNight} isPro={isPro} />}
+        {fountainsSphere && <SpokeExperienceCard eventSlug={eventSlug} experience={fountainsSphere} isPro={isPro} />}
+        {stripAtNight && <SpokeExperienceCard eventSlug={eventSlug} experience={stripAtNight} isPro={isPro} />}
       </div>
 
       {isUnlocked && (
@@ -122,7 +122,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
 
           {raceWeekFree && (
             <div className="mt-6">
-              <SpokeExperienceCard experience={raceWeekFree} isPro={isPro} />
+              <SpokeExperienceCard eventSlug={eventSlug} experience={raceWeekFree} isPro={isPro} />
             </div>
           )}
         </div>

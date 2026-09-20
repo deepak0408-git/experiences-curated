@@ -58,8 +58,8 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
         Windsor Bridge — a realistic single day covering both.
       </p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {windsorCastle && <SpokeExperienceCard experience={windsorCastle} isPro={isPro} />}
-        {eton && <SpokeExperienceCard experience={eton} isPro={isPro} />}
+        {windsorCastle && <SpokeExperienceCard eventSlug={eventSlug} experience={windsorCastle} isPro={isPro} />}
+        {eton && <SpokeExperienceCard eventSlug={eventSlug} experience={eton} isPro={isPro} />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Or a rest day without leaving London</p>
@@ -68,8 +68,8 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
         short train ride from the grounds.
       </p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {restDay && <SpokeExperienceCard experience={restDay} isPro={isPro} />}
-        {brixton && <SpokeExperienceCard experience={brixton} isPro={isPro} />}
+        {restDay && <SpokeExperienceCard eventSlug={eventSlug} experience={restDay} isPro={isPro} />}
+        {brixton && <SpokeExperienceCard eventSlug={eventSlug} experience={brixton} isPro={isPro} />}
       </div>
 
       {isUnlocked && (

@@ -52,20 +52,20 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Austin&apos;s own neighborhoods</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {southCongress && <SpokeExperienceCard experience={southCongress} isPro={isPro} />}
-        {sixthRainey && <SpokeExperienceCard experience={sixthRainey} isPro={isPro} />}
-        {ladyBirdLake && <SpokeExperienceCard experience={ladyBirdLake} isPro={isPro} />}
-        {zilker && <SpokeExperienceCard experience={zilker} isPro={isPro} />}
+        {southCongress && <SpokeExperienceCard eventSlug={eventSlug} experience={southCongress} isPro={isPro} />}
+        {sixthRainey && <SpokeExperienceCard eventSlug={eventSlug} experience={sixthRainey} isPro={isPro} />}
+        {ladyBirdLake && <SpokeExperienceCard eventSlug={eventSlug} experience={ladyBirdLake} isPro={isPro} />}
+        {zilker && <SpokeExperienceCard eventSlug={eventSlug} experience={zilker} isPro={isPro} />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Race weekend&apos;s built-in entertainment</p>
       <div className="mb-8">
-        {superStage && <SpokeExperienceCard experience={superStage} isPro={isPro} />}
+        {superStage && <SpokeExperienceCard eventSlug={eventSlug} experience={superStage} isPro={isPro} />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Beyond the festival stage</p>
       <div className="mb-8">
-        {liveMusic && <SpokeExperienceCard experience={liveMusic} isPro={isPro} />}
+        {liveMusic && <SpokeExperienceCard eventSlug={eventSlug} experience={liveMusic} isPro={isPro} />}
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Two real out-of-town options</p>
@@ -75,8 +75,8 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
         between sessions.
       </p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {hillCountry && <SpokeExperienceCard experience={hillCountry} isPro={isPro} />}
-        {sanAntonio && <SpokeExperienceCard experience={sanAntonio} isPro={isPro} />}
+        {hillCountry && <SpokeExperienceCard eventSlug={eventSlug} experience={hillCountry} isPro={isPro} />}
+        {sanAntonio && <SpokeExperienceCard eventSlug={eventSlug} experience={sanAntonio} isPro={isPro} />}
       </div>
 
       {isUnlocked && (

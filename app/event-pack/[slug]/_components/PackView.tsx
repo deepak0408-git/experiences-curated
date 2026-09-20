@@ -1422,7 +1422,7 @@ export default async function PackView({
             {/* Editor's Pick — feature card */}
             {section.editorsPick && (
               <div className="group rounded-sm border border-[#2A2A2A] bg-[#141414] overflow-hidden hover:border-[#AAFF00] transition-colors mb-5">
-                <Link href={`/experience/${section.editorsPick.slug}`} className="block">
+                <Link href={`/experience/${section.editorsPick.slug}?from=${eventSlug}`} className="block">
                 {section.editorsPick.heroImageUrl && (
                   <div className="relative h-60 overflow-hidden bg-[#1A1A1A]">
                     <Image
@@ -1512,7 +1512,7 @@ export default async function PackView({
                     key={exp.id}
                     className="group rounded-sm border border-[#2A2A2A] bg-[#141414] overflow-hidden hover:border-[#AAFF00] transition-colors"
                   >
-                    <Link href={`/experience/${exp.slug}`} className="block">
+                    <Link href={`/experience/${exp.slug}?from=${eventSlug}`} className="block">
                       <div className="relative h-36 overflow-hidden bg-[#1A1A1A]">
                         {exp.heroImageUrl ? (
                           <Image
@@ -1544,7 +1544,7 @@ export default async function PackView({
                           </span>
                         )}
                       </div>
-                      <Link href={`/experience/${exp.slug}`}>
+                      <Link href={`/experience/${exp.slug}?from=${eventSlug}`}>
                         <h3 className="text-sm font-black text-white leading-snug group-hover:text-[#AAFF00] transition-colors">
                           {exp.title}
                         </h3>

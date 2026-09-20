@@ -88,7 +88,7 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
 
       {padangStage && (
         <div className="mb-10">
-          <SpokeExperienceCard experience={padangStage} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={padangStage} isPro={isPro} />
         </div>
       )}
 
@@ -177,7 +177,7 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
       {orientation && (
         <div className="mt-8">
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The full orientation guide</p>
-          <SpokeExperienceCard experience={orientation} isPro={isPro} />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={orientation} isPro={isPro} />
         </div>
       )}
 

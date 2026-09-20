@@ -45,28 +45,28 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Splurge — under the fig tree</p>
       {figueira && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={figueira} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={figueira} isPro={isPro} hideProCtas />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Splurge — Michelin-starred, Brazilian ingredients</p>
       {mani && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={mani} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={mani} isPro={isPro} hideProCtas />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Budget — the real Liberdade line</p>
       {liberdadeRamen && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={liberdadeRamen} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={liberdadeRamen} isPro={isPro} hideProCtas />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">A night out — Vila Madalena or live samba downtown</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {vilaMadalena && <SpokeExperienceCard experience={vilaMadalena} isPro={isPro} hideProCtas />}
-        {barBrahma && <SpokeExperienceCard experience={barBrahma} isPro={isPro} hideProCtas />}
+        {vilaMadalena && <SpokeExperienceCard eventSlug={eventSlug} experience={vilaMadalena} isPro={isPro} hideProCtas />}
+        {barBrahma && <SpokeExperienceCard eventSlug={eventSlug} experience={barBrahma} isPro={isPro} hideProCtas />}
       </div>
 
       {isUnlocked && (

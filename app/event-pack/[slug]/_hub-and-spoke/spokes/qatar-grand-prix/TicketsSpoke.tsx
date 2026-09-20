@@ -180,7 +180,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
           {ticketGuide && (
             <div className="mb-8">
-              <SpokeExperienceCard experience={ticketGuide} isPro={isPro} />
+              <SpokeExperienceCard eventSlug={eventSlug} experience={ticketGuide} isPro={isPro} />
             </div>
           )}
 
@@ -196,8 +196,8 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
           </p>
 
           <div className="grid sm:grid-cols-2 gap-4 mb-8">
-            {northGrandstand && <SpokeExperienceCard experience={northGrandstand} isPro={isPro} />}
-            {mainGrandstand && <SpokeExperienceCard experience={mainGrandstand} isPro={isPro} />}
+            {northGrandstand && <SpokeExperienceCard eventSlug={eventSlug} experience={northGrandstand} isPro={isPro} />}
+            {mainGrandstand && <SpokeExperienceCard eventSlug={eventSlug} experience={mainGrandstand} isPro={isPro} />}
           </div>
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">What GA generally gets you</p>
@@ -211,7 +211,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
 
           {gaLusailHill && (
             <div className="mb-8">
-              <SpokeExperienceCard experience={gaLusailHill} isPro={isPro} />
+              <SpokeExperienceCard eventSlug={eventSlug} experience={gaLusailHill} isPro={isPro} />
             </div>
           )}
 

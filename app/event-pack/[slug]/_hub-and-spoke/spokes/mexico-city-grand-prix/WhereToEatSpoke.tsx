@@ -38,21 +38,21 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Budget — the street-food essential</p>
       {tacos && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={tacos} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={tacos} isPro={isPro} hideProCtas />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Moderate — a food hall covering every craving</p>
       {mercadoRoma && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={mercadoRoma} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={mercadoRoma} isPro={isPro} hideProCtas />
         </div>
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Splurge — the two hardest tables in the city</p>
       {pujolContramar && (
         <div className="mb-8">
-          <SpokeExperienceCard experience={pujolContramar} isPro={isPro} hideProCtas />
+          <SpokeExperienceCard eventSlug={eventSlug} experience={pujolContramar} isPro={isPro} hideProCtas />
         </div>
       )}
 

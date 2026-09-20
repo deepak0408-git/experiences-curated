@@ -53,11 +53,11 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
       </p>
 
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {qatariCuisine && <SpokeExperienceCard experience={qatariCuisine} isPro={isPro} />}
-        {sawa && <SpokeExperienceCard experience={sawa} isPro={isPro} />}
+        {qatariCuisine && <SpokeExperienceCard eventSlug={eventSlug} experience={qatariCuisine} isPro={isPro} />}
+        {sawa && <SpokeExperienceCard eventSlug={eventSlug} experience={sawa} isPro={isPro} />}
         {parisa && (
           <div className="sm:col-span-2">
-            <SpokeExperienceCard experience={parisa} isPro={isPro} />
+            <SpokeExperienceCard eventSlug={eventSlug} experience={parisa} isPro={isPro} />
           </div>
         )}
       </div>
