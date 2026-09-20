@@ -193,6 +193,18 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
     { label: "Gate times", value: "Not yet officially published for 2026 — based on the confirmed session schedule above, expect roughly: Friday gates ~13:30-14:30 (P1 16:30), Saturday gates ~14:30-15:30 (P3 17:30), Sunday gates ~16:00-17:00 (race 19:00). Confirm exact times via formula1.com closer to race week." },
     { label: "Emergencies", value: "Qatar-wide emergency number: 999. Hamad International Airport and major hotels have English-speaking staff on call; Hamad Medical Corporation runs the country's main public hospitals." },
   ],
+  // Real, sourced facts from experience research (free tram/train travel,
+  // the seven-gate numbering, the Sprint format). Session times are NOT yet
+  // officially published for 2027 (grandprix.com.au's own schedule page
+  // says "released closer to the Grand Prix" as of 20 Sep 2026) — stated
+  // honestly per skill §2a-3, see project_australian_gp_2027_sprint_format
+  // memory.
+  "australian-grand-prix": [
+    { label: "Sprint weekend", value: "2027 is a Sprint format: Friday is Practice 1 + Sprint Qualifying, Saturday is the Sprint Race + Qualifying, Sunday is the Grand Prix. Exact session clock times haven't been published yet — check formula1.com or grandprix.com.au closer to race week." },
+    { label: "Free transit", value: "Tram and train travel to Albert Park is free on race day with a valid ticket — around 5,000 extra tram services run across the weekend. The nearest free-travel train stop is Anzac Station, an 8-minute walk from Gate 5." },
+    { label: "Gates", value: "Seven entry gates, numbered 1, 2, 3, 5, 8, 9, and 10 (not sequential — there's no Gate 4 or 6). Gates typically open 8:30am Friday through Sunday; Thursday's practice day opens later, around 9:30am." },
+    { label: "Emergencies", value: "Australia-wide emergency number: 000. Victoria's public hospital system and Melbourne's tourism information line (13 28 42) both operate in English." },
+  ],
 };
 
 // Exported (27 Aug 2026) — same reasoning as QUICK_REFERENCE_BY_EVENT above.
@@ -370,6 +382,19 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
     introText:
       "Lusail ran real motorsport history — MotoGP's first-ever night race — nearly two decades before F1 arrived. The 2023 rebuild that turned it into today's 52,000-capacity venue, with a 402-metre pit lane building and 50 pit boxes, the largest on the calendar, didn't touch the layout underneath it. You're racing on a track that earned its reputation before this sport ever noticed it.\n\nThis is also a genuinely affordable race by F1 standards. Getting to the circuit costs nothing extra either: the Doha Metro Red Line plus the ticket-holder shuttle is free with any race ticket, a rarity on this calendar.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
+  // Built from real sourced facts researched during experience seeding
+  // (the 2021 reprofile and its near-5-second-faster lap record, the
+  // circuit reverting to public parkland/running paths 361 days a year, the
+  // Piastri Grandstand's 2026 opening opposite the McLaren garage, the 2027
+  // Sprint format) — not invented, matches every other hub-and-spoke
+  // event's pattern of drawing The Brief from real underlying content.
+  "australian-grand-prix": {
+    displayName: "Australian Grand Prix",
+    venueLine: "Held at Albert Park Circuit, a 5.278km lakeside street circuit three kilometres south of Melbourne's CBD — public parkland 361 days a year, an FIA Grade 1 racetrack for one week each April.",
+    heroFallbackImageSlug: "albert-park-circuit-inside-the-track-mu9c6dq0",
+    introText:
+      "Albert Park is unusual among street circuits because it doesn't trade racing quality for spectacle — the 2021 reprofile turned it into a genuinely fast, flowing 14-turn layout, nearly five seconds a lap quicker than the old configuration managed in over two decades. For 361 days a year the same tarmac is a running and cycling path around the lake; for one week each April, it's a Grand Prix circuit with a world championship's worth of history layered into ordinary parkland — Senna's last win, Webber's first point, Brundle's Turn 3 cartwheel, all happened on roads most Melburnians jog past every other week of the year.\n\n2027 brings a real first for the circuit's newest chapter: the Piastri Grandstand, opened in 2026 directly opposite the McLaren garage, named for a driver who came up through Melbourne's own local karting scene before most of the world had heard of him. It's also a Sprint weekend — Practice 1 and Sprint Qualifying on Friday, the Sprint Race and Qualifying on Saturday, the Grand Prix on Sunday — a genuinely different rhythm from a standard three-day race weekend.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
 };
 
 export default async function HubPage({ slug }: { slug: string }) {
@@ -446,7 +471,7 @@ export default async function HubPage({ slug }: { slug: string }) {
             src={hubHeroUrl}
             alt={displayEventName}
             fill
-            className={`object-cover opacity-90 ${slug === "shanghai-masters" ? "lg:object-[center_65%]" : ""} ${slug === "brazilian-grand-prix" ? "lg:object-[center_70%]" : ""}`}
+            className={`object-cover opacity-90 ${slug === "shanghai-masters" ? "lg:object-[center_65%]" : ""} ${slug === "brazilian-grand-prix" ? "lg:object-[center_70%]" : ""} ${slug === "australian-grand-prix" ? "lg:object-[center_75%]" : ""}`}
             sizes="100vw"
             priority
           />

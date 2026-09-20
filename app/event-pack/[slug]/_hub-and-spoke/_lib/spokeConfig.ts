@@ -381,4 +381,36 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "map", label: "Venue Map", question: "What facilities are available at Monza?", status: "public", imageSlug: "history-of-monza-walking-old-banking-mrc4ka26" },
     { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Italian Grand Prix?", status: "teaser", imageSlug: "paddock-club-champions-club-hospitality-mrbsb3a1", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/brazilian-grand-prix-paddock-club.jpg" },
   ],
+  // Australian Grand Prix 2027 — scaffolded 20 Sep 2026. All 21 experiences
+  // real/seeded (status: in_review/published — publish remaining via
+  // /curator/review before all spoke cards render), all 21 already
+  // hero-imaged (content/data build completed in a prior session — see
+  // project_australian_gp_2027_experiences memory). Real imageSlug values
+  // used directly. Weather/Arrival/Tickets use the skill's standing
+  // cross-event default images (imageOverride), set here at config-creation
+  // time per the skill's explicit rule. Real planner_hotel_tier_cost/
+  // planner_ticket_tier_cost/planner_destination_bands/planner_flight_cost
+  // rows already exist for Melbourne/this event (seeded in the prior
+  // session) — Cost spoke should render real data, not the empty-state
+  // fallback. 2-4 Apr 2027 is a Sprint weekend (Practice 1 + Sprint
+  // Qualifying Friday, Sprint Race + Qualifying Saturday, Race Sunday) —
+  // confirmed via grandprix.com.au's official schedule page 20 Sep 2026;
+  // exact session clock times not yet published — see
+  // project_australian_gp_2027_sprint_format memory. Spoke-mapping agreed
+  // with the founder 20 Sep 2026: Lakeside Festival and Fan Zone both sit on
+  // Arrival (race-week in-park fan program), not Day Trips.
+  "australian-grand-prix": [
+    { id: "cost", label: "Cost Guide", question: "How much does an Australian Grand Prix weekend in Melbourne cost?", status: "teaser", imageSlug: "albert-park-circuit-inside-the-track-mu9c6dq0", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/australian-grand-prix-cost-fangio-grandstand.jpg" },
+    { id: "tickets", label: "Ticket Guide", question: "Which Albert Park grandstand is the best buy?", status: "teaser", imageSlug: "ausgp-ticket-guide-grandstands-park-pass-mu9ccj0n", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the Australian Grand Prix?", status: "teaser", imageSlug: "where-to-stay-melbourne-boxing-day-msvp80zu" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to Albert Park?", status: "public", imageSlug: "getting-to-albert-park-tram-train-mu9c7ocr" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the Australian Grand Prix, and what should I pack?", status: "public", imageSlug: "melbourne-april-weather-what-to-pack-mu9c9btl", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Australian Grand Prix?", status: "public", imageSlug: "first-timers-guide-albert-park-mu9cdxo6" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat in Melbourne during Australian Grand Prix weekend?", status: "teaser", imageSlug: "melbourne-coffee-food-culture-guide-bt5u1c" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips during Australian Grand Prix weekend?", status: "teaser", imageSlug: "great-ocean-road-twelve-apostles-daytrip-msxbk23p" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does an Australian Grand Prix Sprint weekend actually look like?", status: "teaser", imageSlug: "lakeside-festival-albert-park-mu9cgpaz" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at Albert Park gates?", status: "public", imageSlug: "arrival-queue-guide-gates-bag-policy-mu9caq03", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at Albert Park?", status: "public", imageSlug: "albert-park-circuit-inside-the-track-mu9c6dq0" },
+    { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Australian Grand Prix?", status: "teaser", imageSlug: "f1-paddock-club-trackside-hospitality-mu9c506w" },
+  ],
 };

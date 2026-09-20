@@ -445,6 +445,37 @@ const EXPERIENCE_TO_SPOKE_BY_EVENT: Record<string, Record<string, { spokeId: str
     "alfa-romeo-museum-arese-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
     "lake-como-race-weekend-from-the-lake-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
   },
+  // Australian Grand Prix 2027 — scaffolded 20 Sep 2026. 4 of these 21
+  // experiences (A Day in Melbourne, Federation Square, Where to Stay in
+  // Melbourne, Great Ocean Road, Yarra Valley, St Kilda) are reused/shared
+  // with Australian Open 2027 and/or the NZ-in-Australia cricket pack via
+  // sporting_event_experiences — this event's own key ensures a visitor who
+  // reaches one of those from THIS pack's Day Trips/Hotels spokes (validated
+  // via ?from=australian-grand-prix) sees the correct back-link, per the
+  // 20 Sep 2026 nested-table fix (project_shared_experience_backlink_gap).
+  "australian-grand-prix": {
+    "fangio-grandstand-albert-park-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "piastri-grandstand-albert-park-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "vettel-stand-turns-11-12-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "brabham-grandstand-turns-1-2-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "general-admission-park-pass-hills-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "ausgp-ticket-guide-grandstands-park-pass-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "f1-paddock-club-trackside-hospitality-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "albert-park-circuit-inside-the-track-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "first-timers-guide-albert-park-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "arrival-queue-guide-gates-bag-policy-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "fan-zone-melbourne-walk-fan-forum-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "lakeside-festival-albert-park-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "getting-to-albert-park-tram-train-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "melbourne-april-weather-what-to-pack-": { spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+    "melbourne-coffee-food-culture-guide-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "where-to-stay-melbourne-boxing-day-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "melbourne-laneways-coffee-city-day-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "federation-square-cbd-laneways-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "great-ocean-road-twelve-apostles-daytrip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "st-kilda-beaches-melbourne-park-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "yarra-valley-melbourne-wine-daytrip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+  },
 };
 
 // fromEventSlug should already be validated against sporting_event_experiences

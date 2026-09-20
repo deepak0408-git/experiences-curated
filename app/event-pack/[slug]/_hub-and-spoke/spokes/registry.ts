@@ -194,6 +194,19 @@ import IGArrivalSpoke from "./italian-grand-prix/ArrivalSpoke";
 import IGMapSpoke from "./italian-grand-prix/MapSpoke";
 import IGLuxurySpoke from "./italian-grand-prix/LuxurySpoke";
 
+import AGCostSpoke from "./australian-grand-prix/CostSpoke";
+import AGTicketsSpoke from "./australian-grand-prix/TicketsSpoke";
+import AGHotelsSpoke from "./australian-grand-prix/HotelsSpoke";
+import AGGettingThereSpoke from "./australian-grand-prix/GettingThereSpoke";
+import AGWeatherSpoke from "./australian-grand-prix/WeatherSpoke";
+import AGFirstTimerGuideSpoke from "./australian-grand-prix/FirstTimerGuideSpoke";
+import AGWhereToEatSpoke from "./australian-grand-prix/WhereToEatSpoke";
+import AGDayTripsSpoke from "./australian-grand-prix/DayTripsSpoke";
+import AGItinerarySpoke from "./australian-grand-prix/ItinerarySpoke";
+import AGArrivalSpoke from "./australian-grand-prix/ArrivalSpoke";
+import AGMapSpoke from "./australian-grand-prix/MapSpoke";
+import AGLuxurySpoke from "./australian-grand-prix/LuxurySpoke";
+
 type SpokeComponent = ComponentType<{ eventSlug: string }>;
 
 // Registry mapping eventSlug -> spokeId -> component. A new hub_and_spoke
@@ -411,6 +424,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: IGMapSpoke,
     luxury: IGLuxurySpoke,
   },
+  "australian-grand-prix": {
+    cost: AGCostSpoke,
+    tickets: AGTicketsSpoke,
+    hotels: AGHotelsSpoke,
+    "getting-there": AGGettingThereSpoke,
+    weather: AGWeatherSpoke,
+    "first-timer-guide": AGFirstTimerGuideSpoke,
+    "where-to-eat": AGWhereToEatSpoke,
+    "day-trips": AGDayTripsSpoke,
+    itinerary: AGItinerarySpoke,
+    arrival: AGArrivalSpoke,
+    map: AGMapSpoke,
+    luxury: AGLuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -623,5 +650,19 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Monza — Arrival & Queue Guide",
     map: "Monza Circuit Map — History, Corners, and Facilities",
     luxury: "Luxury Guide for the Italian Grand Prix — Paddock Club, Champions Club, and More",
+  },
+  "australian-grand-prix": {
+    cost: "How Much Does the Australian Grand Prix Cost? — Melbourne Budget Guide",
+    tickets: "Albert Park Ticket Guide — Park Pass to Paddock Club",
+    hotels: "Where to Stay for the Australian Grand Prix — South Melbourne, St Kilda Road, or the CBD",
+    "getting-there": "Getting to Albert Park — Australian Grand Prix Transit Guide",
+    weather: "Melbourne Weather in April — What to Pack for the Australian Grand Prix",
+    "first-timer-guide": "First-Timer's Guide — the Australian Grand Prix at Albert Park",
+    "where-to-eat": "Where to Eat — Australian Grand Prix Weekend",
+    "day-trips": "Best Day Trips — Australian Grand Prix Weekend, Including the Great Ocean Road",
+    itinerary: "Sample Australian Grand Prix Sprint Weekend Itinerary",
+    arrival: "Albert Park — Arrival & Queue Guide",
+    map: "Albert Park Circuit Map — History, Corners, and Facilities",
+    luxury: "Luxury Guide for the Australian Grand Prix — Paddock Club, Champions Club, and More",
   },
 };
