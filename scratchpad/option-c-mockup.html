@@ -1,0 +1,188 @@
+<title>Mini-Pack Layout Compare</title>
+<style>
+  :root {
+    --bg: #0A0A0A;
+    --surface: #141414;
+    --surface-2: #1A1A1A;
+    --border: #2A2A2A;
+    --muted: #A3A3A3;
+    --fg: #FFFFFF;
+    --accent: #AAFF00;
+    --accent-hover: #BBFF33;
+    --dim: #6A6A6A;
+    --font-display: 'Inter', -apple-system, sans-serif;
+  }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-display);
+    padding-inline: 20px;
+    padding-block: 40px;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; gap: 64px; }
+
+  .label {
+    font-size: 10px; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 6px;
+  }
+  .sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; max-width: 60ch; line-height: 1.6; }
+
+  .frame {
+    border: 1px solid var(--border); border-radius: 4px; background: var(--surface);
+    padding: 28px; overflow: hidden;
+  }
+  .tag {
+    display: inline-block; font-size: 10px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 3px; margin-bottom: 16px;
+  }
+  .tag.bad { color: #ff6b6b; background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.3); }
+  .tag.good { color: var(--accent); background: rgba(170,255,0,0.08); border: 1px solid rgba(170,255,0,0.3); }
+
+  /* ---- shared "page" chrome ---- */
+  .intro-col p { font-size: 13px; line-height: 1.7; color: var(--muted); margin-bottom: 12px; max-width: 46ch; }
+  .plan-your-trip {
+    font-size: 10px; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin-top: 32px; padding-top: 20px;
+  }
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+  .tile { height: 46px; border-radius: 3px; background: var(--surface-2); border: 1px solid var(--border); }
+
+  /* ---- CURRENT (buggy) ---- */
+  .current-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 28px; }
+  .current-grid .intro-col { position: relative; }
+  .gap-marker {
+    position: absolute; left: 0; right: 0; top: 96px; bottom: 0;
+    border: 1px dashed rgba(255,107,107,0.5); border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gap-marker span {
+    font-size: 11px; color: #ff6b6b; background: var(--surface); padding: 2px 8px;
+  }
+  .cta-box {
+    border: 1px solid rgba(170,255,0,0.3); background: rgba(170,255,0,0.05); border-radius: 3px;
+    padding: 16px;
+  }
+  .cta-box .eyebrow { font-size: 10px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .cta-box .price { font-size: 20px; font-weight: 900; margin: 10px 0; }
+  .cta-box .btn {
+    display: block; text-align: center; background: var(--accent); color: #000; font-size: 12px; font-weight: 900;
+    padding: 9px; border-radius: 3px; margin-bottom: 10px;
+  }
+  .mini-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 9px 0; border-top: 1px solid var(--border); font-size: 11px;
+  }
+  .mini-row .name { color: var(--fg); font-weight: 700; }
+  .mini-row .price-sm { color: var(--dim); font-size: 10px; }
+  .mini-row .buy { color: var(--accent); font-weight: 900; font-size: 10px; border: 1px solid rgba(170,255,0,0.4); padding: 3px 8px; border-radius: 3px; }
+
+  /* ---- OPTION C ---- */
+  .option-c-row1 { display: grid; grid-template-columns: 2fr 1fr; gap: 28px; align-items: start; }
+  .strip-label {
+    font-size: 10px; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--dim); margin: 28px 0 12px;
+  }
+  .strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .strip-card {
+    border: 1px solid var(--border); background: var(--surface-2); border-radius: 3px; padding: 14px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .strip-card .name { font-size: 12px; font-weight: 900; color: var(--fg); }
+  .strip-card .price-sm { font-size: 11px; color: var(--dim); }
+  .strip-card .buy {
+    margin-top: 4px; text-align: center; font-size: 10px; font-weight: 900; color: var(--accent);
+    border: 1px solid rgba(170,255,0,0.4); padding: 6px; border-radius: 3px;
+  }
+
+  .why { margin-top: 10px; }
+  .why ul { margin: 0; padding-left: 18px; }
+  .why li { font-size: 12.5px; color: var(--muted); line-height: 1.7; margin-bottom: 4px; }
+  .why b { color: var(--fg); }
+
+  @media (max-width: 720px) {
+    .current-grid, .option-c-row1 { grid-template-columns: 1fr; }
+    .tiles, .strip { grid-template-columns: 1fr 1fr; }
+    .gap-marker { top: 140px; }
+  }
+</style>
+
+<div class="wrap">
+
+  <section>
+    <div class="label">Current layout</div>
+    <div class="sub">Sidebar grid row stretches to match the taller mini-pack list, leaving dead space inside the intro column before "Plan your trip."</div>
+    <div class="frame">
+      <span class="tag bad">Bug — empty gap</span>
+      <div class="current-grid">
+        <div class="intro-col">
+          <p>Held at Sepang International Circuit, Malaysia — same "Bahrain Grand Prix" name on the calendar, a different country hosting it this year.</p>
+          <p>F1 hasn't raced in Malaysia since 2017. Nearly 191,000 fans turned out for a single Sepang MotoGP weekend in 2025.</p>
+          <div class="gap-marker"><span>stretched empty space</span></div>
+        </div>
+        <div>
+          <div class="cta-box">
+            <div class="eyebrow">Unlock the full guide</div>
+            <div class="price">US$15</div>
+            <div class="btn">Get the Pack</div>
+            <div class="mini-row"><div><div class="name">Ticket Guide</div><div class="price-sm">US$7</div></div><div class="buy">Buy</div></div>
+            <div class="mini-row"><div><div class="name">Where to Stay</div><div class="price-sm">US$5</div></div><div class="buy">Buy</div></div>
+            <div class="mini-row"><div><div class="name">Itinerary</div><div class="price-sm">US$5</div></div><div class="buy">Buy</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="plan-your-trip">Plan your trip</div>
+      <div class="tiles"><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">Option C</div>
+    <div class="sub">Mini-packs move out of the 2-column row entirely and become their own full-width strip beneath it — the intro/CTA pairing goes back to its original, naturally-matched height.</div>
+    <div class="frame">
+      <span class="tag good">No stretch — each row is its own height</span>
+
+      <div class="option-c-row1">
+        <div class="intro-col">
+          <p>Held at Sepang International Circuit, Malaysia — same "Bahrain Grand Prix" name on the calendar, a different country hosting it this year.</p>
+          <p>F1 hasn't raced in Malaysia since 2017. Nearly 191,000 fans turned out for a single Sepang MotoGP weekend in 2025.</p>
+        </div>
+        <div class="cta-box">
+          <div class="eyebrow">Unlock the full guide</div>
+          <div class="price">US$15</div>
+          <div class="btn">Get the Pack</div>
+        </div>
+      </div>
+
+      <div class="strip-label">Or just what you need</div>
+      <div class="strip">
+        <div class="strip-card">
+          <div class="name">Ticket Guide</div>
+          <div class="price-sm">US$7</div>
+          <div class="buy">Buy</div>
+        </div>
+        <div class="strip-card">
+          <div class="name">Where to Stay Guide</div>
+          <div class="price-sm">US$5</div>
+          <div class="buy">Buy</div>
+        </div>
+        <div class="strip-card">
+          <div class="name">Itinerary Guide</div>
+          <div class="price-sm">US$5</div>
+          <div class="buy">Buy</div>
+        </div>
+      </div>
+
+      <div class="plan-your-trip">Plan your trip</div>
+      <div class="tiles"><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
+    </div>
+
+    <div class="why">
+      <ul>
+        <li><b>Fixes the bug at the source</b> — the 2-column grid row goes back to just intro text + full-pack box, its original matched pair, so there's nothing left to stretch.</li>
+        <li><b>Mini-packs get more room</b> — 3 cards side by side read more like real product choices than a cramped list squeezed into a narrow sidebar column.</li>
+        <li><b>Trade-off</b> — mini-packs now sit below the fold on narrower screens/shorter intros, instead of being immediately visible beside the full-pack CTA.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>

@@ -56,7 +56,7 @@ const practicalInfo = {
   costRange: "Free with any race ticket; free standalone on Thursday afternoon.",
   bookingMethod: "No separate ticket needed — access is included with any race weekend ticket, and Thursday afternoon is free to the public via Gate G.",
   howToBook: "There's nothing to actually book here, which is itself the tip worth passing on to a client: don't let anyone sell you a \"Fan Zone package.\" If a client's trip includes a spare Thursday in Milan before the weekend proper starts, send them to Gate G between 13:00 and 20:00 for free entry — it's a good low-key way to acclimatize to the scale of the event without spending anything. For driver sightings, the pattern holds across recent years: appearances cluster Friday or Saturday morning, so build any Fan Zone visit for that purpose into the first half of the day rather than the afternoon. If simulator queues matter to a client, mornings before first practice or qualifying are consistently quieter than the afternoon rush.",
-  website: "https://www.f1italy.com/en/fan-zones-19",
+  website: "https://www.monzanet.it/en/",
   reservationsRequired: false,
 };
 

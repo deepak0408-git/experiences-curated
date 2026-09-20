@@ -1,0 +1,330 @@
+<!doctype html>
+<title>Plan Links Options</title>
+<style>
+  :root {
+    --bg: #0A0A0A;
+    --surface: #141414;
+    --surface-2: #1A1A1A;
+    --border: #2A2A2A;
+    --muted: #A3A3A3;
+    --fg: #FFFFFF;
+    --accent: #AAFF00;
+    --accent-hover: #BBFF33;
+    --dim: #6A6A6A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    padding: 40px 20px 80px;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; }
+  .intro {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 48px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .intro strong { color: var(--fg); }
+  .option-block { margin-bottom: 64px; }
+  .option-label {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .option-number {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-weight: 900;
+    font-size: 11px;
+    color: var(--bg);
+    background: var(--accent);
+    border-radius: 2px;
+    padding: 2px 6px;
+    letter-spacing: 0.05em;
+  }
+  .option-title { font-weight: 900; font-size: 15px; }
+  .option-note { color: var(--dim); font-size: 12px; margin: 0 0 18px; line-height: 1.6; }
+
+  /* mock context: fake spoke tile grid, cut short, to show real proximity */
+  .fake-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 0;
+  }
+  .fake-tile {
+    height: 90px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: linear-gradient(160deg, #1c1c1c, #0f0f0f);
+    display: flex;
+    align-items: flex-end;
+    padding: 10px;
+    opacity: 0.55;
+  }
+  .fake-tile span {
+    font-size: 11px;
+    font-weight: 900;
+    color: var(--muted);
+  }
+  .fade-row { grid-column: span 3; text-align: center; color: var(--dim); font-size: 10px; letter-spacing: 0.1em; padding: 2px 0 0; }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 12px;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ---- OPTION 1: current baseline (for comparison) ---- */
+  .v1-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 24px;
+    margin-top: 32px;
+  }
+  .v1-row .eyebrow { margin: 0; }
+  .v1-link { font-size: 14px; color: var(--muted); transition: color .15s; }
+  .v1-link:hover { color: var(--accent); }
+
+  /* ---- OPTION 2: labeled bar, stronger separation ---- */
+  .v2-bar {
+    margin-top: 32px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .v2-label { display: flex; align-items: center; gap: 8px; }
+  .v2-label .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .v2-label span { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 0.02em; }
+  .v2-links { display: flex; gap: 28px; flex-wrap: wrap; }
+  .v2-link {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--fg);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color .15s;
+  }
+  .v2-link .arrow { color: var(--accent); transition: transform .15s; }
+  .v2-link:hover { color: var(--accent); }
+  .v2-link:hover .arrow { transform: translateX(3px); }
+
+  /* ---- OPTION 3: two-column mini-panel, icon + label + sub ---- */
+  .v3-panel {
+    margin-top: 32px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .v3-eyebrow-row {
+    padding: 14px 18px 0;
+  }
+  .v3-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .v3-link {
+    padding: 16px 18px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    transition: background .15s;
+  }
+  .v3-link:first-child { border-right: 1px solid var(--border); }
+  .v3-link:hover { background: var(--surface); }
+  .v3-link-text { font-size: 13.5px; font-weight: 700; color: var(--fg); }
+  .v3-link-sub { font-size: 11px; color: var(--dim); margin-top: 2px; }
+  .v3-link-arrow {
+    flex-shrink: 0;
+    color: var(--accent);
+    font-size: 16px;
+    transition: transform .15s;
+  }
+  .v3-link:hover .v3-link-arrow { transform: translateX(3px); }
+
+  @media (max-width: 480px) {
+    .v3-links { grid-template-columns: 1fr; }
+    .v3-link:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+
+  /* ---- OPTION 4: full-width accent-edge banner, single line each ---- */
+  .v4-wrap { margin-top: 32px; display: flex; flex-direction: column; gap: 2px; }
+  .v4-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: var(--surface);
+    border-left: 2px solid var(--border);
+    transition: border-color .15s, background .15s;
+  }
+  .v4-link:hover { border-left-color: var(--accent); background: var(--surface-2); }
+  .v4-link-left { display: flex; align-items: center; gap: 12px; }
+  .v4-tag {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--dim);
+    letter-spacing: 0.05em;
+  }
+  .v4-text { font-size: 13.5px; font-weight: 700; color: var(--fg); }
+  .v4-arrow { color: var(--accent); font-size: 14px; }
+
+  .verdict {
+    margin-top: 8px;
+    padding: 18px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .verdict strong { color: var(--accent); font-weight: 900; }
+</style>
+
+<div class="wrap">
+  <p class="intro">
+    Same slot on every hub page — the gap between the 12 spoke tiles and the <strong>Quick reference</strong> fact strip. Original text-link version tested too quiet to notice. Four options below, closer to weight of a system row without becoming a 13th spoke tile.
+  </p>
+
+  <!-- OPTION 1 -->
+  <div class="option-block">
+    <div class="option-label">
+      <span class="option-number">01</span>
+      <span class="option-title">Baseline — current build</span>
+    </div>
+    <p class="option-note">What's live now, for reference. Eyebrow + two plain links, no separators from surrounding content.</p>
+
+    <div class="fake-grid">
+      <div class="fake-tile"><span>Getting There</span></div>
+      <div class="fake-tile"><span>Where to Eat</span></div>
+      <div class="fake-tile"><span>Trip Schedule</span></div>
+    </div>
+    <div class="fade-row">···</div>
+
+    <div class="v1-row">
+      <span class="eyebrow">Want to see more?</span>
+      <a class="v1-link" href="#">Budget your trip →</a>
+      <a class="v1-link" href="#">Build a custom itinerary →</a>
+    </div>
+  </div>
+
+  <!-- OPTION 2 -->
+  <div class="option-block">
+    <div class="option-label">
+      <span class="option-number">02</span>
+      <span class="option-title">Rule-bound bar</span>
+    </div>
+    <p class="option-note">Top/bottom hairline gives it a shelf of its own — reads as a distinct row, not trailing text. Links promoted to bold white with a green arrow, closer to the visual weight of nav items.</p>
+
+    <div class="fake-grid">
+      <div class="fake-tile"><span>Getting There</span></div>
+      <div class="fake-tile"><span>Where to Eat</span></div>
+      <div class="fake-tile"><span>Trip Schedule</span></div>
+    </div>
+    <div class="fade-row">···</div>
+
+    <div class="v2-bar">
+      <div class="v2-label">
+        <span class="dot"></span>
+        <span>PLANNING TOOLS</span>
+      </div>
+      <div class="v2-links">
+        <a class="v2-link">Budget your trip <span class="arrow">→</span></a>
+        <a class="v2-link">Build a custom itinerary <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION 3 -->
+  <div class="option-block">
+    <div class="option-label">
+      <span class="option-number">03</span>
+      <span class="option-title">Bordered mini-panel</span>
+    </div>
+    <p class="option-note">Same bordered-box language as Quick reference directly below it, so it reads as a sibling module rather than loose text. Each link gets a one-line sub-description, split by a vertical rule.</p>
+
+    <div class="fake-grid">
+      <div class="fake-tile"><span>Getting There</span></div>
+      <div class="fake-tile"><span>Where to Eat</span></div>
+      <div class="fake-tile"><span>Trip Schedule</span></div>
+    </div>
+    <div class="fade-row">···</div>
+
+    <div class="v3-panel">
+      <div class="v3-eyebrow-row"><span class="eyebrow">Want to see more?</span></div>
+      <div class="v3-links">
+        <a class="v3-link">
+          <span>
+            <span class="v3-link-text">Budget your trip</span>
+            <span class="v3-link-sub">Real flight, hotel and ticket costs</span>
+          </span>
+          <span class="v3-link-arrow">→</span>
+        </a>
+        <a class="v3-link">
+          <span>
+            <span class="v3-link-text">Build a custom itinerary</span>
+            <span class="v3-link-sub">Tell us your trip, we'll shape it</span>
+          </span>
+          <span class="v3-link-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION 4 -->
+  <div class="option-block">
+    <div class="option-label">
+      <span class="option-number">04</span>
+      <span class="option-title">Stacked accent-edge rows</span>
+    </div>
+    <p class="option-note">Each link is its own filled row with a left accent edge that lights up on hover — same device used for locked/unlocked spoke tiles, so it borrows established page vocabulary instead of a new pattern. Reads well even stacked full-width on mobile.</p>
+
+    <div class="fake-grid">
+      <div class="fake-tile"><span>Getting There</span></div>
+      <div class="fake-tile"><span>Where to Eat</span></div>
+      <div class="fake-tile"><span>Trip Schedule</span></div>
+    </div>
+    <div class="fade-row">···</div>
+
+    <div class="v4-wrap">
+      <a class="v4-link">
+        <span class="v4-link-left">
+          <span class="v4-tag">PLAN</span>
+          <span class="v4-text">Budget your trip</span>
+        </span>
+        <span class="v4-arrow">→</span>
+      </a>
+      <a class="v4-link">
+        <span class="v4-link-left">
+          <span class="v4-tag">PLAN</span>
+          <span class="v4-text">Build a custom itinerary</span>
+        </span>
+        <span class="v4-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="verdict">
+    <strong>Recommendation:</strong> Option 03 — it borrows the exact bordered-panel language already sitting one scroll away in Quick reference, so it doesn't introduce a new visual pattern, but the border + sub-copy gives it enough presence to stop being skippable. Option 02 is the lighter alternative if a boxed panel feels like too much weight for two links.
+  </div>
+</div>

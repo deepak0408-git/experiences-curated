@@ -54,7 +54,7 @@ const practicalInfo = {
   costRange: "Free once you have any race day ticket — no separate charge for the track invasion or general Tifosi atmosphere.",
   bookingMethod: "No separate ticket required — any race day ticket gets you the full Tifosi atmosphere and, if confirmed for the season, access to the post-race track invasion.",
   howToBook: "If a client wants to actually join the track invasion rather than just watch it, the fastest legitimate access points are Turn 1 and the area near the Parabolica, with additional openings near the Centrale grandstand and the Glass Tower. Advise them to move toward one of these points in the closing laps rather than waiting for the chequered flag, since the crowd builds fast and the openings can bottleneck. It's worth flagging clearly that F1Italy's own site states track invasion is not officially confirmed every season; check their site or call ahead in the weeks before travel rather than assuming it's running. For clients who want serious Ferrari-red atmosphere without the scrum of the invasion itself, recommend grandstands directly facing the main straight (Centrale, or the grandstands nearest the podium) — that's where the flag density and noise are heaviest even without setting foot on the track.",
-  website: "https://www.f1italy.com/en/track-invasion",
+  website: "https://www.monzanet.it/en/",
   reservationsRequired: false,
 };
 

@@ -410,6 +410,12 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "us-gp-san-antonio-daytrip-": { venueCount: 2, venueNoun: "sites" },
   "french-open-luxury-dining-bois-de-boulogne": { venueCount: 3, venueNoun: "restaurants" },
   "paris-icons-eiffel-tower-seine-arc-de-triomphe": { venueCount: 3, venueNoun: "landmarks" },
+  "staying-in-milan-city-base-strategy-": { venueCount: 3, venueNoun: "hotels" },
+  "eating-in-milan-serious-italians-": { venueCount: 2, venueNoun: "restaurants" },
+  "aperitivo-before-the-race-milan-ritual-": { venueCount: 3, venueNoun: "bars" },
+  "eating-in-monza-risotto-luganega-": { venueCount: 4, venueNoun: "restaurants" },
+  "monza-town-royal-villa-": { venueCount: 4, venueNoun: "sights" },
+  "lake-como-race-weekend-from-the-lake-": { venueCount: 3, venueNoun: "hotels" },
   "paris-landmarks-louvre-notre-dame": { venueCount: 2, venueNoun: "landmarks" },
   "where-to-stay-perth-first-test-": { venueCount: 2, venueNoun: "hotels" },
   "where-to-stay-adelaide-city-vs-north-": { venueCount: 2, venueNoun: "hotels" },
@@ -837,9 +843,9 @@ export default async function ExperiencePage({
               slug.startsWith("open-vincent-hotel-") ? "object-[center_70%]" :
               slug.startsWith("grandstand-22-parabolica-corner-") ? "object-[center_80%]" :
               slug.startsWith("monza-inside-the-venue-") ? "lg:object-[center_65%]" :
-              slug.startsWith("staying-in-milan-city-base-strategy-") ? "object-[center_20%]" :
+              slug.startsWith("staying-in-milan-city-base-strategy-") ? "lg:object-[center_75%]" :
               slug.startsWith("alfa-romeo-museum-arese-") ? "object-[center_15%]" :
-              slug.startsWith("paddock-club-champions-club-hospitality-") ? "object-[center_10%]" :
+              slug.startsWith("paddock-club-champions-club-hospitality-") ? "lg:object-[center_40%]" :
               slug.startsWith("7th-wentworth-grandstand-green-") ? "object-[center_75%]" :
               slug.startsWith("a-day-in-budapest-") ? "lg:object-[center_20%]" :
               slug.startsWith("szimpla-kert-") ? "lg:object-[center_100%]" :

@@ -47,7 +47,7 @@ Overtaking at the Parabolica itself is rare. This is not a braking-zone-pass cor
 
 The Fan Zone is about five minutes on foot from Gate G, which is the entry point for this grandstand. If you want to split the session — grandstand in the morning, Fan Zone at lunch — it's an easy circuit. The Blue and Red car parks are also closest to this end of the circuit.
 
-Tickets for Grandstand 22 are 3-day packages only at €789. Single-day tickets are not available here. Buy via the official f1italy.com — do not use resellers as a first option; tickets at this end of the circuit tend to hold availability longer than Grandstand 26.`;
+Tickets for Grandstand 22 are 3-day packages only at €789. Single-day tickets are not available here. Buy via the official monzanet.it — do not use resellers as a first option; tickets at this end of the circuit tend to hold availability longer than Grandstand 26.`;
 
 const whyItsSpecial = `Grandstand 26 is the prestige choice at Monza — pit lane, podium, the start. Grandstand 22 is the technical choice. What you see here is F1 at its most purely mechanical: a car carrying as much speed as physics allows into a corner that has no margin for error. The Parabolica has been reprofiled slightly over the decades, the run-off tarmacked, but the fundamental demand is unchanged. Arrive fast, brake late, trust the downforce.
 
@@ -56,9 +56,9 @@ Most visitors to Monza who sit at the Parabolica are not the ones who bought a h
 const practicalInfo = {
   hours: "Gates open 08:00 daily. Practice Friday, Qualifying Saturday, Race Sunday (4–7 Sep 2026).",
   costRange: "€789 for a 3-day ticket (all sessions, reserved seat). No single-day option.",
-  bookingMethod: "Buy directly at f1italy.com — tickets delivered as print-at-home PDF within 48 hours.",
-  howToBook: "Grandstand 22 sells slower than Grandstand 26 but does sell out, typically by June for September. Check f1italy.com/en/ticket-info/grandstand-22 now — if 3-day tickets are live, buy immediately. For group bookings, f1italy.com guarantees adjacent seating automatically. If official tickets are sold out, check tickets.gp as a secondary market — they aggregate legitimate resellers and usually have inventory at face value or close to it. Avoid ViaGoGo as a first choice; pricing inflates significantly when stock is low. For hospitality above the grandstand tier — Champions Club (open bar, driver Q&A, grid walk) or Paddock Club (pit lane access, unlimited F&B) — contact F1 Experiences directly at f1experiences.com; these sell 6–8 months out.",
-  website: "https://www.f1italy.com/en/ticket-info/grandstand-22",
+  bookingMethod: "Buy directly at monzanet.it/en/tickets/ — tickets delivered as print-at-home PDF within 48 hours.",
+  howToBook: "Grandstand 22 sells slower than Grandstand 26 but does sell out, typically by June for September. Check monzanet.it/en/tickets/ now — if 3-day tickets are live, buy immediately. For group bookings, Monzanet.it guarantees adjacent seating automatically. If official tickets are sold out, check tickets.gp as a secondary market — they aggregate legitimate resellers and usually have inventory at face value or close to it. Avoid ViaGoGo as a first choice; pricing inflates significantly when stock is low. For hospitality above the grandstand tier — Champions Club (open bar, driver Q&A, grid walk) or Paddock Club (pit lane access, unlimited F&B) — contact F1 Experiences directly at f1experiences.com; these sell 6–8 months out.",
+  website: "https://www.monzanet.it/en/tickets/",
   reservationsRequired: true,
 };
 

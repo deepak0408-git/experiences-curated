@@ -52,9 +52,9 @@ And then there's the podium. Section 26C has the best view of the ceremony of an
 const practicalInfo = {
   hours: "Gates open 08:00 on race days; qualifying from 15:00 Saturday; race start ~15:00 Sunday",
   costRange: "€594–€1,008 for a 3-day pass (26C to 26A); 26A sold out through official channels",
-  bookingMethod: "Book 3-day passes via f1italy.com — check availability for 26B/C or join the waitlist for 26A.",
-  howToBook: "Grandstand 26A sold out through official channels before June 2026. Routes in: (1) Secondary market — StubHub and Viagogo carry resale tickets, typically at 30–50% premium over face value; verify seller ratings carefully. (2) F1 Experiences Champions Club and Paddock Club packages include premium grandstand access bundled with hospitality — book via f1experiences.com. (3) On Location Experiences, the official F1 hospitality partner, sells inclusive packages with grandstand seating and pit lane access; onlocationexp.com. (4) GTG (getthegig.com) — check for Italian GP hospitality and grandstand bundles. For 26B/C, the official waitlist at f1italy.com releases tickets when corporate allocations are returned, usually 4–6 weeks before race day.",
-  website: "https://www.f1italy.com/en/ticket-info/26-laterale-destra-a",
+  bookingMethod: "Book 3-day passes via monzanet.it/en/tickets/ — check availability for 26B/C or join the waitlist for 26A.",
+  howToBook: "Grandstand 26A sold out through official channels before June 2026. Routes in: (1) Secondary market — StubHub and Viagogo carry resale tickets, typically at 30–50% premium over face value; verify seller ratings carefully. (2) F1 Experiences Champions Club and Paddock Club packages include premium grandstand access bundled with hospitality — book via f1experiences.com. (3) On Location Experiences, the official F1 hospitality partner, sells inclusive packages with grandstand seating and pit lane access; onlocationexp.com. (4) GTG (getthegig.com) — check for Italian GP hospitality and grandstand bundles. For 26B/C, the official waitlist at monzanet.it/en/tickets/ releases tickets when corporate allocations are returned, usually 4–6 weeks before race day.",
+  website: "https://www.monzanet.it/en/tickets/",
   reservationsRequired: true,
 };
 

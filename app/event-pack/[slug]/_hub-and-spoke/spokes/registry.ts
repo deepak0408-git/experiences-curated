@@ -181,6 +181,19 @@ import QGArrivalSpoke from "./qatar-grand-prix/ArrivalSpoke";
 import QGMapSpoke from "./qatar-grand-prix/MapSpoke";
 import QGLuxurySpoke from "./qatar-grand-prix/LuxurySpoke";
 
+import IGCostSpoke from "./italian-grand-prix/CostSpoke";
+import IGTicketsSpoke from "./italian-grand-prix/TicketsSpoke";
+import IGHotelsSpoke from "./italian-grand-prix/HotelsSpoke";
+import IGGettingThereSpoke from "./italian-grand-prix/GettingThereSpoke";
+import IGWeatherSpoke from "./italian-grand-prix/WeatherSpoke";
+import IGFirstTimerGuideSpoke from "./italian-grand-prix/FirstTimerGuideSpoke";
+import IGWhereToEatSpoke from "./italian-grand-prix/WhereToEatSpoke";
+import IGDayTripsSpoke from "./italian-grand-prix/DayTripsSpoke";
+import IGItinerarySpoke from "./italian-grand-prix/ItinerarySpoke";
+import IGArrivalSpoke from "./italian-grand-prix/ArrivalSpoke";
+import IGMapSpoke from "./italian-grand-prix/MapSpoke";
+import IGLuxurySpoke from "./italian-grand-prix/LuxurySpoke";
+
 type SpokeComponent = ComponentType<{ eventSlug: string }>;
 
 // Registry mapping eventSlug -> spokeId -> component. A new hub_and_spoke
@@ -384,6 +397,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: QGMapSpoke,
     luxury: QGLuxurySpoke,
   },
+  "italian-grand-prix": {
+    cost: IGCostSpoke,
+    tickets: IGTicketsSpoke,
+    hotels: IGHotelsSpoke,
+    "getting-there": IGGettingThereSpoke,
+    weather: IGWeatherSpoke,
+    "first-timer-guide": IGFirstTimerGuideSpoke,
+    "where-to-eat": IGWhereToEatSpoke,
+    "day-trips": IGDayTripsSpoke,
+    itinerary: IGItinerarySpoke,
+    arrival: IGArrivalSpoke,
+    map: IGMapSpoke,
+    luxury: IGLuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -582,5 +609,19 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Lusail Circuit — Arrival & Fan Zone Guide",
     map: "Lusail International Circuit Map — Facilities and Capacity",
     luxury: "Luxury Guide for the Qatar Grand Prix — Paddock Club, Champions Club, and More",
+  },
+  "italian-grand-prix": {
+    cost: "How Much Does the Italian Grand Prix Cost? — Monza Budget Guide",
+    tickets: "Monza Ticket Guide — General Admission to Grandstand 1",
+    hotels: "Where to Stay for the Italian Grand Prix — Milan or Monza",
+    "getting-there": "Getting to Monza — Italian Grand Prix Transit Guide",
+    weather: "Milan Weather in Early September — What to Pack for the Italian Grand Prix",
+    "first-timer-guide": "First-Timer's Guide — the Italian Grand Prix and the Tifosi",
+    "where-to-eat": "Where to Eat in Milan and Monza — Italian Grand Prix Weekend",
+    "day-trips": "Best Day Trips — Italian Grand Prix Weekend, Including Lake Como",
+    itinerary: "Sample Italian Grand Prix Weekend Itinerary",
+    arrival: "Monza — Arrival & Queue Guide",
+    map: "Monza Circuit Map — History, Corners, and Facilities",
+    luxury: "Luxury Guide for the Italian Grand Prix — Paddock Club, Champions Club, and More",
   },
 };

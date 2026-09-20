@@ -328,4 +328,57 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "map", label: "Venue Map", question: "What facilities are available at Lusail International Circuit?", status: "public", imageSlug: "qatar-gp-inside-lusail-circuit-mtymp2ma" },
     { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Qatar Grand Prix?", status: "teaser", imageSlug: "qatar-gp-paddock-champions-club-mtymkynt" },
   ],
+  // Italian Grand Prix — Phase B hub-and-spoke build, 19 Sep 2026. 20 real
+  // experiences exist for this event (12 pre-existing, published, with real
+  // hero images from the earlier classic-format pack; 6 newly seeded this
+  // session — Arrival & Queue Guide, First-Timer's Guide, Monza — Inside
+  // the Venue, Grandstand 1 — Centrale, Grandstand 5 — Piscina, General
+  // Admission — Lesmo & Ascari — all status in_review, heroImageUrl null;
+  // publish via /curator/review and set hero images before launch). Final
+  // spoke mapping, confirmed against the real DB content:
+  //   tickets: Grandstand 1, Grandstand 5, GA Lesmo & Ascari, Grandstand 22
+  //     (Parabolica), Grandstand 26 (pit/grid/podium), Curva Grande GA —
+  //     Monza sells both GA (Prato) and reserved grandstands, unlike
+  //     Interlagos' grandstand-only structure.
+  //   luxury: Paddock Club & Champions Club hospitality.
+  //   map: Monza — Inside the Venue, The History of Monza (old banking).
+  //   first-timer-guide: First-Timer's Guide, The Tifosi (Ferrari fan
+  //     culture is core first-timer orientation here, unlike sibling events
+  //     where Tifosi-equivalent content doesn't exist).
+  //   arrival: Arrival & Queue Guide, The Fan Zone.
+  //   getting-there: Getting to the Circuit — Train, Walk & Parking.
+  //   hotels: Hotel de la Ville (Monza), Staying in Milan.
+  //   where-to-eat: Eating in Milan, Eating in Monza, Aperitivo Before the
+  //     Race.
+  //   day-trips: Monza Town & the Royal Villa (in-park, 2km from circuit),
+  //     Alfa Romeo Museum (Arese), Lake Como.
+  //   cost / itinerary / weather: no dedicated source experience exists for
+  //     these three (unlike Brazilian GP, which had a weather-packing
+  //     experience) — all three spokes render real general content without
+  //     a linked SpokeExperienceCard, an honest gap rather than a forced
+  //     card assignment.
+  // No planner_hotel_tier_cost/planner_ticket_tier_cost/
+  // planner_destination_bands/planner_flight_cost rows exist for Milan yet
+  // — Cost spoke renders its real "no data yet" empty state, matching every
+  // sibling event's pattern when planner data hasn't been sourced.
+  // Weather/Arrival/Tickets use the skill's standing cross-event default
+  // images (imageOverride). imageSlug for the 6 new (no-image) experiences
+  // is set to "__no-image-yet__" per the founder's explicit instruction —
+  // hero images are being chosen separately, never auto-picked. The 12
+  // pre-existing experiences already have real hero images from the prior
+  // classic-format pack, so their real slugs are used directly.
+  "italian-grand-prix": [
+    { id: "cost", label: "Cost Guide", question: "How much does an Italian Grand Prix weekend cost?", status: "teaser", imageSlug: "monza-inside-the-venue-mu7cm8il" },
+    { id: "tickets", label: "Ticket Guide", question: "Which Monza grandstand is the best buy?", status: "teaser", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the Italian Grand Prix?", status: "teaser", imageSlug: "staying-in-milan-city-base-strategy-mrbv33on" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to Monza?", status: "public", imageSlug: "getting-to-the-circuit-monza-mqz786l4" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the Italian Grand Prix, and what should I pack?", status: "public", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Italian Grand Prix?", status: "public", imageSlug: "the-tifosi-ferraris-red-army-mrbuads9" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat in Milan and Monza during race weekend?", status: "teaser", imageSlug: "eating-in-milan-serious-italians-mrbxw8xs" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips and things to do around Monza and Milan?", status: "teaser", imageSlug: "lake-como-race-weekend-from-the-lake-mrbw7ctf" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does an Italian Grand Prix weekend actually look like?", status: "teaser", imageSlug: "monza-town-royal-villa-mqzf83fr" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at Monza gates?", status: "public", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at Monza?", status: "public", imageSlug: "history-of-monza-walking-old-banking-mrc4ka26" },
+    { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Italian Grand Prix?", status: "teaser", imageSlug: "paddock-club-champions-club-hospitality-mrbsb3a1", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/brazilian-grand-prix-paddock-club.jpg" },
+  ],
 };
