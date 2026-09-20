@@ -87,6 +87,7 @@ function shortEventName(name: string, slug: string): string {
     "mexico-city-grand-prix": "Mexico City GP 2026",
     "brazilian-grand-prix": "São Paulo GP 2026",
     "qatar-grand-prix": "Qatar GP 2026",
+    "australian-grand-prix": "Australian GP 2027",
   };
   return SHORT_NAMES[slug] ?? name;
 }

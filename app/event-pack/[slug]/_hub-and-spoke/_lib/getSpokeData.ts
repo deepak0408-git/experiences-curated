@@ -18,6 +18,8 @@ import { getProDetails } from "@/lib/pro";
 import { grantFreeAccess } from "../../actions";
 import { SPOKES_BY_EVENT } from "./spokeConfig";
 
+const SEASONAL_BAND_BY_MONTH = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+
 // Shared data fetch for the hub + all 12 spokes of any hub_and_spoke-format
 // event. Slug-driven — no hardcoded event constant — so a new hub-and-spoke
 // event only needs a new SPOKES_BY_EVENT entry, not a new copy of this file.
@@ -89,6 +91,17 @@ async function getSpokeDataUncached(slug: string) {
     )
     .orderBy(sportingEventExperiences.packRank);
 
+  // Derived from the event's own start date, and used below to filter both
+  // hotels and flights to the correct month's seeded pricing — without this,
+  // a destination re-seeded across multiple months (e.g. Johannesburg Sep vs
+  // Dec/Jan, or a T-60/T-30 refresh pass landing in a different month than
+  // the initial seed) mixes unrelated months' prices together: hotels'
+  // .find() picks whichever band's row happens to come back first, and
+  // flights' min/max spans months that were never really being compared.
+  // Added 20 Sep 2026 after Australian GP's Cost spoke showed an apr+jan
+  // mix as a single misleading "US$108-2,607" flight range.
+  const eventSeasonalBand = SEASONAL_BAND_BY_MONTH[new Date(event.startDate).getUTCMonth()];
+
   // edition_year filter added 19-20 Sep 2026 (planner cost edition-year
   // migration) — without it, a re-seeded second edition's rows (or a
   // shared destination's other event) return alongside this event's own,
@@ -96,7 +109,11 @@ async function getSpokeDataUncached(slug: string) {
   // the edition currently being viewed on this page. See memory
   // project_planner_cost_edition_year_migration.
   const hotels = event.destinationId
-    ? await db.select().from(plannerHotelTierCost).where(and(eq(plannerHotelTierCost.destinationId, event.destinationId), eq(plannerHotelTierCost.editionYear, event.editionYear)))
+    ? await db.select().from(plannerHotelTierCost).where(and(
+        eq(plannerHotelTierCost.destinationId, event.destinationId),
+        eq(plannerHotelTierCost.editionYear, event.editionYear),
+        eq(plannerHotelTierCost.seasonalBand, eventSeasonalBand)
+      ))
     : [];
   const tickets = await db.select().from(plannerTicketTierCost).where(and(eq(plannerTicketTierCost.sportingEventId, event.id), eq(plannerTicketTierCost.editionYear, event.editionYear)));
   const [destinationBand] = event.destinationId
@@ -112,7 +129,11 @@ async function getSpokeDataUncached(slug: string) {
         })
         .from(plannerFlightCost)
         .innerJoin(plannerOriginMarkets, eq(plannerOriginMarkets.city, plannerFlightCost.originMarket))
-        .where(and(eq(plannerFlightCost.destinationId, event.destinationId), eq(plannerFlightCost.editionYear, event.editionYear)))
+        .where(and(
+          eq(plannerFlightCost.destinationId, event.destinationId),
+          eq(plannerFlightCost.editionYear, event.editionYear),
+          eq(plannerFlightCost.seasonalBand, eventSeasonalBand)
+        ))
     : [];
 
   return {

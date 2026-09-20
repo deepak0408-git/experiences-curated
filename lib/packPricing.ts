@@ -191,6 +191,16 @@ export const PACK_PRICING_CONFIG: Record<string, {
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_QATAR_GP_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_QATAR_GP_EARLY_BIRD_CUTOFF ?? "2026-10-31",
   },
+  // Real Dodo product IDs confirmed by the founder from the live Dodo
+  // dashboard, 20 Sep 2026: Early Bird pdt_0No0geiHrT2nQOb9VQnRt (US$10),
+  // Standard pdt_0No0gj1OYhganz16dvZzB (US$15). Cutoff not yet
+  // founder-confirmed on /curator/price; env-var default below is the
+  // fallback until then.
+  "australian-grand-prix": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_AUSTRALIAN_GP_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_AUSTRALIAN_GP_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_AUSTRALIAN_GP_EARLY_BIRD_CUTOFF ?? "2027-03-04",
+  },
 };
 
 // Mini-packs pilot (Bahrain GP / Singapore GP / Shanghai Masters, Sep 2026)
