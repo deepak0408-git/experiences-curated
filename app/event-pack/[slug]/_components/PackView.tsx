@@ -8,6 +8,7 @@ import HowToBook from "./HowToBook";
 import AskCuratorForm from "./AskCuratorForm";
 import PackDownload from "./PackDownload";
 import { getArticlesForEvent } from "@/lib/queries/blog";
+import PostHogPageContext from "@/app/_components/PostHogPageContext";
 import HomepageNav from "@/app/_components/HomepageNav";
 
 // transit → "Before you go" covers both planning and getting there.
@@ -1137,6 +1138,7 @@ export default async function PackView({
 
   return (
     <main className="min-h-screen bg-[#0A0A0A]">
+      <PostHogPageContext sport={sport} eventSlug={eventSlug} eventName={eventName} />
       {/* Nav */}
       <HomepageNav email={userEmail} />
 

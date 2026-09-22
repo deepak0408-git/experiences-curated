@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import HomepageNav from "@/app/_components/HomepageNav";
+import PostHogPageContext from "@/app/_components/PostHogPageContext";
 import { getSpokeData, getSpokesForEvent, getSpokeImage, getPurchaseStatus, isSpokeUnlocked, MINI_PACK_PRODUCT_TYPE_BY_SPOKE } from "./_lib/getSpokeData";
 import { getPackPricing } from "./_lib/packPricing";
 import { getMiniPackPricing } from "@/lib/packPricing";
@@ -459,6 +460,7 @@ export default async function HubPage({ slug }: { slug: string }) {
 
   return (
     <main className="min-h-screen bg-[#0A0A0A]">
+      <PostHogPageContext sport={event.sport} eventSlug={event.slug} eventName={event.name} />
       <HomepageNav email={user?.email ?? null} />
 
       {/* Hero — same structure, sizes, and gradient as the classic pack's
