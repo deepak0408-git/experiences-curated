@@ -49,8 +49,11 @@ export default function SpokeExperienceCard({
   const howToBook = experience.practicalInfo?.howToBook;
 
   return (
-    <div className="group rounded-sm border border-[#2A2A2A] bg-[#141414] overflow-hidden hover:border-[#AAFF00] transition-colors">
+    <div className="group relative rounded-sm border border-[#2A2A2A] bg-[#141414] overflow-hidden hover:border-[#AAFF00] transition-colors">
       <Link href={`/experience/${experience.slug}?from=${eventSlug}`} className="block">
+        <span className="absolute top-3 right-3 z-10 rounded-sm bg-black/60 backdrop-blur-sm px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-[#AAFF00] group-hover:bg-[#AAFF00] group-hover:text-black transition-colors">
+          Full details →
+        </span>
         {experience.heroImageUrl && (
           <div className="relative h-48 overflow-hidden bg-[#1A1A1A]">
             <Image
