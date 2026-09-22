@@ -559,6 +559,8 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "singapore-gp-chinatown-stay-": { venueCount: 2, venueNoun: "hotels" },
   "singapore-gp-clarke-quay-stay-": { venueCount: 2, venueNoun: "hotels" },
   "singapore-gp-bayfront-hawkers-": { venueCount: 2, venueNoun: "hawker spots" },
+  "japanese-gp-suzuka-where-to-stay": { venueCount: 2, venueNoun: "hotels" },
+  "japanese-gp-nagoya-food-scene": { venueCount: 2, venueNoun: "restaurants" },
   "luxury-shanghai-peninsula-bulgari-": { venueCount: 3, venueNoun: "hotels" },
   "where-to-stay-shanghai-masters-": { venueCount: 3, venueNoun: "hotels" },
   "lujiazui-skyline-shanghai-": { venueCount: 3, venueNoun: "towers" },
@@ -711,6 +713,7 @@ export default async function ExperiencePage({
       let eventPackSlug = "wimbledon";
       let eventPackName = "Wimbledon";
       let eventPackFormat: string | null = null;
+      let eventPackSport: string | null = null;
       let hasLivePack = false;
       // The breadcrumb's "← Back to <spoke>" link and the sidebar's "Get the
       // full guide" CTA must always agree — they're both "which event pack
@@ -741,6 +744,7 @@ export default async function ExperiencePage({
             packFormat: sportingEvents.packFormat,
             packStatus: sportingEvents.packStatus,
             isHidden: sportingEvents.isHidden,
+            sport: sportingEvents.sport,
           })
           .from(sportingEvents)
           .where(eq(sportingEvents.slug, eventPackLookupSlug))
@@ -749,6 +753,7 @@ export default async function ExperiencePage({
           eventPackSlug = ev.slug;
           eventPackName = ev.name;
           eventPackFormat = ev.packFormat;
+          eventPackSport = ev.sport;
           hasLivePack = (ev.packStatus === "live" || ev.packStatus === "built_hidden") && ev.isHidden === false;
         }
       } else if (exp.sportingEventId) {
@@ -759,6 +764,7 @@ export default async function ExperiencePage({
             packFormat: sportingEvents.packFormat,
             packStatus: sportingEvents.packStatus,
             isHidden: sportingEvents.isHidden,
+            sport: sportingEvents.sport,
           })
           .from(sportingEvents)
           .where(eq(sportingEvents.id, exp.sportingEventId))
@@ -767,6 +773,7 @@ export default async function ExperiencePage({
           eventPackSlug = ev.slug;
           eventPackName = ev.name;
           eventPackFormat = ev.packFormat;
+          eventPackSport = ev.sport;
           // Live-pack determination mirrors the blog article page's identical
           // logic — reachability, not purchase status.
           hasLivePack = (ev.packStatus === "live" || ev.packStatus === "built_hidden") && ev.isHidden === false;
@@ -795,7 +802,7 @@ export default async function ExperiencePage({
         )
         .limit(3);
 
-      return { exp, ratingRow, eventPackSlug, eventPackName, eventPackFormat, hasLivePack, related };
+      return { exp, ratingRow, eventPackSlug, eventPackName, eventPackFormat, eventPackSport, hasLivePack, related };
     },
     ["experience-page"],
     { revalidate: 3600 }
@@ -803,7 +810,7 @@ export default async function ExperiencePage({
 
   const cached = await getExperienceData(slug);
   const { exp, ratingRow, related } = cached;
-  let { eventPackSlug, eventPackName, eventPackFormat, hasLivePack } = cached;
+  let { eventPackSlug, eventPackName, eventPackFormat, eventPackSport, hasLivePack } = cached;
 
   // Resolve the referring event pack for a shared experience — per-request,
   // so it can't live inside getExperienceData's unstable_cache. Only trust
@@ -822,6 +829,7 @@ export default async function ExperiencePage({
         packFormat: sportingEvents.packFormat,
         packStatus: sportingEvents.packStatus,
         isHidden: sportingEvents.isHidden,
+        sport: sportingEvents.sport,
       })
       .from(sportingEventExperiences)
       .innerJoin(sportingEvents, eq(sportingEventExperiences.sportingEventId, sportingEvents.id))
@@ -836,6 +844,7 @@ export default async function ExperiencePage({
       eventPackSlug = linkedEvent.slug;
       eventPackName = linkedEvent.name;
       eventPackFormat = linkedEvent.packFormat;
+      eventPackSport = linkedEvent.sport;
       hasLivePack = (linkedEvent.packStatus === "live" || linkedEvent.packStatus === "built_hidden") && linkedEvent.isHidden === false;
       // Only feed the referrer into getSpokeBackLink when it's a hub-and-
       // spoke event — a classic pack (e.g. BMW PGA Championship) has no
@@ -962,6 +971,7 @@ export default async function ExperiencePage({
         experienceTitle={exp.title}
         eventSlug={eventPackSlug}
         eventName={eventPackName}
+        sport={eventPackSport ?? undefined}
       />
       <ExperienceViewGate
         slug={slug}

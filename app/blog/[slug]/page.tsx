@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getAuthUser } from "@/lib/supabase/server";
 import HomepageNav from "@/app/_components/HomepageNav";
+import PostHogPageContext from "@/app/_components/PostHogPageContext";
 import ArticleActionSidebar from "../_components/ArticleActionSidebar";
 import { getBlogArticleBySlug, getSeriesSiblings, getRelatedByCategory } from "@/lib/queries/blog";
 
@@ -138,6 +139,7 @@ export default async function BlogArticlePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <PostHogPageContext sport={article.sport[0] ?? null} eventSlug={article.eventSlug} eventName={article.eventName} />
       <HomepageNav email={user?.email ?? null} />
 
       <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12 flex-1 w-full">

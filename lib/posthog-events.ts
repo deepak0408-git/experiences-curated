@@ -11,23 +11,23 @@ export const phEvent = {
   },
 
   // Pack funnel
-  packCtaClicked: (props: { eventSlug: string; eventName: string; priceTier: string; label: string }) =>
+  packCtaClicked: (props: { eventSlug: string; eventName: string; priceTier: string; label: string; sport?: string }) =>
     posthog.capture("pack_cta_clicked", props),
 
-  checkoutOpened: (props: { eventSlug: string; eventName?: string; priceTier: string }) =>
+  checkoutOpened: (props: { eventSlug: string; eventName?: string; priceTier: string; sport?: string }) =>
     posthog.capture("checkout_opened", props),
 
-  checkoutRedirected: (props: { eventSlug: string; priceTier: string }) =>
+  checkoutRedirected: (props: { eventSlug: string; priceTier: string; sport?: string }) =>
     posthog.capture("checkout_redirected", props),
 
-  purchaseCompleted: (props: { eventSlug: string }) =>
+  purchaseCompleted: (props: { eventSlug: string; sport?: string }) =>
     posthog.capture("purchase_completed", props),
 
   // Pack access
-  packAccessed: (props: { eventSlug: string; eventName: string; via: "purchase" | "free" | "annual_pro" }) =>
+  packAccessed: (props: { eventSlug: string; eventName: string; via: "purchase" | "free" | "annual_pro"; sport?: string }) =>
     posthog.capture("pack_accessed", props),
 
   // Experience
-  experienceViewed: (props: { experienceSlug: string; experienceTitle: string; eventSlug?: string; eventName?: string }) =>
+  experienceViewed: (props: { experienceSlug: string; experienceTitle: string; eventSlug?: string; eventName?: string; sport?: string }) =>
     posthog.capture("experience_viewed", props),
 };
