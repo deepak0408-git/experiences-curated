@@ -14,7 +14,7 @@ import {
   index,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 
 // ─── Enums ────────────────────────────────────────────────────────────────────
 
@@ -103,6 +103,12 @@ export const purchaseProductTypeEnum = pgEnum("purchase_product_type", [
   "tickets_guide",
   "hotels_guide",
   "itinerary_guide",
+  // Ticket Intelligence — standalone $7 quiz+scoring decision tool (25 Sep
+  // 2026), NOT a pack spoke like the 3 mini-packs above. Deliberately its
+  // own value rather than reusing "tickets_guide" (a static guide, built
+  // for a different, simpler product) — see
+  // project_seven_revenue_models_review memory for the strategic origin.
+  "ticket_intelligence",
 ]);
 
 // Richer than isHidden — adds a state for "event is calendared (e.g. on
@@ -693,6 +699,14 @@ export const purchases = pgTable("purchases", {
   preTripReminderSentAt: timestamp("pre_trip_reminder_sent_at"),
   conciergeOutreachPreTripSentAt: timestamp("concierge_outreach_pre_trip_sent_at"),
   conciergeOutreachPostTripSentAt: timestamp("concierge_outreach_post_trip_sent_at"),
+  // Ticket Intelligence only (productType "ticket_intelligence") — the
+  // fan's 6 quiz answers, stored at webhook time so a buyer who closes the
+  // result tab has a real way back in via their confirmation email, rather
+  // than a one-time reveal with no recovery path. NULL for every other
+  // productType. Deliberately scoped to this one narrow purpose, not a
+  // general-purpose metadata field — see feedback_no_unnecessary_new_fields
+  // memory on why a new column needs a real, specific justification.
+  ticketIntelligenceAnswers: jsonb("ticket_intelligence_answers"),
   purchasedAt: timestamp("purchased_at").notNull().defaultNow(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 }, (t) => [
@@ -889,6 +903,27 @@ export const plannerTicketTierEnum = pgEnum("planner_ticket_tier", [
   "tier4",
 ]);
 
+// Real seating category — deliberately NOT the same axis as
+// plannerTicketTierEnum above (which is sortable-by-price, sport-agnostic
+// on purpose). Ticket Intelligence scores fans against seatType, not price
+// tier — see circuitSeatingProfile below.
+export const seatingTypeEnum = pgEnum("seating_type", [
+  "grandstand",
+  "festival_lawn",
+  "hospitality",
+]);
+
+// Structured action-type tags a seat's sightline covers, scored against the
+// Ticket Intelligence rubric's "what track action matters most" question.
+export const actionTagEnum = pgEnum("action_tag", [
+  "overtaking",        // braking zones, battles for position
+  "start_grid",        // grid, opening-lap chaos, start/finish
+  "high_speed",        // flat-out / top-speed sections
+  "technical_corner",  // low-speed cornering, technique
+  "pit_lane",          // pit stops, pit entry/exit
+  "podium_atmosphere", // finish line, podium ceremony proximity
+]);
+
 export const plannerTimeWindowEnum = pgEnum("planner_time_window", [
   "next_3mo",
   "next_6mo",
@@ -1048,6 +1083,67 @@ export const plannerTicketTierCost = pgTable("planner_ticket_tier_cost", {
   lastUpdated: timestamp("last_updated").notNull().defaultNow(),
 }, (t) => [
   uniqueIndex("planner_ticket_tier_cost_event_tier_edition_unique").on(t.sportingEventId, t.tier, t.editionYear),
+]);
+
+// Seating identity — one row per real, named seating option at a circuit (a
+// grandstand, a festival/lawn zone, a hospitality suite), independent of
+// plannerTicketTierCost's price-tier rows. Built for the Ticket Intelligence
+// app (per-circuit fan decision tool: "which seat fits my preferences"),
+// not the Season Planner — tier1-4 above is deliberately sortable-by-price
+// and sport-agnostic, the wrong axis for this. seatType is the real
+// organizing concept here.
+export const circuitSeatingProfile = pgTable("circuit_seating_profile", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sportingEventId: uuid("sporting_event_id").notNull().references(() => sportingEvents.id),
+  // Nullable and NOT unique — several seats can share one price band (e.g.
+  // Interlagos Grandstand A and G both price under tier1). Left null when a
+  // seat needs its own distinct price row instead of sharing one (e.g.
+  // Orange Tree Club vs Paddock Club, split out of one bundled tier4 row —
+  // see project_seven_revenue_models_review / ticket-intelligence build
+  // notes for that incident).
+  ticketTierCostId: uuid("ticket_tier_cost_id").references(() => plannerTicketTierCost.id),
+  seatName: varchar("seat_name", { length: 100 }).notNull(),
+  seatType: seatingTypeEnum("seat_type").notNull(),
+  // Human-readable corner/zone caption, e.g. "Curva do Sol (Turn 3)",
+  // "Subida dos Boxes / back straight" — free text since real named corners
+  // are circuit-specific, same pattern as plannerTicketTierCost.eventTierLabel.
+  // actionTags below is the structured, scoreable version of this.
+  zoneLabel: varchar("zone_label", { length: 150 }).notNull(),
+  actionTags: actionTagEnum("action_tags").array().notNull().default(sql`'{}'::action_tag[]`),
+  // NULL = not yet verifiably sourced — never defaulted to a guess. Same
+  // never-guess bar as feedback_f1_tickets_reseller_verification.md.
+  covered: boolean("covered"),
+  // NULL = no restriction found / not applicable. Set e.g. 18 for
+  // Interlagos's Heineken Village — a hard filter in the rubric, not just a
+  // score input.
+  minAge: smallint("min_age"),
+  // Some seats (typically hospitality) only sell as part of a multi-day
+  // package regardless of what the event's ticket type generally allows —
+  // kept here since it's a seat-specific constraint, not event-wide.
+  singleDayAvailable: boolean("single_day_available"),
+  // Numbered/assigned seat vs first-come-first-served within the stand.
+  // NULL = not yet verifiably sourced. Feeds the rubric: an unreserved
+  // "fixed seat" grandstand is a meaningfully different experience from a
+  // reserved one (arrive-early pressure, family/mobility relevance) — real
+  // finding at Interlagos, where only Grandstand B and M are reserved and
+  // every other grandstand is unreserved.
+  reservedSeating: boolean("reserved_seating"),
+  // Nullable — this seat's own dedicated experience write-up (e.g. "Main
+  // Grandstand — Start, Finish, Podium", "Paddock Club — Above the
+  // Garages"), when one exists. Most seats won't have one (only a handful
+  // of named stands get their own experience per event) — Ticket
+  // Intelligence's result page falls back to that event's general "Ticket
+  // Guide"/"Where to Sit" experience when this is null, and shows no link
+  // at all if neither exists. Added 27 Sep 2026 per founder request: link
+  // the matched seat to its full write-up from the result page.
+  linkedExperienceId: uuid("linked_experience_id").references(() => experiences.id),
+  // Free-text sourcing note + URL(s) — every claim here must trace to
+  // something a curator can re-check, same discipline as
+  // experiences.editorialNote.
+  sourceNote: text("source_note").notNull(),
+  lastVerifiedDate: timestamp("last_verified_date").notNull().defaultNow(),
+}, (t) => [
+  uniqueIndex("circuit_seating_profile_event_seat_name_unique").on(t.sportingEventId, t.seatName),
 ]);
 
 // Local travel and food/daily spend — simplified per-destination bands, not

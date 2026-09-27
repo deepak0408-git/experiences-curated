@@ -5,20 +5,14 @@ import SpokeShell from "../../_components/SpokeShell";
 const SPOKE_ID = "cost";
 const TRIP_NIGHTS = 3;
 
-// planner_flight_cost/planner_hotel_tier_cost/planner_ticket_tier_cost rows
-// exist for Italian GP under edition_year: 2027 as of 19 Sep 2026 — but
-// they are a direct COPY of real 2026 research (49 flight rows, 4 hotel
-// rows, 4 ticket rows), not fresh 2027 pricing. Real 2027 F1 ticket prices
-// aren't published yet, and Google Flights' ~10-month booking horizon
-// blocks searching the real 2027 dates until roughly mid-to-late Nov 2026.
-// The founder's explicit call (19 Sep 2026): go live now with 2026 numbers
-// as an honest placeholder rather than wait, and re-research for real 2027
-// once the horizon opens. See scripts/seed-italian-gp-2027-copy-2026-placeholder.mjs
-// and memory project_italian_gp_2027_planner_placeholder. The calculated-
-// total UI below now renders normally (real rows exist), but the ticket
-// portion of that total is 2026 pricing carried forward — disclosed via the
-// note under the headline figure, not silently presented as confirmed 2027
-// pricing.
+// Ticket tiers are the real 2027 planner_ticket_tier_cost rows (edition_year
+// 2027, founder-validated against the official site, 24 Sep 2026). The 2027
+// tier meanings differ from the 2026 copy this spoke was first built on:
+// tier2 is now the Ascari/Parabolica/Laterale Destra/Lesmo grandstands,
+// tier3 the hospitality lounges, tier4 Schumacher Lounge/Ferrari GP Club.
+// Grandstand 1 (US$2,103, 3-day, founder-supplied 24 Sep 2026) and Grandstand
+// 5 are not in any tier, so the profile labels below name only what each tier
+// actually contains.
 export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
   const { event, linkedExperiences, hotels, tickets, destinationBand, flights, costDataVerifiedAt } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
@@ -55,10 +49,10 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
   const moderateTotal = tripTotal(moderateHotel, tier2);
 
   const profiles = [
-    { label: "Budget", hotel: budgetHotel, ticket: tier1, note: "A budget stay near Monza or a short train ride out from Milan", ticketNote: "General Admission (Prato)" },
-    { label: "Moderate", hotel: moderateHotel, ticket: tier2, note: "A well-located Milan hotel, 9 minutes from Monza by train", ticketNote: "Grandstand 5 or 22" },
-    { label: "Splurge", hotel: splurgeHotel, ticket: tier3, note: "Hotel de la Ville-tier Monza luxury, 2km from the circuit", ticketNote: "Grandstand 1 or 26" },
-    { label: "Luxury", hotel: luxuryHotel, ticket: tier4, note: "A genuine luxury Milan base with a driver for race days", ticketNote: "Paddock Club / Champions Club" },
+    { label: "Budget", hotel: budgetHotel, ticket: tier1, note: "A budget stay near Monza or a short train ride out from Milan", ticketNote: "General Admission (Prato), 3-day" },
+    { label: "Moderate", hotel: moderateHotel, ticket: tier2, note: "A well-located Milan hotel, 9 minutes from Monza by train", ticketNote: "Grandstand at Ascari, Parabolica, Laterale Destra or Lesmo, 3-day" },
+    { label: "Splurge", hotel: splurgeHotel, ticket: tier3, note: "Hotel de la Ville-tier Monza luxury, 2km from the circuit", ticketNote: "Hospitality lounge (Fan's Garden Lounge, Fans Club, Ultimate Hospitality)" },
+    { label: "Luxury", hotel: luxuryHotel, ticket: tier4, note: "A genuine luxury Milan base with a driver for race days", ticketNote: "Schumacher Lounge or Ferrari GP Club, 3-day" },
   ].filter((p) => p.hotel);
 
   // Milan excluded — it's the event's own destination city, seeded at
@@ -96,7 +90,7 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Monza is unusual among F1 circuits for genuinely offering both ends of the spectrum: a General Admission
-        Prato ticket that gets you into the park for roughly €50-100 a day, and a Grandstand 1 seat that&apos;s
+        Prato ticket that gets you into the park for about US$280 for the full weekend, and a Grandstand 1 seat (US$2,103 for the three days) that&apos;s
         historically the most expensive reserved seat on the calendar. Most visitors also base themselves in Milan
         rather than Monza itself, so a real cost estimate has to account for a short daily train commute, not just
         a hotel bill.
@@ -120,10 +114,6 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
               Prices verified {costDataVerifiedAt.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })} — not real-time
             </p>
           )}
-          <p className="text-xs text-[#6A6A6A] mt-1">
-            2027 F1 ticket prices aren&apos;t published yet — the ticket portion of this total uses 2026 pricing as
-            the closest real reference point, carried forward until Monza confirms 2027 prices.
-          </p>
         </div>
       ) : (
         <div className="mb-8 rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
@@ -210,10 +200,10 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
           Tell the Planner where you&apos;re starting from for a real number on your actual route.
         </p>
         <a
-          href="/planner"
+          href={`/price-radar/${eventSlug}`}
           className="inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors"
         >
-          Check flight costs from your city →
+          Check full trip costs from your city →
         </a>
       </div>
 

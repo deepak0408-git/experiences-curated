@@ -1,5 +1,6 @@
 # CLAUDE.md
 
+> **Never write a DB delete script — inserts only.** Claude is not authorized to delete anything from the database, including test/throwaway rows Claude itself just inserted. Write only `_test-insert-*.mjs`-style scripts; never a matching `_test-delete-*.mjs` or any other delete script, even offered proactively "for cleanup." If a test row genuinely needs removing, ask the founder to do it themselves or explicitly instruct otherwise in the moment — this rule doesn't bend for convenience. Founder correction, 27 Sep 2026.
 > **Next.js 16:** `params` is a `Promise` — always `await params` before accessing properties.
 > **Middleware:** Keep named `middleware.ts` — renaming breaks Turbopack cache. Wrap Supabase calls in try-catch.
 > **Experience lists:** Every event pack has a confirmed experience list saved in memory (`project_belgian_gp_experiences.md` etc.). At the start of any content session, read the relevant memory file and work strictly from that list — never propose, add, or swap experiences without user confirmation. If no memory file exists for an event, ask the user to confirm the full list before writing anything, then save it immediately.

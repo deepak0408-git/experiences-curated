@@ -183,10 +183,10 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
           from and it&apos;ll give you a real range for your actual route.
         </p>
         <a
-          href="/planner"
+          href={`/price-radar/${eventSlug}`}
           className="inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors"
         >
-          Check flight costs from your city →
+          Check full trip costs from your city →
         </a>
       </div>
 

@@ -1,0 +1,17 @@
+import { config } from "dotenv";
+config({ path: ".env.local" });
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
+import { eq, sql } from "drizzle-orm";
+import { sportingEvents, plannerTicketTierCost } from "../schema/database.ts";
+const client = postgres(process.env.DATABASE_URL, { ssl: "require", prepare: false });
+const db = drizzle(client);
+const EVENT_ID = "b93770c0-3d96-4e81-b3d0-c1e3a788fd8e";
+const [ev] = await db.select().from(sportingEvents).where(eq(sportingEvents.id, EVENT_ID));
+console.log("EVENT:", { slug: ev.slug, editionYear: ev.editionYear, start: ev.startDate, end: ev.endDate, packCurrency: ev.packCurrency, isHidden: ev.isHidden, destinationId: ev.destinationId });
+const rows = await db.select().from(plannerTicketTierCost).where(eq(plannerTicketTierCost.sportingEventId, EVENT_ID));
+console.log("TICKET TIER ROWS:");
+for (const r of rows.sort((a,b)=>a.editionYear-b.editionYear||a.tier.localeCompare(b.tier))) console.log(` ${r.editionYear} ${r.tier} | ${r.eventTierLabel} | ${r.costLow}-${r.costHigh} ${r.currency} | ${r.lastUpdated.toISOString()}`);
+const jt = await db.execute(sql`select count(*)::int c from sporting_event_experiences where sporting_event_id=${EVENT_ID}`);
+console.log("experiences joined:", jt[0].c);
+await client.end();

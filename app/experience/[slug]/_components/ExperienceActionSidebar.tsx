@@ -22,14 +22,20 @@ import { subscribeToNewsletter } from "@/app/newsletter/actions";
 export default function ExperienceActionSidebar({
   eventPackSlug,
   eventPackName,
+  eventPackFormat,
   hasLivePack,
   userEmail,
 }: {
   eventPackSlug: string;
   eventPackName: string;
+  // Added 25 Sep 2026 for the Price Radar link below — only hub_and_spoke
+  // events have a real /price-radar page (it depends on getSpokeData).
+  // Classic events (e.g. US Open, Belgian GP) fall back to /planner.
+  eventPackFormat: string | null;
   hasLivePack: boolean;
   userEmail: string | null;
 }) {
+  const canPlanCosts = eventPackFormat === "hub_and_spoke";
   return (
     <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
       <p className="text-xs font-black tracking-widest uppercase text-white mb-3.5">
@@ -47,8 +53,14 @@ export default function ExperienceActionSidebar({
         </span>
       </Link>
 
+      {/* Links to Price Radar when eligible (hub_and_spoke, real data),
+          else falls back to /planner — href replaced 25 Sep 2026. See
+          ArticleActionSidebar.tsx's comment for why the old plain /planner
+          link was already known-broken as a deep-link. Label/copy
+          deliberately kept as "Budget your trip" in both cases per founder
+          instruction (same day) — only the destination changes. */}
       <Link
-        href="/planner"
+        href={canPlanCosts ? `/price-radar/${eventPackSlug}` : "/planner"}
         className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">💰</span>

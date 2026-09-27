@@ -14,11 +14,11 @@ import { subscribeToNewsletter } from "@/app/newsletter/actions";
 // "Compare costs" (Planner deep-link) removed 8 Aug 2026 — it only ever
 // sent `eventId`, which /planner/results doesn't read at all (it expects
 // sports/budgetMin/budgetMax/timeWindow/tripLengthDays/originMarket), so
-// the link always rendered "Any sport · US$0 · nothing matches." A real
-// fix needs either an eventId-based pre-fill mode built into the Planner,
-// or a genuine mapping from "one event" to a budget search, neither of
-// which exists yet — out of scope for the blog for now. See Blog Design
-// Document.txt.
+// the link always rendered "Any sport · US$0 · nothing matches." Fixed
+// 25 Sep 2026 not by patching the Planner deep-link, but by pointing this
+// row at Price Radar (/price-radar/[slug]) instead — a real, slug-driven
+// cost page with no pre-fill mapping problem. Falls back to /planner only
+// for classic-format events, which have no Price Radar page.
 //
 // Guide-coming notify state (19 Sep 2026) — ported from the Experience
 // page's ExperienceActionSidebar / Calendar's NotifyMeButton: same
@@ -30,6 +30,7 @@ type SiblingLink = { slug: string; title: string; seriesPosition?: number | null
 export default function ArticleActionSidebar({
   eventSlug,
   eventName,
+  eventPackFormat,
   hasLivePack,
   seriesSlug,
   siblings,
@@ -41,6 +42,10 @@ export default function ArticleActionSidebar({
 }: {
   eventSlug?: string | null;
   eventName?: string | null;
+  // Added 25 Sep 2026 for the Price Radar link below — only hub_and_spoke
+  // events have a real /price-radar page (it depends on getSpokeData).
+  // Classic events (e.g. US Open, Belgian GP) fall back to /planner.
+  eventPackFormat?: string | null;
   hasLivePack: boolean;
   seriesSlug?: string | null;
   siblings: SiblingLink[];
@@ -51,6 +56,7 @@ export default function ArticleActionSidebar({
   userEmail: string | null;
 }) {
   const hasEventContext = !!eventSlug;
+  const canPlanCosts = eventPackFormat === "hub_and_spoke";
   const hasSiblings = siblings.length > 0;
 
   // Fallback block — added 8 Aug 2026. A standalone article (no
@@ -79,8 +85,11 @@ export default function ArticleActionSidebar({
             </span>
           </Link>
 
+          {/* Label/copy deliberately kept as "Budget your trip" in both
+              cases per founder instruction, 25 Sep 2026 — only the
+              destination (href) changes based on canPlanCosts. */}
           <Link
-            href="/planner"
+            href={canPlanCosts && eventSlug ? `/price-radar/${eventSlug}` : "/planner"}
             className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
           >
             <span className="text-base flex-shrink-0 w-5 text-center">💰</span>

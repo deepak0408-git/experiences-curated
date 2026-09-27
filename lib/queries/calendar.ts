@@ -38,6 +38,13 @@ export async function getCalendarEvents(sport?: string, years?: number[]) {
       isHidden: sportingEvents.isHidden,
       matchedEventId: sportingEvents.id,
       matchedEventEditionYear: sportingEvents.editionYear,
+      // Added 25 Sep 2026 for canPlanCosts()'s Price Radar gate — a classic-
+      // format event can have real ticket-cost rows (hasRealCostData true)
+      // but no /price-radar page at all, since that route depends on
+      // getSpokeData, which only exists for hub_and_spoke events. Without
+      // this, canPlanCosts would send classic events (e.g. US Open, Belgian
+      // GP) to a 404.
+      matchedEventPackFormat: sportingEvents.packFormat,
     })
     .from(externalCalendarEvents)
     .leftJoin(sportingEvents, eq(externalCalendarEvents.matchedSportingEventId, sportingEvents.id))
@@ -117,6 +124,12 @@ export function getCtaState(row: Awaited<ReturnType<typeof getCalendarEvents>>[n
 // via a real query against planner_ticket_tier_cost, filtered by
 // edition_year — see that function's comment and
 // project_planner_cost_edition_year_migration memory.
+//
+// packFormat check added 25 Sep 2026 — hasRealCostData alone doesn't
+// distinguish classic (no /price-radar page, since that route depends on
+// getSpokeData which is hub_and_spoke only) from hub_and_spoke. A classic
+// event with real ticket data (e.g. US Open, Belgian GP) would otherwise
+// send this link to a 404.
 export function canPlanCosts(row: Awaited<ReturnType<typeof getCalendarEvents>>[number]): boolean {
-  return row.hasRealCostData;
+  return row.hasRealCostData && row.matchedEventPackFormat === "hub_and_spoke";
 }

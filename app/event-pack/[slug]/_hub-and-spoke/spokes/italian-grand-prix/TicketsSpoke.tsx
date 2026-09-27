@@ -1,4 +1,5 @@
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { formatMoneyRange } from "@/app/planner/_lib/mockEvents";
 import SpokeShell from "../../_components/SpokeShell";
 import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
@@ -11,14 +12,11 @@ const SPOKE_ID = "tickets";
 // Monza DOES sell General Admission (Prato) — a genuinely different
 // structure from several sibling F1 events on this pack platform.
 //
-// Pricing note: 2027 F1 ticket prices are not published anywhere yet.
-// planner_ticket_tier_cost now has edition_year: 2027 rows for this event,
-// but they are a direct copy of real 2026 pricing (the founder's explicit
-// 19 Sep 2026 call — go live now, re-research once real 2027 prices exist).
-// The "On pricing" box below discloses this rather than presenting the
-// carried-forward numbers as confirmed 2027 prices. See
-// scripts/seed-italian-gp-2027-copy-2026-placeholder.mjs and memory
-// project_italian_gp_2027_planner_placeholder.
+// Pricing: the "2027 ticket prices" cards below render the real
+// planner_ticket_tier_cost rows for edition_year 2027 (founder-validated
+// against the official site, 24 Sep 2026). Grandstand 1 (Centrale) and
+// Grandstand 5 (Piscina) sit outside those four tiers, so they are pointed at
+// the official price list rather than given an invented figure.
 const TIER_META = [
   {
     tierKey: "GA — Lesmo & Ascari",
@@ -65,7 +63,7 @@ const TIER_META = [
 ];
 
 export default async function TicketsSpoke({ eventSlug }: { eventSlug: string }) {
-  const { event, linkedExperiences } = await getSpokeData(eventSlug);
+  const { event, linkedExperiences, tickets } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
   const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
@@ -78,6 +76,11 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
   const grandstand26 = linkedExperiences.find((e) => e.slug.includes("grandstand-26-pit-lane-grid-podium-"));
   const curvaGrande = linkedExperiences.find((e) => e.slug.includes("curva-grande-general-admission-"));
 
+  const tier1 = tickets.find((t) => t.tier === "tier1");
+  const tier2 = tickets.find((t) => t.tier === "tier2");
+  const tier3 = tickets.find((t) => t.tier === "tier3");
+  const tier4 = tickets.find((t) => t.tier === "tier4");
+
   return (
     <SpokeShell
       eventSlug={eventSlug}
@@ -87,7 +90,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       justPurchased={justPurchased}
       eventName="Italian Grand Prix"
       status="teaser"
-      h1="Six real seats, from a €50 park pass to Monza's priciest grandstand"
+      h1="Six real seats, from a US$280 weekend park pass to Monza's priciest grandstand"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
@@ -182,16 +185,35 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         ))}
       </div>
 
-      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">On pricing</p>
-        <p className="text-sm text-[#A3A3A3] leading-6">
-          2027 Monza ticket prices haven&apos;t been published yet. The figures shown here are real 2026 prices —
-          General Admission (Prato) ran roughly €50 Friday, €70 Saturday, €100 Sunday, and around €450 for the full
-          weekend; Grandstand 5&apos;s 3-day package was €989 (discounted to €959) — carried forward as the closest
-          real reference point for 2027 until Monza confirms next year&apos;s pricing. We&apos;ll update this the
-          moment 2027 prices go live. Confirm current pricing and availability directly on monzanet.it before buying.
-        </p>
-      </div>
+      {tier1 || tier2 || tier3 || tier4 ? (
+        <div className="mb-4">
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">2027 ticket prices</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+            {[
+              { t: tier1, title: "General Admission (Prato)", unit: "3-day, Friday–Sunday" },
+              { t: tier2, title: "Grandstands — Ascari, Parabolica, Laterale Destra, Lesmo", unit: "3-day reserved seat" },
+              { t: tier3, title: "Hospitality lounges", unit: "Fan's Garden Lounge, Fans Club, Ultimate Hospitality, F1 Experiences Lounge" },
+              { t: tier4, title: "Top hospitality", unit: "Schumacher Lounge, Ferrari GP Club, 3-day" },
+            ]
+              .filter((x) => x.t)
+              .map((x) => (
+                <div key={x.title} className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+                  <p className="text-xs font-black tracking-widest uppercase text-white mb-1">{x.title}</p>
+                  <p className="text-lg font-black text-[#AAFF00]">
+                    {Math.round(Number(x.t!.costLow)) === Math.round(Number(x.t!.costHigh))
+                      ? `US$${Math.round(Number(x.t!.costLow)).toLocaleString("en-US")}`
+                      : formatMoneyRange(Math.round(Number(x.t!.costLow)), Math.round(Number(x.t!.costHigh)))}
+                  </p>
+                  <p className="text-xs text-[#6A6A6A] mt-1">{x.unit}</p>
+                </div>
+              ))}
+          </div>
+          <p className="text-xs text-[#6A6A6A]">
+            Grandstand 1 (Centrale) sits above these bands at US$2,103 for the 3-day weekend. Grandstand 5 (Piscina)
+            isn&apos;t part of them either; its exact 2027 price is on the official price list at monzanet.it.
+          </p>
+        </div>
+      ) : null}
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
@@ -230,7 +252,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Where to actually buy</p>
           <p className="text-sm text-[#A3A3A3] leading-7">
-            Buy the moment 2027 tickets open on monzanet.it if a specific stand matters to you — Grandstand 1 and
+            Buy early on monzanet.it if a specific stand matters to you — Grandstand 1 and
             Grandstand 5 both have a track record of selling through early, and this is Ferrari&apos;s home race,
             which pushes demand higher across the board than almost anywhere else on the F1 calendar.
           </p>

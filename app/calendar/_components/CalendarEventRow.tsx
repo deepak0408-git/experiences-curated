@@ -91,9 +91,16 @@ export default function CalendarEventRow({
             per direct mobile screenshot feedback. */}
         <div className="flex flex-col items-start gap-1.5 mt-2 sm:items-end sm:mt-0 sm:flex-shrink-0">
           {ctaContent(cta, event.name, userEmail)}
+          {/* Links to Price Radar, not /planner — canPlanCosts() now also
+              checks packFormat === "hub_and_spoke" (see calendar.ts), so
+              matchedEventSlug is always a real, eligible Price Radar page
+              whenever this renders. Replaced 25 Sep 2026 — the old generic
+              /planner link had no way to deep-link into a specific event's
+              costs, matching the same gap ArticleActionSidebar's own
+              comment documents. */}
           {!isPast && canPlanCosts(event) && (
             <Link
-              href="/planner"
+              href={`/price-radar/${event.matchedEventSlug}`}
               className="text-[11px] text-[#6A6A6A] hover:text-[#AAFF00] transition-colors"
             >
               Plan costs for this trip →
