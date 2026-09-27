@@ -203,6 +203,7 @@ export default async function BlogArticlePage({
             <ArticleActionSidebar
               eventSlug={article.eventSlug}
               eventName={article.eventName}
+              eventPackFormat={article.eventPackFormat}
               hasLivePack={hasLivePack}
               seriesSlug={article.seriesSlug}
               siblings={siblings}

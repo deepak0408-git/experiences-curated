@@ -8,10 +8,8 @@ const client = new DodoPayments({
 });
 
 export async function POST(request: NextRequest) {
-  const [{ user }, { productId, sportingEventId, priceTier, productType, successUrl }] = await Promise.all([
-    getAuthUser(),
-    request.json(),
-  ]);
+  const [{ user }, { productId, sportingEventId, priceTier, productType, successUrl, ticketIntelligenceAnswers }] =
+    await Promise.all([getAuthUser(), request.json()]);
 
   if (!productId || !sportingEventId) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -28,6 +26,8 @@ export async function POST(request: NextRequest) {
         // webhook's existing `?? "full_pack"` default still applies for
         // every checkout that predates this field.
         ...(productType ? { product_type: productType } : {}),
+        // Ticket Intelligence only — see DodoCheckout.tsx prop comment.
+        ...(ticketIntelligenceAnswers ? { ticket_intelligence_answers: ticketIntelligenceAnswers } : {}),
       },
       return_url: successUrl,
     });

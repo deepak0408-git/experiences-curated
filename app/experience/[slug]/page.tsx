@@ -190,9 +190,9 @@ const EXPERIENCE_TO_SPOKE_BY_EVENT: Record<string, Record<string, { spokeId: str
   // Wimbledon — added 14 Aug 2026 for the classic-to-hub-and-spoke
   // conversion. True-home spoke matches where each experience's
   // SpokeExperienceCard actually renders (see spokes/wimbledon/*.tsx) —
-  // "wimbledon-cannizaro-house-" appears in both Hotels and Luxury, so its
-  // true home here is Hotels, matching the ATP Finals precedent for a
-  // dual-appearing experience.
+  // "wimbledon-cannizaro-house-" used to render a card in both Hotels and
+  // Luxury; the Luxury card was removed 24 Sep 2026 (1 card, 1 spoke rule),
+  // so Hotels is its only spoke.
     "wimbledon-centre-court-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
     "the-hill-wimbledon-": { spokeId: "map", spokeLabel: "Venue Map" },
     "wimbledon-eating-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
@@ -528,6 +528,14 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "where-to-stay-melbourne-boxing-day-": { venueCount: 4, venueNoun: "stay options" },
   "qatar-gp-lusail-marina-hotels-": { venueCount: 2, venueNoun: "hotels" },
   "qatar-gp-qatari-cuisine-souq-": { venueCount: 2, venueNoun: "restaurants" },
+  "where-to-stay-nagpur-": { venueCount: 3, venueNoun: "hotels" },
+  "nagpur-saoji-food-": { venueCount: 3, venueNoun: "eateries" },
+  "where-to-stay-chennai-": { venueCount: 3, venueNoun: "hotels" },
+  "marina-beach-kapaleeshwarar-": { venueCount: 2, venueNoun: "sites" },
+  "chennai-filter-coffee-dosa-": { venueCount: 2, venueNoun: "eateries" },
+  "where-to-stay-ahmedabad-": { venueCount: 3, venueNoun: "hotels" },
+  "ahmedabad-thali-manek-chowk-": { venueCount: 2, venueNoun: "eateries" },
+  "kankaria-riverfront-": { venueCount: 2, venueNoun: "sites" },
   "qatar-gp-pearl-katara-": { venueCount: 2, venueNoun: "districts" },
   "where-to-stay-sydney-fourth-test-": { venueCount: 2, venueNoun: "hotels" },
   "fremantle-day-trip-from-perth-": { venueCount: 3, venueNoun: "places" },
@@ -546,6 +554,10 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "singapore-gp-trackside-hotels-": { venueCount: 3, venueNoun: "hotels" },
   "las-vegas-gp-trackside-hotels-": { venueCount: 3, venueNoun: "hotels" },
   "las-vegas-gp-off-strip-hotels-": { venueCount: 2, venueNoun: "hotels" },
+  "japanese-gp-nagoya-day-trip": { venueCount: 3, venueNoun: "places" },
+  "japanese-gp-osaka-day-trip": { venueCount: 4, venueNoun: "places" },
+  "japanese-gp-cherry-blossoms": { venueCount: 2, venueNoun: "spots" },
+  "japanese-gp-suzuka-city": { venueCount: 4, venueNoun: "places" },
   "yas-marina-dining-walk-": { venueCount: 3, venueNoun: "restaurants" },
   "sheikh-zayed-mosque-qasr-al-watan-": { venueCount: 2, venueNoun: "venues" },
   "louvre-abu-dhabi-yas-theme-parks-": { venueCount: 3, venueNoun: "attractions" },
@@ -554,6 +566,7 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "las-vegas-gp-fremont-downtown-dining-": { venueCount: 2, venueNoun: "restaurants" },
   "las-vegas-gp-fountains-sphere-": { venueCount: 2, venueNoun: "landmarks" },
   "las-vegas-gp-strip-casinos-": { venueCount: 3, venueNoun: "casino resorts" },
+  "chinese-gp-where-to-stay-": { venueCount: 2, venueNoun: "hotels" },
   "xiaolongbao-shanghai-guide-": { venueCount: 2, venueNoun: "restaurants" },
   "french-concession-dining-shanghai-": { venueCount: 3, venueNoun: "restaurants" },
   "singapore-gp-chinatown-stay-": { venueCount: 2, venueNoun: "hotels" },
@@ -1423,6 +1436,7 @@ export default async function ExperiencePage({
           <ExperienceActionSidebar
             eventPackSlug={eventPackSlug}
             eventPackName={eventPackName}
+            eventPackFormat={eventPackFormat}
             hasLivePack={hasLivePack}
             userEmail={authUser?.email ?? null}
           />
@@ -1433,7 +1447,12 @@ export default async function ExperiencePage({
       {/* Related experiences */}
       {related.length > 0 && (
         <div className="border-t border-[#2A2A2A] bg-[#141414]">
-          <div className="max-w-3xl mx-auto px-6 py-12">
+          {/* max-w-5xl (not -3xl) to match the page's main content wrapper
+              above (line ~1216) — using -3xl here re-centered this section
+              narrower than the article/sidebar grid, so it looked centered
+              on the page instead of left-aligned with everything above it.
+              Bug caught live 27 Sep 2026. */}
+          <div className="max-w-5xl mx-auto px-6 py-12">
             <p className="text-xs font-semibold tracking-widest uppercase text-[#6A6A6A] mb-6">
               More from this guide
             </p>

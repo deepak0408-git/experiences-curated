@@ -37,7 +37,6 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
   const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
   const isUnlocked = hasPurchased;
   const theLawn = linkedExperiences.find((e) => e.slug.includes("wimbledon-the-lawn-hospitality"));
-  const cannizaro = linkedExperiences.find((e) => e.slug.includes("wimbledon-cannizaro-house"));
 
   const packages = [
     {
@@ -182,11 +181,13 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">A premium stay</p>
-      {cannizaro && (
-        <div className="mb-8">
-          <SpokeExperienceCard eventSlug={eventSlug} experience={cannizaro} isPro={isPro} />
-        </div>
-      )}
+      <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
+        Hotel du Vin Cannizaro House, inside Cannizaro Park, is covered in full in the{" "}
+        <Link href={`/event-pack/${eventSlug}/hotels`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
+          Where to Stay guide
+        </Link>
+        .
+      </p>
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">

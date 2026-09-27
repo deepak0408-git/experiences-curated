@@ -17,7 +17,11 @@ interface DodoCheckoutProps {
   // Mini-packs pilot — omitted for the full pack, so the checkout route's
   // existing full-pack behavior (and the webhook's "full_pack" default)
   // still apply for every purchase that predates this prop.
-  productType?: "tickets_guide" | "hotels_guide" | "itinerary_guide";
+  // "ticket_intelligence" added 25 Sep 2026 — reuses this same component
+  // for the standalone Ticket Intelligence app, not a pack mini-guide, but
+  // the checkout mechanics (overlay open, singleton event handling) are
+  // identical.
+  productType?: "tickets_guide" | "hotels_guide" | "itinerary_guide" | "ticket_intelligence";
   // Routes to /event-pack/[eventSlug]/checkout (Dodo "inline" display mode,
   // an iframe embedded directly in our own DOM) instead of calling the
   // overlay SDK's Checkout.open() in this component. Overlay mode behaves
@@ -41,6 +45,11 @@ interface DodoCheckoutProps {
   productLabel?: string;
   priceDisplay?: string;
   priceCurrency?: string;
+  // Ticket Intelligence only — the fan's JSON-stringified quiz answers,
+  // passed through to /api/checkout/dodo's metadata so the webhook can
+  // persist them to purchases.ticketIntelligenceAnswers (the recovery path
+  // for the one-time-reveal result). Undefined for every other product.
+  ticketIntelligenceAnswers?: string;
 }
 
 // The Dodo SDK is a true global singleton (one `window.DodoCheckoutWebSDK`,
@@ -119,6 +128,7 @@ export default function DodoCheckout({
   productLabel,
   priceDisplay,
   priceCurrency,
+  ticketIntelligenceAnswers,
 }: DodoCheckoutProps) {
   const [loading, setLoading] = useState(false);
   const setLoadingRef = useRef(setLoading);
@@ -162,7 +172,14 @@ export default function DodoCheckout({
       const res = await fetch("/api/checkout/dodo", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId, sportingEventId, priceTier, productType, successUrl }),
+        body: JSON.stringify({
+          productId,
+          sportingEventId,
+          priceTier,
+          productType,
+          successUrl,
+          ...(ticketIntelligenceAnswers ? { ticketIntelligenceAnswers } : {}),
+        }),
       });
       const { checkout_url, error } = await res.json();
       if (error || !checkout_url) {

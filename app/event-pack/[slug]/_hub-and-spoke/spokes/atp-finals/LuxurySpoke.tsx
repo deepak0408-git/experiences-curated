@@ -13,7 +13,6 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
   const isUnlocked = hasPurchased;
 
   const luxuryHospitality = linkedExperiences.find((e) => e.slug.includes("atp-finals-luxury-hospitality"));
-  const luxuryHotels = linkedExperiences.find((e) => e.slug.includes("atp-finals-luxury-hotels"));
 
   return (
     <SpokeShell
@@ -75,10 +74,18 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
 
       <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
         Principi di Piemonte's top-floor rooms carry the same Alpine-arch views that make Piano35 worth visiting.
+        The full luxury-hotel comparison is in the{" "}
+        <Link href={`/event-pack/${eventSlug}/hotels`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
+          Where to Stay guide
+        </Link>
+        .
       </p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        {luxuryHotels && <SpokeExperienceCard eventSlug={eventSlug} experience={luxuryHotels} isPro={isPro} />}
-        {luxuryHospitality && <SpokeExperienceCard eventSlug={eventSlug} experience={luxuryHospitality} isPro={isPro} />}
+        {luxuryHospitality && (
+          <div className="sm:col-span-2">
+            <SpokeExperienceCard eventSlug={eventSlug} experience={luxuryHospitality} isPro={isPro} />
+          </div>
+        )}
       </div>
 
       {isUnlocked && (

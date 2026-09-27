@@ -127,7 +127,15 @@ export async function POST(request: NextRequest) {
     currency: string;
     total_amount: number;
     customer: { customer_id: string; email: string };
-    metadata?: { sporting_event_id?: string; price_tier?: string; product_type?: string };
+    metadata?: {
+      sporting_event_id?: string;
+      price_tier?: string;
+      product_type?: string;
+      // Ticket Intelligence only — the fan's quiz answers, JSON-stringified
+      // in checkout metadata (Dodo metadata values are strings) so the
+      // webhook can persist them to purchases.ticketIntelligenceAnswers.
+      ticket_intelligence_answers?: string;
+    };
   };
 
   const productId = payment.product_cart?.[0]?.product_id ?? null;
@@ -277,9 +285,25 @@ export async function POST(request: NextRequest) {
   const pricePaid = String(payment.total_amount / 100);
   const currency = payment.currency ?? "GBP";
   // Mini-packs pilot — absent on every checkout that predates this field,
-  // so it defaults to the same full-pack behavior as before.
+  // so it defaults to the same full-pack behavior as before. "ticket_intelligence"
+  // added 25 Sep 2026 — standalone product, not a pack mini-guide (see
+  // productLabel/productSpokeUrl below, which branch separately for it).
   const productType = (payment.metadata?.product_type ?? "full_pack") as
-    "full_pack" | "tickets_guide" | "hotels_guide" | "itinerary_guide";
+    "full_pack" | "tickets_guide" | "hotels_guide" | "itinerary_guide" | "ticket_intelligence";
+
+  // Ticket Intelligence recovery path — parse quiz answers from checkout
+  // metadata (see TeaserResult.tsx, where they're JSON-stringified into
+  // the checkout call). Malformed/missing JSON never blocks the purchase
+  // itself — worst case, the confirmation email's link falls back to the
+  // quiz start instead of a direct result.
+  let ticketIntelligenceAnswers: unknown = null;
+  if (productType === "ticket_intelligence" && payment.metadata?.ticket_intelligence_answers) {
+    try {
+      ticketIntelligenceAnswers = JSON.parse(payment.metadata.ticket_intelligence_answers);
+    } catch (err) {
+      console.error("[dodo webhook] failed to parse ticket_intelligence_answers:", err);
+    }
+  }
 
   try {
     const inserted = await db
@@ -295,6 +319,7 @@ export async function POST(request: NextRequest) {
         pricePaid,
         currency,
         status: "active",
+        ticketIntelligenceAnswers,
       })
       .onConflictDoNothing()
       .returning({ id: purchases.id });
@@ -341,8 +366,22 @@ export async function POST(request: NextRequest) {
     itinerary_guide: "Itinerary Guide",
   };
   const isFullPack = productType === "full_pack";
-  const productLabel = isFullPack ? `${sportingEvent.name} pack` : `${sportingEvent.name} ${MINI_PACK_LABEL[productType]}`;
-  const productSpokeUrl = isFullPack ? packUrl : `${packUrl}/${productType === "tickets_guide" ? "tickets" : productType === "hotels_guide" ? "hotels" : "itinerary"}`;
+  // ticket_intelligence is neither the full pack nor a pack mini-guide — it
+  // has no spoke URL to link to (its result lives at
+  // /ticket-intelligence/[slug]/result, not under /event-pack/[slug]/...),
+  // so both label and URL get their own branch rather than reusing
+  // MINI_PACK_LABEL's spoke-URL assumption.
+  const isTicketIntelligence = productType === "ticket_intelligence";
+  const productLabel = isFullPack
+    ? `${sportingEvent.name} pack`
+    : isTicketIntelligence
+      ? `${sportingEvent.name} Ticket Intelligence match`
+      : `${sportingEvent.name} ${MINI_PACK_LABEL[productType]}`;
+  const productSpokeUrl = isFullPack
+    ? packUrl
+    : isTicketIntelligence
+      ? `${siteUrl}/ticket-intelligence/${sportingEvent.slug}`
+      : `${packUrl}/${productType === "tickets_guide" ? "tickets" : productType === "hotels_guide" ? "hotels" : "itinerary"}`;
 
   try {
     await resend.emails.send({

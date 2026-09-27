@@ -16,6 +16,20 @@ const MINI_PACK_DESCRIPTION: Record<"tickets" | "hotels" | "itinerary", string> 
   itinerary: "The full hour-by-hour shape of the trip",
 };
 
+// Ticket Intelligence — standalone $10 quiz+scoring tool, NOT a pack spoke
+// (see app/ticket-intelligence/[slug]/page.tsx). Deliberately kept OUT of
+// MINI_PACK_PRICING/MiniPackSpokeId above: those are tightly typed around 3
+// real gated spoke pages with inline DodoCheckout on this hub page itself,
+// while Ticket Intelligence's entire quiz → paywall → checkout → result
+// flow lives in its own app. This card matches the mini-guide cards'
+// visual style but links OUT to the quiz rather than checking out here.
+// Whether to show it is data-driven (hasTicketIntelligence — does this
+// event have any circuit_seating_profile rows?), NOT a hardcoded per-slug
+// Set — fixed 26 Sep 2026, the day after the pilot (Brazilian GP), once it
+// was clear this needed to scale to every F1 event without a code change
+// per event. See feedback_avoid_hardcoded_per_entity_tables memory.
+import { hasTicketIntelligence } from "@/app/ticket-intelligence/[slug]/_lib/getSeatingData";
+
 import { STATUS_LABEL, MINI_PACK_LABEL_BY_PRODUCT_TYPE, MINI_PACK_UNLOCK_DESCRIPTION_BY_PRODUCT_TYPE } from "./_components/SpokeShell";
 import DodoCheckout from "../_components/DodoCheckout";
 import LocalCurrencyHint from "../_components/LocalCurrencyHint";
@@ -205,6 +219,27 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
     { label: "Free transit", value: "Tram and train travel to Albert Park is free on race day with a valid ticket — around 5,000 extra tram services run across the weekend. The nearest free-travel train stop is Anzac Station, an 8-minute walk from Gate 5." },
     { label: "Gates", value: "Seven entry gates, numbered 1, 2, 3, 5, 8, 9, and 10 (not sequential — there's no Gate 4 or 6). Gates typically open 8:30am Friday through Sunday; Thursday's practice day opens later, around 9:30am." },
     { label: "Emergencies", value: "Australia-wide emergency number: 000. Victoria's public hospital system and Melbourne's tourism information line (13 28 42) both operate in English." },
+  ],
+  // Real, sourced facts from experience research, 27 Sep 2026. This event's
+  // row rolled forward to the 2027 edition (season_year: 2027, 3-5 Sep 2027)
+  // — 2027 session/gate times aren't published yet, stated honestly per
+  // skill §2a-3. The 2027 Sprint format is real and confirmed (monzanet.it's
+  // own announcement) — Monza's first Sprint weekend since 2021, part of a
+  // new 3-year deal through 2029. Weather is real seasonal climate data
+  // (average September highs/rain-day count for Milan/Monza), not a single-
+  // event forecast. No explicit "Address" row here, same as Brazilian GP —
+  // it's already covered by the automatic DB-driven row above (line ~531),
+  // now that venueAddress is set on this event's row (see
+  // project_italian_gp_hub_page_intro_quickref_fix memory). Added
+  // retroactively after this event's classic->hub-and-spoke migration
+  // (Phase B, 20 Sep 2026) shipped without an entry here — see
+  // migrate-from-classic-to-hub-spoke skill §4d.
+  "italian-grand-prix": [
+    { label: "Sprint weekend", value: "2027 is Monza's first Sprint weekend since 2021, and the first of a new three-year deal running through 2029: Friday is Practice 1 + Sprint Qualifying, Saturday is the Sprint Race + Grand Prix Qualifying, Sunday is the Italian Grand Prix. Exact session clock times haven't been published yet — check formula1.com closer to race week." },
+    { label: "Gate times", value: "Not yet published for 2027 — in recent years gates have opened around 07:30 on Friday and 07:00 on Saturday and Sunday. Confirm exact times via monzanet.it closer to race week." },
+    { label: "Weather", value: "Early September at Monza is late-summer Italian weather — average highs in the mid-20s°C (75-82°F), with some years spiking into the low 30s. Rain is genuinely unlikely: Milan averages only about 5 wet days across the whole month. Sun protection matters more than rain gear." },
+    { label: "Tourism Infoline", value: "Monza Infopoint (Piazza Carducci): +39 039 323222 — city and event visitor information, not emergency dispatch." },
+    { label: "Emergencies", value: "Italy-wide emergency number: 112 (free, English-speaking operators available). Health-specific: 118. Nearest hospital to the circuit: Ospedale San Gerardo, Via Pergolesi 33, Monza — 24-hour emergency department, tel 039 2331." },
   ],
 };
 
@@ -396,6 +431,21 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
     introText:
       "Albert Park is unusual among street circuits because it doesn't trade racing quality for spectacle — the 2021 reprofile turned it into a genuinely fast, flowing 14-turn layout, nearly five seconds a lap quicker than the old configuration managed in over two decades. For 361 days a year the same tarmac is a running and cycling path around the lake; for one week each April, it's a Grand Prix circuit with a world championship's worth of history layered into ordinary parkland — Senna's last win, Webber's first point, Brundle's Turn 3 cartwheel, all happened on roads most Melburnians jog past every other week of the year.\n\n2027 brings a real first for the circuit's newest chapter: the Piastri Grandstand, opened in 2026 directly opposite the McLaren garage, named for a driver who came up through Melbourne's own local karting scene before most of the world had heard of him. It's also a Sprint weekend — Practice 1 and Sprint Qualifying on Friday, the Sprint Race and Qualifying on Saturday, the Grand Prix on Sunday — a genuinely different rhythm from a standard three-day race weekend.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
+  // Real, sourced facts from experience research, 27 Sep 2026 (Monza's 1922
+  // banked-oval origin, Verstappen's 2025 pole/Barrichello's 2003 race-speed
+  // records, Italy's unbroken F1-calendar presence since 1950, the confirmed
+  // 2027 Sprint-format return) — not invented, matches every other
+  // hub-and-spoke event's pattern of drawing The Brief from real underlying
+  // content. Added retroactively after this event's classic->hub-and-spoke
+  // migration (Phase B, 20 Sep 2026) shipped without an entry here — see
+  // migrate-from-classic-to-hub-spoke skill §4d.
+  "italian-grand-prix": {
+    displayName: "Italian Grand Prix",
+    venueLine: "Held at Autodromo Nazionale Monza — F1's fastest circuit, and the only Grand Prix run every season since the World Championship began in 1950.",
+    heroFallbackImageSlug: "monza-inside-the-venue-mu7cm8il",
+    introText:
+      "Monza opened in 1922, built in just 110 days specifically to combine a road course with a banked oval — the banking is still standing inside the park today, unused by F1 since a fatal 1961 accident but never demolished. Nobody calls it by its full name. It's the Temple of Speed, and the title is earned: this is still the fastest circuit on the calendar, with Max Verstappen's 2025 pole lap averaging over 164mph and Rubens Barrichello's 2003 race win still standing as the fastest Grand Prix ever run, over two decades later.\n\nItaly is one of only two countries — alongside Britain — that has had a round on every single F1 calendar since the World Championship started in 1950, and Monza has hosted every one of them but a single year at Imola. The result is a crowd unlike any other stop on the calendar: this is Ferrari's home race, and the tifosi's red takes over the grandstands and the forest around them in a way no other venue replicates.\n\n2027 adds a genuine first in Monza's modern era — its return to the Sprint format for the first time since 2021, as part of a three-year deal running through 2029. Everything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
 };
 
 export default async function HubPage({ slug }: { slug: string }) {
@@ -424,6 +474,7 @@ export default async function HubPage({ slug }: { slug: string }) {
   // the "OR JUST WHAT YOU NEED" block and per-spoke tile badges below both
   // no-op automatically for every other hub-and-spoke event.
   const miniPackPricing = getMiniPackPricing(slug);
+  const showTicketIntelligence = await hasTicketIntelligence(event.id);
   const initiallySaved = user ? await isEventPackSaved(event.id) : false;
   const myRating = user ? await getMyEventPackRating(event.id) : null;
 
@@ -445,6 +496,7 @@ export default async function HubPage({ slug }: { slug: string }) {
     const VENUE_MAP_LINK_OVERRIDE: Record<string, string> = {
       "united-states-grand-prix": "https://maps.app.goo.gl/zN7GPcSxKsSMYH3i6",
       "brazilian-grand-prix": "https://maps.app.goo.gl/msfgaF4VXueyb4FX8",
+      "italian-grand-prix": "https://maps.app.goo.gl/jfZbSWM55Be2HoJY7",
     };
     quickReference.push({
       label: "Address",
@@ -714,6 +766,87 @@ export default async function HubPage({ slug }: { slug: string }) {
           </div>
         )}
 
+        {/* Ticket Intelligence card — showTicketIntelligence is a real
+            data-driven check (does this event have any
+            circuit_seating_profile rows?), not a hardcoded per-slug list —
+            see the hasTicketIntelligence import comment above for why.
+            Separate block from the mini-pack grid below.
+            Deliberately its OWN "Or just what you need"-style header when
+            the mini-pack grid isn't rendered for this event (Brazilian GP
+            has no miniPackPricing entry), so it doesn't look orphaned; when
+            both exist for the same event in future, this renders as its
+            own section immediately after the mini-pack grid rather than
+            forcing a 4th card into that grid's 3-column layout. No
+            !hasPurchased gate — see founder decision 26 Sep 2026: a
+            full-pack buyer hasn't purchased this separately and it isn't
+            bundled in, so it stays visible and simply reads "✓ You have
+            this" once purchasedProductTypes actually contains
+            "ticket_intelligence".
+
+            Title/copy sharpened 26 Sep 2026 per founder — when the Ticket
+            Guide mini-spoke ALSO exists for an event, "Ticket Guide" (a
+            static, same-for-everyone editorial write-up) and "Ticket
+            Intelligence" (a personalized quiz result) read as two
+            competing products with no obvious reason to pick one. "Your
+            Personalized Seat Match" as the title, plus copy that leads
+            with "personalized"/"your answers" rather than "ticket," makes
+            the distinction legible without relying on a shopper reading
+            both one-line descriptions closely enough to spot it
+            themselves.
+
+            "Find your seat" section header added 27 Sep 2026 per founder —
+            previously this block rendered with NO section title at all
+            when miniPackPricing existed for the event (only the
+            "Or just what you need" label shown when it didn't), so the
+            card looked orphaned/unlabeled under the mini-pack grid. Always
+            show a "Find your seat" header now, regardless of whether
+            miniPackPricing exists. */}
+        {showTicketIntelligence && (
+          <div className="mt-10">
+            <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-4">Find your seat</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4 flex flex-col gap-2">
+                <div>
+                  <p className="text-sm font-semibold text-white mb-1">Your Personalized Seat Match</p>
+                  <p className="text-xs text-[#6A6A6A] leading-5">
+                    Answer 6 questions about how YOU want to watch — get matched to the exact seat that fits
+                  </p>
+                </div>
+                <p className="text-base font-black text-white mt-1">
+                  US$10
+                  <LocalCurrencyHint baseAmount={10} baseCurrency={pricing?.currency ?? "USD"} />
+                </p>
+                {purchasedProductTypes.has("ticket_intelligence") ? (
+                  // Real link, not a dead-end span — the quiz page itself
+                  // already redirects an already-purchased signed-in buyer
+                  // straight to /result (see ticket-intelligence/[slug]/
+                  // page.tsx's alreadyPurchased gate), so this correctly
+                  // lands on the real result rather than the quiz. Bug
+                  // found live 26 Sep 2026: the 3 mini-guide cards use a
+                  // plain <span> here too, which is fine for them since
+                  // their content is reachable via the spoke tile grid
+                  // below — Ticket Intelligence has no equivalent
+                  // always-visible tile elsewhere on this page, so its own
+                  // "✓ You have this" was a genuine dead end.
+                  <Link
+                    href={`/ticket-intelligence/${slug}`}
+                    className="w-full inline-flex items-center justify-center px-4 py-2 rounded-sm border border-[#AAFF00]/50 text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00]/10 transition-colors"
+                  >
+                    ✓ View Your Match
+                  </Link>
+                ) : (
+                  <Link
+                    href={`/ticket-intelligence/${slug}`}
+                    className="w-full inline-flex items-center justify-center px-4 py-2 rounded-sm border border-[#AAFF00]/50 text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00]/10 transition-colors"
+                  >
+                    Get Your Match
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mt-10 mb-4">Plan your trip</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {spokes.map((spoke) => {
@@ -800,21 +933,30 @@ export default async function HubPage({ slug }: { slug: string }) {
         </div>
 
         {/* Want to see more — bordered mini-panel linking to site-wide tools
-            (Planner, Custom Itinerary), not pack content. Deliberately
+            (Price Radar, Custom Itinerary), not pack content. Deliberately
             styled to match the Quick reference bordered-box directly below
             it, so it reads as a sibling module rather than loose text (a
             plain text-link version tested too easy to miss — founder
             feedback, 19 Sep 2026; option 3 of 4 mocked in an artifact).
-            Same two destinations/labels as ArticleActionSidebar's blog
-            sidebar (commit 7264415) for consistency. /planner has no
-            deep-linking yet (eventId isn't read by /planner/results, see
-            that component's note from 8 Aug 2026) — plain links only,
-            no query params. */}
+
+            Planner entry REMOVED 25 Sep 2026 — having both Planner and
+            Price Radar here read as confusing/redundant (founder feedback):
+            Price Radar is the deeper, event-specific tool (real per-city
+            flight/hotel/ticket/food/local-travel data for THIS event, no
+            dead-end), while /planner is a generic multi-event intake form
+            that historically couldn't even deep-link into one event (see
+            ArticleActionSidebar.tsx's "Compare costs" comment — it only
+            ever sent `eventId`, which /planner/results never read). Price
+            Radar now carries the exact label/subtitle Planner used to use
+            here ("Budget your trip" / "Real flight, hotel and ticket
+            costs") since that copy was fine — only the destination needed
+            to change, same pattern as the sidebar components. Back to a
+            2-column grid. */}
         <div className="mt-10">
           <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-3">Planning tools</p>
           <div className="rounded-sm border border-[#2A2A2A] overflow-hidden grid grid-cols-1 sm:grid-cols-2">
             <Link
-              href="/planner"
+              href={`/price-radar/${slug}`}
               className="flex items-center justify-between gap-3 px-4 sm:px-5 py-4 sm:py-[18px] sm:border-r border-[#2A2A2A] hover:bg-[#141414] transition-colors"
             >
               <span>
