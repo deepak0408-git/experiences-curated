@@ -38,6 +38,7 @@ import ShareGuideButton from "../_components/ShareGuideButton";
 import RateGuideButton from "../_components/RateGuideButton";
 import AskCuratorForm from "../_components/AskCuratorForm";
 import HubPackDownload from "./_components/HubPackDownload";
+import EventTestimonial from "./_components/EventTestimonial";
 import { isEventPackSaved, getMyEventPackRating } from "../actions";
 import { getArticlesForEvent } from "@/lib/queries/blog";
 import { PDF_CONTENT_BY_EVENT } from "@/app/api/pack/pdf-hub/pdfContentRegistry";
@@ -689,6 +690,16 @@ export default async function HubPage({ slug }: { slug: string }) {
             </aside>
           )}
         </div>
+
+        {/* Event-specific testimonial pull-quote — curator-flagged via
+            featuredTestimonial on event_pack_feedback, filtered to this
+            event. Same !hasPurchased gate as the CTA box above and the
+            mini-packs section below: it exists to support the purchase
+            decision, so it disappears the moment someone has already
+            bought, exactly like those two sections. Renders nothing if
+            this event has no featured testimonial yet — most events don't,
+            so this is expected to be invisible on most packs for now. */}
+        {!hasPurchased && <EventTestimonial sportingEventId={event.id} />}
 
         {/* Mini-packs pilot (Bahrain GP / Singapore GP / Shanghai Masters,
             Sep 2026) — 3 individual-spoke guides sold alongside the full
