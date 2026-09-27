@@ -789,6 +789,8 @@ export const eventPackFeedback = pgTable("event_pack_feedback", {
   rating: smallint("rating").notNull(),
   comment: text("comment"),
   displayConsent: boolean("display_consent").notNull().default(false),
+  displayName: text("display_name"),
+  featuredTestimonial: boolean("featured_testimonial").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 }, (t) => [

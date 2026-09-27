@@ -11,6 +11,7 @@ import SportNavigator from "./_components/SportNavigator";
 import CalendarSection from "./_components/CalendarSection";
 import ScrollFadeInit from "./_components/ScrollFadeInit";
 import BrandHero from "./_components/BrandHero";
+import TestimonialStrip from "./_components/TestimonialStrip";
 import { getAuthUser } from "@/lib/supabase/server";
 import { getPackPricing } from "@/lib/packPricing";
 
@@ -296,6 +297,9 @@ export default async function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* Testimonials — curator-flagged real feedback (featuredTestimonial = true) */}
+      <TestimonialStrip />
 
       {/* Trip board CTA */}
       <div id="get-started" className="bg-[#0A0A0A] scroll-fade">
