@@ -190,7 +190,7 @@ export default function TicketQuiz({
       <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-start">
         <div className="max-w-2xl">
           <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
-            Which seat actually fits you at {eventName}?
+            Which is the best grandstand seat at {eventName.replace(/\s*\d{4}$/, "").trim()}?
           </h1>
           <p className="text-[#A3A3A3] text-base mb-4">
             {steps.length}{" "}
