@@ -1143,9 +1143,11 @@ export default async function ExperiencePage({
           })()}
         </nav>
 
-        <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-start">
-        <article className="max-w-3xl">
-
+        {/* Header block (type badge, title, subtitle, rating, meta row) —
+            deliberately kept OUTSIDE the reordering grid below so it always
+            renders first on every screen size: mobile order is
+            Title/Subtitle → Sidebar → full write-up, desktop is unaffected. */}
+        <div className="max-w-3xl">
         {/* Type badge */}
         <div className="mb-4 flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3 flex-wrap">
@@ -1238,6 +1240,10 @@ export default async function ExperiencePage({
             <MetaBadge label="Event only" highlight />
           )}
         </div>
+        </div>
+
+        <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-start mt-10 lg:mt-0">
+        <article className="max-w-3xl order-2 lg:order-1">
 
         {/* Body */}
         {exp.bodyContent && (
@@ -1432,7 +1438,7 @@ export default async function ExperiencePage({
         </div>
         </article>
 
-        <div className="lg:sticky lg:top-8 lg:mt-11">
+        <div className="order-1 lg:order-2 lg:sticky lg:top-8 lg:mt-11">
           <ExperienceActionSidebar
             eventPackSlug={eventPackSlug}
             eventPackName={eventPackName}

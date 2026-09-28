@@ -44,8 +44,21 @@ interface PriceRadarState {
   setTicketFilter: (v: string) => void;
   cityFilter: string;
   setCityFilter: (v: string) => void;
+  // daysInput is the raw text of the input (can be "" mid-edit, or contain
+  // a value outside 1-30 while the user is still typing a multi-digit
+  // number) — the input itself is always controlled by THIS, never by a
+  // derived/clamped number, so React never re-renders it with a "corrected"
+  // value between keystrokes. days is the derived numeric value for actual
+  // cost math elsewhere, already tolerant of "" / NaN via PriceRadarResults'
+  // own safeDays fallback. Split 28 Sep 2026 — coercing the input's own
+  // value to a fallback (e.g. defaulting empty to 1) on every keystroke was
+  // fighting the user's typing: clearing the field to type "4" would
+  // re-render as "1" before the second keystroke landed, turning "4" into
+  // "14". A controlled input's displayed value must never be silently
+  // corrected mid-edit.
+  daysInput: string;
+  setDaysInput: (v: string) => void;
   days: number;
-  setDays: (v: number) => void;
 }
 
 const PriceRadarContext = createContext<PriceRadarState | null>(null);
@@ -101,13 +114,21 @@ export function PriceRadarProvider({
   const [ticketFilter, setTicketFilter] = useState<string>(defaultTicket);
   const [cityFilter, setCityFilter] = useState<string>("");
   // Trip length — same field/copy as PlannerIntakeForm.tsx's "How many days
-  // are you thinking?" (min 1, max 30). Defaults to 3, matching this
-  // event's real 3-day (Fri-Sun) ticket structure (see CostSpoke.tsx's
-  // TRIP_NIGHTS), not blank like the Planner's own gated form — this page
-  // has no submit step, so it needs a live default to render a table at
-  // all. Added 25 Sep 2026: only hotel/food/local-travel scale per day;
-  // flight (round-trip) and ticket (a fixed package price) don't.
-  const [days, setDays] = useState<number>(3);
+  // are you thinking?" originally (min 1, max 30), but capped at 90 instead
+  // of 30 as of 28 Sep 2026 — a multi-city cricket tour can run 30-45+ days,
+  // which Planner's own single-event 30-day cap was never built to cover.
+  // Defaults to 3, matching this event's real 3-day (Fri-Sun) ticket
+  // structure (see CostSpoke.tsx's TRIP_NIGHTS), not blank like the
+  // Planner's own gated form — this page has no submit step, so it needs a
+  // live default to render a table at all. Added 25 Sep 2026: only hotel/
+  // food/local-travel scale per day; flight (round-trip) and ticket (a
+  // fixed package price) don't.
+  //
+  // daysInput (raw string) is what the <input> is controlled by — see the
+  // PriceRadarState interface comment above for why this is kept separate
+  // from the derived numeric `days` (28 Sep 2026 fix).
+  const [daysInput, setDaysInput] = useState<string>("3");
+  const days = parseInt(daysInput, 10);
 
   return (
     <PriceRadarContext.Provider
@@ -128,8 +149,9 @@ export function PriceRadarProvider({
         setTicketFilter,
         cityFilter,
         setCityFilter,
+        daysInput,
+        setDaysInput,
         days,
-        setDays,
       }}
     >
       {children}
@@ -137,10 +159,16 @@ export function PriceRadarProvider({
   );
 }
 
-// Horizontal pill row — Hotel Tier filter. Same classes as
-// PlannerIntakeForm.tsx's "Which sport?" block. No "All" option (removed
-// per founder feedback, 25 Sep 2026 — single-select only, one hotel tier
-// active at a time) and no description line (also removed).
+// Hotel Tier filter. Below sm: 2x2 grid, all 4 pills (Budget/Moderate/
+// Splurge/Luxury) sharing equal width (founder feedback, 28 Sep 2026 — the
+// original flex-wrap row was overlapping/garbling on small screens). sm and
+// up: reverted to the original flex-wrap row with auto-width pills — the
+// 2x2 grid was mistakenly applied at every screen width in the first pass
+// and broke the desktop layout (caught live 28 Sep 2026); this filter was
+// only ever meant to change below sm. Same classes as
+// PlannerIntakeForm.tsx's "Which sport?" block otherwise. No "All" option
+// (removed per founder feedback, 25 Sep 2026 — single-select only, one
+// hotel tier active at a time) and no description line (also removed).
 function PillRow({
   eyebrow,
   options,
@@ -155,7 +183,7 @@ function PillRow({
   return (
     <div className="mb-6">
       <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-3">{eyebrow}</p>
-      <div className="flex flex-wrap gap-2">
+      <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
         {options.map((opt) => {
           const isSelected = selected === opt.value;
           return (
@@ -165,8 +193,8 @@ function PillRow({
               onClick={() => onSelect(opt.value)}
               className={
                 isSelected
-                  ? "px-4 py-2 rounded-sm text-sm font-semibold bg-[#AAFF00] text-black transition-colors"
-                  : "px-4 py-2 rounded-sm text-sm font-semibold bg-[#141414] border border-[#2A2A2A] text-[#A3A3A3] hover:border-[#AAFF00] hover:text-white transition-colors"
+                  ? "px-4 py-2 rounded-sm text-sm font-semibold text-center sm:text-left bg-[#AAFF00] text-black transition-colors"
+                  : "px-4 py-2 rounded-sm text-sm font-semibold text-center sm:text-left bg-[#141414] border border-[#2A2A2A] text-[#A3A3A3] hover:border-[#AAFF00] hover:text-white transition-colors"
               }
             >
               {opt.label}
@@ -178,11 +206,15 @@ function PillRow({
   );
 }
 
-// Vertical stacked list — Ticket Tier filter. Each option is its own
-// full-width row (label + real example text inline), not a horizontal
-// pill, per founder feedback 25 Sep 2026 — the real tier labels/examples
-// (e.g. "Grandstand — e.g. Turn 4, Turn 9, Turn 12, Turn 15 or Turn 19
-// Grandstand (3-day)") are too long to read as pills.
+// Vertical stacked list — Ticket Tier filter. Below sm: each option is its
+// own full-width row, pill button with the real example text wrapped onto
+// its own line below it (founder feedback, 25 Sep 2026 and 28 Sep 2026 —
+// long examples read badly as pills, and inline label+example was
+// overflowing/garbling on small screens). sm and up: reverted to the
+// original layout — fixed-width pill with the example inline beside it —
+// the stacked layout was mistakenly applied at every screen width in the
+// first pass and broke the desktop layout (caught live 28 Sep 2026); this
+// filter was only ever meant to change below sm.
 function TicketTierList({
   options,
   selected,
@@ -195,7 +227,7 @@ function TicketTierList({
   return (
     <div className="mb-6">
       <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-3">Ticket tier</p>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3 sm:gap-2">
         {options.map((opt) => {
           const isSelected = selected === opt.value;
           return (
@@ -203,21 +235,18 @@ function TicketTierList({
               key={opt.value}
               type="button"
               onClick={() => onSelect(opt.value)}
-              className="flex items-center gap-3 text-left"
+              className="block text-left sm:flex sm:items-center sm:gap-3"
             >
-              {/* Pill holds only the short sport-level label (e.g.
-                  "Grandstand") — fixed-width, not stretched by the long
-                  example text, per founder feedback 25 Sep 2026. */}
               <span
                 className={
                   isSelected
-                    ? "flex-shrink-0 w-56 px-4 py-2 rounded-sm text-sm font-semibold bg-[#AAFF00] text-black transition-colors whitespace-nowrap"
-                    : "flex-shrink-0 w-56 px-4 py-2 rounded-sm text-sm font-semibold bg-[#141414] border border-[#2A2A2A] text-[#A3A3A3] hover:border-[#AAFF00] hover:text-white transition-colors whitespace-nowrap"
+                    ? "block sm:flex-shrink-0 sm:w-56 px-4 py-2 rounded-sm text-sm font-semibold bg-[#AAFF00] text-black transition-colors sm:whitespace-nowrap"
+                    : "block sm:flex-shrink-0 sm:w-56 px-4 py-2 rounded-sm text-sm font-semibold bg-[#141414] border border-[#2A2A2A] text-[#A3A3A3] hover:border-[#AAFF00] hover:text-white transition-colors sm:whitespace-nowrap"
                 }
               >
                 {opt.label}
               </span>
-              <span className="text-xs text-[#6A6A6A]">e.g. {opt.example}</span>
+              <span className="block mt-1.5 sm:mt-0 text-xs text-[#6A6A6A]">e.g. {opt.example}</span>
             </button>
           );
         })}
@@ -229,7 +258,7 @@ function TicketTierList({
 // Narrow column — tier pickers, day input, city dropdown. Renders in the
 // page's grid alongside the sidebar.
 export function PriceRadarFilters() {
-  const { sortedHotelTiers, sortedTicketTiers, originGroups, hotelFilter, setHotelFilter, ticketFilter, setTicketFilter, cityFilter, setCityFilter, days, setDays } =
+  const { sortedHotelTiers, sortedTicketTiers, originGroups, hotelFilter, setHotelFilter, ticketFilter, setTicketFilter, cityFilter, setCityFilter, daysInput, setDaysInput } =
     usePriceRadarState();
 
   return (
@@ -261,9 +290,30 @@ export function PriceRadarFilters() {
         <input
           type="number"
           min={1}
-          max={30}
-          value={days}
-          onChange={(e) => setDays(parseInt(e.target.value, 10))}
+          // 90, not 30 — 28 Sep 2026 fix. 30 was copied verbatim from
+          // PlannerIntakeForm.tsx's own cap without checking whether it
+          // fits every sport this page serves: a multi-city cricket tour
+          // (e.g. Border-Gavaskar Trophy-style series) can easily run
+          // 30-45+ days across venues, and 30 would silently clamp a
+          // genuine long-trip entry down. 90 covers a full multi-Test tour
+          // with room to spare, without going effectively unbounded.
+          max={90}
+          // Controlled by the raw string, not a coerced/clamped number —
+          // fixed 28 Sep 2026 after the first attempt (falling back to 1 on
+          // every keystroke when the field was momentarily empty) fought
+          // the user's own typing: clearing the field to type "4" re-
+          // rendered as "1" before the second keystroke landed, turning "4"
+          // into "14". The field is free to sit empty or out-of-range while
+          // the user is mid-edit; onBlur below clamps it back into 1-90
+          // once they're done, and PriceRadarResults' own safeDays already
+          // tolerates "" / NaN for the live cost math in the meantime.
+          value={daysInput}
+          onChange={(e) => setDaysInput(e.target.value)}
+          onBlur={(e) => {
+            const parsed = parseInt(e.target.value, 10);
+            const clamped = Number.isNaN(parsed) ? 3 : Math.min(90, Math.max(1, parsed));
+            setDaysInput(String(clamped));
+          }}
           className="w-32 px-4 py-2 rounded-sm text-sm bg-[#141414] border border-[#2A2A2A] text-white placeholder:text-[#6A6A6A] focus:outline-none focus:border-[#AAFF00]"
         />
       </div>
@@ -372,7 +422,13 @@ export function PriceRadarResults() {
         </p>
       )}
 
-      <div className="rounded-sm border border-[#2A2A2A]">
+      {/* Table — lg and up only. Below lg, the 7-column table has no room
+          to breathe (caught live, screenshots 28 Sep 2026: numbers
+          overlapping, columns unreadable), so small screens get
+          RegionCardGroup's stacked mini-tiles instead — same region
+          grouping/sort, same 5 line-items + total per city, just laid out
+          vertically. */}
+      <div className="hidden lg:block rounded-sm border border-[#2A2A2A]">
         <table className="w-full text-sm table-fixed">
           <colgroup>
             <col className="w-[22%]" />
@@ -419,6 +475,31 @@ export function PriceRadarResults() {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mini-tiles — below lg only. Mirrors RegionGroup: same region
+          headers, same sort, same 5 cost lines + total per city. */}
+      <div className="lg:hidden space-y-6">
+        {grouped.map(([region, regionRows]) => (
+          <RegionCardGroup
+            key={region}
+            region={region}
+            rows={regionRows}
+            hotelLow={hotelLow}
+            hotelHigh={hotelHigh}
+            ticketLow={ticketLow}
+            ticketHigh={ticketHigh}
+            foodLow={foodLow}
+            foodHigh={foodHigh}
+            localLow={localLow}
+            localHigh={localHigh}
+          />
+        ))}
+        {rows.length === 0 && (
+          <p className="px-4 py-6 text-center text-[#6A6A6A] text-sm rounded-sm border border-[#2A2A2A]">
+            No matching city.
+          </p>
+        )}
       </div>
 
       {/* Footnotes — generic column captions (matching the exact wording
@@ -524,5 +605,76 @@ function RegionGroup({
         </tr>
       ))}
     </>
+  );
+}
+
+// Formats a low/high pair the same way MoneyCell does, as plain text (no
+// <td>) — shared by the mobile card tiles below.
+function formatMoneyRange(low: number, high: number): string {
+  const roundedLow = Math.round(low);
+  const roundedHigh = Math.round(high);
+  if (roundedLow === roundedHigh) return `US$${roundedLow.toLocaleString()}`;
+  return `US$${roundedLow.toLocaleString()}–US$${roundedHigh.toLocaleString()}`;
+}
+
+// Mobile-only region group — same grouping/sort as RegionGroup, rendered as
+// stacked cards instead of table rows. Added 28 Sep 2026 (founder feedback:
+// the 7-column table was unreadable below lg — numbers overlapping,
+// columns garbled on a phone-width screenshot).
+function RegionCardGroup({
+  region,
+  rows,
+  hotelLow,
+  hotelHigh,
+  ticketLow,
+  ticketHigh,
+  foodLow,
+  foodHigh,
+  localLow,
+  localHigh,
+}: {
+  region: string;
+  rows: { city: string; flightLow: number; flightHigh: number; totalLow: number; totalHigh: number }[];
+  hotelLow: number;
+  hotelHigh: number;
+  ticketLow: number;
+  ticketHigh: number;
+  foodLow: number;
+  foodHigh: number;
+  localLow: number;
+  localHigh: number;
+}) {
+  return (
+    <div>
+      <p className="mb-2 px-1 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">{region}</p>
+      <div className="space-y-3">
+        {rows.map((r) => (
+          <div key={r.city} className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+            <div className="flex items-center justify-between gap-3 mb-3">
+              <p className="text-white font-semibold">{r.city}</p>
+              <p className="font-mono font-bold text-sm text-[#AAFF00] text-right whitespace-nowrap">
+                {formatMoneyRange(r.totalLow, r.totalHigh)}
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[11px]">
+              <CostLine label="Flight" low={r.flightLow} high={r.flightHigh} />
+              <CostLine label="Hotel" low={hotelLow} high={hotelHigh} />
+              <CostLine label="Ticket" low={ticketLow} high={ticketHigh} />
+              <CostLine label="Food" low={foodLow} high={foodHigh} />
+              <CostLine label="Local travel" low={localLow} high={localHigh} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CostLine({ label, low, high }: { label: string; low: number; high: number }) {
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <span className="text-[#6A6A6A]">{label}</span>
+      <span className="font-mono text-[#A3A3A3] whitespace-nowrap">{formatMoneyRange(low, high)}</span>
+    </div>
   );
 }

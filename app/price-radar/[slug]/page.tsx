@@ -190,32 +190,39 @@ export default async function PriceRadarPage({
             </Link>
           </div>
 
-          <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-start">
-            <div>
-              <h1 className="text-3xl sm:text-4xl font-black text-white leading-tight tracking-tight">
-                {displayName} — real trip cost by city
-              </h1>
-              {costDataVerifiedAt && (
-                <p className="mt-3 text-xs text-[#6A6A6A]">
-                  Prices verified {costDataVerifiedAt.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })} — not real-time. All figures USD. See our{" "}
-                  <Link href="/planning-methodology" className="text-[#AAFF00] hover:text-[#BBFF33] underline">
-                    Planning methodology
-                  </Link>.
-                </p>
-              )}
+          {/* Title/subtitle kept OUTSIDE the reordering grid below so it
+              always renders first on every screen size. Mobile order is
+              Title/Subtitle → Sidebar → filters (founder request, 28 Sep
+              2026 — the sidebar and filter stack were reading as one long,
+              garbled block on small screens with no visual anchor up top). */}
+          <h1 className="text-3xl sm:text-4xl font-black text-white leading-tight tracking-tight">
+            {displayName} — real trip cost by city
+          </h1>
+          {costDataVerifiedAt && (
+            <p className="mt-3 text-xs text-[#6A6A6A]">
+              Prices verified {costDataVerifiedAt.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })} — not real-time. All figures USD. See our{" "}
+              <Link href="/planning-methodology" className="text-[#AAFF00] hover:text-[#BBFF33] underline">
+                Planning methodology
+              </Link>.
+            </p>
+          )}
 
+          <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-start mt-8 lg:mt-0">
+            <div className="order-2 lg:order-1">
               <PriceRadarFilters />
             </div>
 
-            <SpokeActionSidebar
-              eventSlug={slug}
-              hideBudgetRow
-              heading="This Event"
-              showTicketIntelligence={showTicketIntelligence}
-              showPlannerLink
-              finalCtaLabel="Get the event guide"
-              finalCtaSubtext="Trip costs, curated picks, booking detail"
-            />
+            <div className="order-1 lg:order-2">
+              <SpokeActionSidebar
+                eventSlug={slug}
+                hideBudgetRow
+                heading="This Event"
+                showTicketIntelligence={showTicketIntelligence}
+                showPlannerLink
+                finalCtaLabel="Get the event guide"
+                finalCtaSubtext="Trip costs, curated picks, booking detail"
+              />
+            </div>
           </div>
         </div>
 
