@@ -15,20 +15,26 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
   return (
     <SpokeShell eventSlug={eventSlug} eventId={event.id} eventCurrency={event.packCurrency} spokeId={SPOKE_ID} justPurchased={justPurchased} eventName="Bahrain Grand Prix" status="public" h1="Arrival & queue strategy by stand" question="What time should I arrive at Sepang gates?" heroImageUrl={heroImageUrl} isUnlocked={isUnlocked}>
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        Exact 2026 gate times for this relocated race haven&apos;t been published yet — Sepang typically opens gates
-        several hours before the first on-track session, with exact times released closer to the event. What&apos;s
-        already clear from how the venue is built, though, is that arrival strategy genuinely differs by which stand
-        you&apos;re heading for, so plan around your specific ticket, not a single blanket arrival time.
+        Race day is Sunday 4 October, with the main event at 15:00 (qualifying is Saturday 3 October at 16:00) — but
+        the grounds are running a full morning of on-track action and fan activities well before that, so treat
+        &quot;race start&quot; as the last thing you&apos;d arrive for, not the first. Plan to be through the gates by
+        mid-morning, around 10:00–11:00, rather than cutting it to the standard 2-to-3-hour pre-race window — that
+        window still applies as a bare minimum, especially for general admission, but it puts you at the gates closer
+        to 12:00–13:00, missing everything that happens earlier in the day. Arrival strategy genuinely differs by
+        which ticket you&apos;re holding, so plan around your specific stand as well as your own appetite for the
+        full day.
       </p>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Reserved seating (Main Grandstand, K1, Grandstand F)</p>
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
         <p className="text-sm text-[#A3A3A3] leading-6">
-          Your seat is yours regardless of arrival time, but arriving early still matters for two reasons: the
-          pre-race grid walk at the Main Grandstand is visible from almost pit-wall distance if you&apos;re seated
-          before the cars roll out, and within K1&apos;s unreserved blocks, seating is first-come within your section
-          — arrive early enough to claim a spot with a clear line to both Turn 1 and Turn 2, not just whichever seat
-          is free.
+          Your seat is yours regardless of arrival time, so you have more flexibility than general admission — the
+          latest sensible arrival is around 13:00–13:30 (roughly 90 minutes before the 15:00 start) to catch the grid
+          walk, which is visible from almost pit-wall distance from the Main Grandstand. But since there&apos;s a
+          full morning of on-track action before that, coming earlier — mid-morning rather than early afternoon —
+          gets you the rest of the day, not just the last hour of it. Within K1&apos;s unreserved blocks, seating is
+          first-come within your section, so lean toward the earlier arrival to claim a spot with a clear line to
+          both Turn 1 and Turn 2, not just whichever seat is free.
         </p>
       </div>
 
@@ -36,10 +42,11 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
         <p className="text-sm text-[#A3A3A3] leading-6">
           This is where arrival time matters most. General admission means no reserved return to your exact spot if
-          you leave — arrive early enough on race day to claim ground near the partial canopy rather than settling
-          for whatever&apos;s left once the hill fills up. The canopy covers only part of the embankment, and
-          Sepang&apos;s rain can turn heavy fast, so know where the covered sections are before the session starts,
-          not after the sky turns.
+          you leave, and the hill fills from the morning&apos;s on-track sessions onward — aim to be through the
+          gates by mid-morning, around 10:00–11:00, to claim ground near the partial canopy rather than settling for
+          whatever&apos;s left once the day builds toward the 15:00 start. The canopy covers only part of the
+          embankment, and Sepang&apos;s rain can turn heavy fast, so know where the covered sections are before you
+          settle in, not after the sky turns.
         </p>
       </div>
 
@@ -67,15 +74,15 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
       </p>
 
       <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">The honest gap here</p>
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">One gap that&apos;s still open</p>
         <p className="text-sm text-[#A3A3A3] leading-6">
-          Sepang hasn&apos;t published exact 2026 gate-opening times for this relocated race yet, and we won&apos;t
-          invent a specific hour. What&apos;s reliable is the pattern above — reserved stands reward early arrival
-          for the atmosphere and sightlines, general admission rewards it for the ground itself. Check{" "}
+          Confirmed 2026 session times put race start at 15:00 on Sunday and qualifying at 16:00 on Saturday, and
+          the arrival guidance above is built around those. What Sepang hasn&apos;t published yet is the exact
+          gate-opening time itself — the hour the turnstiles actually start letting people in. Check{" "}
           <a href="https://tickets.formula1.com/en/f1-83069-bahrain-in-malaysia" target="_blank" rel="noopener noreferrer" className="text-[#AAFF00] hover:text-[#BBFF33] underline">
             tickets.formula1.com
           </a>{" "}
-          closer to race weekend for confirmed gate times.
+          closer to race weekend for the confirmed gate-opening time.
         </p>
       </div>
 
