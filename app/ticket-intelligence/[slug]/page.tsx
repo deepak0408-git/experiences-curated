@@ -25,7 +25,8 @@ export async function generateMetadata({
   const { slug } = await params;
   const data = await getSeatingData(slug).catch(() => null);
   if (!data?.event) return { title: "Ticket Intelligence" };
-  const title = `Which ticket should you buy for the ${data.event.name}?`;
+  const trackName = data.event.name.replace(/\s*\d{4}$/, "").trim();
+  const title = `Best Seats at the ${trackName}`;
   const description = `Answer 6 questions, get matched to the real grandstand, lawn zone, or hospitality suite that fits you — US$10.`;
   return {
     title,

@@ -18,7 +18,7 @@ import { hasAnyActiveSeasonPass } from "./_lib/seasonPassAccess";
 // check on top, per founder direction the same day).
 
 export const metadata: Metadata = {
-  title: "Ticket Intelligence — Which Seat Fits You?",
+  title: "Best F1 Grandstand Seats",
   description: "Answer 6 questions, get matched to the real grandstand, lawn zone, or hospitality suite that fits you.",
 };
 
@@ -44,7 +44,7 @@ export default async function TicketIntelligenceHomePage() {
           Ticket Intelligence
         </p>
         <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
-          Which seat actually fits you?
+          Which is the best F1 grandstand seat?
         </h1>
         <p className="text-[#A3A3A3] text-base mb-12 max-w-2xl">
           Pick your event. Answer 6 quick questions about how you actually want to watch — we&apos;ll match you
