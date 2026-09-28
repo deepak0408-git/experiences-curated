@@ -2,7 +2,7 @@
 import { getAuthUser } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { users, userProfiles, travelLogs, purchases, sportingEvents, proSubscriptions, savedEventPacks } from "@/schema/database";
-import { eq, count, sql } from "drizzle-orm";
+import { eq, and, count, sql } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -64,6 +64,17 @@ export default async function ProfilePage() {
   const visitCount = stats?.visitCount ?? 0;
   const avgRating = stats?.avgRating ? Number(stats.avgRating) : null;
 
+  // Restricted to full_pack purchases only (28 Sep 2026 fix) — purchases has
+  // a productType column (full_pack | the 3 single-spoke mini-packs |
+  // ticket_intelligence), and a buyer can hold more than one row for the
+  // SAME event (e.g. a full pack + a separate Ticket Intelligence pass).
+  // Without this filter, linkedPacks could return two rows with the same
+  // eventSlug, which React then keyed on identically — caught live via a
+  // "two children with the same key" console error on this exact case
+  // (deepak0408@gmail.com's Mexico City GP full_pack + ticket_intelligence
+  // rows). "Linked event packs" is specifically about the full guide
+  // purchase, not every product type, so this filter is also the correct
+  // display semantics, not just a de-dupe workaround.
   const linkedPacks = user.email
     ? await db
         .select({
@@ -74,7 +85,7 @@ export default async function ProfilePage() {
         })
         .from(purchases)
         .innerJoin(sportingEvents, eq(purchases.sportingEventId, sportingEvents.id))
-        .where(eq(purchases.email, user.email))
+        .where(and(eq(purchases.email, user.email), eq(purchases.productType, "full_pack")))
     : [];
 
   // Favourites — whole-pack saves, per beta feedback 4 Aug 2026. Separate

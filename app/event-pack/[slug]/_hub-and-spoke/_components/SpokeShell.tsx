@@ -109,8 +109,33 @@ export default async function SpokeShell({
           )}
         </nav>
 
-        <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-start">
-        <article className="max-w-3xl">
+        {/* Status badge + title/subtitle kept OUTSIDE the reordering grid
+            below so they always render first on every screen size. Mobile
+            order is Title/Subtitle → Sidebar → rest of the spoke content
+            (founder request, 28 Sep 2026 — same fix already applied to the
+            experience template and Price Radar). */}
+        <div className="max-w-3xl">
+        <div className="mb-2">
+          {isUnlocked ? (
+            <span className="inline-block text-[10px] font-black tracking-widest uppercase rounded-sm px-2 py-0.5 border backdrop-blur-sm bg-black/30 text-[#AAFF00] border-[#AAFF00]/50">
+              ✓ Unlocked — you own this pack
+            </span>
+          ) : (
+            <StatusBadge status={status} miniPackPriceDisplay={miniPackOption && !miniPackOption.owned ? miniPackOption.priceDisplay : undefined} />
+          )}
+        </div>
+        {/* h1 is the literal search-style question — best SEO signal for
+            how a visitor actually phrases this in Google. The shorter
+            editorial phrase (the `h1` prop, historically the visible
+            heading before this swap) now renders as a secondary h2 line
+            underneath. Swapped 29 Jul 2026 per explicit user SEO
+            direction — do not revert without re-confirming. */}
+        <h1 className="text-2xl sm:text-3xl font-black text-white mb-2 leading-tight">{question}</h1>
+        <h2 className="text-sm text-[#6A6A6A] font-semibold mb-8">{h1}</h2>
+        </div>
+
+        <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-start mt-8 lg:mt-0">
+        <article className="max-w-3xl order-2 lg:order-1">
 
         {/* One-time celebratory banner — justPurchased is derived server-side
             from the real purchases.createdAt timestamp (see
@@ -143,24 +168,6 @@ export default async function SpokeShell({
             )}
           </div>
         )}
-
-        <div className="mb-2">
-          {isUnlocked ? (
-            <span className="inline-block text-[10px] font-black tracking-widest uppercase rounded-sm px-2 py-0.5 border backdrop-blur-sm bg-black/30 text-[#AAFF00] border-[#AAFF00]/50">
-              ✓ Unlocked — you own this pack
-            </span>
-          ) : (
-            <StatusBadge status={status} miniPackPriceDisplay={miniPackOption && !miniPackOption.owned ? miniPackOption.priceDisplay : undefined} />
-          )}
-        </div>
-        {/* h1 is the literal search-style question — best SEO signal for
-            how a visitor actually phrases this in Google. The shorter
-            editorial phrase (the `h1` prop, historically the visible
-            heading before this swap) now renders as a secondary h2 line
-            underneath. Swapped 29 Jul 2026 per explicit user SEO
-            direction — do not revert without re-confirming. */}
-        <h1 className="text-2xl sm:text-3xl font-black text-white mb-2 leading-tight">{question}</h1>
-        <h2 className="text-sm text-[#6A6A6A] font-semibold mb-8">{h1}</h2>
 
         {children}
 
@@ -325,7 +332,7 @@ export default async function SpokeShell({
         )}
         </article>
 
-        <div className="lg:sticky lg:top-8 lg:mt-6">
+        <div className="order-1 lg:order-2 lg:sticky lg:top-8 lg:mt-6">
           <SpokeActionSidebar eventSlug={eventSlug} />
         </div>
         </div>
