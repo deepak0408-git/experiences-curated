@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { sportingEvents, circuitSeatingProfile, plannerTicketTierCost, experiences, sportingEventExperiences } from "@/schema/database";
+import { sportingEvents, circuitSeatingProfile, plannerTicketTierCost, plannerHotelTierCost, plannerFlightCost, plannerDestinationBands, experiences, sportingEventExperiences } from "@/schema/database";
 import { and, eq, gte, ilike, inArray, or, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import type { Seat } from "./types";
@@ -31,6 +31,14 @@ async function getSeatingDataUncached(slug: string) {
       // Season Pass gating (seasonPassAccess.ts) matches against this —
       // added 28 Sep 2026.
       editionYear: sportingEvents.editionYear,
+      // isBuilt gating for TicketIntelligenceSidebar's "Get the event
+      // guide" CTA — same formula as the Season Planner's isBuilt
+      // (ShortlistResults.tsx), added 28 Sep 2026 after the sidebar was
+      // found linking straight to a dead /event-pack/<slug> page for
+      // planned/not-yet-activated events (Miami GP 2027, caught live).
+      sport: sportingEvents.sport,
+      packStatus: sportingEvents.packStatus,
+      destinationId: sportingEvents.destinationId,
     })
     .from(sportingEvents)
     .where(eq(sportingEvents.slug, slug))
@@ -161,6 +169,61 @@ const hasTicketIntelligenceCached = unstable_cache(
   ["ticket-intelligence-has-seats"],
   { revalidate: 3600 }
 );
+
+// Real, row-existence check across ALL FIVE Season Planner cost categories
+// for this event's edition — flights, hotels, tickets, and destination
+// bands (which cover both food and local travel in one row). Used to gate
+// TicketIntelligenceSidebar's "Budget your trip" / Price Radar link.
+//
+// Deliberately stricter than Calendar's existing canPlanCosts()
+// (lib/queries/calendar.ts), which only checks planner_ticket_tier_cost —
+// founder executive decision, 28 Sep 2026, scoped to Ticket Intelligence
+// only for now: Price Radar's own getSpokeData() never blocks rendering on
+// missing cost rows (it only 404s if the event itself doesn't exist), so a
+// partially-seeded event like Miami GP 2027 (4 ticket tiers, zero
+// flights/hotels/bands) would otherwise link to a Price Radar page that
+// renders but shows an essentially empty table — a bad experience, caught
+// live on Miami GP 2027's Ticket Intelligence result page. Calendar's own
+// canPlanCosts is intentionally NOT touched here — same gap, different
+// surface, left for a separate pass.
+const hasFullPlannerCostDataCached = unstable_cache(
+  async (eventId: string, destinationId: string | null, editionYear: number) => {
+    if (!destinationId) return false;
+    const [tickets, hotels, flights, bands] = await Promise.all([
+      db
+        .select({ id: plannerTicketTierCost.id })
+        .from(plannerTicketTierCost)
+        .where(and(eq(plannerTicketTierCost.sportingEventId, eventId), eq(plannerTicketTierCost.editionYear, editionYear)))
+        .limit(1),
+      db
+        .select({ id: plannerHotelTierCost.id })
+        .from(plannerHotelTierCost)
+        .where(and(eq(plannerHotelTierCost.destinationId, destinationId), eq(plannerHotelTierCost.editionYear, editionYear)))
+        .limit(1),
+      db
+        .select({ id: plannerFlightCost.id })
+        .from(plannerFlightCost)
+        .where(and(eq(plannerFlightCost.destinationId, destinationId), eq(plannerFlightCost.editionYear, editionYear)))
+        .limit(1),
+      db
+        .select({ id: plannerDestinationBands.id })
+        .from(plannerDestinationBands)
+        .where(eq(plannerDestinationBands.destinationId, destinationId))
+        .limit(1),
+    ]);
+    return tickets.length > 0 && hotels.length > 0 && flights.length > 0 && bands.length > 0;
+  },
+  ["ticket-intelligence-has-full-planner-cost-data"],
+  { revalidate: 3600 }
+);
+
+export async function hasFullPlannerCostData(
+  eventId: string,
+  destinationId: string | null,
+  editionYear: number
+): Promise<boolean> {
+  return hasFullPlannerCostDataCached(eventId, destinationId, editionYear);
+}
 
 export async function hasTicketIntelligence(eventId: string): Promise<boolean> {
   return hasTicketIntelligenceCached(eventId);

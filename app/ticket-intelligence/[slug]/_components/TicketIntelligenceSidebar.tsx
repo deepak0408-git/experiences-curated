@@ -1,4 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { notifyMe } from "@/app/planner/_lib/actions";
 
 // Shared sidebar — used on the quiz entry page (TicketQuiz.tsx), the
 // already-purchased teaser reveal (TeaserResult.tsx), and the result page
@@ -23,7 +27,142 @@ import Link from "next/link";
 // secondary CTA pair right under the paywall's own checkout button in
 // TeaserResult.tsx, matching the "Buy Ticket Guide" / "Or get every guide
 // in the Event Pack" pattern from SpokeShell.tsx, not a third sidebar box.
-export default function TicketIntelligenceSidebar({ eventSlug }: { eventSlug: string }) {
+// getEventGuideCta — bottom action in "This Event": a real, activated pack
+// links straight through (as before); an unbuilt/not-yet-activated pack
+// (packStatus/isHidden, same isBuilt formula as the Season Planner's
+// ShortlistResults.tsx) instead shows the Calendar page's own "Guide
+// coming — get notified" inline pattern, wired to notifyMe() so the
+// signup writes a real planner_sessions row (gateAction: "notified",
+// gateActionEventIds: [eventId]) and gets picked up by the existing
+// newsletter-new-pack-announcement cron's targeted send when this event
+// activates. Fixed 28 Sep 2026 — this button previously linked straight to
+// /event-pack/<slug> unconditionally, which 404'd/showed nothing for any
+// event still isHidden/packStatus "planned" (caught live on Miami GP 2027,
+// also present on Japanese and Chinese GP).
+function EventGuideCta({
+  eventSlug,
+  eventId,
+  sport,
+  isBuilt,
+  userEmail,
+}: {
+  eventSlug: string;
+  eventId: string;
+  sport: string;
+  isBuilt: boolean;
+  userEmail: string | null;
+}) {
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState(userEmail ?? "");
+  const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
+
+  if (isBuilt) {
+    return (
+      <Link
+        href={`/event-pack/${eventSlug}`}
+        className="flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 rounded-b-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors"
+      >
+        <span className="text-base flex-shrink-0 w-5 text-center">🎟</span>
+        <span className="flex-1">
+          <span className="block text-sm font-black text-black">Get the event guide</span>
+          <span className="block text-xs text-black/65 mt-0.5">Trip costs, curated picks, booking detail</span>
+        </span>
+      </Link>
+    );
+  }
+
+  if (status === "done") {
+    return (
+      <div className="py-4 px-5 -mx-5 -mb-5 mt-0">
+        <p className="text-xs text-[#AAFF00]">You&apos;re on the list.</p>
+      </div>
+    );
+  }
+
+  if (!open) {
+    return (
+      <button
+        onClick={() => setOpen(true)}
+        className="flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 w-[calc(100%+2.5rem)] text-left hover:opacity-80 transition-opacity"
+      >
+        <span className="text-base flex-shrink-0 w-5 text-center">🔔</span>
+        <span className="flex-1">
+          <span className="block text-sm font-bold text-[#A3A3A3]">Guide coming soon</span>
+          <span className="block text-xs text-[#6A6A6A] mt-0.5">Get notified when it&apos;s ready</span>
+        </span>
+      </button>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={async (e) => {
+        e.preventDefault();
+        setStatus("loading");
+        try {
+          await notifyMe(
+            email,
+            {
+              sports: [sport],
+              budgetMin: 0,
+              budgetMax: 100000,
+              timeWindow: "flexible",
+              tripLengthDays: 0,
+              originMarket: "unspecified",
+            },
+            [],
+            eventId
+          );
+          setStatus("done");
+        } catch {
+          setStatus("error");
+        }
+      }}
+      className="flex items-center gap-2 py-4 px-5 -mx-5 -mb-5 mt-0"
+    >
+      <input
+        type="email"
+        required
+        autoFocus
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="you@example.com"
+        aria-label="Get notified when this guide is live"
+        className="flex-1 min-w-0 rounded-sm bg-[#1A1A1A] border border-[#2A2A2A] px-2.5 py-1.5 text-xs text-white placeholder:text-[#6A6A6A] focus:outline-none focus:border-[#AAFF00] transition-colors"
+      />
+      <button
+        type="submit"
+        disabled={status === "loading"}
+        className="flex-shrink-0 rounded-sm bg-[#AAFF00] text-black text-xs font-black px-3 py-1.5 hover:bg-[#BBFF33] transition-colors disabled:opacity-60"
+      >
+        {status === "loading" ? "..." : "Notify me"}
+      </button>
+    </form>
+  );
+}
+
+export default function TicketIntelligenceSidebar({
+  eventSlug,
+  eventId,
+  sport,
+  isBuilt,
+  userEmail,
+  showBudgetLink,
+}: {
+  eventSlug: string;
+  eventId: string;
+  sport: string;
+  isBuilt: boolean;
+  userEmail: string | null;
+  // Gates "Budget your trip" (links to Price Radar) — founder executive
+  // decision, 28 Sep 2026: only show this when flights, hotels, tickets,
+  // food AND local travel are ALL seeded for this event's edition (see
+  // hasFullPlannerCostData in getSeatingData.ts). Price Radar's own page
+  // never blocks on missing data, so without this gate a partially-seeded
+  // event (Miami GP 2027: 4 ticket tiers, zero flights/hotels/bands) linked
+  // straight to a page that renders but shows an essentially empty table.
+  showBudgetLink: boolean;
+}) {
   return (
     <div className="flex flex-col gap-5">
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
@@ -31,16 +170,18 @@ export default function TicketIntelligenceSidebar({ eventSlug }: { eventSlug: st
           This Event
         </p>
 
-        <Link
-          href={`/price-radar/${eventSlug}`}
-          className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
-        >
-          <span className="text-base flex-shrink-0 w-5 text-center">💰</span>
-          <span className="flex-1">
-            <span className="block text-sm font-bold text-[#A3A3A3]">Budget your trip</span>
-            <span className="block text-xs text-[#6A6A6A] mt-0.5">Real flight, hotel and ticket costs</span>
-          </span>
-        </Link>
+        {showBudgetLink && (
+          <Link
+            href={`/price-radar/${eventSlug}`}
+            className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+          >
+            <span className="text-base flex-shrink-0 w-5 text-center">💰</span>
+            <span className="flex-1">
+              <span className="block text-sm font-bold text-[#A3A3A3]">Budget your trip</span>
+              <span className="block text-xs text-[#6A6A6A] mt-0.5">Real flight, hotel and ticket costs</span>
+            </span>
+          </Link>
+        )}
 
         <Link
           href="/calendar"
@@ -64,16 +205,7 @@ export default function TicketIntelligenceSidebar({ eventSlug }: { eventSlug: st
           </span>
         </Link>
 
-        <Link
-          href={`/event-pack/${eventSlug}`}
-          className="flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 rounded-b-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors"
-        >
-          <span className="text-base flex-shrink-0 w-5 text-center">🎟</span>
-          <span className="flex-1">
-            <span className="block text-sm font-black text-black">Get the event guide</span>
-            <span className="block text-xs text-black/65 mt-0.5">Trip costs, curated picks, booking detail</span>
-          </span>
-        </Link>
+        <EventGuideCta eventSlug={eventSlug} eventId={eventId} sport={sport} isBuilt={isBuilt} userEmail={userEmail} />
       </div>
 
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">

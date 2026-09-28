@@ -90,6 +90,10 @@ São Paulo destination:         9c01f960-ff51-45eb-8fd1-d55f05b7f8cb
 Brazilian GP 2026 event:      37e82616-34fd-4acb-a4b4-6575b0d674f4
 Doha destination:              4e53af71-7526-4d55-bf81-5d57d6f22136
 Qatar GP 2026 event:           8ab4460a-122e-4c1b-bcfe-81f93359c899
+Miami destination:              d4ec0c4f-4c48-445c-be38-909a87b845e6
+Miami GP 2027 event:            048d7693-b616-4747-ab3c-49b3de61a025 (evergreen slug: miami-grand-prix, seasonYear: 2027)
+Montreal destination:           4d171bf6-5a01-4c5e-b05f-3b2dc74b8fad
+Canadian GP 2027 event:          f054e849-849e-44a2-85c2-d150d973e1bf (slug: canadian-grand-prix, packStatus: planned, isHidden: true)
 ```
 
 **Live event dates — always match `sporting_events.start_date/end_date` in the DB, and the Content Calendar (`C:\Users\HP\.claude\docs\Content Calendar.txt`) is the single source of truth. If any date below ever conflicts with the Calendar or the DB, trust the DB, fix the Calendar, then fix this list — never the reverse.**
@@ -104,6 +108,8 @@ BMW PGA Championship 2026: 17 – 20 Sep 2026
 Shanghai Masters 2026:     5 – 18 Oct 2026
 Brazilian GP 2026:         6 – 8 Nov 2026
 Qatar GP 2026:             27 – 29 Nov 2026
+Miami GP 2027:              30 Apr – 2 May 2027
+Canadian GP 2027:            21 – 23 May 2027
 ```
 
 ---

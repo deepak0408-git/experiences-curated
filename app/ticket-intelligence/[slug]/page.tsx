@@ -6,7 +6,7 @@ import { getAuthUser } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { purchases } from "@/schema/database";
 import { and, eq } from "drizzle-orm";
-import { getSeatingData } from "./_lib/getSeatingData";
+import { getSeatingData, hasFullPlannerCostData } from "./_lib/getSeatingData";
 import { hasActiveSeasonPass } from "../_lib/seasonPassAccess";
 import TicketQuiz from "./_components/TicketQuiz";
 
@@ -57,6 +57,8 @@ export default async function TicketIntelligencePage({
   const data = await getSeatingData(slug);
   if (!data?.event) notFound();
   if (data.seats.length === 0) notFound();
+
+  const showBudgetLink = await hasFullPlannerCostData(data.event.id, data.event.destinationId, data.event.editionYear);
 
   // Fetched once, used two ways below: (1) a signed-in buyer landing here
   // normally (no ?retake=1) skips straight to their existing result rather
@@ -129,6 +131,9 @@ export default async function TicketIntelligencePage({
           slug={slug}
           eventId={data.event.id}
           eventName={data.event.name}
+          eventSport={data.event.sport}
+          eventIsBuilt={(data.event.packStatus === "live" || data.event.packStatus === "built_hidden") && !data.event.isHidden}
+          showBudgetLink={showBudgetLink}
           seats={data.seats}
           signedInEmail={user?.email ?? null}
           alreadyPurchased={alreadyPurchased}
