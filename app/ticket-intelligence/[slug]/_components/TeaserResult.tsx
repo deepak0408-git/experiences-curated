@@ -7,6 +7,8 @@ import type { QuizAnswers, ScoreResult } from "../_lib/types";
 import DodoCheckout from "@/app/event-pack/[slug]/_components/DodoCheckout";
 import FullResult from "../result/_components/FullResult";
 import TicketIntelligenceSidebar from "./TicketIntelligenceSidebar";
+import SeasonPassCheckout from "../../_components/SeasonPassCheckout";
+import LocalCurrencyHint from "@/app/event-pack/[slug]/_components/LocalCurrencyHint";
 import { updateTicketIntelligenceAnswers } from "../actions";
 
 // Real Dodo product for Ticket Intelligence — confirmed by founder 25 Sep
@@ -164,6 +166,15 @@ export default function TeaserResult({
 
       {signedInEmail ? (
         <>
+          {/* Price + local currency hint on its own row, full-width
+              centered CTA below — same stacked shape as the Season Pass
+              box on /ticket-intelligence, applied here too. Founder
+              direction 28 Sep 2026 (swapped from the earlier price-left/
+              CTA-right row layout). */}
+          <p className="text-2xl font-black text-white mb-4">
+            US$10
+            <LocalCurrencyHint baseAmount={10} baseCurrency="USD" />
+          </p>
           <DodoCheckout
             productId={TICKET_INTELLIGENCE_PRODUCT_ID}
             sportingEventId={eventId}
@@ -172,25 +183,67 @@ export default function TeaserResult({
             priceTier="standard"
             successUrl={successUrl}
             productType="ticket_intelligence"
-            label="Unlock your full match — US$10"
-            buttonClassName="w-full px-6 py-4 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors disabled:opacity-60"
+            label="Unlock your full match"
+            buttonClassName="w-full inline-flex items-center justify-center px-6 py-4 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors disabled:opacity-60"
             ticketIntelligenceAnswers={JSON.stringify(answers)}
           />
           <p className="text-xs text-[#6A6A6A] mt-3 text-center">
             One-time purchase, sent to {signedInEmail}. See the exact seat, why it fits, and how to buy your ticket.
           </p>
+
+          {/* Season Pass upsell (28 Sep 2026) — secondary CTA under the
+              primary unlock button, same primary/secondary pattern as
+              SpokeShell.tsx's mini-pack → full-pack nudge ("Buy Ticket
+              Guide" + "Or get every guide in the Event Pack — Get the
+              Guide"), not a same-weight second green button. */}
+          <div className="mt-4 pt-4 border-t border-[#2A2A2A] flex items-center justify-between gap-3">
+            <p className="text-sm text-[#A3A3A3]">
+              Or get this + full 2026/27 Ticket Intelligence with{" "}
+              <span className="text-white font-bold">F1 Season Access — US$25</span>
+            </p>
+            <SeasonPassCheckout
+              label="Get Season Access"
+              buttonClassName="flex-shrink-0 inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00]/50 text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00]/10 transition-colors disabled:opacity-60"
+            />
+          </div>
         </>
       ) : (
         <>
+          <p className="text-2xl font-black text-white mb-4">
+            US$10
+            <LocalCurrencyHint baseAmount={10} baseCurrency="USD" />
+          </p>
           <Link
             href={`/sign-in?next=${encodeURIComponent(nextUrl)}`}
             className="w-full inline-flex items-center justify-center px-6 py-4 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors"
           >
-            Sign in to unlock — US$10
+            Sign in to unlock
           </Link>
           <p className="text-xs text-[#6A6A6A] mt-3 text-center">
             We&apos;ll email you a magic link, then take you straight back here to complete your purchase.
           </p>
+
+          {/* Season Pass upsell, signed-out version (28 Sep 2026) — same
+              secondary row as the signed-in branch, but its button routes
+              to sign-in first (same nextUrl as the primary button above),
+              rather than opening Season Pass checkout anonymously — no
+              purchase path on this product currently skips sign-in, so
+              this one doesn't either. Without this row at all, a signed-out
+              fan facing US$10 per event saw no cheaper alternative and had
+              no reason not to bounce — founder-flagged conversion risk,
+              28 Sep 2026. */}
+          <div className="mt-4 pt-4 border-t border-[#2A2A2A] flex items-center justify-between gap-3">
+            <p className="text-sm text-[#A3A3A3]">
+              Or get this + full 2026/27 Ticket Intelligence with{" "}
+              <span className="text-white font-bold">F1 Season Access — US$25</span>
+            </p>
+            <Link
+              href={`/sign-in?next=${encodeURIComponent(nextUrl)}`}
+              className="flex-shrink-0 inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00]/50 text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00]/10 transition-colors"
+            >
+              Get Season Access
+            </Link>
+          </div>
         </>
       )}
     </div>

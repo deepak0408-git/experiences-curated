@@ -4,9 +4,24 @@ import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { db } from "@/lib/db";
-import { purchases, sportingEvents, proSubscriptions, users, customItineraryOrders } from "@/schema/database";
+import { purchases, sportingEvents, proSubscriptions, users, customItineraryOrders, ticketIntelligenceSeasonPasses } from "@/schema/database";
 
 const CUSTOM_ITINERARY_PRODUCT_ID = "pdt_0NmN6uswSvFETzX6GUQOU";
+// Ticket Intelligence Season Pass — US$25, covers every 2026 + 2027 event.
+// Added 28 Sep 2026. TEST_MODE product created same day for local checkout
+// testing (separate Dodo catalog, same pattern as every other product ID
+// pair in this codebase — see TeaserResult.tsx's LIVE/TEST split).
+const SEASON_PASS_LIVE_PRODUCT_ID = "pdt_0NoZDkyBBmaePFV5Hq9Ww";
+const SEASON_PASS_TEST_PRODUCT_ID = "pdt_0NoZIdoLaL3GxoWvIsg6D";
+const SEASON_PASS_PRODUCT_ID =
+  process.env.NEXT_PUBLIC_DODO_MODE === "test_mode" ? SEASON_PASS_TEST_PRODUCT_ID : SEASON_PASS_LIVE_PRODUCT_ID;
+// Which editionYear values the current pass unlocks — matched against
+// sportingEvents.editionYear via `= ANY(...)` at gating time (see
+// app/ticket-intelligence/_lib/seasonPassAccess.ts). Update this array (and
+// reprice/relabel the Dodo product) when a "2027/28" pass eventually
+// supersedes this one, per founder direction 28 Sep 2026 — not derived from
+// a date range.
+const SEASON_PASS_EDITION_YEARS = [2026, 2027];
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -253,6 +268,108 @@ export async function POST(request: NextRequest) {
       console.log(`[dodo webhook] ✓ custom itinerary confirmation email sent to ${email}`);
     } catch (err) {
       console.error("[dodo webhook] failed to send custom itinerary confirmation email:", err);
+    }
+
+    return NextResponse.json({ received: true });
+  }
+
+  // ── Ticket Intelligence Season Pass — standalone, non-event product ───────
+  // Same shape as the custom-itinerary block above: no sporting_event_id at
+  // all (the whole point of a season pass), so this must be handled before
+  // the sporting_event_id requirement below. Writes to its own table, not
+  // `purchases` — see schema/database.ts comment on
+  // ticketIntelligenceSeasonPasses for why. Refunds are handled manually for
+  // now (status flipped by hand) — no refund event branch here, per founder
+  // direction 28 Sep 2026.
+  if (productId === SEASON_PASS_PRODUCT_ID) {
+    const passCurrency = payment.currency ?? "USD";
+    const passPricePaid = String(payment.total_amount / 100);
+
+    try {
+      const inserted = await db
+        .insert(ticketIntelligenceSeasonPasses)
+        .values({
+          email,
+          editionSeason: SEASON_PASS_EDITION_YEARS,
+          dodoOrderId: payment.payment_id,
+          dodoCustomerId: payment.customer.customer_id,
+          dodoProductId: productId,
+          pricePaid: passPricePaid,
+          currency: passCurrency,
+          status: "active",
+        })
+        .onConflictDoNothing()
+        .returning({ id: ticketIntelligenceSeasonPasses.id });
+
+      if (inserted.length === 0) {
+        console.log("[dodo webhook] season pass already recorded (conflict), skipping email");
+        return NextResponse.json({ received: true });
+      }
+      console.log(`[dodo webhook] ✓ season pass recorded — email: ${email}`);
+    } catch (err) {
+      console.error("[dodo webhook] failed to insert season pass:", err);
+      return NextResponse.json({ error: "DB insert failed" }, { status: 500 });
+    }
+
+    try {
+      const { data: authData, error } = await supabaseAdmin.auth.admin.createUser({ email, email_confirm: true });
+      if (error && !error.message.includes("already been registered")) {
+        console.error("[dodo webhook] failed to create Supabase user:", error.message);
+      }
+      const authId = authData?.user?.id;
+      if (authId) {
+        await db.insert(users).values({ email, authId }).onConflictDoNothing();
+      }
+    } catch (err) {
+      console.error("[dodo webhook] Supabase user provisioning error:", err);
+    }
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.experiences-curated.com";
+    const formattedPassAmount = (payment.total_amount / 100).toFixed(2);
+    const passCurrencySymbol =
+      passCurrency === "GBP" ? "£" : passCurrency === "USD" ? "US$" : passCurrency === "EUR" ? "€" : passCurrency + " ";
+
+    try {
+      await resend.emails.send({
+        from: "Experiences | Curated <hello@experiences-curated.com>",
+        to: email,
+        subject: "Your 2026/27 Ticket Intelligence Season Pass is active",
+        html: `
+          <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0A0A0A">
+            <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#AAFF00;margin-bottom:28px">Experiences | Curated</p>
+            <p style="font-size:20px;font-weight:900;color:#ffffff;margin-bottom:12px">Your Season Pass is active.</p>
+            <p style="font-size:14px;color:#A3A3A3;line-height:1.6;margin-bottom:28px">
+              You now have Ticket Intelligence access to every 2026 and 2027 event — answer the 6 quick
+              questions on any event's page and your full seat match unlocks instantly, no separate payment.
+            </p>
+            <a href="${siteUrl}/ticket-intelligence"
+               style="display:inline-block;background:#AAFF00;color:#000;text-decoration:none;padding:14px 28px;border-radius:2px;font-size:14px;font-weight:900;margin-bottom:40px">
+              Browse events →
+            </a>
+            <table style="width:100%;border-top:1px solid #2A2A2A;padding-top:24px;font-size:13px;color:#A3A3A3;border-collapse:collapse">
+              <tr>
+                <td style="padding:6px 0">Order</td>
+                <td style="padding:6px 0;text-align:right;color:#ffffff;font-family:monospace;font-size:12px">${payment.payment_id}</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 0">Pass</td>
+                <td style="padding:6px 0;text-align:right;color:#ffffff">2026/27 Season Pass</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 0">Amount paid</td>
+                <td style="padding:6px 0;text-align:right;color:#ffffff;font-weight:900">${passCurrencySymbol}${formattedPassAmount}</td>
+              </tr>
+            </table>
+            <p style="font-size:11px;color:#6A6A6A;margin-top:32px;line-height:1.6">
+              If you have any questions, reply to this email.<br>
+              Sent to ${email}.
+            </p>
+          </div>
+        `,
+      });
+      console.log(`[dodo webhook] ✓ season pass confirmation email sent to ${email}`);
+    } catch (err) {
+      console.error("[dodo webhook] failed to send season pass confirmation email:", err);
     }
 
     return NextResponse.json({ received: true });

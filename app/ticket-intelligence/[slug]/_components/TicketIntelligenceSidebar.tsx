@@ -18,6 +18,11 @@ import Link from "next/link";
 // inline "Retake the quiz" link right below its h1, and the quiz page
 // itself IS the retake flow, so a retake link here would be redundant on
 // both pages it renders on.
+//
+// Season Pass upsell (28 Sep 2026) does NOT live here — it's a primary/
+// secondary CTA pair right under the paywall's own checkout button in
+// TeaserResult.tsx, matching the "Buy Ticket Guide" / "Or get every guide
+// in the Event Pack" pattern from SpokeShell.tsx, not a third sidebar box.
 export default function TicketIntelligenceSidebar({ eventSlug }: { eventSlug: string }) {
   return (
     <div className="flex flex-col gap-5">

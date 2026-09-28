@@ -28,6 +28,9 @@ async function getSeatingDataUncached(slug: string) {
       name: sportingEvents.name,
       heroImageUrl: sportingEvents.heroImageUrl,
       isHidden: sportingEvents.isHidden,
+      // Season Pass gating (seasonPassAccess.ts) matches against this —
+      // added 28 Sep 2026.
+      editionYear: sportingEvents.editionYear,
     })
     .from(sportingEvents)
     .where(eq(sportingEvents.slug, slug))

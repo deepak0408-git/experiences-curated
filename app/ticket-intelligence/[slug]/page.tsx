@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { purchases } from "@/schema/database";
 import { and, eq } from "drizzle-orm";
 import { getSeatingData } from "./_lib/getSeatingData";
+import { hasActiveSeasonPass } from "../_lib/seasonPassAccess";
 import TicketQuiz from "./_components/TicketQuiz";
 
 // Ticket Intelligence — standalone $10 quiz+scoring decision tool ("sell the
@@ -64,6 +65,7 @@ export default async function TicketIntelligencePage({
   // time — bug found live 25 Sep 2026: the retake escape hatch let a buyer
   // re-answer, but the teaser they landed on had no awareness of the
   // existing purchase and showed the paywall again regardless.
+  let hasPerEventPurchase = false;
   let alreadyPurchased = false;
   if (user?.email) {
     const [existing] = await db
@@ -77,7 +79,13 @@ export default async function TicketIntelligencePage({
         )
       )
       .limit(1);
-    alreadyPurchased = !!existing;
+    hasPerEventPurchase = !!existing;
+    // Season Pass (28 Sep 2026) — a fan with an active pass covering this
+    // event's editionYear gets the same "already unlocked" treatment as a
+    // per-event buyer (no paywall once they answer), with no separate
+    // purchases row for this event at all. Checked second (existing
+    // purchase is the common case, cheaper to short-circuit on).
+    alreadyPurchased = hasPerEventPurchase || (await hasActiveSeasonPass(user.email, data.event.editionYear));
   }
 
   // ?retake=<timestamp> (linked from the result page's "Retake the quiz",
@@ -86,7 +94,16 @@ export default async function TicketIntelligencePage({
   // per click (not a fixed "1") so every retake is a genuinely distinct
   // navigation — see the key comment on TicketQuiz below for why that
   // matters.
-  if (alreadyPurchased && !isRetake) {
+  //
+  // Redirect straight to /result ONLY for a real per-event purchases row
+  // — that's the one case with actual stored answers to recover
+  // (purchases.ticketIntelligenceAnswers). A season-pass-only holder has
+  // never answered this event's quiz, so sending them to /result blind
+  // landed on the "match answers not found" recovery screen on every
+  // first visit — poor first-time UX. Founder-flagged, 28 Sep 2026. They
+  // stay on the quiz page instead (alreadyPurchased is still true, so no
+  // paywall shows once they answer).
+  if (hasPerEventPurchase && !isRetake) {
     redirect(`/ticket-intelligence/${slug}/result`);
   }
 

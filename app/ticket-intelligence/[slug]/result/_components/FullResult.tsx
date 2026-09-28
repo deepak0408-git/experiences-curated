@@ -25,7 +25,7 @@ import ZoomableImage from "../../../../event-pack/[slug]/_hub-and-spoke/_compone
 // have none in their own spoke, so none is shown here either).
 const CIRCUIT_MAP_BY_EVENT: Record<
   string,
-  { url: string; alt: string; aspectClassName: string; credit?: string }
+  { url: string; alt: string; aspectClassName: string; credit?: string; lightFrame?: boolean }
 > = {
   "brazilian-grand-prix": {
     url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/brazilian-grand-prix-map.png",
@@ -47,6 +47,10 @@ const CIRCUIT_MAP_BY_EVENT: Record<
     alt: "Autódromo Hermanos Rodríguez circuit layout with grandstand zones marked",
     aspectClassName: "aspect-[3840/2548]",
     credit: "Wikimedia Commons, WL2392, CC BY 4.0.",
+    // Source image is black line art on a near-transparent background —
+    // nearly invisible against the default dark ZoomableImage frame.
+    // Founder-flagged 28 Sep 2026.
+    lightFrame: true,
   },
   "las-vegas-grand-prix": {
     url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/las-vegas-grand-prix-circuit-layout.jpg",
@@ -423,7 +427,12 @@ export default function FullResult({
       {circuitMap && (
         <div className="mb-10">
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Circuit map</p>
-          <ZoomableImage src={circuitMap.url} alt={circuitMap.alt} aspectClassName={circuitMap.aspectClassName} />
+          <ZoomableImage
+            src={circuitMap.url}
+            alt={circuitMap.alt}
+            aspectClassName={circuitMap.aspectClassName}
+            lightFrame={circuitMap.lightFrame}
+          />
           {circuitMap.credit && <p className="text-xs text-[#6A6A6A] mt-2">Credit: {circuitMap.credit}</p>}
         </div>
       )}
