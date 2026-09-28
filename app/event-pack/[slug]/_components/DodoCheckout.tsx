@@ -63,6 +63,19 @@ interface DodoCheckoutProps {
 // every other button's overlay silently never opens (caught live 16 Sep 2026
 // via PostHog replay: user clicked every mini-pack CTA on Bahrain GP and none
 // of them opened the Dodo overlay).
+//
+// This is THE ONE global Initialize() call for any page that mixes
+// DodoCheckout with a non-pack checkout button (e.g. TeaserResult.tsx's
+// Ticket Intelligence unlock + SeasonPassCheckout upsell together) — calling
+// DodoPayments.Initialize() a second time from a different component on the
+// same page silently overwrites this onEvent handler at the SDK level,
+// freezing every DodoCheckout button already on the page mid-checkout. Bug
+// found live 28 Sep 2026: SeasonPassCheckout ran its own separate
+// Initialize(), which froze the page's primary "Unlock your full match"
+// DodoCheckout button on "Opening…" after the Dodo popup closed. Fixed by
+// exporting registerNonPackCheckout() below so any other checkout
+// component on the same page routes through this single Initialize() call
+// instead of running its own.
 let dodoInitialised = false;
 const activeCheckoutRef: {
   current: {
@@ -74,6 +87,25 @@ const activeCheckoutRef: {
   } | null;
 } = { current: null };
 
+// Set by a non-pack checkout component (e.g. SeasonPassCheckout) right
+// before it opens the overlay, via registerNonPackCheckout() below.
+// Separate from activeCheckoutRef because non-pack products have no
+// eventSlug/eventName/priceTier to report to PostHog and no successUrl
+// that needs the pack's own redirect shape — just a setLoading + a plain
+// successUrl to bounce to on checkout.redirect.
+const activeNonPackCheckoutRef: {
+  current: { successUrl: string; setLoading: (loading: boolean) => void } | null;
+} = { current: null };
+
+// Called by any non-DodoCheckout checkout button (SeasonPassCheckout,
+// future standalone products) right before opening the overlay — routes
+// its loading-state + redirect through THIS module's single Initialize()
+// call instead of running a second, singleton-clobbering one of its own.
+export function registerNonPackCheckout(entry: { successUrl: string; setLoading: (loading: boolean) => void }) {
+  ensureDodoInitialised();
+  activeNonPackCheckoutRef.current = entry;
+}
+
 function ensureDodoInitialised() {
   if (dodoInitialised) return;
   DodoPayments.Initialize({
@@ -81,8 +113,10 @@ function ensureDodoInitialised() {
     displayType: "overlay",
     onEvent: (event: { event_type: string; data?: { message?: string } }) => {
       const active = activeCheckoutRef.current;
+      const activeNonPack = activeNonPackCheckoutRef.current;
       if (event.event_type === "checkout.opened") {
         active?.setLoading(false);
+        activeNonPack?.setLoading(false);
         if (active) {
           import("@/lib/posthog-events").then(({ phEvent }) =>
             phEvent.checkoutOpened({ eventSlug: active.eventSlug, eventName: active.eventName, priceTier: active.priceTier })
@@ -91,6 +125,7 @@ function ensureDodoInitialised() {
       }
       if (event.event_type === "checkout.error") {
         active?.setLoading(false);
+        activeNonPack?.setLoading(false);
         console.error("[dodo checkout]", event.data?.message);
       }
       if (event.event_type === "checkout.closed") {
@@ -99,6 +134,7 @@ function ensureDodoInitialised() {
         // without this the button hangs on "Opening…" forever (caught live
         // 16 Sep 2026: mini-pack CTA stuck after closing the Dodo overlay).
         active?.setLoading(false);
+        activeNonPack?.setLoading(false);
       }
       if (event.event_type === "checkout.redirect") {
         if (active) {
@@ -106,6 +142,9 @@ function ensureDodoInitialised() {
             phEvent.checkoutRedirected({ eventSlug: active.eventSlug, priceTier: active.priceTier })
           );
           const { successUrl } = active;
+          setTimeout(() => { window.location.href = successUrl; }, 2500);
+        } else if (activeNonPack) {
+          const { successUrl } = activeNonPack;
           setTimeout(() => { window.location.href = successUrl; }, 2500);
         }
       }

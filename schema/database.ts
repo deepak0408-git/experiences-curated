@@ -716,6 +716,44 @@ export const purchases = pgTable("purchases", {
   uniqueIndex("purchases_email_event_unique").on(t.email, t.sportingEventId, t.productType),
 ]);
 
+// Ticket Intelligence Season Pass — deliberately a near-clone of `purchases`
+// (same column shapes/names, same purchaseStatusEnum) minus sportingEventId,
+// so sales reporting can treat it consistently alongside per-event purchases.
+// Kept as its own table rather than shoehorned into `purchases` because that
+// table's core constraint is NOT NULL sportingEventId + a unique index keyed
+// on (email, sportingEventId, productType) — this product isn't scoped to
+// one event at all, so it needs its own coverage field instead.
+//
+// editionSeason (smallint[]) replaces sportingEventId as the access key:
+// which sportingEvents.editionYear values this pass unlocks, e.g. [2026, 2027]
+// for the current Dodo product (pdt_0NoZDkyBBmaePFV5Hq9Ww). Gating checks
+// `sportingEvents.editionYear = ANY(pass.editionSeason)` — a new event created
+// later with editionYear 2027 is automatically covered with no backfill,
+// since the check runs against the event's own year, not a frozen list
+// captured at purchase time.
+//
+// Refunds are handled manually for now (status flipped by hand when it
+// happens) — no webhook refund branch wired yet, same as `purchases` today.
+export const ticketIntelligenceSeasonPasses = pgTable("ticket_intelligence_season_passes", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").references(() => users.id),
+  email: varchar("email", { length: 255 }).notNull(),
+  editionSeason: smallint("edition_season").array().notNull(),
+  dodoOrderId: varchar("dodo_order_id", { length: 100 }).notNull().unique(),
+  dodoCustomerId: varchar("dodo_customer_id", { length: 100 }),
+  dodoProductId: varchar("dodo_product_id", { length: 100 }).notNull(),
+  priceTier: varchar("price_tier", { length: 20 }).notNull().default("standard"),
+  pricePaid: numeric("price_paid", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).notNull(),
+  status: purchaseStatusEnum("status").notNull().default("active"),
+  purchasedAt: timestamp("purchased_at").notNull().defaultNow(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+}, (t) => [
+  index("ti_season_passes_user_idx").on(t.userId),
+  index("ti_season_passes_email_idx").on(t.email),
+  uniqueIndex("ti_season_passes_email_product_unique").on(t.email, t.dodoProductId),
+]);
+
 // Custom Itinerary Planning — standalone, non-event paid service (US$49 one-time).
 // Deliberately separate from `purchases`, which requires a sportingEventId FK.
 export const customItineraryOrders = pgTable("custom_itinerary_orders", {
@@ -1326,6 +1364,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   tripBoards: many(tripBoards),
   savedItems: many(savedItems),
   purchases: many(purchases),
+  ticketIntelligenceSeasonPasses: many(ticketIntelligenceSeasonPasses),
   curator: one(curators, {
     fields: [users.curatorId],
     references: [curators.id],
@@ -1378,6 +1417,13 @@ export const purchasesRelations = relations(purchases, ({ one }) => ({
   sportingEvent: one(sportingEvents, {
     fields: [purchases.sportingEventId],
     references: [sportingEvents.id],
+  }),
+}));
+
+export const ticketIntelligenceSeasonPassesRelations = relations(ticketIntelligenceSeasonPasses, ({ one }) => ({
+  user: one(users, {
+    fields: [ticketIntelligenceSeasonPasses.userId],
+    references: [users.id],
   }),
 }));
 

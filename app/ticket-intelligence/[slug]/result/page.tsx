@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { purchases, sportingEvents } from "@/schema/database";
 import { and, eq } from "drizzle-orm";
 import { getSeatingData } from "../_lib/getSeatingData";
+import { hasActiveSeasonPass } from "../../_lib/seasonPassAccess";
 import { scoreSeats } from "../_lib/scoreSeats";
 import type { QuizAnswers } from "../_lib/types";
 import FullResult from "./_components/FullResult";
@@ -65,7 +66,7 @@ export default async function TicketIntelligenceResultPage({
   }
 
   const [event] = await db
-    .select({ id: sportingEvents.id })
+    .select({ id: sportingEvents.id, editionYear: sportingEvents.editionYear })
     .from(sportingEvents)
     .where(eq(sportingEvents.slug, slug))
     .limit(1);
@@ -83,6 +84,13 @@ export default async function TicketIntelligenceResultPage({
     )
     .limit(1);
 
+  // Season Pass (28 Sep 2026) — grants the same access as `purchase` above
+  // but carries no stored answers of its own (retake-per-event is fine
+  // since a pass holder isn't paying per event — founder direction, 28 Sep
+  // 2026), so it only ever satisfies the query-string answers path below,
+  // never the answersFromStored recovery path.
+  const hasAccess = !!purchase || (await hasActiveSeasonPass(user.email, event.editionYear));
+
   const data = await getSeatingData(slug);
   if (!data?.event) redirect(`/ticket-intelligence/${slug}`);
 
@@ -91,7 +99,7 @@ export default async function TicketIntelligenceResultPage({
   return (
     <main className="min-h-screen bg-[#0A0A0A]">
       <HomepageNav email={user.email} />
-      {purchase && answers ? (
+      {hasAccess && answers ? (
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-16">
           {/* Eyebrow sits above the grid (not inside FullResult) so the
               sidebar's top edge lines up with the h1 title row, not one row
@@ -118,17 +126,21 @@ export default async function TicketIntelligenceResultPage({
         </div>
       ) : (
         <div className="max-w-2xl mx-auto px-6 sm:px-8 py-16">
-        {purchase ? (
+        {hasAccess ? (
           <div className="text-center">
             <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00] mb-4">
               Match answers not found
             </p>
             <h1 className="text-2xl font-black text-white mb-4">
-              We found your purchase, but couldn&apos;t recover your quiz answers.
+              We found your access, but couldn&apos;t recover your quiz answers.
             </h1>
             <p className="text-sm text-[#A3A3A3] mb-8">
-              This can happen for a purchase made before we started saving answers. Answer the quiz again —
-              your match will unlock automatically since you&apos;ve already paid.
+              {/* Season Pass holders always land here on first visit (no
+                  stored answers of their own — retake-per-event is fine,
+                  they're not paying per event). Wording stays generic
+                  enough to cover both that case and a pre-answers-tracking
+                  per-event purchase. */}
+              Answer the quiz again — your match will unlock automatically since you already have access.
             </p>
             {/* Must go through RetakeLink (sets ?retake=<Date.now()>), not a
                 plain Link to the bare quiz URL — page.tsx's alreadyPurchased
