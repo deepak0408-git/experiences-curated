@@ -44,6 +44,9 @@ export default function TeaserResult({
   eventName,
   eventId,
   eventSlug,
+  eventSport,
+  eventIsBuilt,
+  showBudgetLink,
   result,
   successUrl,
   signedInEmail,
@@ -55,6 +58,9 @@ export default function TeaserResult({
   eventName: string;
   eventId: string;
   eventSlug: string;
+  eventSport: string;
+  eventIsBuilt: boolean;
+  showBudgetLink: boolean;
   result: ScoreResult;
   successUrl: string;
   signedInEmail: string | null;
@@ -107,7 +113,14 @@ export default function TeaserResult({
               fallbackExperienceSlug={fallbackExperienceSlug}
             />
           </div>
-          <TicketIntelligenceSidebar eventSlug={eventSlug} />
+          <TicketIntelligenceSidebar
+            eventSlug={eventSlug}
+            eventId={eventId}
+            sport={eventSport}
+            isBuilt={eventIsBuilt}
+            userEmail={signedInEmail}
+            showBudgetLink={showBudgetLink}
+          />
         </div>
       </div>
     );

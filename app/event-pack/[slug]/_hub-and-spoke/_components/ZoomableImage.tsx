@@ -58,7 +58,7 @@ export default function ZoomableImage({
             Close ✕
           </button>
           <div
-            className={`relative w-full h-full max-w-5xl overflow-auto ${lightFrame ? "bg-[#F5F5F0] p-4" : ""}`}
+            className={`relative w-full h-full max-w-5xl overflow-auto flex items-center justify-center ${lightFrame ? "bg-[#F5F5F0] p-4" : ""}`}
             onClick={(e) => e.stopPropagation()}
           >
             <img src={src} alt={alt} className="w-full h-auto" />

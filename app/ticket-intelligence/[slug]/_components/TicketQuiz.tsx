@@ -57,6 +57,9 @@ interface Props {
   slug: string;
   eventId: string;
   eventName: string;
+  eventSport: string;
+  eventIsBuilt: boolean;
+  showBudgetLink: boolean;
   seats: Seat[];
   signedInEmail: string | null;
   alreadyPurchased: boolean;
@@ -80,6 +83,9 @@ export default function TicketQuiz({
   slug,
   eventId,
   eventName,
+  eventSport,
+  eventIsBuilt,
+  showBudgetLink,
   seats,
   signedInEmail,
   alreadyPurchased,
@@ -153,6 +159,9 @@ export default function TicketQuiz({
         eventName={eventName}
         eventId={eventId}
         eventSlug={slug}
+        eventSport={eventSport}
+        eventIsBuilt={eventIsBuilt}
+        showBudgetLink={showBudgetLink}
         result={result}
         successUrl={successUrl}
         signedInEmail={signedInEmail}
@@ -266,7 +275,14 @@ export default function TicketQuiz({
             {complete ? "See my match" : `Answer all ${steps.length} questions`}
           </button>
         </div>
-        <TicketIntelligenceSidebar eventSlug={slug} />
+        <TicketIntelligenceSidebar
+          eventSlug={slug}
+          eventId={eventId}
+          sport={eventSport}
+          isBuilt={eventIsBuilt}
+          userEmail={signedInEmail}
+          showBudgetLink={showBudgetLink}
+        />
       </div>
     </div>
   );

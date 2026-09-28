@@ -58,6 +58,25 @@ const CIRCUIT_MAP_BY_EVENT: Record<
     aspectClassName: "aspect-[1920/1080]",
     credit: "Hazim Fikri A., CC BY-SA 4.0, via Wikimedia Commons.",
   },
+  // Slug renamed from "miami-grand-prix-2027" to the evergreen
+  // "miami-grand-prix" (seasonYear: 2027) 28 Sep 2026 — the dated slug was
+  // a mistake, per sportingEvents.seasonYear's own schema comment (new
+  // events should use the evergreen pattern, year tracked separately, not
+  // baked into the slug). Caught by the founder before any other code
+  // referenced the old slug.
+  "miami-grand-prix": {
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/miami-grand-prix-2027-map.jpg",
+    alt: "Miami International Autodrome layout showing all 19 turns around Hard Rock Stadium",
+    // Source image re-cropped 28 Sep 2026 to its real content bounds
+    // (3740x1487) — the original 3840x1638 file had baked-in white margin
+    // that didn't match the original aspectClassName, causing
+    // ZoomableImage's object-cover to crop into the circuit itself.
+    aspectClassName: "aspect-[3740/1487]",
+    credit: "Dh16dh, CC BY 4.0.",
+    // Black line art on a near-white/transparent background — same
+    // near-invisible-against-dark-frame issue as Mexico City's map above.
+    lightFrame: true,
+  },
   "qatar-grand-prix": {
     url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/qatar-grand-prix-circuit-map.png",
     alt: "Lusail International Circuit layout with every grandstand and hospitality unit marked",
@@ -86,6 +105,18 @@ const CIRCUIT_MAP_BY_EVENT: Record<
     alt: "Suzuka Circuit grounds and facilities map",
     aspectClassName: "aspect-[878/551]",
     credit: "suzukacircuit.jp.",
+  },
+  "chinese-grand-prix": {
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/chinese-grand-prix-circuit-map.jpg",
+    alt: "Shanghai International Circuit layout, tracing the 'shang' (上) character shape with Turns 13-14's long straight and hairpin marked",
+    aspectClassName: "aspect-[3840/2433]",
+    credit: "Will Pittenger, CC BY 3.0.",
+  },
+  "canadian-grand-prix": {
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/canadian-grand-prix-circuit-map.jpg",
+    alt: "Circuit Gilles Villeneuve layout on Île Notre-Dame, showing the Senna Curve, the Hairpin, Casino Straight, and the Wall of Champions",
+    aspectClassName: "aspect-[3840/2880]",
+    credit: "Will Pittenger, CC BY 3.0.",
   },
 };
 
@@ -137,6 +168,20 @@ const RESELLER_LINKS_BY_EVENT: Record<
     p1Url: "https://www.p1travel.com/en-GB/series/formula-1-2026?organizers=grand-prix-las-vegas",
     soldOutNote: "Main Grandstand has historically been the first stand to sell out given its start/finish and pit-lane view",
   },
+  // No TicketsSpoke.tsx exists yet for this event (no hub-and-spoke content
+  // built as of 28 Sep 2026) — officialUrl/soldOutNote below are placeholder
+  // copy, NOT copied from a curator-reviewed spoke per this map's own rule.
+  // Replace both once a real Tickets spoke is built for Miami GP 2027.
+  // Slug renamed from "miami-grand-prix-2027" to evergreen
+  // "miami-grand-prix" 28 Sep 2026 — see CIRCUIT_MAP_BY_EVENT's matching
+  // comment above.
+  "miami-grand-prix": {
+    officialLabel: "Official Miami GP tickets →",
+    officialUrl: "https://f1miamigp.com/tickets",
+    p1Label: "P1 Travel — Miami GP →",
+    p1Url: "https://www.p1travel.com/en-GB/motorsports/formula-1/miami-gp-2027-fri-sat-sun",
+    soldOutNote: "tickets went on sale September 2026 — check current availability before booking",
+  },
   "qatar-grand-prix": {
     officialLabel: "Official Qatar GP tickets →",
     officialUrl: "https://tickets.formula1.com/en/f1-56257-qatar",
@@ -187,6 +232,21 @@ const RESELLER_LINKS_BY_EVENT: Record<
     p1Label: "P1 Travel — Chinese GP →",
     p1Url: "https://www.p1travel.com/en-GB/series/formula-1-2027?organizers=grand-prix-china",
     soldOutNote: "most 2027 ticket types are still pre-sale waitlist only as of this writing — register on the official channel for priority access ahead of general on-sale",
+  },
+  // No TicketsSpoke.tsx exists yet for this event (no hub-and-spoke content
+  // built as of 28 Sep 2026, packStatus: planned) — same situation as
+  // Miami GP above. officialUrl is the real ticketing.formula1.com/canada
+  // URL (verified waitlist-only, confirmed 28 Sep 2026 — "full details on
+  // available packages will be announced soon"). P1 Travel URL confirmed
+  // by the founder directly (resolves to the real Canadian GP 2027, 21 May
+  // 2027, Montréal, Circuit Gilles Villeneuve — verified via fetch, 28 Sep
+  // 2026). Replace soldOutNote once a real Tickets spoke is built.
+  "canadian-grand-prix": {
+    officialLabel: "Official Canadian GP ticket waitlist →",
+    officialUrl: "https://ticketing.formula1.com/canada",
+    p1Label: "P1 Travel — Canadian GP →",
+    p1Url: "https://www.p1travel.com/en-GB/motorsports/formula-1/canada-gp-2027-fri-sat-sun",
+    soldOutNote: "2027 ticket sales haven't opened yet — register on the official waitlist for priority access ahead of general on-sale",
   },
 };
 

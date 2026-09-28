@@ -5,7 +5,7 @@ import { getAuthUser } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { purchases, sportingEvents } from "@/schema/database";
 import { and, eq } from "drizzle-orm";
-import { getSeatingData } from "../_lib/getSeatingData";
+import { getSeatingData, hasFullPlannerCostData } from "../_lib/getSeatingData";
 import { hasActiveSeasonPass } from "../../_lib/seasonPassAccess";
 import { scoreSeats } from "../_lib/scoreSeats";
 import type { QuizAnswers } from "../_lib/types";
@@ -66,11 +66,24 @@ export default async function TicketIntelligenceResultPage({
   }
 
   const [event] = await db
-    .select({ id: sportingEvents.id, editionYear: sportingEvents.editionYear })
+    .select({
+      id: sportingEvents.id,
+      editionYear: sportingEvents.editionYear,
+      sport: sportingEvents.sport,
+      packStatus: sportingEvents.packStatus,
+      isHidden: sportingEvents.isHidden,
+      destinationId: sportingEvents.destinationId,
+    })
     .from(sportingEvents)
     .where(eq(sportingEvents.slug, slug))
     .limit(1);
   if (!event) redirect(`/ticket-intelligence/${slug}`);
+
+  // Same isBuilt formula as the Season Planner's ShortlistResults.tsx —
+  // gates TicketIntelligenceSidebar's "Get the event guide" CTA.
+  const isBuilt = (event.packStatus === "live" || event.packStatus === "built_hidden") && !event.isHidden;
+
+  const showBudgetLink = await hasFullPlannerCostData(event.id, event.destinationId, event.editionYear);
 
   const [purchase] = await db
     .select({ id: purchases.id, storedAnswers: purchases.ticketIntelligenceAnswers })
@@ -121,7 +134,14 @@ export default async function TicketIntelligenceResultPage({
                 fallbackExperienceSlug={data.event.fallbackTicketExperienceSlug}
               />
             </div>
-            <TicketIntelligenceSidebar eventSlug={slug} />
+            <TicketIntelligenceSidebar
+              eventSlug={slug}
+              eventId={event.id}
+              sport={event.sport}
+              isBuilt={isBuilt}
+              userEmail={user.email}
+              showBudgetLink={showBudgetLink}
+            />
           </div>
         </div>
       ) : (

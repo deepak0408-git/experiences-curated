@@ -22,7 +22,13 @@ function daysUntil(dateStr: string): number {
   return Math.ceil((new Date(dateStr).getTime() - Date.now()) / 86_400_000);
 }
 
-function ctaContent(cta: CalendarCtaState, eventName: string, userEmail: string | null) {
+function ctaContent(
+  cta: CalendarCtaState,
+  eventName: string,
+  userEmail: string | null,
+  matchedEventId: string | null,
+  sport: string
+) {
   if (cta.type === "live_guide") {
     return (
       <Link
@@ -33,8 +39,11 @@ function ctaContent(cta: CalendarCtaState, eventName: string, userEmail: string 
       </Link>
     );
   }
-  if (cta.type === "guide_coming") {
-    return <NotifyMeButton eventName={eventName} userEmail={userEmail} />;
+  // "guide_coming" only reaches here when row.matchedEventSlug is truthy
+  // (getCtaState returns "not_covered" otherwise), so matchedEventId is
+  // always real at this point — see calendar.ts's getCtaState.
+  if (cta.type === "guide_coming" && matchedEventId) {
+    return <NotifyMeButton eventName={eventName} eventId={matchedEventId} sport={sport} userEmail={userEmail} />;
   }
   return null;
 }
@@ -90,7 +99,7 @@ export default function CalendarEventRow({
             original right-aligned side-by-side layout. Fixed 16 Aug 2026
             per direct mobile screenshot feedback. */}
         <div className="flex flex-col items-start gap-1.5 mt-2 sm:items-end sm:mt-0 sm:flex-shrink-0">
-          {ctaContent(cta, event.name, userEmail)}
+          {ctaContent(cta, event.name, userEmail, event.matchedEventId, event.sport)}
           {/* Links to Price Radar, not /planner — canPlanCosts() now also
               checks packFormat === "hub_and_spoke" (see calendar.ts), so
               matchedEventSlug is always a real, eligible Price Radar page

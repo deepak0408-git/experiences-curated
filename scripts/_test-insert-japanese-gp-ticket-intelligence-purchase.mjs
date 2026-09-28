@@ -3,16 +3,25 @@ config({ path: ".env.local" });
 import postgres from "postgres";
 
 // TEST DATA — inserted 27 Sep 2026 to manually verify the Ticket
-// Intelligence result page's purchase-gate flow for Singapore GP while
+// Intelligence result page's purchase-gate flow for Japanese GP while
 // testing locally in Dodo test_mode (no webhook tunnel to localhost, so the
 // real payment.succeeded webhook never fires). Same pattern as
-// scripts/_test-insert-ticket-intelligence-purchase.mjs (Brazilian GP).
+// scripts/_test-insert-italian-gp-ticket-intelligence-purchase.mjs /
+// scripts/_test-insert-australian-gp-ticket-intelligence-purchase.mjs.
 // INSERT ONLY — per CLAUDE.md's standing rule (27 Sep 2026), no matching
 // delete script exists or will be written for this row.
+//
+// Note: Japanese GP's own event pack is still isHidden: true / packStatus
+// built_hidden (not yet activated) — this test row only exercises the
+// Ticket Intelligence purchase-gate flow, which is independently reachable
+// per getTicketIntelligenceEventsUncached's deliberate built_hidden
+// allowance for pre-launch testing. Per the fix in getSeatingData.ts (27
+// Sep 2026), seat experience links stay suppressed on the result page
+// until the event itself is activated, regardless of this purchase row.
 
 const sql = postgres(process.env.DATABASE_URL, { ssl: "require", prepare: false });
 
-const EVENT_ID = "48aa4415-f6a2-4867-b390-eb6b28b6903b"; // Singapore Grand Prix 2026
+const EVENT_ID = "9fe13c2e-37d1-49f0-8a48-d3ea40186fe4"; // Japanese Grand Prix 2027
 const EMAIL = "deepak0408@gmail.com";
 
 // Arbitrary but valid answers across the 6 real rubric questions (q6/Q6
