@@ -26,7 +26,7 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
       question="Where to eat in Kuala Lumpur during race weekend?"
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="Both picks above are real and free. The pack adds which specific dishes to order and why, how to fit both into one trip without wasting an evening, and the full guide to each venue."
+      ctaCopy="The Event Pack adds our two real Kuala Lumpur picks, which specific dishes to order and why, how to fit both into one trip without wasting an evening, and the full guide to each venue."
     >
       {/* Cuisine-orientation intro — added 1 Aug 2026 after the user
           flagged the page as too barebones for a reader with zero context
