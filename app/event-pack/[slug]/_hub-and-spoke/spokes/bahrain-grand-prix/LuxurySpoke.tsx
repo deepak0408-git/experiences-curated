@@ -27,7 +27,7 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       question="What does a genuinely luxury Sepang weekend look like?"
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="What's real is free above — Corporate Suites, private transit, the KL skyline venue, and Paddock Club's own inclusions. The pack adds the actual contacts, prices, and booking timeline for every one of them: who to call for Corporate Suites, real chauffeur pricing and how to book, the reservations line for the skyline venue, and the specific Paddock Club booking window worth knowing for a race with unusually high pent-up demand — this tier has historically sold out its best packages well ahead of race weekend."
+      ctaCopy="The Event Pack adds the full luxury breakdown — Corporate Suites, private transit, the KL skyline venue, and Paddock Club's own inclusions, plus the actual contacts, prices, and booking timeline for every one of them: who to call for Corporate Suites, real chauffeur pricing and how to book, the reservations line for the skyline venue, and the specific Paddock Club booking window worth knowing for a race with unusually high pent-up demand — this tier has historically sold out its best packages well ahead of race weekend."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
         Luxury at a relocated, first-in-9-years Sepang race isn&apos;t as built-out as at an established calendar

@@ -479,6 +479,17 @@ export default async function HubPage({ slug }: { slug: string }) {
   const initiallySaved = user ? await isEventPackSaved(event.id) : false;
   const myRating = user ? await getMyEventPackRating(event.id) : null;
 
+  // Full-gate pilot (Bahrain GP, 29 Sep 2026) — same env-var-driven flag as
+  // SpokeShell.tsx. Blank/unset FULLY_GATED_EVENTS → isFullyGated always
+  // false → tile badges render exactly as before this change. Kept in sync
+  // with SpokeShell's own copy of this check so a locked spoke never shows
+  // "Free" on the hub grid while its own page shows "Pack exclusive".
+  const fullyGatedEvents = (process.env.FULLY_GATED_EVENTS ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const isFullyGated = fullyGatedEvents.includes(slug);
+
   const hubHeroUrl = event.heroImageUrl ?? (config ? getSpokeImage(linkedExperiences, config.heroFallbackImageSlug) : null);
 
   // "Worth Reading" — pack-side counterpart to the blog's own "Get the full
@@ -628,8 +639,9 @@ export default async function HubPage({ slug }: { slug: string }) {
               <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 lg:sticky lg:top-6">
                 <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-2">Unlock the full guide</p>
                 <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-                  While most information for this event is free to read, buying the Event Pack unlocks our curated
-                  picks, tactical booking detail, and the full day-by-day itinerary across all of them.
+                  {isFullyGated
+                    ? "Buying the Event Pack unlocks our curated picks, tactical booking detail, and the full day-by-day itinerary across all of them."
+                    : "While most information for this event is free to read, buying the Event Pack unlocks our curated picks, tactical booking detail, and the full day-by-day itinerary across all of them."}
                 </p>
                 {pricing.freeAccessEnabled ? (
                   <>
@@ -904,6 +916,8 @@ export default async function HubPage({ slug }: { slug: string }) {
                     className={`absolute top-3 right-3 text-[9px] font-black tracking-widest uppercase rounded-sm px-2 py-0.5 border backdrop-blur-sm ${
                       miniPackPricing && MINI_PACK_PRODUCT_TYPE_BY_SPOKE[spoke.id]
                         ? "text-amber-400 border-amber-400/50 bg-black/30"
+                        : isFullyGated
+                        ? "text-amber-400 border-amber-400/50 bg-black/30"
                         : spoke.status === "teaser"
                         ? "text-[#AAFF00] border-[#AAFF00]/50 bg-black/30"
                         : "text-white/70 border-white/20 bg-black/30"
@@ -928,6 +942,8 @@ export default async function HubPage({ slug }: { slug: string }) {
                         off-brand color like red. */}
                     {miniPackPricing && MINI_PACK_PRODUCT_TYPE_BY_SPOKE[spoke.id]
                       ? `Unlock for ${miniPackPricing[spoke.id as keyof typeof miniPackPricing].priceDisplay}`
+                      : isFullyGated
+                      ? "Pack exclusive"
                       : STATUS_LABEL[spoke.status]}
                   </span>
                 )}

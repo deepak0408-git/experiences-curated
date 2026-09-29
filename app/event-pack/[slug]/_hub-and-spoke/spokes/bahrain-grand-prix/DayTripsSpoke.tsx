@@ -43,7 +43,7 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
       question="What are the best day trips from Kuala Lumpur?"
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The three trips are named above — the pack adds the real detail on each one (what's actually there, entry rules, costs), which one we'd pick for your specific free day, and how to fit it around race sessions without wasting travel time."
+      ctaCopy="The Event Pack adds our three real day-trip picks from Kuala Lumpur, the detail on each one (what's actually there, entry rules, costs), which one we'd pick for your specific free day, and how to fit it around race sessions without wasting travel time."
     >
       {/* Orientation intro — expanded 1 Aug 2026 after the user flagged the
           page as thin, then again to add Batu Caves as a real third
