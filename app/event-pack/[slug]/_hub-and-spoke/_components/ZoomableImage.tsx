@@ -19,11 +19,22 @@ export default function ZoomableImage({
   alt,
   aspectClassName,
   lightFrame = false,
+  fitByHeight = false,
 }: {
   src: string;
   alt: string;
   aspectClassName: string;
   lightFrame?: boolean;
+  // Default lightbox sizing (w-full h-auto) fills the available width, so a
+  // tall/near-square image renders taller than the viewport and the
+  // container scrolls to show it — Monaco's circuit map (2560x2173, far
+  // more square than most events' wide circuit maps) hits this. Opt-in per
+  // image, same mechanism as lightFrame, rather than changing the shared
+  // default — most events' maps are wide/short and look better filling the
+  // full width than they would constrained by height. Founder-flagged 30
+  // Sep 2026 ("id prefer the zoomed image to not scroll"), scoped to Monaco
+  // only per explicit founder direction (other events keep today's sizing).
+  fitByHeight?: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -61,7 +72,11 @@ export default function ZoomableImage({
             className={`relative w-full h-full max-w-5xl overflow-auto flex items-center justify-center ${lightFrame ? "bg-[#F5F5F0] p-4" : ""}`}
             onClick={(e) => e.stopPropagation()}
           >
-            <img src={src} alt={alt} className="w-full h-auto" />
+            <img
+              src={src}
+              alt={alt}
+              className={fitByHeight ? "max-h-full w-auto object-contain" : "w-full h-auto"}
+            />
           </div>
         </div>
       )}

@@ -87,6 +87,19 @@ export default function SpokeActionSidebar({
         </Link>
       )}
 
+      {showTicketIntelligence && (
+        <Link
+          href={`/ticket-intelligence/${eventSlug}`}
+          className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+        >
+          <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
+          <span className="flex-1">
+            <span className="block text-sm font-bold text-[#A3A3A3]">Find your perfect seat</span>
+            <span className="block text-xs text-[#6A6A6A] mt-0.5">Answer 6 questions, get matched to a seat</span>
+          </span>
+        </Link>
+      )}
+
       <Link
         href="/custom-itinerary"
         className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
@@ -97,19 +110,6 @@ export default function SpokeActionSidebar({
           <span className="block text-xs text-[#6A6A6A] mt-0.5">Tell us your trip, we&apos;ll shape it</span>
         </span>
       </Link>
-
-      {showTicketIntelligence && (
-        <Link
-          href={`/ticket-intelligence/${eventSlug}`}
-          className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
-        >
-          <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
-          <span className="flex-1">
-            <span className="block text-sm font-bold text-[#A3A3A3]">Find the best seat</span>
-            <span className="block text-xs text-[#6A6A6A] mt-0.5">Answer 6 questions, get matched to a seat</span>
-          </span>
-        </Link>
-      )}
 
       {showPlannerLink && (
         <Link

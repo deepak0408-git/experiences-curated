@@ -25,6 +25,7 @@ export default function ExperienceActionSidebar({
   eventPackFormat,
   hasLivePack,
   userEmail,
+  showTicketIntelligenceLink,
 }: {
   eventPackSlug: string;
   eventPackName: string;
@@ -34,6 +35,13 @@ export default function ExperienceActionSidebar({
   eventPackFormat: string | null;
   hasLivePack: boolean;
   userEmail: string | null;
+  // "Find your perfect seat" row — gated sport-only (F1 + real seeded
+  // Ticket Intelligence data) as of 30 Sep 2026, computed by the page from
+  // eventPackSport/eventPackId + hasTicketIntelligence(). Deliberately NOT
+  // per-experience filtered yet — see page.tsx's showTicketIntelligenceLink
+  // comment for the documented gaps in that filter (scratchpad/
+  // _ti-sidebar-filter-table.md) that are still open.
+  showTicketIntelligenceLink: boolean;
 }) {
   const canPlanCosts = eventPackFormat === "hub_and_spoke";
   return (
@@ -69,6 +77,19 @@ export default function ExperienceActionSidebar({
           <span className="block text-xs text-[#6A6A6A] mt-0.5">Real flight, hotel and ticket costs</span>
         </span>
       </Link>
+
+      {showTicketIntelligenceLink && (
+        <Link
+          href={`/ticket-intelligence/${eventPackSlug}`}
+          className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+        >
+          <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
+          <span className="flex-1">
+            <span className="block text-sm font-bold text-[#A3A3A3]">Find your perfect seat</span>
+            <span className="block text-xs text-[#6A6A6A] mt-0.5">Answer 6 questions, get matched to a seat</span>
+          </span>
+        </Link>
+      )}
 
       <Link
         href="/custom-itinerary"

@@ -7,6 +7,16 @@ import { getPackPricing } from "../_lib/packPricing";
 import DodoCheckout from "../../_components/DodoCheckout";
 import LocalCurrencyHint from "../../_components/LocalCurrencyHint";
 import SpokeActionSidebar from "./SpokeActionSidebar";
+import { hasTicketIntelligence } from "../../../../ticket-intelligence/[slug]/_lib/getSeatingData";
+
+// Spokes where "Find the best seat" earns its place in the sidebar — the
+// fan is already thinking about cost/tickets/hospitality on these three,
+// unlike e.g. Where to Eat or Day Trips. Founder direction, 30 Sep 2026:
+// roll out to Cost/Tickets/Luxury only, every F1 event (sport-only gate,
+// same as the experience-page sidebar's showTicketIntelligenceLink — see
+// that file's comment for why this isn't per-experience/per-spoke content
+// filtered yet).
+const TICKET_INTELLIGENCE_SPOKE_IDS = new Set(["cost", "tickets", "luxury"]);
 
 // Shared shell for every spoke page — slug-driven so it works for any
 // hub_and_spoke event, not just one. Structure copied from the pilot;
@@ -78,6 +88,9 @@ export default async function SpokeShell({
   // order, for every hub-and-spoke event, not just Wimbledon.
   const currentIdx = spokes.findIndex((s) => s.id === spokeId);
   const nextSpoke = currentIdx === -1 ? null : spokes[(currentIdx + 1) % spokes.length];
+
+  const showTicketIntelligence =
+    TICKET_INTELLIGENCE_SPOKE_IDS.has(spokeId) && (await hasTicketIntelligence(eventId));
 
   // Full-gate pilot (Bahrain GP, 29 Sep 2026) — env-var-driven so it can be
   // reverted with zero code change, just by clearing FULLY_GATED_EVENTS.
@@ -352,7 +365,7 @@ export default async function SpokeShell({
         </article>
 
         <div className="order-1 lg:order-2 lg:sticky lg:top-8 lg:mt-6">
-          <SpokeActionSidebar eventSlug={eventSlug} />
+          <SpokeActionSidebar eventSlug={eventSlug} showTicketIntelligence={showTicketIntelligence} />
         </div>
         </div>
 
