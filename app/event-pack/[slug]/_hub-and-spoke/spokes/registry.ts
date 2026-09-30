@@ -207,6 +207,19 @@ import AGArrivalSpoke from "./australian-grand-prix/ArrivalSpoke";
 import AGMapSpoke from "./australian-grand-prix/MapSpoke";
 import AGLuxurySpoke from "./australian-grand-prix/LuxurySpoke";
 
+import JGCostSpoke from "./japanese-grand-prix/CostSpoke";
+import JGTicketsSpoke from "./japanese-grand-prix/TicketsSpoke";
+import JGHotelsSpoke from "./japanese-grand-prix/HotelsSpoke";
+import JGGettingThereSpoke from "./japanese-grand-prix/GettingThereSpoke";
+import JGWeatherSpoke from "./japanese-grand-prix/WeatherSpoke";
+import JGFirstTimerGuideSpoke from "./japanese-grand-prix/FirstTimerGuideSpoke";
+import JGWhereToEatSpoke from "./japanese-grand-prix/WhereToEatSpoke";
+import JGDayTripsSpoke from "./japanese-grand-prix/DayTripsSpoke";
+import JGItinerarySpoke from "./japanese-grand-prix/ItinerarySpoke";
+import JGArrivalSpoke from "./japanese-grand-prix/ArrivalSpoke";
+import JGMapSpoke from "./japanese-grand-prix/MapSpoke";
+import JGLuxurySpoke from "./japanese-grand-prix/LuxurySpoke";
+
 type SpokeComponent = ComponentType<{ eventSlug: string }>;
 
 // Registry mapping eventSlug -> spokeId -> component. A new hub_and_spoke
@@ -438,6 +451,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: AGMapSpoke,
     luxury: AGLuxurySpoke,
   },
+  "japanese-grand-prix": {
+    cost: JGCostSpoke,
+    tickets: JGTicketsSpoke,
+    hotels: JGHotelsSpoke,
+    "getting-there": JGGettingThereSpoke,
+    weather: JGWeatherSpoke,
+    "first-timer-guide": JGFirstTimerGuideSpoke,
+    "where-to-eat": JGWhereToEatSpoke,
+    "day-trips": JGDayTripsSpoke,
+    itinerary: JGItinerarySpoke,
+    arrival: JGArrivalSpoke,
+    map: JGMapSpoke,
+    luxury: JGLuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -664,5 +691,19 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Albert Park — Arrival & Queue Guide",
     map: "Albert Park Circuit Map — History, Corners, and Facilities",
     luxury: "Luxury Guide for the Australian Grand Prix — Paddock Club, Champions Club, and More",
+  },
+  "japanese-grand-prix": {
+    cost: "How Much Does the Japanese Grand Prix Cost? — Suzuka Budget Guide",
+    tickets: "Suzuka Ticket Guide — General Admission to Grandstand V1/V2",
+    hotels: "Where to Stay for the Japanese Grand Prix — Nagoya vs. the Suzuka Area",
+    "getting-there": "Getting to Suzuka Circuit — Japanese Grand Prix Transit Guide",
+    weather: "Suzuka Weather in April — What to Pack for the Japanese Grand Prix",
+    "first-timer-guide": "First-Timer's Guide — the Japanese Grand Prix at Suzuka",
+    "where-to-eat": "Where to Eat in Nagoya — Japanese Grand Prix Weekend",
+    "day-trips": "Best Day Trips from Nagoya — Japanese Grand Prix Weekend",
+    itinerary: "Sample Japanese Grand Prix Sprint Weekend Itinerary",
+    arrival: "Suzuka Circuit — Arrival & Fan Zone Guide",
+    map: "Suzuka Circuit Map — History, Corners, and Facilities",
+    luxury: "Luxury Guide for the Japanese Grand Prix — Paddock Club, Champions Club, and More",
   },
 };

@@ -201,6 +201,19 @@ export const PACK_PRICING_CONFIG: Record<string, {
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_AUSTRALIAN_GP_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_AUSTRALIAN_GP_EARLY_BIRD_CUTOFF ?? "2027-03-04",
   },
+  // Real Dodo product IDs confirmed by the founder from the live Dodo
+  // dashboard, 22 Sep 2026: Early Bird pdt_0No9vNRegxVLgTZsASHlM (US$10),
+  // Standard pdt_0No9vS705JqYPL41QBi6Q (US$15) — already in .env.local, but
+  // this entry itself was never added to PACK_PRICING_CONFIG during the
+  // japanese-grand-prix-2027 -> japanese-grand-prix slug correction (22 Sep
+  // 2026), which silently dropped the Dodo checkout from the live pack.
+  // Found and fixed 29 Sep 2026. Display strings/cutoff still need a real
+  // /curator/price save; env-var default below is the fallback until then.
+  "japanese-grand-prix": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_JAPANESE_GP_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_JAPANESE_GP_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_JAPANESE_GP_EARLY_BIRD_CUTOFF ?? "2027-03-09",
+  },
 };
 
 // Mini-packs pilot (Bahrain GP / Singapore GP / Shanghai Masters, Sep 2026)

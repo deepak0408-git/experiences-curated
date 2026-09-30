@@ -242,6 +242,21 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
     { label: "Tourism Infoline", value: "Monza Infopoint (Piazza Carducci): +39 039 323222 — city and event visitor information, not emergency dispatch." },
     { label: "Emergencies", value: "Italy-wide emergency number: 112 (free, English-speaking operators available). Health-specific: 118. Nearest hospital to the circuit: Ospedale San Gerardo, Via Pergolesi 33, Monza — 24-hour emergency department, tel 039 2331." },
   ],
+  // Real, sourced facts from experience research and the ticket-intelligence
+  // build (project_japanese_gp_ticket_intelligence memory) — Suzuka's first
+  // Sprint weekend, the dual-airport reality (NGO primary, NRT/Shinkansen
+  // secondary). Added retroactively 29 Sep 2026 — this entry was never
+  // added during the japanese-grand-prix-2027 -> japanese-grand-prix slug
+  // correction (22 Sep 2026), matching the same gap found in
+  // PACK_PRICING_CONFIG. Session clock times not yet published as of build
+  // date, stated honestly per skill §2a-3.
+  "japanese-grand-prix": [
+    { label: "Sprint weekend", value: "2027 is Suzuka's first-ever Sprint format: Friday is Practice 1 + Sprint Qualifying, Saturday is the Sprint Race + Grand Prix Qualifying, Sunday is the Japanese Grand Prix. Exact session clock times haven't been published yet — check formula1.com closer to race week." },
+    { label: "Getting there", value: "Chubu Centrair (NGO) is the closest major airport, roughly 40km from the circuit. Narita (NRT) plus a Shinkansen connection is the practical alternative for most international routings." },
+    { label: "Gate times", value: "Not yet published for 2027 — confirm exact times via the official Suzuka Circuit site (suzukacircuit.jp) or formula1.com closer to race week." },
+    { label: "Weather", value: "Early April at Suzuka is Japan's spring — mild, changeable, with rain a real possibility across the weekend. Bring a light rain layer regardless of the forecast." },
+    { label: "Emergencies", value: "Japan-wide emergency numbers: 110 (police), 119 (ambulance/fire). English-speaking operator support is not guaranteed on the standard line — the Japan Visitor Hotline (050-3816-2787) runs 24/7 in English." },
+  ],
 };
 
 // Exported (27 Aug 2026) — same reasoning as QUICK_REFERENCE_BY_EVENT above.
@@ -340,6 +355,22 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
     heroFallbackImageSlug: "las-vegas-gp-sphere-f1-grandstands",
     introText:
       "Liberty Media didn't drop a circuit into Las Vegas — it spent roughly $500 million buying land and building a permanent pit and paddock facility specifically to run a Grand Prix down a street that wasn't built for one. This is the first Grand Prix Liberty has promoted itself rather than handing to a third-party promoter, and every session runs entirely at night, timed specifically to show off the Strip lit up after dark.\n\nNo other Grand Prix on the calendar lets you watch the race from a hotel balcony. The circuit runs directly past the Bellagio Fountains, the Sphere, and a stretch of the Strip's biggest resorts — three of them (Bellagio, Aria, Paris Las Vegas) sell track-view rooms that book out months ahead. This isn't a circuit you travel to; for a lot of visitors, it's one you're already standing inside the moment you leave your hotel.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
+  // Built from real sourced facts researched during experience seeding and
+  // the ticket-intelligence build (Honda's 1962 origin, John Hugenholtz's
+  // figure-8 design, the 13-titles-decided-at-Suzuka record, Suzuka's
+  // first-ever Sprint weekend in 2027) — not invented, matches every other
+  // hub-and-spoke event's pattern of drawing The Brief from real underlying
+  // content. Added retroactively 29 Sep 2026 — this entry was never added
+  // during the japanese-grand-prix-2027 -> japanese-grand-prix slug
+  // correction (22 Sep 2026), which silently left the pack with no intro
+  // write-up (see project_japanese_gp_2027_build_status memory).
+  "japanese-grand-prix": {
+    displayName: "Japanese Grand Prix",
+    venueLine: "Held at Suzuka Circuit, Mie Prefecture — the sport's only figure-8 track, and the layout every driver still calls the hardest on the calendar.",
+    heroFallbackImageSlug: "suzuka-circuit-main-gate",
+    introText:
+      "Honda built Suzuka in 1962 as a test track for its own cars, not a race circuit, and hired Dutch designer John Hugenholtz to lay it out — the result is the only figure-8 layout left in F1, crossing over itself via a bridge between Turn 8 and Turn 9. More world championships have been decided here than at any other circuit on the calendar: 13 titles settled at Suzuka, including some of the sport's most famous rivalries.\n\n2027 marks Suzuka's first-ever Sprint weekend, adding a Saturday Sprint Race and second qualifying session to a circuit that already asks more of drivers than almost anywhere else — the flowing Esses, the high-speed 130R, and the technical final chicane are still driven flat-out by only the most confident. Mie Prefecture itself sits between Nagoya and Osaka, giving you a genuine choice of base city rather than a single circuit town.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
   // Built from real sourced facts researched during experience seeding
   // (Yas Marina Circuit's 2009 debut as the world's first F1 twilight race,
@@ -509,6 +540,9 @@ export default async function HubPage({ slug }: { slug: string }) {
       "united-states-grand-prix": "https://maps.app.goo.gl/zN7GPcSxKsSMYH3i6",
       "brazilian-grand-prix": "https://maps.app.goo.gl/msfgaF4VXueyb4FX8",
       "italian-grand-prix": "https://maps.app.goo.gl/jfZbSWM55Be2HoJY7",
+      // Founder-supplied, verified correct link — the auto-generated
+      // text-search URL wasn't resolving to Suzuka Circuit correctly.
+      "japanese-grand-prix": "https://maps.app.goo.gl/Z8KTdpjkhmYV7qg66",
     };
     quickReference.push({
       label: "Address",

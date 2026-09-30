@@ -88,6 +88,11 @@ function shortEventName(name: string, slug: string): string {
     "brazilian-grand-prix": "São Paulo GP 2026",
     "qatar-grand-prix": "Qatar GP 2026",
     "australian-grand-prix": "Australian GP 2027",
+    // Missing since the japanese-grand-prix-2027 -> japanese-grand-prix slug
+    // correction (22 Sep 2026) — added 29 Sep 2026 alongside the
+    // INTRO_BY_EVENT/PACK_PRICING_CONFIG fix (see
+    // project_japanese_gp_2027_build_status memory).
+    "japanese-grand-prix": "Japanese GP 2027",
   };
   return SHORT_NAMES[slug] ?? name;
 }
