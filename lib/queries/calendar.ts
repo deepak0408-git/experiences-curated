@@ -1,6 +1,8 @@
 import { db } from "@/lib/db";
-import { externalCalendarEvents, sportingEvents, plannerTicketTierCost } from "@/schema/database";
+import { externalCalendarEvents, sportingEvents, plannerTicketTierCost, plannerHotelTierCost, plannerFlightCost, plannerDestinationBands } from "@/schema/database";
 import { and, asc, eq, inArray, or, sql, type SQL } from "drizzle-orm";
+
+const SEASONAL_BAND_BY_MONTH = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 
 // Master data source for the Sports Calendar page family (/calendar,
 // /calendar/[sport]) — see docs/Sports Calendar - Design Document.txt.
@@ -45,6 +47,7 @@ export async function getCalendarEvents(sport?: string, years?: number[]) {
       // this, canPlanCosts would send classic events (e.g. US Open, Belgian
       // GP) to a 404.
       matchedEventPackFormat: sportingEvents.packFormat,
+      matchedEventDestinationId: sportingEvents.destinationId,
     })
     .from(externalCalendarEvents)
     .leftJoin(sportingEvents, eq(externalCalendarEvents.matchedSportingEventId, sportingEvents.id))
@@ -58,27 +61,63 @@ export async function getCalendarEvents(sport?: string, years?: number[]) {
   // memory). packStatus alone can never express "cost data exists for the
   // edition currently displayed" — only a real query against the cost
   // tables, filtered by edition_year, can. Batched into one query (same
-  // pattern as getPlannerEvents.ts) rather than N+1 per row. Checking
-  // ticket-tier cost alone as the proxy for "has real planner data" is
-  // sufficient — every event seeded so far has all 3 categories seeded
-  // together in the same pass (see planner-data-researcher skill).
+  // pattern as getPlannerEvents.ts) rather than N+1 per row.
+  //
+  // Checks ALL FOUR planner cost tables, not just tickets — fixed 1 Oct 2026
+  // after the founder caught British Grand Prix 2027 showing "Plan costs for
+  // this trip" with only 4 ticket-tier rows seeded and zero hotel/flight/
+  // destination-band rows, landing on a Price Radar page missing 3 of its 4
+  // cost columns. The original comment here assumed "every event seeded so
+  // far has all 3 [sic] categories seeded together in the same pass" — false
+  // for British GP, and nothing enforced that assumption going forward.
+  // Ticket-tier cost is keyed by sportingEventId directly; hotel/flight/
+  // destination-band rows are keyed by destinationId (a destination is
+  // shared across events) plus editionYear + seasonalBand for hotel/flight
+  // (same pattern as getSpokeData.ts) — destinationBand has no
+  // edition/season split, it's one row per destination.
   const matchedEventIds = [...new Set(rows.map((r) => r.matchedEventId).filter((id): id is string => id !== null))];
-  const costRows = matchedEventIds.length > 0
+  const ticketRows = matchedEventIds.length > 0
     ? await db
         .select({ sportingEventId: plannerTicketTierCost.sportingEventId, editionYear: plannerTicketTierCost.editionYear })
         .from(plannerTicketTierCost)
         .where(inArray(plannerTicketTierCost.sportingEventId, matchedEventIds))
     : [];
-  const costEditionsByEvent = new Map<string, Set<number>>();
-  for (const c of costRows) {
-    if (!costEditionsByEvent.has(c.sportingEventId)) costEditionsByEvent.set(c.sportingEventId, new Set());
-    costEditionsByEvent.get(c.sportingEventId)!.add(c.editionYear);
+  const ticketEditionsByEvent = new Map<string, Set<number>>();
+  for (const c of ticketRows) {
+    if (!ticketEditionsByEvent.has(c.sportingEventId)) ticketEditionsByEvent.set(c.sportingEventId, new Set());
+    ticketEditionsByEvent.get(c.sportingEventId)!.add(c.editionYear);
   }
 
-  return rows.map((r) => ({
-    ...r,
-    hasRealCostData: !!r.matchedEventId && !!r.matchedEventEditionYear && (costEditionsByEvent.get(r.matchedEventId)?.has(r.matchedEventEditionYear) ?? false),
-  }));
+  const destinationIds = [...new Set(rows.map((r) => r.matchedEventDestinationId).filter((id): id is string => id !== null))];
+  const [hotelRows, flightRows, bandRows] = destinationIds.length > 0
+    ? await Promise.all([
+        db.select({ destinationId: plannerHotelTierCost.destinationId, editionYear: plannerHotelTierCost.editionYear, seasonalBand: plannerHotelTierCost.seasonalBand })
+          .from(plannerHotelTierCost)
+          .where(inArray(plannerHotelTierCost.destinationId, destinationIds)),
+        db.select({ destinationId: plannerFlightCost.destinationId, editionYear: plannerFlightCost.editionYear, seasonalBand: plannerFlightCost.seasonalBand })
+          .from(plannerFlightCost)
+          .where(inArray(plannerFlightCost.destinationId, destinationIds)),
+        db.select({ destinationId: plannerDestinationBands.destinationId })
+          .from(plannerDestinationBands)
+          .where(inArray(plannerDestinationBands.destinationId, destinationIds)),
+      ])
+    : [[], [], []];
+  const hotelKeys = new Set(hotelRows.map((h) => `${h.destinationId}|${h.editionYear}|${h.seasonalBand}`));
+  const flightKeys = new Set(flightRows.map((f) => `${f.destinationId}|${f.editionYear}|${f.seasonalBand}`));
+  const bandDestinationIds = new Set(bandRows.map((b) => b.destinationId));
+
+  return rows.map((r) => {
+    const hasTicketData = !!r.matchedEventId && !!r.matchedEventEditionYear && (ticketEditionsByEvent.get(r.matchedEventId)?.has(r.matchedEventEditionYear) ?? false);
+    if (!hasTicketData || !r.matchedEventDestinationId) {
+      return { ...r, hasRealCostData: false };
+    }
+    const seasonalBand = SEASONAL_BAND_BY_MONTH[new Date(r.startDate).getUTCMonth()];
+    const key = `${r.matchedEventDestinationId}|${r.matchedEventEditionYear}|${seasonalBand}`;
+    const hasHotelData = hotelKeys.has(key);
+    const hasFlightData = flightKeys.has(key);
+    const hasBandData = bandDestinationIds.has(r.matchedEventDestinationId);
+    return { ...r, hasRealCostData: hasHotelData && hasFlightData && hasBandData };
+  });
 }
 
 // Three real CTA states, exactly per the design doc — computed here so
