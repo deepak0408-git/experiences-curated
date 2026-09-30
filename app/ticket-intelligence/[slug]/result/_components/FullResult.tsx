@@ -25,7 +25,17 @@ import ZoomableImage from "../../../../event-pack/[slug]/_hub-and-spoke/_compone
 // have none in their own spoke, so none is shown here either).
 const CIRCUIT_MAP_BY_EVENT: Record<
   string,
-  { url: string; alt: string; aspectClassName: string; credit?: string; lightFrame?: boolean }
+  {
+    url: string;
+    alt: string;
+    aspectClassName: string;
+    credit?: string;
+    lightFrame?: boolean;
+    // See ZoomableImage's own comment — opt-in for a map whose real
+    // dimensions are tall/near-square enough that the default w-full h-auto
+    // lightbox sizing overflows the viewport and forces a scroll.
+    fitByHeight?: boolean;
+  }
 > = {
   "brazilian-grand-prix": {
     url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/brazilian-grand-prix-map.png",
@@ -117,6 +127,29 @@ const CIRCUIT_MAP_BY_EVENT: Record<
     alt: "Circuit Gilles Villeneuve layout on Île Notre-Dame, showing the Senna Curve, the Hairpin, Casino Straight, and the Wall of Champions",
     aspectClassName: "aspect-[3840/2880]",
     credit: "Will Pittenger, CC BY 3.0.",
+  },
+  "monaco-grand-prix": {
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/monaco-grand-prix-circuit-map.jpg",
+    alt: "Official 2027 Circuit de Monaco map showing grandstands A, B, K/K1-K6, L, N, O, P, T/T1-T3, V, X-PMR, Z, and Secteur Rocher around the street circuit",
+    // Corrected 30 Sep 2026 — real dimensions are 2560x2173 (ratio 1.178),
+    // not 2560x2400 as originally set (a stale read from before the map
+    // file was re-uploaded).
+    aspectClassName: "aspect-[2560/2173]",
+    credit: "acm.mc (Automobile Club de Monaco).",
+    // Near-square map overflows the lightbox viewport height and forces a
+    // scroll under the default w-full sizing — see ZoomableImage's own
+    // comment. Founder-flagged 30 Sep 2026, fixed scoped to this event only.
+    fitByHeight: true,
+  },
+  "british-grand-prix": {
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/british-grand-prix-circuit-map.png",
+    alt: "Silverstone Circuit layout showing Abbey, Farm, Arena, Copse, Maggotts, Becketts, Chapel, Hangar Straight, Stowe, Vale, Club, Woodcote, Luffield, and Brooklands",
+    aspectClassName: "aspect-[3840/2461]",
+    credit: "Anthony Alessio Tralongo, CC BY 4.0.",
+    // White-background line art — nearly invisible against the default dark
+    // ZoomableImage frame, same issue as Mexico City/Miami's maps above.
+    // Founder-flagged 30 Sep 2026.
+    lightFrame: true,
   },
 };
 
@@ -247,6 +280,38 @@ const RESELLER_LINKS_BY_EVENT: Record<
     p1Label: "P1 Travel — Canadian GP →",
     p1Url: "https://www.p1travel.com/en-GB/motorsports/formula-1/canada-gp-2027-fri-sat-sun",
     soldOutNote: "2027 ticket sales haven't opened yet — register on the official waitlist for priority access ahead of general on-sale",
+  },
+  // No TicketsSpoke.tsx exists yet for this event (no hub-and-spoke content
+  // built as of 30 Sep 2026) — same honest-placeholder situation as
+  // Canadian GP above. Official channel confirmed genuinely unpublished for
+  // 2027 (ticketing.formula1.com/monaco/, gpticketshop.com/en/f1/monaco-f1-
+  // grand-prix/tickets.html, and a freshly-generated 30 Sep 2026
+  // gpticketshop.com PDF price list all show no live prices — waitlist/
+  // "coming soon" only). P1 Travel URL verified by fetch 30 Sep 2026 —
+  // resolves to real Monaco GP 2027, 3-6 June 2027, Monaco, Monaco.
+  // Replace soldOutNote and officialLabel/Url once a real Tickets spoke is
+  // built for this event.
+  "monaco-grand-prix": {
+    officialLabel: "Official Monaco GP tickets →",
+    officialUrl: "https://ticketing.formula1.com/monaco/",
+    p1Label: "P1 Travel — Monaco GP →",
+    p1Url: "https://www.p1travel.com/en-GB/series/formula-1-2027?organizers=grand-prix-monaco",
+    soldOutNote: "2027 ticket sales haven't opened yet — check the official site for priority access ahead of general on-sale, and be ready early given this is F1's most in-demand race",
+  },
+  // No TicketsSpoke.tsx exists yet for this event (no hub-and-spoke content
+  // built as of 30 Sep 2026) — same honest-placeholder pattern as Canadian
+  // GP/Monaco above, EXCEPT tickets are genuinely on sale with real,
+  // directly-sourced 3-day prices (unlike those two waitlist-only events —
+  // see seed-british-grand-prix-circuit-seating.mjs). officialUrl matches
+  // sportingEvents.ticketingUrl for this event. P1 Travel URL supplied
+  // directly by the founder, 30 Sep 2026. Replace soldOutNote/officialLabel
+  // once a real Tickets spoke is built.
+  "british-grand-prix": {
+    officialLabel: "Official British GP tickets →",
+    officialUrl: "https://www.silverstone.co.uk/events/formula-1-british-grand-prix/tickets",
+    p1Label: "P1 Travel — British GP →",
+    p1Url: "https://www.p1travel.com/en-GB/motorsports/formula-1/british-gp-2027-fri-sat-sun",
+    soldOutNote: "this is F1's highest-attendance weekend on the calendar, and the George Russell Grandstand has already sold out for 2027",
   },
 };
 
@@ -492,6 +557,7 @@ export default function FullResult({
             alt={circuitMap.alt}
             aspectClassName={circuitMap.aspectClassName}
             lightFrame={circuitMap.lightFrame}
+            fitByHeight={circuitMap.fitByHeight}
           />
           {circuitMap.credit && <p className="text-xs text-[#6A6A6A] mt-2">Credit: {circuitMap.credit}</p>}
         </div>

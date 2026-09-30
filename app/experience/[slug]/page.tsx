@@ -14,6 +14,7 @@ import SaveExperienceCTA from "./_components/SaveExperienceCTA";
 import ExperienceTracker from "./_components/ExperienceTracker";
 import ExperienceActionSidebar from "./_components/ExperienceActionSidebar";
 import { isRealAffiliateLink } from "../../event-pack/[slug]/_hub-and-spoke/_lib/getSpokeData";
+import { hasTicketIntelligence } from "../../ticket-intelligence/[slug]/_lib/getSeatingData";
 
 // Hub-and-spoke "back to spoke" link — maps an experience's slug prefix to
 // the spoke it's most at home in for a given event, per explicit curator
@@ -429,6 +430,7 @@ const EXPERIENCE_TO_SPOKE_BY_EVENT: Record<string, Record<string, { spokeId: str
     "grandstand-26-pit-lane-grid-podium-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
     "curva-grande-general-admission-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
     "paddock-club-champions-club-hospitality-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "trackside-corner-lounges-villas-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
     "monza-inside-the-venue-": { spokeId: "map", spokeLabel: "Venue Map" },
     "history-of-monza-walking-old-banking-": { spokeId: "map", spokeLabel: "Venue Map" },
     "italian-gp-first-timer-guide-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
@@ -475,6 +477,41 @@ const EXPERIENCE_TO_SPOKE_BY_EVENT: Record<string, Record<string, { spokeId: str
     "great-ocean-road-twelve-apostles-daytrip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
     "st-kilda-beaches-melbourne-park-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
     "yarra-valley-melbourne-wine-daytrip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+  },
+  // Japanese Grand Prix 2027 (Suzuka) — added 29 Sep 2026, filling a gap
+  // left since the pack's 22 Sep 2026 build (no entry ever existed for this
+  // event, so every experience reached from its spokes silently fell
+  // through to the flat cross-event scan instead of a correct back-link).
+  // "japanese-gp-suzuka-v1-v2-grandstand" and "japanese-gp-suzuka-city"
+  // both render as cards in two spokes each (Tickets/Luxury and
+  // Itinerary/Map respectively) — founder chose Tickets and Itinerary as
+  // each one's primary/back-link home, 29 Sep 2026. No trailing hyphen on
+  // any key below — unlike most other events, Japanese GP's 20 experience
+  // slugs are exact, bare slugs with no random suffix (confirmed against
+  // the DB and against MULTI_VENUE_RATINGS' existing entries for the same
+  // event further down this file), so a trailing hyphen would break the
+  // slug.startsWith(prefix) match in getSpokeBackLink().
+  "japanese-grand-prix": {
+    "japanese-gp-suzuka-ticket-guide": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "japanese-gp-suzuka-general-admission": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "japanese-gp-suzuka-grandstand-g": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "japanese-gp-suzuka-q2-grandstand": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "japanese-gp-suzuka-v1-v2-grandstand": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "japanese-gp-suzuka-hospitality-tiers": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "japanese-gp-suzuka-where-to-stay": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "japanese-gp-suzuka-arriving-airport": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "japanese-gp-suzuka-getting-there": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "japanese-gp-suzuka-weather-pack": { spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+    "japanese-gp-suzuka-first-timer-guide": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "japanese-gp-nagoya-food-scene": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "japanese-gp-nagoya-day-trip": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "japanese-gp-ise-grand-shrine": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "japanese-gp-osaka-day-trip": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "japanese-gp-sumo-near-nagoya": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "japanese-gp-cherry-blossoms": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "japanese-gp-suzuka-city": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+    "japanese-gp-suzuka-fan-zones": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "japanese-gp-suzuka-circuit-park-motopia": { spokeId: "map", spokeLabel: "Venue Map" },
   },
 };
 
@@ -727,6 +764,7 @@ export default async function ExperiencePage({
       let eventPackName = "Wimbledon";
       let eventPackFormat: string | null = null;
       let eventPackSport: string | null = null;
+      let eventPackId: string | null = null;
       let hasLivePack = false;
       // The breadcrumb's "← Back to <spoke>" link and the sidebar's "Get the
       // full guide" CTA must always agree — they're both "which event pack
@@ -752,6 +790,7 @@ export default async function ExperiencePage({
       if (eventPackLookupSlug) {
         const [ev] = await db
           .select({
+            id: sportingEvents.id,
             slug: sportingEvents.slug,
             name: sportingEvents.name,
             packFormat: sportingEvents.packFormat,
@@ -767,11 +806,13 @@ export default async function ExperiencePage({
           eventPackName = ev.name;
           eventPackFormat = ev.packFormat;
           eventPackSport = ev.sport;
+          eventPackId = ev.id;
           hasLivePack = (ev.packStatus === "live" || ev.packStatus === "built_hidden") && ev.isHidden === false;
         }
       } else if (exp.sportingEventId) {
         const [ev] = await db
           .select({
+            id: sportingEvents.id,
             slug: sportingEvents.slug,
             name: sportingEvents.name,
             packFormat: sportingEvents.packFormat,
@@ -787,6 +828,7 @@ export default async function ExperiencePage({
           eventPackName = ev.name;
           eventPackFormat = ev.packFormat;
           eventPackSport = ev.sport;
+          eventPackId = ev.id;
           // Live-pack determination mirrors the blog article page's identical
           // logic — reachability, not purchase status.
           hasLivePack = (ev.packStatus === "live" || ev.packStatus === "built_hidden") && ev.isHidden === false;
@@ -815,7 +857,7 @@ export default async function ExperiencePage({
         )
         .limit(3);
 
-      return { exp, ratingRow, eventPackSlug, eventPackName, eventPackFormat, eventPackSport, hasLivePack, related };
+      return { exp, ratingRow, eventPackSlug, eventPackName, eventPackFormat, eventPackSport, eventPackId, hasLivePack, related };
     },
     ["experience-page"],
     { revalidate: 3600 }
@@ -823,7 +865,7 @@ export default async function ExperiencePage({
 
   const cached = await getExperienceData(slug);
   const { exp, ratingRow, related } = cached;
-  let { eventPackSlug, eventPackName, eventPackFormat, eventPackSport, hasLivePack } = cached;
+  let { eventPackSlug, eventPackName, eventPackFormat, eventPackSport, eventPackId, hasLivePack } = cached;
 
   // Resolve the referring event pack for a shared experience — per-request,
   // so it can't live inside getExperienceData's unstable_cache. Only trust
@@ -837,6 +879,7 @@ export default async function ExperiencePage({
   if (fromEventSlug) {
     const [linkedEvent] = await db
       .select({
+        id: sportingEvents.id,
         slug: sportingEvents.slug,
         name: sportingEvents.name,
         packFormat: sportingEvents.packFormat,
@@ -858,6 +901,7 @@ export default async function ExperiencePage({
       eventPackName = linkedEvent.name;
       eventPackFormat = linkedEvent.packFormat;
       eventPackSport = linkedEvent.sport;
+      eventPackId = linkedEvent.id;
       hasLivePack = (linkedEvent.packStatus === "live" || linkedEvent.packStatus === "built_hidden") && linkedEvent.isHidden === false;
       // Only feed the referrer into getSpokeBackLink when it's a hub-and-
       // spoke event — a classic pack (e.g. BMW PGA Championship) has no
@@ -875,6 +919,19 @@ export default async function ExperiencePage({
       }
     }
   }
+
+  // Ticket Intelligence sidebar link — v1 scope is sport-only (F1 events with
+  // real seeded seat data), per founder executive decision 30 Sep 2026: the
+  // per-experience "is this genuinely an on-track seat/ticket/hospitality
+  // experience" filter has real, documented gaps (sports_venue-typed
+  // grandstands missed entirely, several fan_experience-typed non-track
+  // pieces falsely included — see scratchpad/_ti-sidebar-filter-table.md
+  // audit) that aren't resolved yet. Rather than ship a leaky per-experience
+  // filter, every experience belonging to an F1 event with live Ticket
+  // Intelligence data gets the link — revisit narrowing this once the
+  // experienceType/spoke-table gaps are fixed.
+  const showTicketIntelligenceLink =
+    eventPackSport === "formula_one" && eventPackId !== null && (await hasTicketIntelligence(eventPackId));
 
   const avgRating = ratingRow?.avgRating ?? null;
   const ratingCount = ratingRow?.ratingCount ?? 0;
@@ -1445,6 +1502,7 @@ export default async function ExperiencePage({
             eventPackFormat={eventPackFormat}
             hasLivePack={hasLivePack}
             userEmail={authUser?.email ?? null}
+            showTicketIntelligenceLink={showTicketIntelligenceLink}
           />
         </div>
         </div>
