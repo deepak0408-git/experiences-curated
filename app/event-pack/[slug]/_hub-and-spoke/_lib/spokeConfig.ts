@@ -413,4 +413,51 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "map", label: "Venue Map", question: "What facilities are available at Albert Park?", status: "public", imageSlug: "albert-park-circuit-inside-the-track-mu9c6dq0" },
     { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Australian Grand Prix?", status: "teaser", imageSlug: "f1-paddock-club-trackside-hospitality-mu9c506w" },
   ],
+  // Japanese Grand Prix 2027 — built 22 Sep 2026. All 20 experiences real/
+  // seeded (status: in_review — publish via /curator/review before spoke
+  // cards render), zero hero images yet (deferred pass per founder's
+  // explicit instruction — see project_japanese_gp_experiences memory), so
+  // every imageSlug is set to the blank sentinel per the skill's §3 rule.
+  // Weather/Arrival/Tickets use the skill's standing cross-event default
+  // images (imageOverride), set here at config-creation time per the
+  // skill's explicit rule — not deferred. 2027 is Suzuka's first-ever
+  // Sprint weekend (9-11 Apr 2027) — session order confirmed (FP1+Sprint
+  // Quali Fri, Sprint+Quali Sat, Race Sun) but exact clock times not yet
+  // published as of this build; stated honestly per skill §2a-3/§2a-5. No
+  // planner_hotel_tier_cost/planner_ticket_tier_cost/planner_destination_bands/
+  // planner_flight_cost rows exist for Suzuka yet — Cost spoke renders its
+  // real "no data yet" empty state, matching every sibling event's pattern.
+  // Spoke-mapping: tickets covers GA/Grandstand G/Q2/V1-V2/Ticket Guide (also
+  // cross-referenced Hospitality Tiers); hotels covers Where to Stay; day-trips
+  // covers Nagoya/Osaka/Ise/Sumo; itinerary covers Suzuka City + Circuit
+  // Park & Motopia (no dedicated day-by-day source experience, matches
+  // Italian GP's pattern); arrival covers GP Square & Fan Zones; luxury
+  // covers Hospitality Tiers + V1/V2 Grandstand.
+  // imageSlug values corrected 29 Sep 2026 — every entry was still the
+  // "__no-image-yet__" sentinel from the initial scaffold, despite all 20
+  // experiences having real hero images and being published (founder
+  // caught this live via screenshot: every spoke tile blank). getSpokeImage()
+  // matches imageSlug as a substring against linkedExperiences' slugs, so
+  // the sentinel could never match anything — now pointed at each spoke's
+  // real representative experience, confirmed against what each spoke
+  // component actually references (grepped per-file, not guessed). Cost/
+  // Tickets/Weather/Arrival keep the mandatory cross-event standing
+  // imageOverride (the 3 shared Bahrain-GP-sourced placeholder images —
+  // same on every event per the hub-and-spoke skill's rule) — corrected
+  // 29 Sep 2026 after wrongly dropping them on the first pass, founder
+  // caught it live.
+  "japanese-grand-prix": [
+    { id: "cost", label: "Cost Guide", question: "How much does a Suzuka Grand Prix weekend cost?", status: "teaser", imageSlug: "japanese-gp-suzuka-weather-pack" },
+    { id: "tickets", label: "Ticket Guide", question: "Which Suzuka ticket is the best buy?", status: "teaser", imageSlug: "japanese-gp-suzuka-ticket-guide", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the Japanese Grand Prix?", status: "teaser", imageSlug: "japanese-gp-suzuka-where-to-stay" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to Suzuka Circuit?", status: "public", imageSlug: "japanese-gp-suzuka-getting-there" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the Japanese Grand Prix, and what should I pack?", status: "public", imageSlug: "japanese-gp-suzuka-weather-pack", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Suzuka race weekend?", status: "public", imageSlug: "japanese-gp-suzuka-first-timer-guide" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat in Nagoya during Japanese Grand Prix race weekend?", status: "teaser", imageSlug: "japanese-gp-nagoya-food-scene" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips from Nagoya during Japanese Grand Prix weekend?", status: "teaser", imageSlug: "japanese-gp-nagoya-day-trip" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does a Suzuka Grand Prix Sprint weekend actually look like?", status: "teaser", imageSlug: "japanese-gp-suzuka-city" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at Suzuka Circuit gates?", status: "public", imageSlug: "japanese-gp-suzuka-fan-zones", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at Suzuka Circuit?", status: "public", imageSlug: "japanese-gp-suzuka-circuit-park-motopia" },
+    { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Japanese Grand Prix?", status: "teaser", imageSlug: "japanese-gp-suzuka-hospitality-tiers" },
+  ],
 };
