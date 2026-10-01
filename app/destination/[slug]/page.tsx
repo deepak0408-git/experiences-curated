@@ -17,6 +17,34 @@ import { isGetYourGuideLink, isBookingComLink } from "../../event-pack/[slug]/_h
 import EventNotifyRow from "./_components/EventNotifyRow";
 import DestinationActionSidebar from "./_components/DestinationActionSidebar";
 
+// SEO titles/descriptions for the 4 pilot destinations only — written to match
+// real search intent ("[city] sports travel guide", "[event] + hotels/tickets")
+// rather than the generic `{name} — Experiences | Curated` pattern the other
+// 35 (non-pilot) destinations still use. Founder-requested 1 Oct 2026; extend
+// this map as more destinations get the events treatment.
+const DESTINATION_SEO: Record<string, { title: string; description: string }> = {
+  "london-gb": {
+    title: "London Sports Travel Guide",
+    description:
+      "Plan your London sports trip: upcoming events, plus hotels, dining and day trips near every venue.",
+  },
+  "melbourne-au": {
+    title: "Melbourne Sports Travel Guide",
+    description:
+      "Plan your Melbourne sports trip: upcoming events, plus hotels, dining and day trips near every venue.",
+  },
+  shanghai: {
+    title: "Shanghai Sports Travel Guide",
+    description:
+      "Plan your Shanghai sports trip: upcoming events, plus hotels, dining and day trips near every venue.",
+  },
+  "abu-dhabi": {
+    title: "Abu Dhabi Sports Travel Guide",
+    description:
+      "Plan your Abu Dhabi sports trip: upcoming events, plus hotels, dining and day trips near every venue.",
+  },
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -25,12 +53,15 @@ export async function generateMetadata({
   const { slug } = await params;
   try {
     const dest = await getDestinationBySlug(slug);
+    const seo = DESTINATION_SEO[slug];
+    const title = seo ? `${seo.title} | Experiences | Curated` : `${dest.name} — Experiences | Curated`;
+    const description = seo ? seo.description : dest.editorialOverview?.slice(0, 160);
     return {
-      title: `${dest.name} — Experiences | Curated`,
-      description: dest.editorialOverview?.slice(0, 160),
+      title,
+      description,
       openGraph: {
-        title: dest.name,
-        description: dest.editorialOverview ?? "",
+        title: seo?.title ?? dest.name,
+        description: description ?? "",
         images: dest.heroImageUrl ? [{ url: dest.heroImageUrl }] : [],
       },
     };
