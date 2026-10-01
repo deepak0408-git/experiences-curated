@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { blogArticles, sportingEvents } from "@/schema/database";
-import { and, eq, desc, asc, sql } from "drizzle-orm";
+import { and, eq, desc, asc, sql, inArray } from "drizzle-orm";
 import { notFound } from "next/navigation";
 
 const PUBLISHED = eq(blogArticles.status, "published");
@@ -131,6 +131,88 @@ export async function getArticlesForEvent(sportingEventId: string, sport: string
   const seen = new Set(eventMatches.map((a) => a.slug));
   const fill = sportMatches.filter((a) => !seen.has(a.slug)).slice(0, limit - eventMatches.length);
   return [...eventMatches, ...fill];
+}
+
+// Destination-page "Worth reading" block — same job as getArticlesForEvent's
+// hub-page block, but a destination can have multiple sportingEvents, so
+// this matches articles tagged to ANY of the destination's events first,
+// then falls back to articles matching any of those events' sports. Never
+// pads with an unrelated sport; returns fewer than `limit` (or none) if the
+// destination's events genuinely have no related coverage yet.
+// Diversity-first: a destination with 2 cricket events and 1 tennis event
+// (e.g. London) must not fill all `limit` slots with cricket just because
+// cricket has more event-tagged articles available — picks the single best
+// article per represented sport first (event-tagged match preferred over a
+// sport-level fallback), THEN fills any remaining slots by recency.
+// Founder-confirmed 1 Oct 2026: "endeavour should be to cover at least 1
+// blog from all sports" a destination's events represent.
+//
+// extraEvents covers the page's "Nearby" events too (different
+// destinationId, shown on this page via getNearbyDestinationEvents) — e.g.
+// London's page shows British Grand Prix (Silverstone, a different
+// destination) as nearby, so F1 must be covered here too, not just the 2
+// sports attached to London's own destinationId. Caught live 1 Oct 2026:
+// Silverstone/F1 wasn't appearing in "Worth reading" despite being part of
+// the page.
+export async function getArticlesForDestination(
+  destinationId: string,
+  limit = 3,
+  extraEvents: { id: string; sport: typeof sportingEvents.$inferSelect["sport"] }[] = []
+) {
+  const destEventsRaw = await db
+    .select({ id: sportingEvents.id, sport: sportingEvents.sport })
+    .from(sportingEvents)
+    .where(eq(sportingEvents.destinationId, destinationId));
+
+  const destEvents = [...destEventsRaw, ...extraEvents];
+  if (destEvents.length === 0) return [];
+
+  const eventIds = [...new Set(destEvents.map((e) => e.id))];
+  const sports = [...new Set(destEvents.map((e) => e.sport))];
+
+  const ARTICLE_COLS = { slug: blogArticles.slug, title: blogArticles.title, excerpt: blogArticles.excerpt, readMinutes: blogArticles.readMinutes, heroImageUrl: blogArticles.heroImageUrl, sport: blogArticles.sport };
+
+  const eventMatches = await db
+    .select(ARTICLE_COLS)
+    .from(blogArticles)
+    .where(and(inArray(blogArticles.sportingEventId, eventIds), PUBLISHED))
+    .orderBy(desc(blogArticles.publishedAt));
+
+  const sportMatches = await db
+    .select(ARTICLE_COLS)
+    .from(blogArticles)
+    .where(and(sql`${blogArticles.sport} && ARRAY[${sql.join(sports.map((s) => sql`${s}`), sql`, `)}]::sport[]`, PUBLISHED))
+    .orderBy(sql`array_length(${blogArticles.sport}, 1) asc`, desc(blogArticles.publishedAt));
+
+  const picked: typeof eventMatches = [];
+  const seen = new Set<string>();
+
+  // One pick per represented sport, in the order the destination's own
+  // events appear (not alphabetical) — event-tagged article preferred.
+  for (const sport of sports) {
+    const best =
+      eventMatches.find((a) => a.sport.includes(sport) && !seen.has(a.slug)) ??
+      sportMatches.find((a) => a.sport.includes(sport) && !seen.has(a.slug));
+    if (best) {
+      picked.push(best);
+      seen.add(best.slug);
+    }
+    if (picked.length >= limit) break;
+  }
+
+  // Fill any remaining slots by recency across both pools.
+  if (picked.length < limit) {
+    const fill = [...eventMatches, ...sportMatches]
+      .filter((a) => !seen.has(a.slug))
+      .filter((a, i, arr) => arr.findIndex((b) => b.slug === a.slug) === i);
+    for (const a of fill) {
+      if (picked.length >= limit) break;
+      picked.push(a);
+      seen.add(a.slug);
+    }
+  }
+
+  return picked.map(({ sport, ...rest }) => rest);
 }
 
 // Index listing. Travel Craft always sorts last (added 14 Aug 2026, founder

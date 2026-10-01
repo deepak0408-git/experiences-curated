@@ -240,6 +240,9 @@ export const destinations = pgTable("destinations", {
   timezone: varchar("timezone", { length: 60 }),
   budgetContext: text("budget_context"),
   publishedAt: timestamp("published_at"),
+  // Homepage "Browse by Destination" slot — null means not featured. Curator-set,
+  // mirrors sportingEvents.homepageSlot exactly (app/curator/destinations).
+  homepageSlot: smallint("homepage_slot"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 }, (t) => [

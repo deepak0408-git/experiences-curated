@@ -337,9 +337,26 @@ export function getSpokeImage(linkedExperiences: { slug: string; heroImageUrl: s
 const CJ_REDIRECT_HOSTS = ["tkqlhce.com", "anrdoezrs.net", "kqzyfj.com", "jdoqocy.com", "dpbolvw.net"];
 
 export function isRealAffiliateLink(url: string): boolean {
+  return isGetYourGuideLink(url) || isBookingComLink(url);
+}
+
+// Platform-specific predicates — added 1 Oct 2026 for the destination page's
+// per-section affiliate sidebars (GetYourGuide on Attractions, Booking.com
+// on Where to Stay), which need to tell the two apart rather than just
+// knowing "this is some real affiliate link." Same detection logic as
+// isRealAffiliateLink above, split out rather than duplicated.
+export function isGetYourGuideLink(url: string): boolean {
   try {
     const parsed = new URL(url);
-    if (parsed.hostname === "getyourguide.com" || parsed.hostname.endsWith(".getyourguide.com")) return true;
+    return parsed.hostname === "getyourguide.com" || parsed.hostname.endsWith(".getyourguide.com");
+  } catch {
+    return false;
+  }
+}
+
+export function isBookingComLink(url: string): boolean {
+  try {
+    const parsed = new URL(url);
     if (CJ_REDIRECT_HOSTS.some((h) => parsed.hostname === h || parsed.hostname.endsWith(`.${h}`))) {
       const embedded = parsed.searchParams.get("url");
       if (embedded) {
@@ -350,6 +367,7 @@ export function isRealAffiliateLink(url: string): boolean {
           return false;
         }
       }
+      return false;
     }
     return parsed.hostname === "booking.com" || parsed.hostname.endsWith(".booking.com");
   } catch {
