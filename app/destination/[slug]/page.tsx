@@ -112,7 +112,9 @@ const SPORT_LABELS: Record<string, string> = {
 // tower's top off with default center positioning — founder-caught 1 Oct
 // 2026. Lowering the focus point shifts the visible crop window upward.
 const HERO_IMAGE_FOCUS: Record<string, string> = {
-  shanghai: "lg:object-[center_85%]",
+  shanghai: "lg:object-[center_75%]",
+  melbourne: "lg:object-[center_75%]",
+  "abu-dhabi": "lg:object-[center_35%]",
 };
 
 const COUNTRY_NAMES: Record<string, string> = {
@@ -235,7 +237,7 @@ export default async function DestinationPage({
     <div className="min-h-screen bg-[#0A0A0A]">
       {/* Hero */}
       {dest.heroImageUrl ? (
-        <div className="relative h-[45vh] min-h-[300px] overflow-hidden bg-[#141414]">
+        <div className="relative h-[55vh] min-h-[380px] overflow-hidden bg-[#141414]">
           <Image
             src={dest.heroImageUrl}
             alt={dest.name}
