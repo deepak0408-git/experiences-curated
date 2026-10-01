@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { sportingEvents, sportingEventExperiences, experiences } from "@/schema/database";
 import { eq, and, gte, asc, isNotNull, count, inArray } from "drizzle-orm";
 import Link from "next/link";
+import Image from "next/image";
 import HomepageTripBoardCTA from "./_components/HomepageTripBoardCTA";
 import HomepageNav from "./_components/HomepageNav";
 import IdentityStrip from "./_components/IdentityStrip";
@@ -14,6 +15,7 @@ import BrandHero from "./_components/BrandHero";
 import TestimonialStrip from "./_components/TestimonialStrip";
 import { getAuthUser } from "@/lib/supabase/server";
 import { getPackPricing } from "@/lib/packPricing";
+import { getDestinationsForHomepage } from "@/lib/queries/destinations";
 
 // Revalidate every 5 minutes — events and experience counts change rarely.
 // Auth (nav email, trip board CTA) gracefully falls back to unauthenticated state from cache.
@@ -86,6 +88,10 @@ export default async function HomePage() {
   const in365Days = new Date(Date.now() + 365 * 86_400_000).toISOString().split("T")[0];
 
   const { user } = await getAuthUser();
+
+  // Destination-first discovery pilot (4 cities, 1 Oct 2026 brainstorm) —
+  // curator-set via homepageSlot, same pattern as sportingEvents.homepageSlot.
+  const featuredDestinations = await getDestinationsForHomepage();
 
   // Fetch featured events from DB by homepageSlot (set via /curator/events)
   const featuredRows = await db
@@ -220,6 +226,48 @@ export default async function HomePage() {
       )}
 
       <SportNavigator />
+
+      {/* Zone 3.5 — Where Sport Takes You (pilot, 1 Oct 2026). Curator-set via
+          /curator/destinations homepageSlot field — empty entirely until a
+          destination is explicitly featured, same pattern as the event
+          carousel. */}
+      {featuredDestinations.length > 0 && (
+        <div className="bg-[#0A0A0A]">
+          <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-1">
+              Where Sport Takes You
+            </p>
+            <p className="text-sm text-[#A3A3A3] mb-8">
+              Pick the city — we&apos;ll show you what&apos;s on.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {featuredDestinations.map((d) => (
+                <Link
+                  key={d.id}
+                  href={`/destination/${d.slug}`}
+                  className="group relative overflow-hidden rounded-sm aspect-[3/4] sm:aspect-square block border border-[#2A2A2A] bg-[#141414] hover:border-[#AAFF00] transition-colors duration-300"
+                >
+                  {d.heroImageUrl ? (
+                    <Image
+                      src={d.heroImageUrl}
+                      alt={d.name}
+                      fill
+                      className="object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-300"
+                      sizes="(max-width: 640px) 50vw, 25vw"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-[#1A1A1A]" />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                  <span className="absolute bottom-3 left-3 right-3 text-[#AAFF00] text-sm font-black tracking-wide leading-tight group-hover:text-white transition-colors">
+                    {d.name}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Editorial statement — Why us */}
       <div className="bg-[#0A0A0A]">

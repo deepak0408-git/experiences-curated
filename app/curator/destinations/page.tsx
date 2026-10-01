@@ -1,12 +1,14 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { getAllDestinations } from "./actions";
+import { getAllDestinations, getDestinationsForSlotEditor } from "./actions";
+import DestinationSlotEditorForm from "./_components/DestinationSlotEditorForm";
 
 export const metadata = { title: "Destinations" };
 
 export default async function DestinationsPage() {
   const destinations = await getAllDestinations();
+  const slotEditorDestinations = await getDestinationsForSlotEditor();
 
   return (
     <div>
@@ -23,6 +25,13 @@ export default async function DestinationsPage() {
         >
           + Add Destination
         </Link>
+      </div>
+
+      <div className="mb-10">
+        <h2 className="text-sm font-black tracking-widest uppercase text-[#AAFF00] mb-4">
+          Where Sport Takes You — homepage slots
+        </h2>
+        <DestinationSlotEditorForm destinations={slotEditorDestinations} />
       </div>
 
       {destinations.length === 0 ? (

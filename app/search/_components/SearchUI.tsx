@@ -280,6 +280,7 @@ export function SearchUI({
   indexName,
   initialQuery = "",
   initialSport = "",
+  initialDestination = "",
   archetype,
   userEmail,
   hideProCtas = false,
@@ -289,6 +290,7 @@ export function SearchUI({
   indexName: string;
   initialQuery?: string;
   initialSport?: string;
+  initialDestination?: string;
   archetype?: string | null;
   userEmail?: string | null;
   hideProCtas?: boolean;
@@ -315,7 +317,7 @@ export function SearchUI({
       searchClient={searchClient}
       indexName={indexName}
       future={{ preserveSharedStateOnUnmount: true }}
-      initialUiState={{ [indexName]: { query: initialQuery ?? "", ...(initialSport ? { refinementList: { sport: [initialSport] } } : {}) } }}
+      initialUiState={{ [indexName]: { query: initialQuery ?? "", refinementList: { ...(initialSport ? { sport: [initialSport] } : {}), ...(initialDestination ? { destinationName: [initialDestination] } : {}) } } }}
     >
       <Configure
         hitsPerPage={50}

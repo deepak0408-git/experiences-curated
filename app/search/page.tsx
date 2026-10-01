@@ -16,11 +16,11 @@ export const metadata: Metadata = {
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; sport?: string }>;
+  searchParams: Promise<{ q?: string; sport?: string; destination?: string }>;
 }) {
   noStore();
 
-  const { q, sport } = await searchParams;
+  const { q, sport, destination } = await searchParams;
 
   const { user } = await getAuthUser();
 
@@ -41,6 +41,7 @@ export default async function SearchPage({
       indexName={process.env.ALGOLIA_EXPERIENCES_INDEX!}
       initialQuery={q ?? ""}
       initialSport={sport ?? ""}
+      initialDestination={destination ?? ""}
       archetype={archetype}
       userEmail={user?.email ?? null}
       hideProCtas={process.env.HIDE_PRO === "true"}

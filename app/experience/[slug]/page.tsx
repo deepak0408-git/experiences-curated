@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import { db } from "@/lib/db";
-import { experiences, savedItems, users, userProfiles, travelLogs, purchases, sportingEvents, sportingEventExperiences } from "@/schema/database";
+import { experiences, savedItems, users, userProfiles, travelLogs, purchases, sportingEvents, sportingEventExperiences, destinations } from "@/schema/database";
 import { and, eq, ne, inArray, count, sql } from "drizzle-orm";
 import { getAuthUser } from "@/lib/supabase/server";
 import { hasProSubscription } from "@/lib/pro";
@@ -742,10 +742,10 @@ export default async function ExperiencePage({
   searchParams,
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ from?: string }>;
+  searchParams: Promise<{ from?: string; fromDestination?: string }>;
 }) {
   const { slug } = await params;
-  const { from: fromEventSlug } = await searchParams;
+  const { from: fromEventSlug, fromDestination } = await searchParams;
 
   // Cache experience content, ratings, and related for 1 hour — only auth runs per-request
   const getExperienceData = unstable_cache(
@@ -917,6 +917,28 @@ export default async function ExperiencePage({
       } else {
         suppressSpokeBackLink = true;
       }
+    }
+  }
+
+  // Destination-page backlink — same "?from=" validation principle as
+  // resolvedFromEventSlug above (never trust an unvalidated query param),
+  // but a separate query param (fromDestination, not from) since
+  // destination slugs and event slugs are different ID spaces with no
+  // overlap risk otherwise. A visitor who reached this experience from
+  // /destination/[slug] (Attractions/Where to Stay/Where to Eat links) sees
+  // "← Back to [Destination]" instead of the event-spoke backlink — takes
+  // priority over the spoke link when both would otherwise apply, since the
+  // destination referrer is the more specific, just-confirmed one. Founder-
+  // requested 1 Oct 2026, same ?from= concept as the spoke ExperienceCard.
+  let destinationBackLink: { slug: string; name: string } | null = null;
+  if (fromDestination) {
+    const [linkedDestination] = await db
+      .select({ slug: destinations.slug, name: destinations.name })
+      .from(destinations)
+      .where(and(eq(destinations.slug, fromDestination), eq(destinations.id, exp.destinationId)))
+      .limit(1);
+    if (linkedDestination) {
+      destinationBackLink = linkedDestination;
     }
   }
 
@@ -1188,6 +1210,16 @@ export default async function ExperiencePage({
             )}
           </div>
           {(() => {
+            if (destinationBackLink) {
+              return (
+                <Link
+                  href={`/destination/${destinationBackLink.slug}`}
+                  className="flex-shrink-0 text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+                >
+                  ← Back to {destinationBackLink.name}
+                </Link>
+              );
+            }
             const spokeLink = suppressSpokeBackLink ? null : getSpokeBackLink(exp.slug, resolvedFromEventSlug);
             return spokeLink ? (
               <Link
