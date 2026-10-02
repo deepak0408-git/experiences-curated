@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
 import { sportingEvents, sportingEventExperiences, experiences } from "@/schema/database";
@@ -222,7 +223,9 @@ export default async function HomePage() {
 
       {/* Zone 3 — Available Now */}
       {calendarCardData.length > 0 && (
-        <CalendarSection events={calendarCardData} />
+        <Suspense fallback={null}>
+          <CalendarSection events={calendarCardData} />
+        </Suspense>
       )}
 
       <SportNavigator />

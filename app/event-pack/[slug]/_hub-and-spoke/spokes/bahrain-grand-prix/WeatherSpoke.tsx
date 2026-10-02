@@ -14,7 +14,8 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
   const month = new Date(event.startDate).toLocaleDateString("en-GB", { month: "long" });
 
   return (
-    <SpokeShell eventSlug={eventSlug} eventId={event.id} eventCurrency={event.packCurrency} spokeId={SPOKE_ID} justPurchased={justPurchased} eventName="Bahrain Grand Prix" status="public" h1={`Sepang weather in ${month} — what to pack`} question="What's the weather like at Sepang, and what should I pack?" heroImageUrl={heroImageUrl} isUnlocked={isUnlocked}>
+    <SpokeShell eventSlug={eventSlug} eventId={event.id} eventCurrency={event.packCurrency}
+      eventSport={event.sport} spokeId={SPOKE_ID} justPurchased={justPurchased} eventName="Bahrain Grand Prix" status="public" h1={`Sepang weather in ${month} — what to pack`} question="What's the weather like at Sepang, and what should I pack?" heroImageUrl={heroImageUrl} isUnlocked={isUnlocked}>
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Sepang in October sits deep in Malaysia&apos;s wet season, and it&apos;s worth planning around that honestly
         rather than hoping for a dry weekend. Expect highs around 30°C and lows around 25°C — consistently hot and

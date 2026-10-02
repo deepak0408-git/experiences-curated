@@ -221,6 +221,7 @@ export default async function PriceRadarPage({
                 showPlannerLink
                 finalCtaLabel="Get the event guide"
                 finalCtaSubtext="Trip costs, curated picks, booking detail"
+                sport={event.sport ?? undefined}
               />
             </div>
           </div>

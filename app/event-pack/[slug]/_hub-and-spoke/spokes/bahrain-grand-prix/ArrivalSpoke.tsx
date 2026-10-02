@@ -13,7 +13,8 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
   const isUnlocked = hasPurchased;
 
   return (
-    <SpokeShell eventSlug={eventSlug} eventId={event.id} eventCurrency={event.packCurrency} spokeId={SPOKE_ID} justPurchased={justPurchased} eventName="Bahrain Grand Prix" status="public" h1="Arrival & queue strategy by stand" question="What time should I arrive at Sepang gates?" heroImageUrl={heroImageUrl} isUnlocked={isUnlocked}>
+    <SpokeShell eventSlug={eventSlug} eventId={event.id} eventCurrency={event.packCurrency}
+      eventSport={event.sport} spokeId={SPOKE_ID} justPurchased={justPurchased} eventName="Bahrain Grand Prix" status="public" h1="Arrival & queue strategy by stand" question="What time should I arrive at Sepang gates?" heroImageUrl={heroImageUrl} isUnlocked={isUnlocked}>
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Race day is Sunday 4 October, with the main event at 15:00 (qualifying is Saturday 3 October at 16:00) — but
         the grounds are running a full morning of on-track action and fan activities well before that, so treat

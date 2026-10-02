@@ -212,6 +212,7 @@ export default async function BlogArticlePage({
               categoryHref={`/blog?category=${article.contentCategory}`}
               categoryLabel={categoryLabel}
               userEmail={user?.email ?? null}
+              sport={article.sport[0] ?? null}
             />
           </div>
         </div>

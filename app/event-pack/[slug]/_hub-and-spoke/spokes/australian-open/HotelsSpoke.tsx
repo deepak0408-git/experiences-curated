@@ -23,6 +23,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       eventSlug={eventSlug}
       eventId={event.id}
       eventCurrency={event.packCurrency}
+      eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
       eventName="Australian Open"

@@ -4,6 +4,20 @@ import { useState } from "react";
 import Link from "next/link";
 import { notifyMe } from "@/app/planner/_lib/actions";
 
+// Same map used across the site (homepage, calendar, event pack, etc.) —
+// the raw DB enum value should never be shown to visitors directly.
+const SPORT_LABELS: Record<string, string> = {
+  tennis: "Tennis",
+  cricket: "Cricket",
+  football: "Football",
+  rugby: "Rugby",
+  golf: "Golf",
+  formula_one: "Formula 1",
+  cycling: "Cycling",
+  athletics: "Athletics",
+  other: "Sport",
+};
+
 // Shared sidebar — used on the quiz entry page (TicketQuiz.tsx), the
 // already-purchased teaser reveal (TeaserResult.tsx), and the result page
 // (result/page.tsx), per founder direction 27 Sep 2026. Moved out of
@@ -202,6 +216,19 @@ export default function TicketIntelligenceSidebar({
           <span className="flex-1">
             <span className="block text-sm font-bold text-[#A3A3A3]">Build a custom itinerary</span>
             <span className="block text-xs text-[#6A6A6A] mt-0.5">Tell us your trip, we&apos;ll shape it</span>
+          </span>
+        </Link>
+
+        <Link
+          href={`/?sport=${sport}#on-the-calendar`}
+          className="flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+        >
+          <span className="text-base flex-shrink-0 w-5 text-center">🏆</span>
+          <span className="flex-1">
+            <span className="block text-sm font-bold text-[#A3A3A3]">
+              See upcoming {SPORT_LABELS[sport] ?? sport} events
+            </span>
+            <span className="block text-xs text-[#6A6A6A] mt-0.5">Don&apos;t miss the next one</span>
           </span>
         </Link>
 

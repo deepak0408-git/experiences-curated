@@ -34,6 +34,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       eventSlug={eventSlug}
       eventId={event.id}
       eventCurrency={event.packCurrency}
+      eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
       eventName="Las Vegas Grand Prix"

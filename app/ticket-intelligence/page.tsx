@@ -70,7 +70,7 @@ export default async function TicketIntelligenceHomePage() {
                 {events.map((event) => (
                   <Link
                     key={event.id}
-                    href={`/ticket-intelligence/${event.slug}`}
+                    href={`/ticket-intelligence/${event.slug}?from=picker`}
                     className="group rounded-sm border border-[#2A2A2A] bg-[#141414] overflow-hidden hover:border-[#AAFF00]/50 transition-colors"
                   >
                     <div className="relative w-full aspect-[16/9] bg-[#1A1A1A]">

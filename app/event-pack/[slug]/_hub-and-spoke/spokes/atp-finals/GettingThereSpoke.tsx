@@ -19,6 +19,7 @@ export default async function GettingThereSpoke({ eventSlug }: { eventSlug: stri
       eventSlug={eventSlug}
       eventId={event.id}
       eventCurrency={event.packCurrency}
+      eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
       eventName="Nitto ATP Finals"
