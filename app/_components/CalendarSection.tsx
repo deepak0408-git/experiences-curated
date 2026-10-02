@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -39,7 +40,8 @@ type CalendarEvent = {
 };
 
 export default function CalendarSection({ events }: { events: CalendarEvent[] }) {
-  const [activeSport, setActiveSport] = useState<string>("all");
+  const searchParams = useSearchParams();
+  const sportParam = searchParams.get("sport");
 
   // Tabs derived from sports actually present, ordered by SPORT_TAB_ORDER
   // (any sport not in that list falls back to first-appearance order) —
@@ -57,6 +59,15 @@ export default function CalendarSection({ events }: { events: CalendarEvent[] })
     if (bi === -1) return -1;
     return ai - bi;
   });
+
+  // A ?sport= param only pre-selects a tab when that sport actually has a
+  // live event right now — e.g. a golf experience page links here with
+  // ?sport=golf, but if no golf event is currently on the calendar, that
+  // tab doesn't exist and silently filtering to it would show an empty
+  // list with no visible way back. Fall back to "All" in that case.
+  const [activeSport, setActiveSport] = useState<string>(
+    sportParam && sportsPresent.includes(sportParam) ? sportParam : "all"
+  );
 
   const filteredEvents = activeSport === "all"
     ? events

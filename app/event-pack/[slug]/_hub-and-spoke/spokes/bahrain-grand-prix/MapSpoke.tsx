@@ -17,7 +17,8 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
   const hillstand = linkedExperiences.find((e) => e.slug.includes("hill-stand-c2-sepang-general-admission"));
 
   return (
-    <SpokeShell eventSlug={eventSlug} eventId={event.id} eventCurrency={event.packCurrency} spokeId={SPOKE_ID} justPurchased={justPurchased} eventName="Bahrain Grand Prix" status="public" h1="A first-timer's guide to the venue itself" question="What facilities are available at Sepang International Circuit?" heroImageUrl={heroImageUrl} isUnlocked={isUnlocked}>
+    <SpokeShell eventSlug={eventSlug} eventId={event.id} eventCurrency={event.packCurrency}
+      eventSport={event.sport} spokeId={SPOKE_ID} justPurchased={justPurchased} eventName="Bahrain Grand Prix" status="public" h1="A first-timer's guide to the venue itself" question="What facilities are available at Sepang International Circuit?" heroImageUrl={heroImageUrl} isUnlocked={isUnlocked}>
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Knowing where your grandstand sits on the lap matters, but so does knowing where to find a toilet, a meal,
         an ATM, or first aid once you&apos;re actually inside the circuit — and that&apos;s a genuinely different

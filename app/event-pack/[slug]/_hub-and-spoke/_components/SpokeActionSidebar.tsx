@@ -1,5 +1,19 @@
 import Link from "next/link";
 
+// Same map used across the site (homepage, calendar, event pack, etc.) —
+// the raw DB enum value should never be shown to visitors directly.
+const SPORT_LABELS: Record<string, string> = {
+  tennis: "Tennis",
+  cricket: "Cricket",
+  football: "Football",
+  rugby: "Rugby",
+  golf: "Golf",
+  formula_one: "Formula 1",
+  cycling: "Cycling",
+  athletics: "Athletics",
+  other: "Sport",
+};
+
 // Same 4-action model as blog's ArticleActionSidebar / experience page's
 // ExperienceActionSidebar. Spoke-page variant: rendered inside SpokeShell
 // (which only ever renders for an event whose hub-and-spoke pack already
@@ -17,6 +31,9 @@ export default function SpokeActionSidebar({
   showPlannerLink,
   finalCtaLabel,
   finalCtaSubtext,
+  sport,
+  spokeId,
+  spokeLabel,
 }: {
   eventSlug: string;
   // Suppresses the "Budget your trip" row — set true when this sidebar
@@ -48,6 +65,17 @@ export default function SpokeActionSidebar({
   // "Every planning guide in one place" wording.
   finalCtaLabel?: string;
   finalCtaSubtext?: string;
+  // DB sport enum (e.g. "formula_one") for the "See upcoming X events" row
+  // below — same eventSport SpokeShell already resolves. Optional since not
+  // every caller (e.g. Price Radar) necessarily has it.
+  sport?: string;
+  // This spoke's own id/label — used to build the Ticket Intelligence
+  // back-link (?from=spoke:<id>) so a visitor who arrives there from a
+  // spoke page returns to this exact spoke, not the generic hub page.
+  // Price Radar (not a spoke) never passes these, so that link falls back
+  // to the generic hub destination, same as before.
+  spokeId?: string;
+  spokeLabel?: string;
 }) {
   return (
     <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
@@ -89,7 +117,11 @@ export default function SpokeActionSidebar({
 
       {showTicketIntelligence && (
         <Link
-          href={`/ticket-intelligence/${eventSlug}`}
+          href={`/ticket-intelligence/${eventSlug}${
+            spokeId
+              ? `?from=${encodeURIComponent(`spoke:${spokeId}`)}${spokeLabel ? `&fromLabel=${encodeURIComponent(spokeLabel)}` : ""}`
+              : ""
+          }`}
           className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
@@ -120,6 +152,21 @@ export default function SpokeActionSidebar({
           <span className="flex-1">
             <span className="block text-sm font-bold text-[#A3A3A3]">Compare costs with other events</span>
             <span className="block text-xs text-[#6A6A6A] mt-0.5">Real flight, hotel and ticket costs</span>
+          </span>
+        </Link>
+      )}
+
+      {sport && (
+        <Link
+          href={`/?sport=${sport}#on-the-calendar`}
+          className="flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+        >
+          <span className="text-base flex-shrink-0 w-5 text-center">🏆</span>
+          <span className="flex-1">
+            <span className="block text-sm font-bold text-[#A3A3A3]">
+              See upcoming {SPORT_LABELS[sport] ?? sport} events
+            </span>
+            <span className="block text-xs text-[#6A6A6A] mt-0.5">Don&apos;t miss the next one</span>
           </span>
         </Link>
       )}

@@ -79,6 +79,38 @@ function readAnswersFromParams(params: URLSearchParams): PartialAnswers {
   return out;
 }
 
+// Resolves the sidebar's "from" context into a real href + label. "from" is
+// one of: "picker" (main /ticket-intelligence page), "experience:<slug>"
+// (an experience page), "spoke:<id>" (a spoke page, with ?fromLabel=<text>
+// for its display name), or absent (default: the event hub page).
+function resolveBackLink(
+  params: URLSearchParams,
+  slug: string,
+  eventName: string
+): { href: string; label: string } {
+  const from = params.get("from");
+  if (from === "picker") {
+    return { href: "/ticket-intelligence", label: "← Back to all events" };
+  }
+  if (from?.startsWith("experience:")) {
+    const experienceSlug = from.slice("experience:".length);
+    if (experienceSlug) {
+      return { href: `/experience/${experienceSlug}`, label: "← Back to this experience" };
+    }
+  }
+  if (from?.startsWith("spoke:")) {
+    const spokeId = from.slice("spoke:".length);
+    const fromLabel = params.get("fromLabel");
+    if (spokeId) {
+      return {
+        href: `/event-pack/${slug}/${spokeId}`,
+        label: fromLabel ? `← Back to ${fromLabel}` : `← Back to ${eventName} guide`,
+      };
+    }
+  }
+  return { href: `/event-pack/${slug}`, label: `← Back to ${eventName} guide` };
+}
+
 export default function TicketQuiz({
   slug,
   eventId,
@@ -105,6 +137,13 @@ export default function TicketQuiz({
   // silently drop retake= the moment Q1 is answered, breaking the escape
   // hatch on any subsequent reload/navigation.
   const retakeValue = useRef(searchParams.get("retake"));
+  // Back-link needs to be context-aware — this page is reached from the
+  // event hub (default, no param), the main /ticket-intelligence picker
+  // (?from=picker), a specific experience (?from=experience:<slug>), or a
+  // specific spoke (?from=spoke:<id>, with ?fromLabel=<text> for its
+  // display name). Read once on mount, same pattern as retakeValue above,
+  // so it survives the URL-sync effect rewriting the query string below.
+  const backLink = useRef(resolveBackLink(searchParams, slug, eventName));
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -187,10 +226,10 @@ export default function TicketQuiz({
           Ticket Intelligence
         </p>
         <Link
-          href={`/event-pack/${slug}`}
+          href={backLink.current.href}
           className="text-xs font-semibold text-[#6A6A6A] hover:text-[#AAFF00] underline transition-colors"
         >
-          ← Back to {eventName} guide
+          {backLink.current.label}
         </Link>
       </div>
       {/* Same grid pattern as SpokeShell.tsx / the result page — sidebar

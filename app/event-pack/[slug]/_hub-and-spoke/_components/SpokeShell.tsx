@@ -33,6 +33,7 @@ export default async function SpokeShell({
   eventId,
   eventName,
   eventCurrency,
+  eventSport,
   spokeId,
   status,
   h1,
@@ -50,6 +51,10 @@ export default async function SpokeShell({
   eventId: string;
   eventName: string;
   eventCurrency: string | null;
+  // DB sport enum (e.g. "formula_one") — passed through from each spoke's
+  // own getSpokeData() call, same pattern as eventId/eventCurrency (see
+  // comment above), for the sidebar's "See upcoming X events" link.
+  eventSport?: string | null;
   spokeId: string;
   status: SpokeStatus;
   h1: string;
@@ -365,7 +370,13 @@ export default async function SpokeShell({
         </article>
 
         <div className="order-1 lg:order-2 lg:sticky lg:top-8 lg:mt-6">
-          <SpokeActionSidebar eventSlug={eventSlug} showTicketIntelligence={showTicketIntelligence} />
+          <SpokeActionSidebar
+            eventSlug={eventSlug}
+            showTicketIntelligence={showTicketIntelligence}
+            sport={eventSport ?? undefined}
+            spokeId={spokeId}
+            spokeLabel={spokes.find((s) => s.id === spokeId)?.label}
+          />
         </div>
         </div>
 

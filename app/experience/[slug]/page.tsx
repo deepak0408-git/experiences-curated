@@ -1535,6 +1535,8 @@ export default async function ExperiencePage({
             hasLivePack={hasLivePack}
             userEmail={authUser?.email ?? null}
             showTicketIntelligenceLink={showTicketIntelligenceLink}
+            sport={eventPackSport ?? undefined}
+            experienceSlug={slug}
           />
         </div>
         </div>

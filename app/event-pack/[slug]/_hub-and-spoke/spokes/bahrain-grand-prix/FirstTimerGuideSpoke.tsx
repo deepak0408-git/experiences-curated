@@ -15,7 +15,8 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
   const fanNostalgia = linkedExperiences.find((e) => e.slug.includes("malaysia-f1-fans-nostalgia"));
 
   return (
-    <SpokeShell eventSlug={eventSlug} eventId={event.id} eventCurrency={event.packCurrency} spokeId={SPOKE_ID} justPurchased={justPurchased} eventName="Bahrain Grand Prix" status="public" h1="5 mistakes first-time visitors make" question="What do I need to know for my first Sepang race weekend?" heroImageUrl={heroImageUrl} isUnlocked={isUnlocked}>
+    <SpokeShell eventSlug={eventSlug} eventId={event.id} eventCurrency={event.packCurrency}
+      eventSport={event.sport} spokeId={SPOKE_ID} justPurchased={justPurchased} eventName="Bahrain Grand Prix" status="public" h1="5 mistakes first-time visitors make" question="What do I need to know for my first Sepang race weekend?" heroImageUrl={heroImageUrl} isUnlocked={isUnlocked}>
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         This isn&apos;t Malaysia&apos;s bid finally paying off, and it isn&apos;t simply &quot;F1 comes back.&quot;
         Understanding what this weekend actually is changes how you should plan it — here&apos;s what genuinely

@@ -86,6 +86,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       eventSlug={eventSlug}
       eventId={event.id}
       eventCurrency={event.packCurrency}
+      eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
       justPurchasedProductType={justPurchasedProductType}

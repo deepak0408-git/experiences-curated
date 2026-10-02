@@ -4,6 +4,20 @@ import { useState } from "react";
 import Link from "next/link";
 import { subscribeToNewsletter } from "@/app/newsletter/actions";
 
+// Same map used across the site (homepage, calendar, event pack, etc.) —
+// the raw DB enum value should never be shown to visitors directly.
+const SPORT_LABELS: Record<string, string> = {
+  tennis: "Tennis",
+  cricket: "Cricket",
+  football: "Football",
+  rugby: "Rugby",
+  golf: "Golf",
+  formula_one: "Formula 1",
+  cycling: "Cycling",
+  athletics: "Athletics",
+  other: "Sport",
+};
+
 // Same 4-action model as blog's ArticleActionSidebar (see that file for the
 // locked design rationale — all real next actions shown at once, no forced
 // sequencing). This is the experience-page variant: every experience has an
@@ -26,6 +40,8 @@ export default function ExperienceActionSidebar({
   hasLivePack,
   userEmail,
   showTicketIntelligenceLink,
+  sport,
+  experienceSlug,
 }: {
   eventPackSlug: string;
   eventPackName: string;
@@ -42,6 +58,14 @@ export default function ExperienceActionSidebar({
   // comment for the documented gaps in that filter (scratchpad/
   // _ti-sidebar-filter-table.md) that are still open.
   showTicketIntelligenceLink: boolean;
+  // DB sport enum (e.g. "formula_one") for the "See upcoming X events" link
+  // below — same eventPackSport the page already resolves for Ticket
+  // Intelligence gating. Optional since not every experience resolves one.
+  sport?: string;
+  // This experience's own slug — used to build the Ticket Intelligence
+  // back-link (?from=experience:<slug>) so a visitor who arrives there from
+  // here returns to this exact experience, not the generic event guide.
+  experienceSlug: string;
 }) {
   const canPlanCosts = eventPackFormat === "hub_and_spoke";
   return (
@@ -80,7 +104,7 @@ export default function ExperienceActionSidebar({
 
       {showTicketIntelligenceLink && (
         <Link
-          href={`/ticket-intelligence/${eventPackSlug}`}
+          href={`/ticket-intelligence/${eventPackSlug}?from=${encodeURIComponent(`experience:${experienceSlug}`)}`}
           className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
@@ -101,6 +125,21 @@ export default function ExperienceActionSidebar({
           <span className="block text-xs text-[#6A6A6A] mt-0.5">Tell us your trip, we&apos;ll shape it</span>
         </span>
       </Link>
+
+      {sport && (
+        <Link
+          href={`/?sport=${sport}#on-the-calendar`}
+          className="flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+        >
+          <span className="text-base flex-shrink-0 w-5 text-center">🏆</span>
+          <span className="flex-1">
+            <span className="block text-sm font-bold text-[#A3A3A3]">
+              See upcoming {SPORT_LABELS[sport] ?? sport} events
+            </span>
+            <span className="block text-xs text-[#6A6A6A] mt-0.5">Don&apos;t miss the next one</span>
+          </span>
+        </Link>
+      )}
 
       {hasLivePack ? (
         <Link

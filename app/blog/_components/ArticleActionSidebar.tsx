@@ -4,6 +4,20 @@ import { useState } from "react";
 import Link from "next/link";
 import { subscribeToNewsletter } from "@/app/newsletter/actions";
 
+// Same map used across the site (homepage, calendar, event pack, etc.) —
+// the raw DB enum value should never be shown to visitors directly.
+const SPORT_LABELS: Record<string, string> = {
+  tennis: "Tennis",
+  cricket: "Cricket",
+  football: "Football",
+  rugby: "Rugby",
+  golf: "Golf",
+  formula_one: "Formula 1",
+  cycling: "Cycling",
+  athletics: "Athletics",
+  other: "Sport",
+};
+
 // Shared "This event" action block — two real states (live pack /
 // coming-soon) plus an optional series/related block. Per Blog Design
 // Document.txt's locked sidebar model: all real next actions shown at
@@ -39,6 +53,7 @@ export default function ArticleActionSidebar({
   categoryHref,
   categoryLabel,
   userEmail,
+  sport,
 }: {
   eventSlug?: string | null;
   eventName?: string | null;
@@ -54,6 +69,10 @@ export default function ArticleActionSidebar({
   categoryHref: string;
   categoryLabel: string;
   userEmail: string | null;
+  // DB sport enum (e.g. "formula_one") for the "See upcoming X events" row
+  // below — article.sport is a string[] on the page, so callers pass the
+  // primary sport (article.sport[0]).
+  sport?: string | null;
 }) {
   const hasEventContext = !!eventSlug;
   const canPlanCosts = eventPackFormat === "hub_and_spoke";
@@ -109,6 +128,21 @@ export default function ArticleActionSidebar({
               <span className="block text-xs text-[#6A6A6A] mt-0.5">Tell us your trip, we&apos;ll shape it</span>
             </span>
           </Link>
+
+          {sport && (
+            <Link
+              href={`/?sport=${sport}#on-the-calendar`}
+              className="flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+            >
+              <span className="text-base flex-shrink-0 w-5 text-center">🏆</span>
+              <span className="flex-1">
+                <span className="block text-sm font-bold text-[#A3A3A3]">
+                  See upcoming {SPORT_LABELS[sport] ?? sport} events
+                </span>
+                <span className="block text-xs text-[#6A6A6A] mt-0.5">Don&apos;t miss the next one</span>
+              </span>
+            </Link>
+          )}
 
           {hasLivePack ? (
             <Link

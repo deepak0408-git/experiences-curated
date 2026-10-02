@@ -29,6 +29,7 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       eventSlug={eventSlug}
       eventId={event.id}
       eventCurrency={event.packCurrency}
+      eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
       eventName="Australian Grand Prix"
@@ -37,7 +38,7 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="What's real is free above — the full hospitality tier stack, the helicopter option, and the rooftop pick for a night off the circuit. The pack adds the direct verdict on which hospitality tier is actually worth the price jump for a first Albert Park trip, plus the real booking-window detail for Paddock Club before it sells out."
+      ctaCopy="What's free above names the options: four hospitality tiers from Chicane Pavilion to Paddock Club, the helicopter transfer route, and the rooftop pick. The pack unlocks the full tier-by-tier breakdown — what each one actually includes, the real price gaps between them, and our direct verdict on which tier is worth the jump for a first Albert Park trip — plus the booking-window deadline for Paddock Club and The Laneway before they sell out."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
         A luxury Albert Park weekend is a stack of decisions, not one purchase. Beyond the top hospitality tier, a
