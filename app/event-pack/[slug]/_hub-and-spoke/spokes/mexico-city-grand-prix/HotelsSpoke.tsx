@@ -1,4 +1,5 @@
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isRealAffiliateLink } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked, isRealAffiliateLink } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
@@ -8,8 +9,12 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, isPro, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.hotels;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "hotels_guide" as const, owned: purchasedProductTypes.has("hotels_guide") }
+    : undefined;
 
   const romaNorte = linkedExperiences.find((e) => e.slug.includes("mexico-city-where-to-stay-roma-norte-"));
   const condesa = linkedExperiences.find((e) => e.slug.includes("mexico-city-where-to-stay-condesa-"));
@@ -23,14 +28,19 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="Mexico City Grand Prix"
       status="teaser"
       h1="Roma Norte, Condesa, or Polanco — three real, different trips"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="You've got the real hotels and booking links above — what you don't have yet is which one to actually book. Roma Norte, Condesa, or Polanco is a genuinely different trip, and this year's Día de Muertos collision means the wrong guess could mean no room at all by the time you decide. The pack gives you our direct pick for your priorities here, plus this same level of tactical detail across all 12 guides — tickets, food, transit, the whole trip planned out — not just this one decision."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Pack, to unlock our real hotel picks and ratings, plus our direct recommendation for your priorities here and the booking-timing detail that matters most given this year's Día de Muertos collision."
     >
+      {/* Free teaser — neighborhood overview only, no specific hotel picks,
+          ratings, or booking detail. Everything else is gated behind
+          isUnlocked (full pack or the Where to Stay Guide mini-pack). */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Where to stay for Mexico City is a genuine three-way call between neighborhoods, not a default choice. Roma
         Norte is the walkable, food-forward pick — the neighborhood most first-timers end up recommending to the
@@ -39,36 +49,40 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
         Hills, at the cost of being furthest from the circuit of the three.
       </p>
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Roma Norte — walkable and food-forward</p>
-      {romaNorte && (
-        <div className="mb-8">
-          <SpokeExperienceCard eventSlug={eventSlug} experience={romaNorte} isPro={isPro} hideProCtas />
-        </div>
-      )}
+      {isUnlocked && (
+        <>
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Roma Norte — walkable and food-forward</p>
+          {romaNorte && (
+            <div className="mb-8">
+              <SpokeExperienceCard eventSlug={eventSlug} experience={romaNorte} isPro={isPro} hideProCtas />
+            </div>
+          )}
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Condesa — quieter, park-adjacent</p>
-      {condesa && (
-        <div className="mb-8">
-          <SpokeExperienceCard eventSlug={eventSlug} experience={condesa} isPro={isPro} hideProCtas />
-        </div>
-      )}
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Condesa — quieter, park-adjacent</p>
+          {condesa && (
+            <div className="mb-8">
+              <SpokeExperienceCard eventSlug={eventSlug} experience={condesa} isPro={isPro} hideProCtas />
+            </div>
+          )}
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Polanco — polished, secure, furthest from the circuit</p>
-      {polanco && (
-        <div className="mb-8">
-          <SpokeExperienceCard eventSlug={eventSlug} experience={polanco} isPro={isPro} hideProCtas />
-        </div>
-      )}
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Polanco — polished, secure, furthest from the circuit</p>
+          {polanco && (
+            <div className="mb-8">
+              <SpokeExperienceCard eventSlug={eventSlug} experience={polanco} isPro={isPro} hideProCtas />
+            </div>
+          )}
 
-      <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Book early — this year specifically</p>
-        <p className="text-sm text-[#A3A3A3] leading-6">
-          2026 race weekend (30 October–1 November) lands directly on top of Mexico City&apos;s Día de Muertos Grand
-          Parade weekend — one of the biggest tourism draws in the city&apos;s calendar, entirely independent of the
-          race. Hotel demand across all three neighborhoods will run higher than a typical Mexico City GP weekend.
-          Book earlier than you normally would for this trip.
-        </p>
-      </div>
+          <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Book early — this year specifically</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">
+              2026 race weekend (30 October–1 November) lands directly on top of Mexico City&apos;s Día de Muertos Grand
+              Parade weekend — one of the biggest tourism draws in the city&apos;s calendar, entirely independent of the
+              race. Hotel demand across all three neighborhoods will run higher than a typical Mexico City GP weekend.
+              Book earlier than you normally would for this trip.
+            </p>
+          </div>
+        </>
+      )}
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">

@@ -1,4 +1,5 @@
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import { formatMoneyRange } from "@/app/planner/_lib/mockEvents";
 import SpokeShell from "../../_components/SpokeShell";
 import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
@@ -48,8 +49,12 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
   const { event, linkedExperiences, tickets } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, isPro, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.tickets;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "tickets_guide" as const, owned: purchasedProductTypes.has("tickets_guide") }
+    : undefined;
 
   const tierCost = (tierId: string) => tickets.find((t) => t.tier === tierId);
   const stands = STANDS.map((s) => {
@@ -80,6 +85,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="United States Grand Prix"
       status="teaser"
       h1="Four real tiers, from General Admission to trackside hospitality"
@@ -87,115 +93,133 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       heroImageUrl={heroImageUrl}
       heroImagePosition={spoke.heroImagePosition}
       isUnlocked={isUnlocked}
-      ctaCopy="The tiers, what they actually show, and every confirmed price are all free above. The pack adds a full, detailed breakdown of every ticket tier plus our real verdict — which grandstand we'd pick for a first Austin GP and why — and the tactical detail for Paddock Club's early-access booking window, not just a summary of the public page."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Ticket Guide alone, or the full Event Pack, to unlock real confirmed pricing for every tier, the full side-by-side comparison, where to actually buy, and our verdict on which grandstand we'd pick for a first Austin GP."
     >
+      {/* Free teaser — tier names + what each shows only, no pricing, no
+          seating/weather detail, no buying links, no verdict. Everything
+          else in this spoke is gated behind isUnlocked (full pack or the
+          Ticket Guide mini-pack) — whole-spoke gating per the mini-packs
+          pilot design. */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Circuit of the Americas sells a genuine range, from a flexible general-admission ticket up through full
-        pit-lane hospitality — this isn&apos;t a single grandstand-vs-grandstand choice. Every ticket covers the
-        standard 3-day (Friday-Sunday) weekend, and every tier — GA included — comes bundled with access to the
-        Germania Insurance Super Stage concerts on the same ticket.
+        pit-lane hospitality — this isn&apos;t a single grandstand-vs-grandstand choice.
       </p>
 
-      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Where to actually buy your ticket</p>
-        <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-          Buy directly from the official source first. Every F1 ticket ultimately traces back to the promoter, and
-          buying direct means no markup and no risk of a fraudulent listing.
-        </p>
-        <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-          If official tickets are sold out, or you want a package with hospitality, hotel, or shuttle bundled in,
-          P1 Travel is a genuine authorized F1 ticket partner — named directly on Yas Marina Circuit&apos;s own
-          official reseller list and confirmed as Singapore GP&apos;s own Authorised Partner, not a random resale
-          site. It&apos;s rated 4.7 from over 10,000 reviews on Trustpilot, and has been in business since 2007.
-        </p>
-        <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-          Steer clear of anything else claiming to be &quot;official&quot; without that kind of direct
-          confirmation — ticket fraud is real at every high-demand Grand Prix, and a listing that looks legitimate
-          isn&apos;t the same as one a circuit has actually named.
-        </p>
-        <div className="flex flex-wrap gap-4">
-          <a
-            href="https://tickets.formula1.com/en/f1-3320-united-states"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center px-4 py-2 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
-          >
-            Official US GP tickets →
-          </a>
-          <a
-            href="https://www.p1travel.com/en-GB/series/formula-1-2026?organizers=grand-prix-usa"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors"
-          >
-            P1 Travel — US GP →
-          </a>
+      {!isUnlocked && (
+        <div className="flex flex-col gap-2 mb-8">
+          {STANDS.map((s) => (
+            <p key={s.slug} className="text-sm text-[#A3A3A3]">
+              <span className="text-white font-bold">{s.name}:</span>{" "}{s.shows}
+            </p>
+          ))}
         </div>
-      </div>
+      )}
 
-      <p className="hidden md:block text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Side by side</p>
-      <p className="md:hidden text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Options compared</p>
-      <div className="hidden md:block overflow-x-auto mb-8">
-        <table className="w-full text-sm border-collapse table-fixed">
-          <thead>
-            <tr className="border-b border-[#2A2A2A]">
-              <th className="w-[20%] text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Tier</th>
-              <th className="w-[30%] text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">What it shows</th>
-              <th className="w-[30%] text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Seating</th>
-              <th className="w-[20%] text-left py-2 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Weather cover</th>
-            </tr>
-          </thead>
-          <tbody>
-            {STANDS.map((s) => (
-              <tr key={s.slug} className="border-b border-[#2A2A2A] last:border-0">
-                <td className="py-3 pr-4 text-white font-bold align-top">{s.name}</td>
-                <td className="py-3 pr-4 text-[#A3A3A3] align-top">{s.shows}</td>
-                <td className="py-3 pr-4 text-[#A3A3A3] align-top">{s.seating}</td>
-                <td className="py-3 text-[#A3A3A3] align-top">{s.exposure}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="md:hidden flex flex-col gap-3 mb-8">
-        {STANDS.map((s) => (
-          <div key={s.slug} className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
-            <p className="text-sm font-bold text-white mb-2">{s.name}</p>
-            <div className="flex flex-col gap-1.5">
-              <p className="text-sm text-[#A3A3A3] leading-6">
-                <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">What it shows: </span>
-                {s.shows}
-              </p>
-              <p className="text-sm text-[#A3A3A3] leading-6">
-                <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Seating: </span>
-                {s.seating}
-              </p>
-              <p className="text-sm text-[#A3A3A3] leading-6">
-                <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Weather cover: </span>
-                {s.exposure}
-              </p>
+      {isUnlocked && (
+        <>
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Where to actually buy your ticket</p>
+            <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
+              Buy directly from the official source first. Every F1 ticket ultimately traces back to the promoter, and
+              buying direct means no markup and no risk of a fraudulent listing.
+            </p>
+            <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
+              If official tickets are sold out, or you want a package with hospitality, hotel, or shuttle bundled in,
+              P1 Travel is a genuine authorized F1 ticket partner — named directly on Yas Marina Circuit&apos;s own
+              official reseller list and confirmed as Singapore GP&apos;s own Authorised Partner, not a random resale
+              site. It&apos;s rated 4.7 from over 10,000 reviews on Trustpilot, and has been in business since 2007.
+            </p>
+            <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
+              Steer clear of anything else claiming to be &quot;official&quot; without that kind of direct
+              confirmation — ticket fraud is real at every high-demand Grand Prix, and a listing that looks legitimate
+              isn&apos;t the same as one a circuit has actually named.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <a
+                href="https://tickets.formula1.com/en/f1-3320-united-states"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
+              >
+                Official US GP tickets →
+              </a>
+              <a
+                href="https://www.p1travel.com/en-GB/series/formula-1-2026?organizers=grand-prix-usa"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors"
+              >
+                P1 Travel — US GP →
+              </a>
             </div>
           </div>
-        ))}
-      </div>
 
-      <div className="flex flex-col gap-2 mb-8">
-        {stands.map((s) => (
-          <p key={s.slug} className="text-xs text-[#6A6A6A]">
-            <span className="text-[#AAFF00]">{s.name}:</span> {s.costNote}
-          </p>
-        ))}
-      </div>
+          <p className="hidden md:block text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Side by side</p>
+          <p className="md:hidden text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Options compared</p>
+          <div className="hidden md:block overflow-x-auto mb-8">
+            <table className="w-full text-sm border-collapse table-fixed">
+              <thead>
+                <tr className="border-b border-[#2A2A2A]">
+                  <th className="w-[20%] text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Tier</th>
+                  <th className="w-[30%] text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">What it shows</th>
+                  <th className="w-[30%] text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Seating</th>
+                  <th className="w-[20%] text-left py-2 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Weather cover</th>
+                </tr>
+              </thead>
+              <tbody>
+                {STANDS.map((s) => (
+                  <tr key={s.slug} className="border-b border-[#2A2A2A] last:border-0">
+                    <td className="py-3 pr-4 text-white font-bold align-top">{s.name}</td>
+                    <td className="py-3 pr-4 text-[#A3A3A3] align-top">{s.shows}</td>
+                    <td className="py-3 pr-4 text-[#A3A3A3] align-top">{s.seating}</td>
+                    <td className="py-3 text-[#A3A3A3] align-top">{s.exposure}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Real, published pricing</p>
-        <p className="text-sm text-[#A3A3A3] leading-6">
-          Every price above is the real, published 2026 3-day (Friday-Sunday) rate from tickets.formula1.com — not
-          an estimate. A separate, cheaper Sunday race-day-only ticket also exists for each stand, starting from
-          roughly US$310 for General Admission, if you only want to attend race day itself.
-        </p>
-      </div>
+          <div className="md:hidden flex flex-col gap-3 mb-8">
+            {STANDS.map((s) => (
+              <div key={s.slug} className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+                <p className="text-sm font-bold text-white mb-2">{s.name}</p>
+                <div className="flex flex-col gap-1.5">
+                  <p className="text-sm text-[#A3A3A3] leading-6">
+                    <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">What it shows: </span>
+                    {s.shows}
+                  </p>
+                  <p className="text-sm text-[#A3A3A3] leading-6">
+                    <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Seating: </span>
+                    {s.seating}
+                  </p>
+                  <p className="text-sm text-[#A3A3A3] leading-6">
+                    <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Weather cover: </span>
+                    {s.exposure}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col gap-2 mb-8">
+            {stands.map((s) => (
+              <p key={s.slug} className="text-xs text-[#6A6A6A]">
+                <span className="text-[#AAFF00]">{s.name}:</span>{" "}{s.costNote}
+              </p>
+            ))}
+          </div>
+
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Real, published pricing</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">
+              Every price above is the real, published 2026 3-day (Friday-Sunday) rate from tickets.formula1.com — not
+              an estimate. A separate, cheaper Sunday race-day-only ticket also exists for each stand, starting from
+              roughly US$310 for General Admission, if you only want to attend race day itself.
+            </p>
+          </div>
+        </>
+      )}
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
@@ -258,10 +282,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
 
         </div>
       )}
-
-      <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: tickets.formula1.com, circuitoftheamericas.com.
-      </p>
+      {/* Sources: tickets.formula1.com, circuitoftheamericas.com. */}
     </SpokeShell>
   );
 }

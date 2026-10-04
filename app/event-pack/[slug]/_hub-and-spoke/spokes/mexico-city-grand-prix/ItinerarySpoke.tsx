@@ -1,4 +1,5 @@
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 
 const SPOKE_ID = "itinerary";
@@ -7,8 +8,12 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.itinerary;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "itinerary_guide" as const, owned: purchasedProductTypes.has("itinerary_guide") }
+    : undefined;
 
   return (
     <SpokeShell
@@ -18,35 +23,46 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="Mexico City Grand Prix"
       status="teaser"
       h1="A race weekend that collides with Día de Muertos, hour by hour"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The weekend shape above is free. The pack adds the full hour-by-hour itinerary — sequenced against the real session schedule, the Día de Muertos parade, and a genuine Teotihuacán day trip, not just a generic race-weekend template."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the full hour-by-hour itinerary — sequenced against the real session schedule, the Día de Muertos parade route, and a genuine Teotihuacán day trip, not just a generic race-weekend template."
     >
-      <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
-        Mexico City runs a standard 3-day Grand Prix weekend — Friday through Sunday — but 2026 carries a genuine
-        complication most other race weekends don&apos;t: the city&apos;s Día de Muertos Grand Parade falls on
-        Saturday 31 October, directly inside race weekend itself. That means Saturday specifically needs real
-        planning, not just a qualifying-session-and-dinner day like it would be most other years.
-      </p>
+      {/* Free teaser — bare day shape only, no specific activities, no
+          parade-route detail, no Teotihuacán logistics. Everything else is
+          gated behind isUnlocked (full pack or the Itinerary Guide
+          mini-pack). */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        Within the three core days, each has a different job. Thursday (before track action starts) is the natural
-        day for the one genuine out-of-city commitment — Teotihuacán — since it eats most of a day including travel.
-        Friday is practice, light on track commitments, and a good day for the Zócalo/Cathedral/Templo Mayor loop in
-        the city itself. Saturday is qualifying and the parade, both real commitments on the same day. Sunday is race
-        day, with the Foro Sol podium ceremony as the closing spectacle.
+        Mexico City runs a standard 3-day Grand Prix weekend — Friday through Sunday — but 2026 carries a genuine
+        complication most other race weekends don&apos;t: the city&apos;s Día de Muertos Grand Parade falls directly
+        inside race weekend itself, so one day specifically needs real planning, not just a generic track-and-dinner
+        template.
       </p>
 
-      <div className="flex flex-col gap-3 mb-8">
-        <DayCard day="Thursday — Teotihuacán day trip" summary="An early start to beat the heat and crowds, back in the city by evening with time to spare" />
-        <DayCard day="Friday — Practice, Zócalo & historic center" summary="Circuit sessions, then the Zócalo/Cathedral/Templo Mayor loop in the afternoon or evening" />
-        <DayCard day="Saturday — Practice, qualifying & the Día de Muertos parade" summary="Practice 3, qualifying, plus catching part of the parade — the one day this year that needs real sequencing" />
-        <DayCard day="Sunday — Race day" summary="Arrival timing by grandstand, the race itself, the Foro Sol podium ceremony" />
-        <DayCard day="Monday (optional) — More of the city" summary="If your trip extends a day further, Chapultepec, the Frida Kahlo Museum, or Xochimilco round out the sightseeing without competing with track sessions" />
-      </div>
+      {!isUnlocked && (
+        <div className="flex flex-col gap-3 mb-8">
+          <DayCard day="Thursday" summary="Day trip option" />
+          <DayCard day="Friday" summary="Practice" />
+          <DayCard day="Saturday" summary="Practice, qualifying & a city event" />
+          <DayCard day="Sunday" summary="Race" />
+          <DayCard day="Monday (optional)" summary="Extra day in the city" />
+        </div>
+      )}
+
+      {isUnlocked && (
+        <div className="flex flex-col gap-3 mb-8">
+          <DayCard day="Thursday — Teotihuacán day trip" summary="An early start to beat the heat and crowds, back in the city by evening with time to spare" />
+          <DayCard day="Friday — Practice, Zócalo & historic center" summary="Circuit sessions, then the Zócalo/Cathedral/Templo Mayor loop in the afternoon or evening" />
+          <DayCard day="Saturday — Practice, qualifying & the Día de Muertos parade" summary="Practice 3, qualifying, plus catching part of the parade — the one day this year that needs real sequencing" />
+          <DayCard day="Sunday — Race day" summary="Arrival timing by grandstand, the race itself, the Foro Sol podium ceremony" />
+          <DayCard day="Monday (optional) — More of the city" summary="If your trip extends a day further, Chapultepec, the Frida Kahlo Museum, or Xochimilco round out the sightseeing without competing with track sessions" />
+        </div>
+      )}
 
       {isUnlocked && (
         <div className="mt-2 pt-10 border-t border-[#2A2A2A]">

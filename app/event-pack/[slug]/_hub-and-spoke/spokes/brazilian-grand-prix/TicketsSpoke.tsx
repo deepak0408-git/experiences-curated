@@ -1,4 +1,5 @@
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
@@ -47,8 +48,12 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
   const { event, linkedExperiences, tickets } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, isPro, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.tickets;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "tickets_guide" as const, owned: purchasedProductTypes.has("tickets_guide") }
+    : undefined;
 
   const tier1 = tickets.find((t) => t.tier === "tier1");
   const tier2 = tickets.find((t) => t.tier === "tier2");
@@ -67,14 +72,21 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="São Paulo Grand Prix"
       status="teaser"
       h1="No General Admission — every seat here is a fixed grandstand letter"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The tiers and what each one actually shows you are free above. The pack adds the full Ticket Guide with the real grandstand-by-grandstand comparison (including G, R, H, D, and B — not just the four tiers shown here), our direct verdict on M vs. A for a first Interlagos weekend, and which stand to move on first before it sells out."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Ticket Guide alone, or the full Event Pack, to unlock the real grandstand-by-grandstand comparison (including G, R, H, D, and B — not just the four tiers shown here), confirmed pricing for every tier, where to actually buy, and our direct verdict on M vs. A for a first Interlagos weekend."
     >
+      {/* Free teaser — tier names + what each shows only, no pricing, no
+          seating/weather detail, no buying links, no verdict. Everything
+          else in this spoke is gated behind isUnlocked (full pack or the
+          Ticket Guide mini-pack) — whole-spoke gating per the mini-packs
+          pilot design. */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Interlagos doesn&apos;t sell general admission — every ticket is grandstand-specific, and that letter is
         where you sit for all three days. This is different from circuits like Silverstone or Spa, where a GA
@@ -82,93 +94,107 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         the calendar, because there&apos;s no fallback once you&apos;ve bought.
       </p>
 
-      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Where to actually buy your ticket</p>
-        <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-          Buy directly from the official source first, and be ready early — several stands, including Turn 1&apos;s
-          Grandstand M, have sold out months ahead of the 2026 race. Every F1 ticket ultimately traces back to the
-          promoter, and buying direct means no markup and no risk of a fraudulent listing.
-        </p>
-        <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-          If official tickets are sold out, or you want a package with hospitality, hotel, or shuttle bundled in, P1
-          Travel is a genuine authorized F1 ticket partner — named directly on multiple circuits&apos; own official
-          reseller lists, rated 4.7 from over 10,000 reviews on Trustpilot, and in business since 2007.
-        </p>
-        <div className="flex flex-wrap gap-4">
-          <a
-            href="https://tickets.formula1.com/en/f1-3325-brazil"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center px-4 py-2 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
-          >
-            Official São Paulo GP tickets →
-          </a>
-          <a
-            href="https://www.p1travel.com/en/series/formula-1-2026?organizers=grand-prix-brasil"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors"
-          >
-            P1 Travel — São Paulo GP →
-          </a>
+      {!isUnlocked && (
+        <div className="flex flex-col gap-2 mb-8">
+          {TIER_META.map((t) => (
+            <p key={t.name} className="text-sm text-[#A3A3A3]">
+              <span className="text-white font-bold">{t.name}:</span>{" "}{t.shows}
+            </p>
+          ))}
         </div>
-      </div>
+      )}
 
-      <p className="hidden md:block text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Side by side</p>
-      <p className="md:hidden text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Options compared</p>
-      <div className="hidden md:block overflow-x-auto mb-4">
-        <table className="w-full text-sm border-collapse table-fixed">
-          <thead>
-            <tr className="border-b border-[#2A2A2A]">
-              <th className="w-1/4 text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Tier</th>
-              <th className="w-2/5 text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">What it shows</th>
-              <th className="w-[17.5%] text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Seating</th>
-              <th className="w-[17.5%] text-left py-2 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Weather cover</th>
-            </tr>
-          </thead>
-          <tbody>
-            {TIER_META.map((t) => (
-              <tr key={t.name} className="border-b border-[#2A2A2A] last:border-0">
-                <td className="py-3 pr-4 text-white font-bold align-top">{t.name}</td>
-                <td className="py-3 pr-4 text-[#A3A3A3] align-top">{t.shows}</td>
-                <td className="py-3 pr-4 text-[#A3A3A3] align-top">{t.seating}</td>
-                <td className="py-3 text-[#A3A3A3] align-top">{t.exposure}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="md:hidden flex flex-col gap-3 mb-4">
-        {TIER_META.map((t) => (
-          <div key={t.name} className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
-            <p className="text-sm font-bold text-white mb-2">{t.name}</p>
-            <div className="flex flex-col gap-1.5">
-              <p className="text-sm text-[#A3A3A3] leading-6">
-                <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">What it shows: </span>
-                {t.shows}
-              </p>
-              <p className="text-sm text-[#A3A3A3] leading-6">
-                <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Seating: </span>
-                {t.seating}
-              </p>
-              <p className="text-sm text-[#A3A3A3] leading-6">
-                <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Weather cover: </span>
-                {t.exposure}
-              </p>
+      {isUnlocked && (
+        <>
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Where to actually buy your ticket</p>
+            <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
+              Buy directly from the official source first, and be ready early — several stands, including Turn 1&apos;s
+              Grandstand M, have sold out months ahead of the 2026 race. Every F1 ticket ultimately traces back to the
+              promoter, and buying direct means no markup and no risk of a fraudulent listing.
+            </p>
+            <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
+              If official tickets are sold out, or you want a package with hospitality, hotel, or shuttle bundled in, P1
+              Travel is a genuine authorized F1 ticket partner — named directly on multiple circuits&apos; own official
+              reseller lists, rated 4.7 from over 10,000 reviews on Trustpilot, and in business since 2007.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <a
+                href="https://tickets.formula1.com/en/f1-3325-brazil"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
+              >
+                Official São Paulo GP tickets →
+              </a>
+              <a
+                href="https://www.p1travel.com/en/series/formula-1-2026?organizers=grand-prix-brasil"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors"
+              >
+                P1 Travel — São Paulo GP →
+              </a>
             </div>
           </div>
-        ))}
-      </div>
 
-      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">On pricing</p>
-        <p className="text-sm text-[#A3A3A3] leading-6">
-          Prices above are confirmed 2026 figures from the official ticketing site. Confirm current availability
-          directly before buying — several stands, including Grandstand M and Grandstand A, have historically sold
-          out well ahead of race weekend.
-        </p>
-      </div>
+          <p className="hidden md:block text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Side by side</p>
+          <p className="md:hidden text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Options compared</p>
+          <div className="hidden md:block overflow-x-auto mb-4">
+            <table className="w-full text-sm border-collapse table-fixed">
+              <thead>
+                <tr className="border-b border-[#2A2A2A]">
+                  <th className="w-1/4 text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Tier</th>
+                  <th className="w-2/5 text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">What it shows</th>
+                  <th className="w-[17.5%] text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Seating</th>
+                  <th className="w-[17.5%] text-left py-2 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Weather cover</th>
+                </tr>
+              </thead>
+              <tbody>
+                {TIER_META.map((t) => (
+                  <tr key={t.name} className="border-b border-[#2A2A2A] last:border-0">
+                    <td className="py-3 pr-4 text-white font-bold align-top">{t.name}</td>
+                    <td className="py-3 pr-4 text-[#A3A3A3] align-top">{t.shows}</td>
+                    <td className="py-3 pr-4 text-[#A3A3A3] align-top">{t.seating}</td>
+                    <td className="py-3 text-[#A3A3A3] align-top">{t.exposure}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="md:hidden flex flex-col gap-3 mb-4">
+            {TIER_META.map((t) => (
+              <div key={t.name} className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+                <p className="text-sm font-bold text-white mb-2">{t.name}</p>
+                <div className="flex flex-col gap-1.5">
+                  <p className="text-sm text-[#A3A3A3] leading-6">
+                    <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">What it shows: </span>
+                    {t.shows}
+                  </p>
+                  <p className="text-sm text-[#A3A3A3] leading-6">
+                    <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Seating: </span>
+                    {t.seating}
+                  </p>
+                  <p className="text-sm text-[#A3A3A3] leading-6">
+                    <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Weather cover: </span>
+                    {t.exposure}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">On pricing</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">
+              Prices above are confirmed 2026 figures from the official ticketing site. Confirm current availability
+              directly before buying — several stands, including Grandstand M and Grandstand A, have historically sold
+              out well ahead of race weekend.
+            </p>
+          </div>
+        </>
+      )}
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">

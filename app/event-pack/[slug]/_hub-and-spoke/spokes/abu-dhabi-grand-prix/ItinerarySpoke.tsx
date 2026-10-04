@@ -1,4 +1,5 @@
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 
 const SPOKE_ID = "itinerary";
@@ -7,8 +8,12 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.itinerary;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "itinerary_guide" as const, owned: purchasedProductTypes.has("itinerary_guide") }
+    : undefined;
 
   return (
     <SpokeShell
@@ -18,39 +23,45 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="Abu Dhabi Grand Prix"
       status="teaser"
       h1="A season-finale weekend, hour by hour"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The weekend shape above is free. The pack adds the full hour-by-hour itinerary — sequenced against real session times, the Yasalam concert schedule, and a genuine day trip, not just a generic race-weekend template."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the full hour-by-hour itinerary — sequenced against real session times, the Yasalam concert schedule, and a genuine day trip, not just a generic race-weekend template."
     >
-      <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
-        Abu Dhabi runs a standard 4-day Grand Prix rhythm — Thursday through Sunday — but the season-finale framing
-        changes what each day is actually for. Qualifying starts at 18:00 and the race at 17:00 local time, both
-        building through the afternoon into the twilight-to-night transition, and every night of the weekend carries a real
-        Yasalam concert on the same ticket. That means a full race day here genuinely runs from an afternoon
-        session through to a late-night headline set under the same lights — plan the evening as seriously as the
-        session itself.
-      </p>
+      {/* Free teaser — bare day shape only, no specific activities, no
+          concert lineup, no day-trip detail. Everything else is gated
+          behind isUnlocked (full pack or the Itinerary Guide mini-pack). */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        Within the four core days, each has a different job. Thursday is the lightest on track commitments and
-        carries the first night&apos;s concert (Zara Larsson, Lewis Capaldi) — the natural day for an Abu Dhabi
-        city day trip before the weekend gets busier. Friday and Saturday build through practice and qualifying,
-        each with its own headline act after. Sunday is the race and the closing set — Imagine Dragons headlines
-        Saturday night specifically, with The Chainsmokers and The Script closing out Sunday. If you&apos;re flying
-        out via DXB anyway, staying one extra night and adding a Monday Dubai day turns what would otherwise be a
-        rushed same-day departure into a real, unhurried day out.
+        Abu Dhabi runs a standard 4-day Grand Prix rhythm — Thursday through Sunday — but the season-finale framing
+        changes what each day is actually for. Every night of the weekend carries a real Yasalam concert on the
+        same ticket, and a full race day here genuinely runs from an afternoon session through to a late-night
+        headline set under the same lights.
       </p>
 
-      <div className="flex flex-col gap-3 mb-8">
-        <DayCard day="Thursday — Arrival, Abu Dhabi city day" summary="Land, settle in, use the day for Sheikh Zayed Grand Mosque and Qasr Al Watan, catch the opening concerts" />
-        <DayCard day="Friday — Practice" summary="Circuit sessions in the afternoon, first night of the marina/dining scene in the evening" />
-        <DayCard day="Saturday — Qualifying" summary="Qualifying session, then the season's biggest concert night" />
-        <DayCard day="Sunday — Race" summary="Arrival timing by grandstand, the race itself, the closing concerts" />
-        <DayCard day="Monday — Optional Dubai day" summary="A full, unhurried Dubai day trip before flying out of DXB — the natural way to use a travel day that would otherwise be dead time" />
-      </div>
+      {!isUnlocked && (
+        <div className="flex flex-col gap-3 mb-8">
+          <DayCard day="Thursday" summary="Arrival, Abu Dhabi city day" />
+          <DayCard day="Friday" summary="Practice" />
+          <DayCard day="Saturday" summary="Qualifying" />
+          <DayCard day="Sunday" summary="Race" />
+          <DayCard day="Optional extra day" summary="A bookend day before flying out" />
+        </div>
+      )}
+
+      {isUnlocked && (
+        <div className="flex flex-col gap-3 mb-8">
+          <DayCard day="Thursday — Arrival, Abu Dhabi city day" summary="Land, settle in, use the day for Sheikh Zayed Grand Mosque and Qasr Al Watan, catch the opening concerts" />
+          <DayCard day="Friday — Practice" summary="Circuit sessions in the afternoon, first night of the marina/dining scene in the evening" />
+          <DayCard day="Saturday — Qualifying" summary="Qualifying session, then the season's biggest concert night" />
+          <DayCard day="Sunday — Race" summary="Arrival timing by grandstand, the race itself, the closing concerts" />
+          <DayCard day="Monday — Optional Dubai day" summary="A full, unhurried Dubai day trip before flying out of DXB — the natural way to use a travel day that would otherwise be dead time" />
+        </div>
+      )}
 
       {isUnlocked && (
         <div className="mt-2 pt-10 border-t border-[#2A2A2A]">

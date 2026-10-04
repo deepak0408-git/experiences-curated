@@ -1,4 +1,5 @@
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 
 const SPOKE_ID = "itinerary";
@@ -22,8 +23,12 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.itinerary;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "itinerary_guide" as const, owned: purchasedProductTypes.has("itinerary_guide") }
+    : undefined;
 
   return (
     <SpokeShell
@@ -33,38 +38,46 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="São Paulo Grand Prix"
       status="teaser"
       h1="A standard 3-day weekend — no Sprint format this year at Interlagos"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The weekend shape above is free. The pack adds the full hour-by-hour itinerary from Thursday's arrival to Monday's day trip — exact session-window timings, two different real nights out (not just where to eat), and the one out-of-city excursion that actually fits, not a generic race-weekend template."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the full hour-by-hour itinerary from Thursday's arrival to Monday's day trip — exact session-window timings, two different real nights out, and the one out-of-city excursion that actually fits, not a generic race-weekend template."
     >
-      <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
-        Interlagos runs the standard 3-day Formula 1 format for 2026 — Friday practice, Saturday practice and
-        qualifying, Sunday race — with no Sprint session this year. Official session times (track time): Practice 1
-        12:30-13:30 and Practice 2 16:00-17:00 on Friday 6 Nov; Practice 3 11:30-12:30 and Qualifying 15:00-16:00 on
-        Saturday 7 Nov; the race goes lights-out at 14:00 on Sunday 8 Nov.
-      </p>
+      {/* Free teaser — bare day shape only, no session times, no specific
+          activities, no verdict on which day trip to pick. Everything else
+          is gated behind isUnlocked (full pack or the Itinerary Guide
+          mini-pack). */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        Arriving Thursday, the day before track action starts, is worth building in deliberately rather than as a
-        buffer — it's the one day with zero session-time pressure, so it's the natural slot for the in-city
-        sightseeing that doesn't need a full day of its own. Within the three core days, each has a different job.
-        Friday is the lightest day on track and the natural window for a first-city orientation walk. Saturday's
-        qualifying afternoon leaves an evening free for one of São Paulo's real dining picks. Sunday is race day,
-        with Interlagos' bowl-shaped grandstands putting fans genuinely close to the podium celebrations. Monday,
-        the day after, is the right window for a true out-of-city day trip — leaving Tuesday as your genuine travel
-        day home.
+        Interlagos runs the standard 3-day Formula 1 format for 2026 — Friday practice, Saturday practice and
+        qualifying, Sunday race — with no Sprint session this year. A Thursday arrival day and a Monday day trip
+        round the full trip out to five days, Thursday through Monday, with Tuesday left as a genuine travel day
+        home.
       </p>
 
-      <div className="flex flex-col gap-3 mb-8">
-        <DayCard day="Thursday — Arrival & first orientation" summary="Settle in, then Ibirapuera Park or Beco do Batman in the afternoon before an early night ahead of Friday practice" />
-        <DayCard day="Friday — Practice & first orientation" summary="FP1 12:30-13:30, FP2 16:00-17:00, then an evening walk down Avenida Paulista before dinner in Liberdade's Japantown streets" />
-        <DayCard day="Saturday — Qualifying & a real São Paulo night out" summary="FP3 11:30-12:30 and Qualifying 15:00-16:00 set Sunday's grid, then Figueira Rubaiyat or Maní for dinner, followed by live samba at Bar Brahma" />
-        <DayCard day="Sunday — Race day" summary="Gates from around 08:00, lights out at 14:00, then Vila Madalena for a night out" />
-        <DayCard day="Monday — one real day trip" summary="São Roque, Santos & Guarujá, or Campos do Jordão — pick one, don't try to pair it with a session day" />
-      </div>
+      {!isUnlocked && (
+        <div className="flex flex-col gap-3 mb-8">
+          <DayCard day="Thursday" summary="Arrival" />
+          <DayCard day="Friday" summary="Practice" />
+          <DayCard day="Saturday" summary="Practice & qualifying" />
+          <DayCard day="Sunday" summary="Race" />
+          <DayCard day="Monday" summary="Day trip" />
+        </div>
+      )}
+
+      {isUnlocked && (
+        <div className="flex flex-col gap-3 mb-8">
+          <DayCard day="Thursday — Arrival & first orientation" summary="Settle in, then Ibirapuera Park or Beco do Batman in the afternoon before an early night ahead of Friday practice" />
+          <DayCard day="Friday — Practice & first orientation" summary="FP1 12:30-13:30, FP2 16:00-17:00, then an evening walk down Avenida Paulista before dinner in Liberdade's Japantown streets" />
+          <DayCard day="Saturday — Qualifying & a real São Paulo night out" summary="FP3 11:30-12:30 and Qualifying 15:00-16:00 set Sunday's grid, then Figueira Rubaiyat or Maní for dinner, followed by live samba at Bar Brahma" />
+          <DayCard day="Sunday — Race day" summary="Gates from around 08:00, lights out at 14:00, then Vila Madalena for a night out" />
+          <DayCard day="Monday — one real day trip" summary="São Roque, Santos & Guarujá, or Campos do Jordão — pick one, don't try to pair it with a session day" />
+        </div>
+      )}
 
       {isUnlocked && (
         <div className="mt-2 pt-10 border-t border-[#2A2A2A]">

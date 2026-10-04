@@ -1,4 +1,5 @@
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 
 const SPOKE_ID = "itinerary";
@@ -7,8 +8,12 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.itinerary;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "itinerary_guide" as const, owned: purchasedProductTypes.has("itinerary_guide") }
+    : undefined;
 
   return (
     <SpokeShell
@@ -18,6 +23,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="United States Grand Prix"
       status="teaser"
       h1="A standard weekend, plus a real extra day worth planning for"
@@ -25,30 +31,37 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       heroImageUrl={heroImageUrl}
       heroImagePosition={spoke.heroImagePosition}
       isUnlocked={isUnlocked}
-      ctaCopy="The weekend shape above is free. The pack adds the full hour-by-hour itinerary — sequenced against real session times, the Super Stage concert schedule, and a genuine day-trip option, not just a generic race-weekend template."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the full hour-by-hour itinerary — sequenced against real session times, the Super Stage concert schedule, and a genuine day-trip option, not just a generic race-weekend template."
     >
-      <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
-        Austin runs a standard 3-day Grand Prix weekend for 2026 — Friday through Sunday, no sprint race — plus a
-        new, separately-ticketed fourth day (Grand PrixView Thursday, 22 October) built around F1 Academy track
-        action. That means a full trip genuinely spans four days if you add the Thursday preview, not the usual
-        three.
-      </p>
+      {/* Free teaser — bare day shape only, no specific activities, no
+          concert lineup, no day-trip detail. Everything else is gated
+          behind isUnlocked (full pack or the Itinerary Guide mini-pack). */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        Within the weekend, each day has a different job. Friday is the quietest and cheapest-feeling — practice
-        sessions, smaller crowds, a good day to explore Austin&apos;s own neighborhoods before the weekend gets
-        busy, and the first Super Stage concert (Maroon 5) in the evening. Saturday builds through qualifying into
-        the second headline concert (Post Malone). Sunday is the race and Alesso&apos;s closing set. If your travel
-        dates allow it, adding a day either before or after for Hill Country/Fredericksburg or San Antonio turns a
-        tight race-only trip into a fuller Texas visit.
+        Austin runs a standard 3-day Grand Prix weekend for 2026 — Friday through Sunday, no sprint race — plus a
+        new, separately-ticketed fourth day built around F1 Academy track action. A full trip genuinely spans four
+        days if you add the Thursday preview, not the usual three.
       </p>
 
-      <div className="flex flex-col gap-3 mb-8">
-        <DayCard day="Thursday — Optional Grand PrixView Thursday" summary="F1 Academy track action and early Fan Zone access — a separate ticket from the main weekend, from $20" />
-        <DayCard day="Friday — Practice" summary="Circuit sessions in the afternoon, Maroon 5 headlines the Super Stage in the evening" />
-        <DayCard day="Saturday — Qualifying" summary="Qualifying session, then Post Malone headlines the biggest concert night of the weekend" />
-        <DayCard day="Sunday — Race" summary="Arrival timing by grandstand, the race itself, Alesso closes out the weekend" />
-        <DayCard day="Optional extra day" summary="Texas Hill Country/Fredericksburg or San Antonio — either works well as a bookend day before or after the core weekend" />
-      </div>
+      {!isUnlocked && (
+        <div className="flex flex-col gap-3 mb-8">
+          <DayCard day="Thursday" summary="Optional Grand PrixView Thursday" />
+          <DayCard day="Friday" summary="Practice" />
+          <DayCard day="Saturday" summary="Qualifying" />
+          <DayCard day="Sunday" summary="Race" />
+          <DayCard day="Optional extra day" summary="A bookend day before or after the core weekend" />
+        </div>
+      )}
+
+      {isUnlocked && (
+        <div className="flex flex-col gap-3 mb-8">
+          <DayCard day="Thursday — Optional Grand PrixView Thursday" summary="F1 Academy track action and early Fan Zone access — a separate ticket from the main weekend, from $20" />
+          <DayCard day="Friday — Practice" summary="Circuit sessions in the afternoon, Maroon 5 headlines the Super Stage in the evening" />
+          <DayCard day="Saturday — Qualifying" summary="Qualifying session, then Post Malone headlines the biggest concert night of the weekend" />
+          <DayCard day="Sunday — Race" summary="Arrival timing by grandstand, the race itself, Alesso closes out the weekend" />
+          <DayCard day="Optional extra day" summary="Texas Hill Country/Fredericksburg or San Antonio — either works well as a bookend day before or after the core weekend" />
+        </div>
+      )}
 
       {isUnlocked && (
         <div className="mt-2 pt-10 border-t border-[#2A2A2A]">
@@ -101,10 +114,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
           />
         </div>
       )}
-
-      <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: circuitoftheamericas.com, cbsaustin.com, austinmonthly.com.
-      </p>
+      {/* Sources: circuitoftheamericas.com, cbsaustin.com, austinmonthly.com. */}
     </SpokeShell>
   );
 }

@@ -1,4 +1,5 @@
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
@@ -15,8 +16,12 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, isPro, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.hotels;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "hotels_guide" as const, owned: purchasedProductTypes.has("hotels_guide") }
+    : undefined;
 
   const hotelEmiliano = linkedExperiences.find((e) => e.slug.includes("brazilian-gp-hotel-emiliano-"));
   const budgetHotels = linkedExperiences.find((e) => e.slug.includes("brazilian-gp-budget-hotels-morumbi-"));
@@ -30,14 +35,19 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="São Paulo Grand Prix"
       status="teaser"
       h1="Jardins luxury, Morumbi value, or a self-catered stay across three neighborhoods"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="You've got the real hotel picks and neighborhood breakdown above — what you don't have yet is our direct verdict on which specific stay to book if Hotel Emiliano is sold out, plus our honest read on Airbnb and hostel options for race week, a gap most guides skip entirely. The pack adds both, plus this same level of tactical detail across all 12 guides — tickets, food, transit, the whole trip planned out."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Pack, to unlock our real hotel picks and ratings, our direct verdict on which specific stay to book if Hotel Emiliano is sold out, and our honest read on Airbnb and hostel options for race week — a gap most guides skip entirely."
     >
+      {/* Free teaser — neighborhood overview only, no specific hotel picks,
+          ratings, or booking detail. Everything else is gated behind
+          isUnlocked (full pack or the Where to Stay Guide mini-pack). */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Where to stay for the São Paulo Grand Prix is a genuine tradeoff between polish and proximity. Jardins puts
         you in São Paulo&apos;s most fashionable, food-forward neighborhood, a real transit ride from Interlagos.
@@ -46,36 +56,40 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
         Conceição is the third option, for anyone who wants more space or a longer stay.
       </p>
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Hotel Emiliano — Jardins boutique luxury</p>
-      {hotelEmiliano && (
-        <div className="mb-8">
-          <SpokeExperienceCard eventSlug={eventSlug} experience={hotelEmiliano} isPro={isPro} hideProCtas />
-        </div>
-      )}
+      {isUnlocked && (
+        <>
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Hotel Emiliano — Jardins boutique luxury</p>
+          {hotelEmiliano && (
+            <div className="mb-8">
+              <SpokeExperienceCard eventSlug={eventSlug} experience={hotelEmiliano} isPro={isPro} hideProCtas />
+            </div>
+          )}
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Budget & mid-range — Morumbi and Campo Belo</p>
-      {budgetHotels && (
-        <div className="mb-8">
-          <SpokeExperienceCard eventSlug={eventSlug} experience={budgetHotels} isPro={isPro} hideProCtas />
-        </div>
-      )}
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Budget & mid-range — Morumbi and Campo Belo</p>
+          {budgetHotels && (
+            <div className="mb-8">
+              <SpokeExperienceCard eventSlug={eventSlug} experience={budgetHotels} isPro={isPro} hideProCtas />
+            </div>
+          )}
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Self-catered — Jardins, Itaim Bibi & Vila Nova Conceição</p>
-      {neighborhoods && (
-        <div className="mb-8">
-          <SpokeExperienceCard eventSlug={eventSlug} experience={neighborhoods} isPro={isPro} hideProCtas />
-        </div>
-      )}
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Self-catered — Jardins, Itaim Bibi & Vila Nova Conceição</p>
+          {neighborhoods && (
+            <div className="mb-8">
+              <SpokeExperienceCard eventSlug={eventSlug} experience={neighborhoods} isPro={isPro} hideProCtas />
+            </div>
+          )}
 
-      <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Book early</p>
-        <p className="text-sm text-[#A3A3A3] leading-6">
-          Race weekend is one of São Paulo&apos;s highest-demand hotel periods of the year — a well-regarded,
-          57-room property like Hotel Emiliano books out its best rooms months ahead. Jardins, Itaim Bibi, and Vila
-          Nova Conceição&apos;s short-term rental stock also carries a real race-weekend premium across all three
-          neighborhoods.
-        </p>
-      </div>
+          <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Book early</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">
+              Race weekend is one of São Paulo&apos;s highest-demand hotel periods of the year — a well-regarded,
+              57-room property like Hotel Emiliano books out its best rooms months ahead. Jardins, Itaim Bibi, and Vila
+              Nova Conceição&apos;s short-term rental stock also carries a real race-weekend premium across all three
+              neighborhoods.
+            </p>
+          </div>
+        </>
+      )}
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">

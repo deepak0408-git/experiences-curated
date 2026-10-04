@@ -1,4 +1,5 @@
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
@@ -8,8 +9,12 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, isPro, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.hotels;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "hotels_guide" as const, owned: purchasedProductTypes.has("hotels_guide") }
+    : undefined;
 
   const whereToStay = linkedExperiences.find((e) => e.slug.includes("us-gp-where-to-stay"));
 
@@ -21,6 +26,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="United States Grand Prix"
       status="teaser"
       h1="South Congress, Downtown, or a self-catered stay — three real bases"
@@ -28,8 +34,12 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       heroImageUrl={heroImageUrl}
       heroImagePosition={spoke.heroImagePosition}
       isUnlocked={isUnlocked}
-      ctaCopy="Every hotel and rating above is real and free. The pack adds our single recommendation for your specific priorities, plus the booking-timing detail that matters most for a genuine F1-weekend demand spike across all of Austin."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Pack, to unlock our real hotel picks and ratings, plus our single recommendation for your specific priorities and the booking-timing detail that matters most for a genuine F1-weekend demand spike across all of Austin."
     >
+      {/* Free teaser — neighborhood overview only, no specific hotel picks,
+          ratings, or booking detail. Everything else is gated behind
+          isUnlocked (full pack or the Where to Stay Guide mini-pack). */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Austin doesn&apos;t have one obvious neighborhood to base an F1 trip from the way some host cities do —
         Downtown, South Congress, and the areas around Lady Bird Lake all put you within a genuinely short
@@ -37,47 +47,51 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
         proximity.
       </p>
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Three real picks, three budgets</p>
-      {whereToStay && (
-        <div className="mb-8">
-          <SpokeExperienceCard eventSlug={eventSlug} experience={whereToStay} isPro={isPro} hideProCtas />
-        </div>
-      )}
+      {isUnlocked && (
+        <>
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Three real picks, three budgets</p>
+          {whereToStay && (
+            <div className="mb-8">
+              <SpokeExperienceCard eventSlug={eventSlug} experience={whereToStay} isPro={isPro} hideProCtas />
+            </div>
+          )}
 
-      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3 mt-6">Prefer an Airbnb or serviced apartment instead?</p>
-      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
-        <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-          Hotels aren&apos;t the only option — Austin has a real short-let market, and for a multi-night trip a
-          self-catered apartment can genuinely beat a hotel room on space and price. If you&apos;re searching
-          Airbnb or a serviced-apartment platform rather than booking a hotel directly, these are the areas worth
-          filtering for:
-        </p>
-        <div className="flex flex-col gap-4">
-          <div>
-            <p className="text-sm font-bold text-white mb-1">South Congress / Travis Heights</p>
-            <p className="text-sm text-[#A3A3A3] leading-6">
-              Walkable to SoCo&apos;s shops, murals, and restaurants, with a real stock of converted bungalows and
-              small apartment buildings — a genuinely different feel from a downtown high-rise, at a comparable or
-              lower rate.
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3 mt-6">Prefer an Airbnb or serviced apartment instead?</p>
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
+            <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
+              Hotels aren&apos;t the only option — Austin has a real short-let market, and for a multi-night trip a
+              self-catered apartment can genuinely beat a hotel room on space and price. If you&apos;re searching
+              Airbnb or a serviced-apartment platform rather than booking a hotel directly, these are the areas worth
+              filtering for:
             </p>
+            <div className="flex flex-col gap-4">
+              <div>
+                <p className="text-sm font-bold text-white mb-1">South Congress / Travis Heights</p>
+                <p className="text-sm text-[#A3A3A3] leading-6">
+                  Walkable to SoCo&apos;s shops, murals, and restaurants, with a real stock of converted bungalows and
+                  small apartment buildings — a genuinely different feel from a downtown high-rise, at a comparable or
+                  lower rate.
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-bold text-white mb-1">East Austin</p>
+                <p className="text-sm text-[#A3A3A3] leading-6">
+                  The neighborhood Franklin Barbecue and Micklethwait Craft Meats both sit in — a real, still-affordable
+                  residential district with a large short-let stock, a short rideshare from both downtown and COTA.
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-bold text-white mb-1">South Austin, near Zilker</p>
+                <p className="text-sm text-[#A3A3A3] leading-6">
+                  Closer to Barton Springs Pool and Zilker Park than either downtown or South Congress proper — a
+                  genuinely quieter, more residential base for anyone prioritizing the outdoor side of an Austin trip
+                  over nightlife proximity.
+                </p>
+              </div>
+            </div>
           </div>
-          <div>
-            <p className="text-sm font-bold text-white mb-1">East Austin</p>
-            <p className="text-sm text-[#A3A3A3] leading-6">
-              The neighborhood Franklin Barbecue and Micklethwait Craft Meats both sit in — a real, still-affordable
-              residential district with a large short-let stock, a short rideshare from both downtown and COTA.
-            </p>
-          </div>
-          <div>
-            <p className="text-sm font-bold text-white mb-1">South Austin, near Zilker</p>
-            <p className="text-sm text-[#A3A3A3] leading-6">
-              Closer to Barton Springs Pool and Zilker Park than either downtown or South Congress proper — a
-              genuinely quieter, more residential base for anyone prioritizing the outdoor side of an Austin trip
-              over nightlife proximity.
-            </p>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
@@ -100,10 +114,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
           </div>
         </div>
       )}
-
-      <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: bunkhousehotels.com, marriott.com, hilton.com.
-      </p>
+      {/* Sources: bunkhousehotels.com, marriott.com, hilton.com. */}
     </SpokeShell>
   );
 }
