@@ -1,0 +1,230 @@
+[
+  {
+    "name": "EVEN Hotel Shanghai Hongqiao CBD by IHG",
+    "price": "US$579",
+    "reviewScore": 9,
+    "reviewCount": 193,
+    "starRating": null,
+    "address": null,
+    "area": "anting/hongqiao",
+    "priceNum": 82.71428571428571
+  },
+  {
+    "name": "Holiday Inn Shanghai Hongqiao by IHG",
+    "price": "US$581",
+    "reviewScore": 9.3,
+    "reviewCount": 516,
+    "starRating": null,
+    "address": null,
+    "area": "anting/hongqiao",
+    "priceNum": 83
+  },
+  {
+    "name": "Dayin Serene Garden Hotel -Shanghai Hongqiao North Xinjing Metro Station -Large Social Area -Bar -Café -Gym -Free Laundry Luggage Storage -24H Front Desk-English Service",
+    "price": "US$633",
+    "reviewScore": 9.2,
+    "reviewCount": 59,
+    "starRating": null,
+    "address": null,
+    "area": "anting/hongqiao",
+    "priceNum": 90.42857142857143
+  },
+  {
+    "name": "Artyzen Habitat Hongqiao Shanghai",
+    "price": "US$709",
+    "reviewScore": 9.2,
+    "reviewCount": 118,
+    "starRating": null,
+    "address": null,
+    "area": "anting/hongqiao",
+    "priceNum": 101.28571428571429
+  },
+  {
+    "name": "HUALUXE Shanghai Changfeng Park by IHG",
+    "price": "US$715",
+    "reviewScore": 9.5,
+    "reviewCount": 241,
+    "starRating": null,
+    "address": null,
+    "area": "anting/hongqiao",
+    "priceNum": 102.14285714285714
+  },
+  {
+    "name": "Shanghai Fish Inn East Nanjing Road",
+    "price": "US$722",
+    "reviewScore": 8.2,
+    "reviewCount": 800,
+    "starRating": null,
+    "address": null,
+    "area": "downtown",
+    "priceNum": 103.14285714285714
+  },
+  {
+    "name": "IntercityHotel Shanghai Hongqiao Airport - Free Minibar for First Night",
+    "price": "US$799",
+    "reviewScore": 9,
+    "reviewCount": 168,
+    "starRating": null,
+    "address": null,
+    "area": "anting/hongqiao",
+    "priceNum": 114.14285714285714
+  },
+  {
+    "name": "Mlily Hotel",
+    "price": "US$839",
+    "reviewScore": 9.2,
+    "reviewCount": 132,
+    "starRating": null,
+    "address": null,
+    "area": "anting/hongqiao",
+    "priceNum": 119.85714285714286
+  },
+  {
+    "name": "Broadway Mansions Hotel - On the bund",
+    "price": "US$923",
+    "reviewScore": 8.8,
+    "reviewCount": 403,
+    "starRating": null,
+    "address": null,
+    "area": "downtown",
+    "priceNum": 131.85714285714286
+  },
+  {
+    "name": "Shanghai Yunhe Yebo Hotel, Wuning Road Global Harbor Branch",
+    "price": "US$940",
+    "reviewScore": 9.8,
+    "reviewCount": 513,
+    "starRating": null,
+    "address": null,
+    "area": "anting/hongqiao",
+    "priceNum": 134.28571428571428
+  },
+  {
+    "name": "Shanghai Hongqiao Heyitang Hotel Beixinjing Subway Station Branch",
+    "price": "US$966",
+    "reviewScore": 9.3,
+    "reviewCount": 612,
+    "starRating": null,
+    "address": null,
+    "area": "anting/hongqiao",
+    "priceNum": 138
+  },
+  {
+    "name": "Holiday Inn Express Shanghai on The Bund by IHG",
+    "price": "US$1,038",
+    "reviewScore": 9,
+    "reviewCount": 1891,
+    "starRating": null,
+    "address": null,
+    "area": "downtown",
+    "priceNum": 148.28571428571428
+  },
+  {
+    "name": "Shanghai Bund Shamei Building Treasure Hotel",
+    "price": "US$1,077",
+    "reviewScore": 8.5,
+    "reviewCount": 285,
+    "starRating": null,
+    "address": null,
+    "area": "downtown",
+    "priceNum": 153.85714285714286
+  },
+  {
+    "name": "Hyatt on the Bund Shanghai - a Grand Hyatt hotel",
+    "price": "US$1,218",
+    "reviewScore": 8.5,
+    "reviewCount": 854,
+    "starRating": null,
+    "address": null,
+    "area": "downtown",
+    "priceNum": 174
+  },
+  {
+    "name": "Jinglai Hotel Bushe - Shanghai On the Bund",
+    "price": "US$1,239",
+    "reviewScore": 8.8,
+    "reviewCount": 304,
+    "starRating": null,
+    "address": null,
+    "area": "downtown",
+    "priceNum": 177
+  },
+  {
+    "name": "Hotel Indigo Shanghai On The Bund by IHG",
+    "price": "US$1,401",
+    "reviewScore": 8.5,
+    "reviewCount": 1064,
+    "starRating": null,
+    "address": null,
+    "area": "downtown",
+    "priceNum": 200.14285714285714
+  },
+  {
+    "name": "Courtyard Shanghai Jiading (force-included, named in pack copy)",
+    "price": "US$1,674",
+    "reviewScore": 8.6,
+    "reviewCount": 26,
+    "area": "jiading-forced",
+    "priceNum": 239.14285714285714
+  },
+  {
+    "name": "The Westin Bund Center, Shanghai",
+    "price": "US$1,762",
+    "reviewScore": 8.7,
+    "reviewCount": 1412,
+    "starRating": null,
+    "address": null,
+    "area": "downtown",
+    "priceNum": 251.71428571428572
+  },
+  {
+    "name": "Fairmont Peace Hotel on the Bund",
+    "price": "US$2,542",
+    "reviewScore": 9.3,
+    "reviewCount": 589,
+    "starRating": null,
+    "address": null,
+    "area": "downtown",
+    "priceNum": 363.14285714285717
+  },
+  {
+    "name": "The St. Regis on the Bund, Shanghai",
+    "price": "US$2,619",
+    "reviewScore": 9.2,
+    "reviewCount": 398,
+    "starRating": null,
+    "address": null,
+    "area": "downtown",
+    "priceNum": 374.14285714285717
+  },
+  {
+    "name": "Waldorf Astoria Shanghai on the Bund",
+    "price": "US$2,920",
+    "reviewScore": 9.1,
+    "reviewCount": 536,
+    "starRating": null,
+    "address": null,
+    "area": "downtown",
+    "priceNum": 417.14285714285717
+  },
+  {
+    "name": "The Shanghai EDITION",
+    "price": "US$2,987",
+    "reviewScore": 9.3,
+    "reviewCount": 551,
+    "starRating": null,
+    "address": null,
+    "area": "downtown",
+    "priceNum": 426.7142857142857
+  },
+  {
+    "name": "The Peninsula Shanghai",
+    "price": "US$3,864",
+    "reviewScore": 9.4,
+    "reviewCount": 615,
+    "starRating": null,
+    "address": null,
+    "area": "downtown",
+    "priceNum": 552
+  }
+]

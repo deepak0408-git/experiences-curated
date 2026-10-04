@@ -1,0 +1,38 @@
+{
+  "origin": "Berlin",
+  "googleFlights": {
+    "sorted": [
+      1769,
+      1833,
+      1839,
+      1842,
+      1935
+    ],
+    "rawCount": 8
+  },
+  "kayak": {
+    "sorted": [
+      1624,
+      1625,
+      1630,
+      1681,
+      1682,
+      1684,
+      1822,
+      1848
+    ],
+    "rawCount": 21
+  },
+  "combined": {
+    "low": 1624,
+    "high": 1935,
+    "excludedLow": [],
+    "excludedHigh": [],
+    "gfLow": 1769,
+    "gfHigh": 1935,
+    "kyLow": 1624,
+    "kyHigh": 1848
+  },
+  "finalCostLow": 1697,
+  "finalCostHigh": 1892
+}

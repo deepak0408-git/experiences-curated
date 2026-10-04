@@ -1,0 +1,51 @@
+{
+  "origin": "Mexico_City",
+  "googleFlights": {
+    "sorted": [
+      2560
+    ],
+    "rawCount": 3
+  },
+  "kayak": {
+    "sorted": [
+      1684,
+      1828,
+      1991,
+      2009,
+      2028,
+      2037,
+      2045,
+      2053,
+      2064,
+      2072,
+      2092,
+      2100,
+      2110,
+      2111,
+      2119,
+      2120,
+      2128,
+      2145,
+      2147,
+      2156,
+      2157,
+      2160,
+      2166,
+      2175,
+      2243
+    ],
+    "rawCount": 37
+  },
+  "combined": {
+    "low": 1684,
+    "high": 2243,
+    "excludedLow": [],
+    "excludedHigh": [
+      2560
+    ],
+    "gfLow": null,
+    "gfHigh": null,
+    "kyLow": 1684,
+    "kyHigh": 2243
+  }
+}

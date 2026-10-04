@@ -1,0 +1,210 @@
+{
+  "url": "https://www.booking.com/searchresults.html?ss=Hyatt+Regency+Shanghai+Jiading&checkin=2027-04-14&checkout=2027-04-21&group_adults=2&no_rooms=1&group_children=0&order=review_score_and_price&nflt=review_score%3D70%3Bht_id%3D204&selected_currency=USD&lang=en-us",
+  "checkin": "2027-04-14",
+  "checkout": "2027-04-21",
+  "rawHotelCount": 25,
+  "qualifyingHotelCount": 0,
+  "hotels": [],
+  "rejectedForLowReviewCount": [
+    {
+      "name": "Starway Hotel Shanghai Hongqiao National Exhibition and Convention Center Beiqing Road",
+      "price": "US$225",
+      "reviewScore": 10,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "唯庭酒店上海体育馆徐家汇交大店",
+      "price": "US$328",
+      "reviewScore": 10,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Baolong Homelike Hotel - Zhongshan Branch",
+      "price": "US$385",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Hanting Hotel Shanghai Jing'an Sports Center Wenshui Road Subway Station",
+      "price": "US$435",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Crystal Hotel Shanghai University Dachang",
+      "price": "US$506",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Crystal Hotel Jing'an Darongcheng Hutai Road",
+      "price": "US$506",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "CitiGO Hotel Shanghai Wujiaochang Guohang Road",
+      "price": "US$571",
+      "reviewScore": 10,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "JI Hotel Shanghai Zhongxing Road",
+      "price": "US$590",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "全季上海大宁国际酒店",
+      "price": "US$643",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "上海安鉌蓓斯特酒店国家会展中心虹桥机场店",
+      "price": "US$671",
+      "reviewScore": 10,
+      "reviewCount": 3,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Orange Hotel Shanghai North Xizang Road Subway Station",
+      "price": "US$672",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "JI Hotel Shanghai Daning North Hi-Tech Industrial Park",
+      "price": "US$733",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "JI Hotel Shanghai Jing'an Daning Park",
+      "price": "US$735",
+      "reviewScore": 10,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Crystal Hotel Shanghai Wujiaochang Fudan",
+      "price": "US$748",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Crystal Orange Shanghai Jiangqiao Wanda Hotel",
+      "price": "US$693",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Manxin Hotel Shanghai North Bund",
+      "price": "US$816",
+      "reviewScore": 10,
+      "reviewCount": 3,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Tyms High Serviced Residence Shanghai Xujiahui Tower",
+      "price": "US$835",
+      "reviewScore": 10,
+      "reviewCount": 9,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "JI Hotel Shanghai Jing'an Temple Kangding Road",
+      "price": "US$902",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Tonight Homestay East Nanjing Road Shanghai Guangli Building",
+      "price": "US$1,037",
+      "reviewScore": 10,
+      "reviewCount": 7,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Tyms High Serviced Residence Shanghai Suzhou Creek",
+      "price": "US$1,062",
+      "reviewScore": 10,
+      "reviewCount": 5,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "InterContinental Hotels Shanghai Jing'An Ser Apt.by IHG",
+      "price": "US$1,047",
+      "reviewScore": 10,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Yuexi, Nordic style, Shanghai Railway Station, Changshou Road subway, cooking, big bathtub, family outing, Disney, the Bund, Nanjing Road Walkway, Hongshoufang",
+      "price": "US$3,792",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "哲学家酒店中山公园武宁路地铁站店",
+      "price": "US$233",
+      "reviewScore": 9.8,
+      "reviewCount": 8,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "SilMiCore Hostel",
+      "price": "US$326",
+      "reviewScore": 9.9,
+      "reviewCount": 11,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Hanting Hotel Shanghai Hongqiao Hub Qibao Center",
+      "price": "US$535",
+      "reviewScore": 9.5,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    }
+  ]
+}

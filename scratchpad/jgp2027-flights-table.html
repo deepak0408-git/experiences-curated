@@ -1,0 +1,92 @@
+<title>Japanese GP 2027 Flights</title>
+<style>
+:root{
+  --bg:#0A0A0A; --surface:#141414; --surface2:#1A1A1A; --border:#2A2A2A;
+  --muted:#A3A3A3; --fg:#FFFFFF; --accent:#AAFF00; --dim:#6A6A6A;
+  --warn:#FFB020; --warn-bg:#2A2000;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#FAFAF7; --surface:#FFFFFF; --surface2:#F2F2EE; --border:#E2E2DC;
+    --muted:#5C5C56; --fg:#141410; --accent:#5C8A00; --dim:#8A8A82;
+    --warn:#8A5A00; --warn-bg:#FFF3DC;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#FAFAF7; --surface:#FFFFFF; --surface2:#F2F2EE; --border:#E2E2DC;
+  --muted:#5C5C56; --fg:#141410; --accent:#5C8A00; --dim:#8A8A82;
+  --warn:#8A5A00; --warn-bg:#FFF3DC;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;margin:0;padding-block:32px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px}
+h1{font-weight:900;font-size:22px;margin:0 0 4px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 24px;line-height:1.6}
+.sub b{color:var(--fg)}
+.meta{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:20px;font-size:12px;color:var(--muted);font-family:ui-monospace,Menlo,Consolas,monospace}
+.meta span b{color:var(--accent)}
+table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+thead th{text-align:left;padding:10px 10px;background:var(--surface2);color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:10.5px;border-bottom:1px solid var(--border);white-space:nowrap}
+tbody td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top;font-variant-numeric:tabular-nums}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--surface2)}
+.origin{font-weight:700;white-space:nowrap}
+.num{color:var(--muted)}
+.final{font-weight:900;color:var(--accent);white-space:nowrap}
+.excl{color:var(--muted);max-width:340px}
+.flag{background:var(--warn-bg);color:var(--warn)}
+.flag .final{color:var(--warn)}
+.flag .excl{color:var(--warn);font-weight:600}
+.tag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;padding:2px 6px;border-radius:3px;background:var(--warn-bg);color:var(--warn);margin-right:6px}
+.tbl-scroll{overflow-x:auto}
+</style>
+
+<div class="wrap">
+  <h1>Japanese GP 2027 — Flight Cost Research</h1>
+  <p class="sub">Suzuka Circuit, 9–11 Apr 2027 &middot; destination airport used for search: <b>NRT (Tokyo Narita)</b>, per explicit direction — Suzuka's stored <code>nearestAirportIata</code> stays NGO. Round-trip, ≤1 stop, economy, <b>2027-04-04 → 2027-04-16</b> window. Google Flights + Kayak, combined-dataset density-boundary outlier exclusion. All 49 origin markets, initial seeding pass.</p>
+  <div class="meta">
+    <span>Routes researched: <b>48</b></span>
+    <span>Same-city (Tokyo): <b>1</b></span>
+    <span>Single-source: <b>2</b> (Doha, Moscow)</span>
+    <span>Needs curator decision: <b>1</b> (Moscow)</span>
+  </div>
+  <div class="tbl-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th>Origin</th>
+        <th>GF Range</th>
+        <th>GF n</th>
+        <th>Kayak Range</th>
+        <th>Kayak n</th>
+        <th>Proposed Final</th>
+        <th>Exclusions</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  </div>
+</div>
+
+<script>
+const rows = [{"origin":"Amsterdam","gfRange":"$1291-17807","gfN":75,"kyRange":"$1017-2402","kyN":38,"proposedFinal":"$1154-2698","exclusions":"8 high outlier(s) excluded (sparse tail above $2698)"},{"origin":"Atlanta","gfRange":"$1716-8367","gfN":42,"kyRange":"$1348-2423","kyN":9,"proposedFinal":"$1532-2729","exclusions":"4 high outlier(s) excluded (sparse tail above $2729)"},{"origin":"Bangalore","gfRange":"$867-3972","gfN":37,"kyRange":"$727-1401","kyN":38,"proposedFinal":"$797-1419","exclusions":"19 high outlier(s) excluded (sparse tail above $1419)"},{"origin":"Barcelona","gfRange":"$1334-10878","gfN":57,"kyRange":"$1152-2874","kyN":25,"proposedFinal":"$1243-2869","exclusions":"5 high outlier(s) excluded (sparse tail above $2869)"},{"origin":"Beijing","gfRange":"$401-4061","gfN":65,"kyRange":"$510-831","kyN":28,"proposedFinal":"$456-1108","exclusions":"14 high outlier(s) excluded (sparse tail above $1108)"},{"origin":"Berlin","gfRange":"$1236-20149","gfN":39,"kyRange":"$1242-1665","kyN":25,"proposedFinal":"$1239-2096","exclusions":"6 high outlier(s) excluded (sparse tail above $2096)"},{"origin":"Boston","gfRange":"$1311-4773","gfN":41,"kyRange":"$1265-2361","kyN":28,"proposedFinal":"$1288-2541","exclusions":"15 high outlier(s) excluded (sparse tail above $2541)"},{"origin":"Buenos Aires","gfRange":"$2930-14953","gfN":13,"kyRange":"$1936-6529","kyN":5,"proposedFinal":"$2851-3729","exclusions":"1 low outlier(s) excluded (1936); 6 high outlier(s) excluded (sparse tail above $3729)"},{"origin":"Cairo","gfRange":"$1196-4785","gfN":31,"kyRange":"$1048-1504","kyN":20,"proposedFinal":"$1122-1522","exclusions":"20 high outlier(s) excluded (sparse tail above $1522)"},{"origin":"Casablanca","gfRange":"$1554-11969","gfN":27,"kyRange":"$1516-1849","kyN":14,"proposedFinal":"$1535-2267","exclusions":"5 high outlier(s) excluded (sparse tail above $2267)"},{"origin":"Chicago","gfRange":"$1205-12212","gfN":58,"kyRange":"$1165-1401","kyN":15,"proposedFinal":"$1185-1932","exclusions":"17 high outlier(s) excluded (sparse tail above $1932)"},{"origin":"Dallas","gfRange":"$1110-4477","gfN":41,"kyRange":"$1067-2444","kyN":10,"proposedFinal":"$1089-1288","exclusions":"42 high outlier(s) excluded (sparse tail above $1288)"},{"origin":"Doha","gfRange":"-","gfN":0,"kyRange":"$1156-1399","kyN":28,"proposedFinal":"$1156-1399","exclusions":"SINGLE-SOURCE: Google Flights returned 0 results (intermittent rate-limit pattern documented in skill for either site); Kayak (n=28) formed one clean dense cluster, no exclusions"},{"origin":"Dubai","gfRange":"$1011-17103","gfN":62,"kyRange":"$651-2106","kyN":27,"proposedFinal":"$989-2208","exclusions":"2 low outlier(s) excluded (651, 664); 13 high outlier(s) excluded (sparse tail above $2208)"},{"origin":"Dublin","gfRange":"$1599-3664","gfN":32,"kyRange":"$1346-1719","kyN":26,"proposedFinal":"$1473-2239","exclusions":"5 high outlier(s) excluded (sparse tail above $2239)"},{"origin":"Hong Kong","gfRange":"$324-4959","gfN":58,"kyRange":"$330-412","kyN":13,"proposedFinal":"$327-955","exclusions":"7 high outlier(s) excluded (sparse tail above $955)"},{"origin":"Johannesburg","gfRange":"$988-21331","gfN":26,"kyRange":"$947-1471","kyN":14,"proposedFinal":"$968-1866","exclusions":"7 high outlier(s) excluded (sparse tail above $1866)"},{"origin":"London","gfRange":"$1424-3318","gfN":100,"kyRange":"$1405-2253","kyN":19,"proposedFinal":"$1415-2786","exclusions":"none -- full continuous dense run"},{"origin":"Los Angeles","gfRange":"$940-8569","gfN":68,"kyRange":"$917-1365","kyN":28,"proposedFinal":"$929-1790","exclusions":"3 high outlier(s) excluded (sparse tail above $1790)"},{"origin":"Madrid","gfRange":"$1293-6484","gfN":53,"kyRange":"$1052-2875","kyN":28,"proposedFinal":"$1173-1973","exclusions":"7 high outlier(s) excluded (sparse tail above $1973)"},{"origin":"Manchester","gfRange":"$1675-3674","gfN":35,"kyRange":"$1473-1849","kyN":37,"proposedFinal":"$1574-2411","exclusions":"3 high outlier(s) excluded (sparse tail above $2411)"},{"origin":"Manila","gfRange":"$257-2532","gfN":67,"kyRange":"$252-460","kyN":16,"proposedFinal":"$255-884","exclusions":"2 high outlier(s) excluded (sparse tail above $884)"},{"origin":"Melbourne","gfRange":"$818-4683","gfN":57,"kyRange":"$819-1443","kyN":34,"proposedFinal":"$819-2099","exclusions":"3 high outlier(s) excluded (sparse tail above $2099)"},{"origin":"Mexico City","gfRange":"$1764-11627","gfN":28,"kyRange":"$1261-2118","kyN":31,"proposedFinal":"$1513-2356","exclusions":"8 high outlier(s) excluded (sparse tail above $2356)"},{"origin":"Miami","gfRange":"$1358-13432","gfN":67,"kyRange":"$1422-1856","kyN":15,"proposedFinal":"$1390-2951","exclusions":"7 high outlier(s) excluded (sparse tail above $2951)"},{"origin":"Milan","gfRange":"$1236-17176","gfN":70,"kyRange":"$1117-1590","kyN":22,"proposedFinal":"$1177-2127","exclusions":"7 high outlier(s) excluded (sparse tail above $2127)"},{"origin":"Montreal","gfRange":"$1351-4719","gfN":35,"kyRange":"$1378-1574","kyN":4,"proposedFinal":"$1365-1907","exclusions":"11 high outlier(s) excluded (sparse tail above $1907)"},{"origin":"Moscow","gfRange":"$1183-9160","gfN":23,"kyRange":"-","kyN":0,"proposedFinal":"PENDING DECISION","exclusions":"SINGLE-SOURCE: Kayak returned 0 results (known recurring EU-airspace-closure gap per skill); Google Flights (n=23) shows TWO disconnected dense clusters -- needs curator judgment call, see flagged note"},{"origin":"Mumbai","gfRange":"$735-3637","gfN":32,"kyRange":"$590-1016","kyN":21,"proposedFinal":"$663-1295","exclusions":"16 high outlier(s) excluded (sparse tail above $1295)"},{"origin":"Munich","gfRange":"$1258-14561","gfN":49,"kyRange":"$1252-2721","kyN":29,"proposedFinal":"$1255-2789","exclusions":"7 high outlier(s) excluded (sparse tail above $2789)"},{"origin":"Nairobi","gfRange":"$1418-2905","gfN":3,"kyRange":"$1205-1385","kyN":17,"proposedFinal":"$1312-1402","exclusions":"2 high outlier(s) excluded (sparse tail above $1402)"},{"origin":"New Delhi","gfRange":"$695-2724","gfN":47,"kyRange":"$616-1127","kyN":43,"proposedFinal":"$656-1744","exclusions":"2 high outlier(s) excluded (sparse tail above $1744)"},{"origin":"New York City","gfRange":"$1176-2625","gfN":89,"kyRange":"$1144-1480","kyN":7,"proposedFinal":"$1160-2015","exclusions":"2 high outlier(s) excluded (sparse tail above $2015)"},{"origin":"Paris","gfRange":"$1406-17390","gfN":75,"kyRange":"$1320-2280","kyN":21,"proposedFinal":"$1363-2564","exclusions":"10 high outlier(s) excluded (sparse tail above $2564)"},{"origin":"Philadelphia","gfRange":"$1259-8576","gfN":30,"kyRange":"$1217-1858","kyN":6,"proposedFinal":"$1238-2147","exclusions":"9 high outlier(s) excluded (sparse tail above $2147)"},{"origin":"Rio de Janeiro","gfRange":"$2069-9434","gfN":12,"kyRange":"$1393-2023","kyN":6,"proposedFinal":"$1731-2046","exclusions":"11 high outlier(s) excluded (sparse tail above $2046)"},{"origin":"Rome","gfRange":"$1408-18701","gfN":55,"kyRange":"$1156-1729","kyN":32,"proposedFinal":"$1282-2271","exclusions":"4 high outlier(s) excluded (sparse tail above $2271)"},{"origin":"San Francisco","gfRange":"$963-8921","gfN":61,"kyRange":"$927-1303","kyN":18,"proposedFinal":"$945-1814","exclusions":"6 high outlier(s) excluded (sparse tail above $1814)"},{"origin":"Sao Paulo","gfRange":"$1421-4792","gfN":36,"kyRange":"$1475-2453","kyN":4,"proposedFinal":"$1448-2430","exclusions":"14 high outlier(s) excluded (sparse tail above $2430)"},{"origin":"Seoul","gfRange":"$391-3898","gfN":55,"kyRange":"$267-387","kyN":18,"proposedFinal":"$329-748","exclusions":"10 high outlier(s) excluded (sparse tail above $748)"},{"origin":"Shanghai","gfRange":"$475-3437","gfN":63,"kyRange":"$368-569","kyN":32,"proposedFinal":"$422-986","exclusions":"6 high outlier(s) excluded (sparse tail above $986)"},{"origin":"Singapore","gfRange":"$418-3284","gfN":67,"kyRange":"$484-589","kyN":24,"proposedFinal":"$451-928","exclusions":"2 high outlier(s) excluded (sparse tail above $928)"},{"origin":"Stockholm","gfRange":"$1228-7668","gfN":45,"kyRange":"$1077-1355","kyN":23,"proposedFinal":"$1153-1861","exclusions":"5 high outlier(s) excluded (sparse tail above $1861)"},{"origin":"Sydney","gfRange":"$791-4000","gfN":51,"kyRange":"$851-1445","kyN":32,"proposedFinal":"$821-1584","exclusions":"8 high outlier(s) excluded (sparse tail above $1584)"},{"origin":"Tokyo","gfRange":"n/a","gfN":"n/a","kyRange":"n/a","kyN":"n/a","proposedFinal":"$0-0","exclusions":"Same-city origin rule -- NRT is Tokyo's own airport, no flight needed"},{"origin":"Toronto","gfRange":"$1389-13434","gfN":63,"kyRange":"$1331-1412","kyN":10,"proposedFinal":"$1360-2184","exclusions":"8 high outlier(s) excluded (sparse tail above $2184)"},{"origin":"Vancouver","gfRange":"$849-11369","gfN":61,"kyRange":"$989-1273","kyN":6,"proposedFinal":"$919-1806","exclusions":"10 high outlier(s) excluded (sparse tail above $1806)"},{"origin":"Washington DC","gfRange":"$1110-3476","gfN":89,"kyRange":"$1114-1766","kyN":8,"proposedFinal":"$1112-2258","exclusions":"6 high outlier(s) excluded (sparse tail above $2258)"},{"origin":"Zurich","gfRange":"$1439-16345","gfN":52,"kyRange":"$1302-1457","kyN":20,"proposedFinal":"$1371-2169","exclusions":"8 high outlier(s) excluded (sparse tail above $2169)"}];
+const tbody = document.getElementById('rows');
+for (const r of rows) {
+  const tr = document.createElement('tr');
+  const flagged = r.proposedFinal === 'PENDING DECISION' || String(r.exclusions).startsWith('SINGLE-SOURCE') || String(r.exclusions).startsWith('Same-city');
+  if (flagged) tr.className = 'flag';
+  const tag = r.proposedFinal === 'PENDING DECISION' ? '<span class="tag">decision needed</span>' :
+              String(r.exclusions).startsWith('SINGLE-SOURCE') ? '<span class="tag">single-source</span>' :
+              String(r.exclusions).startsWith('Same-city') ? '<span class="tag">same-city</span>' : '';
+  tr.innerHTML = `
+    <td class="origin">${r.origin}</td>
+    <td class="num">${r.gfRange}</td>
+    <td class="num">${r.gfN}</td>
+    <td class="num">${r.kyRange}</td>
+    <td class="num">${r.kyN}</td>
+    <td class="final">${r.proposedFinal}</td>
+    <td class="excl">${tag}${r.exclusions}</td>
+  `;
+  tbody.appendChild(tr);
+}
+</script>

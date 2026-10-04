@@ -1,0 +1,211 @@
+{
+  "url": "https://www.booking.com/searchresults.html?ss=Melbourne%2C+Australia&checkin=2027-03-31&checkout=2027-04-07&group_adults=2&no_rooms=1&group_children=0&order=review_score_and_price&nflt=review_score%3D70%3Bht_id%3D204&selected_currency=USD&lang=en-us&offset=25",
+  "checkin": "2027-03-31",
+  "checkout": "2027-04-07",
+  "rawHotelCount": 25,
+  "qualifyingHotelCount": 22,
+  "hotels": [
+    {
+      "name": "The Lyall",
+      "price": "US$3,637",
+      "reviewScore": 9.6,
+      "reviewCount": 212,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Adina Apartment Hotel Melbourne, Pentridge",
+      "price": "US$1,157",
+      "reviewScore": 9,
+      "reviewCount": 3717,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "The Sebel Melbourne Moonee Ponds",
+      "price": "US$1,867",
+      "reviewScore": 9,
+      "reviewCount": 823,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "The Motley Hotel Melbourne, Tapestry Collection by Hilton",
+      "price": "US$2,485",
+      "reviewScore": 9.1,
+      "reviewCount": 1334,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Crowne Plaza Melbourne Carlton by IHG",
+      "price": "US$2,567",
+      "reviewScore": 9,
+      "reviewCount": 79,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Quest Collingwood",
+      "price": "US$2,346",
+      "reviewScore": 9.3,
+      "reviewCount": 1758,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Meriton Suites Melbourne",
+      "price": "US$2,790",
+      "reviewScore": 9.2,
+      "reviewCount": 4162,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Zagame's House",
+      "price": "US$2,864",
+      "reviewScore": 9.1,
+      "reviewCount": 2016,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "The StandardX, Melbourne",
+      "price": "US$2,946",
+      "reviewScore": 9.2,
+      "reviewCount": 1978,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Melbourne City Apartment Hotel",
+      "price": "US$2,754",
+      "reviewScore": 9,
+      "reviewCount": 2677,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Holiday Inn Melbourne Bourke Street Mall by IHG",
+      "price": "US$3,147",
+      "reviewScore": 9.1,
+      "reviewCount": 600,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Quay West Suites Melbourne",
+      "price": "US$3,424",
+      "reviewScore": 9.1,
+      "reviewCount": 1280,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Lanson Place Parliament Gardens",
+      "price": "US$3,080",
+      "reviewScore": 9.3,
+      "reviewCount": 1670,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Hilton Melbourne Little Queen Street",
+      "price": "US$3,520",
+      "reviewScore": 9.1,
+      "reviewCount": 1295,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Treasury on Collins Melbourne",
+      "price": "US$3,961",
+      "reviewScore": 9.2,
+      "reviewCount": 1253,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Pullman East Melbourne",
+      "price": "US$4,164",
+      "reviewScore": 9,
+      "reviewCount": 2729,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Park Hyatt Melbourne",
+      "price": "US$5,654",
+      "reviewScore": 9.1,
+      "reviewCount": 1369,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "ibis Styles Melbourne Airport",
+      "price": "US$1,186",
+      "reviewScore": 8.6,
+      "reviewCount": 7508,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Mantra Melbourne Airport",
+      "price": "US$1,198",
+      "reviewScore": 8.5,
+      "reviewCount": 4234,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "Novotel Melbourne Airport",
+      "price": "US$1,325",
+      "reviewScore": 8.5,
+      "reviewCount": 3226,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "lyf Collingwood Melbourne",
+      "price": "US$1,635",
+      "reviewScore": 8.8,
+      "reviewCount": 3023,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "MainStay Suites Abbotsford",
+      "price": "US$1,783",
+      "reviewScore": 8.5,
+      "reviewCount": 548,
+      "starRating": 5,
+      "address": null
+    }
+  ],
+  "rejectedForLowReviewCount": [
+    {
+      "name": "Novotel St Kilda",
+      "price": "US$4,299",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": 4,
+      "address": null
+    },
+    {
+      "name": "United Places Hotel Botanic Gardens",
+      "price": "US$4,500",
+      "reviewScore": 9.2,
+      "reviewCount": 19,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "Private Unit in Heritage Building in Fitzroy North",
+      "price": "US$7,751",
+      "reviewScore": 9,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    }
+  ]
+}

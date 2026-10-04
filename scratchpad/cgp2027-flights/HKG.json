@@ -1,0 +1,36 @@
+{
+  "origin": "Hong Kong",
+  "googleFlights": {
+    "sorted": [
+      472,
+      569,
+      581,
+      587
+    ],
+    "rawCount": 11
+  },
+  "kayak": {
+    "sorted": [
+      317,
+      359,
+      373,
+      384,
+      390,
+      402,
+      431
+    ],
+    "rawCount": 50
+  },
+  "combined": {
+    "low": 317,
+    "high": 587,
+    "excludedLow": [],
+    "excludedHigh": [],
+    "gfLow": 472,
+    "gfHigh": 587,
+    "kyLow": 317,
+    "kyHigh": 431
+  },
+  "finalCostLow": 395,
+  "finalCostHigh": 509
+}

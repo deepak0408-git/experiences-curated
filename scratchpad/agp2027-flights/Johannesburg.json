@@ -1,0 +1,47 @@
+{
+  "origin": "Johannesburg",
+  "googleFlights": {
+    "sorted": [
+      1230,
+      1330,
+      1335,
+      1338,
+      1348,
+      1358
+    ],
+    "rawCount": 8
+  },
+  "kayak": {
+    "sorted": [
+      952,
+      959,
+      979,
+      1049,
+      1065,
+      1120,
+      1146,
+      1226,
+      1247,
+      1275,
+      1285,
+      1295,
+      1300,
+      1303,
+      1318,
+      1412
+    ],
+    "rawCount": 51
+  },
+  "combined": {
+    "low": 952,
+    "high": 1412,
+    "excludedLow": [],
+    "excludedHigh": [],
+    "gfLow": 1230,
+    "gfHigh": 1358,
+    "kyLow": 952,
+    "kyHigh": 1412
+  },
+  "finalCostLow": 1091,
+  "finalCostHigh": 1385
+}

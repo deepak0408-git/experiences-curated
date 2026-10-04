@@ -1,0 +1,52 @@
+{
+  "origin": "Buenos_Aires",
+  "googleFlights": {
+    "sorted": [
+      2930,
+      3226,
+      3312,
+      4056,
+      4079,
+      4114,
+      4201,
+      4275,
+      5224,
+      5786,
+      7188,
+      7697,
+      14953
+    ],
+    "rawCount": 14
+  },
+  "kayak": {
+    "sorted": [
+      1936,
+      2772,
+      2892,
+      3182,
+      6529
+    ],
+    "rawCount": 14
+  },
+  "combined": {
+    "low": 2772,
+    "high": 4275,
+    "excludedLow": [
+      1936
+    ],
+    "excludedHigh": [
+      5224,
+      5786,
+      6529,
+      7188,
+      7697,
+      14953
+    ],
+    "gfLow": 2930,
+    "gfHigh": 4275,
+    "kyLow": 2772,
+    "kyHigh": 3182
+  },
+  "finalCostLow": 2851,
+  "finalCostHigh": 3729
+}

@@ -1,0 +1,338 @@
+<title>Ticket Intelligence Filter Audit</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f7f7f8;
+    --border: #e2e2e6;
+    --text: #1a1a1e;
+    --muted: #6b6b74;
+    --accent: #3d5afe;
+    --ok: #1a7f4e;
+    --ok-bg: #e8f6ee;
+    --warn: #9a6a00;
+    --warn-bg: #fdf3dc;
+    --bad: #b3261e;
+    --bad-bg: #fceae9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17171a;
+      --surface: #1f1f23;
+      --border: #313136;
+      --text: #ececee;
+      --muted: #a0a0a8;
+      --accent: #8ab4ff;
+      --ok: #6fd39a;
+      --ok-bg: #123324;
+      --warn: #e0b34c;
+      --warn-bg: #3a2e0e;
+      --bad: #ff8a80;
+      --bad-bg: #3a1512;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17171a;
+    --surface: #1f1f23;
+    --border: #313136;
+    --text: #ececee;
+    --muted: #a0a0a8;
+    --accent: #8ab4ff;
+    --ok: #6fd39a;
+    --ok-bg: #123324;
+    --warn: #e0b34c;
+    --warn-bg: #3a2e0e;
+    --bad: #ff8a80;
+    --bad-bg: #3a1512;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    padding: 32px 16px 48px;
+    max-width: 1080px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.92rem;
+    margin: 0 0 28px;
+    max-width: 68ch;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    font-size: 0.8rem;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 32px;
+  }
+  .legend b { color: var(--text); }
+  h2 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 40px 0 4px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+  h2:first-of-type { border-top: none; margin-top: 0; }
+  .verdict {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 0 0 14px;
+    max-width: 76ch;
+  }
+  .verdict b { color: var(--text); }
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+    min-width: 640px;
+  }
+  th, td {
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  thead th {
+    background: var(--surface);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    font-weight: 700;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:nth-child(even) { background: color-mix(in srgb, var(--surface) 50%, transparent); }
+  .exp-name { font-weight: 600; }
+  .type-tag {
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    font-size: 0.74rem;
+    color: var(--muted);
+  }
+  .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+  .pill.ok { background: var(--ok-bg); color: var(--ok); }
+  .pill.warn { background: var(--warn-bg); color: var(--warn); }
+  .pill.bad { background: var(--bad-bg); color: var(--bad); }
+  .note { color: var(--muted); font-size: 0.78rem; }
+  .summary {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-top: 40px;
+  }
+  .summary h2 { border: none; margin-top: 0; padding-top: 0; }
+  .summary ol { margin: 10px 0 0; padding-left: 20px; font-size: 0.87rem; }
+  .summary li { margin-bottom: 10px; }
+  .summary .bottom-line {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 0.87rem;
+  }
+  .empty-events {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+</style>
+
+<h1>Ticket Intelligence Filter Audit</h1>
+<p class="subtitle">Every F1 event's experiences, checked against two candidate signals for surfacing a "See your seat match" link on the experience page sidebar: <b>T1</b> = <code>experienceType === "fan_experience"</code>, <b>T2</b> = the experience's curator-assigned spoke is <code>tickets</code> or <code>luxury</code> in <code>EXPERIENCE_TO_SPOKE_BY_EVENT</code>. Queried directly from the DB, 30 Sep 2026.</p>
+
+<div class="legend">
+  <span><span class="pill ok">✓</span> <b>correct</b> — filter result matches human judgment</span>
+  <span><span class="pill bad">✗</span> <b>false positive</b> — filter shows link, shouldn't</span>
+  <span><span class="pill warn">?</span> <b>false negative / gap</b> — filter hides link, should show</span>
+</div>
+
+<h2>Abu Dhabi Grand Prix 2026</h2>
+<p class="verdict"><b>2 false positives survive both signals</b> — Skybridge Terrace and Yacht Charter are tagged <code>fan_experience</code> AND mapped to the <code>luxury</code> spoke, but neither is a purchasable circuit seat.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Experience</th><th>Type</th><th>On-track?</th><th>T1</th><th>T2</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td class="exp-name">Abu Dhabi Hill — the Real Value Seat</td><td class="type-tag">fan_experience</td><td>Yes (GA)</td><td>✓</td><td>tickets</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">F1 Paddock Club — Pit-Lane Hospitality</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>luxury</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">Main Grandstand — Start, Finish & Podium</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>tickets</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">West Grandstand — the Braking-Zone Seat</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>tickets</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">Skybridge Terrace — Suspended Over the Track</td><td class="type-tag">fan_experience</td><td>No (hotel rooftop perch)</td><td>✓ (wrong)</td><td>luxury (wrong)</td><td><span class="pill bad">✗</span></td></tr>
+<tr><td class="exp-name">Yas Marina Yacht Charter</td><td class="type-tag">fan_experience</td><td>No (boat charter)</td><td>✓ (wrong)</td><td>luxury (wrong)</td><td><span class="pill bad">✗</span></td></tr>
+<tr><td class="exp-name">Yasalam After-Parties / First-Timer Orientation / etc.</td><td class="type-tag">event, activity, transit</td><td>No</td><td>excluded</td><td>&mdash;</td><td><span class="pill ok">✓</span></td></tr>
+</tbody>
+</table></div>
+
+<h2>Australian Grand Prix 2027</h2>
+<p class="verdict">T2 resolves 2 of T1's 3 false positives (Arrival &amp; Queue, Fan Zone &mdash; both mapped to <code>arrival</code>, not <code>tickets</code>/<code>luxury</code>). <b>Lakeside Festival slips through</b> — not in the spoke table at all.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Experience</th><th>Type</th><th>On-track?</th><th>T1</th><th>T2</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td class="exp-name">AusGP Ticket Guide</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>tickets</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">Brabham / Fangio / Piastri / Vettel Grandstand (×4)</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>tickets</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">General Admission — Park Pass &amp; Hills</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>tickets</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">F1 Paddock Club &amp; Trackside Hospitality</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>luxury</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">Arrival &amp; Queue Guide / Fan Zone — Melbourne Walk</td><td class="type-tag">fan_experience</td><td>No</td><td>✓ (wrong)</td><td>arrival (correct exclude)</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">Lakeside Festival — Race Week's Concert Series</td><td class="type-tag">fan_experience</td><td>No</td><td>✓ (wrong)</td><td>not in table</td><td><span class="pill bad">✗</span></td></tr>
+</tbody>
+</table></div>
+
+<h2>Bahrain Grand Prix 2026 (Sepang)</h2>
+<p class="verdict"><b>Clean.</b> Every <code>fan_experience</code> row is genuinely on-track; no false positives.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Experience</th><th>Type</th><th>On-track?</th><th>T1</th><th>T2</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td class="exp-name">F1 Paddock Club</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>luxury</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">Grandstand F / Hill Stand C2 / K1 Grandstand / Main Grandstand</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>tickets</td><td><span class="pill ok">✓</span></td></tr>
+</tbody>
+</table></div>
+
+<h2>Belgian Grand Prix 2026 <span class="note">(classic format)</span></h2>
+<p class="verdict"><b>Zero T2 coverage</b> — <code>EXPERIENCE_TO_SPOKE_BY_EVENT</code> only covers hub-and-spoke events. T1 alone has 1 false positive (Fan Zone at Raidillon) with nothing to correct it.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Experience</th><th>Type</th><th>On-track?</th><th>T1</th><th>T2</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td class="exp-name">Eau Rouge/Raidillon — Gold 3, Pouhon — Silver 3, Kemmel Straight GA</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>n/a (classic)</td><td><span class="pill warn">?</span> T1-only</td></tr>
+<tr><td class="exp-name">Your Belgian GP Ticket Guide</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>n/a</td><td><span class="pill warn">?</span> T1-only</td></tr>
+<tr><td class="exp-name">The Fan Zone at Raidillon</td><td class="type-tag">fan_experience</td><td>No</td><td>✓ (wrong)</td><td>n/a</td><td><span class="pill bad">✗</span></td></tr>
+</tbody>
+</table></div>
+
+<h2>Hungarian Grand Prix 2026 <span class="note">(classic format)</span></h2>
+<p class="verdict">Zero T2 coverage. <b>"The Chicane"</b> is a genuine judgment call — reads as an on-track storytelling piece, not clearly a purchasable seat.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Experience</th><th>Type</th><th>On-track?</th><th>T1</th><th>T2</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td class="exp-name">F1 Fan Lounge, GA &amp; Fan Zone, Paddock Club, Where to Sit, Ticket Guide</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>n/a</td><td><span class="pill warn">?</span> T1-only</td></tr>
+<tr><td class="exp-name">The Chicane — Where Laps Quietly Fall Apart</td><td class="type-tag">fan_experience</td><td><b>Uncertain</b></td><td>✓ (maybe wrong)</td><td>n/a</td><td><span class="pill warn">?</span></td></tr>
+</tbody>
+</table></div>
+
+<h2>Italian Grand Prix 2027 (Monza)</h2>
+<p class="verdict">T2 resolves 2 of T1's false positives (Fan Zone, The Tifosi). <b>"Trackside Corner Lounges &amp; Villas"</b> — a likely-real premium product — isn't in the spoke table yet.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Experience</th><th>Type</th><th>On-track?</th><th>T1</th><th>T2</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td class="exp-name">Curva Grande GA, GA Lesmo/Ascari, Grandstand 1/5/22/26, Paddock &amp; Champions Club</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>tickets/luxury</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">The Fan Zone — Ascari to Parabolica</td><td class="type-tag">fan_experience</td><td>No</td><td>✓ (wrong)</td><td>arrival (correct exclude)</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">The Tifosi — Ferrari's Red Army</td><td class="type-tag">fan_experience</td><td>No</td><td>✓ (wrong)</td><td>first-timer-guide (correct exclude)</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">Trackside Corner Lounges &amp; Villas</td><td class="type-tag">fan_experience</td><td>Likely yes</td><td>✓</td><td>not in table (stale)</td><td><span class="pill warn">?</span> T1-only</td></tr>
+</tbody>
+</table></div>
+
+<h2>Las Vegas Grand Prix 2026</h2>
+<p class="verdict"><b>Biggest structural finding:</b> 3 real grandstands are typed <code>sports_venue</code>, not <code>fan_experience</code> — T1 misses them entirely; only T2 catches them. Also 3 T1 false positives with no T2 entry to correct.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Experience</th><th>Type</th><th>On-track?</th><th>T1</th><th>T2</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td class="exp-name">F1 Paddock Club, Flamingo Zone GA, Practice &amp; Qualifying tickets</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>tickets/luxury</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">Heineken Silver Main Grandstand, Turn 3 Grandstand, West Harmon Grandstand</td><td class="type-tag">sports_venue</td><td>Yes</td><td><span class="pill bad">✗ missed</span></td><td>tickets (saves it)</td><td><span class="pill warn">?</span> T2-only</td></tr>
+<tr><td class="exp-name">Race Week on the Strip, T-Mobile Zone at Sphere, Watching From a Sportsbook</td><td class="type-tag">fan_experience</td><td>No</td><td>✓ (wrong ×3)</td><td>not in table</td><td><span class="pill bad">✗</span> ×3</td></tr>
+</tbody>
+</table></div>
+
+<h2>Mexico City Grand Prix 2026</h2>
+<p class="verdict">1 false positive (Fan Zone &amp; Race Week Culture) — spoke table is missing 5 of 21 real experiences for this event.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Experience</th><th>Type</th><th>On-track?</th><th>T1</th><th>T2</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td class="exp-name">F1 Paddock &amp; Champions Club, Foro Sol, Ticket Guide, Where to Sit</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>tickets/luxury</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">The Fan Zone &amp; Race Week Culture</td><td class="type-tag">fan_experience</td><td>No</td><td>✓ (wrong)</td><td>not in table</td><td><span class="pill bad">✗</span></td></tr>
+</tbody>
+</table></div>
+
+<h2>Qatar Grand Prix 2026</h2>
+<p class="verdict">T2 correctly resolves the one T1 false positive.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Experience</th><th>Type</th><th>On-track?</th><th>T1</th><th>T2</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td class="exp-name">GA — Lusail Hill, Main/North Grandstand, Paddock/Champions Club, Ticket Guide, Lusail Hill Lounge</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>tickets/luxury</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">Fan Zone — Simulators, Pit Stops, Free Concerts</td><td class="type-tag">fan_experience</td><td>No</td><td>✓ (wrong)</td><td>arrival (correct exclude)</td><td><span class="pill ok">✓</span></td></tr>
+</tbody>
+</table></div>
+
+<h2>São Paulo (Brazilian) Grand Prix 2026</h2>
+<p class="verdict"><b>Clean.</b> No false positives found.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Experience</th><th>Type</th><th>On-track?</th><th>T1</th><th>T2</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td class="exp-name">Grandstand A/M, Heineken Village, Paddock/Champions Club, Ticket Guide</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>tickets/luxury</td><td><span class="pill ok">✓</span></td></tr>
+</tbody>
+</table></div>
+
+<h2>Singapore Grand Prix 2026</h2>
+<p class="verdict">Same <code>sports_venue</code> gap as Las Vegas — 3 real grandstands missed by T1, only caught by T2.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Experience</th><th>Type</th><th>On-track?</th><th>T1</th><th>T2</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td class="exp-name">F1 Paddock Club, Grandstand/Walkabout ticket guide, Zone 4 Walkabout</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>tickets/luxury</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">F1 Village — Zone 1 &amp; 4 / Padang Stage — Concerts</td><td class="type-tag">fan_experience</td><td>No</td><td>✓ (wrong)</td><td>arrival/first-timer-guide (correct exclude)</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">Padang Grandstand, Stamford Grandstand, Turn 1 Grandstand</td><td class="type-tag">sports_venue</td><td>Yes</td><td><span class="pill bad">✗ missed</span></td><td>tickets (saves it)</td><td><span class="pill warn">?</span> T2-only</td></tr>
+</tbody>
+</table></div>
+
+<h2>United States Grand Prix 2026</h2>
+<p class="verdict"><b>Clean.</b> No false positives found.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Experience</th><th>Type</th><th>On-track?</th><th>T1</th><th>T2</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td class="exp-name">Champions Club, GA, Main Grandstand, Paddock Club, Turn 1 "Big Red", Turn 15</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>tickets/luxury</td><td><span class="pill ok">✓</span></td></tr>
+</tbody>
+</table></div>
+
+<h2>Chinese Grand Prix 2027 <span class="note">(built_hidden, not yet activated)</span></h2>
+<p class="verdict"><b>Worst false-positive rate of any event</b> — 4 of 10 <code>fan_experience</code> rows are non-track, and the spoke table has no entry for this event at all.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Experience</th><th>Type</th><th>On-track?</th><th>T1</th><th>T2</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td class="exp-name">Ticket Guide, GA, Grandstand A/B/H/K, Paddock Club</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>not in table</td><td><span class="pill warn">?</span> T1-only</td></tr>
+<tr><td class="exp-name">Arrival &amp; Entry Guide, Fan Zone &amp; Off-Track, First-Timer's Guide, Weather</td><td class="type-tag">fan_experience</td><td>No</td><td>✓ (wrong ×4)</td><td>not in table</td><td><span class="pill bad">✗</span> ×4</td></tr>
+</tbody>
+</table></div>
+
+<h2>Japanese Grand Prix 2027 <span class="note">(built_hidden, not yet activated)</span></h2>
+<p class="verdict"><b>Best-case outcome</b> — T2 fully resolves all 3 T1 false positives, since this event's spoke table entry is complete and current (29 Sep 2026).</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Experience</th><th>Type</th><th>On-track?</th><th>T1</th><th>T2</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td class="exp-name">GA, Grandstand G/V1-V2/Q2, Ticket Guide, Hospitality Tiers</td><td class="type-tag">fan_experience</td><td>Yes</td><td>✓</td><td>tickets/luxury</td><td><span class="pill ok">✓</span></td></tr>
+<tr><td class="exp-name">First-Timer's Guide, GP Square &amp; Fan Zones, Weather &amp; What to Pack</td><td class="type-tag">fan_experience</td><td>No</td><td>✓ (wrong ×3)</td><td>first-timer-guide/arrival/weather (correct exclude)</td><td><span class="pill ok">✓</span></td></tr>
+</tbody>
+</table></div>
+
+<p class="empty-events"><b>No experiences yet (0 rows, not included above):</b> British Grand Prix 2027, Canadian Grand Prix 2027, Miami Grand Prix 2027, Monaco Grand Prix 2027, Portuguese Grand Prix 2027.</p>
+
+<div class="summary">
+<h2>Four real failure modes</h2>
+<ol>
+<li><b>sports_venue false negatives</b> (Las Vegas ×3, Singapore ×3): real grandstands typed <code>sports_venue</code> instead of <code>fan_experience</code>. T1 misses these entirely; only T2 catches them, and only when that event's spoke table entry is complete.</li>
+<li><b>fan_experience false positives with no T2 entry to correct them</b>: Abu Dhabi (Skybridge Terrace, Yacht Charter &mdash; worse, also mis-tagged <code>luxury</code>), Australian GP (Lakeside Festival), Belgian &amp; Hungarian GP (classic format, zero T2 coverage), Mexico City (Fan Zone), Chinese GP (4 non-track rows, no table entry exists).</li>
+<li><b>T2 table incompleteness</b>: Italian GP's "Trackside Corner Lounges &amp; Villas", Mexico City missing 5 of 21 entries, Chinese GP missing entirely &mdash; the curator table lags behind real seeded experiences, a structural staleness risk for any filter that leans on it.</li>
+<li><b>Classic-format events get zero T2 coverage by design</b> (Belgian GP, Hungarian GP) &mdash; <code>EXPERIENCE_TO_SPOKE_BY_EVENT</code> is hub-and-spoke only, so T1-only false positives on these two live events are unresolvable without a third signal.</li>
+</ol>
+<p class="bottom-line">Neither signal alone is reliable, and combined (T1 OR T2), real false positives survive on at least 5 events (Abu Dhabi, Australian GP, Belgian GP, Mexico City, Chinese GP), plus a false-negative class (<code>sports_venue</code>) that only T2 saves &mdash; and T2 itself isn't complete or current. A title/slug keyword check (matching "Grandstand", "Paddock Club", "General Admission", "Ticket Guide", "Hospitality", "GA") would likely close most remaining gaps, but carries its own fragility &mdash; worth a deliberate decision rather than a default.</p>
+</div>

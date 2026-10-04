@@ -1,0 +1,18 @@
+{
+  "origin": "Buenos_Aires",
+  "googleFlights": {
+    "sorted": [],
+    "rawCount": 0
+  },
+  "kayak": {
+    "sorted": [
+      2339,
+      2761,
+      3081,
+      3094,
+      3220,
+      9715
+    ],
+    "rawCount": 12
+  }
+}

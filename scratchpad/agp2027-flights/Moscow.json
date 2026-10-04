@@ -1,0 +1,19 @@
+{
+  "origin": "Moscow",
+  "googleFlights": {
+    "sorted": [
+      1372,
+      1443,
+      1650,
+      1734,
+      1853,
+      1889,
+      2419
+    ],
+    "rawCount": 7
+  },
+  "kayak": {
+    "sorted": [],
+    "rawCount": 0
+  }
+}

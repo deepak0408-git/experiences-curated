@@ -1,0 +1,49 @@
+{
+  "origin": "Milan",
+  "googleFlights": {
+    "sorted": [
+      1627,
+      1761,
+      1784,
+      1795,
+      1801,
+      1841,
+      1877,
+      1886,
+      2018,
+      2079
+    ],
+    "rawCount": 26
+  },
+  "kayak": {
+    "sorted": [
+      1670,
+      1770,
+      1808,
+      1871,
+      1879,
+      1886,
+      1919,
+      1946,
+      1965,
+      1993,
+      1999,
+      2022,
+      2025,
+      2030
+    ],
+    "rawCount": 43
+  },
+  "combined": {
+    "low": 1627,
+    "high": 2079,
+    "excludedLow": [],
+    "excludedHigh": [],
+    "gfLow": 1627,
+    "gfHigh": 2079,
+    "kyLow": 1670,
+    "kyHigh": 2030
+  },
+  "finalCostLow": 1649,
+  "finalCostHigh": 2055
+}

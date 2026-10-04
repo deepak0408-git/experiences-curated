@@ -1,0 +1,55 @@
+{
+  "origin": "Rio_de_Janeiro",
+  "googleFlights": {
+    "sorted": [
+      2069,
+      2416,
+      2422,
+      2601,
+      2737,
+      2955,
+      3245,
+      3462,
+      3891,
+      4133,
+      4647,
+      9434
+    ],
+    "rawCount": 14
+  },
+  "kayak": {
+    "sorted": [
+      1393,
+      1744,
+      1851,
+      1969,
+      1973,
+      2023
+    ],
+    "rawCount": 23
+  },
+  "combined": {
+    "low": 1393,
+    "high": 2069,
+    "excludedLow": [],
+    "excludedHigh": [
+      2416,
+      2422,
+      2601,
+      2737,
+      2955,
+      3245,
+      3462,
+      3891,
+      4133,
+      4647,
+      9434
+    ],
+    "gfLow": 2069,
+    "gfHigh": 2069,
+    "kyLow": 1393,
+    "kyHigh": 2023
+  },
+  "finalCostLow": 1731,
+  "finalCostHigh": 2046
+}

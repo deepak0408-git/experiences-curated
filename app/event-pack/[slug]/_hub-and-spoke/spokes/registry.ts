@@ -220,6 +220,19 @@ import JGArrivalSpoke from "./japanese-grand-prix/ArrivalSpoke";
 import JGMapSpoke from "./japanese-grand-prix/MapSpoke";
 import JGLuxurySpoke from "./japanese-grand-prix/LuxurySpoke";
 
+import CGCostSpoke from "./chinese-grand-prix/CostSpoke";
+import CGTicketsSpoke from "./chinese-grand-prix/TicketsSpoke";
+import CGHotelsSpoke from "./chinese-grand-prix/HotelsSpoke";
+import CGGettingThereSpoke from "./chinese-grand-prix/GettingThereSpoke";
+import CGWeatherSpoke from "./chinese-grand-prix/WeatherSpoke";
+import CGFirstTimerGuideSpoke from "./chinese-grand-prix/FirstTimerGuideSpoke";
+import CGWhereToEatSpoke from "./chinese-grand-prix/WhereToEatSpoke";
+import CGDayTripsSpoke from "./chinese-grand-prix/DayTripsSpoke";
+import CGItinerarySpoke from "./chinese-grand-prix/ItinerarySpoke";
+import CGArrivalSpoke from "./chinese-grand-prix/ArrivalSpoke";
+import CGMapSpoke from "./chinese-grand-prix/MapSpoke";
+import CGLuxurySpoke from "./chinese-grand-prix/LuxurySpoke";
+
 type SpokeComponent = ComponentType<{ eventSlug: string }>;
 
 // Registry mapping eventSlug -> spokeId -> component. A new hub_and_spoke
@@ -465,6 +478,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: JGMapSpoke,
     luxury: JGLuxurySpoke,
   },
+  "chinese-grand-prix": {
+    cost: CGCostSpoke,
+    tickets: CGTicketsSpoke,
+    hotels: CGHotelsSpoke,
+    "getting-there": CGGettingThereSpoke,
+    weather: CGWeatherSpoke,
+    "first-timer-guide": CGFirstTimerGuideSpoke,
+    "where-to-eat": CGWhereToEatSpoke,
+    "day-trips": CGDayTripsSpoke,
+    itinerary: CGItinerarySpoke,
+    arrival: CGArrivalSpoke,
+    map: CGMapSpoke,
+    luxury: CGLuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -705,5 +732,19 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Suzuka Circuit — Arrival & Fan Zone Guide",
     map: "Suzuka Circuit Map — History, Corners, and Facilities",
     luxury: "Luxury Guide for the Japanese Grand Prix — Paddock Club, Champions Club, and More",
+  },
+  "chinese-grand-prix": {
+    cost: "How Much Does the Chinese Grand Prix Cost? — Shanghai Budget Guide",
+    tickets: "Shanghai Ticket Guide — General Admission to Grandstand A",
+    hotels: "Where to Stay for the Chinese Grand Prix — Jiading vs. Downtown Shanghai",
+    "getting-there": "Getting to Shanghai International Circuit — Transit Guide",
+    weather: "Shanghai Weather in April — What to Pack for the Chinese Grand Prix",
+    "first-timer-guide": "First-Timer's Guide — the Chinese Grand Prix and China Travel Basics",
+    "where-to-eat": "Where to Eat — Chinese Grand Prix Weekend",
+    "day-trips": "Best Day Trips from Shanghai — Chinese Grand Prix Weekend",
+    itinerary: "Sample Chinese Grand Prix Weekend Itinerary",
+    arrival: "Shanghai International Circuit — Arrival & Entry Guide",
+    map: "Shanghai International Circuit Map — Karting, Museum, and Facilities",
+    luxury: "Luxury Guide for the Chinese Grand Prix — Paddock Club and More",
   },
 };

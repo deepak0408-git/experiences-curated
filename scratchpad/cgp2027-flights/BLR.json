@@ -1,0 +1,44 @@
+{
+  "origin": "Bangalore",
+  "googleFlights": {
+    "sorted": [
+      903
+    ],
+    "rawCount": 1
+  },
+  "kayak": {
+    "sorted": [
+      460,
+      473,
+      478,
+      483,
+      521,
+      525,
+      532,
+      577,
+      589,
+      604,
+      607,
+      610,
+      613,
+      615,
+      632,
+      646,
+      649,
+      652
+    ],
+    "rawCount": 62
+  },
+  "combined": {
+    "low": 460,
+    "high": 652,
+    "excludedLow": [],
+    "excludedHigh": [
+      903
+    ],
+    "gfLow": null,
+    "gfHigh": null,
+    "kyLow": 460,
+    "kyHigh": 652
+  }
+}

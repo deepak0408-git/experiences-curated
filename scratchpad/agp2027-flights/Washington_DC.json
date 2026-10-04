@@ -1,0 +1,46 @@
+{
+  "origin": "Washington_DC",
+  "googleFlights": {
+    "sorted": [
+      1919,
+      1935,
+      2014,
+      2030,
+      2088,
+      2091,
+      2097
+    ],
+    "rawCount": 16
+  },
+  "kayak": {
+    "sorted": [
+      1292,
+      1578,
+      1605,
+      1638,
+      1666,
+      1701,
+      1746,
+      1790,
+      1802,
+      2036,
+      2091,
+      5063
+    ],
+    "rawCount": 29
+  },
+  "combined": {
+    "low": 1292,
+    "high": 2097,
+    "excludedLow": [],
+    "excludedHigh": [
+      5063
+    ],
+    "gfLow": 1919,
+    "gfHigh": 2097,
+    "kyLow": 1292,
+    "kyHigh": 2091
+  },
+  "finalCostLow": 1606,
+  "finalCostHigh": 2094
+}

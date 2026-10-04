@@ -1,0 +1,211 @@
+{
+  "url": "https://www.booking.com/searchresults.html?ss=Anting%2C+Shanghai&checkin=2027-04-14&checkout=2027-04-21&group_adults=2&no_rooms=1&group_children=0&order=review_score_and_price&nflt=review_score%3D70%3Bht_id%3D204&selected_currency=USD&lang=en-us",
+  "checkin": "2027-04-14",
+  "checkout": "2027-04-21",
+  "rawHotelCount": 25,
+  "qualifyingHotelCount": 9,
+  "hotels": [
+    {
+      "name": "HUALUXE Shanghai Changfeng Park by IHG",
+      "price": "US$715",
+      "reviewScore": 9.5,
+      "reviewCount": 241,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Shanghai Yunhe Yebo Hotel, Wuning Road Global Harbor Branch",
+      "price": "US$940",
+      "reviewScore": 9.8,
+      "reviewCount": 513,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Dayin Serene Garden Hotel -Shanghai Hongqiao North Xinjing Metro Station -Large Social Area -Bar -Café -Gym -Free Laundry Luggage Storage -24H Front Desk-English Service",
+      "price": "US$633",
+      "reviewScore": 9.2,
+      "reviewCount": 59,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Holiday Inn Shanghai Hongqiao by IHG",
+      "price": "US$581",
+      "reviewScore": 9.3,
+      "reviewCount": 516,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "EVEN Hotel Shanghai Hongqiao CBD by IHG",
+      "price": "US$579",
+      "reviewScore": 9,
+      "reviewCount": 193,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "IntercityHotel Shanghai Hongqiao Airport - Free Minibar for First Night",
+      "price": "US$799",
+      "reviewScore": 9,
+      "reviewCount": 168,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Artyzen Habitat Hongqiao Shanghai",
+      "price": "US$709",
+      "reviewScore": 9.2,
+      "reviewCount": 118,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Mlily Hotel",
+      "price": "US$839",
+      "reviewScore": 9.2,
+      "reviewCount": 132,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Shanghai Hongqiao Heyitang Hotel Beixinjing Subway Station Branch",
+      "price": "US$966",
+      "reviewScore": 9.3,
+      "reviewCount": 612,
+      "starRating": null,
+      "address": null
+    }
+  ],
+  "rejectedForLowReviewCount": [
+    {
+      "name": "Starway Hotel Shanghai Hongqiao National Exhibition and Convention Center Beiqing Road",
+      "price": "US$225",
+      "reviewScore": 10,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Holiday Inn Express Kunshan High-Tech Zone by IHG",
+      "price": "US$288",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Fairfield by Marriott Shanghai Qingpu",
+      "price": "US$366",
+      "reviewScore": 10,
+      "reviewCount": 5,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Crystal Hotel Jing'an Darongcheng Hutai Road",
+      "price": "US$506",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "上海安鉌蓓斯特酒店国家会展中心虹桥机场店",
+      "price": "US$671",
+      "reviewScore": 10,
+      "reviewCount": 3,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Crystal Orange Shanghai Jiangqiao Wanda Hotel",
+      "price": "US$723",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Tyms High Serviced Residence Shanghai Suzhou Creek",
+      "price": "US$1,062",
+      "reviewScore": 10,
+      "reviewCount": 5,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Hanting Hotel Shanghai Hongqiao Hub Qibao Center",
+      "price": "US$535",
+      "reviewScore": 9.5,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "The Anandi Hotel and SPA - Luxury Healing Hotel for Wellbeing",
+      "price": "US$1,225",
+      "reviewScore": 9.7,
+      "reviewCount": 15,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Longchen Holiday Hotel",
+      "price": "US$338",
+      "reviewScore": 9,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Mercure Shanghai Hongqiao SOHO",
+      "price": "US$497",
+      "reviewScore": 9,
+      "reviewCount": 10,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Aloft by Marriott Kunshan Dianshan Lake",
+      "price": "US$477",
+      "reviewScore": 9,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Pullman Suzhou Taicang",
+      "price": "US$542",
+      "reviewScore": 9,
+      "reviewCount": 27,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "HUALUXE Kunshan Huaqiao by IHG - F1 Racing Preferred Hotel",
+      "price": "US$639",
+      "reviewScore": 9,
+      "reviewCount": 16,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "IntercityHotel Shanghai Hongqiao NECC",
+      "price": "US$986",
+      "reviewScore": 9.2,
+      "reviewCount": 15,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Crowne Plaza Shanghai Anting-20 Minutes drive to National Exhibition and Convention Center & 15 Minutes drive to F1",
+      "price": "US$1,064",
+      "reviewScore": 9,
+      "reviewCount": 33,
+      "starRating": null,
+      "address": null
+    }
+  ]
+}

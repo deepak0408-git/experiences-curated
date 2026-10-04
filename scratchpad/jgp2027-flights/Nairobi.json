@@ -1,0 +1,48 @@
+{
+  "origin": "Nairobi",
+  "googleFlights": {
+    "sorted": [
+      1418,
+      1742,
+      2905
+    ],
+    "rawCount": 5
+  },
+  "kayak": {
+    "sorted": [
+      1205,
+      1222,
+      1313,
+      1330,
+      1332,
+      1335,
+      1362,
+      1364,
+      1365,
+      1371,
+      1373,
+      1374,
+      1376,
+      1377,
+      1379,
+      1382,
+      1385
+    ],
+    "rawCount": 54
+  },
+  "combined": {
+    "low": 1205,
+    "high": 1418,
+    "excludedLow": [],
+    "excludedHigh": [
+      1742,
+      2905
+    ],
+    "gfLow": 1418,
+    "gfHigh": 1418,
+    "kyLow": 1205,
+    "kyHigh": 1385
+  },
+  "finalCostLow": 1312,
+  "finalCostHigh": 1402
+}

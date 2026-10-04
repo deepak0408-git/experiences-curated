@@ -460,4 +460,65 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "map", label: "Venue Map", question: "What facilities are available at Suzuka Circuit?", status: "public", imageSlug: "japanese-gp-suzuka-circuit-park-motopia" },
     { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Japanese Grand Prix?", status: "teaser", imageSlug: "japanese-gp-suzuka-hospitality-tiers" },
   ],
+  // Chinese Grand Prix 2027 — built 23 Sep 2026. All 22 experiences real/
+  // seeded (status: in_review — publish via /curator/review before spoke
+  // cards render), zero hero images yet (deferred pass per founder's
+  // explicit instruction, matching Japanese GP's pattern), so every
+  // imageSlug is set to the blank sentinel per the skill's §3 rule. Weather/
+  // Arrival/Tickets use the skill's standing cross-event default images
+  // (imageOverride), set here at config-creation time per the skill's
+  // explicit rule — not deferred. 16-18 Apr 2027, regular (non-sprint)
+  // weekend format confirmed directly by the founder; exact session clock
+  // times not yet published on any official F1 channel as of this build —
+  // stated honestly per skill §2a-3/§2a-5. No planner_hotel_tier_cost/
+  // planner_ticket_tier_cost/planner_destination_bands/planner_flight_cost
+  // rows exist for Shanghai/this event yet — Cost spoke renders its real "no
+  // data yet" empty state; a separate session is researching real cost data
+  // in parallel (per founder instruction, this build's Cost spoke stays a
+  // placeholder, not filled in here). Sourcing note: formula1shanghai.com
+  // is NOT cited anywhere in this event's content, per explicit founder
+  // instruction mid-build — official sources only (formula1.com,
+  // ticketing.formula1.com, f1experiences.com) plus independently-
+  // corroborated neutral/government sources for non-F1 content (Wikipedia,
+  // Shanghai/Jiading government tourism sites). Spoke-mapping: tickets
+  // covers Grandstands A/B/H/K, GA, Paddock Club/Hospitality, Ticket Guide;
+  // getting-there covers Getting to the Circuit; arrival covers Arrival &
+  // Entry Guide, Fan Zone; hotels covers Where to Stay; where-to-eat covers
+  // Nanxiang Xiaolongbao, Anting Old Street, Mr & Mrs Bund; day-trips covers
+  // the 3 reused day trips (Hangzhou, Suzhou, Zhujiajiao) + the 4 reused
+  // downtown Shanghai pieces (Bund, Yu Garden, French Concession, Lujiazui);
+  // map covers Shanghai Circuit — Karting, Museum & Porsche Centre; first-
+  // timer-guide covers First-Timer's Guide, Anting neighborhood; weather
+  // covers Weather & What to Pack; luxury covers Paddock Club/Hospitality
+  // (cross-referenced from tickets) + Mr & Mrs Bund (cross-referenced from
+  // where-to-eat); itinerary and cost have no dedicated source experience
+  // (matches Italian GP/Japanese GP's pattern) — itinerary renders real
+  // general content without a linked SpokeExperienceCard, cost stays a
+  // placeholder pending the parallel cost-research session.
+  // Hero images switched 2 Oct 2026 from the blank "__no-image-yet__"
+  // sentinel to each spoke's own linked-experience imageSlug, matching the
+  // real, Shanghai-specific hero already seeded on that experience (founder
+  // request: reuse the spoke's main ExperienceCard image). Tickets,
+  // Weather, and Arrival keep the standard cross-event templated
+  // imageOverride (bahrain-grand-prix-cost/-packing/-arrival.jpg) — every
+  // other event in this file uses that same templated trio for these three
+  // spokes specifically, so Chinese GP follows the established pattern
+  // rather than diverging from every sibling event. Cost and Itinerary have
+  // no single linked experience card (see those spokes' own files), so
+  // they reuse the circuit-venue and ticket-guide images respectively as
+  // the closest representative shot.
+  "chinese-grand-prix": [
+    { id: "cost", label: "Cost Guide", question: "How much does a Chinese Grand Prix weekend cost?", status: "teaser", imageSlug: "chinese-gp-circuit-venue-" },
+    { id: "tickets", label: "Ticket Guide", question: "Which Shanghai grandstand is the best buy?", status: "teaser", imageSlug: "chinese-gp-ticket-guide-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the Chinese Grand Prix?", status: "teaser", imageSlug: "chinese-gp-where-to-stay-" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to Shanghai International Circuit?", status: "public", imageSlug: "chinese-gp-getting-there-" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the Chinese Grand Prix, and what should I pack?", status: "public", imageSlug: "chinese-gp-weather-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Chinese Grand Prix?", status: "public", imageSlug: "china-visa-apps-payments-guide-" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat during Chinese Grand Prix race weekend?", status: "teaser", imageSlug: "chinese-gp-upscale-dining-" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips during Chinese Grand Prix weekend?", status: "teaser", imageSlug: "hangzhou-west-lake-day-trip-" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does a Chinese Grand Prix weekend actually look like?", status: "teaser", imageSlug: "chinese-gp-ticket-guide-" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at Shanghai International Circuit gates?", status: "public", imageSlug: "chinese-gp-arrival-guide-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at Shanghai International Circuit?", status: "public", imageSlug: "chinese-gp-circuit-venue-" },
+    { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Chinese Grand Prix?", status: "teaser", imageSlug: "chinese-gp-paddock-club-" },
+  ],
 };

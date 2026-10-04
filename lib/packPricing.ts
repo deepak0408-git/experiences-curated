@@ -214,6 +214,16 @@ export const PACK_PRICING_CONFIG: Record<string, {
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_JAPANESE_GP_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_JAPANESE_GP_EARLY_BIRD_CUTOFF ?? "2027-03-09",
   },
+  // Real Dodo product IDs confirmed by the founder, 23 Sep 2026 (already in
+  // .env.local: Early Bird pdt_0NoELoKBtPy6WDWOYJHSc, Standard
+  // pdt_0NoELfPArnarQrSQ0Lq0U) — same bug class as Japanese GP above, this
+  // entry was never added to PACK_PRICING_CONFIG, which silently hid the
+  // event from /curator/price. Found and fixed 4 Oct 2026.
+  "chinese-grand-prix": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_CHINESE_GP_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_CHINESE_GP_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_CHINESE_GP_EARLY_BIRD_CUTOFF ?? "2027-03-16",
+  },
 };
 
 // Mini-packs pilot (Bahrain GP / Singapore GP / Shanghai Masters, Sep 2026)

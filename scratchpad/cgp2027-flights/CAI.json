@@ -1,0 +1,50 @@
+{
+  "origin": "Cairo",
+  "googleFlights": {
+    "sorted": [
+      723,
+      758,
+      848,
+      922,
+      1007,
+      1150,
+      2139,
+      2545
+    ],
+    "rawCount": 10
+  },
+  "kayak": {
+    "sorted": [
+      668,
+      671,
+      724,
+      751,
+      859,
+      895,
+      907,
+      918,
+      929,
+      932,
+      938,
+      944,
+      947
+    ],
+    "rawCount": 42
+  },
+  "combined": {
+    "low": 668,
+    "high": 1007,
+    "excludedLow": [],
+    "excludedHigh": [
+      1150,
+      2139,
+      2545
+    ],
+    "gfLow": 723,
+    "gfHigh": 1007,
+    "kyLow": 668,
+    "kyHigh": 947
+  },
+  "finalCostLow": 696,
+  "finalCostHigh": 977
+}

@@ -1,0 +1,202 @@
+{
+  "url": "https://www.booking.com/searchresults.html?ss=Shanghai&checkin=2027-04-14&checkout=2027-04-21&group_adults=2&no_rooms=1&group_children=0&order=review_score_and_price&nflt=review_score%3D70%3Bht_id%3D204&selected_currency=USD&lang=en-us",
+  "checkin": "2027-04-14",
+  "checkout": "2027-04-21",
+  "rawHotelCount": 24,
+  "qualifyingHotelCount": 0,
+  "hotels": [],
+  "rejectedForLowReviewCount": [
+    {
+      "name": "Starway Hotel Shanghai Hongqiao National Exhibition and Convention Center Beiqing Road",
+      "price": "US$225",
+      "reviewScore": 10,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "上海觅应微咪泳池别墅酒店迪士尼乐园店",
+      "price": "US$309",
+      "reviewScore": 10,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "嘉虹酒店-上海国际旅游度假区川沙地铁站店",
+      "price": "US$293",
+      "reviewScore": 10,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "唯庭酒店上海体育馆徐家汇交大店",
+      "price": "US$328",
+      "reviewScore": 10,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Manxin Mansion Shanghai Songjiang Yunjian Granary",
+      "price": "US$383",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Baolong Homelike Hotel - Zhongshan Branch",
+      "price": "US$385",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Hanting Hotel Shanghai Jing'an Sports Center Wenshui Road Subway Station",
+      "price": "US$435",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Fairfield by Marriott Shanghai Qingpu",
+      "price": "US$366",
+      "reviewScore": 10,
+      "reviewCount": 5,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Crystal Orange Shanghai Safari Park Hotel",
+      "price": "US$481",
+      "reviewScore": 10,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Hanting Hotel Shanghai New International Expo Centre Fanghua Road",
+      "price": "US$498",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Crystal Hotel Shanghai University Dachang",
+      "price": "US$506",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "全季上海浦东国际机场闻居路酒店 JI Hotel Shanghai Pudong Airport Core Area Wenju Road Free airport shuttle and Disney bus",
+      "price": "US$516",
+      "reviewScore": 10,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Madison Hotel Shanghai Wildlife Park",
+      "price": "US$516",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "JI Hotel Shanghai Lujiazui Mall Road",
+      "price": "US$526",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Orange Hotel Shanghai Chuansha International Tourism Resort",
+      "price": "US$529",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Crystal Hotel Jing'an Darongcheng Hutai Road",
+      "price": "US$506",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Hanting Hotel Shanghai International Tourism Resort Chuansha Road",
+      "price": "US$545",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Starway Hotel Shanghai International Tourism Resort Xiupu Road",
+      "price": "US$568",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "CitiGO Hotel Shanghai Wujiaochang Guohang Road",
+      "price": "US$571",
+      "reviewScore": 10,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "JI Hotel Shanghai Zhongxing Road",
+      "price": "US$590",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "JI Hotel Shanghai Lujiazui Pudong Avenue Hotel",
+      "price": "US$630",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "全季上海大宁国际酒店",
+      "price": "US$643",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Orange Hotel Shanghai North Xizang Road Subway Station",
+      "price": "US$672",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Orange Hotel Shanghai International Tourism Resort Chuanhuan South Road",
+      "price": "US$696",
+      "reviewScore": 10,
+      "reviewCount": 2,
+      "starRating": null,
+      "address": null
+    }
+  ]
+}

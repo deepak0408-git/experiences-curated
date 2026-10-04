@@ -257,6 +257,19 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
     { label: "Weather", value: "Early April at Suzuka is Japan's spring — mild, changeable, with rain a real possibility across the weekend. Bring a light rain layer regardless of the forecast." },
     { label: "Emergencies", value: "Japan-wide emergency numbers: 110 (police), 119 (ambulance/fire). English-speaking operator support is not guaranteed on the standard line — the Japan Visitor Hotline (050-3816-2787) runs 24/7 in English." },
   ],
+  // Real, sourced facts from experience research (Shanghai Intl Circuit's
+  // regular-weekend format, confirmed directly by the founder). Added
+  // retroactively 29 Sep 2026 — this entry was never actually added during
+  // the 23 Sep 2026 build session despite the build-status memory claiming
+  // it was (see project_chinese_gp_2027_build_status memory correction).
+  // Exact session/gate times still TBC on official F1 channels as of build
+  // date, stated honestly per skill §2a-3.
+  "chinese-grand-prix": [
+    { label: "Regular weekend", value: "2027 is a standard (non-Sprint) format: Friday Practice 1 and 2, Saturday Practice 3 and Qualifying, Sunday the Chinese Grand Prix. Exact session clock times haven't been published yet — check formula1.com closer to race week." },
+    { label: "Getting there", value: "Shanghai Hongqiao (SHA) is closer to Jiading district and the circuit; Shanghai Pudong (PVG) handles most long-haul international arrivals. See the Getting There spoke for the full routing comparison." },
+    { label: "Weather", value: "Mid-April in Shanghai is mild spring weather — variable, with rain a real possibility across the weekend. Bring a light rain layer regardless of the forecast." },
+    { label: "Emergencies", value: "China-wide emergency numbers: 110 (police), 120 (ambulance), 119 (fire). English-speaking operator support is not guaranteed — having your hotel call on your behalf is more reliable." },
+  ],
 };
 
 // Exported (27 Aug 2026) — same reasoning as QUICK_REFERENCE_BY_EVENT above.
@@ -371,6 +384,21 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
     heroFallbackImageSlug: "suzuka-circuit-main-gate",
     introText:
       "Honda built Suzuka in 1962 as a test track for its own cars, not a race circuit, and hired Dutch designer John Hugenholtz to lay it out — the result is the only figure-8 layout left in F1, crossing over itself via a bridge between Turn 8 and Turn 9. More world championships have been decided here than at any other circuit on the calendar: 13 titles settled at Suzuka, including some of the sport's most famous rivalries.\n\n2027 marks Suzuka's first-ever Sprint weekend, adding a Saturday Sprint Race and second qualifying session to a circuit that already asks more of drivers than almost anywhere else — the flowing Esses, the high-speed 130R, and the technical final chicane are still driven flat-out by only the most confident. Mie Prefecture itself sits between Nagoya and Osaka, giving you a genuine choice of base city rather than a single circuit town.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
+  // Built from real sourced facts researched during experience seeding and
+  // the ticket-intelligence build (Shanghai Intl Circuit's role as F1's
+  // first mainland China venue since 2004, the 2027 regular-weekend
+  // format, the Jiading/Anting district location distinct from downtown
+  // Shanghai) — not invented, matches every other hub-and-spoke event's
+  // pattern. Added retroactively 29 Sep 2026 — never actually added during
+  // the 23 Sep 2026 build session despite the build-status memory claiming
+  // it was (see project_chinese_gp_2027_build_status memory correction).
+  "chinese-grand-prix": {
+    displayName: "Chinese Grand Prix",
+    venueLine: "Held at Shanghai International Circuit, Jiading District — F1's return to mainland China after a five-year gap, on a circuit built in the shape of the Chinese character 上 (\"shang,\" for Shanghai).",
+    heroFallbackImageSlug: "__no-image-yet__",
+    introText:
+      "Shanghai International Circuit opened in 2004 as F1's first venue on mainland China, and its layout is deliberately symbolic — the track traces the shape of the Chinese character 上 (\"shang\"), the first character in Shanghai's name. The circuit's signature Turn 1-2-3 complex is a long, tightening spiral that keeps widening the racing line long after most corners would have resolved, and it's one of the longest back straights on the calendar, built specifically to reward a bold overtake into Turn 14.\n\nThe circuit sits in Jiading District, in Shanghai's northwest, a genuinely different part of the city from the downtown Bund and French Concession most first-time visitors picture — this pack treats both as real options, with dedicated Jiading-area and downtown accommodation and dining content depending on how you want to split your trip. 2027 is a standard, non-Sprint weekend.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
   // Built from real sourced facts researched during experience seeding
   // (Yas Marina Circuit's 2009 debut as the world's first F1 twilight race,
@@ -543,6 +571,10 @@ export default async function HubPage({ slug }: { slug: string }) {
       // Founder-supplied, verified correct link — the auto-generated
       // text-search URL wasn't resolving to Suzuka Circuit correctly.
       "japanese-grand-prix": "https://maps.app.goo.gl/Z8KTdpjkhmYV7qg66",
+      // Founder-supplied, verified correct link — the auto-generated
+      // text-search URL wasn't resolving to Shanghai International Circuit
+      // correctly (2 Oct 2026).
+      "chinese-grand-prix": "https://maps.app.goo.gl/H5NmBHZFqcPXr2neA",
     };
     quickReference.push({
       label: "Address",
