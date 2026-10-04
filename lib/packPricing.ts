@@ -229,22 +229,39 @@ export const PACK_PRICING_CONFIG: Record<string, {
 type MiniPackSpokeId = "tickets" | "hotels" | "itinerary";
 type MiniPackPricingEntry = { dodoProductId: string; priceDisplay: string; label: string };
 
+// Fixed default Dodo product IDs, shared across every mini-packs event —
+// originally created for Bahrain GP, now repurposed as the standing default
+// for every event's Tickets/Hotels/Itinerary mini-packs (per
+// add-mini-guides-to-existing-event-pack skill §0, 4 Oct 2026). The Dodo
+// product itself never determines which event/product a purchase is
+// recorded against — the checkout route's metadata does (see that skill's
+// §5) — so reusing one fixed set of IDs across every event is safe and
+// intentional, not a shortcut. Do not create new per-event Dodo products or
+// ask the founder for IDs; use these three verbatim for every new event.
+const DEFAULT_MINI_PACK_DODO_IDS: Record<MiniPackSpokeId, string> = {
+  tickets: "pdt_0NneYR41yC3mDwB6eyVXd",
+  hotels: "pdt_0NneYezQP6reWC5hqzWRm",
+  itinerary: "pdt_0NneYlbIvjxPEwPIzikjx",
+};
+
+function defaultMiniPackEntries(): Record<MiniPackSpokeId, MiniPackPricingEntry> {
+  return {
+    tickets: { dodoProductId: DEFAULT_MINI_PACK_DODO_IDS.tickets, priceDisplay: "US$7", label: "Ticket Guide" },
+    hotels: { dodoProductId: DEFAULT_MINI_PACK_DODO_IDS.hotels, priceDisplay: "US$5", label: "Where to Stay Guide" },
+    itinerary: { dodoProductId: DEFAULT_MINI_PACK_DODO_IDS.itinerary, priceDisplay: "US$5", label: "Itinerary Guide" },
+  };
+}
+
 export const MINI_PACK_PRICING: Record<string, Record<MiniPackSpokeId, MiniPackPricingEntry>> = {
-  "bahrain-grand-prix": {
-    tickets: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BAHRAIN_GP_TICKETS_GUIDE ?? "", priceDisplay: "US$7", label: "Ticket Guide" },
-    hotels: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BAHRAIN_GP_HOTELS_GUIDE ?? "", priceDisplay: "US$5", label: "Where to Stay Guide" },
-    itinerary: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BAHRAIN_GP_ITINERARY_GUIDE ?? "", priceDisplay: "US$5", label: "Itinerary Guide" },
-  },
-  "singapore-grand-prix": {
-    tickets: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SINGAPORE_GP_TICKETS_GUIDE ?? "", priceDisplay: "US$7", label: "Ticket Guide" },
-    hotels: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SINGAPORE_GP_HOTELS_GUIDE ?? "", priceDisplay: "US$5", label: "Where to Stay Guide" },
-    itinerary: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SINGAPORE_GP_ITINERARY_GUIDE ?? "", priceDisplay: "US$5", label: "Itinerary Guide" },
-  },
-  "shanghai-masters": {
-    tickets: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SHANGHAI_MASTERS_TICKETS_GUIDE ?? "", priceDisplay: "US$7", label: "Ticket Guide" },
-    hotels: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SHANGHAI_MASTERS_HOTELS_GUIDE ?? "", priceDisplay: "US$5", label: "Where to Stay Guide" },
-    itinerary: { dodoProductId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_SHANGHAI_MASTERS_ITINERARY_GUIDE ?? "", priceDisplay: "US$5", label: "Itinerary Guide" },
-  },
+  "bahrain-grand-prix": defaultMiniPackEntries(),
+  "singapore-grand-prix": defaultMiniPackEntries(),
+  "shanghai-masters": defaultMiniPackEntries(),
+  "united-states-grand-prix": defaultMiniPackEntries(),
+  "mexico-city-grand-prix": defaultMiniPackEntries(),
+  "brazilian-grand-prix": defaultMiniPackEntries(),
+  "las-vegas-grand-prix": defaultMiniPackEntries(),
+  "qatar-grand-prix": defaultMiniPackEntries(),
+  "abu-dhabi-grand-prix": defaultMiniPackEntries(),
 };
 
 export function getMiniPackPricing(slug: string): Record<MiniPackSpokeId, MiniPackPricingEntry> | null {

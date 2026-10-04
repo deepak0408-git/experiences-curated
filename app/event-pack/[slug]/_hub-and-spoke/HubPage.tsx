@@ -869,10 +869,6 @@ export default async function HubPage({ slug }: { slug: string }) {
                     Answer 6 questions about how YOU want to watch — get matched to the exact seat that fits
                   </p>
                 </div>
-                <p className="text-base font-black text-white mt-1">
-                  US$10
-                  <LocalCurrencyHint baseAmount={10} baseCurrency={pricing?.currency ?? "USD"} />
-                </p>
                 {purchasedProductTypes.has("ticket_intelligence") ? (
                   // Real link, not a dead-end span — the quiz page itself
                   // already redirects an already-purchased signed-in buyer
