@@ -280,7 +280,7 @@ export function SearchUI({
   indexName,
   initialQuery = "",
   initialSport = "",
-  initialDestination = "",
+  initialDestinations = [],
   archetype,
   userEmail,
   hideProCtas = false,
@@ -290,7 +290,10 @@ export function SearchUI({
   indexName: string;
   initialQuery?: string;
   initialSport?: string;
-  initialDestination?: string;
+  // One or more destinationName facet values (OR'd) — multiple values cover
+  // multi-city tour events (e.g. a cricket tour's tour_cities), where any
+  // one of several cities should match.
+  initialDestinations?: string[];
   archetype?: string | null;
   userEmail?: string | null;
   hideProCtas?: boolean;
@@ -317,7 +320,7 @@ export function SearchUI({
       searchClient={searchClient}
       indexName={indexName}
       future={{ preserveSharedStateOnUnmount: true }}
-      initialUiState={{ [indexName]: { query: initialQuery ?? "", refinementList: { ...(initialSport ? { sport: [initialSport] } : {}), ...(initialDestination ? { destinationName: [initialDestination] } : {}) } } }}
+      initialUiState={{ [indexName]: { query: initialQuery ?? "", refinementList: { ...(initialSport ? { sport: [initialSport] } : {}), ...(initialDestinations.length > 0 ? { destinationName: initialDestinations } : {}) } } }}
     >
       <Configure
         hitsPerPage={50}

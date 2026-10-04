@@ -15,6 +15,7 @@ import ExperienceTracker from "./_components/ExperienceTracker";
 import ExperienceActionSidebar from "./_components/ExperienceActionSidebar";
 import { isRealAffiliateLink } from "../../event-pack/[slug]/_hub-and-spoke/_lib/getSpokeData";
 import { hasTicketIntelligence } from "../../ticket-intelligence/[slug]/_lib/getSeatingData";
+import { shortEventName, stripYear } from "@/lib/eventShortNames";
 
 // Hub-and-spoke "back to spoke" link — maps an experience's slug prefix to
 // the spoke it's most at home in for a given event, per explicit curator
@@ -513,6 +514,43 @@ const EXPERIENCE_TO_SPOKE_BY_EVENT: Record<string, Record<string, { spokeId: str
     "japanese-gp-suzuka-fan-zones": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
     "japanese-gp-suzuka-circuit-park-motopia": { spokeId: "map", spokeLabel: "Venue Map" },
   },
+  // Chinese Grand Prix 2027 (Shanghai) — added 2 Oct 2026, filling a gap left
+  // since the pack's 23 Sep 2026 build (this event's build-status memory
+  // claimed this entry had been added, but it had not — no entry ever
+  // existed here, so every experience reached from this event's spokes
+  // silently fell through to the flat cross-event scan instead of a correct
+  // back-link). "chinese-gp-upscale-dining-" (Mr & Mrs Bund) cards in both
+  // LuxurySpoke and WhereToEatSpoke — mapped to where-to-eat as its primary
+  // home, matching its dining experienceType.
+  "chinese-grand-prix": {
+    "chinese-gp-ticket-guide-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "chinese-gp-grandstand-a-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "chinese-gp-grandstand-b-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "chinese-gp-grandstand-h-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "chinese-gp-grandstand-k-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "chinese-gp-grandstand-e-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "chinese-gp-general-admission-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "chinese-gp-paddock-club-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "chinese-gp-upscale-dining-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "chinese-gp-where-to-stay-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "chinese-gp-nanxiang-xiaolongbao-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "chinese-gp-anting-old-street-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "chinese-gp-getting-there-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "chinese-gp-arrival-guide-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "chinese-gp-fan-zone-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "chinese-gp-weather-": { spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+    "chinese-gp-first-timer-guide-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "chinese-gp-anting-neighborhood-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "china-visa-apps-payments-guide-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "chinese-gp-circuit-venue-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "hangzhou-west-lake-day-trip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "suzhou-classical-gardens-day-trip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "zhujiajiao-water-town-day-trip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "the-bund-shanghai-dusk-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "yu-garden-old-city-shanghai-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "french-concession-tianzifang-shanghai-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "lujiazui-skyline-shanghai-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+  },
 };
 
 // fromEventSlug should already be validated against sporting_event_experiences
@@ -603,7 +641,7 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "las-vegas-gp-fremont-downtown-dining-": { venueCount: 2, venueNoun: "restaurants" },
   "las-vegas-gp-fountains-sphere-": { venueCount: 2, venueNoun: "landmarks" },
   "las-vegas-gp-strip-casinos-": { venueCount: 3, venueNoun: "casino resorts" },
-  "chinese-gp-where-to-stay-": { venueCount: 2, venueNoun: "hotels" },
+  "chinese-gp-where-to-stay-": { venueCount: 5, venueNoun: "hotels" },
   "xiaolongbao-shanghai-guide-": { venueCount: 2, venueNoun: "restaurants" },
   "french-concession-dining-shanghai-": { venueCount: 3, venueNoun: "restaurants" },
   "singapore-gp-chinatown-stay-": { venueCount: 2, venueNoun: "hotels" },
@@ -766,6 +804,8 @@ export default async function ExperiencePage({
       let eventPackSport: string | null = null;
       let eventPackId: string | null = null;
       let hasLivePack = false;
+      let eventPackDestinationName: string | null = null;
+      let eventPackTourCities: string[] | null = null;
       // The breadcrumb's "← Back to <spoke>" link and the sidebar's "Get the
       // full guide" CTA must always agree — they're both "which event pack
       // does this experience belong to," just two different UI surfaces for
@@ -797,8 +837,11 @@ export default async function ExperiencePage({
             packStatus: sportingEvents.packStatus,
             isHidden: sportingEvents.isHidden,
             sport: sportingEvents.sport,
+            tourCities: sportingEvents.tourCities,
+            destinationName: destinations.name,
           })
           .from(sportingEvents)
+          .leftJoin(destinations, eq(sportingEvents.destinationId, destinations.id))
           .where(eq(sportingEvents.slug, eventPackLookupSlug))
           .limit(1);
         if (ev) {
@@ -808,6 +851,8 @@ export default async function ExperiencePage({
           eventPackSport = ev.sport;
           eventPackId = ev.id;
           hasLivePack = (ev.packStatus === "live" || ev.packStatus === "built_hidden") && ev.isHidden === false;
+          eventPackTourCities = ev.tourCities;
+          eventPackDestinationName = ev.destinationName;
         }
       } else if (exp.sportingEventId) {
         const [ev] = await db
@@ -819,8 +864,11 @@ export default async function ExperiencePage({
             packStatus: sportingEvents.packStatus,
             isHidden: sportingEvents.isHidden,
             sport: sportingEvents.sport,
+            tourCities: sportingEvents.tourCities,
+            destinationName: destinations.name,
           })
           .from(sportingEvents)
+          .leftJoin(destinations, eq(sportingEvents.destinationId, destinations.id))
           .where(eq(sportingEvents.id, exp.sportingEventId))
           .limit(1);
         if (ev) {
@@ -832,6 +880,8 @@ export default async function ExperiencePage({
           // Live-pack determination mirrors the blog article page's identical
           // logic — reachability, not purchase status.
           hasLivePack = (ev.packStatus === "live" || ev.packStatus === "built_hidden") && ev.isHidden === false;
+          eventPackTourCities = ev.tourCities;
+          eventPackDestinationName = ev.destinationName;
         }
       }
 
@@ -857,15 +907,31 @@ export default async function ExperiencePage({
         )
         .limit(3);
 
-      return { exp, ratingRow, eventPackSlug, eventPackName, eventPackFormat, eventPackSport, eventPackId, hasLivePack, related };
+      // How many distinct events this experience is actually linked to
+      // (sporting_event_experiences is the golden-truth join table — see
+      // CLAUDE.md). When > 1, the resolved eventPackSport above is only ONE
+      // of several real sports this experience serves (e.g. a Melbourne
+      // hotel shared by Australian Open/tennis, Australian GP/F1, and the
+      // NZ-in-Australia cricket tour) — which one "wins" is an accident of
+      // object key order in EXPERIENCE_TO_SPOKE_BY_EVENT (the documented gap
+      // in project_shared_experience_backlink_gap memory, Ops Checklist P1
+      // T3 #4), not a real fact about the experience. The "Explore all X
+      // experiences" sidebar link drops the sport filter entirely for these
+      // rather than risk sending a visitor to the wrong sport's results.
+      const [{ sharedEventCount }] = await db
+        .select({ sharedEventCount: count(sportingEventExperiences.id) })
+        .from(sportingEventExperiences)
+        .where(eq(sportingEventExperiences.experienceId, exp.id));
+
+      return { exp, ratingRow, eventPackSlug, eventPackName, eventPackFormat, eventPackSport, eventPackId, hasLivePack, eventPackDestinationName, eventPackTourCities, sharedEventCount, related };
     },
     ["experience-page"],
     { revalidate: 3600 }
   );
 
   const cached = await getExperienceData(slug);
-  const { exp, ratingRow, related } = cached;
-  let { eventPackSlug, eventPackName, eventPackFormat, eventPackSport, eventPackId, hasLivePack } = cached;
+  const { exp, ratingRow, related, sharedEventCount } = cached;
+  let { eventPackSlug, eventPackName, eventPackFormat, eventPackSport, eventPackId, hasLivePack, eventPackDestinationName, eventPackTourCities } = cached;
 
   // Resolve the referring event pack for a shared experience — per-request,
   // so it can't live inside getExperienceData's unstable_cache. Only trust
@@ -886,9 +952,12 @@ export default async function ExperiencePage({
         packStatus: sportingEvents.packStatus,
         isHidden: sportingEvents.isHidden,
         sport: sportingEvents.sport,
+        tourCities: sportingEvents.tourCities,
+        destinationName: destinations.name,
       })
       .from(sportingEventExperiences)
       .innerJoin(sportingEvents, eq(sportingEventExperiences.sportingEventId, sportingEvents.id))
+      .leftJoin(destinations, eq(sportingEvents.destinationId, destinations.id))
       .where(
         and(
           eq(sportingEventExperiences.experienceId, exp.id),
@@ -903,6 +972,8 @@ export default async function ExperiencePage({
       eventPackSport = linkedEvent.sport;
       eventPackId = linkedEvent.id;
       hasLivePack = (linkedEvent.packStatus === "live" || linkedEvent.packStatus === "built_hidden") && linkedEvent.isHidden === false;
+      eventPackTourCities = linkedEvent.tourCities;
+      eventPackDestinationName = linkedEvent.destinationName;
       // Only feed the referrer into getSpokeBackLink when it's a hub-and-
       // spoke event — a classic pack (e.g. BMW PGA Championship) has no
       // spokes, so there's nothing to link back to. Leaving
@@ -1056,6 +1127,42 @@ export default async function ExperiencePage({
   const isArchetypeMatch = archetype != null &&
     (ARCHETYPE_PREFERRED_TYPES[archetype] ?? []).includes(exp.experienceType);
 
+  // "Explore all X experiences" sidebar link — short, year-free event label
+  // (reuses the same SHORT_NAMES table as the homepage's "Now featured"
+  // strip, per founder direction, with the year stripped since this label
+  // needs to stay correct across an evergreen event's edition rollover) and
+  // a comma-separated destination facet value. Multi-city tours (tourCities
+  // non-null, e.g. cricket tours) pass every tour city — Algolia's
+  // refinementList treats multiple destinationName values as OR'd, so this
+  // surfaces experiences from every city on the tour, not just the anchor
+  // destination.
+  //
+  // Shared experiences (sharedEventCount > 1) never pass the sport facet:
+  // eventPackSport above is only one of several real sports this experience
+  // serves, and which one "wins" is an accident of object key order in
+  // EXPERIENCE_TO_SPOKE_BY_EVENT (see sharedEventCount's own comment in
+  // getExperienceData). Rather than risk sending a visitor to the wrong
+  // sport's results, drop the sport filter and the event-specific label —
+  // "Explore all {destination} experiences" is correct regardless of which
+  // event resolution picked.
+  const isSharedAcrossEvents = sharedEventCount > 1;
+  const eventPackShortLabel = stripYear(shortEventName(eventPackName, eventPackSlug));
+  // Shared experiences use the experience's OWN single destination
+  // (exp.destinationName), never the resolved event's tourCities — the
+  // winning event in the shared case is itself an accident of object key
+  // order (see sharedEventCount's comment above), so a multi-city tour
+  // winning the resolution must not leak its other cities into a link for
+  // an experience that only actually lives in one of them.
+  const eventPackSearchDestination = isSharedAcrossEvents
+    ? exp.destinationName
+    : eventPackTourCities && eventPackTourCities.length > 0
+      ? eventPackTourCities.join(",")
+      : eventPackDestinationName;
+  const exploreSport = isSharedAcrossEvents ? null : (eventPackSport ?? null);
+  const exploreLabel = isSharedAcrossEvents
+    ? (exp.destinationName ?? eventPackShortLabel)
+    : eventPackShortLabel;
+
   return (
     <div className="min-h-screen bg-[#0A0A0A]">
       <ExperienceTracker
@@ -1178,6 +1285,8 @@ export default async function ExperiencePage({
               slug.startsWith("piastri-grandstand-albert-park-") ? "lg:object-[center_20%]" :
               slug.startsWith("albert-park-circuit-inside-the-track-") ? "lg:object-[center_40%]" :
               slug.startsWith("lakeside-festival-albert-park-") ? "lg:object-[center_40%]" :
+              slug.startsWith("chinese-gp-general-admission-") ? "lg:object-[center_85%]" :
+              slug.startsWith("chinese-gp-where-to-stay-") ? "lg:object-[center_70%]" :
               ""
             }`}
             sizes="100vw"
@@ -1537,6 +1646,9 @@ export default async function ExperiencePage({
             showTicketIntelligenceLink={showTicketIntelligenceLink}
             sport={eventPackSport ?? undefined}
             experienceSlug={slug}
+            exploreLabel={exploreLabel}
+            exploreSport={exploreSport}
+            eventPackSearchDestination={eventPackSearchDestination}
           />
         </div>
         </div>

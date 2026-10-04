@@ -42,6 +42,9 @@ export default function ExperienceActionSidebar({
   showTicketIntelligenceLink,
   sport,
   experienceSlug,
+  exploreLabel,
+  exploreSport,
+  eventPackSearchDestination,
 }: {
   eventPackSlug: string;
   eventPackName: string;
@@ -66,6 +69,26 @@ export default function ExperienceActionSidebar({
   // back-link (?from=experience:<slug>) so a visitor who arrives there from
   // here returns to this exact experience, not the generic event guide.
   experienceSlug: string;
+  // Label for "Explore all X experiences" below — either the short, year-free
+  // event label (e.g. "Bahrain GP") for an experience that belongs to one
+  // event, or the destination name for an experience shared across multiple
+  // events (see exploreSport below for why these two are decided together
+  // by the page, not derived from `sport`/`eventPackName` here).
+  exploreLabel: string;
+  // Sport facet for the "Explore all X experiences" link — deliberately a
+  // SEPARATE prop from `sport` above (which still drives "See upcoming X
+  // events" unconditionally). The page passes null here whenever this
+  // experience is linked to more than one sporting event: eventPackSport is
+  // only one of several real sports such an experience serves, and which
+  // one "wins" is an accident of object key order in
+  // EXPERIENCE_TO_SPOKE_BY_EVENT, not a fact about the experience — so the
+  // sport filter is dropped rather than risk sending a visitor to the wrong
+  // sport's results.
+  exploreSport: string | null;
+  // Destination facet value for the /search link below — a single
+  // destination name, or comma-separated tour cities for multi-city events
+  // (tourCities). Null when the event has no resolvable destination yet.
+  eventPackSearchDestination: string | null;
 }) {
   const canPlanCosts = eventPackFormat === "hub_and_spoke";
   return (
@@ -111,6 +134,21 @@ export default function ExperienceActionSidebar({
           <span className="flex-1">
             <span className="block text-sm font-bold text-[#A3A3A3]">Find your perfect seat</span>
             <span className="block text-xs text-[#6A6A6A] mt-0.5">Answer 6 questions, get matched to a seat</span>
+          </span>
+        </Link>
+      )}
+
+      {(exploreSport || eventPackSearchDestination) && (
+        <Link
+          href={`/search?${exploreSport ? `sport=${encodeURIComponent(exploreSport)}` : ""}${exploreSport && eventPackSearchDestination ? "&" : ""}${eventPackSearchDestination ? `destination=${encodeURIComponent(eventPackSearchDestination)}` : ""}`}
+          className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+        >
+          <span className="text-base flex-shrink-0 w-5 text-center">🔎</span>
+          <span className="flex-1">
+            <span className="block text-sm font-bold text-[#A3A3A3]">
+              Explore all {exploreLabel} experiences
+            </span>
+            <span className="block text-xs text-[#6A6A6A] mt-0.5">Venues, transit, stays, activities and more</span>
           </span>
         </Link>
       )}

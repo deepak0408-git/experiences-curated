@@ -41,7 +41,7 @@ export default async function SearchPage({
       indexName={process.env.ALGOLIA_EXPERIENCES_INDEX!}
       initialQuery={q ?? ""}
       initialSport={sport ?? ""}
-      initialDestination={destination ?? ""}
+      initialDestinations={destination ? destination.split(",").filter(Boolean) : []}
       archetype={archetype}
       userEmail={user?.email ?? null}
       hideProCtas={process.env.HIDE_PRO === "true"}
