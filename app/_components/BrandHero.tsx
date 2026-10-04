@@ -156,19 +156,19 @@ export default function BrandHero({
                 otherwise it points at a #planner-teaser anchor that
                 doesn't exist on the page during the beta gate. */}
             <div className="flex flex-row gap-4 sm:grid sm:grid-cols-2 sm:gap-x-8">
-              <a
-                href={hasCalendarEvents ? "#on-the-calendar" : "/search"}
+              <Link
+                href={hasCalendarEvents ? "/#on-the-calendar" : "/search"}
                 className="text-sm font-black text-white hover:text-[#AAFF00] transition-colors"
               >
                 See all events ↓
-              </a>
+              </Link>
               {showPlannerLink && (
-                <a
-                  href="#planner-teaser"
+                <Link
+                  href="/#planner-teaser"
                   className="text-sm font-black text-white hover:text-[#AAFF00] transition-colors"
                 >
                   Or start with your budget ↓
-                </a>
+                </Link>
               )}
             </div>
           </div>

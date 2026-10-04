@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
-import { sportingEvents, sportingEventExperiences, experiences } from "@/schema/database";
+import { sportingEvents, sportingEventExperiences, experiences, circuitSeatingProfile } from "@/schema/database";
 import { eq, and, gte, asc, isNotNull, count, inArray } from "drizzle-orm";
 import Link from "next/link";
 import Image from "next/image";
@@ -157,6 +157,16 @@ export default async function HomePage() {
     }
   }
 
+  // Which calendar events have Ticket Intelligence built (any seeded rows
+  // in circuit_seating_profile) — gates the "Find your perfect seat" CTA.
+  const tiRows = calendarEventIds.length > 0
+    ? await db
+        .selectDistinct({ eventId: circuitSeatingProfile.sportingEventId })
+        .from(circuitSeatingProfile)
+        .where(inArray(circuitSeatingProfile.sportingEventId, calendarEventIds))
+    : [];
+  const tiEventIds = new Set(tiRows.map((r) => r.eventId));
+
   const featuredEventsForHero = await Promise.all(
     featuredSorted.map(async (ev) => ({
       slug: ev.slug,
@@ -178,6 +188,7 @@ export default async function HomePage() {
     heroImageUrl: ev.heroImageUrl,
     expCount: expCountMap[ev.id] ?? 0,
     glimpse: glimpseMap[ev.id] ?? [],
+    hasTicketIntelligence: tiEventIds.has(ev.id),
     venue: ev.slug === "india-in-england-cricket-2026"
       ? "Birmingham · London · Nottingham · more"
       : ev.venueName,

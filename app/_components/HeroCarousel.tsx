@@ -232,12 +232,12 @@ export default function HeroCarousel({
             )}
 
             {calendarHint && (
-              <a
-                href="#on-the-calendar"
+              <Link
+                href="/#on-the-calendar"
                 className="mt-3 inline-block text-xs font-semibold tracking-widest uppercase text-white bg-black/50 px-3 py-1 rounded-full hover:bg-black/70 transition-colors"
               >
                 Also available · {calendarHint} ↓
-              </a>
+              </Link>
             )}
           </div>
         </div>
