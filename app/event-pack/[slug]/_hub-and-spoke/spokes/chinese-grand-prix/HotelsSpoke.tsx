@@ -92,7 +92,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
             <HotelBookingCard
               name="Courtyard & Hyatt Regency Shanghai Jiading"
               note="Both sit in the same general Jiading area, closest to the circuit."
-              links={whereToStay?.bookingLinks?.filter((l) => l.label?.includes("Jiading")) ?? []}
+              links={(whereToStay?.bookingLinks as Array<{ platform: string; label?: string; url: string }> | undefined)?.filter((l) => l.label?.includes("Jiading")) ?? []}
             />
             <HotelBookingCard
               name="Crowne Plaza Shanghai Anting"
@@ -108,7 +108,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
             <HotelBookingCard
               name="Downtown — Campanile, Okura Garden & Waldorf Astoria on the Bund"
               note="Budget, moderate, and luxury picks respectively, all covered in full in the Where to Stay guide above."
-              links={whereToStay?.bookingLinks?.filter((l) => !l.label?.includes("Jiading")) ?? []}
+              links={(whereToStay?.bookingLinks as Array<{ platform: string; label?: string; url: string }> | undefined)?.filter((l) => !l.label?.includes("Jiading")) ?? []}
             />
           </div>
 
