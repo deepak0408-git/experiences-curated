@@ -232,6 +232,31 @@ import CGItinerarySpoke from "./chinese-grand-prix/ItinerarySpoke";
 import CGArrivalSpoke from "./chinese-grand-prix/ArrivalSpoke";
 import CGMapSpoke from "./chinese-grand-prix/MapSpoke";
 import CGLuxurySpoke from "./chinese-grand-prix/LuxurySpoke";
+import USOCostSpoke from "./us-open-2026/CostSpoke";
+import USOTicketsSpoke from "./us-open-2026/TicketsSpoke";
+import USOHotelsSpoke from "./us-open-2026/HotelsSpoke";
+import USOGettingThereSpoke from "./us-open-2026/GettingThereSpoke";
+import USOWeatherSpoke from "./us-open-2026/WeatherSpoke";
+import USOFirstTimerGuideSpoke from "./us-open-2026/FirstTimerGuideSpoke";
+import USOWhereToEatSpoke from "./us-open-2026/WhereToEatSpoke";
+import USODayTripsSpoke from "./us-open-2026/DayTripsSpoke";
+import USOItinerarySpoke from "./us-open-2026/ItinerarySpoke";
+import USOArrivalSpoke from "./us-open-2026/ArrivalSpoke";
+import USOMapSpoke from "./us-open-2026/MapSpoke";
+import USOLuxurySpoke from "./us-open-2026/LuxurySpoke";
+
+import BGTCostSpoke from "./border-gavaskar-trophy-2027/CostSpoke";
+import BGTTicketsSpoke from "./border-gavaskar-trophy-2027/TicketsSpoke";
+import BGTHotelsSpoke from "./border-gavaskar-trophy-2027/HotelsSpoke";
+import BGTGettingThereSpoke from "./border-gavaskar-trophy-2027/GettingThereSpoke";
+import BGTWeatherSpoke from "./border-gavaskar-trophy-2027/WeatherSpoke";
+import BGTFirstTimerGuideSpoke from "./border-gavaskar-trophy-2027/FirstTimerGuideSpoke";
+import BGTWhereToEatSpoke from "./border-gavaskar-trophy-2027/WhereToEatSpoke";
+import BGTDayTripsSpoke from "./border-gavaskar-trophy-2027/DayTripsSpoke";
+import BGTItinerarySpoke from "./border-gavaskar-trophy-2027/ItinerarySpoke";
+import BGTArrivalSpoke from "./border-gavaskar-trophy-2027/ArrivalSpoke";
+import BGTMapSpoke from "./border-gavaskar-trophy-2027/MapSpoke";
+import BGTLuxurySpoke from "./border-gavaskar-trophy-2027/LuxurySpoke";
 
 type SpokeComponent = ComponentType<{ eventSlug: string }>;
 
@@ -492,6 +517,51 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: CGMapSpoke,
     luxury: CGLuxurySpoke,
   },
+  "us-open-2026": {
+    cost: USOCostSpoke,
+    tickets: USOTicketsSpoke,
+    hotels: USOHotelsSpoke,
+    "getting-there": USOGettingThereSpoke,
+    weather: USOWeatherSpoke,
+    "first-timer-guide": USOFirstTimerGuideSpoke,
+    "where-to-eat": USOWhereToEatSpoke,
+    "day-trips": USODayTripsSpoke,
+    itinerary: USOItinerarySpoke,
+    arrival: USOArrivalSpoke,
+    map: USOMapSpoke,
+    luxury: USOLuxurySpoke,
+  },
+  // Mirror of "us-open-2026" above, under the evergreen "us-open" slug — DB
+  // rename not done yet (Deploy A/B hard gate, migrate-from-classic-to-
+  // hub-spoke skill §1).
+  "us-open": {
+    cost: USOCostSpoke,
+    tickets: USOTicketsSpoke,
+    hotels: USOHotelsSpoke,
+    "getting-there": USOGettingThereSpoke,
+    weather: USOWeatherSpoke,
+    "first-timer-guide": USOFirstTimerGuideSpoke,
+    "where-to-eat": USOWhereToEatSpoke,
+    "day-trips": USODayTripsSpoke,
+    itinerary: USOItinerarySpoke,
+    arrival: USOArrivalSpoke,
+    map: USOMapSpoke,
+    luxury: USOLuxurySpoke,
+  },
+  "border-gavaskar-trophy-2027": {
+    cost: BGTCostSpoke,
+    tickets: BGTTicketsSpoke,
+    hotels: BGTHotelsSpoke,
+    "getting-there": BGTGettingThereSpoke,
+    weather: BGTWeatherSpoke,
+    "first-timer-guide": BGTFirstTimerGuideSpoke,
+    "where-to-eat": BGTWhereToEatSpoke,
+    "day-trips": BGTDayTripsSpoke,
+    itinerary: BGTItinerarySpoke,
+    arrival: BGTArrivalSpoke,
+    map: BGTMapSpoke,
+    luxury: BGTLuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -746,5 +816,50 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Shanghai International Circuit — Arrival & Entry Guide",
     map: "Shanghai International Circuit Map — Karting, Museum, and Facilities",
     luxury: "Luxury Guide for the Chinese Grand Prix — Paddock Club and More",
+  },
+  "us-open-2026": {
+    cost: "How Much Does a US Open Trip to New York Cost? — Budget Guide",
+    tickets: "US Open Ticket Guide — Grounds Admission to Arthur Ashe Hospitality",
+    hotels: "Where to Stay for the US Open — Manhattan vs. Queens",
+    "getting-there": "Getting to the USTA Billie Jean King National Tennis Center — Transit Guide",
+    weather: "US Open Weather in Late August-September — What to Pack",
+    "first-timer-guide": "First-Timer's Guide — the US Open and New York's Loudest Slam",
+    "where-to-eat": "Where to Eat — US Open Weekend, On the Grounds and in Queens",
+    "day-trips": "Best Day Trips During the US Open — Atlantic City, Hudson Valley, and Queens",
+    itinerary: "Sample US Open Trip Itinerary",
+    arrival: "US Open — Arrival & Practice Court Guide",
+    map: "USTA Billie Jean King National Tennis Center Map — Stadiums and Facilities",
+    luxury: "Luxury Guide for the US Open — Official Hospitality and the Honey Deuce",
+  },
+  // Mirror of "us-open-2026" above, under the evergreen "us-open" slug — DB
+  // rename not done yet (Deploy A/B hard gate, migrate-from-classic-to-
+  // hub-spoke skill §1).
+  "us-open": {
+    cost: "How Much Does a US Open Trip to New York Cost? — Budget Guide",
+    tickets: "US Open Ticket Guide — Grounds Admission to Arthur Ashe Hospitality",
+    hotels: "Where to Stay for the US Open — Manhattan vs. Queens",
+    "getting-there": "Getting to the USTA Billie Jean King National Tennis Center — Transit Guide",
+    weather: "US Open Weather in Late August-September — What to Pack",
+    "first-timer-guide": "First-Timer's Guide — the US Open and New York's Loudest Slam",
+    "where-to-eat": "Where to Eat — US Open Weekend, On the Grounds and in Queens",
+    "day-trips": "Best Day Trips During the US Open — Atlantic City, Hudson Valley, and Queens",
+    itinerary: "Sample US Open Trip Itinerary",
+    arrival: "US Open — Arrival & Practice Court Guide",
+    map: "USTA Billie Jean King National Tennis Center Map — Stadiums and Facilities",
+    luxury: "Luxury Guide for the US Open — Official Hospitality and the Honey Deuce",
+  },
+  "border-gavaskar-trophy-2027": {
+    cost: "How Much Does a Border-Gavaskar Trophy Trip Cost? — India Budget Guide",
+    tickets: "Border-Gavaskar Test Ticket Guide — Nagpur, Chennai, and Ahmedabad Stands",
+    hotels: "Where to Stay for the Border-Gavaskar Trophy — Nagpur, Chennai, and Ahmedabad",
+    "getting-there": "Getting to VCA Nagpur, Chepauk, and Narendra Modi Stadium — Transit Guide",
+    weather: "India in January-March — What to Pack for the Border-Gavaskar Trophy",
+    "first-timer-guide": "First-Timer's Guide — the Border-Gavaskar Trophy and India Travel Basics",
+    "where-to-eat": "Where to Eat — Nagpur, Chennai, and Ahmedabad During the Border-Gavaskar Trophy",
+    "day-trips": "Best Day Trips — Tadoba, Mahabalipuram, Statue of Unity, Gir, and More",
+    itinerary: "Sample Border-Gavaskar Trophy Itinerary — Nagpur, Chennai, and Ahmedabad",
+    arrival: "Three Grounds Arrival Guide — Border-Gavaskar Trophy",
+    map: "Nagpur, Chepauk, and Motera Stadium Guide — Border-Gavaskar Trophy Venues",
+    luxury: "Luxury Guide for the Border-Gavaskar Trophy — Hospitality and Luxury Stays",
   },
 };
