@@ -233,6 +233,19 @@ import CGArrivalSpoke from "./chinese-grand-prix/ArrivalSpoke";
 import CGMapSpoke from "./chinese-grand-prix/MapSpoke";
 import CGLuxurySpoke from "./chinese-grand-prix/LuxurySpoke";
 
+import USOCostSpoke from "./us-open-2026/CostSpoke";
+import USOTicketsSpoke from "./us-open-2026/TicketsSpoke";
+import USOHotelsSpoke from "./us-open-2026/HotelsSpoke";
+import USOGettingThereSpoke from "./us-open-2026/GettingThereSpoke";
+import USOWeatherSpoke from "./us-open-2026/WeatherSpoke";
+import USOFirstTimerGuideSpoke from "./us-open-2026/FirstTimerGuideSpoke";
+import USOWhereToEatSpoke from "./us-open-2026/WhereToEatSpoke";
+import USODayTripsSpoke from "./us-open-2026/DayTripsSpoke";
+import USOItinerarySpoke from "./us-open-2026/ItinerarySpoke";
+import USOArrivalSpoke from "./us-open-2026/ArrivalSpoke";
+import USOMapSpoke from "./us-open-2026/MapSpoke";
+import USOLuxurySpoke from "./us-open-2026/LuxurySpoke";
+
 type SpokeComponent = ComponentType<{ eventSlug: string }>;
 
 // Registry mapping eventSlug -> spokeId -> component. A new hub_and_spoke
@@ -492,6 +505,37 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     map: CGMapSpoke,
     luxury: CGLuxurySpoke,
   },
+  "us-open-2026": {
+    cost: USOCostSpoke,
+    tickets: USOTicketsSpoke,
+    hotels: USOHotelsSpoke,
+    "getting-there": USOGettingThereSpoke,
+    weather: USOWeatherSpoke,
+    "first-timer-guide": USOFirstTimerGuideSpoke,
+    "where-to-eat": USOWhereToEatSpoke,
+    "day-trips": USODayTripsSpoke,
+    itinerary: USOItinerarySpoke,
+    arrival: USOArrivalSpoke,
+    map: USOMapSpoke,
+    luxury: USOLuxurySpoke,
+  },
+  // Mirror of "us-open-2026" above, under the evergreen "us-open" slug — DB
+  // rename not done yet (Deploy A/B hard gate, migrate-from-classic-to-
+  // hub-spoke skill §1).
+  "us-open": {
+    cost: USOCostSpoke,
+    tickets: USOTicketsSpoke,
+    hotels: USOHotelsSpoke,
+    "getting-there": USOGettingThereSpoke,
+    weather: USOWeatherSpoke,
+    "first-timer-guide": USOFirstTimerGuideSpoke,
+    "where-to-eat": USOWhereToEatSpoke,
+    "day-trips": USODayTripsSpoke,
+    itinerary: USOItinerarySpoke,
+    arrival: USOArrivalSpoke,
+    map: USOMapSpoke,
+    luxury: USOLuxurySpoke,
+  },
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
@@ -746,5 +790,36 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Shanghai International Circuit — Arrival & Entry Guide",
     map: "Shanghai International Circuit Map — Karting, Museum, and Facilities",
     luxury: "Luxury Guide for the Chinese Grand Prix — Paddock Club and More",
+  },
+  "us-open-2026": {
+    cost: "How Much Does a US Open Trip to New York Cost? — Budget Guide",
+    tickets: "US Open Ticket Guide — Grounds Admission to Arthur Ashe Hospitality",
+    hotels: "Where to Stay for the US Open — Manhattan vs. Queens",
+    "getting-there": "Getting to the USTA Billie Jean King National Tennis Center — Transit Guide",
+    weather: "US Open Weather in Late August-September — What to Pack",
+    "first-timer-guide": "First-Timer's Guide — the US Open and New York's Loudest Slam",
+    "where-to-eat": "Where to Eat — US Open Weekend, On the Grounds and in Queens",
+    "day-trips": "Best Day Trips During the US Open — Atlantic City, Hudson Valley, and Queens",
+    itinerary: "Sample US Open Trip Itinerary",
+    arrival: "US Open — Arrival & Practice Court Guide",
+    map: "USTA Billie Jean King National Tennis Center Map — Stadiums and Facilities",
+    luxury: "Luxury Guide for the US Open — Official Hospitality and the Honey Deuce",
+  },
+  // Mirror of "us-open-2026" above, under the evergreen "us-open" slug — DB
+  // rename not done yet (Deploy A/B hard gate, migrate-from-classic-to-
+  // hub-spoke skill §1).
+  "us-open": {
+    cost: "How Much Does a US Open Trip to New York Cost? — Budget Guide",
+    tickets: "US Open Ticket Guide — Grounds Admission to Arthur Ashe Hospitality",
+    hotels: "Where to Stay for the US Open — Manhattan vs. Queens",
+    "getting-there": "Getting to the USTA Billie Jean King National Tennis Center — Transit Guide",
+    weather: "US Open Weather in Late August-September — What to Pack",
+    "first-timer-guide": "First-Timer's Guide — the US Open and New York's Loudest Slam",
+    "where-to-eat": "Where to Eat — US Open Weekend, On the Grounds and in Queens",
+    "day-trips": "Best Day Trips During the US Open — Atlantic City, Hudson Valley, and Queens",
+    itinerary: "Sample US Open Trip Itinerary",
+    arrival: "US Open — Arrival & Practice Court Guide",
+    map: "USTA Billie Jean King National Tennis Center Map — Stadiums and Facilities",
+    luxury: "Luxury Guide for the US Open — Official Hospitality and the Honey Deuce",
   },
 };

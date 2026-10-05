@@ -90,6 +90,21 @@ const FILMSTRIP_SLUGS_BY_EVENT: Record<string, string[]> = {
 // pack's PACK_EDITORIAL, which exists as two separately-maintained copies
 // (PackView.tsx and lib/pack-content.ts).
 export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; value: string; href?: string; linkLabel?: string }>> = {
+  "us-open-2026": [
+    { label: "Gate times", value: "Day session gates 9:30am for most of the main draw, typically shifting later on the tournament's final days; evening session gates 6pm regardless of date. Confirm exact times via the official app closer to the event." },
+    { label: "Bag policy", value: "One bag per guest, max 12\"W x 12\"H x 16\"L. Backpacks not permitted with very limited exceptions. Metal/plastic water bottles up to 24oz are allowed." },
+    { label: "Weather", value: "Low-to-mid 80s°F, real humidity, afternoon thunderstorms a recurring feature. Ashe's roof seals more completely than Armstrong's naturally-ventilated design.", href: "https://www.accuweather.com/en/us/flushing/11354/weather-forecast/2622414", linkLabel: "AccuWeather forecast" },
+    { label: "Emergencies", value: "US-wide emergency number: 911. NYC non-emergency: 311. Nearest major hospital to the grounds: NewYork-Presbyterian Queens, 56-45 Main St, Flushing." },
+  ],
+  // Mirror of "us-open-2026" above, under the evergreen "us-open" slug — DB
+  // rename not done yet (Deploy A/B hard gate, migrate-from-classic-to-
+  // hub-spoke skill §1).
+  "us-open": [
+    { label: "Gate times", value: "Day session gates 9:30am for most of the main draw, typically shifting later on the tournament's final days; evening session gates 6pm regardless of date. Confirm exact times via the official app closer to the event." },
+    { label: "Bag policy", value: "One bag per guest, max 12\"W x 12\"H x 16\"L. Backpacks not permitted with very limited exceptions. Metal/plastic water bottles up to 24oz are allowed." },
+    { label: "Weather", value: "Low-to-mid 80s°F, real humidity, afternoon thunderstorms a recurring feature. Ashe's roof seals more completely than Armstrong's naturally-ventilated design.", href: "https://www.accuweather.com/en/us/flushing/11354/weather-forecast/2622414", linkLabel: "AccuWeather forecast" },
+    { label: "Emergencies", value: "US-wide emergency number: 911. NYC non-emergency: 311. Nearest major hospital to the grounds: NewYork-Presbyterian Queens, 56-45 Main St, Flushing." },
+  ],
   "singapore-grand-prix": [
     { label: "Gates open", value: "F1 hasn't published exact 2026 gate-opening times yet. Based on the confirmed 2026 session schedule — Practice 1 Fri 4:30pm, Sprint Qualifying Fri 8:30pm, Sprint Sat 5pm, Qualifying Sat 9pm, Race Sun 8pm — expect gates to open roughly 2-3 hours before each day's first session. Confirm exact times closer to race week." },
     { label: "Emergencies", value: "Police: 999. Fire/ambulance (SCDF): 995 — the same number covers both. Non-emergency ambulance: 1777. Nearest 24-hour A&E to the circuit: Raffles Hospital, 585 North Bridge Road, Singapore 188770." },
@@ -274,6 +289,23 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
 
 // Exported (27 Aug 2026) — same reasoning as QUICK_REFERENCE_BY_EVENT above.
 export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: string; heroFallbackImageSlug: string; introText: string }> = {
+  "us-open-2026": {
+    displayName: "US Open",
+    venueLine: "Held at the USTA Billie Jean King National Tennis Center, Flushing Meadows, Queens — the world's largest tennis stadium, and the loudest Grand Slam on the calendar.",
+    heroFallbackImageSlug: "arthur-ashe-stadium",
+    introText:
+      "Two weeks in August heat in Queens, New York. The night sessions under the lights of Arthur Ashe Stadium. Grounds passes that get you within arm's reach of the world's best players on the outer courts. The US Open doesn't ask you to behave like you're at Wimbledon — there's no dress code, no enforced silence, and a crowd that's openly encouraged to be loud. It's the one Grand Slam that built its whole identity around rejecting the decorum the others expect.\n\nThis isn't a tournament you can see all of from one seat. A Grounds Admission pass gets you onto every court except Ashe — the outer courts, Louis Armstrong's general-admission sections, the practice facility where top players warm up a few feet from the rail. Add a city built around it — Queens' own genuinely diverse food scene in Jackson Heights and Flushing, a day trip to Atlantic City or the Hudson Valley, a cocktail that's sold three million servings since 2007 — and the tournament is only half the trip.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
+  // Mirror of "us-open-2026" above, under the evergreen "us-open" slug — DB
+  // rename not done yet (Deploy A/B hard gate, migrate-from-classic-to-
+  // hub-spoke skill §1).
+  "us-open": {
+    displayName: "US Open",
+    venueLine: "Held at the USTA Billie Jean King National Tennis Center, Flushing Meadows, Queens — the world's largest tennis stadium, and the loudest Grand Slam on the calendar.",
+    heroFallbackImageSlug: "arthur-ashe-stadium",
+    introText:
+      "Two weeks in August heat in Queens, New York. The night sessions under the lights of Arthur Ashe Stadium. Grounds passes that get you within arm's reach of the world's best players on the outer courts. The US Open doesn't ask you to behave like you're at Wimbledon — there's no dress code, no enforced silence, and a crowd that's openly encouraged to be loud. It's the one Grand Slam that built its whole identity around rejecting the decorum the others expect.\n\nThis isn't a tournament you can see all of from one seat. A Grounds Admission pass gets you onto every court except Ashe — the outer courts, Louis Armstrong's general-admission sections, the practice facility where top players warm up a few feet from the rail. Add a city built around it — Queens' own genuinely diverse food scene in Jackson Heights and Flushing, a day trip to Atlantic City or the Hudson Valley, a cocktail that's sold three million servings since 2007 — and the tournament is only half the trip.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
   "bahrain-grand-prix": {
     displayName: "Bahrain Grand Prix in Malaysia",
     venueLine: "Held at Sepang International Circuit, Malaysia — same \"Bahrain Grand Prix\" name on the calendar, a different country hosting it this year.",

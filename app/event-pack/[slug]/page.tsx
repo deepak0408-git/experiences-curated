@@ -513,14 +513,14 @@ export default async function EventPackPage({
   // Compare against end-of-day instead.
   const isEventPast = new Date() > new Date(`${event.endDate}T23:59:59Z`);
 
-  // Fallback changed from "wimbledon-2026" to "us-open-2026" 16 Aug 2026 —
-  // the Wimbledon evergreen-slug migration retired the "wimbledon-2026" key
-  // entirely (see lib/packPricing.ts), and this line only runs for
-  // classic-format events (the real Wimbledon row now dispatches to
-  // HubPage.tsx before ever reaching here) — a generic fallback for a
-  // still-classic event should point at another real classic event, not a
-  // hub-and-spoke one's pricing shape.
-  const pricing = (await getPackPricing(slug)) ?? (await getPackPricing("us-open-2026"))!;
+  // Fallback changed from "us-open-2026" to "bmw-pga-championship-2026"
+  // 5 Oct 2026 — the US Open evergreen-slug migration retired the
+  // "us-open-2026" key entirely (see lib/packPricing.ts), and this line
+  // only runs for classic-format events (the real US Open row now
+  // dispatches to HubPage.tsx before ever reaching here) — a generic
+  // fallback for a still-classic event should point at another real
+  // classic event, not a hub-and-spoke one's pricing shape.
+  const pricing = (await getPackPricing(slug)) ?? (await getPackPricing("bmw-pga-championship-2026"))!;
   const isEarlyBird = new Date() < new Date(pricing.earlyBirdCutoff);
   const priceDisplay = freeAccessEnabled ? "Free" : isEarlyBird ? pricing.earlyBirdDisplay : pricing.standardDisplay;
   const priceId = isEarlyBird ? pricing.earlyBirdPriceId : pricing.standardPriceId;

@@ -208,6 +208,43 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
   // Real imageSlug values used directly. Weather/Arrival/Tickets use the
   // skill's standing cross-event default images (imageOverride), set here
   // at config-creation time per the skill's explicit rule — not deferred.
+  // US Open — migrated from classic to hub-and-spoke, 5 Oct 2026. No fresh
+  // hero-image sourcing pass needed since the migrated event already had
+  // 16 hero-imaged experiences from its classic-pack life (see
+  // migrate-from-classic-to-hub-spoke skill §3b). The 6 new experiences
+  // added for this migration (Atlantic City, Hudson Valley, Arrival,
+  // Luxury, First-Timer's Guide, Weather) all have real hero images as of
+  // 5 Oct 2026 — no pending-image gap remains. Mirrored under the
+  // evergreen "us-open" slug below — DB rename not done yet (Deploy A/B
+  // hard gate, migrate-from-classic-to-hub-spoke skill §1).
+  "us-open-2026": [
+    { id: "cost", label: "Cost Guide", question: "How much does a US Open trip to New York cost?", status: "teaser", imageSlug: "where-to-stay-us-open" },
+    { id: "tickets", label: "Ticket Guide", question: "Which US Open ticket is the best buy?", status: "teaser", imageSlug: "arthur-ashe-stadium", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the US Open?", status: "teaser", imageSlug: "where-to-stay-us-open" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to the USTA Billie Jean King National Tennis Center?", status: "public", imageSlug: "the-7-train-to-flushing" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the US Open, and what should I pack?", status: "public", imageSlug: "us-open-weather-packing", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first US Open?", status: "public", imageSlug: "us-open-first-timer-guide" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat during the US Open?", status: "teaser", imageSlug: "jackson-heights-food-mile" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips during the US Open — Atlantic City, the Hudson Valley, or Queens itself?", status: "teaser", imageSlug: "atlantic-city-day-trip" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does a US Open trip to New York actually look like?", status: "teaser", imageSlug: "us-open-rooftop-night-session" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at the US Open gates?", status: "public", imageSlug: "us-open-arrival-guide", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at the USTA Billie Jean King National Tennis Center?", status: "public", imageSlug: "flushing-meadows-corona-park" },
+    { id: "luxury", label: "Luxury Guide", question: "What does a genuinely luxury US Open trip look like?", status: "teaser", imageSlug: "us-open-luxury-hospitality" },
+  ],
+  "us-open": [
+    { id: "cost", label: "Cost Guide", question: "How much does a US Open trip to New York cost?", status: "teaser", imageSlug: "where-to-stay-us-open" },
+    { id: "tickets", label: "Ticket Guide", question: "Which US Open ticket is the best buy?", status: "teaser", imageSlug: "arthur-ashe-stadium", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the US Open?", status: "teaser", imageSlug: "where-to-stay-us-open" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to the USTA Billie Jean King National Tennis Center?", status: "public", imageSlug: "the-7-train-to-flushing" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the US Open, and what should I pack?", status: "public", imageSlug: "us-open-weather-packing", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first US Open?", status: "public", imageSlug: "us-open-first-timer-guide" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat during the US Open?", status: "teaser", imageSlug: "jackson-heights-food-mile" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips during the US Open — Atlantic City, the Hudson Valley, or Queens itself?", status: "teaser", imageSlug: "atlantic-city-day-trip" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does a US Open trip to New York actually look like?", status: "teaser", imageSlug: "us-open-rooftop-night-session" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at the US Open gates?", status: "public", imageSlug: "us-open-arrival-guide", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at the USTA Billie Jean King National Tennis Center?", status: "public", imageSlug: "flushing-meadows-corona-park" },
+    { id: "luxury", label: "Luxury Guide", question: "What does a genuinely luxury US Open trip look like?", status: "teaser", imageSlug: "us-open-luxury-hospitality" },
+  ],
   "french-open": [
     { id: "cost", label: "Cost Guide", question: "How much does a French Open trip to Paris cost?", status: "teaser", imageSlug: "court-philippe-chatrier-suzanne-lenglen" },
     { id: "tickets", label: "Ticket Guide", question: "Which Roland-Garros ticket is the best buy?", status: "teaser", imageSlug: "roland-garros-grounds-pass-tickets", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },

@@ -302,6 +302,66 @@ const EXPERIENCE_TO_SPOKE_BY_EVENT: Record<string, Record<string, { spokeId: str
     "late-night-melbourne-park-midnight-finishes-": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
     "grand-slam-oval-party-live-music-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
   },
+  "us-open-2026": {
+  // US Open — spoke mapping agreed during classic-to-hub-and-spoke
+  // migration, 5 Oct 2026. Covers all 16 real experiences carried over
+  // from the classic pack plus the 6 new experiences seeded for this
+  // migration (Atlantic City, Hudson Valley, Arrival, Luxury, First-
+  // Timer's Guide, Weather & Packing). Row rolled to the 2027 edition in
+  // the same session.
+    "arthur-ashe-stadium-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "louis-armstrong-stadium-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "us-open-night-sessions-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "where-to-stay-us-open-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "the-7-train-to-flushing-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "us-open-weather-packing-": { spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+    "us-open-first-timer-guide-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "eating-at-the-us-open-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "jackson-heights-food-mile-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "flushings-golden-mall-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "us-open-rooftop-night-session-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "us-open-queens-food-tour-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "queens-a-day-beyond-the-courts-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "flushing-meadows-corona-park-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "atlantic-city-day-trip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "hudson-valley-day-trip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "nyc-museums-day-trip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "preparing-for-us-open-": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+    "us-open-fan-week-free-grounds-access-before-the-open-": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+    "us-open-practice-courts-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "us-open-arrival-guide-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "when-play-stops-us-open-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "us-open-luxury-hospitality-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  },
+  // Mirror of "us-open-2026" above, under the evergreen "us-open" slug —
+  // DB rename not done yet (Deploy A/B hard gate, migrate-from-classic-to-
+  // hub-spoke skill §1). Keep both keys in sync until the dated key is
+  // retired after the rename lands.
+  "us-open": {
+    "arthur-ashe-stadium-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "louis-armstrong-stadium-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "us-open-night-sessions-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "where-to-stay-us-open-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "the-7-train-to-flushing-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "us-open-weather-packing-": { spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+    "us-open-first-timer-guide-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "eating-at-the-us-open-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "jackson-heights-food-mile-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "flushings-golden-mall-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "us-open-rooftop-night-session-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "us-open-queens-food-tour-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "queens-a-day-beyond-the-courts-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "flushing-meadows-corona-park-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "atlantic-city-day-trip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "hudson-valley-day-trip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "nyc-museums-day-trip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "preparing-for-us-open-": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+    "us-open-fan-week-free-grounds-access-before-the-open-": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+    "us-open-practice-courts-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "us-open-arrival-guide-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "when-play-stops-us-open-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "us-open-luxury-hospitality-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  },
   "french-open": {
   // French Open 2027 — spoke mapping locked with founder 4 Sep 2026.
     "court-philippe-chatrier-suzanne-lenglen": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
