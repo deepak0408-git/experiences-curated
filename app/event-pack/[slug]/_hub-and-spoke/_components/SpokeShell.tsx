@@ -293,7 +293,8 @@ export default async function SpokeShell({
               </>
             ) : (
               <>
-                <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Get the full picture</p>
+                <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-1">Get the full event guide</p>
+                <p className="text-xs italic text-[#6A6A6A] mb-2">All {spokes.length} planning guides</p>
                 <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
                   {(isFullyGated ? undefined : ctaCopy) ?? DEFAULT_CTA_COPY_BY_SPOKE[spokeId] ?? "The Event Pack adds our single curated recommendation and the tactical detail — booking lead times, contacts, and which option is actually worth it."}
                 </p>
