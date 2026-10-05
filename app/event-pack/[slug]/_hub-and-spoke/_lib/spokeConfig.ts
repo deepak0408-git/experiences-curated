@@ -208,43 +208,6 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
   // Real imageSlug values used directly. Weather/Arrival/Tickets use the
   // skill's standing cross-event default images (imageOverride), set here
   // at config-creation time per the skill's explicit rule — not deferred.
-  // US Open 2026 — migrated from classic to hub-and-spoke, built 5 Oct 2026.
-  // Real seeded experience slugs throughout — no __no-image-yet__ sentinel
-  // needed since the migrated event already had 16 hero-imaged experiences
-  // from its classic-pack life (see migrate-from-classic-to-hub-spoke
-  // skill §3b). The 6 new experiences added for this migration (Atlantic
-  // City, Hudson Valley, Arrival, Luxury, First-Timer's Guide, Weather) all
-  // have real hero images as of 5 Oct 2026 — no pending-image gap remains.
-  // Mirrored under the evergreen "us-open" slug below — DB rename not done
-  // yet (Deploy A/B hard gate, migrate-from-classic-to-hub-spoke skill §1).
-  "us-open-2026": [
-    { id: "cost", label: "Cost Guide", question: "How much does a US Open trip to New York cost?", status: "teaser", imageSlug: "where-to-stay-us-open" },
-    { id: "tickets", label: "Ticket Guide", question: "Which US Open ticket is the best buy?", status: "teaser", imageSlug: "arthur-ashe-stadium", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
-    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the US Open?", status: "teaser", imageSlug: "where-to-stay-us-open" },
-    { id: "getting-there", label: "Getting There", question: "How do I get to the USTA Billie Jean King National Tennis Center?", status: "public", imageSlug: "the-7-train-to-flushing" },
-    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the US Open, and what should I pack?", status: "public", imageSlug: "us-open-weather-packing", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
-    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first US Open?", status: "public", imageSlug: "us-open-first-timer-guide" },
-    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat during the US Open?", status: "teaser", imageSlug: "jackson-heights-food-mile" },
-    { id: "day-trips", label: "Day Trips", question: "What are the best day trips during the US Open — Atlantic City, the Hudson Valley, or Queens itself?", status: "teaser", imageSlug: "atlantic-city-day-trip" },
-    { id: "itinerary", label: "Trip Schedule", question: "What does a US Open trip to New York actually look like?", status: "teaser", imageSlug: "us-open-rooftop-night-session" },
-    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at the US Open gates?", status: "public", imageSlug: "us-open-arrival-guide", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
-    { id: "map", label: "Venue Map", question: "What facilities are available at the USTA Billie Jean King National Tennis Center?", status: "public", imageSlug: "flushing-meadows-corona-park" },
-    { id: "luxury", label: "Luxury Guide", question: "What does a genuinely luxury US Open trip look like?", status: "teaser", imageSlug: "us-open-luxury-hospitality" },
-  ],
-  "us-open": [
-    { id: "cost", label: "Cost Guide", question: "How much does a US Open trip to New York cost?", status: "teaser", imageSlug: "where-to-stay-us-open" },
-    { id: "tickets", label: "Ticket Guide", question: "Which US Open ticket is the best buy?", status: "teaser", imageSlug: "arthur-ashe-stadium", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
-    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the US Open?", status: "teaser", imageSlug: "where-to-stay-us-open" },
-    { id: "getting-there", label: "Getting There", question: "How do I get to the USTA Billie Jean King National Tennis Center?", status: "public", imageSlug: "the-7-train-to-flushing" },
-    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the US Open, and what should I pack?", status: "public", imageSlug: "us-open-weather-packing", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
-    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first US Open?", status: "public", imageSlug: "us-open-first-timer-guide" },
-    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat during the US Open?", status: "teaser", imageSlug: "jackson-heights-food-mile" },
-    { id: "day-trips", label: "Day Trips", question: "What are the best day trips during the US Open — Atlantic City, the Hudson Valley, or Queens itself?", status: "teaser", imageSlug: "atlantic-city-day-trip" },
-    { id: "itinerary", label: "Trip Schedule", question: "What does a US Open trip to New York actually look like?", status: "teaser", imageSlug: "us-open-rooftop-night-session" },
-    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at the US Open gates?", status: "public", imageSlug: "us-open-arrival-guide", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
-    { id: "map", label: "Venue Map", question: "What facilities are available at the USTA Billie Jean King National Tennis Center?", status: "public", imageSlug: "flushing-meadows-corona-park" },
-    { id: "luxury", label: "Luxury Guide", question: "What does a genuinely luxury US Open trip look like?", status: "teaser", imageSlug: "us-open-luxury-hospitality" },
-  ],
   "french-open": [
     { id: "cost", label: "Cost Guide", question: "How much does a French Open trip to Paris cost?", status: "teaser", imageSlug: "court-philippe-chatrier-suzanne-lenglen" },
     { id: "tickets", label: "Ticket Guide", question: "Which Roland-Garros ticket is the best buy?", status: "teaser", imageSlug: "roland-garros-grounds-pass-tickets", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
@@ -557,27 +520,5 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at Shanghai International Circuit gates?", status: "public", imageSlug: "chinese-gp-arrival-guide-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
     { id: "map", label: "Venue Map", question: "What facilities are available at Shanghai International Circuit?", status: "public", imageSlug: "chinese-gp-circuit-venue-" },
     { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Chinese Grand Prix?", status: "teaser", imageSlug: "chinese-gp-paddock-club-" },
-  ],
-  // Border-Gavaskar Trophy 2027 — scaffolded 24 Sep 2026. Pack scope is 3 of
-  // the 5 Tests (Nagpur, Chennai, Ahmedabad; Guwahati and Ranchi excluded by
-  // explicit founder decision). All 27 experiences seeded (status: in_review
-  // — publish via /curator/review before spoke cards render) with zero hero
-  // images yet, so every imageSlug is the blank sentinel per the skill's
-  // sequencing rule; the hero-image pass is separate, and last. Weather/
-  // Arrival/Tickets use the standing cross-event default images
-  // (imageOverride), set here at config-creation time.
-  "border-gavaskar-trophy-2027": [
-    { id: "cost", label: "Cost Guide", question: "How much does a Border-Gavaskar Trophy trip to India cost?", status: "teaser", imageSlug: "__no-image-yet__" },
-    { id: "tickets", label: "Ticket Guide", question: "Which Border-Gavaskar Test ticket is the best buy?", status: "teaser", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
-    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the Tests in Nagpur, Chennai, and Ahmedabad?", status: "teaser", imageSlug: "__no-image-yet__" },
-    { id: "getting-there", label: "Getting There", question: "How do I get to VCA Nagpur, Chepauk, and the Narendra Modi Stadium?", status: "public", imageSlug: "__no-image-yet__" },
-    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like across a January-March India tour, and what should I pack?", status: "public", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
-    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Border-Gavaskar Trophy in India?", status: "public", imageSlug: "__no-image-yet__" },
-    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat in Nagpur, Chennai, and Ahmedabad during the series?", status: "teaser", imageSlug: "__no-image-yet__" },
-    { id: "day-trips", label: "Day Trips", question: "What are the best day trips and things to do between the Tests?", status: "teaser", imageSlug: "__no-image-yet__" },
-    { id: "itinerary", label: "Trip Schedule", question: "What does a three-Test Border-Gavaskar trip to India actually look like?", status: "teaser", imageSlug: "__no-image-yet__" },
-    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at each of the three grounds?", status: "public", imageSlug: "__no-image-yet__", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
-    { id: "map", label: "Venue Map", question: "What facilities are available at the three Test grounds?", status: "public", imageSlug: "__no-image-yet__" },
-    { id: "luxury", label: "Luxury Guide", question: "What does a genuinely luxury Border-Gavaskar Trophy trip look like?", status: "teaser", imageSlug: "__no-image-yet__" },
   ],
 };

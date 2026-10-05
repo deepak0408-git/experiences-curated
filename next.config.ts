@@ -64,16 +64,6 @@ const nextConfig: NextConfig = {
         destination: "/event-pack/italian-grand-prix/:spoke",
         permanent: true,
       },
-      {
-        source: "/event-pack/us-open-2026",
-        destination: "/event-pack/us-open",
-        permanent: true,
-      },
-      {
-        source: "/event-pack/us-open-2026/:spoke",
-        destination: "/event-pack/us-open/:spoke",
-        permanent: true,
-      },
     ];
   },
   async headers() {

@@ -37,22 +37,7 @@ export const PACK_PRICING_CONFIG: Record<string, {
         : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_WIMBLEDON_EARLY_BIRD_CUTOFF ?? "2027-06-27",
   },
-  // Kept under both the dated slug and the evergreen "us-open" slug — DB
-  // rename not done yet (Deploy A/B hard gate, see migrate-from-classic-to-
-  // hub-spoke skill §1). Both keys must resolve correctly in the window
-  // between this deploy landing and the DB rename running.
   "us-open-2026": {
-    earlyBirdPriceId:
-      process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
-        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_US_OPEN_EARLY_BIRD ?? ""
-        : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_US_OPEN_EARLY_BIRD ?? "",
-    standardPriceId:
-      process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
-        ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_US_OPEN_STANDARD ?? ""
-        : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_US_OPEN_STANDARD ?? "",
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_US_OPEN_EARLY_BIRD_CUTOFF ?? "2026-08-01",
-  },
-  "us-open": {
     earlyBirdPriceId:
       process.env.NEXT_PUBLIC_PAYMENT_PROVIDER === "dodo"
         ? process.env.NEXT_PUBLIC_DODO_PRICE_ID_US_OPEN_EARLY_BIRD ?? ""

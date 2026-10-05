@@ -90,24 +90,6 @@ const FILMSTRIP_SLUGS_BY_EVENT: Record<string, string[]> = {
 // pack's PACK_EDITORIAL, which exists as two separately-maintained copies
 // (PackView.tsx and lib/pack-content.ts).
 export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; value: string; href?: string; linkLabel?: string }>> = {
-  // Real facts sourced during migration research (gate times, bag policy)
-  // plus the real DB-stored preTripBriefLines content (MTA express-train
-  // detail, mixed doubles 2026 format change) — not invented.
-  "us-open-2026": [
-    { label: "Gate times", value: "Day session gates 9:30am for most of the main draw, typically shifting later on the tournament's final days; evening session gates 6pm regardless of date. Confirm exact times via the official app closer to the event." },
-    { label: "Bag policy", value: "One bag per guest, max 12\"W x 12\"H x 16\"L. Backpacks not permitted with very limited exceptions. Metal/plastic water bottles up to 24oz are allowed." },
-    { label: "Weather", value: "Low-to-mid 80s°F, real humidity, afternoon thunderstorms a recurring feature. Ashe's roof seals more completely than Armstrong's naturally-ventilated design.", href: "https://www.accuweather.com/en/us/flushing/11354/weather-forecast/2622414", linkLabel: "AccuWeather forecast" },
-    { label: "Emergencies", value: "US-wide emergency number: 911. NYC non-emergency: 311. Nearest major hospital to the grounds: NewYork-Presbyterian Queens, 56-45 Main St, Flushing." },
-  ],
-  // Mirror of "us-open-2026" above, under the evergreen "us-open" slug — DB
-  // rename not done yet (Deploy A/B hard gate, migrate-from-classic-to-
-  // hub-spoke skill §1).
-  "us-open": [
-    { label: "Gate times", value: "Day session gates 9:30am for most of the main draw, typically shifting later on the tournament's final days; evening session gates 6pm regardless of date. Confirm exact times via the official app closer to the event." },
-    { label: "Bag policy", value: "One bag per guest, max 12\"W x 12\"H x 16\"L. Backpacks not permitted with very limited exceptions. Metal/plastic water bottles up to 24oz are allowed." },
-    { label: "Weather", value: "Low-to-mid 80s°F, real humidity, afternoon thunderstorms a recurring feature. Ashe's roof seals more completely than Armstrong's naturally-ventilated design.", href: "https://www.accuweather.com/en/us/flushing/11354/weather-forecast/2622414", linkLabel: "AccuWeather forecast" },
-    { label: "Emergencies", value: "US-wide emergency number: 911. NYC non-emergency: 311. Nearest major hospital to the grounds: NewYork-Presbyterian Queens, 56-45 Main St, Flushing." },
-  ],
   "singapore-grand-prix": [
     { label: "Gates open", value: "F1 hasn't published exact 2026 gate-opening times yet. Based on the confirmed 2026 session schedule — Practice 1 Fri 4:30pm, Sprint Qualifying Fri 8:30pm, Sprint Sat 5pm, Qualifying Sat 9pm, Race Sun 8pm — expect gates to open roughly 2-3 hours before each day's first session. Confirm exact times closer to race week." },
     { label: "Emergencies", value: "Police: 999. Fire/ambulance (SCDF): 995 — the same number covers both. Non-emergency ambulance: 1777. Nearest 24-hour A&E to the circuit: Raffles Hospital, 585 North Bridge Road, Singapore 188770." },
@@ -288,44 +270,10 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
     { label: "Weather", value: "Mid-April in Shanghai is mild spring weather — variable, with rain a real possibility across the weekend. Bring a light rain layer regardless of the forecast." },
     { label: "Emergencies", value: "China-wide emergency numbers: 110 (police), 120 (ambulance), 119 (fire). English-speaking operator support is not guaranteed — having your hotel call on your behalf is more reliable." },
   ],
-  // Real, sourced facts from experience research (VCA Jamtha, Chepauk,
-  // Narendra Modi Stadium capacities/history; the pack's own confirmed
-  // 3-city scope within the full 5-Test series — see
-  // project_border_gavaskar_trophy_2027_experiences memory). Added
-  // retroactively 29 Sep 2026 — this entry was never actually added during
-  // the 24 Sep 2026 build session despite the build-status memory claiming
-  // it was (see project_border_gavaskar_trophy_2027_build_status memory
-  // correction).
-  "border-gavaskar-trophy-2027": [
-    { label: "Venues (this pack)", value: "VCA Stadium, Nagpur (1st Test, 21-25 Jan) · MA Chidambaram Stadium, Chennai (2nd, 29 Jan-2 Feb) · Narendra Modi Stadium, Ahmedabad (5th, 27 Feb-3 Mar). The full series also stops in Guwahati and Ranchi — out of scope for this pack by design." },
-    { label: "Gate times", value: "Not yet published for this series — expect roughly 1-2 hours before first session, confirm via bcci.tv closer to each Test." },
-    { label: "What to bring", value: "Sun protection every day. Light layers for evening sessions. No glass or outside alcohol at any venue — standard BCCI stadium policy." },
-    { label: "Emergencies", value: "India-wide emergency number: 112 (police/fire/ambulance, English-speaking operators available in major cities)." },
-  ],
 };
 
 // Exported (27 Aug 2026) — same reasoning as QUICK_REFERENCE_BY_EVENT above.
 export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: string; heroFallbackImageSlug: string; introText: string }> = {
-  // Built from the real classic-pack editorialOverview already on the
-  // sportingEvents row, restructured for the hub intro per the migration
-  // skill's §4d requirement — not invented fresh.
-  "us-open-2026": {
-    displayName: "US Open",
-    venueLine: "Held at the USTA Billie Jean King National Tennis Center, Flushing Meadows, Queens — the world's largest tennis stadium, and the loudest Grand Slam on the calendar.",
-    heroFallbackImageSlug: "arthur-ashe-stadium",
-    introText:
-      "Two weeks in August heat in Queens, New York. The night sessions under the lights of Arthur Ashe Stadium. Grounds passes that get you within arm's reach of the world's best players on the outer courts. The US Open doesn't ask you to behave like you're at Wimbledon — there's no dress code, no enforced silence, and a crowd that's openly encouraged to be loud. It's the one Grand Slam that built its whole identity around rejecting the decorum the others expect.\n\nThis isn't a tournament you can see all of from one seat. A Grounds Admission pass gets you onto every court except Ashe — the outer courts, Louis Armstrong's general-admission sections, the practice facility where top players warm up a few feet from the rail. Add a city built around it — Queens' own genuinely diverse food scene in Jackson Heights and Flushing, a day trip to Atlantic City or the Hudson Valley, a cocktail that's sold three million servings since 2007 — and the tournament is only half the trip.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
-  },
-  // Mirror of "us-open-2026" above, under the evergreen "us-open" slug — DB
-  // rename not done yet (Deploy A/B hard gate, migrate-from-classic-to-
-  // hub-spoke skill §1).
-  "us-open": {
-    displayName: "US Open",
-    venueLine: "Held at the USTA Billie Jean King National Tennis Center, Flushing Meadows, Queens — the world's largest tennis stadium, and the loudest Grand Slam on the calendar.",
-    heroFallbackImageSlug: "arthur-ashe-stadium",
-    introText:
-      "Two weeks in August heat in Queens, New York. The night sessions under the lights of Arthur Ashe Stadium. Grounds passes that get you within arm's reach of the world's best players on the outer courts. The US Open doesn't ask you to behave like you're at Wimbledon — there's no dress code, no enforced silence, and a crowd that's openly encouraged to be loud. It's the one Grand Slam that built its whole identity around rejecting the decorum the others expect.\n\nThis isn't a tournament you can see all of from one seat. A Grounds Admission pass gets you onto every court except Ashe — the outer courts, Louis Armstrong's general-admission sections, the practice facility where top players warm up a few feet from the rail. Add a city built around it — Queens' own genuinely diverse food scene in Jackson Heights and Flushing, a day trip to Atlantic City or the Hudson Valley, a cocktail that's sold three million servings since 2007 — and the tournament is only half the trip.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
-  },
   "bahrain-grand-prix": {
     displayName: "Bahrain Grand Prix in Malaysia",
     venueLine: "Held at Sepang International Circuit, Malaysia — same \"Bahrain Grand Prix\" name on the calendar, a different country hosting it this year.",
@@ -451,22 +399,6 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
     heroFallbackImageSlug: "__no-image-yet__",
     introText:
       "Shanghai International Circuit opened in 2004 as F1's first venue on mainland China, and its layout is deliberately symbolic — the track traces the shape of the Chinese character 上 (\"shang\"), the first character in Shanghai's name. The circuit's signature Turn 1-2-3 complex is a long, tightening spiral that keeps widening the racing line long after most corners would have resolved, and it's one of the longest back straights on the calendar, built specifically to reward a bold overtake into Turn 14.\n\nThe circuit sits in Jiading District, in Shanghai's northwest, a genuinely different part of the city from the downtown Bund and French Concession most first-time visitors picture — this pack treats both as real options, with dedicated Jiading-area and downtown accommodation and dining content depending on how you want to split your trip. 2027 is a standard, non-Sprint weekend.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
-  },
-  // Built from real sourced facts researched during experience seeding
-  // (VCA Jamtha's metro access, Chepauk's 1916 founding as one of the
-  // world's oldest Test venues still in use, Narendra Modi Stadium's real
-  // 132,000 capacity as the world's largest cricket ground — see
-  // project_border_gavaskar_trophy_2027_experiences memory) — not
-  // invented. Added retroactively 29 Sep 2026 — never actually added
-  // during the 24 Sep 2026 build session despite the build-status memory
-  // claiming it was (see project_border_gavaskar_trophy_2027_build_status
-  // memory correction).
-  "border-gavaskar-trophy-2027": {
-    displayName: "Border-Gavaskar Trophy",
-    venueLine: "A 5-Test series across India — this pack covers the Nagpur, Chennai, and Ahmedabad legs, three of the tour's five host cities.",
-    heroFallbackImageSlug: "__no-image-yet__",
-    introText:
-      "The Border-Gavaskar Trophy is India and Australia's oldest continuous Test rivalry, and the 2027 series runs the full 5-Test distance across five weeks and five cities — a scale almost no other bilateral series still attempts. This pack covers three of those legs: Nagpur's VCA Stadium opens the series, Chennai's MA Chidambaram Stadium (Chepauk) is one of the oldest Test grounds still in use anywhere in the world, founded in 1916, and Ahmedabad's Narendra Modi Stadium closes it out as the largest cricket ground on Earth, holding 132,000 people.\n\nEach city is a genuinely different trip, not a repeat of the same day with a different scoreboard — Nagpur puts a tiger-reserve day safari within reach, Chennai pairs Test cricket with a UNESCO shore temple and a real filter-coffee culture, and Ahmedabad adds Gandhi's Sabarmati Ashram and a heritage old-city walk alongside the match itself.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
   // Built from real sourced facts researched during experience seeding
   // (Yas Marina Circuit's 2009 debut as the world's first F1 twilight race,
