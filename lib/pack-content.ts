@@ -55,7 +55,7 @@ export const PACK_EDITORIAL: Record<string, PackEditorial> = {
     },
   },
 
-  "us-open-2026": {
+  "us-open": {
     brief:
       "The US Open is two weeks in August heat, and it runs nothing like Wimbledon. Arthur Ashe Stadium holds 23,771 people and gets louder as the evening goes on. The night sessions — prime matches starting at 7pm under lights — are the event's signature, and there's nothing else in tennis that sounds or feels like them. If you're only making one trip, it's an evening session.\n\nThe rest of the tournament is more accessible than you'd expect. A grounds pass (around $50 in the first week) gets you onto every practice court and outer court, and you can be ten rows from a top-20 player on Court 7 at 11am before the stadium sessions have started. Bring water. Bring sunscreen. August in Queens runs hot, and the USTA has an extreme heat policy that can pause outdoor play — but knowing that in advance means it doesn't catch you off-guard.\n\nFlushing changes what this trip can be. The 7 train puts you in Queens, which means the food situation before and after the tournament is genuinely excellent. Flushing's Golden Mall is fifteen minutes from the gates. Jackson Heights is twenty-five. The neighbourhood has been feeding New York for decades and does not charge tournament prices. A few things to sort before you arrive: book night session tickets before anything else — they sell out months ahead. A hat and a refillable water bottle are not optional in August. The sections here follow the shape of the trip.",
     sectionIntros: {
@@ -169,12 +169,12 @@ export const TOURNAMENT_RHYTHM: Record<string, RhythmEntry[]> = {
     { label: "Semi-finals (Thu–Fri, 9–10 Jul)", body: "Thursday is the Ladies' semis, Friday the Men's. If you want pure tennis with no distraction, these are your days. If you came for the full Wimbledon feeling, it peaked around the quarterfinals." },
     { label: "Finals Weekend (11–12 Jul)", body: "Saturday is the Ladies' Singles final and Men's Doubles. Sunday is the Men's Singles final and Ladies' Doubles. Worth doing once — but it's also the most formal, least spontaneous version of Wimbledon. The tournament worth travelling for is the one with roaming outer courts and unexpected results." },
   ],
-  "us-open-2026": [
-    { label: "Opening Sunday–Monday (Aug 30–31)", body: "Still 128 players in, the facility still navigable, day session tickets at their cheapest. You can watch three matches on three courts in a single afternoon. Night sessions are the introduction to what makes this tournament different — Ashe under lights with a full house sounds and feels like nothing else in tennis." },
-    { label: "First-week weekdays (Tue–Fri, Sep 1–4)", body: "The value window. Day sessions are genuinely quiet. Find a show court with open seats and stay. Night sessions build across the week: the second match starting around 9:30pm is something else entirely." },
-    { label: "Labor Day weekend (Sat Sep 5 – Mon Sep 7)", body: "Peak intensity. Night session tickets are expensive for a reason — 23,000 people in Ashe Stadium on a US holiday weekend is closer to a World Cup final than a tennis match. Day sessions are calmer and the tennis quality has jumped (Round of 16, quarters)." },
-    { label: "Semi-finals (Thu–Fri, Sep 10–11)", body: "Women's semis Thursday, Men's semis Friday. The semi-finals are the loudest Ashe gets outside a final — and the best tennis of the fortnight." },
-    { label: "Finals weekend (Sat–Sun, Sep 12–13)", body: "Women's Final on Saturday Sep 12, Men's Final on Sunday Sep 13. Finals tickets are expensive and scarce; watching on screens in the park with 20,000 other people has its own thing going on." },
+  "us-open": [
+    { label: "Opening Sunday–Monday (Aug 29–30)", body: "Still 128 players in, the facility still navigable, day session tickets at their cheapest. You can watch three matches on three courts in a single afternoon. Night sessions are the introduction to what makes this tournament different — Ashe under lights with a full house sounds and feels like nothing else in tennis." },
+    { label: "First-week weekdays (Tue–Fri, Aug 31 – Sep 3)", body: "The value window. Day sessions are genuinely quiet. Find a show court with open seats and stay. Night sessions build across the week: the second match starting around 9:30pm is something else entirely." },
+    { label: "Labor Day weekend (Sat Sep 4 – Mon Sep 6)", body: "Peak intensity. Night session tickets are expensive for a reason — 23,000 people in Ashe Stadium on a US holiday weekend is closer to a World Cup final than a tennis match. Day sessions are calmer and the tennis quality has jumped (Round of 16, quarters)." },
+    { label: "Semi-finals (Thu–Fri, Sep 9–10)", body: "Women's semis Thursday, Men's semis Friday. The semi-finals are the loudest Ashe gets outside a final — and the best tennis of the fortnight." },
+    { label: "Finals weekend (Sat–Sun, Sep 11–12)", body: "Women's Final on Saturday Sep 11, Men's Final on Sunday Sep 12. Finals tickets are expensive and scarce; watching on screens in the park with 20,000 other people has its own thing going on." },
   ],
   "open-championship-2026": [
     { label: "Sunday 12 Jul — First practice day", body: "The quietest of the eight days. The Spectator Village opens, the course is free to roam, and the field hasn't arrived yet. Right for people who want to walk Royal Birkdale without a crowd." },
