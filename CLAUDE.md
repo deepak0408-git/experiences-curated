@@ -74,7 +74,7 @@ Liverpool, England dest:     263faaad-ceed-4355-acb7-9f2073cb1028
 Open Championship 2026 event: ccb585a6-3cdb-40ce-999e-a1d455854301
 India in England 2026 event: 2bab697d-9d2b-45ff-9b46-9fbfc3a0a40b
 Wimbledon 2026 event:        8bb7090e-1ec7-4c3f-b4e2-7fd6bf9942cf
-US Open 2026 event:          91f298a3-ca22-49c3-9c8e-5a200f0026c9
+US Open 2027 event:          91f298a3-ca22-49c3-9c8e-5a200f0026c9 (slug still "us-open-2026" — rolled to 2027 dates/name 5 Oct 2026, evergreen-slug migration not yet done, see project_us_open_2027_edition_rollover memory)
 Belgian GP 2026 event:       b1816396-6d71-4693-a53f-05bccb2d8a8e
 Milan destination:           0b0d8f9a-911d-4cc7-8049-50e4685958ca
 Italian GP 2026 event:       b93770c0-3d96-4e81-b3d0-c1e3a788fd8e
@@ -102,7 +102,7 @@ Wimbledon 2026:            29 Jun – 12 Jul 2026
 India in England 2026:     1 – 19 Jul 2026
 Open Championship 2026:    16 – 19 Jul 2026
 Belgian GP 2026:           17 – 19 Jul 2026
-US Open 2026:              30 Aug – 13 Sep 2026 (Fan Week free-admission period 23-29 Aug precedes main draw)
+US Open 2027:              29 Aug – 12 Sep 2027 (Fan Week free-admission period 22-28 Aug precedes main draw) — rolled from 2026 edition 5 Oct 2026
 Italian GP 2026:           4 – 6 Sep 2026
 BMW PGA Championship 2026: 17 – 20 Sep 2026
 Shanghai Masters 2026:     5 – 18 Oct 2026
@@ -307,7 +307,7 @@ supabase.auth.admin.generateLink({
 - **Hero images — 3 options required:** Always present 3 CC-licensed image options before seeding. Never present fewer. Download to `Images/` folder with descriptive filename before running seed script. Always verify a hotel/venue's current trading name before writing — venues rebrand.
 - **`PACK_PRICING` is the single, provider-aware source of truth** for both Dodo and Paddle pricing — never add a second per-event pricing table. When wiring a new event, grep for every `Record<string,` per-event object in both `PackView.tsx` and `page.tsx`, not just the 5 named above, since a silent duplicate will fall back to another event's product ID undetected. See `feedback_duplicate_config_tables.md` memory for the incident this rule came from.
 - **Homepage carousel:** 2-slide rotating HeroCarousel (`app/_components/HeroCarousel.tsx`). Featured events controlled via `/curator/events` (radio Slot 1/2 + Deactivate checkbox). `homepage_slot` + `is_hidden` columns on `sporting_events`. Deactivated events hidden from carousel and calendar section.
-- **Pre-trip brief cron window:** fires ≤7 days before event `startDate`.
+- **Pre-trip brief cron window:** fires ≤10 days before event `startDate` (widened from 7, 29 Sep 2026 — buyer-facing 5-day reminder cron does an exact-day match with no retry, so late activation right at the 5-day mark silently dropped buyers on Bahrain GP; wider window gives more buffer to activate before that cutoff).
 - **Free event access:** Controlled via `FREE_EVENT_SLUGS` env var (comma-separated slugs, `slug:YYYY-MM-DD` for a dated cutoff or bare slug for indefinite) in Vercel. Add a slug = free; empty = paid. No code change needed.
 - **Algolia search:** `searchableAttributes` explicitly set in sync-algolia.mjs — includes `sport`, `neighborhood`. `sportingEventId` registered as facet — required for `freeEventIds` filter in SearchUI. After any neighborhood/sport DB update on a published experience, run sync-algolia.mjs.
 - **Search respects event activation state via `eventIsHidden` facet.** Publishing an experience does not make it publicly searchable if its parent sporting event is still `isHidden: true` — sync-algolia.mjs sets `eventIsHidden` on each record, and SearchUI's `<Configure>` always applies `filters="eventIsHidden:false"`. This is a query-time filter, not an index-membership gate — hidden-event experiences stay indexed, just excluded from results until activated. `saveHomepageSlots` (`app/curator/events/actions.ts`) auto-syncs this facet when `isHidden` changes — no need to manually rerun sync-algolia.mjs after activating an event.

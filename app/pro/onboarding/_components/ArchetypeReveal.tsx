@@ -27,9 +27,14 @@ const EVENT_PACKS = [
     heroImageUrl: `${R2}/sporting-events/hero/wimbledon-2026-v2.jpg`,
   },
   {
-    slug: "us-open-2026",
-    name: "US Open 2026",
-    dates: "25 Aug – 7 Sep 2026",
+    // Evergreen-slug migration done 5 Oct 2026 — DB row renamed from
+    // "us-open-2026" to "us-open" (Deploy A confirmed live first, per the
+    // migration skill's Deploy A/B hard gate). heroImageUrl below keeps the
+    // old R2 object key — renaming the file itself is a separate, low-
+    // priority cosmetic task, not a routing concern.
+    slug: "us-open",
+    name: "US Open 2027",
+    dates: "29 Aug – 12 Sep 2027",
     location: "New York",
     sport: "Tennis",
     heroImageUrl: `${R2}/sporting-events/hero/us-open-2026.jpg`,

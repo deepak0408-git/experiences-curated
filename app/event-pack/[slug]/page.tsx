@@ -246,7 +246,12 @@ const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: strin
         "Pest's district-by-district character, a Danube-front five-star, and Zengo Camping right behind the final corner",
     },
   ],
-  "us-open-2026": [
+  // Renamed from "us-open-2026" during the classic->hub-and-spoke evergreen-
+  // slug migration (migrate-from-classic-to-hub-spoke skill) — this section
+  // list is only reached while the event stays packFormat: "classic". The
+  // generic fallback below was retargeted to "bmw-pga-championship-2026"
+  // in the same migration (see lib/packPricing.ts for the same change).
+  "us-open": [
     {
       label: "On the Grounds",
       description:
@@ -729,7 +734,7 @@ export default async function EventPackPage({
             What&apos;s inside
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {(PACK_SECTIONS_BY_EVENT[slug] ?? PACK_SECTIONS_BY_EVENT["us-open-2026"]).map((section) => (
+            {(PACK_SECTIONS_BY_EVENT[slug] ?? PACK_SECTIONS_BY_EVENT["bmw-pga-championship-2026"]).map((section) => (
               <div
                 key={section.label}
                 className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 hover:border-[#AAFF00] transition-colors"

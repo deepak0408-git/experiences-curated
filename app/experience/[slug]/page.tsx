@@ -640,6 +640,12 @@ function getSpokeBackLink(slug: string, fromEventSlug?: string | null) {
 // #ratings anchor in bodyContent, where each named venue's real rating is
 // written inline. venueCount is display-only ("all 3 hotels").
 const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: string }> = {
+  "hudson-valley-day-trip-": { venueCount: 2, venueNoun: "venues" },
+  "nyc-museums-day-trip-": { venueCount: 3, venueNoun: "museums" },
+  "jackson-heights-food-mile-": { venueCount: 4, venueNoun: "restaurants" },
+  "us-open-rooftop-night-session-": { venueCount: 3, venueNoun: "venues" },
+  "where-to-stay-us-open-": { venueCount: 4, venueNoun: "hotels" },
+  "atlantic-city-day-trip-": { venueCount: 2, venueNoun: "venues" },
   "brazilian-gp-jardins-itaim-neighborhoods-": { venueCount: 5, venueNoun: "restaurants" },
   "brazilian-gp-budget-hotels-morumbi-": { venueCount: 2, venueNoun: "hotels" },
   "brazilian-gp-vila-madalena-food-crawl-": { venueCount: 2, venueNoun: "bars" },
@@ -1347,6 +1353,12 @@ export default async function ExperiencePage({
               slug.startsWith("lakeside-festival-albert-park-") ? "lg:object-[center_40%]" :
               slug.startsWith("chinese-gp-general-admission-") ? "lg:object-[center_85%]" :
               slug.startsWith("chinese-gp-where-to-stay-") ? "lg:object-[center_70%]" :
+              slug.startsWith("atlantic-city-day-trip-") ? "lg:object-[center_60%]" :
+              slug.startsWith("us-open-first-timer-guide-") ? "lg:object-[center_35%]" :
+              slug.startsWith("hudson-valley-day-trip-") ? "lg:object-[center_75%]" :
+              slug.startsWith("louis-armstrong-stadium-") ? "lg:object-[center_90%]" :
+              slug.startsWith("us-open-night-sessions-") ? "lg:object-[center_90%]" :
+              slug.startsWith("where-to-stay-us-open-") ? "lg:object-[center_75%]" :
               ""
             }`}
             sizes="100vw"

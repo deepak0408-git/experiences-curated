@@ -218,13 +218,13 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
   // evergreen "us-open" slug below — DB rename not done yet (Deploy A/B
   // hard gate, migrate-from-classic-to-hub-spoke skill §1).
   "us-open-2026": [
-    { id: "cost", label: "Cost Guide", question: "How much does a US Open trip to New York cost?", status: "teaser", imageSlug: "where-to-stay-us-open" },
+    { id: "cost", label: "Cost Guide", question: "How much does a US Open trip to New York cost?", status: "teaser", imageSlug: "where-to-stay-us-open", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/experiences/hero/us-open-arrival-guide-tennis-center.jpg" },
     { id: "tickets", label: "Ticket Guide", question: "Which US Open ticket is the best buy?", status: "teaser", imageSlug: "arthur-ashe-stadium", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
-    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the US Open?", status: "teaser", imageSlug: "where-to-stay-us-open" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the US Open?", status: "teaser", imageSlug: "where-to-stay-us-open", heroImagePosition: "center 75%" },
     { id: "getting-there", label: "Getting There", question: "How do I get to the USTA Billie Jean King National Tennis Center?", status: "public", imageSlug: "the-7-train-to-flushing" },
     { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the US Open, and what should I pack?", status: "public", imageSlug: "us-open-weather-packing", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
     { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first US Open?", status: "public", imageSlug: "us-open-first-timer-guide" },
-    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat during the US Open?", status: "teaser", imageSlug: "jackson-heights-food-mile" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat during the US Open?", status: "teaser", imageSlug: "jackson-heights-food-mile", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/experiences/hero/us-open-eating-where-to-eat.jpg" },
     { id: "day-trips", label: "Day Trips", question: "What are the best day trips during the US Open — Atlantic City, the Hudson Valley, or Queens itself?", status: "teaser", imageSlug: "atlantic-city-day-trip" },
     { id: "itinerary", label: "Trip Schedule", question: "What does a US Open trip to New York actually look like?", status: "teaser", imageSlug: "us-open-rooftop-night-session" },
     { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at the US Open gates?", status: "public", imageSlug: "us-open-arrival-guide", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
@@ -232,13 +232,13 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "luxury", label: "Luxury Guide", question: "What does a genuinely luxury US Open trip look like?", status: "teaser", imageSlug: "us-open-luxury-hospitality" },
   ],
   "us-open": [
-    { id: "cost", label: "Cost Guide", question: "How much does a US Open trip to New York cost?", status: "teaser", imageSlug: "where-to-stay-us-open" },
+    { id: "cost", label: "Cost Guide", question: "How much does a US Open trip to New York cost?", status: "teaser", imageSlug: "where-to-stay-us-open", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/experiences/hero/us-open-arrival-guide-tennis-center.jpg" },
     { id: "tickets", label: "Ticket Guide", question: "Which US Open ticket is the best buy?", status: "teaser", imageSlug: "arthur-ashe-stadium", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
-    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the US Open?", status: "teaser", imageSlug: "where-to-stay-us-open" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the US Open?", status: "teaser", imageSlug: "where-to-stay-us-open", heroImagePosition: "center 75%" },
     { id: "getting-there", label: "Getting There", question: "How do I get to the USTA Billie Jean King National Tennis Center?", status: "public", imageSlug: "the-7-train-to-flushing" },
     { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the US Open, and what should I pack?", status: "public", imageSlug: "us-open-weather-packing", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
     { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first US Open?", status: "public", imageSlug: "us-open-first-timer-guide" },
-    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat during the US Open?", status: "teaser", imageSlug: "jackson-heights-food-mile" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat during the US Open?", status: "teaser", imageSlug: "jackson-heights-food-mile", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/experiences/hero/us-open-eating-where-to-eat.jpg" },
     { id: "day-trips", label: "Day Trips", question: "What are the best day trips during the US Open — Atlantic City, the Hudson Valley, or Queens itself?", status: "teaser", imageSlug: "atlantic-city-day-trip" },
     { id: "itinerary", label: "Trip Schedule", question: "What does a US Open trip to New York actually look like?", status: "teaser", imageSlug: "us-open-rooftop-night-session" },
     { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at the US Open gates?", status: "public", imageSlug: "us-open-arrival-guide", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },

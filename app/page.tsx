@@ -59,11 +59,13 @@ function isFreeEventSlug(slug: string): boolean {
 // project_curator_driven_pack_pricing_design.md).
 async function eventPriceDisplay(slug: string): Promise<string> {
   if (isFreeEventSlug(slug)) return "Free";
-  // Fallback changed from "wimbledon-2026" to "us-open-2026" 16 Aug 2026 —
-  // "wimbledon-2026" retired entirely as part of the Wimbledon evergreen-
-  // slug migration (see lib/packPricing.ts and app/event-pack/[slug]/page.tsx
-  // for the same change).
-  const pricing = (await getPackPricing(slug)) ?? (await getPackPricing("us-open-2026"))!;
+  // Fallback changed from "us-open-2026" to "bmw-pga-championship-2026"
+  // 5 Oct 2026 — "us-open-2026" retired as a fallback target as part of
+  // the US Open evergreen-slug migration (see lib/packPricing.ts and
+  // app/event-pack/[slug]/page.tsx for the same change). A generic
+  // fallback for a still-classic event must point at another real,
+  // still-classic event, never a hub-and-spoke one's pricing shape.
+  const pricing = (await getPackPricing(slug)) ?? (await getPackPricing("bmw-pga-championship-2026"))!;
   return pricing.priceDisplay;
 }
 
