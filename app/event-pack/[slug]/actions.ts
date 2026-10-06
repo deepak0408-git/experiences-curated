@@ -20,7 +20,7 @@ export async function grantFreeAccess(email: string, sportingEventId: string): P
     .onConflictDoNothing();
 
   const [event] = await db
-    .select({ packCurrency: sportingEvents.packCurrency })
+    .select({ packCurrency: sportingEvents.packCurrency, editionYear: sportingEvents.editionYear })
     .from(sportingEvents)
     .where(eq(sportingEvents.id, sportingEventId))
     .limit(1);
@@ -30,6 +30,7 @@ export async function grantFreeAccess(email: string, sportingEventId: string): P
     .values({
       email,
       sportingEventId,
+      editionYear: event?.editionYear ?? new Date().getFullYear(),
       paddleOrderId: `free-${email}-${sportingEventId}`,
       paddleCustomerId: "free_access",
       paddlePriceId: "free",
