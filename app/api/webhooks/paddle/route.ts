@@ -186,10 +186,10 @@ export async function POST(request: NextRequest) {
   const sportingEventId = customData.sporting_event_id;
   const priceTier = customData.price_tier ?? "standard";
 
-  let sportingEvent: { id: string; slug: string } | undefined;
+  let sportingEvent: { id: string; slug: string; editionYear: number } | undefined;
   try {
     [sportingEvent] = await db
-      .select({ id: sportingEvents.id, slug: sportingEvents.slug })
+      .select({ id: sportingEvents.id, slug: sportingEvents.slug, editionYear: sportingEvents.editionYear })
       .from(sportingEvents)
       .where(eq(sportingEvents.id, sportingEventId))
       .limit(1);
@@ -218,6 +218,7 @@ export async function POST(request: NextRequest) {
       .values({
         email,
         sportingEventId,
+        editionYear: sportingEvent.editionYear,
         paddleOrderId,
         paddleCustomerId,
         paddlePriceId,

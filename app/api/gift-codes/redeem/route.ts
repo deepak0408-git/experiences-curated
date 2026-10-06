@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
 
   // Validate the chosen event exists, is live, and actually has a pack
   const [event] = await db
-    .select({ id: sportingEvents.id, name: sportingEvents.name, slug: sportingEvents.slug, packCurrency: sportingEvents.packCurrency })
+    .select({ id: sportingEvents.id, name: sportingEvents.name, slug: sportingEvents.slug, packCurrency: sportingEvents.packCurrency, editionYear: sportingEvents.editionYear })
     .from(sportingEvents)
     .where(
       and(
@@ -103,6 +103,7 @@ export async function POST(request: NextRequest) {
     .values({
       email: user.email,
       sportingEventId,
+      editionYear: event.editionYear,
       paddleOrderId: `gift-${gift.id}`,
       paddleCustomerId: null,
       paddlePriceId: "gift",

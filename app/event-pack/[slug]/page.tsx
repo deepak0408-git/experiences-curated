@@ -431,7 +431,11 @@ export default async function EventPackPage({
         and(
           eq(purchases.email, user.email),
           eq(purchases.sportingEventId, event.id),
-          eq(purchases.status, "active")
+          eq(purchases.status, "active"),
+          // Evergreen-slug events reuse the same row across editions — a
+          // purchase for an earlier edition must not grant access to the
+          // current live edition. See project_evergreen_purchase_edition_gap.
+          eq(purchases.editionYear, event.editionYear)
         )
       )
       .limit(1);

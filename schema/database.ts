@@ -683,11 +683,24 @@ export const purchases = pgTable("purchases", {
   // Email captured by Paddle — primary link key before account exists
   email: varchar("email", { length: 255 }).notNull(),
   sportingEventId: uuid("sporting_event_id").notNull().references(() => sportingEvents.id),
+  // Which edition of the event this purchase was for — sportingEvents.editionYear
+  // at the moment of purchase, frozen on this row forever. Evergreen-slug events
+  // (US Open, Miami GP, Canadian GP) reuse the SAME sportingEvents row across
+  // editions, mutating startDate/endDate/editionYear in place at rollover, rather
+  // than creating a new row per edition. Without this column, a purchase made for
+  // one edition keeps granting access after rollover, since the gate only checked
+  // email+sportingEventId+status. See project_evergreen_purchase_edition_gap
+  // memory for the full incident. Deliberately the OPPOSITE pattern from
+  // ticketIntelligenceSeasonPasses.editionSeason (an array checked against the
+  // event's CURRENT year, so it auto-extends to future editions) — this column
+  // must freeze the edition at purchase time, never auto-cover later ones.
+  editionYear: smallint("edition_year").notNull(),
   // Which product this row represents — full pack (default, matches every
   // purchase before the mini-packs pilot) or one of the 3 single-spoke
   // mini-packs. See purchases_email_event_unique below: a user can hold one
-  // row per (event, productType), so a mini-pack purchase never collides
-  // with a later full-pack purchase for the same event.
+  // row per (event, productType, editionYear), so a mini-pack purchase never
+  // collides with a later full-pack purchase for the same event, and a repeat
+  // buyer across editions never silently collides with their earlier purchase.
   productType: purchaseProductTypeEnum("product_type").notNull().default("full_pack"),
   // Paddle references (stored for refunds, disputes, and audit)
   paddleOrderId: varchar("paddle_order_id", { length: 100 }).notNull().unique(),
@@ -716,7 +729,10 @@ export const purchases = pgTable("purchases", {
   index("purchases_user_idx").on(t.userId),
   index("purchases_email_idx").on(t.email),
   index("purchases_event_idx").on(t.sportingEventId),
-  uniqueIndex("purchases_email_event_unique").on(t.email, t.sportingEventId, t.productType),
+  // Keyed on (email, sportingEventId, productType, editionYear) so a repeat
+  // buyer purchasing a later edition of an evergreen event never silently
+  // collides with their earlier-edition purchase via onConflictDoNothing().
+  uniqueIndex("purchases_email_event_edition_unique").on(t.email, t.sportingEventId, t.productType, t.editionYear),
 ]);
 
 // Ticket Intelligence Season Pass — deliberately a near-clone of `purchases`

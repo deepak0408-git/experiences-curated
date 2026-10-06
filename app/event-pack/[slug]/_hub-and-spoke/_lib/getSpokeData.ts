@@ -256,15 +256,32 @@ export async function getPurchaseStatus(slug: string, eventId: string, isHidden:
     : { isPro: false, isAnnual: false, currentPeriodEnd: null };
 
   if (user?.email) {
-    // Fetch every active purchase row for this (email, event) — mini-packs
-    // pilot allows more than one (e.g. tickets_guide + hotels_guide), so
-    // this can no longer assume/limit to a single row the way it did before
-    // productType existed.
-    const rows = await db
-      .select({ id: purchases.id, createdAt: purchases.createdAt, productType: purchases.productType })
-      .from(purchases)
-      .where(and(eq(purchases.email, user.email), eq(purchases.sportingEventId, eventId), eq(purchases.status, "active")))
-      .orderBy(purchases.createdAt);
+    // Evergreen-slug events reuse the same sportingEvents row across
+    // editions — a purchase for an earlier edition must not count as
+    // "purchased" against the current live edition. See
+    // project_evergreen_purchase_edition_gap memory.
+    const [event] = await db
+      .select({ editionYear: sportingEvents.editionYear })
+      .from(sportingEvents)
+      .where(eq(sportingEvents.id, eventId))
+      .limit(1);
+
+    // Fetch every active purchase row for this (email, event, current
+    // edition) — mini-packs pilot allows more than one (e.g. tickets_guide +
+    // hotels_guide), so this can no longer assume/limit to a single row the
+    // way it did before productType existed.
+    const rows = event
+      ? await db
+          .select({ id: purchases.id, createdAt: purchases.createdAt, productType: purchases.productType })
+          .from(purchases)
+          .where(and(
+            eq(purchases.email, user.email),
+            eq(purchases.sportingEventId, eventId),
+            eq(purchases.status, "active"),
+            eq(purchases.editionYear, event.editionYear)
+          ))
+          .orderBy(purchases.createdAt)
+      : [];
 
     for (const row of rows) {
       purchasedProductTypes.add(row.productType);

@@ -381,10 +381,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Missing sporting_event_id" }, { status: 400 });
   }
 
-  let sportingEvent: { id: string; slug: string; name: string } | undefined;
+  let sportingEvent: { id: string; slug: string; name: string; editionYear: number } | undefined;
   try {
     [sportingEvent] = await db
-      .select({ id: sportingEvents.id, slug: sportingEvents.slug, name: sportingEvents.name })
+      .select({ id: sportingEvents.id, slug: sportingEvents.slug, name: sportingEvents.name, editionYear: sportingEvents.editionYear })
       .from(sportingEvents)
       .where(eq(sportingEvents.id, sportingEventId))
       .limit(1);
@@ -428,6 +428,7 @@ export async function POST(request: NextRequest) {
       .values({
         email,
         sportingEventId,
+        editionYear: sportingEvent.editionYear,
         productType,
         paddleOrderId: payment.payment_id,
         paddleCustomerId: payment.customer.customer_id,
