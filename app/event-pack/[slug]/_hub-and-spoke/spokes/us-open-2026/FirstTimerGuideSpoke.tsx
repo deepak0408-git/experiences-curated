@@ -113,6 +113,14 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
             change.
           </p>
         </div>
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+          <p className="text-sm font-bold text-white mb-1">Uber</p>
+          <p className="text-xs text-[#A3A3A3] leading-5">
+            The real fallback once a night session lets out and the 7 train gets packed — Flushing Meadows gets a
+            surge of demand at the same few minutes every night, so request early rather than waiting for the crowd
+            to thin.
+          </p>
+        </div>
       </div>
 
       <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5">
@@ -124,10 +132,6 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
           distraction from it.
         </p>
       </div>
-
-      <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: CNN (Ashe atmosphere), ESPN (loudest major coverage), SI (fan rules), Beaumont Etiquette (dress code).
-      </p>
     </SpokeShell>
   );
 }

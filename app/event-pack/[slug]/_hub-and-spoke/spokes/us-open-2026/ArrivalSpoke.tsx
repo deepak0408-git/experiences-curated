@@ -40,6 +40,25 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
         want out of the first hour once you&apos;re inside, not about beating a queue.
       </p>
 
+      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Which gate to use</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
+          <p className="text-sm font-bold text-white mb-2">East Gate — the main entrance</p>
+          <p className="text-xs text-[#A3A3A3] leading-5">
+            Steps from the 7 train and LIRR at Mets-Willets Point — the natural choice if you&apos;re arriving by
+            subway. A Speed Line (no-bag express entry) operates here alongside paid bag storage just outside. Both
+            gates lead onto the same grounds, so either one gets you to Arthur Ashe, Armstrong, and the Grandstand.
+          </p>
+        </div>
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
+          <p className="text-sm font-bold text-white mb-2">South Gate — near the Unisphere</p>
+          <p className="text-xs text-[#A3A3A3] leading-5">
+            The other main entrance, by Flushing Meadows&apos; Unisphere, and the right drop-off point for
+            Uber/Lyft/taxi arrivals. Also has a Speed Line and paid bag storage.
+          </p>
+        </div>
+      </div>
+
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">When to arrive</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
         <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
@@ -85,10 +104,6 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
           closer access to top players than any day once the tournament itself begins.
         </p>
       </div>
-
-      <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: usopen.org, Ticketmaster US Open fan buying guide.
-      </p>
     </SpokeShell>
   );
 }

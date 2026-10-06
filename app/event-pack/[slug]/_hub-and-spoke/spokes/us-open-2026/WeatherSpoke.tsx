@@ -41,7 +41,7 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
       <div className="flex flex-col gap-2 mb-8">
         <FactRow label="Day high" value="Low-to-mid 80s°F (upper 70s by early Sep)" />
         <FactRow label="Overnight low" value="Mid-to-upper 60s°F" />
-        <FactRow label="Rain" value="Afternoon thunderstorms a real, recurring feature of a NY late summer" />
+        <FactRow label="Rain" value="Afternoon thunderstorms a recurring feature of a late NY summer" />
       </div>
 
       <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8">
@@ -95,7 +95,7 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
           of your travel dates.
         </p>
         <a
-          href="https://www.accuweather.com/en/us/flushing/11354/weather-forecast/2622414"
+          href="https://www.accuweather.com/en/us/flushing-meadows-corona-park/11367/weather-forecast/2627464?type=locality"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors"
@@ -103,10 +103,6 @@ export default async function WeatherSpoke({ eventSlug }: { eventSlug: string })
           AccuWeather forecast for Flushing →
         </a>
       </div>
-
-      <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: Weather.com, ESPN (Armstrong roof/Hurricane Ida), currentresults.com (NY climate normals).
-      </p>
     </SpokeShell>
   );
 }

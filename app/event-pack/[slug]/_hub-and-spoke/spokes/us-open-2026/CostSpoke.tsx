@@ -43,10 +43,18 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
     { label: "Luxury", hotel: luxuryHotel, ticket: tier4Ticket, hotelNote: "A Manhattan luxury stay", ticketNote: "Official hospitality — see the Luxury Guide" },
   ].filter((p) => p.hotel);
 
-  const flightRange = flights.length
+  // New York City excluded — seeded $0-$0 same-city origin, meaningless in
+  // an aggregate range (same pattern as French Open's Paris exclusion, skill
+  // §2a-2). Scoped to real US domestic origin markets only — the rest of the
+  // seeded rows are major international markets (Europe, Asia-Pacific, Latin
+  // America, Canada), which belong on the Planner's own per-route lookup,
+  // not blended into one misleading headline number.
+  const US_ORIGIN_CITIES = ["Philadelphia", "Atlanta", "Boston", "Chicago", "Dallas", "Los Angeles", "Miami", "San Francisco", "Washington D.C."];
+  const usFlights = flights.filter((f) => US_ORIGIN_CITIES.includes(f.originMarket));
+  const flightRange = usFlights.length
     ? {
-        low: Math.min(...flights.map((f) => Number(f.costLow))),
-        high: Math.max(...flights.map((f) => Number(f.costHigh))),
+        low: Math.min(...usFlights.map((f) => Number(f.costLow))),
+        high: Math.max(...usFlights.map((f) => Number(f.costHigh))),
       }
     : null;
 
@@ -64,7 +72,7 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="Every number above is real and free — the pack doesn't unlock more prices, it unlocks the decision. Which ticket tier is actually worth it, whether to stay in Manhattan or near Flushing, and how OMNY's weekly fare cap changes your real transit cost."
+      ctaCopy="Every number above is real and free — the pack doesn't unlock more prices, it unlocks the decision. Which ticket route is actually worth it, how to time your purchase around the on-sale wave instead of the draw, whether a day or night session is the better buy, how to actually do a night session right, and where to spend the hotel budget."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         The US Open runs the same two weeks every late August and early September, so there&apos;s no shoulder-season
@@ -162,13 +170,13 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
         {flightRange && (
           <p className="text-sm text-white font-bold mb-2">
             Roughly {formatMoneyRange(flightRange.low, flightRange.high)}{" "}
-            round-trip, economy, depending on where you're flying from.
+            round-trip, economy, if you&apos;re flying from within the US.
           </p>
         )}
         <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-          Flying into JFK versus LaGuardia or Newark can meaningfully change your fare and your ground-transport
-          cost, so we&apos;re not folding every region into one misleading blended number here. Tell the Planner
-          where you&apos;re starting from and it&apos;ll give you a real range for your actual route.
+          Flying in from Europe, Asia-Pacific, Latin America, or further afield costs meaningfully more, so
+          we&apos;re not folding every region into one misleading blended number here. Tell the Planner where
+          you&apos;re starting from and it&apos;ll give you a real range for your actual route.
         </p>
         <a
           href={`/price-radar/${eventSlug}`}
@@ -204,10 +212,47 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
             </a>
             .
           </p>
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Time your trip to the on-sale wave, not the tournament</p>
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
+            Unlike Wimbledon or Roland-Garros, there&apos;s no ballot to work around here — the US Open sells
+            first-come-first-served, in waves starting in spring. That changes what a budget trip actually looks
+            like: the sessions available in the first on-sale wave are priced lower and sell at face value, while
+            the same session bought later, closer to the tournament or after the draw is out, is both pricier and
+            more likely to mean paying resale rates on the official marketplace. Buying the moment tickets open,
+            before you know who&apos;s actually playing, is the single biggest lever on total cost here — not
+            waiting to see the draw first.
+          </p>
+
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Day sessions are the better buy early on</p>
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
+            A Grounds Admission day covers multiple courts and rotates through several matches for one price — a
+            night session commits the whole evening to two pre-selected matches in Ashe alone, at a higher price
+            per match in the first week when the draw hasn&apos;t thinned yet. That relationship flips in the
+            second week, once the field is down to the last 8 or 16 and a night session is reliably built around a
+            genuinely high-stakes matchup. If budget is the priority and you&apos;re visiting early in the
+            tournament, buy day sessions and save the one night session for later in your trip.
+          </p>
+
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Getting a night session right</p>
+          <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
+            The first match starts at 7pm, but the second — often the one worth staying for — regularly doesn&apos;t
+            start until 9:30pm or later, and runs past midnight if it goes five sets. Plan the day around that:
+            don&apos;t book an early grounds session the same morning, and eat before you arrive rather than
+            relying on concessions during the changeover crush. The 7 train runs late and Mets-Willets Point
+            handles the post-match crowd well, so there&apos;s no need to leave early to beat traffic the way you
+            might at a stadium with a parking lot to clear. If you can only afford one night session, the second
+            week is worth the premium over an early-round night — it&apos;s where the tournament&apos;s real
+            atmosphere lives.
+          </p>
+
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Where we&apos;d spend the hotel budget</p>
           <p className="text-sm text-[#A3A3A3] leading-7">
-            A hotel near a 7-train stop keeps the commute to Flushing Meadows short and predictable, without paying
-            Manhattan prices for a room you&apos;ll barely sleep in during an intense tennis week. See the{" "}
+            Put the money into a Queens hotel near the 7 train if a night session is actually part of your trip —
+            the short, predictable ride back matters most on a day you&apos;re not leaving the grounds until after
+            midnight, and Queens has genuinely limited hotel stock that sells out well before the tournament
+            starts, so book the moment your dates are set rather than waiting on ticket confirmation. If your trip
+            is mostly day sessions, or the US Open is one stop inside a longer New York trip, Manhattan opens up far
+            more rooms and price points for a commute that only costs you 40 minutes each way. See the{" "}
             <a href={`/event-pack/${eventSlug}/hotels`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
               Where to Stay guide
             </a>{" "}

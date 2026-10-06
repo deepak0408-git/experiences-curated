@@ -130,10 +130,6 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
           )}
         </div>
       )}
-
-      <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: usopen.org.
-      </p>
     </SpokeShell>
   );
 }

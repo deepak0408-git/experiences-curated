@@ -37,7 +37,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The real ticket tiers and prices are free above. Unlocking adds the exact combination we'd buy for a first US Open trip — whether a Grounds Pass week beats a single Ashe night, and which days of the two-week draw are genuinely the best value."
+      ctaCopy="The real ticket tiers and prices are free above. Unlocking adds the exact combination we'd buy for a first US Open trip — why a Grounds Pass week plus one Ashe or Armstrong day beats a run of reserved-seat days, and why a day session gets you more actual tennis per dollar than a night session before the draw thins out."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         The US Open sells four genuinely different products. A Grounds Admission pass gets you onto every court
@@ -72,7 +72,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
         {tier4 && (
           <TicketRow
             label={tier4.eventTierLabel ?? "Hospitality"}
-            detail="Official USTA Premier hospitality — see the Luxury Guide for the real tier breakdown."
+            detail="Official USTA Premier hospitality — three real tiers, The Blue Room, The Club, and Luxury Suites — see the Luxury Guide for the full breakdown."
             price={`US$${Math.round(Number(tier4.costLow))}-${Math.round(Number(tier4.costHigh))}`}
           />
         )}

@@ -87,10 +87,6 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
           </p>
         </div>
       )}
-
-      <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: usopen.org (on-grounds concessions).
-      </p>
     </SpokeShell>
   );
 }

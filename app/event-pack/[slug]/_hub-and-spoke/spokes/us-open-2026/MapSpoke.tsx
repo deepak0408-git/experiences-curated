@@ -1,5 +1,6 @@
 import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
 import SpokeShell from "../../_components/SpokeShell";
+import ZoomableImage from "../../_components/ZoomableImage";
 
 const SPOKE_ID = "map";
 
@@ -7,9 +8,10 @@ const SPOKE_ID = "map";
 // research: Ashe (23,771 capacity, world's largest tennis stadium),
 // Armstrong's 2018 roof rebuild. Armstrong and Flushing Meadows-Corona Park
 // experience cards live in Tickets and Day Trips respectively (1-card-1-spoke
-// rule) — this spoke mentions both in prose/fact rows only. No dedicated
-// venue-map image or facilities-tour experience exists for this event yet —
-// open item, same honest-gap pattern as the Hotels spoke.
+// rule) — this spoke mentions both in prose/fact rows only. Official grounds
+// map added 6 Oct 2026 (nytimes.com, 1037x616), same ZoomableImage pattern
+// as French Open's MapSpoke — no dedicated facilities-tour experience exists
+// for this event yet, that's still an open item.
 export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
@@ -47,6 +49,16 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
         <FactRow label="The Grandstand" value="8,125 seats, the smallest of the three reserved-seat stadiums, genuinely close to the action" />
       </div>
 
+      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Official grounds map</p>
+      <div className="max-w-2xl">
+        <ZoomableImage
+          src="https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/us-open-venue-map.jpg"
+          alt="Official USTA Billie Jean King National Tennis Center grounds map showing court layout, gates, and facilities"
+          aspectClassName="aspect-[1037/616]"
+        />
+      </div>
+      <p className="text-xs text-[#6A6A6A] mb-8">Credit: nytimes.com. Click the map to zoom in.</p>
+
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
         <p className="text-sm font-bold text-white mb-2">Watching outer-court tennis well</p>
         <p className="text-sm text-[#A3A3A3] leading-6">
@@ -57,20 +69,69 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
       </div>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Food and facilities on-site</p>
-      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4 mb-8">
-        <p className="text-sm font-bold text-white mb-1">Concessions across the grounds</p>
-        <p className="text-xs text-[#A3A3A3] leading-5">
-          A full range of food stands and sit-down restaurants across the grounds. See the full{" "}
-          <a href={`/event-pack/${eventSlug}/where-to-eat`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
-            Where to Eat guide
-          </a>
-          .
-        </p>
+      <div className="grid sm:grid-cols-2 gap-4 mb-8">
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+          <p className="text-sm font-bold text-white mb-1">Concessions across the grounds</p>
+          <p className="text-xs text-[#A3A3A3] leading-5">
+            A full range of food stands and sit-down restaurants spread across the grounds, from quick bites near
+            the outer courts to full-service dining by Arthur Ashe. See the full{" "}
+            <a href={`/event-pack/${eventSlug}/where-to-eat`} className="text-[#AAFF00] hover:text-[#BBFF33] underline">
+              Where to Eat guide
+            </a>
+            .
+          </p>
+        </div>
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+          <p className="text-sm font-bold text-white mb-1">The Honey Deuce</p>
+          <p className="text-xs text-[#A3A3A3] leading-5">
+            The tournament&apos;s signature Grey Goose cocktail, US$23, sold at bars throughout the grounds rather
+            than one dedicated stand — the collectible souvenir cup is yours to keep.
+          </p>
+        </div>
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+          <p className="text-sm font-bold text-white mb-1">Free water refills</p>
+          <p className="text-xs text-[#A3A3A3] leading-5">
+            Water fountains and bottle-filling stations are spread across the grounds — bring an empty reusable
+            bottle (24oz or smaller, no glass) rather than buying water once you&apos;re inside.
+          </p>
+        </div>
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+          <p className="text-sm font-bold text-white mb-1">Merchandise</p>
+          <p className="text-xs text-[#A3A3A3] leading-5">
+            The official US Open Shop sits at Public Square, the grounds&apos; central plaza near Arthur Ashe —
+            apparel, the annual poster, and Honey Deuce-branded cups and glassware.
+          </p>
+        </div>
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+          <p className="text-sm font-bold text-white mb-1">Restrooms and ATMs</p>
+          <p className="text-xs text-[#A3A3A3] leading-5">
+            Restrooms are distributed throughout the grounds near every court cluster, not just at the show
+            stadiums. ATMs are available near the main gates — bring some cash as backup, since not every smaller
+            concession stand takes card.
+          </p>
+        </div>
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+          <p className="text-sm font-bold text-white mb-1">Bag storage</p>
+          <p className="text-xs text-[#A3A3A3] leading-5">
+            Paid bag storage operates just outside both the East Gate and South Gate — useful if you&apos;re
+            carrying anything bigger than the bag-size limit, or arriving straight from a flight or hotel checkout.
+            Bags capped at 12&quot;x12&quot;x16&quot; are allowed inside; backpacks are barred regardless of size.
+          </p>
+        </div>
       </div>
 
-      <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: usopen.org.
-      </p>
+      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
+        <p className="text-sm font-bold text-white mb-2">Accessibility</p>
+        <p className="text-sm text-[#A3A3A3] leading-6">
+          The grounds are fully accessible, with ramps, elevators, and escalators throughout. Wheelchair-accessible
+          seating is available at Arthur Ashe (lower and upper concourse), Louis Armstrong (lower concourse), the
+          Grandstand (lower and upper concourse), Court 17, and every field court — each accommodating the ticket
+          holder plus up to three companions, subject to availability. Accessible parking includes shuttle service to
+          the stadiums, though not every shuttle is wheelchair-lift equipped — request one on arrival if needed. For
+          specific accommodations, check usopen.org&apos;s accessibility page before you travel rather than on
+          arrival.
+        </p>
+      </div>
     </SpokeShell>
   );
 }

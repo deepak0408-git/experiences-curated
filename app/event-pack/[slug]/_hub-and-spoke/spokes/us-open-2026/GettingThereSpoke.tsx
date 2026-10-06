@@ -88,10 +88,6 @@ export default async function GettingThereSpoke({ eventSlug }: { eventSlug: stri
           tourist-eligibility restriction on either.
         </p>
       </div>
-
-      <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: MTA (mta.info), US Open official transportation guidance (usopen.org).
-      </p>
     </SpokeShell>
   );
 }

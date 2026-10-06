@@ -93,7 +93,7 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
   "us-open-2026": [
     { label: "Gate times", value: "Day session gates 9:30am for most of the main draw, typically shifting later on the tournament's final days; evening session gates 6pm regardless of date. Confirm exact times via the official app closer to the event." },
     { label: "Bag policy", value: "One bag per guest, max 12\"W x 12\"H x 16\"L. Backpacks not permitted with very limited exceptions. Metal/plastic water bottles up to 24oz are allowed." },
-    { label: "Weather", value: "Low-to-mid 80s°F, real humidity, afternoon thunderstorms a recurring feature. Ashe's roof seals more completely than Armstrong's naturally-ventilated design.", href: "https://www.accuweather.com/en/us/flushing/11354/weather-forecast/2622414", linkLabel: "AccuWeather forecast" },
+    { label: "Weather", value: "Low-to-mid 80s°F, real humidity, afternoon thunderstorms a recurring feature. Ashe's roof seals more completely than Armstrong's naturally-ventilated design.", href: "https://www.accuweather.com/en/us/flushing-meadows-corona-park/11367/weather-forecast/2627464?type=locality", linkLabel: "AccuWeather forecast" },
     { label: "Emergencies", value: "US-wide emergency number: 911. NYC non-emergency: 311. Nearest major hospital to the grounds: NewYork-Presbyterian Queens, 56-45 Main St, Flushing." },
   ],
   // Mirror of "us-open-2026" above, under the evergreen "us-open" slug — DB
@@ -102,7 +102,7 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
   "us-open": [
     { label: "Gate times", value: "Day session gates 9:30am for most of the main draw, typically shifting later on the tournament's final days; evening session gates 6pm regardless of date. Confirm exact times via the official app closer to the event." },
     { label: "Bag policy", value: "One bag per guest, max 12\"W x 12\"H x 16\"L. Backpacks not permitted with very limited exceptions. Metal/plastic water bottles up to 24oz are allowed." },
-    { label: "Weather", value: "Low-to-mid 80s°F, real humidity, afternoon thunderstorms a recurring feature. Ashe's roof seals more completely than Armstrong's naturally-ventilated design.", href: "https://www.accuweather.com/en/us/flushing/11354/weather-forecast/2622414", linkLabel: "AccuWeather forecast" },
+    { label: "Weather", value: "Low-to-mid 80s°F, real humidity, afternoon thunderstorms a recurring feature. Ashe's roof seals more completely than Armstrong's naturally-ventilated design.", href: "https://www.accuweather.com/en/us/flushing-meadows-corona-park/11367/weather-forecast/2627464?type=locality", linkLabel: "AccuWeather forecast" },
     { label: "Emergencies", value: "US-wide emergency number: 911. NYC non-emergency: 311. Nearest major hospital to the grounds: NewYork-Presbyterian Queens, 56-45 Main St, Flushing." },
   ],
   "singapore-grand-prix": [

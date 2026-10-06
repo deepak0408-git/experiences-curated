@@ -53,7 +53,7 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
       )}
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Official grounds map</p>
-      <div className="max-w-md mx-auto">
+      <div className="max-w-md">
         <ZoomableImage
           src="https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/french-open-grounds-map-v2.jpg"
           alt="Official Roland-Garros grounds map showing court layout, gates, and facilities at Stade Roland-Garros"
