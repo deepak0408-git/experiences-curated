@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { ScoreResult, ScoredSeat, Seat } from "../../_lib/types";
 import RetakeLink from "./RetakeLink";
 import ZoomableImage from "../../../../event-pack/[slug]/_hub-and-spoke/_components/ZoomableImage";
@@ -440,6 +441,24 @@ function weatherLine(seat: Seat): string {
   return "Unconfirmed";
 }
 
+// Per-experience crop override for the SeatCard banner image, keyed by the
+// linked experience's slug — same object-[center_Y%] pattern already used
+// on experience/[slug]/page.tsx and destination/[slug]/page.tsx. Needed
+// because the banner's fixed 16:9 box crops each hero image differently
+// than the experience page's own hero does, and a source photo's real
+// subject (e.g. a grandstand structure) isn't always centred in frame.
+// Default is plain "object-center" when an experience has no entry here.
+const SEAT_IMAGE_OBJECT_POSITION_BY_EXPERIENCE_SLUG: Record<string, string> = {
+  "grandstand-22-parabolica-corner-mqzgq262": "object-[center_80%]",
+  "las-vegas-gp-main-grandstand-mte72szf": "object-[center_65%]",
+  "west-grandstand-yas-marina-mtff6r3xhgb8": "object-[center_100%]",
+  "qatar-gp-north-grandstand-mtymo0an": "object-[center_70%]",
+  "piastri-grandstand-albert-park-mu9bykxi": "object-[center_20%]",
+  "us-gp-general-admission-mtnb3iak": "object-[center_85%]",
+  "chinese-gp-general-admission-mud1mn7y": "object-[center_85%]",
+  "singapore-gp-zone4-walkabout-msai03x3": "object-[center_80%]",
+};
+
 function SeatCard({
   scored,
   headline,
@@ -456,61 +475,80 @@ function SeatCard({
   // 2026, which has no ticket-guide experience yet) — never a broken or
   // misleading fallback link.
   const experienceSlug = seat.linkedExperienceSlug ?? fallbackExperienceSlug;
+  // Banner image only for a seat's own dedicated write-up (never the
+  // generic fallbackExperienceSlug) and never for hospitality — hospitality
+  // still gets its full card + link, just no image. Added 7 Oct 2026.
+  const showImage = Boolean(seat.linkedExperienceSlug) && seat.seatType !== "hospitality" && Boolean(seat.linkedExperienceImageUrl);
+  const imageObjectPosition = (seat.linkedExperienceSlug && SEAT_IMAGE_OBJECT_POSITION_BY_EXPERIENCE_SLUG[seat.linkedExperienceSlug]) || "object-center";
   return (
-    <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-6 mb-6">
-      <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-2">{headline}</p>
-      <p className="text-2xl font-black text-white mb-1">{seat.seatName}</p>
-      {seat.tier && <p className="text-sm text-[#A3A3A3] mb-4">{TIER_LABEL[seat.tier]} option at this circuit.</p>}
+    <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] overflow-hidden mb-6">
+      {showImage && (
+        <div className="relative w-full aspect-[16/9] bg-[#1A1A1A]">
+          <Image
+            src={seat.linkedExperienceImageUrl as string}
+            alt={seat.seatName}
+            fill
+            className={`object-cover ${imageObjectPosition}`}
+            sizes="(max-width: 1024px) 100vw, 640px"
+          />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#141414] to-transparent" />
+        </div>
+      )}
+      <div className="p-6">
+        <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-2">{headline}</p>
+        <p className="text-2xl font-black text-white mb-1">{seat.seatName}</p>
+        {seat.tier && <p className="text-sm text-[#A3A3A3] mb-4">{TIER_LABEL[seat.tier]} option at this circuit.</p>}
 
-      {/* Same structure as the Tickets spoke's "Side by side" comparison —
-          What it shows / Seating / Weather cover — so the paid reveal
-          reads at the same depth as the pack's own ticket comparison. */}
-      <div className="rounded-sm border border-[#2A2A2A] bg-[#1A1A1A] divide-y divide-[#2A2A2A] mb-4">
-        <div className="p-4">
-          <p className="text-xs font-black tracking-widest uppercase text-[#6A6A6A] mb-1">What it shows</p>
-          <p className="text-sm text-[#A3A3A3] leading-6">{seat.zoneLabel}</p>
+        {/* Same structure as the Tickets spoke's "Side by side" comparison —
+            What it shows / Seating / Weather cover — so the paid reveal
+            reads at the same depth as the pack's own ticket comparison. */}
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#1A1A1A] divide-y divide-[#2A2A2A] mb-4">
+          <div className="p-4">
+            <p className="text-xs font-black tracking-widest uppercase text-[#6A6A6A] mb-1">What it shows</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">{seat.zoneLabel}</p>
+          </div>
+          <div className="p-4">
+            <p className="text-xs font-black tracking-widest uppercase text-[#6A6A6A] mb-1">Seating</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">{seatingLine(seat)}</p>
+          </div>
+          <div className="p-4">
+            <p className="text-xs font-black tracking-widest uppercase text-[#6A6A6A] mb-1">Weather cover</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">{weatherLine(seat)}</p>
+          </div>
+          <div className="p-4">
+            <p className="text-xs font-black tracking-widest uppercase text-[#6A6A6A] mb-1">Seat type</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">
+              {SEAT_TYPE_LABEL[seat.seatType] ?? seat.seatType}
+              {seat.minAge !== null && ` — ${seat.minAge}+ only`}
+            </p>
+          </div>
         </div>
-        <div className="p-4">
-          <p className="text-xs font-black tracking-widest uppercase text-[#6A6A6A] mb-1">Seating</p>
-          <p className="text-sm text-[#A3A3A3] leading-6">{seatingLine(seat)}</p>
-        </div>
-        <div className="p-4">
-          <p className="text-xs font-black tracking-widest uppercase text-[#6A6A6A] mb-1">Weather cover</p>
-          <p className="text-sm text-[#A3A3A3] leading-6">{weatherLine(seat)}</p>
-        </div>
-        <div className="p-4">
-          <p className="text-xs font-black tracking-widest uppercase text-[#6A6A6A] mb-1">Seat type</p>
-          <p className="text-sm text-[#A3A3A3] leading-6">
-            {SEAT_TYPE_LABEL[seat.seatType] ?? seat.seatType}
-            {seat.minAge !== null && ` — ${seat.minAge}+ only`}
-          </p>
-        </div>
+
+        <CostStars seatName={seat.seatName} tier={seat.tier} />
+
+        {reasons.length > 0 && (
+          <div className="pt-4 border-t border-[#2A2A2A]">
+            <p className="text-xs font-semibold tracking-widest uppercase text-[#6A6A6A] mb-2">Why this fits you</p>
+            <ul className="space-y-1">
+              {reasons.map((r, i) => (
+                <li key={i} className="text-sm text-[#A3A3A3] flex gap-2">
+                  <span className="text-[#AAFF00]">—</span>
+                  <span className="capitalize">{r}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {experienceSlug && (
+          <Link
+            href={`/experience/${experienceSlug}`}
+            className="inline-flex items-center gap-1 mt-4 pt-4 border-t border-[#2A2A2A] text-xs font-semibold text-[#AAFF00] hover:text-[#BBFF33] transition-colors"
+          >
+            {seat.linkedExperienceSlug ? "Read the full write-up" : "See our ticket guide for this circuit"} →
+          </Link>
+        )}
       </div>
-
-      <CostStars seatName={seat.seatName} tier={seat.tier} />
-
-      {reasons.length > 0 && (
-        <div className="pt-4 border-t border-[#2A2A2A]">
-          <p className="text-xs font-semibold tracking-widest uppercase text-[#6A6A6A] mb-2">Why this fits you</p>
-          <ul className="space-y-1">
-            {reasons.map((r, i) => (
-              <li key={i} className="text-sm text-[#A3A3A3] flex gap-2">
-                <span className="text-[#AAFF00]">—</span>
-                <span className="capitalize">{r}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {experienceSlug && (
-        <Link
-          href={`/experience/${experienceSlug}`}
-          className="inline-flex items-center gap-1 mt-4 pt-4 border-t border-[#2A2A2A] text-xs font-semibold text-[#AAFF00] hover:text-[#BBFF33] transition-colors"
-        >
-          {seat.linkedExperienceSlug ? "Read the full write-up" : "See our ticket guide for this circuit"} →
-        </Link>
-      )}
     </div>
   );
 }
@@ -548,6 +586,11 @@ export default function FullResult({
       {thirdPlace && (
         <SeatCard scored={thirdPlace} headline="3rd option" fallbackExperienceSlug={fallbackExperienceSlug} />
       )}
+
+      <p className="text-xs text-[#6A6A6A] mb-10">
+        Images rendered based on availability and provide an indicative view of the expected experience. Please
+        refer to the circuit map for position.
+      </p>
 
       {circuitMap && (
         <div className="mb-10">

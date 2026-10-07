@@ -79,6 +79,7 @@ async function getSeatingDataUncached(slug: string) {
       costLow: plannerTicketTierCost.costLow,
       costHigh: plannerTicketTierCost.costHigh,
       linkedExperienceSlug: experiences.slug,
+      linkedExperienceImageUrl: experiences.heroImageUrl,
     })
     .from(circuitSeatingProfile)
     .leftJoin(plannerTicketTierCost, eq(circuitSeatingProfile.ticketTierCostId, plannerTicketTierCost.id))
@@ -99,6 +100,7 @@ async function getSeatingDataUncached(slug: string) {
     costLow: r.costLow ? Number(r.costLow) : null,
     costHigh: r.costHigh ? Number(r.costHigh) : null,
     linkedExperienceSlug: showExperienceLinks ? r.linkedExperienceSlug : null,
+    linkedExperienceImageUrl: showExperienceLinks ? r.linkedExperienceImageUrl : null,
   }));
 
   const fallbackTicketExperienceSlug = showExperienceLinks ? await getFallbackTicketExperienceSlug(event.id) : null;

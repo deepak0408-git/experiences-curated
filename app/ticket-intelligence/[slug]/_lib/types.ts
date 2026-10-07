@@ -36,6 +36,12 @@ export interface Seat {
   // (fallbackExperienceSlug on ScoreResult) when null, and no link at all
   // when neither exists. Added 27 Sep 2026.
   linkedExperienceSlug: string | null;
+  // The linked experience's own hero image — only ever populated alongside
+  // a real linkedExperienceSlug (never for the fallbackExperienceSlug path).
+  // Used by FullResult's SeatCard to show a thumbnail of the actual stand;
+  // never shown for hospitality seats or in TeaserResult regardless of this
+  // being set. Added 7 Oct 2026.
+  linkedExperienceImageUrl: string | null;
 }
 
 // ── Rubric answers ──────────────────────────────────────────────────────
