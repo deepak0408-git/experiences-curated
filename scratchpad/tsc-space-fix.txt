@@ -1,8 +1,0 @@
-app/event-pack/[slug]/_hub-and-spoke/spokes/border-gavaskar-trophy-2027/CostSpoke.tsx(88,135): error TS2345: Argument of type 'string | null | undefined' is not assignable to parameter of type 'string | undefined'.
-  Type 'null' is not assignable to type 'string | undefined'.
-app/event-pack/[slug]/_hub-and-spoke/spokes/border-gavaskar-trophy-2027/CostSpoke.tsx(89,140): error TS2345: Argument of type 'string | null | undefined' is not assignable to parameter of type 'string | undefined'.
-  Type 'null' is not assignable to type 'string | undefined'.
-app/event-pack/[slug]/_hub-and-spoke/spokes/border-gavaskar-trophy-2027/CostSpoke.tsx(90,133): error TS2345: Argument of type 'string | null | undefined' is not assignable to parameter of type 'string | undefined'.
-  Type 'null' is not assignable to type 'string | undefined'.
-app/event-pack/[slug]/_hub-and-spoke/spokes/border-gavaskar-trophy-2027/CostSpoke.tsx(91,142): error TS2345: Argument of type 'string | null | undefined' is not assignable to parameter of type 'string | undefined'.
-  Type 'null' is not assignable to type 'string | undefined'.

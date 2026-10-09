@@ -56,3 +56,11 @@ docs/
 *.doc
 *.xlsx
 *.xls
+
+# scratch/debug output — research dumps, scraped pages, throwaway scripts
+scratchpad/
+scratchpad-*
+scratchpad_*
+.dev-server.log
+.dev-server-err.log
+Capture.PNG

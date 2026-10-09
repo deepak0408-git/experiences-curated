@@ -1,3 +1,0 @@
-done: Jiading, Shanghai -> 19 raw cards, 4 qualify (>=50 reviews)
-done: The Bund, Shanghai -> 15 raw cards, 13 qualify (>=50 reviews)
-HOTEL_RESEARCH_DONE

@@ -1,4 +1,0 @@
-done: Hong Kong -> $395-509
-done: Johannesburg -> $945-1220
-done: Nairobi -> $877-1171
-RETRY_DONE

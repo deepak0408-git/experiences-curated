@@ -1,5 +1,0 @@
-⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
-[browser] Image with src "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/experiences/hero/statue-of-unity.jpg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
-Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (http://localhost:3000/ingest/static/posthog-recorder.js?v=1.381.0:1:118901)
-[browser] Image with src "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/experiences/hero/bgt-narendra-modi-stadium-ahmedabad.jpg" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
-Read more: https://nextjs.org/docs/app/api-reference/components/image#loading (http://localhost:3000/ingest/static/posthog-recorder.js?v=1.381.0:1:118901)

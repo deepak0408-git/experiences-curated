@@ -1,3 +1,0 @@
-done: Anting, Shanghai -> 25 raw cards, 9 qualify (>=50 reviews)
-done: Hyatt Regency Shanghai Jiading -> 25 raw cards, 0 qualify (>=50 reviews)
-HOTEL_RETRY_DONE
