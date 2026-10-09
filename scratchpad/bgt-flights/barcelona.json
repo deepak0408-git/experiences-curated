@@ -1,0 +1,59 @@
+{
+  "origin": "Barcelona",
+  "googleFlights": {
+    "sorted": [
+      654,
+      669,
+      718,
+      927,
+      952,
+      1187,
+      1353
+    ],
+    "rawCount": 13
+  },
+  "kayak": {
+    "sorted": [
+      626,
+      627,
+      628,
+      639,
+      640,
+      641,
+      642,
+      643,
+      653,
+      654,
+      656,
+      657,
+      659,
+      660,
+      662,
+      663,
+      674,
+      677,
+      678,
+      681,
+      1237
+    ],
+    "rawCount": 57
+  },
+  "combined": {
+    "low": 626,
+    "high": 718,
+    "excludedLow": [],
+    "excludedHigh": [
+      927,
+      952,
+      1187,
+      1237,
+      1353
+    ],
+    "gfLow": 654,
+    "gfHigh": 718,
+    "kyLow": 626,
+    "kyHigh": 681
+  },
+  "finalCostLow": 640,
+  "finalCostHigh": 700
+}

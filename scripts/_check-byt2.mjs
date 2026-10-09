@@ -1,0 +1,10 @@
+import { chromium } from "playwright";
+const [, , url] = process.argv;
+const browser = await chromium.launch({ headless: true });
+const page = await browser.newPage({ userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" });
+await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });
+await page.waitForTimeout(2000);
+const text = await page.evaluate(() => document.body.innerText);
+const idx = text.indexOf("Past travelers have spent");
+console.log(text.slice(Math.max(0, idx - 200), idx + 2000));
+await browser.close();

@@ -1,0 +1,23 @@
+=== RETRY: Buenos Aires (EZE) ===
+done: Buenos Aires (error/incomplete, see file)
+=== RETRY: Casablanca (CMN) ===
+done: Casablanca (error/incomplete, see file)
+=== RETRY: London (LHR) ===
+done: London (error/incomplete, see file)
+=== RETRY: Mexico City (MEX) ===
+done: Mexico City (error/incomplete, see file)
+=== RETRY: Moscow (SVO) ===
+done: Moscow (error/incomplete, see file)
+=== RETRY: Munich (MUC) ===
+done: Munich -> $614-1029
+=== RETRY: Rio de Janeiro (GIG) ===
+done: Rio de Janeiro -> $1880-1992
+=== RETRY: Rome (FCO) ===
+done: Rome -> $569-851
+=== RETRY: San Francisco (SFO) ===
+done: San Francisco -> $904-1252
+=== RETRY: Sao Paulo (GRU) ===
+done: Sao Paulo -> $1486-1796
+=== RETRY: Washington D.C. (IAD) ===
+done: Washington D.C. -> $878-1303
+RETRY BATCH COMPLETE

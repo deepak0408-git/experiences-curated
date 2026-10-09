@@ -1,0 +1,46 @@
+{
+  "origin": "Dublin",
+  "googleFlights": {
+    "sorted": [
+      643,
+      648,
+      721,
+      746,
+      751,
+      766,
+      820,
+      906,
+      913,
+      1005
+    ],
+    "rawCount": 29
+  },
+  "kayak": {
+    "sorted": [
+      610,
+      611,
+      612,
+      615,
+      616,
+      617,
+      620,
+      621,
+      627,
+      642,
+      818
+    ],
+    "rawCount": 57
+  },
+  "combined": {
+    "low": 610,
+    "high": 1005,
+    "excludedLow": [],
+    "excludedHigh": [],
+    "gfLow": 643,
+    "gfHigh": 1005,
+    "kyLow": 610,
+    "kyHigh": 818
+  },
+  "finalCostLow": 627,
+  "finalCostHigh": 912
+}

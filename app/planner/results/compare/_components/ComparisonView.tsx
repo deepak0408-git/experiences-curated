@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { SPORT_LABELS, TIME_WINDOW_LABELS, sumLineItems, formatMoneyRange, rankEvents, type MockEvent } from "../../../_lib/mockEvents";
+import { SPORT_LABELS, TIME_WINDOW_LABELS, sumLineItems, formatMoneyRange, rankEvents, type MockEvent, type CostLineItem } from "../../../_lib/mockEvents";
 import { saveComparison } from "../../../_lib/actions";
 
 // Mobile-only swipeable single-event view — the desktop table's horizontal
@@ -162,15 +162,22 @@ export default function ComparisonView({
     isBuilt: (e.packStatus === "live" || e.packStatus === "built_hidden") && !e.isHidden,
   }));
 
-  // Find the single biggest delta line item across all compared events
-  const lineItemLabels = rows[0].lineItems.map((item) => item.label);
+  // Union of labels across all compared rows, not just rows[0] — a row can
+  // have extra line items (e.g. Border-Gavaskar Trophy 2027's "Domestic
+  // connector"), and using only the first row's labels would silently drop
+  // that row's extra cost from the table when it isn't compared first.
+  const lineItemLabels = [...new Set(rows.flatMap((r) => r.lineItems.map((item) => item.label)))];
   let biggestDeltaLabel = "";
   let biggestDelta = 0;
   for (const label of lineItemLabels) {
-    const mids = rows.map((r) => {
-      const item = r.lineItems.find((i) => i.label === label)!;
-      return (item.low + item.high) / 2;
-    });
+    // Not every row has every label (e.g. "Domestic connector" only exists
+    // on Border-Gavaskar Trophy 2027) — skip rows missing it rather than a
+    // non-null assertion that would throw.
+    const mids = rows
+      .map((r) => r.lineItems.find((i) => i.label === label))
+      .filter((item): item is CostLineItem => item !== undefined)
+      .map((item) => (item.low + item.high) / 2);
+    if (mids.length === 0) continue;
     const delta = Math.max(...mids) - Math.min(...mids);
     if (delta > biggestDelta) {
       biggestDelta = delta;
@@ -178,9 +185,11 @@ export default function ComparisonView({
     }
   }
   const highestRow = rows.reduce((a, b) => {
-    const aItem = a.lineItems.find((i) => i.label === biggestDeltaLabel)!;
-    const bItem = b.lineItems.find((i) => i.label === biggestDeltaLabel)!;
-    return (aItem.low + aItem.high) / 2 > (bItem.low + bItem.high) / 2 ? a : b;
+    const aItem = a.lineItems.find((i) => i.label === biggestDeltaLabel);
+    const bItem = b.lineItems.find((i) => i.label === biggestDeltaLabel);
+    const aMid = aItem ? (aItem.low + aItem.high) / 2 : -Infinity;
+    const bMid = bItem ? (bItem.low + bItem.high) / 2 : -Infinity;
+    return aMid > bMid ? a : b;
   });
 
   // PlannerSession is email-only by design, same identity model as every
@@ -275,14 +284,21 @@ export default function ComparisonView({
                 </td>
               ))}
             </tr>
-            {rows[0].lineItems.map((_, i) => (
-              <tr key={i} className="border-t border-[#2A2A2A]">
-                <td className="py-3 pr-4 text-[#6A6A6A]">{rows[0].lineItems[i].label}</td>
-                {rows.map((r) => (
-                  <td key={r.slug} className="py-3 px-4 text-[#A3A3A3]">
-                    {formatMoneyRange(r.lineItems[i].low, r.lineItems[i].high)}
-                  </td>
-                ))}
+            {lineItemLabels.map((label) => (
+              <tr key={label} className="border-t border-[#2A2A2A]">
+                <td className="py-3 pr-4 text-[#6A6A6A]">{label}</td>
+                {rows.map((r) => {
+                  // Match by label, not position — rows can have different
+                  // line item counts (e.g. Border-Gavaskar Trophy 2027's
+                  // extra "Domestic connector" row), so positional indexing
+                  // would misalign or go out of bounds across compared events.
+                  const item = r.lineItems.find((li) => li.label === label);
+                  return (
+                    <td key={r.slug} className="py-3 px-4 text-[#A3A3A3]">
+                      {item ? formatMoneyRange(item.low, item.high) : "—"}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
             <tr className="border-t border-[#2A2A2A]">

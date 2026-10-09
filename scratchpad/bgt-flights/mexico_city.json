@@ -1,0 +1,24 @@
+{
+  "origin": "Mexico City",
+  "googleFlights": {
+    "sorted": [],
+    "rawCount": 0
+  },
+  "kayak": {
+    "sorted": [
+      1299,
+      1643
+    ],
+    "rawCount": 9
+  },
+  "singleSourceFallback": {
+    "source": "kayak",
+    "low": 1299,
+    "high": 1643,
+    "excludedLow": [],
+    "excludedHigh": [],
+    "rawSortedCount": 2
+  },
+  "finalCostLow": 1299,
+  "finalCostHigh": 1643
+}

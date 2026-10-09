@@ -1,0 +1,47 @@
+{
+  "origin": "Toronto",
+  "googleFlights": {
+    "sorted": [
+      1294,
+      1353,
+      1389,
+      1405,
+      1420,
+      1530,
+      1688,
+      1880,
+      2182
+    ],
+    "rawCount": 18
+  },
+  "kayak": {
+    "sorted": [
+      1283,
+      1307,
+      1308,
+      1309,
+      1314,
+      1349,
+      1402,
+      1414,
+      1415,
+      1527
+    ],
+    "rawCount": 27
+  },
+  "combined": {
+    "low": 1283,
+    "high": 1688,
+    "excludedLow": [],
+    "excludedHigh": [
+      1880,
+      2182
+    ],
+    "gfLow": 1294,
+    "gfHigh": 1688,
+    "kyLow": 1283,
+    "kyHigh": 1527
+  },
+  "finalCostLow": 1289,
+  "finalCostHigh": 1608
+}

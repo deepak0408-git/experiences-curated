@@ -20,9 +20,9 @@ const r2 = new S3Client({
 const client = postgres(process.env.DATABASE_URL, { ssl: "require", prepare: false });
 const db = drizzle(client);
 
-// Replaces the Melbourne destination hero image — CC BY 4.0 (Dietmar Rabich), skyline.
+// Replaces the Melbourne destination hero image — CC BY 4.0 (Gracchus250), Flinders Street Station.
 const DESTINATION_ID = "f6b2c13f-cb70-45e3-9dcf-2a821d9e6f50";
-const localFile = "Images/Melbourne - Skyline Dietmar Rabich CC BY 4.0.jpg";
+const localFile = "Images/Melbourne Flinders Station Gracchus250 CC BY 4.0.jpg";
 const imageKey = "destinations/hero/melbourne.jpg";
 
 const file = readFileSync(localFile);

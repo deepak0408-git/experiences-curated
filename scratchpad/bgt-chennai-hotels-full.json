@@ -1,0 +1,131 @@
+{
+  "url": "https://www.booking.com/searchresults.html?ss=Chennai&checkin=2027-01-27&checkout=2027-02-03&group_adults=2&no_rooms=1&group_children=0&order=review_score_and_price&nflt=review_score%3D70%3Bht_id%3D204&selected_currency=USD&lang=en-us",
+  "checkin": "2027-01-27",
+  "checkout": "2027-02-03",
+  "rawHotelCount": 15,
+  "qualifyingHotelCount": 1,
+  "hotels": [
+    {
+      "name": "Hotel NKC Airport",
+      "price": "US$152",
+      "reviewScore": 9.6,
+      "reviewCount": 58,
+      "starRating": 2,
+      "address": null
+    }
+  ],
+  "rejectedForLowReviewCount": [
+    {
+      "name": "Essential By Apart Stayz",
+      "price": "US$111",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": 2,
+      "address": null
+    },
+    {
+      "name": "Nuzl - Hotel City Centre",
+      "price": "US$127",
+      "reviewScore": 10,
+      "reviewCount": 4,
+      "starRating": 2,
+      "address": null
+    },
+    {
+      "name": "SRK Clasic",
+      "price": "US$159",
+      "reviewScore": 10,
+      "reviewCount": 3,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "Villa Classical Mahabs",
+      "price": "US$409",
+      "reviewScore": 10,
+      "reviewCount": 6,
+      "starRating": 5,
+      "address": null
+    },
+    {
+      "name": "T Nagar -S2- 2BHK Aparthotel Shopping central II FLOOR",
+      "price": "US$466",
+      "reviewScore": 10,
+      "reviewCount": 1,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Silveira's Inn",
+      "price": "US$170",
+      "reviewScore": 9.7,
+      "reviewCount": 3,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Radial Serviced Apartments Deluxe Room",
+      "price": "US$189",
+      "reviewScore": null,
+      "reviewCount": null,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Kaustubh",
+      "price": "US$229",
+      "reviewScore": 9.5,
+      "reviewCount": 2,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "T Nagar -S1- 2BHK Aparthotel Shopping central II FLOOR",
+      "price": "US$476",
+      "reviewScore": null,
+      "reviewCount": null,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "T Nagar -F3- 2BHK Aparthotel Shopping central FIRST FLOOR",
+      "price": "US$504",
+      "reviewScore": null,
+      "reviewCount": null,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "Ekanaa Cottages",
+      "price": "US$123",
+      "reviewScore": 9.1,
+      "reviewCount": 11,
+      "starRating": null,
+      "address": null
+    },
+    {
+      "name": "skylink residency",
+      "price": "US$159",
+      "reviewScore": 9.3,
+      "reviewCount": 3,
+      "starRating": 2,
+      "address": null
+    },
+    {
+      "name": "Moon Residency Tambaram",
+      "price": "US$166",
+      "reviewScore": 9.3,
+      "reviewCount": 4,
+      "starRating": 3,
+      "address": null
+    },
+    {
+      "name": "NVS suites",
+      "price": "US$181",
+      "reviewScore": 9.3,
+      "reviewCount": 3,
+      "starRating": 1,
+      "address": null
+    }
+  ]
+}

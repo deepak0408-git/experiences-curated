@@ -1,0 +1,45 @@
+{
+  "origin": "Dallas",
+  "googleFlights": {
+    "sorted": [
+      1413,
+      1434,
+      1456,
+      1571,
+      1631,
+      1931,
+      1961
+    ],
+    "rawCount": 11
+  },
+  "kayak": {
+    "sorted": [
+      1042,
+      1102,
+      1282,
+      1307,
+      1390,
+      1406,
+      1434,
+      1496,
+      1637,
+      1725
+    ],
+    "rawCount": 20
+  },
+  "combined": {
+    "low": 1042,
+    "high": 1725,
+    "excludedLow": [],
+    "excludedHigh": [
+      1931,
+      1961
+    ],
+    "gfLow": 1413,
+    "gfHigh": 1631,
+    "kyLow": 1042,
+    "kyHigh": 1725
+  },
+  "finalCostLow": 1228,
+  "finalCostHigh": 1678
+}

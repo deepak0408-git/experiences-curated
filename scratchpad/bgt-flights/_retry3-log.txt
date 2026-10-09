@@ -1,0 +1,9 @@
+=== RETRY3: Buenos Aires (EZE) ===
+done: Buenos Aires (error/incomplete, see file)
+=== RETRY3: Casablanca (CMN) ===
+done: Casablanca (error/incomplete, see file)
+=== RETRY3: Mexico City (MEX) ===
+done: Mexico City (error/incomplete, see file)
+=== RETRY3: Moscow (SVO) ===
+done: Moscow (error/incomplete, see file)
+RETRY3 BATCH COMPLETE

@@ -4,7 +4,7 @@ import { createContext, useContext, useMemo, useState } from "react";
 
 type Flight = { city: string; region: string; costLow: number; costHigh: number };
 type HotelTier = { tier: string; costLow: number; costHigh: number };
-type TicketTier = { tier: string; label: string; example: string; costLow: number; costHigh: number };
+type TicketTier = { tier: string; label: string; example: string; exampleForTotal?: string; costLow: number; costHigh: number };
 type Band = { low: number; high: number } | null;
 
 const HOTEL_TIER_ORDER = ["budget", "moderate", "splurge", "luxury"];
@@ -35,6 +35,8 @@ interface PriceRadarState {
   localTravel: Band;
   localTravelNote: string | null;
   foodNote: string | null;
+  hotelBenchmarkNote: string | null;
+  extraCostsNote: string | null;
   sortedHotelTiers: HotelTier[];
   sortedTicketTiers: TicketTier[];
   originGroups: [string, string[]][];
@@ -77,6 +79,8 @@ export function PriceRadarProvider({
   localTravel,
   localTravelNote,
   foodNote,
+  hotelBenchmarkNote = null,
+  extraCostsNote = null,
   children,
 }: {
   flights: Flight[];
@@ -86,6 +90,8 @@ export function PriceRadarProvider({
   localTravel: Band;
   localTravelNote: string | null;
   foodNote: string | null;
+  hotelBenchmarkNote?: string | null;
+  extraCostsNote?: string | null;
   children: React.ReactNode;
 }) {
   const sortedHotelTiers = useMemo(
@@ -140,6 +146,8 @@ export function PriceRadarProvider({
         localTravel,
         localTravelNote,
         foodNote,
+        hotelBenchmarkNote,
+        extraCostsNote,
         sortedHotelTiers,
         sortedTicketTiers,
         originGroups,
@@ -356,7 +364,7 @@ export function PriceRadarFilters() {
 // below the grid (breaks out of the narrow column) so its columns keep
 // their original, uncompressed width.
 export function PriceRadarResults() {
-  const { sortedHotelTiers, sortedTicketTiers, food, localTravel, localTravelNote, foodNote, hotelFilter, ticketFilter, cityFilter, flights, days } =
+  const { sortedHotelTiers, sortedTicketTiers, food, localTravel, localTravelNote, foodNote, hotelBenchmarkNote, extraCostsNote, hotelFilter, ticketFilter, cityFilter, flights, days } =
     usePriceRadarState();
 
   const activeHotel = sortedHotelTiers.find((h) => h.tier === hotelFilter) ?? null;
@@ -418,7 +426,7 @@ export function PriceRadarResults() {
           {activeHotel && " · "}
           <span className="font-semibold text-white">{safeDays} day{safeDays === 1 ? "" : "s"}</span>
           {activeTicket && " · "}
-          {activeTicket && <span className="font-semibold text-white">{activeTicket.example}</span>}
+          {activeTicket && <span className="font-semibold text-white">{activeTicket.exampleForTotal ?? activeTicket.example}</span>}
         </p>
       )}
 
@@ -529,6 +537,17 @@ export function PriceRadarResults() {
               <p className="text-sm text-[#A3A3A3] leading-6">{foodNote}</p>
             </div>
           )}
+        </div>
+      )}
+
+      {hotelBenchmarkNote && (
+        <p className="mt-4 text-xs text-[#6A6A6A]">{hotelBenchmarkNote}</p>
+      )}
+
+      {extraCostsNote && (
+        <div className="mt-4 rounded-sm border border-amber-400/30 bg-amber-400/5 p-4">
+          <p className="text-xs font-black tracking-widest uppercase text-amber-400 mb-1.5">Also budget for</p>
+          <p className="text-sm text-[#A3A3A3] leading-6">{extraCostsNote}</p>
         </div>
       )}
 

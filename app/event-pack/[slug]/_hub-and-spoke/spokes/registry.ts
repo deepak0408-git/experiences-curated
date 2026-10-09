@@ -233,6 +233,19 @@ import CGArrivalSpoke from "./chinese-grand-prix/ArrivalSpoke";
 import CGMapSpoke from "./chinese-grand-prix/MapSpoke";
 import CGLuxurySpoke from "./chinese-grand-prix/LuxurySpoke";
 
+import BGTCostSpoke from "./border-gavaskar-trophy-2027/CostSpoke";
+import BGTTicketsSpoke from "./border-gavaskar-trophy-2027/TicketsSpoke";
+import BGTHotelsSpoke from "./border-gavaskar-trophy-2027/HotelsSpoke";
+import BGTGettingThereSpoke from "./border-gavaskar-trophy-2027/GettingThereSpoke";
+import BGTWeatherSpoke from "./border-gavaskar-trophy-2027/WeatherSpoke";
+import BGTFirstTimerGuideSpoke from "./border-gavaskar-trophy-2027/FirstTimerGuideSpoke";
+import BGTWhereToEatSpoke from "./border-gavaskar-trophy-2027/WhereToEatSpoke";
+import BGTDayTripsSpoke from "./border-gavaskar-trophy-2027/DayTripsSpoke";
+import BGTItinerarySpoke from "./border-gavaskar-trophy-2027/ItinerarySpoke";
+import BGTArrivalSpoke from "./border-gavaskar-trophy-2027/ArrivalSpoke";
+import BGTMapSpoke from "./border-gavaskar-trophy-2027/MapSpoke";
+import BGTLuxurySpoke from "./border-gavaskar-trophy-2027/LuxurySpoke";
+
 import USOCostSpoke from "./us-open-2026/CostSpoke";
 import USOTicketsSpoke from "./us-open-2026/TicketsSpoke";
 import USOHotelsSpoke from "./us-open-2026/HotelsSpoke";
@@ -504,6 +517,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
     arrival: CGArrivalSpoke,
     map: CGMapSpoke,
     luxury: CGLuxurySpoke,
+  },
+  "border-gavaskar-trophy-2027": {
+    cost: BGTCostSpoke,
+    tickets: BGTTicketsSpoke,
+    hotels: BGTHotelsSpoke,
+    "getting-there": BGTGettingThereSpoke,
+    weather: BGTWeatherSpoke,
+    "first-timer-guide": BGTFirstTimerGuideSpoke,
+    "where-to-eat": BGTWhereToEatSpoke,
+    "day-trips": BGTDayTripsSpoke,
+    itinerary: BGTItinerarySpoke,
+    arrival: BGTArrivalSpoke,
+    map: BGTMapSpoke,
+    luxury: BGTLuxurySpoke,
   },
   "us-open-2026": {
     cost: USOCostSpoke,
@@ -790,6 +817,20 @@ export const SPOKE_METADATA: Record<string, Record<string, string>> = {
     arrival: "Shanghai International Circuit — Arrival & Entry Guide",
     map: "Shanghai International Circuit Map — Karting, Museum, and Facilities",
     luxury: "Luxury Guide for the Chinese Grand Prix — Paddock Club and More",
+  },
+  "border-gavaskar-trophy-2027": {
+    cost: "How Much Does the Border-Gavaskar Trophy Cost? — Nagpur, Chennai, Ahmedabad Budget Guide",
+    tickets: "Border-Gavaskar Trophy Ticket Guide — Which Stand to Pick, City by City",
+    hotels: "Where to Stay for the Border-Gavaskar Trophy — Nagpur, Chennai, and Ahmedabad",
+    "getting-there": "Getting to VCA Jamtha, Chepauk, and Narendra Modi Stadium — Transit Guide",
+    weather: "India in January-February — Weather & What to Pack for the Border-Gavaskar Trophy",
+    "first-timer-guide": "First-Timer's Guide — the Border-Gavaskar Trophy and Travel Basics for India",
+    "where-to-eat": "Where to Eat — Nagpur, Chennai, and Ahmedabad During the Border-Gavaskar Trophy",
+    "day-trips": "Best Day Trips — Border-Gavaskar Trophy, Including Tadoba and the Statue of Unity",
+    itinerary: "Sample Border-Gavaskar Trophy Itinerary — Three Tests Across India",
+    arrival: "VCA Jamtha, Chepauk, and Narendra Modi Stadium — Arrival & Queue Guide",
+    map: "Three Test Venues — VCA Jamtha, Chepauk, and Narendra Modi Stadium Map Guide",
+    luxury: "Luxury Guide for the Border-Gavaskar Trophy — Hospitality Across 3 Cities",
   },
   "us-open-2026": {
     cost: "How Much Does a US Open Trip to New York Cost? — Budget Guide",

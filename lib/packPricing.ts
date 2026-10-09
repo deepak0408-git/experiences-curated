@@ -239,6 +239,16 @@ export const PACK_PRICING_CONFIG: Record<string, {
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_CHINESE_GP_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_CHINESE_GP_EARLY_BIRD_CUTOFF ?? "2027-03-16",
   },
+  // Real Dodo product IDs already in .env.local (Early Bird
+  // pdt_0NoIqmZMfLxfMnwsndWeR, Standard pdt_0NoIqqjRZGzElAH8rGHpU) —
+  // display strings/cutoff still need a real /curator/price save; env-var
+  // default below is the fallback until then, same pattern as Japanese GP
+  // and Chinese GP above.
+  "border-gavaskar-trophy-2027": {
+    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BORDER_GAVASKAR_EARLY_BIRD ?? "",
+    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BORDER_GAVASKAR_STANDARD ?? "",
+    earlyBirdCutoff: process.env.NEXT_PUBLIC_BORDER_GAVASKAR_EARLY_BIRD_CUTOFF ?? "2027-01-01",
+  },
 };
 
 // Mini-packs pilot (Bahrain GP / Singapore GP / Shanghai Masters, Sep 2026)

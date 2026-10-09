@@ -1,0 +1,49 @@
+
+> experiences-curated@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.18.112.1:3000
+- Environments: .env.local
+✓ Ready in 1594ms
+- Experiments (use with caution):
+  · clientTraceMetadata
+
+○ Compiling /event-pack/[slug]/[spoke] ...
+ GET /event-pack/border-gavaskar-trophy-2027/day-trips 200 in 8.0s (next.js: 7.2s, application-code: 797ms)
+ GET /curator/ranker 200 in 11.5s (next.js: 7.9s, proxy.ts: 754ms, application-code: 2.9s)
+ GET /event-pack/border-gavaskar-trophy-2027/day-trips 200 in 1063ms (next.js: 36ms, application-code: 1027ms)
+ GET /curator/ranker?event=a81c5c8c-9bb8-40ef-aa7a-bac527d4bffd 200 in 1415ms (next.js: 38ms, proxy.ts: 622ms, application-code: 754ms)
+ GET /event-pack/border-gavaskar-trophy-2027/day-trips 200 in 315ms (next.js: 43ms, application-code: 272ms)
+ GET /event-pack/border-gavaskar-trophy-2027/arrival 200 in 2.2s (next.js: 448ms, application-code: 1738ms)
+ GET /event-pack/border-gavaskar-trophy-2027/day-trips 200 in 3.7s (next.js: 16ms, application-code: 3.7s)
+ POST /curator/ranker?event=a81c5c8c-9bb8-40ef-aa7a-bac527d4bffd 200 in 10.3s (next.js: 137ms, proxy.ts: 556ms, application-code: 9.6s)
+  └─ ƒ saveRanks("a81c5c8c-9bb8-40ef-aa7a-bac527d4bffd", [{"experienceId":"93862f81-3617-4db5-bd26-7def9a47e4e5","rank":"6"},{"experienceId":"c6f0a2d8-7195-4a6f-8fde-f87a61361fda","rank":"1"},{"experienceId":"b779b253-81c1-4d20-af56-f4a5bc5dea8c","rank":"7"},"... 23 items not stringified"]) in 8786ms app/curator/ranker/actions.ts
+ GET /curator/ranker?event=a81c5c8c-9bb8-40ef-aa7a-bac527d4bffd 200 in 1131ms (next.js: 34ms, proxy.ts: 341ms, application-code: 755ms)
+ GET /event-pack/border-gavaskar-trophy-2027/day-trips 200 in 5.7s (next.js: 350ms, application-code: 5.4s)
+✓ Finished filesystem cache database compaction in 24.7s
+✓ Compiled in 49.9s
+ GET /event-pack/border-gavaskar-trophy-2027/day-trips 200 in 22.6s (next.js: 20.4s, application-code: 2.2s)
+ GET /event-pack/border-gavaskar-trophy-2027/arrival 200 in 1828ms (next.js: 20ms, application-code: 1808ms)
+ GET /curator/ranker?event=a81c5c8c-9bb8-40ef-aa7a-bac527d4bffd 200 in 2.5s (next.js: 94ms, proxy.ts: 1521ms, application-code: 848ms)
+ GET /event-pack/border-gavaskar-trophy-2027/day-trips 200 in 4.0s (next.js: 16ms, application-code: 4.0s)
+ GET /event-pack/border-gavaskar-trophy-2027 200 in 18.0s (next.js: 12.0s, application-code: 6.0s)
+ GET /event-pack/border-gavaskar-trophy-2027/arrival 200 in 8.4s (next.js: 4.0s, application-code: 4.4s)
+ GET /curator/ranker?event=a81c5c8c-9bb8-40ef-aa7a-bac527d4bffd 200 in 10.4s (next.js: 1268ms, proxy.ts: 3.1s, application-code: 6.1s)
+ GET /curator/ranker?event=a81c5c8c-9bb8-40ef-aa7a-bac527d4bffd 200 in 5.4s (next.js: 221ms, proxy.ts: 286ms, application-code: 4.9s)
+ GET /event-pack/border-gavaskar-trophy-2027/arrival 200 in 9.1s (next.js: 4.6s, application-code: 4.5s)
+ GET /event-pack/border-gavaskar-trophy-2027/arrival 200 in 3.2s (next.js: 1028ms, application-code: 2.2s)
+ GET /event-pack/border-gavaskar-trophy-2027/arrival 200 in 1731ms (next.js: 51ms, application-code: 1680ms)
+ GET /event-pack/border-gavaskar-trophy-2027/arrival 200 in 1613ms (next.js: 159ms, application-code: 1454ms)
+ GET /curator/ranker?event=a81c5c8c-9bb8-40ef-aa7a-bac527d4bffd 200 in 7.1s (next.js: 735ms, proxy.ts: 2.0s, application-code: 4.4s)
+ GET /curator/ranker?event=a81c5c8c-9bb8-40ef-aa7a-bac527d4bffd 200 in 7.3s (next.js: 439ms, proxy.ts: 2.0s, application-code: 4.9s)
+ GET /curator/ranker?event=a81c5c8c-9bb8-40ef-aa7a-bac527d4bffd 200 in 7.4s (next.js: 653ms, proxy.ts: 2.0s, application-code: 4.7s)
+ GET /curator/ranker?event=a81c5c8c-9bb8-40ef-aa7a-bac527d4bffd 200 in 1893ms (next.js: 232ms, proxy.ts: 340ms, application-code: 1322ms)
+ GET /event-pack/border-gavaskar-trophy-2027 200 in 12.5s (next.js: 4.9s, application-code: 7.6s)
+ GET /event-pack/border-gavaskar-trophy-2027/arrival 200 in 3.7s (next.js: 39ms, application-code: 3.7s)
+ GET /event-pack/border-gavaskar-trophy-2027 200 in 6.9s (next.js: 126ms, application-code: 6.8s)
+ GET /event-pack/border-gavaskar-trophy-2027 200 in 4.1s (next.js: 20ms, application-code: 4.0s)
+ GET /event-pack/border-gavaskar-trophy-2027 200 in 4.3s (next.js: 14ms, application-code: 4.3s)
+ GET /event-pack/border-gavaskar-trophy-2027 200 in 4.1s (next.js: 123ms, application-code: 4.0s)
+ GET /event-pack/border-gavaskar-trophy-2027 200 in 3.8s (next.js: 19ms, application-code: 3.8s)

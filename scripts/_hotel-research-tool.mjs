@@ -77,6 +77,15 @@ const hotels = await page.evaluate(() => {
     const name = card.querySelector('[data-testid="title"]')?.textContent?.trim() ?? null;
     const priceEl = card.querySelector('[data-testid="price-and-discounted-price"]');
     const price = priceEl?.textContent?.trim() ?? null;
+    // Booking.com's card price is the TOTAL for the whole stay, not
+    // per-night — confirmed via a real card showing "1 week" next to the
+    // price in [data-testid="price-for-x-nights"]. Capture the nights
+    // label so callers can normalize to a per-night figure instead of
+    // silently treating the stay-total as a nightly rate (caught on the
+    // Border-Gavaskar Trophy 2027 Chennai search, 9 Oct 2026 — a 7-night
+    // total was read as if it were nightly, inflating every price ~7x).
+    const nightsLabelEl = card.querySelector('[data-testid="price-for-x-nights"]');
+    const nightsLabel = nightsLabelEl?.textContent?.trim() ?? null;
     const scoreEl = card.querySelector('[data-testid="review-score"]');
     const scoreText = scoreEl?.textContent?.trim() ?? null;
     // scoreText looks like "Scored 8.3 8.3Very Good 3,632 reviews" — parse
@@ -98,9 +107,26 @@ const hotels = await page.evaluate(() => {
     const starRating = starMatch ? Number(starMatch[1]) : null;
     const addressEl = card.querySelector('[data-testid="address"]');
     const address = addressEl?.textContent?.trim() ?? null;
-    return { name, price, reviewScore, reviewCount, starRating, address };
+    return { name, price, nightsLabel, reviewScore, reviewCount, starRating, address };
   });
 });
+
+// Normalize price to per-night USD. nightsLabel is free text like "1 week"
+// or "7 nights" — parse the real night count rather than assuming the
+// search window's night count always matches (Booking can round/adjust).
+function parseNights(label) {
+  if (!label) return 1;
+  const weekMatch = label.match(/(\d+)\s*week/i);
+  if (weekMatch) return Number(weekMatch[1]) * 7;
+  const nightMatch = label.match(/(\d+)\s*night/i);
+  if (nightMatch) return Number(nightMatch[1]);
+  return 1;
+}
+for (const h of hotels) {
+  const nights = parseNights(h.nightsLabel);
+  const totalNum = h.price ? Number(h.price.replace(/[^\d.]/g, "")) : null;
+  h.pricePerNight = totalNum != null ? Math.round((totalNum / nights) * 100) / 100 : null;
+}
 
 // Skill §2 step 3: filter to >=50 real reviews. The review_score=70 URL
 // filter is a score-bucket filter (Booking's own "Good: 7+" tier), NOT a

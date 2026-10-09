@@ -1,0 +1,66 @@
+#!/bin/bash
+cd "C:\Users\HP\.claude\projects\ExperienceCurator"
+
+declare -a ROUTES=(
+  "Atlanta|ATL"
+  "Bangalore|BLR"
+  "Barcelona|BCN"
+  "Beijing|PEK"
+  "Berlin|BER"
+  "Boston|BOS"
+  "Buenos Aires|EZE"
+  "Cairo|CAI"
+  "Casablanca|CMN"
+  "Chicago|ORD"
+  "Dallas|DFW"
+  "Doha|DOH"
+  "Dubai|DXB"
+  "Dublin|DUB"
+  "Hong Kong|HKG"
+  "Johannesburg|JNB"
+  "London|LHR"
+  "Los Angeles|LAX"
+  "Madrid|MAD"
+  "Manchester|MAN"
+  "Manila|MNL"
+  "Melbourne|MEL"
+  "Mexico City|MEX"
+  "Miami|MIA"
+  "Milan|MXP"
+  "Montreal|YUL"
+  "Moscow|SVO"
+  "Mumbai|BOM"
+  "Munich|MUC"
+  "Nairobi|NBO"
+  "New Delhi|DEL"
+  "New York City|JFK"
+  "Paris|CDG"
+  "Philadelphia|PHL"
+  "Rio de Janeiro|GIG"
+  "Rome|FCO"
+  "San Francisco|SFO"
+  "Sao Paulo|GRU"
+  "Seoul|ICN"
+  "Shanghai|PVG"
+  "Singapore|SIN"
+  "Stockholm|ARN"
+  "Sydney|SYD"
+  "Tokyo|NRT"
+  "Toronto|YYZ"
+  "Vancouver|YVR"
+  "Washington D.C.|IAD"
+  "Zurich|ZRH"
+)
+
+for route in "${ROUTES[@]}"; do
+  IFS='|' read -r city iata <<< "$route"
+  slug=$(echo "$city" | tr '[:upper:] ' '[:lower:]_' | tr -d '.')
+  outfile="scratchpad/bgt-flights/${slug}.json"
+  if [ -f "$outfile" ]; then
+    echo "skip (exists): $city"
+    continue
+  fi
+  echo "=== $city ($iata) ==="
+  node scripts/_flight-research-tool.mjs "$city" "$iata" "Chennai" "MAA" "2027-01-24" "2027-02-07" "$outfile" 2>&1 | tail -3
+done
+echo "BATCH COMPLETE"

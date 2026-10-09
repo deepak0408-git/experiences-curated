@@ -1,0 +1,39 @@
+{
+  "origin": "Moscow",
+  "googleFlights": {
+    "sorted": [
+      666,
+      671,
+      675,
+      773,
+      803,
+      890,
+      918,
+      937,
+      1037,
+      1157,
+      1224,
+      1228,
+      1271,
+      1415,
+      1432
+    ],
+    "rawCount": 37
+  },
+  "kayak": {
+    "sorted": [],
+    "rawCount": 0
+  },
+  "singleSourceFallback": {
+    "source": "googleFlights",
+    "low": 666,
+    "high": 1415,
+    "excludedLow": [],
+    "excludedHigh": [
+      1432
+    ],
+    "rawSortedCount": 15
+  },
+  "finalCostLow": 666,
+  "finalCostHigh": 1415
+}

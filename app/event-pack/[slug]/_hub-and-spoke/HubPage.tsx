@@ -135,6 +135,26 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
     { label: "Weather", value: "Variable. Rain likely. Centre Court and No. 1 Court roofs close automatically; outer courts may pause.", href: "https://www.accuweather.com/en/gb/wimbledon/sw19-4/weather-forecast/323341", linkLabel: "AccuWeather forecast" },
     { label: "Emergencies", value: "Emergency services: 999 · Non-emergency police: 101 · NHS urgent (non-emergency): 111 · Nearest A&E: St George's Hospital, Tooting SW17 0QT" },
   ],
+  // Real, sourced facts for the 3 host cities in this pack's scope
+  // (Nagpur, Chennai, Ahmedabad — Guwahati and Ranchi are excluded by
+  // explicit founder decision, see project_border_gavaskar_trophy_2027_
+  // confirmed_experience_list memory). No single "address" applies to a
+  // multi-venue tour, so this table carries the venue-specific content the
+  // generic address/ticketing block above can't (it only handles one venue).
+  "border-gavaskar-trophy-2027": [
+    // Founder-supplied, verified Google Maps place links (9 Oct 2026) —
+    // replaces the earlier auto-generated text-search URLs, same reasoning
+    // as the VENUE_MAP_LINK_OVERRIDE precedent (a name+address text search
+    // doesn't always resolve to the correct pin).
+    { label: "Address — Nagpur", value: "VCA Stadium, Wardha Road, Jamtha, Nagpur, Maharashtra 441108", href: "https://maps.app.goo.gl/2yHQvYxgab4keopk6", linkLabel: "Open in Maps" },
+    { label: "Address — Chennai", value: "MA Chidambaram Stadium, Victoria Hostel Road, Chepauk, Chennai, Tamil Nadu 600005", href: "https://maps.app.goo.gl/3KffWYfY6xLAYdf58", linkLabel: "Open in Maps" },
+    { label: "Address — Ahmedabad", value: "Narendra Modi Stadium, Motera, Ahmedabad, Gujarat 380005", href: "https://maps.app.goo.gl/3JNBmPcFGqwAX8Eb7", linkLabel: "Open in Maps" },
+    { label: "Venues in this pack", value: "VCA Stadium, Jamtha (1st Test, Nagpur) · MA Chidambaram Stadium, Chepauk (2nd Test, Chennai) · Narendra Modi Stadium, Motera (5th Test, Ahmedabad)" },
+    { label: "Gate times", value: "Play starts 9:30am IST at all three grounds. Gates typically open around 2 hours before the first ball — confirm exact timing via each ground's official channels closer to the match." },
+    { label: "Visa", value: "Most nationalities need an e-Tourist visa (US$10-40 depending on duration) booked in advance online, entering via one of 33 designated airports. Check eligibility before booking flights.", href: "https://indianvisaonline.gov.in/evisa/tvoa.html", linkLabel: "Official e-Visa site" },
+    { label: "What to bring", value: "Light, breathable clothing for Nagpur and Chennai's heat and humidity; a light jacket for Ahmedabad evenings in late February. Outside food, drinks, and large bags aren't permitted at any of the three grounds." },
+    { label: "Emergencies", value: "India-wide emergency number: 112. Tourist helpline (24x7, multilingual): 1800111363, short code 1363." },
+  ],
   // Real, sourced facts for all 4 host cities — no single "address" applies
   // to a 4-venue tour, so this table carries the venue-specific content the
   // generic address/ticketing block above can't (it only handles one venue).
@@ -362,6 +382,21 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
     heroFallbackImageSlug: "wimbledon-centre-court-",
     introText:
       "Wimbledon runs for two weeks in late June and early July, but the experience of it — the bit worth paying for — starts before you get on the train. The queue culture, the strawberry ritual, the SW19 neighbourhood that treats its famous visitor with relaxed familiarity: none of it is accidental, and none of it is in the official guide.\n\nThis pack is built around one idea: that the best version of Wimbledon isn't on Centre Court. It's a picnic on Henman Hill when a match has just turned, a pre-match breakfast on the village high street, a quiet pint in the local pub after the day's last result. The experiences here were chosen because they're the difference between attending a tennis tournament and actually experiencing one.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
+  // Built from real sourced facts researched during experience seeding
+  // (VCA Jamtha's 2008 opening and solar power, Chepauk's 1916 origin and
+  // 1933-34 first Test, Narendra Modi Stadium's 132,000 capacity as the
+  // world's largest cricket ground, the real ~4-week gap between the
+  // Chennai and Ahmedabad Tests in this pack's scope) — not invented,
+  // matches every other hub-and-spoke event's pattern of drawing The Brief
+  // from real underlying content. Pack scope is 3 of the 5 Test cities
+  // (Nagpur, Chennai, Ahmedabad) — see confirmed-experience-list memory.
+  "border-gavaskar-trophy-2027": {
+    displayName: "Border-Gavaskar Trophy",
+    venueLine: "Three Tests across three cities in this pack — VCA Stadium in Nagpur, Chepauk in Chennai, and the world's largest cricket ground in Ahmedabad.",
+    heroFallbackImageSlug: "narendra-modi-stadium-mueclmpw",
+    introText:
+      "The Border-Gavaskar Trophy is the biggest rivalry in Test cricket outside the Ashes, and this edition runs across five Tests and five Indian cities over six weeks. This pack deliberately focuses on three of those five: Nagpur, where the series opens; Chennai, where it moves four days later; and Ahmedabad, where it closes after a nearly four-week gap. Guwahati and Ranchi, the series' other two Tests, aren't covered here.\n\nThe three grounds could hardly be more different. VCA Stadium is a modern, 2008-built ground on Nagpur's edge with no history to speak of and a pitch that provides the character instead. Chepauk has been Tamil Nadu's cricket ground since 1916, with the Bay of Bengal's sea breeze part of the experience. Narendra Modi Stadium in Ahmedabad is, at 132,000 seats, the largest cricket ground on earth — so large that reaching your block from the gate takes longer than you'd expect.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going — including the tiger safari, the lion safari, and the Gandhi memorial that make the gaps between Tests worth staying for.",
   },
   "new-zealand-in-australia-cricket-2026-27": {
     displayName: "New Zealand tour of Australia",
@@ -592,7 +627,15 @@ export default async function HubPage({ slug }: { slug: string }) {
   // from the real sportingEvents record (not hardcoded), prepended to any
   // event-specific rows (emergencies, etc.) from QUICK_REFERENCE_BY_EVENT.
   const quickReference: Array<{ label: string; value: string; href?: string; linkLabel?: string }> = [];
-  if (event.venueName && event.venueAddress) {
+  // Multi-venue events whose own QUICK_REFERENCE_BY_EVENT entry already
+  // provides real per-venue "Address — <city>" rows (border-gavaskar-
+  // trophy-2027) suppress this generic single-Address block entirely —
+  // otherwise it would show a confusing 4th, combined-string Address row
+  // alongside the 3 real per-venue ones. Added 9 Oct 2026, same reasoning
+  // as the "Venues in this pack" row already carrying multi-venue content
+  // this generic block can't.
+  const SUPPRESS_GENERIC_ADDRESS_ROW = new Set(["border-gavaskar-trophy-2027"]);
+  if (event.venueName && event.venueAddress && !SUPPRESS_GENERIC_ADDRESS_ROW.has(slug)) {
     // A text-search Maps URL built from name+address doesn't always resolve
     // to the correct pin (confirmed broken for COTA, 5 Sep 2026) — per-slug
     // override with a verified, real Google Maps place link where needed.

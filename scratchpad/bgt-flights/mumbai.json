@@ -1,0 +1,47 @@
+{
+  "origin": "Mumbai",
+  "googleFlights": {
+    "sorted": [
+      151,
+      153,
+      154,
+      158,
+      231,
+      244,
+      254,
+      265,
+      374,
+      393,
+      559,
+      2916,
+      2949,
+      2977
+    ],
+    "rawCount": 36
+  },
+  "kayak": {
+    "sorted": [
+      146,
+      157,
+      164
+    ],
+    "rawCount": 55
+  },
+  "combined": {
+    "low": 146,
+    "high": 393,
+    "excludedLow": [],
+    "excludedHigh": [
+      559,
+      2916,
+      2949,
+      2977
+    ],
+    "gfLow": 151,
+    "gfHigh": 393,
+    "kyLow": 146,
+    "kyHigh": 164
+  },
+  "finalCostLow": 149,
+  "finalCostHigh": 279
+}

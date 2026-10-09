@@ -150,6 +150,25 @@ async function getPlannerEventsUnsafe(tripLengthDays: number, originMarket: stri
       { label: "Food", low: Math.round(Number(bandRow.foodPerDayLow) * days), high: Math.round(Number(bandRow.foodPerDayHigh) * days), qualifier: `~${formatMoneyRange(Number(bandRow.foodPerDayLow), Number(bandRow.foodPerDayHigh))}/person/day` },
     ];
 
+    // Border-Gavaskar Trophy 2027 one-off: this event's single destinationId
+    // (Chennai) only covers the international gateway leg. The pack's 3-city
+    // scope (Nagpur, Chennai, Ahmedabad) needs two domestic connector flights
+    // that the generic single-destination plannerFlightCost schema has no
+    // slot for, and this is a one-off multi-city cricket series, not worth a
+    // schema change. Hardcoded here rather than seeded, per explicit decision
+    // (9 Oct 2026). Researched round-trip economy fares for the real Test
+    // match dates: Chennai<->Nagpur (1-stop via BLR/BOM/HYD, no direct route,
+    // ~19-28 Jan) and Chennai<->Ahmedabad (direct, 2h15m, ~24 Feb-4 Mar).
+    // Covers both legs — a fan doing the full 3-city tour needs both.
+    if (event.slug === "border-gavaskar-trophy-2027") {
+      lineItems.push({
+        label: "Domestic connector",
+        low: 275,
+        high: 355,
+        qualifier: "Chennai ↔ Nagpur + Chennai ↔ Ahmedabad, round-trip economy",
+      });
+    }
+
     const start = new Date(event.startDate);
     const end = new Date(event.endDate);
     const dateRange = `${start.toLocaleDateString("en-GB", { day: "numeric", month: "short" })}–${end.toLocaleDateString("en-GB", { day: "numeric", month: "short" })}`;

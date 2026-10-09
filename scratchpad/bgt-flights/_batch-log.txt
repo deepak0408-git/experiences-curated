@@ -1,0 +1,75 @@
+=== Atlanta (ATL) ===
+done: Atlanta -> $908-1087
+=== Bangalore (BLR) ===
+done: Bangalore -> $86-163
+=== Barcelona (BCN) ===
+done: Barcelona -> $640-700
+=== Beijing (PEK) ===
+done: Beijing -> $599-762
+=== Berlin (BER) ===
+done: Berlin -> $788-1022
+=== Boston (BOS) ===
+done: Boston -> $852-1134
+=== Buenos Aires (EZE) ===
+done: Buenos Aires (error/incomplete, see file)
+=== Cairo (CAI) ===
+done: Cairo -> $406-715
+=== Casablanca (CMN) ===
+done: Casablanca (error/incomplete, see file)
+=== Chicago (ORD) ===
+done: Chicago -> $890-1224
+=== Dallas (DFW) ===
+done: Dallas -> $1228-1678
+=== Doha (DOH) ===
+done: Doha -> $303-696
+=== Dubai (DXB) ===
+done: Dubai -> $307-556
+=== Dublin (DUB) ===
+done: Dublin -> $627-912
+=== Hong Kong (HKG) ===
+done: Hong Kong -> $454-1033
+=== Johannesburg (JNB) ===
+done: Johannesburg -> $764-1040
+=== London (LHR) ===
+done: London (error/incomplete, see file)
+skip (exists): Los Angeles
+=== Madrid (MAD) ===
+done: Madrid -> $579-863
+=== Manchester (MAN) ===
+done: Manchester -> $693-1040
+=== Manila (MNL) ===
+done: Manila -> $373-788
+=== Melbourne (MEL) ===
+done: Melbourne -> $717-1245
+=== Mexico City (MEX) ===
+done: Mexico City (error/incomplete, see file)
+=== Miami (MIA) ===
+done: Miami -> $1370-1814
+skip (exists): Milan
+=== Montreal (YUL) ===
+done: Montreal -> $1259-1522
+=== Moscow (SVO) ===
+done: Moscow (error/incomplete, see file)
+=== Mumbai (BOM) ===
+done: Mumbai -> $149-279
+=== Munich (MUC) ===
+done: Munich (error/incomplete, see file)
+skip (exists): Nairobi
+skip (exists): New Delhi
+=== New York City (JFK) ===
+done: New York City -> $697-1347
+=== Paris (CDG) ===
+done: Paris -> $607-1100
+=== Philadelphia (PHL) ===
+done: Philadelphia (error/incomplete, see file)
+=== Rio de Janeiro (GIG) ==dodone: Rio de Janeiro (error/incomplete, see file)
+=== Rome (FCO) ===
+done: Rome (error/incomplete, see file)
+=== San Francisco (SFO) ===
+done: San Francisco -> $912-1329
+=== Sao Padone: San Frandone: Sao Paulo (error/incomplete, see file)
+=== Seoul (ICNdone: done: Seoul (error/incomplete, see file)
+=== Shanghai (PVG)done:done: Shanghai (error/incomplete, see filedone: Shanghai -> $521-608done: Singapore -> $335-7done: Singapore -> $335-744done: Stockholm -> $683-9done: Stockholm -> $683-done: Sydney -> $781-1244done: Sydney -> $781-done: Tokyo -> $693-1297
+done: Tokyo -> $693-12done: Toronto -> $1310-16done: Toronto -> $1289-1608done: Vancouver -> $1328-done: Vancouver -> $1328-1561
+=== Wdone: Washington D.C. -> done: Washington D.C. (error/indone: Zurich (error/incomplete, see file)done: Zurich -> $525-1114
+BATCH COMPLETE

@@ -1,0 +1,72 @@
+{
+  "origin": "Casablanca",
+  "googleFlights": {
+    "sorted": [
+      1269,
+      1602,
+      1975
+    ],
+    "rawCount": 8
+  },
+  "kayak": {
+    "sorted": [
+      697,
+      781,
+      783,
+      787,
+      789,
+      820,
+      826,
+      834,
+      842,
+      844,
+      866,
+      870,
+      872,
+      880,
+      881,
+      882,
+      889,
+      890,
+      900,
+      903,
+      905,
+      919,
+      927,
+      928,
+      931,
+      932,
+      938,
+      940,
+      941,
+      944,
+      949,
+      953,
+      961,
+      963,
+      965
+    ],
+    "rawCount": 60
+  },
+  "combined": {
+    "low": 697,
+    "high": 965,
+    "excludedLow": [],
+    "excludedHigh": [
+      1269,
+      1602,
+      1975
+    ],
+    "gfLow": null,
+    "gfHigh": null,
+    "kyLow": 697,
+    "kyHigh": 965
+  },
+  "finalCostLow": 697,
+  "finalCostHigh": 965,
+  "singleSourceFallback": {
+    "source": "kayak (google flights 3 points all excluded as outliers by combined test)",
+    "low": 697,
+    "high": 965
+  }
+}

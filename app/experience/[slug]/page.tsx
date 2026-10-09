@@ -57,6 +57,40 @@ import { shortEventName, stripYear } from "@/lib/eventShortNames";
 // falling back to a flat scan (first match across all events) to preserve the
 // existing no-referrer default for direct links/search/saved items.
 const EXPERIENCE_TO_SPOKE_BY_EVENT: Record<string, Record<string, { spokeId: string; spokeLabel: string }>> = {
+  // Added 9 Oct 2026 — all 27 experiences wired into this pack's spokes had
+  // no EXPERIENCE_TO_SPOKE_BY_EVENT entry at all (gap caught by the founder
+  // while browsing a hotel card's back-link). None of these 27 are shared
+  // with another event (confirmed via sporting_event_experiences), so this
+  // is a straightforward one-event addition, not a shared-experience merge.
+  "border-gavaskar-trophy-2027": {
+    "nagpur-saoji-food-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "chennai-filter-coffee-dosa-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "ahmedabad-thali-manek-chowk-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "deekshabhoomi-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "tadoba-tiger-safari-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "marina-beach-kapaleeshwarar-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "mahabalipuram-daytrip-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "sabarmati-ashram-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "ahmedabad-old-city-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "kankaria-riverfront-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "statue-of-unity-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "gir-national-park-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "bgt-rivalry-history-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "first-time-india-": { spokeId: "first-timer-guide", spokeLabel: "First-Timer's Guide" },
+    "india-weather-packing-": { spokeId: "weather", spokeLabel: "Weather & What to Pack" },
+    "vca-getting-there-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "chepauk-getting-there-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "motera-getting-there-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "chennai-hospitality-tiers-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "ahmedabad-which-stand-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "vca-stadium-jamtha-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "chepauk-stadium-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "narendra-modi-stadium-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "where-to-stay-nagpur-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "where-to-stay-chennai-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "where-to-stay-ahmedabad-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "bgt-planning-guide-": { spokeId: "itinerary", spokeLabel: "Trip Schedule" },
+  },
   "abu-dhabi-grand-prix": {
     "main-grandstand-yas-marina-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
     "west-grandstand-yas-marina-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
@@ -1359,6 +1393,13 @@ export default async function ExperiencePage({
               slug.startsWith("louis-armstrong-stadium-") ? "lg:object-[center_90%]" :
               slug.startsWith("us-open-night-sessions-") ? "lg:object-[center_90%]" :
               slug.startsWith("where-to-stay-us-open-") ? "lg:object-[center_75%]" :
+              slug.startsWith("where-to-stay-nagpur-") ? "lg:object-[center_65%]" :
+              slug.startsWith("chepauk-stadium-") ? "lg:object-[center_92%]" :
+              slug.startsWith("mahabalipuram-daytrip-") ? "lg:object-[center_30%]" :
+              slug.startsWith("chennai-filter-coffee-dosa-") ? "lg:object-[center_35%]" :
+              slug.startsWith("ahmedabad-old-city-") ? "lg:object-[center_43%]" :
+              slug.startsWith("statue-of-unity-") ? "lg:object-[center_42%]" :
+              slug.startsWith("bgt-rivalry-history-") ? "lg:object-[center_25%]" :
               ""
             }`}
             sizes="100vw"

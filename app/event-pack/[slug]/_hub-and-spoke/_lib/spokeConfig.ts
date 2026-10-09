@@ -558,4 +558,28 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
     { id: "map", label: "Venue Map", question: "What facilities are available at Shanghai International Circuit?", status: "public", imageSlug: "chinese-gp-circuit-venue-" },
     { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Chinese Grand Prix?", status: "teaser", imageSlug: "chinese-gp-paddock-club-" },
   ],
+  // Border-Gavaskar Trophy 2027 — cricket, 3 of the 5 Test cities in pack
+  // scope (Nagpur, Chennai, Ahmedabad). Every imageSlug below is a distinct
+  // real seeded experience slug, confirmed against the live DB 9 Oct 2026 —
+  // see feedback_spoke_image_assignment_unclear memory for why that matters.
+  "border-gavaskar-trophy-2027": [
+    // imageSlugs below are aligned to match what each spoke component
+    // actually renders as content (not just a thematically-close pick) —
+    // see each spoke's own linkedExperiences.find(...) calls. Cost and
+    // Tickets both display chennai-hospitality-tiers/ahmedabad-which-stand;
+    // Cost's tile uses the former as its distinct pick since Cost itself
+    // has no dedicated content experience (local-price table only).
+    { id: "cost", label: "Cost Guide", question: "How much does a Border-Gavaskar Trophy trip across India cost?", status: "teaser", imageSlug: "chennai-hospitality-tiers" },
+    { id: "tickets", label: "Ticket Guide", question: "Which stand should I pick for the Border-Gavaskar Trophy?", status: "teaser", imageSlug: "ahmedabad-which-stand", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay across Nagpur, Chennai, and Ahmedabad?", status: "teaser", imageSlug: "where-to-stay-chennai" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to VCA Jamtha, Chepauk, and Narendra Modi Stadium?", status: "public", imageSlug: "vca-getting-there" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like in India in January-February, and what should I pack?", status: "public", imageSlug: "india-weather-packing", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first trip to India?", status: "public", imageSlug: "first-time-india" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat across Nagpur, Chennai, and Ahmedabad?", status: "teaser", imageSlug: "chennai-filter-coffee-dosa" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips during the Border-Gavaskar Trophy?", status: "teaser", imageSlug: "statue-of-unity", heroImagePosition: "center 20%" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does a Border-Gavaskar Trophy trip across 3 cities actually look like?", status: "teaser", imageSlug: "bgt-planning-guide" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at the grounds for the Border-Gavaskar Trophy?", status: "public", imageSlug: "vca-stadium-jamtha", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at VCA Jamtha, Chepauk, and Narendra Modi Stadium?", status: "public", imageSlug: "narendra-modi-stadium" },
+    { id: "luxury", label: "Luxury Guide", question: "What does a genuinely luxury Border-Gavaskar Trophy trip look like?", status: "teaser", imageSlug: "where-to-stay-ahmedabad" },
+  ],
 };

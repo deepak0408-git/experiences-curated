@@ -83,7 +83,7 @@ export default function CalendarSection({ events }: { events: CalendarEvent[] })
               Available Now
             </p>
             <p className="text-sm text-[#A3A3A3]">
-              Full guides, ready today — buy once, keep forever.
+              Full guides, ready today.
             </p>
           </div>
           <Link

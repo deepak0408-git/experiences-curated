@@ -1,0 +1,11 @@
+=== RETRY2: Buenos Aires (EZE) ===
+done: Buenos Aires (error/incomplete, see file)
+=== RETRY2: Casablanca (CMN) ===
+done: Casablanca (error/incomplete, see file)
+=== RETRY2: London (LHR) ===
+done: London -> $583-1139
+=== RETRY2: Mexico City (MEX) ===
+done: Mexico City (error/incomplete, see file)
+=== RETRY2: Moscow (SVO) ===
+done: Moscow (error/incomplete, see file)
+RETRY2 BATCH COMPLETE

@@ -117,6 +117,12 @@ export default async function PriceRadarPage({
     tier: t.tier,
     label: sportLabelByTier[t.tier] ?? t.tier,
     example: t.eventTierLabel ?? sportLabelByTier[t.tier] ?? t.tier,
+    // "example" is also shown in the summary line next to a trip TOTAL
+    // scaled across several days (PriceRadarResults.tsx) — a trailing
+    // "— 1-day" on the raw eventTierLabel is accurate for the per-tier
+    // reference list but wrong there, since that total isn't a 1-day
+    // price. Same fix as CostSpoke.tsx's stripDayQualifier, 9 Oct 2026.
+    exampleForTotal: (t.eventTierLabel ?? sportLabelByTier[t.tier] ?? t.tier)?.replace(/\s*—\s*1-day\s*$/, ""),
     costLow: Number(t.costLow),
     costHigh: Number(t.costHigh),
   }));
@@ -147,6 +153,26 @@ export default async function PriceRadarPage({
   const localTravelNote = destinationBand?.localTravelNote ?? null;
   const foodNote = destinationBand?.foodNote ?? null;
 
+  // Standalone caveat, rendered below the Getting Around/Money-Saving boxes
+  // (never folded into the seeded note text itself) — this 3-city pack only
+  // researched hotel/food/local-travel for Chennai, extrapolated to Nagpur/
+  // Ahmedabad. Added 9 Oct 2026, same reasoning as CostSpoke's "use Chennai
+  // as your cost guide" box.
+  const HOTEL_BENCHMARK_NOTE_BY_EVENT: Record<string, string> = {
+    "border-gavaskar-trophy-2027": "Hotel, food, and local travel costs above are researched for Chennai only and used as a benchmark for Nagpur and Ahmedabad — those two cities haven't been independently priced.",
+  };
+  const hotelBenchmarkNote = HOTEL_BENCHMARK_NOTE_BY_EVENT[slug] ?? null;
+
+  // Real additional costs this table's 5 columns don't capture — flagged
+  // explicitly so a fan budgeting from this page doesn't miss them. Added
+  // 9 Oct 2026 alongside hotelBenchmarkNote, same reasoning (real cost
+  // gaps CostSpoke.tsx already surfaces that Price Radar's generic column
+  // set has no slot for).
+  const EXTRA_COSTS_NOTE_BY_EVENT: Record<string, string> = {
+    "border-gavaskar-trophy-2027": "Covering all three cities means two domestic connector flights not included in the Flight column above: Chennai–Nagpur (no direct route, connects through Hyderabad, Mumbai, or Delhi) and Chennai–Ahmedabad (direct, under two hours) — budget US$275–355 for both, round-trip. The India e-Tourist visa (US$10–40) and real day-trip/safari costs (Mahabalipuram, the Statue of Unity, Tadoba and Gir safari permits) are also real costs on top of this table — see the cost guide for exact prices.",
+  };
+  const extraCostsNote = EXTRA_COSTS_NOTE_BY_EVENT[slug] ?? null;
+
   // Same curated displayName as generateMetadata above — real, sourced
   // per-event name (falls back to event.name), used for the H1/summary/
   // footer copy so the page never shows a raw internal event.name that
@@ -166,6 +192,8 @@ export default async function PriceRadarPage({
         localTravel={localTravelBand}
         localTravelNote={localTravelNote}
         foodNote={foodNote}
+        hotelBenchmarkNote={hotelBenchmarkNote}
+        extraCostsNote={extraCostsNote}
       >
         {/* Narrow container (max-w-6xl, same as the page's original width)
             for the title/filters + sidebar grid — kept intentionally
