@@ -82,7 +82,7 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
   // dollar figure next to it is already a 5-day total (stayTotal
   // multiplies the ticket by TRIP_DAYS_WITH_TICKET), so keeping "1-day"
   // here would wrongly suggest the tile's price is a single day's cost.
-  const stripDayQualifier = (label: string | undefined) => label?.replace(/\s*—\s*1-day\s*$/, "");
+  const stripDayQualifier = (label: string | null | undefined) => label?.replace(/\s*—\s*1-day\s*$/, "");
 
   const profiles = [
     { label: "Budget", hotel: budgetHotel, ticket: tier1, hotelNote: "Hotel NKC Airport or similar 2★", ticketNote: stripDayQualifier(tier1?.eventTierLabel) },
