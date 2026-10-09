@@ -35,6 +35,7 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
       h1="Nine things worth leaving the ground for, from a half-day temple stop to a two-day lion safari"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
+      heroImagePosition="center 40%"
       isUnlocked={isUnlocked}
       ctaCopy="All nine trips are free to read in full. Unlocking gets you direct booking links for every tour, plus the calendar work that decides whether they actually fit: the Monday closure that rules out the Statue of Unity on the third day of the Ahmedabad Test, and the safari permit dates that can cost you ₹3,000 a head if you miss them — Tadoba's booking window opens exactly 120 days out and its core zone is closed on Tuesdays."
     >
