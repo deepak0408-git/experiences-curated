@@ -57,6 +57,31 @@ import { shortEventName, stripYear } from "@/lib/eventShortNames";
 // falling back to a flat scan (first match across all events) to preserve the
 // existing no-referrer default for direct links/search/saved items.
 const EXPERIENCE_TO_SPOKE_BY_EVENT: Record<string, Record<string, { spokeId: string; spokeLabel: string }>> = {
+  // Belgian Grand Prix — classic->hub-and-spoke migration, 12 Oct 2026. All
+  // 20 experiences, none shared with another event as of this build
+  // (confirmed via sporting_event_experiences).
+  "belgian-grand-prix": {
+    "eau-rouge-raidillon-gold3-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "pouhon-corner-silver3-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "kemmel-straight-general-admission-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "gold1-pit-grandstand-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "les-combes-grandstands-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "la-source-hairpin-grandstands-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "bus-stop-chicane-grandstands-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "belgian-gp-ticket-guide-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "van-der-valk-hotel-spa-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "romantik-hotel-le-val-dambleve-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "getting-to-circuit-belgian-gp-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "domino-steak-house-spa-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "belgian-race-weekend-street-food-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "spa-town-thermal-city-belgian-gp-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "stavelot-abbey-circuit-museum-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "ardennes-beyond-the-circuit-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "fan-zone-raidillon-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "camping-at-the-circuit-belgian-gp-": { spokeId: "arrival", spokeLabel: "Arrival & Queue Guide" },
+    "spa-francorchamps-track-experiences-": { spokeId: "map", spokeLabel: "Venue Map" },
+    "paddock-club-belgian-gp-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  },
   // Added 9 Oct 2026 — all 27 experiences wired into this pack's spokes had
   // no EXPERIENCE_TO_SPOKE_BY_EVENT entry at all (gap caught by the founder
   // while browsing a hotel card's back-link). None of these 27 are shared
@@ -790,6 +815,14 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   // prefix like every other entry above.
   "ardennes-beyond-the-circuit-": { venueCount: 6, venueNoun: "places" },
   "belgian-race-weekend-street-food-": { venueCount: 3, venueNoun: "restaurants" },
+  // Camping at the Circuit — 3 named premium operators in body content
+  // (GPtents, IntentsGP, Glamping Green). Only 2 counted/rated here —
+  // GPtents and IntentsGP both confidently matched via Google Places
+  // (on-site in Stavelot, near the circuit); "Glamping Green" returned no
+  // confident match under that name anywhere near Spa (closest hits were
+  // Durbuy/Gembloux/Gavere operators unrelated to this circuit) — left
+  // unrated per the "don't force a weak match" rule rather than mismatched.
+  "camping-at-the-circuit-belgian-gp-": { venueCount: 2, venueNoun: "camping operators" },
 };
 
 function getMultiVenueRatings(slug: string) {

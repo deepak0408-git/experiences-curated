@@ -1,4 +1,17 @@
 import type { ComponentType } from "react";
+import BGPCostSpoke from "./belgian-grand-prix/CostSpoke";
+import BGPTicketsSpoke from "./belgian-grand-prix/TicketsSpoke";
+import BGPHotelsSpoke from "./belgian-grand-prix/HotelsSpoke";
+import BGPGettingThereSpoke from "./belgian-grand-prix/GettingThereSpoke";
+import BGPWeatherSpoke from "./belgian-grand-prix/WeatherSpoke";
+import BGPFirstTimerGuideSpoke from "./belgian-grand-prix/FirstTimerGuideSpoke";
+import BGPWhereToEatSpoke from "./belgian-grand-prix/WhereToEatSpoke";
+import BGPDayTripsSpoke from "./belgian-grand-prix/DayTripsSpoke";
+import BGPItinerarySpoke from "./belgian-grand-prix/ItinerarySpoke";
+import BGPArrivalSpoke from "./belgian-grand-prix/ArrivalSpoke";
+import BGPMapSpoke from "./belgian-grand-prix/MapSpoke";
+import BGPLuxurySpoke from "./belgian-grand-prix/LuxurySpoke";
+
 import CostSpoke from "./bahrain-grand-prix/CostSpoke";
 import TicketsSpoke from "./bahrain-grand-prix/TicketsSpoke";
 import HotelsSpoke from "./bahrain-grand-prix/HotelsSpoke";
@@ -266,6 +279,20 @@ type SpokeComponent = ComponentType<{ eventSlug: string }>;
 // folder and a SPOKES_BY_EVENT entry in _lib/spokeConfig.ts) — nothing
 // else in the routing layer changes.
 export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = {
+  "belgian-grand-prix": {
+    cost: BGPCostSpoke,
+    tickets: BGPTicketsSpoke,
+    hotels: BGPHotelsSpoke,
+    "getting-there": BGPGettingThereSpoke,
+    weather: BGPWeatherSpoke,
+    "first-timer-guide": BGPFirstTimerGuideSpoke,
+    "where-to-eat": BGPWhereToEatSpoke,
+    "day-trips": BGPDayTripsSpoke,
+    itinerary: BGPItinerarySpoke,
+    arrival: BGPArrivalSpoke,
+    map: BGPMapSpoke,
+    luxury: BGPLuxurySpoke,
+  },
   "bahrain-grand-prix": {
     cost: CostSpoke,
     tickets: TicketsSpoke,
@@ -566,6 +593,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
+  "belgian-grand-prix": {
+    cost: "How Much Does the Belgian Grand Prix Cost? — Spa Budget Guide",
+    tickets: "Spa-Francorchamps Ticket Guide — Bronze to Gold Grandstand",
+    hotels: "Where to Stay for the Belgian Grand Prix — Spa or Stavelot",
+    "getting-there": "Getting to Spa-Francorchamps — Belgian Grand Prix Transit Guide",
+    weather: "Ardennes Weather in July — What to Pack for the Belgian Grand Prix",
+    "first-timer-guide": "First-Timer's Guide — the Belgian Grand Prix at Spa-Francorchamps",
+    "where-to-eat": "Where to Eat at the Belgian Grand Prix — Spa Weekend",
+    "day-trips": "Best Day Trips — Belgian Grand Prix Weekend, Including the Ardennes",
+    itinerary: "Sample Belgian Grand Prix Weekend Itinerary",
+    arrival: "Spa-Francorchamps — Arrival & Queue Guide",
+    map: "Spa-Francorchamps Circuit Map — Corners, History, and Facilities",
+    luxury: "Luxury Guide for the Belgian Grand Prix — Paddock Club and More",
+  },
   "bahrain-grand-prix": {
     cost: "How Much Does the Bahrain Grand Prix (Malaysia) Cost? — Budget Guide",
     tickets: "Sepang Grandstand vs General Admission — Ticket Guide",

@@ -90,6 +90,17 @@ const FILMSTRIP_SLUGS_BY_EVENT: Record<string, string[]> = {
 // pack's PACK_EDITORIAL, which exists as two separately-maintained copies
 // (PackView.tsx and lib/pack-content.ts).
 export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; value: string; href?: string; linkLabel?: string }>> = {
+  // Added as part of the classic->hub-and-spoke migration, 12 Oct 2026, per
+  // migrate-from-classic-to-hub-spoke skill 4d. Sourced from the event
+  // row's own preTripBriefLines content and lib/pack-content.ts's existing
+  // localInfo table for this event.
+  "belgian-grand-prix": [
+    { label: "Weekend format", value: "2027 runs the standard weekend format, confirmed, no sprint session, two practice sessions Friday, final practice and qualifying Saturday, race Sunday. Confirmed dates: 23-25 July 2027. Exact session clock times not yet published, check formula1.com closer to race week." },
+    { label: "Gate times", value: "Gates from around 06:00 on each race day. Check the official Formula 1 app for confirmed daily timings, these can shift session to session." },
+    { label: "Weather", value: "July in the Ardennes typically runs 18-26 degrees Celsius, with genuine micro-climate variation, one part of the circuit can be dry while another is wet. Pack a waterproof regardless of the forecast.", href: "https://www.accuweather.com/en/be/spa/29281/weather-forecast/29281", linkLabel: "AccuWeather forecast" },
+    { label: "Shuttles", value: "Day return coaches from 14 cities including Brussels, Liege, Namur and Antwerp, approx. EUR65-75 per day. Sales typically close around 26 June, book early. Book via spagrandprix.com.", href: "https://www.spagrandprix.com/en/tickets-city-shuttle", linkLabel: "Book shuttles" },
+    { label: "Emergencies", value: "Belgium-wide emergency number: 112. Police non-emergency: 101. Nearest hospital: CHR de Verviers, Rue du Palais 211, 4800 Verviers." },
+  ],
   "us-open-2026": [
     { label: "Gate times", value: "Day session gates 9:30am for most of the main draw, typically shifting later on the tournament's final days; evening session gates 6pm regardless of date. Confirm exact times via the official app closer to the event." },
     { label: "Bag policy", value: "One bag per guest, max 12\"W x 12\"H x 16\"L. Backpacks not permitted with very limited exceptions. Metal/plastic water bottles up to 24oz are allowed." },
@@ -566,6 +577,18 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
   // content. Added retroactively after this event's classic->hub-and-spoke
   // migration (Phase B, 20 Sep 2026) shipped without an entry here — see
   // migrate-from-classic-to-hub-spoke skill §4d.
+  // Added as part of the classic->hub-and-spoke migration, 12 Oct 2026 —
+  // per migrate-from-classic-to-hub-spoke skill §4d, added in the SAME
+  // session as the spoke build, not deferred (the exact gap that bit
+  // Italian GP 5 weeks late). introText draws from the event row's real
+  // editorialOverview and preTripBriefLines content.
+  "belgian-grand-prix": {
+    displayName: "Belgian Grand Prix",
+    venueLine: "Held at Circuit de Spa-Francorchamps, the longest circuit on the F1 calendar, and the one most drivers on the current grid name as their favourite.",
+    heroFallbackImageSlug: "eau-rouge-raidillon-gold3-",
+    introText:
+      "Spa-Francorchamps is 7.004 kilometres of road climbing and dropping through the Ardennes forest, corners named after the villages and landmarks they pass through, not a letter or a number. It's the longest circuit on the calendar, and the one most drivers on the current grid cite as their favourite, for a simple reason: nowhere else combines this much elevation change, this much genuine high-speed commitment, with weather that can turn in the time it takes to drive from one corner to the next.\n\nThis pack is built around one idea: Spa is not a single experience, it's a circuit you roam. A Bronze General Admission ticket unlocks most of the 7km lap, the Kemmel Straight bank, the Pouhon mound, the Fan Zone at the base of Raidillon. Grandstand tickets, Gold 3 at Raidillon above all, give you a fixed, covered seat at one specific corner. The choice between them shapes what kind of weekend this actually is.\n\nThe Ardennes micro-climate is worth knowing before you arrive, July temperatures typically run 18 to 26 degrees Celsius, but it's genuinely possible for one part of the circuit to be dry while another, a few kilometres away, is in a downpour. Everything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
   "italian-grand-prix": {
     displayName: "Italian Grand Prix",
     venueLine: "Held at Autodromo Nazionale Monza — F1's fastest circuit, and the only Grand Prix run every season since the World Championship began in 1950.",

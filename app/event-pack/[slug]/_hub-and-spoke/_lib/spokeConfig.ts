@@ -9,6 +9,25 @@ import type { SpokeConfig } from "./getSpokeData";
 // slugs (see getSpokeImage) — confirmed against the real Bahrain GP
 // experience list before being wired in (29 Jul 2026).
 export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
+  // Belgian Grand Prix — classic->hub-and-spoke migration, 12 Oct 2026. All
+  // 20 experiences real/seeded and published (see project_belgian_gp_experiences
+  // memory). Weather/Arrival/Tickets use the skill's standing cross-event
+  // default images (imageOverride), set here at config-creation time per
+  // the skill's explicit rule.
+  "belgian-grand-prix": [
+    { id: "cost", label: "Cost Guide", question: "How much does a Belgian Grand Prix weekend cost?", status: "teaser", imageSlug: "eau-rouge-raidillon-gold3-" },
+    { id: "tickets", label: "Ticket Guide", question: "Which Spa grandstand is the best buy?", status: "teaser", imageSlug: "eau-rouge-raidillon-gold3-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the Belgian Grand Prix?", status: "teaser", imageSlug: "van-der-valk-hotel-spa-" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to Spa-Francorchamps?", status: "public", imageSlug: "getting-to-circuit-belgian-gp-" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the Belgian Grand Prix, and what should I pack?", status: "public", imageSlug: "spa-francorchamps-track-experiences-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Belgian Grand Prix?", status: "public", imageSlug: "fan-zone-raidillon-" },
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat at Spa during race weekend?", status: "teaser", imageSlug: "domino-steak-house-spa-" },
+    { id: "day-trips", label: "Day Trips", question: "What are the best day trips around Spa and the Ardennes?", status: "teaser", imageSlug: "ardennes-beyond-the-circuit-" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does a Belgian Grand Prix weekend actually look like?", status: "teaser", imageSlug: "stavelot-abbey-circuit-museum-" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at Spa-Francorchamps gates?", status: "public", imageSlug: "fan-zone-raidillon-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at Spa-Francorchamps?", status: "public", imageSlug: "spa-francorchamps-track-experiences-" },
+    { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Belgian Grand Prix?", status: "teaser", imageSlug: "paddock-club-belgian-gp-" },
+  ],
   "bahrain-grand-prix": [
     { id: "cost", label: "Cost Guide", question: "How much does a Sepang weekend cost?", status: "teaser", imageSlug: "main-grandstand-sepang-start-finish", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost-circuit.jpg" },
     { id: "tickets", label: "Ticket Guide", question: "Which grandstand ticket is the best buy for Sepang?", status: "teaser", imageSlug: "hill-stand-c2-sepang-general-admission", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
