@@ -152,6 +152,29 @@ const CIRCUIT_MAP_BY_EVENT: Record<
     // Founder-flagged 30 Sep 2026.
     lightFrame: true,
   },
+  "belgian-gp-2026": {
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/belgian-grand-prix-circuit-map.webp",
+    alt: "Circuit de Spa-Francorchamps layout, numbered 1-20, showing La Source, Eau Rouge/Raidillon, Kemmel Straight, Les Combes, Pouhon, Campus, Stavelot, Blanchimont, and the Bus Stop chicane",
+    aspectClassName: "aspect-[3840/2375]",
+    credit: "Will Pittenger, CC BY-SA 3.0, via Wikimedia Commons.",
+    // White/light-background line art — nearly invisible against the
+    // default dark ZoomableImage frame in both the inline card and the
+    // zoomed lightbox, same issue as Mexico City/Miami/British GP's maps
+    // above. Founder-flagged 12 Oct 2026.
+    lightFrame: true,
+  },
+  // Forward-prep duplicate under the evergreen event-pack slug — Ticket
+  // Intelligence itself is still routed at /ticket-intelligence/belgian-gp-2026
+  // (its own slug, unaffected by the event-pack classic->hub-and-spoke
+  // migration) as of this writing, but added so this key already resolves
+  // if/when Ticket Intelligence's own route is ever migrated to match.
+  "belgian-grand-prix": {
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/belgian-grand-prix-circuit-map.webp",
+    alt: "Circuit de Spa-Francorchamps layout, numbered 1-20, showing La Source, Eau Rouge/Raidillon, Kemmel Straight, Les Combes, Pouhon, Campus, Stavelot, Blanchimont, and the Bus Stop chicane",
+    aspectClassName: "aspect-[3840/2375]",
+    credit: "Will Pittenger, CC BY-SA 3.0, via Wikimedia Commons.",
+    lightFrame: true,
+  },
 };
 
 // "Where to actually buy your ticket" — per-event reseller frame, reused
@@ -313,6 +336,33 @@ const RESELLER_LINKS_BY_EVENT: Record<
     p1Label: "P1 Travel — British GP →",
     p1Url: "https://www.p1travel.com/en-GB/motorsports/formula-1/british-gp-2027-fri-sat-sun",
     soldOutNote: "this is F1's highest-attendance weekend on the calendar, and the George Russell Grandstand has already sold out for 2027",
+  },
+  // Belgian GP has no Tickets spoke yet (packFormat still "classic" as of
+  // 12 Oct 2026) — copy below written directly from official sources
+  // verified during circuit_seating_profile research, not copied from an
+  // existing spoke. officialUrl matches the spagrandprix.com checkout used
+  // for every seat's sourceNote. P1 Travel's Belgian GP organizer page
+  // confirmed live, 12 Oct 2026. soldOutNote uses the same durable,
+  // pattern-level phrasing as every other event in this map (demand
+  // behavior, not a point-in-time "X is sold out right now" snapshot,
+  // which goes stale) — several Gold grandstands were already gone for the
+  // weekend tier at research time, which is itself evidence of the pattern
+  // described here.
+  "belgian-gp-2026": {
+    officialLabel: "Official Belgian GP tickets →",
+    officialUrl: "https://www.spagrandprix.com/en/billetterie",
+    p1Label: "P1 Travel — Belgian GP →",
+    p1Url: "https://www.p1travel.com/en/organizer/grand-prix-belgium",
+    soldOutNote: "the premium Gold grandstands around Eau Rouge and La Source have historically sold out their full-weekend allocation well ahead of race week",
+  },
+  // Forward-prep duplicate under the evergreen event-pack slug — see note on
+  // CIRCUIT_MAP_BY_EVENT's "belgian-grand-prix" key above.
+  "belgian-grand-prix": {
+    officialLabel: "Official Belgian GP tickets →",
+    officialUrl: "https://www.spagrandprix.com/en/billetterie",
+    p1Label: "P1 Travel — Belgian GP →",
+    p1Url: "https://www.p1travel.com/en/organizer/grand-prix-belgium",
+    soldOutNote: "the premium Gold grandstands around Eau Rouge and La Source have historically sold out their full-weekend allocation well ahead of race week",
   },
 };
 

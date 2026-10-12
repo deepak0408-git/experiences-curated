@@ -219,6 +219,38 @@ const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: strin
         "Francorchamps hotels 2km from the gates, Malmedy and Spa-town options, and what fills fastest for race weekend",
     },
   ],
+  // Duplicate of "belgian-gp-2026" above under the evergreen slug — packFormat
+  // stays "classic" through Deploy A/the slug rename, so this table is still
+  // the real render path for both slugs in the gap. Remove the dated key
+  // once packFormat flips to hub_and_spoke (same pattern as the retired
+  // "wimbledon-2026" entry's comment above).
+  "belgian-grand-prix": [
+    {
+      label: "At the Circuit",
+      description:
+        "How to move between Eau Rouge, Kemmel, Pouhon, and the Fan Zone — and what each section of Spa actually gives you",
+    },
+    {
+      label: "Race Weekend",
+      description:
+        "Friday practice, Saturday qualifying, Sunday race — what to prioritise at each session and where to be for the moments that matter",
+    },
+    {
+      label: "The Ardennes",
+      description:
+        "Francorchamps village, the forest roads, and what to do when you have a rest afternoon in one of Europe's quieter corners",
+    },
+    {
+      label: "Where to Eat & Drink",
+      description:
+        "Belgian classics near the circuit, the Fan Zone food offer, and where to find a proper meal after qualifying",
+    },
+    {
+      label: "Where to Stay",
+      description:
+        "Francorchamps hotels 2km from the gates, Malmedy and Spa-town options, and what fills fastest for race weekend",
+    },
+  ],
   "hungarian-gp-2026": [
     {
       label: "At the Circuit",

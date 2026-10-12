@@ -22,6 +22,13 @@ export function shortEventName(name: string, slug: string): string {
     "wimbledon-2026": "Wimbledon 2026",
     "india-in-england-cricket-2026": "India in England 2026",
     "open-championship-2026": "The Open 2026",
+    // Real key for the evergreen-slug event (migration started 12 Oct 2026),
+    // rolled forward to the confirmed 2027 edition (23-25 Jul) in the same
+    // migration.
+    "belgian-grand-prix": "Belgian GP 2027",
+    // Kept for consistency with the other permanent-fallback tables (see
+    // "wimbledon-2026" above) — no live row uses this key anymore once the
+    // DB slug rename lands.
     "belgian-gp-2026": "Belgian GP 2026",
     // Real key for the evergreen-slug event (migrated 5 Oct 2026), rolled
     // forward to the 2027 edition in the same migration.

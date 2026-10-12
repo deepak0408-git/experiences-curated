@@ -316,6 +316,41 @@ const PACK_EDITORIAL: Record<string, PackEditorial> = {
     },
   },
 
+  // Duplicate of "belgian-gp-2026" above under the evergreen slug — kept in
+  // sync during the classic->hub-and-spoke migration (packFormat stays
+  // "classic" through Deploy A/the slug rename, so this table is still the
+  // real render path for both slugs — see migrate-from-classic-to-hub-spoke
+  // skill §4b item 3). Remove the dated key once packFormat flips.
+  "belgian-grand-prix": {
+    brief:
+      "The Belgian Grand Prix is three days in the Ardennes forest, and the forest is the point. Circuit de Spa-Francorchamps is 7 kilometres of road that climbs and drops through trees, with corners named after the villages they pass through and a weather system that changes within the hour. It is the circuit most F1 drivers cite as their favourite, and after a lap in a road car you understand why — the elevation changes alone are unlike anything else on the calendar.\n\nThis pack is built around one idea: Spa is not a single experience. It is a circuit you roam. A Bronze general admission ticket unlocks most of it — the Kemmel Straight bank, the Pouhon mound, the Fan Zone at the base of Raidillon, and 7 kilometres of forest trackside. Grandstand tickets — Gold 3 at Raidillon, Silver 3 at Pouhon — give you a fixed seat and cover. The choice between them shapes what kind of weekend this is.\n\nA few things worth knowing before you arrive. July in the Ardennes is unpredictable — the same afternoon can run 28 degrees and then a downpour within the hour, and it matters when you're standing on a grassy bank. Day return shuttles run from 14 cities across Belgium and the Netherlands — sales close 26 June, so book early. Parking on-site on race Sunday takes two hours to clear. Plan your exit before race day. The sections here follow the shape of the weekend — what to do on each day, where to watch from, and how to make the most of a circuit that rewards movement over sitting still.",
+    sectionIntros: {
+      "Before you go":
+        "Tickets are the first thing to sort and the thing most people leave too late. Gold 3 at Raidillon — the covered grandstand at the top of Eau Rouge — is the first to sell out, typically in the autumn the year before. Silver 3 at Pouhon goes next. Bronze general admission is the last to go but the circuit shuttle booking fills before the tickets do — buy early to unlock the shuttle reservation. For transport: day return shuttles run from 14 cities including Brussels, Liège, Namur and Antwerp — sales close 26 June, book early. On-site parking is pre-booked only and Sunday exit queues run two hours — most regulars take the shuttle. Download the official Belgian GP app before you arrive; it carries the stage schedule, session updates, and circuit maps.",
+      "On the grounds":
+        "The circuit is 7 kilometres long and a Bronze ticket covers most of it. The strategic question is whether to pick a position and commit or spend the weekend roaming. Most experienced Spa visitors do both: Friday roaming to find their preferred spots, Saturday qualifying from a fixed position — grandstand or bankside — and Sunday race at the spot that worked best on Friday. The experiences here cover the main decision points: Gold 3 at Raidillon for the most famous corner sequence on the calendar, the Kemmel Straight for flat-out speed, Pouhon for sustained lateral load, and the Fan Zone for the social side of the weekend.",
+      "Where to stay":
+        "Three honest options: Spa town (13km from circuit, good restaurants and hotels, shuttle access), Stavelot (5km, smaller, quieter, closest to circuit entrances), and Malmedy (6km, mid-size, better accommodation range than Stavelot). Liège is 50km but has the best hotel selection and a direct shuttle. Camping on the circuit itself is the fourth option — the camping areas fill with a regulars community that treats the weekend as a festival rather than a race visit. Most first-timers stay in Spa or Malmedy and wish they'd camped.",
+      "Where to eat":
+        "The Fan Zone at Raidillon has the best food at the circuit — Belgian frites, stoofvlees, proper bar areas. Quality is better than most F1 circuits manage. Off-circuit, Spa town has a good range: brasseries, Belgian gastropubs, and the kind of places that stay open late on qualifying Saturday. Stavelot's main square has two or three restaurants worth the 10-minute detour. Book anything in Spa town for Saturday evening — the town fills on qualifying weekend and walk-ins become unreliable by 8pm.",
+      "The neighbourhood":
+        "The Belgian Ardennes is worth time beyond the circuit. The Ardennes is a forested plateau that runs across southeastern Belgium and into Luxembourg and Germany — river valleys, medieval towns, and the kind of landscape that feels genuinely different from the rest of Western Europe. La Roche-en-Ardenne is 30 minutes from Spa and worth a Friday morning if you arrive the day before. The Cave de Han (Han-sur-Lesse) — natural caves in a river gorge — is 50 minutes away and one of the more extraordinary natural sites in Belgium. Durbuy, 40 minutes north, bills itself as the smallest city in the world and earns that description.",
+    },
+    localInfo: [
+      { label: "Address", value: "Route du Circuit 55, 4970 Stavelot, Belgium", href: "https://maps.google.com/?q=Circuit+de+Spa-Francorchamps+Route+du+Circuit+55+Stavelot+Belgium", linkLabel: "Open in Maps" },
+      { label: "Official site", value: "formula1.com/en/racing/2027/belgium", href: "https://www.formula1.com/en/racing/2027/belgium", linkLabel: "Visit" },
+      { label: "Ticketing", value: "Official tickets via Formula 1 — Gold 3 sells out first (autumn the year before). Bronze GA widely available but buy early to unlock circuit shuttle reservations.", href: "https://tickets.formula1.com/en/f1-3286-belgium", linkLabel: "Buy tickets" },
+      { label: "Shuttles", value: "Day return coaches from 14 cities including Brussels, Liège, Namur and Antwerp — approx. €65–75 per day. Sales close late June. Book via spagrandprix.com.", href: "https://www.spagrandprix.com/en/tickets-city-shuttle", linkLabel: "Book shuttles" },
+      { label: "Circuit opens", value: "Gates from 06:00 each race day. Fan Zone and grandstands accessible throughout all sessions. Check the Belgian GP app for confirmed daily timings." },
+      { label: "What to bring", value: "Waterproof jacket (non-negotiable — July Ardennes weather changes fast). Fold-up chair if GA. Ear defenders. Sunscreen. The circuit has no cover outside the paid grandstands." },
+      { label: "Weather", value: "Unpredictable. July highs 18–28°C, with sudden downpours common. The Ardennes micro-climate means it can be dry at La Source and raining at Pouhon.", href: "https://www.accuweather.com/en/be/spa/29281/weather-forecast/29281?type=locality&city=spa", linkLabel: "AccuWeather forecast" },
+      { label: "Emergencies", value: "Emergency services: 112 · Police non-emergency: 101 · Nearest hospital: CHR de Verviers, Rue du Palais 211, 4800 Verviers" },
+    ],
+    experienceOrder: {
+      "On the grounds": ["Eau Rouge", "Kemmel", "Pouhon", "Fan Zone"],
+    },
+  },
+
   "hungarian-gp-2026": {
     brief:
       "The Hungarian Grand Prix is the calendar's affordability outlier, and once you're standing in the natural bowl the Hungaroring sits in, you understand why that matters more here than it would anywhere else. This is a tight, technical circuit outside Budapest, one reliable overtaking corner at Turn 1, a slow chicane at Turns 6-7 that quietly separates clean laps from scrappy ones, and terrain shaped like an amphitheatre that makes General Admission genuinely good rather than a fallback for people who couldn't afford a seat.\n\nThis pack is built around one idea: Hungary rewards people who don't over-plan the seating question. A General Admission ticket here costs a fraction of what the same tier runs at Spa or Monza, and the hillside gives real sightlines across multiple corners without a fixed seat. Grandstand options exist too — T1 for the corner where overtakes actually happen, the covered Hungaroring Grandstand for shelter and a pit-straight view — but they're an upgrade on a strong base, not a rescue from a weak one. The Ticket Guide experience walks through the full tier comparison; the Where to Sit experience compares the specific stands.\n\nA few things worth knowing before you commit to a plan. Budapest sits 25 minutes from the circuit, close enough that basing there and commuting by metro and suburban rail is not just viable but genuinely the default choice most visitors make. Late July in Hungary runs hot, regularly past 30°C, with afternoon storms that don't always announce themselves. And because prices here are so much lower than the rest of the calendar, it's easy to assume availability holds longer than it actually does — the covered grandstand and the popular corners sell out weeks ahead even while General Admission tickets remain available right up to the gates. The sections here follow the shape of the weekend — what to sort before you travel, where to watch from, where to stay, and what Budapest itself offers beyond the circuit.",
@@ -749,6 +784,32 @@ const INSIDER_TIPS: Record<string, Record<string, string[]>> = {
     ],
   },
 
+  // Duplicate of "belgian-gp-2026" above under the evergreen slug — see note
+  // on PACK_EDITORIAL's "belgian-grand-prix" key above for why this stays
+  // in sync rather than being removed.
+  "belgian-grand-prix": {
+    "Eau Rouge": [
+      "Blocks B or C, rows 18–22 — fully under the roof, best angle down Raidillon, with a partial sightline to the Bus Stop Chicane across the circuit",
+      "Saturday qualifying is the session most Spa regulars choose for Gold 3: single-lap effort, no race traffic, and the corner differences between drivers are starkly visible",
+      "Gold 3 sells out faster than any other grandstand — monitor belgium.gp from September the year before and sign up for the newsletter for the release date",
+    ],
+    "Kemmel Straight": [
+      "Mid-straight on the mound, roughly level with the two large screens, is the sweet spot — high enough to see over the barrier, close enough to both ends to watch DRS battles develop before Les Combes",
+      "Arrive before 07:00 on race Sunday for any fence-side position; by 09:30 the entire bank is full and you'll be standing behind other people for the rest of the day",
+      "Spend Friday roaming the full circuit — Bronze gives you access almost everywhere, and you'll find your preferred spots before committing on Saturday qualifying",
+    ],
+    "Pouhon Corner": [
+      "Sections A or B, rows 10–15 — directly opposite the first apex, high enough to see over the fence, with a clear view of both the entry commitment and exit load",
+      "Saturday qualifying is the session that justifies this grandstand: each car attacks Pouhon individually and the differences between drivers through the double-left are stark without race traffic masking them",
+      "Silver 3 is the last Silver grandstand to sell out — if Gold 3 is gone, check Silver 3 before giving up on assigned seating entirely",
+    ],
+    "Fan Zone": [
+      "Check the stage schedule on the Belgian GP app the evening before each day — driver interview times shift based on session overruns and the confirmed slot appears there before it's posted anywhere else",
+      "Friday morning is the best time for simulators and the pit stop challenge — queues are 10–20 minutes versus 45–60 minutes on race Sunday",
+      "Eat before 11:00 or after 14:30 on race Sunday — the food queue at peak mid-morning runs 20+ minutes and frites sell out at two of the three stalls by early afternoon",
+    ],
+  },
+
   "hungarian-gp-2026": {
     "Where to Sit": [
       "If you can only book one grandstand, T1 gives the highest chance of seeing an actual overtake, it's the circuit's one reliable passing zone.",
@@ -1015,6 +1076,27 @@ const TOURNAMENT_RHYTHM: Record<string, RhythmEntry[]> = {
     {
       label: "Sunday (19 Jul) — Race Day",
       body: "Race start is 14:00 local time. The circuit fills from 07:00 and fence-side positions on the Kemmel Straight are gone by 09:30. If you have a grandstand ticket, arrive with time to spare — the forest paths are slower on race morning than any other day. The opening lap through Eau Rouge and Raidillon is 44 seconds into the race and worth the entire trip. The DRS zone on the Kemmel Straight produces the most overtaking moves of the weekend. After the podium ceremony — worth staying for — plan your exit before the crowd clears: the single-carriageway roads around the circuit take two hours to clear on Sunday evening. Take the shuttle, or walk to Stavelot and let it pass.",
+    },
+  ],
+
+  // Duplicate of "belgian-gp-2026" above under the evergreen slug — dates
+  // updated to the confirmed 2027 weekend (23-25 Jul, standard format, per
+  // Formula1.com and spagrandprix.com, verified 12 Oct 2026). Sprint-vs-
+  // standard format for 2027 is confirmed via both official sources (no
+  // sprint session listed in the published schedule); exact session times
+  // are still TBC as of this writing — re-verify before the pack goes live.
+  "belgian-grand-prix": [
+    {
+      label: "Friday (23 Jul) — Practice 1 & 2",
+      body: "Standard weekend format confirmed for 2027 (no sprint) — both practice sessions run Friday, making it the quietest day on circuit and the right time to walk the full 7 kilometres and find your spots for the rest of the weekend: the Kemmel mound, the Pouhon bank, the angle from Blanchimont. Fan Zone queues are shortest on Friday morning.",
+    },
+    {
+      label: "Saturday (24 Jul) — Practice 3 & Qualifying",
+      body: "Final practice in the morning, qualifying in the afternoon. Qualifying at Spa is the session to prioritise: single laps, the full Spa atmosphere, and the corner differences between drivers are starkly visible without race traffic masking them.",
+    },
+    {
+      label: "Sunday (25 Jul) — Race Day",
+      body: "Race day. Exact start time TBC per Formula1.com as of this writing — re-verify before publishing. The circuit fills from early morning and fence-side positions on the Kemmel Straight go first. The opening lap through Eau Rouge and Raidillon is seconds into the race and worth the entire trip. After the podium ceremony, plan your exit before the crowd clears — the single-carriageway roads around the circuit take two hours to clear on Sunday evening.",
     },
   ],
 

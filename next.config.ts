@@ -74,6 +74,16 @@ const nextConfig: NextConfig = {
         destination: "/event-pack/us-open/:spoke",
         permanent: true,
       },
+      {
+        source: "/event-pack/belgian-gp-2026",
+        destination: "/event-pack/belgian-grand-prix",
+        permanent: true,
+      },
+      {
+        source: "/event-pack/belgian-gp-2026/:spoke",
+        destination: "/event-pack/belgian-grand-prix/:spoke",
+        permanent: true,
+      },
       // Trip Intelligence moved under a per-sport path (12 Oct 2026) ahead
       // of a planned tennis build — "Trip Intelligence" is the umbrella
       // product/patent name, sport is a path segment underneath it, not a

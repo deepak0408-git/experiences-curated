@@ -785,6 +785,11 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "everyday-parisian-eating-baguette-jambon-beurre": { venueCount: 2, venueNoun: "boulangeries" },
   "village-dauteuil-neighborhood": { venueCount: 2, venueNoun: "hotels" },
   "montmartre-neighborhood": { venueCount: 2, venueNoun: "landmarks" },
+  // Belgian GP 2026 — added 12 Oct 2026. Both slugs carry a random suffix
+  // (e.g. "-mqfhepzr") per this event's seeding pattern, matched here by
+  // prefix like every other entry above.
+  "ardennes-beyond-the-circuit-": { venueCount: 6, venueNoun: "places" },
+  "belgian-race-weekend-street-food-": { venueCount: 3, venueNoun: "restaurants" },
 };
 
 function getMultiVenueRatings(slug: string) {

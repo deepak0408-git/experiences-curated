@@ -134,7 +134,38 @@ export const PACK_EDITORIAL: Record<string, PackEditorial> = {
     },
   },
 
+  // Kept under both the dated slug and the evergreen "belgian-grand-prix"
+  // slug during the classic->hub-and-spoke migration — packFormat stays
+  // "classic" until the migration's content gate passes, so PackView.tsx
+  // keeps rendering real visitors through this table for whichever slug
+  // they're on (see migrate-from-classic-to-hub-spoke skill §4b item 3 —
+  // this table is NOT dead code just because a migration is in progress).
+  // Remove the dated key once packFormat flips to hub_and_spoke.
   "belgian-gp-2026": {
+    brief:
+      "The Belgian Grand Prix is three days in the Ardennes forest, and the forest is the point. Circuit de Spa-Francorchamps is 7 kilometres of road that climbs and drops through trees, with corners named after the villages they pass through and a weather system that changes within the hour. It is the circuit most F1 drivers cite as their favourite.\n\nThis pack is built around one idea: Spa is not a single experience. It is a circuit you roam. A Bronze general admission ticket unlocks most of it. Grandstand tickets — Gold 3 at Raidillon, Silver 3 at Pouhon — give you a fixed seat and cover.",
+    sectionIntros: {
+      "Before you go": "Tickets are the first thing to sort. Gold 3 at Raidillon is the first to sell out, typically in the autumn the year before. For transport: day return shuttles run from 14 cities including Brussels, Liège, Namur and Antwerp — sales close 26 June, book early.",
+      "On the grounds": "The circuit is 7 kilometres long and a Bronze ticket covers most of it. Friday roaming to find your preferred spots, Saturday qualifying from a fixed position, and Sunday race at the spot that worked best on Friday.",
+      "Where to stay": "Three honest options: Spa town (13km from circuit), Stavelot (5km, closest to circuit entrances), and Malmedy (6km, better accommodation range). Camping on the circuit itself is the fourth option.",
+      "Where to eat": "The Fan Zone at Raidillon has the best food at the circuit — Belgian frites, stoofvlees, proper bar areas. Off-circuit, Spa town has a good range of brasseries and Belgian gastropubs.",
+      "The neighbourhood": "The Belgian Ardennes is worth time beyond the circuit. La Roche-en-Ardenne is 30 minutes from Spa and worth a Friday morning. The Cave de Han is 50 minutes away.",
+    },
+    localInfo: [
+      { label: "Address", value: "Route du Circuit 55, 4970 Stavelot, Belgium", href: "https://maps.google.com/?q=Circuit+de+Spa-Francorchamps", linkLabel: "Open in Maps" },
+      { label: "Official site", value: "formula1.com/en/racing/2026/belgium", href: "https://www.formula1.com/en/racing/2026/belgium", linkLabel: "Visit" },
+      { label: "Ticketing", value: "Official tickets via Formula 1 — Gold 3 sells out first. Bronze GA widely available but buy early to unlock shuttle reservations.", href: "https://tickets.formula1.com/en/f1-3286-belgium", linkLabel: "Buy tickets" },
+      { label: "Shuttles", value: "Day return coaches from 14 cities — approx. €65–75 per day. Sales close 26 Jun. Book via spagrandprix.com.", href: "https://www.spagrandprix.com/en/tickets-city-shuttle", linkLabel: "Book shuttles" },
+      { label: "Circuit opens", value: "Gates from 06:00 each race day. Check the Belgian GP app for confirmed daily timings." },
+      { label: "What to bring", value: "Waterproof jacket (non-negotiable). Fold-up chair if GA. Ear defenders. Sunscreen. No cover outside paid grandstands." },
+      { label: "Weather", value: "Unpredictable. July highs 18–28°C, with sudden downpours common.", href: "https://www.accuweather.com/en/be/spa/29281/weather-forecast/29281", linkLabel: "AccuWeather forecast" },
+      { label: "Emergencies", value: "Emergency services: 112 · Police non-emergency: 101 · Nearest hospital: CHR de Verviers, Rue du Palais 211, 4800 Verviers" },
+    ],
+    experienceOrder: {
+      "On the grounds": ["Eau Rouge", "Kemmel", "Pouhon", "Fan Zone"],
+    },
+  },
+  "belgian-grand-prix": {
     brief:
       "The Belgian Grand Prix is three days in the Ardennes forest, and the forest is the point. Circuit de Spa-Francorchamps is 7 kilometres of road that climbs and drops through trees, with corners named after the villages they pass through and a weather system that changes within the hour. It is the circuit most F1 drivers cite as their favourite.\n\nThis pack is built around one idea: Spa is not a single experience. It is a circuit you roam. A Bronze general admission ticket unlocks most of it. Grandstand tickets — Gold 3 at Raidillon, Silver 3 at Pouhon — give you a fixed seat and cover.",
     sectionIntros: {
@@ -186,9 +217,19 @@ export const TOURNAMENT_RHYTHM: Record<string, RhythmEntry[]> = {
     { label: "Saturday 18 Jul — Round 3", body: "The busiest and loudest day of the championship. 70 players, real leaderboard drama, the grandstands full. The 18th fills early — if you don't have a reserved seat, commit to your dune position by mid-morning." },
     { label: "Sunday 19 Jul — Final round", body: "The closing round. The 18th grandstand is claimed hours before the leaders arrive. If you want to watch golf rather than a crowd, the 11th dune on Sunday morning is one of the better places to be." },
   ],
+  // Note: this table's content reflects the real 2026 weekend (standard
+  // format, no sprint) — kept as-is for the dated slug's historical record.
+  // The "belgian-grand-prix" key below is a placeholder pending real 2027
+  // session-by-session content during the hub-and-spoke build; do not treat
+  // it as final.
   "belgian-gp-2026": [
-    { label: "Friday (17 Jul) — Practice 1", body: "The best day to roam — 2026 is a sprint weekend, so Friday has only one practice session (FP1, ~13:30 local). That makes it the quietest day on circuit and the right time to walk the full 7 kilometres and find your spots for the rest of the weekend." },
-    { label: "Saturday (18 Jul) — Sprint Qualifying, Sprint Race & GP Qualifying", body: "The busiest day of the weekend. Three separate sessions, each with a different character. Grand Prix Qualifying at Spa is the session to prioritise: single laps, the full Spa atmosphere, and the corner differences between drivers are starkly visible." },
-    { label: "Sunday (19 Jul) — Race Day", body: "Race start is 14:00 local time. The circuit fills from 07:00 and fence-side positions on the Kemmel Straight are gone by 09:30. The opening lap through Eau Rouge and Raidillon is 44 seconds into the race and worth the entire trip." },
+    { label: "Friday (17 Jul) — Practice 1 & 2", body: "2026 returned to the standard weekend format (no sprint) after hosting sprint weekends in 2023 and 2025. Both practice sessions run Friday, making it the quietest day on circuit — the right time to walk the full 7 kilometres and find your spots for the rest of the weekend." },
+    { label: "Saturday (18 Jul) — Practice 3 & Qualifying", body: "Final practice in the morning, qualifying in the afternoon. Qualifying at Spa is the session to prioritise: single laps, the full Spa atmosphere, and the corner differences between drivers are starkly visible." },
+    { label: "Sunday (19 Jul) — Race Day", body: "Race start is 15:00 local time, 44 laps. The circuit fills from 07:00 and fence-side positions on the Kemmel Straight are gone by 09:30. The opening lap through Eau Rouge and Raidillon is seconds into the race and worth the entire trip." },
+  ],
+  "belgian-grand-prix": [
+    { label: "Friday (23 Jul) — Practice 1 & 2", body: "Confirmed 2027 dates: 23–25 July, standard weekend format (no sprint confirmed as of this writing — F1's 2027 sprint calendar not yet published, re-verify closer to the date). Both practice sessions run Friday, the quietest day to walk the full 7 kilometres and find your spots." },
+    { label: "Saturday (24 Jul) — Practice 3 & Qualifying", body: "Final practice in the morning, qualifying in the afternoon. Qualifying at Spa is the session to prioritise: single laps, the full Spa atmosphere, and the corner differences between drivers are starkly visible." },
+    { label: "Sunday (25 Jul) — Race Day", body: "Race day. Exact start time TBC per Formula1.com as of this writing — re-verify before publishing. The circuit fills from early morning and fence-side positions on the Kemmel Straight go first. The opening lap through Eau Rouge and Raidillon is seconds into the race and worth the entire trip." },
   ],
 };
