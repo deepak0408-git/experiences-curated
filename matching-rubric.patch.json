@@ -1,0 +1,95 @@
+{
+  "artifact_type": "trip_intelligence_incremental_matching_rubric_patch",
+  "baseline": "EC_Trip_Intelligence_Developer_Handoff_v1",
+  "operation": "merge_overrides_into_existing_rubric_and_ranking_pipeline",
+  "question_option_mapping_overrides": {
+    "Q2": {
+      "racing_circuit": {
+        "C01A": 0.6,
+        "C01B": 0.2,
+        "C05A": 0.2
+      }
+    },
+    "Q3": {
+      "festival": {
+        "C09B": 0.95,
+        "C09A": 0.05
+      },
+      "glamour": {
+        "C04B": 0.95,
+        "C04A": 0.05
+      },
+      "fan_experience": {
+        "C09A": 0.95,
+        "C09B": 0.05
+      }
+    },
+    "Q6": {
+      "very": {
+        "C07A": 0.2,
+        "C07B": 0.8
+      },
+      "quite": {
+        "C07A": 0.3,
+        "C07B": 0.7
+      }
+    }
+  },
+  "street_spectacle": {
+    "trigger": {
+      "question": "Q2",
+      "answer": "street_spectacle"
+    },
+    "existing_question_option_mapping_unchanged": {
+      "C04A": 0.8,
+      "C01": 0.2
+    },
+    "experience_fit_bonus_points": 0.15,
+    "qualifying_event_ids": [
+      "monaco",
+      "singapore",
+      "las-vegas",
+      "saudi-arabia",
+      "azerbaijan",
+      "spain-madrid"
+    ],
+    "bonus_applies_only_to": "experience_fit_score_before_shortlisting_and_affordability_blend",
+    "alternative_safeguard": {
+      "when": "initial_top_three_have_no_qualifying_street_circuit",
+      "eligible_candidates": "qualifying_street_circuits_in_existing_experience_fit_shortlist_only",
+      "shortlist_tolerance_points": 0.3,
+      "choose": "highest_final_blended_score_then_experience_fit_then_stable_event_id",
+      "action": "replace_third_recommendation_only",
+      "if_no_eligible_street_circuit": "leave_top_three_unchanged",
+      "keep_hero_and_second_unchanged": true,
+      "affordability_veto": false,
+      "never_insert_outside_shortlist": true
+    }
+  },
+  "final_results_explanation": {
+    "placement": "single_subtle_footnote_after_all_three_recommendations",
+    "preserve_existing_individual_match_and_ranking_explanations": true,
+    "text": "How these three were chosen: We balance your answers to find the strongest overall match and two worthwhile alternatives. An alternative may particularly reflect an experience you prioritised, even when that involves trade-offs in cost, comfort or convenience. Review each recommendation's reasons and trade-offs before deciding.",
+    "safeguard_alternative_disclosure": "Existing event-specific explanation should describe why the alternative reflects Q2 street preference and mention meaningful cost/comfort/convenience trade-offs, especially Q8 major/quite. Do not claim it outranks displaced third event on blended score."
+  },
+  "preserve_unchanged": {
+    "questions_and_options": true,
+    "question_budgets": true,
+    "baseline_prior_fraction": 0.15,
+    "preference_fraction": 0.85,
+    "redistribute_neutral_answers": true,
+    "q6_quite_strength_multiplier": 0.65,
+    "q8_affordability_blend": {
+      "major": 0.25,
+      "quite": 0.125,
+      "flexible": 0.0,
+      "not_deciding": 0.0
+    },
+    "experience_fit_shortlist_tolerance_points": 0.3,
+    "minimum_shortlist_size": 3,
+    "all_other_question_option_mappings": true,
+    "C10_cost_model": true,
+    "three_recommendation_UI": true,
+    "static_event_insights": true
+  }
+}

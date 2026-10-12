@@ -94,6 +94,16 @@ Miami destination:              d4ec0c4f-4c48-445c-be38-909a87b845e6
 Miami GP 2027 event:            048d7693-b616-4747-ab3c-49b3de61a025 (evergreen slug: miami-grand-prix, seasonYear: 2027)
 Montreal destination:           4d171bf6-5a01-4c5e-b05f-3b2dc74b8fad
 Canadian GP 2027 event:          f054e849-849e-44a2-85c2-d150d973e1bf (slug: canadian-grand-prix, packStatus: planned, isHidden: true)
+Spielberg destination:           368e9c89-80bb-4442-b3c0-e85fd1e26914
+Austrian GP 2027 event:          5ef66790-1609-4969-8c20-46f3d9d796a6 (slug: austrian-grand-prix, packStatus: planned, isHidden: true — Trip Intelligence placeholder, no pack content)
+Jeddah destination:              6d2eef97-536a-4b7d-8c6e-5f3ef4147297
+Saudi Arabian GP 2027 event:     9f93333e-d8fc-4e8d-8985-cdcbb4b17c40 (slug: saudi-arabian-grand-prix, packStatus: planned, isHidden: true — Trip Intelligence placeholder, no pack content)
+Madrid destination:              aaa0f0cd-b535-4f19-8154-a103e1a4c721
+Spanish GP 2027 event:           0738c013-2644-4784-825f-d112ec603825 (slug: spanish-grand-prix, packStatus: planned, isHidden: true — Trip Intelligence placeholder, no pack content)
+Baku destination:                44d51205-85c0-4a9e-b776-bf72f882496f
+Azerbaijan GP 2027 event:        86a0634f-847e-4b66-94e0-e6904afe17c0 (slug: azerbaijan-grand-prix, packStatus: planned, isHidden: true — Trip Intelligence placeholder, no pack content)
+Istanbul destination:            72e0d54d-60d0-47a1-b435-8ba97107a97a
+Turkish GP 2027 event:           e4bb0e08-634a-4ab6-8e28-0bf9230f337d (slug: turkish-grand-prix, packStatus: planned, isHidden: true — Trip Intelligence placeholder, no pack content)
 ```
 
 **Live event dates — always match `sporting_events.start_date/end_date` in the DB, and the Content Calendar (`C:\Users\HP\.claude\docs\Content Calendar.txt`) is the single source of truth. If any date below ever conflicts with the Calendar or the DB, trust the DB, fix the Calendar, then fix this list — never the reverse.**

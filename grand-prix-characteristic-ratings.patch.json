@@ -1,0 +1,48 @@
+{
+  "artifact_type": "trip_intelligence_incremental_rating_patch",
+  "baseline": "EC_Trip_Intelligence_Developer_Handoff_v1/data/grand-prix-master.json",
+  "operation": "update_existing_records_only",
+  "primary_key": "sporting_event_id",
+  "event_count_unchanged": 24,
+  "recompute_derived_from_subdimensions": true,
+  "changes": [
+    {
+      "sporting_event_id": "canada",
+      "characteristic": "C07",
+      "subdimension_key": "Circuit Access & Logistics",
+      "subdimension_code": "C07B",
+      "expected_old_score": 5,
+      "new_score": 4,
+      "expected_old_derived_score": 5.0,
+      "new_derived_score": 4.4
+    },
+    {
+      "sporting_event_id": "singapore",
+      "characteristic": "C07",
+      "subdimension_key": "Circuit Access & Logistics",
+      "subdimension_code": "C07B",
+      "expected_old_score": 5,
+      "new_score": 4,
+      "expected_old_derived_score": 5.0,
+      "new_derived_score": 4.4
+    },
+    {
+      "sporting_event_id": "azerbaijan",
+      "characteristic": "C01",
+      "subdimension_key": "Racing Action",
+      "subdimension_code": "C01A",
+      "expected_old_score": 5,
+      "new_score": 4,
+      "expected_old_derived_score": 4.5,
+      "new_derived_score": 4.0
+    }
+  ],
+  "unchanged": [
+    "all_other_event_records",
+    "all_other_subdimension_scores",
+    "all_C10_affordability_scores",
+    "existing_subdimension_weights",
+    "all_24_eligible_events",
+    "bahrain_Sakhir_reference"
+  ]
+}

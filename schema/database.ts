@@ -1355,6 +1355,14 @@ export const sportingEventsRelations = relations(sportingEvents, ({ one, many })
   purchases: many(purchases),
   blogArticles: many(blogArticles),
   externalCalendarMatches: many(externalCalendarEvents),
+  tripIntelligenceProfile: one(tripIntelligenceGrandPrixProfiles, {
+    fields: [sportingEvents.id],
+    references: [tripIntelligenceGrandPrixProfiles.sportingEventId],
+  }),
+  tripIntelligenceFanInsight: one(tripIntelligenceFanInsights, {
+    fields: [sportingEvents.id],
+    references: [tripIntelligenceFanInsights.sportingEventId],
+  }),
 }));
 
 export const blogArticlesRelations = relations(blogArticles, ({ one }) => ({
@@ -1493,5 +1501,114 @@ export const plannerDripSentRelations = relations(plannerDripSent, ({ one }) => 
   plannerSession: one(plannerSessions, {
     fields: [plannerDripSent.plannerSessionId],
     references: [plannerSessions.id],
+  }),
+}));
+
+// --- Trip Intelligence (F1 "which Grand Prix matches you" quiz) ---------
+// Three tables, all prefixed trip_intelligence_ per explicit founder
+// instruction (overriding this schema's usual convention of naming content
+// tables for what they store, e.g. circuit_seating_profile) — see plan at
+// C:\Users\HP\.claude\plans\go-ahead-in-plan-merry-bentley.md and memory
+// project_trip_intelligence_build.md.
+//
+// Source: EC_Trip_Intelligence_Developer_Handoff_v1.zip's grand-prix-master.json
+// (v0.4.1). Each of the 10 headline characteristics (C01-C09) is two
+// equally-or-differently-weighted subdimensions combined into one derived
+// decimal score (1-5 scale) — stored here as the already-derived scores,
+// not the raw subdimension inputs, since the handoff's own scoring_principle
+// states "C01-C09 are calculated from their base subdimensions, not manually
+// rated as independent source data" and the derived scores are what the
+// matching engine actually consumes. C10 (affordability) is a standalone
+// continuous score from a cost-basket formula, not a two-subdimension
+// average like C01-C09.
+export const tripIntelligenceGrandPrixProfiles = pgTable("trip_intelligence_grand_prix_profiles", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sportingEventId: uuid("sporting_event_id").notNull().references(() => sportingEvents.id).unique(),
+  // Preserves the handoff dataset's original slug (e.g. "spa", "sao-paulo")
+  // for traceability back to the source JSON even after the real FK is set —
+  // the README explicitly warns these are "not confirmed database primary-key
+  // values" and to "preserve stable source slugs separately".
+  sourceSlug: varchar("source_slug", { length: 60 }).notNull().unique(),
+  grandPrixName: varchar("grand_prix_name", { length: 150 }).notNull(),
+  c01RacingActionCircuitExperience: numeric("c01_racing_action_circuit_experience", { precision: 3, scale: 2 }).notNull(),
+  c02AtmosphereFanPassion: numeric("c02_atmosphere_fan_passion", { precision: 3, scale: 2 }).notNull(),
+  c03CircuitHeritagePrestige: numeric("c03_circuit_heritage_prestige", { precision: 3, scale: 2 }).notNull(),
+  c04SpectacleGlamour: numeric("c04_spectacle_glamour", { precision: 3, scale: 2 }).notNull(),
+  c05SpectatorViewingExperience: numeric("c05_spectator_viewing_experience", { precision: 3, scale: 2 }).notNull(),
+  c06DestinationAppeal: numeric("c06_destination_appeal", { precision: 3, scale: 2 }).notNull(),
+  c07AccessibilityConvenience: numeric("c07_accessibility_convenience", { precision: 3, scale: 2 }).notNull(),
+  c08WeatherPhysicalComfort: numeric("c08_weather_physical_comfort", { precision: 3, scale: 2 }).notNull(),
+  c09FanEngagementEntertainment: numeric("c09_fan_engagement_entertainment", { precision: 3, scale: 2 }).notNull(),
+  // Stored to 3 decimal places per scoring-rubric.md's explicit rounding
+  // rule for the continuous C10 formula ("round to three decimal places
+  // when storing/reporting the current master scores").
+  c10Affordability: numeric("c10_affordability", { precision: 5, scale: 3 }).notNull(),
+  // Full subdimension breakdown (both halves of each Cxx, weights, status,
+  // confidence, rationale) kept verbatim from the source JSON for audit/
+  // traceability — the derived columns above are what the engine scores
+  // against, this is the paper trail behind them.
+  subdimensionDetail: jsonb("subdimension_detail").notNull(),
+  // "pilot_reference_with_provisional_components" | "provisional_editorial" |
+  // "provisional_editorial_and_modelled_cost" — verbatim from source JSON's
+  // per-event "status" field, free text rather than an enum since the
+  // handoff dataset's own status vocabulary may still evolve.
+  datasetStatus: varchar("dataset_status", { length: 100 }),
+  datasetVersion: varchar("dataset_version", { length: 20 }).notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Four static fan-insight sections, identical for every user shown that
+// race — never selected or rewritten per questionnaire answer (README §2,
+// §6). Deliberately a separate table from the profiles above even though
+// both are keyed 1:1 by sporting_event_id, per the handoff's explicit
+// "keep ratings and fan insights logically separate" instruction.
+export const tripIntelligenceFanInsights = pgTable("trip_intelligence_fan_insights", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sportingEventId: uuid("sporting_event_id").notNull().references(() => sportingEvents.id).unique(),
+  sourceSlug: varchar("source_slug", { length: 60 }).notNull().unique(),
+  experienceHighlights: jsonb("experience_highlights").$type<string[]>().notNull().default(sql`'[]'::jsonb`),
+  goodToKnow: jsonb("good_to_know").$type<string[]>().notNull().default(sql`'[]'::jsonb`),
+  tradeOffs: jsonb("trade_offs").$type<string[]>().notNull().default(sql`'[]'::jsonb`),
+  insiderTip: text("insider_tip"),
+  // Founder approved editorial content for all 24 GPs on 10 Oct 2026 —
+  // see memory project_trip_intelligence_build.md — overriding the source
+  // JSON's own per-row publish_ready:false default. Still a real column
+  // (not hardcoded true everywhere) since a future race could need content
+  // pulled without a schema change.
+  publishReady: boolean("publish_ready").notNull().default(true),
+  verifiedForSeason: smallint("verified_for_season"),
+  lastChecked: date("last_checked"),
+  sourceUrls: jsonb("source_urls").$type<string[]>().notNull().default(sql`'[]'::jsonb`),
+  editorialNotes: text("editorial_notes"),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Versioned matching-engine policy (shortlist tolerance, affordability
+// blend caps, minimum-shortlist-size exception). New config changes are
+// always a new row, never an overwrite of an existing one — see README §5's
+// explicit requirement to "retain traceable score contributions/versions".
+export const tripIntelligenceEngineConfigurations = pgTable("trip_intelligence_engine_configurations", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  configurationKey: varchar("configuration_key", { length: 100 }).notNull().unique(),
+  configurationPayload: jsonb("configuration_payload").notNull(),
+  // "experimental" | "approved" — the handoff's selected 0.30-point policy
+  // starts experimental per README §10 ("not final production sign-off")
+  // and stays that way until the founder explicitly approves it for real.
+  status: varchar("status", { length: 20 }).notNull().default("experimental"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const tripIntelligenceGrandPrixProfilesRelations = relations(tripIntelligenceGrandPrixProfiles, ({ one }) => ({
+  sportingEvent: one(sportingEvents, {
+    fields: [tripIntelligenceGrandPrixProfiles.sportingEventId],
+    references: [sportingEvents.id],
+  }),
+}));
+
+export const tripIntelligenceFanInsightsRelations = relations(tripIntelligenceFanInsights, ({ one }) => ({
+  sportingEvent: one(sportingEvents, {
+    fields: [tripIntelligenceFanInsights.sportingEventId],
+    references: [sportingEvents.id],
   }),
 }));

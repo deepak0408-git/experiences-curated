@@ -74,6 +74,20 @@ const nextConfig: NextConfig = {
         destination: "/event-pack/us-open/:spoke",
         permanent: true,
       },
+      // Trip Intelligence moved under a per-sport path (12 Oct 2026) ahead
+      // of a planned tennis build — "Trip Intelligence" is the umbrella
+      // product/patent name, sport is a path segment underneath it, not a
+      // separate product. F1 was the only sport live at the old bare path.
+      {
+        source: "/trip-intelligence",
+        destination: "/trip-intelligence/formula-1",
+        permanent: true,
+      },
+      {
+        source: "/trip-intelligence/results",
+        destination: "/trip-intelligence/formula-1/results",
+        permanent: true,
+      },
     ];
   },
   async headers() {
