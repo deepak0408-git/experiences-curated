@@ -84,8 +84,8 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Spa-Francorchamps offers a genuine range of ticket tiers — a Bronze General Admission pass from around
         US$215 that roams most of the 7km circuit, up to Paddock Club hospitality at the top end. The Ardennes
-        itself has thin hotel stock close to the circuit, so most visitors base in Liège, 50km out, which has the
-        area&apos;s real hotel range and a direct shuttle connection.
+        itself has thin hotel stock close to the circuit, so most visitors base in Spa or in Liège, 50km out,
+        which has the area&apos;s real hotel range and a direct shuttle connection.
       </p>
 
       {moderateTotal ? (
@@ -130,9 +130,9 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
             })}
           </div>
           <p className="text-xs text-[#6A6A6A] mb-8">
-            Belgian GP&apos;s own 2027 ticket pricing isn&apos;t published yet — figures above carry forward the
-            real, confirmed 2026 USD pricing. Hotel figures reflect real Liège/Spa/Stavelot rates for the 2027
-            dates.
+            Belgian GP&apos;s own 2027 ticket pricing isn&apos;t published yet — ticket figures above carry forward
+            the real, confirmed 2026 USD pricing. Hotel figures are real 2027 rates, researched directly against
+            the actual race-weekend dates.
           </p>
         </>
       )}
