@@ -84,6 +84,22 @@ const nextConfig: NextConfig = {
         destination: "/event-pack/belgian-grand-prix/:spoke",
         permanent: true,
       },
+      // Ticket Intelligence reads sportingEvents by its own [slug] route
+      // param — the DB slug rename (12 Oct 2026) broke
+      // /ticket-intelligence/belgian-gp-2026 immediately (hard 404, caught
+      // live via direct production check right after the rename). Added as
+      // an emergency same-session fix rather than deferred to Deploy B,
+      // since the route was actively broken for real visitors.
+      {
+        source: "/ticket-intelligence/belgian-gp-2026",
+        destination: "/ticket-intelligence/belgian-grand-prix",
+        permanent: true,
+      },
+      {
+        source: "/ticket-intelligence/belgian-gp-2026/:path*",
+        destination: "/ticket-intelligence/belgian-grand-prix/:path*",
+        permanent: true,
+      },
       // Trip Intelligence moved under a per-sport path (12 Oct 2026) ahead
       // of a planned tennis build — "Trip Intelligence" is the umbrella
       // product/patent name, sport is a path segment underneath it, not a
