@@ -58,10 +58,21 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
     { label: "Luxury", hotel: luxuryHotel, ticket: tier4, note: "Hotel Verviers Van der Valk or similar", ticketNote: "Hospitality — Paddock Club, 3-day" },
   ].filter((p) => p.hotel);
 
-  const flightRange = flights.length
+  // Restricted to Europe, matching Italian GP's CostSpoke pattern — the
+  // blended range is meant to read as "a typical fare for someone flying
+  // in from nearby," not a global low-to-high spread across 49 markets of
+  // wildly different haul lengths. Moscow excluded ($1,044-1,238 — far
+  // above every other European origin's range, $102-593) for the same
+  // reason Italian GP excludes its own outliers: EU-Russia routing
+  // disruption inflates this one route well past normal European
+  // short-haul pricing. Still seeded and available via the Planner's own
+  // per-origin lookup — just excluded from this blended range.
+  const EUROPE_RANGE_EXCLUDED_ORIGINS = ["Moscow"];
+  const euFlights = flights.filter((f) => f.region === "Europe" && !EUROPE_RANGE_EXCLUDED_ORIGINS.includes(f.originMarket));
+  const flightRange = euFlights.length
     ? {
-        low: Math.min(...flights.map((f) => Number(f.costLow))),
-        high: Math.max(...flights.map((f) => Number(f.costHigh))),
+        low: Math.min(...euFlights.map((f) => Number(f.costLow))),
+        high: Math.max(...euFlights.map((f) => Number(f.costHigh))),
       }
     : null;
 
@@ -176,7 +187,7 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
         {flightRange ? (
           <p className="text-sm text-white font-bold mb-2">
             Roughly {formatMoneyRange(flightRange.low, flightRange.high)}{" "}
-            round-trip, economy, across real fares from 49 origin markets worldwide.
+            round-trip, economy, if you&apos;re flying from within Europe.
           </p>
         ) : (
           <p className="text-sm text-[#A3A3A3] leading-6 mb-2">
