@@ -52,10 +52,10 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
   const moderateTotal = tripTotal(moderateHotel, tier2);
 
   const profiles = [
-    { label: "Budget", hotel: budgetHotel, ticket: tier1, note: "Hôtel Mosa-tier stay, Spa/Stavelot/Liège area", ticketNote: "Bronze General Admission, 3-day" },
-    { label: "Moderate", hotel: moderateHotel, ticket: tier2, note: "Park Inn by Radisson Liège Airport-tier stay", ticketNote: "Silver Grandstand, 3-day" },
-    { label: "Splurge", hotel: splurgeHotel, ticket: tier3, note: "Domaine des Thermes-tier stay, Liège", ticketNote: "Gold Grandstand, 3-day" },
-    { label: "Luxury", hotel: luxuryHotel, ticket: tier4, note: "Hotel Verviers Van der Valk-tier stay", ticketNote: "Hospitality — Paddock Club, 3-day" },
+    { label: "Budget", hotel: budgetHotel, ticket: tier1, note: "Hôtel Mosa or similar", ticketNote: "Bronze General Admission, 3-day" },
+    { label: "Moderate", hotel: moderateHotel, ticket: tier2, note: "Park Inn by Radisson Liège Airport or similar", ticketNote: "Silver Grandstand, 3-day" },
+    { label: "Splurge", hotel: splurgeHotel, ticket: tier3, note: "Domaine des Thermes or similar", ticketNote: "Gold Grandstand, 3-day" },
+    { label: "Luxury", hotel: luxuryHotel, ticket: tier4, note: "Hotel Verviers Van der Valk or similar", ticketNote: "Hospitality — Paddock Club, 3-day" },
   ].filter((p) => p.hotel);
 
   const flightRange = flights.length
