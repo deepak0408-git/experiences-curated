@@ -9,10 +9,8 @@ const SPOKE_ID = "tickets";
 // circuit), Silver and Gold grandstands (fixed seat + cover at specific
 // corners), and Hospitality (Paddock Club). Real factual columns sourced
 // from the 8 seeded grandstand/ticket experiences, 12 Oct 2026. Pricing:
-// real planner_ticket_tier_cost rows for edition_year 2027 (same real USD
-// figures as 2026 — Belgian GP's own 2027 pricing isn't published yet,
-// applied per the classic-to-hub-and-spoke migration's documented approach,
-// see project_belgian_gp_experiences memory).
+// real planner_ticket_tier_cost rows for edition_year 2027, real 2027
+// pricing (sourced in a separate Ticket Intelligence session).
 const TIER_META = [
   {
     tierKey: "Bronze GA",
@@ -215,8 +213,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
               ))}
           </div>
           <p className="text-xs text-[#6A6A6A]">
-            Belgian GP&apos;s own 2027 pricing isn&apos;t published yet — figures above carry forward the real,
-            confirmed 2026 USD pricing. Re-verify against spagrandprix.com closer to the 2027 on-sale date.
+            Figures above are real, confirmed 2027 USD pricing.
           </p>
         </div>
       ) : null}

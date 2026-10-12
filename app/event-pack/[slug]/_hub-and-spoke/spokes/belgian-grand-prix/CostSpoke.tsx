@@ -141,9 +141,8 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
             })}
           </div>
           <p className="text-xs text-[#6A6A6A] mb-8">
-            Belgian GP&apos;s own 2027 ticket pricing isn&apos;t published yet — ticket figures above carry forward
-            the real, confirmed 2026 USD pricing. Hotel figures are real 2027 rates, researched directly against
-            the actual race-weekend dates.
+            Ticket and hotel figures above are real 2027 rates, researched directly against the actual
+            race-weekend dates.
           </p>
         </>
       )}
