@@ -1363,6 +1363,10 @@ export const sportingEventsRelations = relations(sportingEvents, ({ one, many })
     fields: [sportingEvents.id],
     references: [tripIntelligenceFanInsights.sportingEventId],
   }),
+  tripIntelligenceTennisGrandSlamProfile: one(tripIntelligenceTennisGrandSlamProfiles, {
+    fields: [sportingEvents.id],
+    references: [tripIntelligenceTennisGrandSlamProfiles.sportingEventId],
+  }),
 }));
 
 export const blogArticlesRelations = relations(blogArticles, ({ one }) => ({
@@ -1609,6 +1613,58 @@ export const tripIntelligenceGrandPrixProfilesRelations = relations(tripIntellig
 export const tripIntelligenceFanInsightsRelations = relations(tripIntelligenceFanInsights, ({ one }) => ({
   sportingEvent: one(sportingEvents, {
     fields: [tripIntelligenceFanInsights.sportingEventId],
+    references: [sportingEvents.id],
+  }),
+}));
+
+// --- Trip Intelligence — Tennis Grand Slam quiz --------------------------
+// Separate, independent engine from the F1 Trip Intelligence tables above —
+// see Tennis Grand Slam Trip Intelligence Development Implementation
+// Specification v1.0, §2.3 ("Create separate Tennis-specific tables...
+// Do not modify F1 tables to add Tennis-specific columns") and §2.4.
+// Characteristic IDs (D01A-D08B) are the spec's own locked IDs, kept
+// distinct from F1's C01-C10 naming so the two rating sets are never
+// confused. No fan-insights table and no engine-configuration table here —
+// founder confirmed (plan "concurrent-zooming-treehouse", 13 Oct 2026) that
+// Tennis's deeper contribution-based explanation engine supplies the
+// per-Slam depth F1's separate fan-insights table exists to provide, and
+// F1's engine-configuration table is dead code never read at runtime, not
+// worth replicating. This is purely additive — no row in any F1 table
+// above is read, written, or deleted by this section.
+export const tripIntelligenceTennisGrandSlamProfiles = pgTable("trip_intelligence_tennis_grand_slam_profiles", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sportingEventId: uuid("sporting_event_id").notNull().references(() => sportingEvents.id).unique(),
+  // "ao" | "rg" | "wim" | "uso" — spec's placeholder codes, distinct from
+  // the real sportingEvents.slug values (australian-open/french-open/
+  // wimbledon/us-open), matching F1's own sourceSlug-vs-real-slug pattern.
+  sourceSlug: varchar("source_slug", { length: 10 }).notNull().unique(),
+  grandSlamName: varchar("grand_slam_name", { length: 150 }).notNull(),
+  d01aHeritageIconicAppeal: numeric("d01a_heritage_iconic_appeal", { precision: 3, scale: 2 }).notNull(),
+  d01bModernSpectacle: numeric("d01b_modern_spectacle", { precision: 3, scale: 2 }).notNull(),
+  d03aShowcourtExperience: numeric("d03a_showcourt_experience", { precision: 3, scale: 2 }).notNull(),
+  d03bOutsideCourtDiscovery: numeric("d03b_outside_court_discovery", { precision: 3, scale: 2 }).notNull(),
+  d03cPlayerProximityPractice: numeric("d03c_player_proximity_practice", { precision: 3, scale: 2 }).notNull(),
+  d04aGroundsAtmosphere: numeric("d04a_grounds_atmosphere", { precision: 3, scale: 2 }).notNull(),
+  d05aCrowdEnergyIntensity: numeric("d05a_crowd_energy_intensity", { precision: 3, scale: 2 }).notNull(),
+  d05bSpectatorCultureEtiquette: numeric("d05b_spectator_culture_etiquette", { precision: 3, scale: 2 }).notNull(),
+  d06aHostCityExploration: numeric("d06a_host_city_exploration", { precision: 3, scale: 2 }).notNull(),
+  d06bRegionalExploration: numeric("d06b_regional_exploration", { precision: 3, scale: 2 }).notNull(),
+  d07aAccessibilityConnectivity: numeric("d07a_accessibility_connectivity", { precision: 3, scale: 2 }).notNull(),
+  d07bOnSiteComfortFacilities: numeric("d07b_on_site_comfort_facilities", { precision: 3, scale: 2 }).notNull(),
+  d08aAttendanceAffordability: numeric("d08a_attendance_affordability", { precision: 3, scale: 2 }).notNull(),
+  d08bDestinationCosts: numeric("d08b_destination_costs", { precision: 3, scale: 2 }).notNull(),
+  // Per-rating confidence level, preserved verbatim from the spec's
+  // calibration dataset where available — spec §4 rating-governance.
+  confidenceLevel: varchar("confidence_level", { length: 20 }),
+  evidenceNotes: jsonb("evidence_notes").$type<string[]>().notNull().default(sql`'[]'::jsonb`),
+  rubricVersion: varchar("rubric_version", { length: 20 }).notNull(),
+  assessedDate: date("assessed_date"),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const tripIntelligenceTennisGrandSlamProfilesRelations = relations(tripIntelligenceTennisGrandSlamProfiles, ({ one }) => ({
+  sportingEvent: one(sportingEvents, {
+    fields: [tripIntelligenceTennisGrandSlamProfiles.sportingEventId],
     references: [sportingEvents.id],
   }),
 }));

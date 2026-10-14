@@ -74,17 +74,6 @@ export const PACK_PRICING_CONFIG: Record<string, {
         : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_CRICKET_STANDARD ?? "",
     earlyBirdCutoff: process.env.NEXT_PUBLIC_CRICKET_EARLY_BIRD_CUTOFF ?? "2026-06-15",
   },
-  // Kept under both the dated slug and the evergreen "belgian-grand-prix"
-  // slug during the classic->hub-and-spoke migration — DB rename not done
-  // yet (Deploy A/B hard gate, see migrate-from-classic-to-hub-spoke skill
-  // §1). Both keys must resolve correctly in the window between this
-  // deploy landing and the DB rename running. Remove the dated key once
-  // the rename is confirmed live and packFormat has flipped.
-  "belgian-gp-2026": {
-    earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_EARLY_BIRD ?? "",
-    standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_STANDARD ?? "",
-    earlyBirdCutoff: process.env.NEXT_PUBLIC_BELGIAN_GP_EARLY_BIRD_CUTOFF ?? "2026-07-10",
-  },
   "belgian-grand-prix": {
     earlyBirdPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_EARLY_BIRD ?? "",
     standardPriceId: process.env.NEXT_PUBLIC_DODO_PRICE_ID_BELGIAN_GP_STANDARD ?? "",

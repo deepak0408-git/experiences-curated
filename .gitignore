@@ -46,6 +46,12 @@ Images/
 # drizzle migrations meta
 drizzle/
 
+# regenerable offline audit export (scripts/export-tennis-engine-for-audit.mjs)
+tennis-engine-audit-export/
+
+# local scratch dump from a pre-rollover archive step, not source
+scratch-*.json
+
 # Sentry Config File
 .env.sentry-build-plugin
 .env.local

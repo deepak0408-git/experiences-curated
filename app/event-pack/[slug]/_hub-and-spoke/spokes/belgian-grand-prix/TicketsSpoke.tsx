@@ -98,7 +98,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="Every real option and what it shows you is free above. The pack adds our direct verdict on which specific grandstand suits a first Spa trip, the Bronze-roaming strategy that actually works across a 7km circuit, and which stand to move on first before it sells — Gold 3 at Raidillon is historically the first to go."
+      ctaCopy="Every real option and what it shows you is free above. The pack unlocks our full written guide to all 7 grandstands — Raidillon, Pouhon, the Pit straight, Les Combes, La Source, the Bus Stop Chicane, and Kemmel — plus which one actually suits a first Spa trip, the Bronze-roaming strategy that works across a 7km circuit, and which stand to move on first before it sells — Gold 3 at Raidillon is historically the first to go."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Spa-Francorchamps is 7 kilometres long, and that length shapes the real ticket decision here more than at

@@ -74,6 +74,7 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
         src={CIRCUIT_MAP_URL}
         alt="Circuit de Spa-Francorchamps layout, numbered 1-20, showing La Source, Eau Rouge/Raidillon, Kemmel Straight, Les Combes, Pouhon, Campus, Stavelot, Blanchimont, and the Bus Stop chicane"
         aspectClassName="aspect-[3840/2375]"
+        lightFrame
       />
       <p className="text-xs text-[#6A6A6A] mb-8">Credit: Will Pittenger, CC BY-SA 3.0, via Wikimedia Commons.</p>
 
