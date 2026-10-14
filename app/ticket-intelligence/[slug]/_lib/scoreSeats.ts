@@ -293,8 +293,19 @@ function scoreSeat(seat: Seat, answers: QuizAnswers): ScoredSeat {
   // Prestige tiebreaker — see PRESTIGE_SEAT_NAMES comment above. Small
   // (smaller than any single question's full weight) so it only breaks
   // genuine ties, never overrides a fan's actual stated preferences.
+  // 0.6, not 0.5 — deliberately larger than PADDOCK_TOUR_SEAT_NAMES's +0.5
+  // below. Austrian GP, 14 Oct 2026: when a fan answers q5=lounge AND
+  // q7=maximize, Paddock Club (this bonus) and Champions Club (the
+  // paddock-tour bonus) both fired, re-tying two seats this tiebreaker was
+  // supposed to separate. Founder direction, 14 Oct 2026: Paddock Club
+  // always wins against any other tier4 hospitality product by product
+  // design — it's the top of the hospitality hierarchy regardless of a
+  // specific amenity another product also offers. Bumped globally, not
+  // Austrian-GP-scoped, since the same conflict exists wherever any
+  // PRESTIGE_SEAT_NAMES seat shares an event with a PADDOCK_TOUR_SEAT_NAMES
+  // seat (e.g. British GP's Champions Club).
   if (answers.q7 === "maximize" && answers.q5 === "lounge" && PRESTIGE_SEAT_NAMES.has(seat.seatName)) {
-    score += 0.5;
+    score += 0.6;
     reasons.push("the single most exclusive hospitality option at this circuit");
   }
 

@@ -38,6 +38,24 @@ const CIRCUIT_MAP_BY_EVENT: Record<
     fitByHeight?: boolean;
   }
 > = {
+  "austrian-grand-prix": {
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/austrian-grand-prix-circuit-map.svg",
+    alt: "Red Bull Ring circuit layout with all 10 numbered turns and every circuit_seating_profile grandstand/hospitality seat marked",
+    aspectClassName: "aspect-[683/552]",
+    credit: "Base map: HumanBodyPiloter5, CC BY-SA 4.0, via Wikimedia Commons.",
+    // Black line art on a transparent background — same near-invisible-
+    // against-dark-frame issue as Mexico City's and Miami's maps above.
+    // Grandstand markers (Steiermark, Red Bull A/B, Red Bull C-P, T3,
+    // Schönberg, North, T9, T10, Start-Ziel, Paddock Club/Champions Club)
+    // added 14 Oct 2026 as inline SVG overlay on the base CC BY-SA map,
+    // positioned against its own turn-number ellipse coordinates and
+    // validated turn-by-turn against a founder-provided official Red Bull
+    // Ring zone map (Blue/Yellow/Green ticket zones) — no MapSpoke.tsx/
+    // event-pack exists yet for this event, so this was built directly
+    // rather than reused from one (see ticket-intelligence-researcher
+    // skill §5).
+    lightFrame: true,
+  },
   "brazilian-grand-prix": {
     url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/brazilian-grand-prix-map.png",
     alt: "Interlagos circuit layout with grandstand zones, Heineken Village, and Orange Tree Club marked",
@@ -185,6 +203,18 @@ const RESELLER_LINKS_BY_EVENT: Record<
   string,
   { officialLabel: string; officialUrl: string; p1Label: string; p1Url: string; soldOutNote: string }
 > = {
+  // No TicketsSpoke.tsx exists yet for this event (no hub-and-spoke content
+  // built as of 14 Oct 2026) — officialUrl/soldOutNote below are placeholder
+  // copy, NOT copied from a curator-reviewed spoke per this map's own rule,
+  // same honest-placeholder pattern as Miami GP's entry below. Replace both
+  // once a real Tickets spoke is built for Austrian GP 2027.
+  "austrian-grand-prix": {
+    officialLabel: "Official Red Bull Ring tickets →",
+    officialUrl: "https://tickets.redbullring.com/en/f1/f1-grand-prix-oesterreich-2027/tickets.html",
+    p1Label: "P1 Travel — Austrian GP →",
+    p1Url: "https://www.p1travel.com/en/motorsports/formula-1/austrian-gp-2027-fri-sat-sun",
+    soldOutNote: "Steiermark and the full-weekend Start-Ziel grandstand were already sold out on the official site as of 14 Oct 2026, over 8 months ahead of the race",
+  },
   "brazilian-grand-prix": {
     officialLabel: "Official São Paulo GP tickets →",
     officialUrl: "https://tickets.formula1.com/en/f1-3325-brazil",
