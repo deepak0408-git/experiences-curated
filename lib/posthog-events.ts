@@ -30,4 +30,18 @@ export const phEvent = {
   // Experience
   experienceViewed: (props: { experienceSlug: string; experienceTitle: string; eventSlug?: string; eventName?: string; sport?: string }) =>
     posthog.capture("experience_viewed", props),
+
+  // F1 Travel Planning Cockpit — $pageview already fires from PostHogProvider
+  // on every route including /formula-1, so these cover outbound engagement
+  // only, not page visits themselves.
+  cockpitHomepageCtaClicked: () => posthog.capture("cockpit_homepage_cta_clicked"),
+  cockpitCardClicked: (props: { card: "exploring" | "budget" | "chosen_gp" | "planning" }) =>
+    posthog.capture("cockpit_card_clicked", props),
+  cockpitModalOpened: (props: { modal: "gp_selector" | "trip_planning"; source: "card" | "calendar" }) =>
+    posthog.capture("cockpit_modal_opened", props),
+  cockpitGpSelected: (props: { eventSlug: string }) => posthog.capture("cockpit_gp_selected", props),
+  cockpitCalendarCardClicked: (props: { eventSlug: string }) =>
+    posthog.capture("cockpit_calendar_card_clicked", props),
+  cockpitDeeperTileClicked: (props: { tile: "articles" | "experiences" | "destinations" }) =>
+    posthog.capture("cockpit_deeper_tile_clicked", props),
 };

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { OriginMarketGroup } from "../_lib/getOriginMarkets";
 
 const SPORTS = [
@@ -28,9 +29,21 @@ const TIME_WINDOWS = [
 
 type Sport = (typeof SPORTS)[number]["value"];
 
+// Preselects Formula 1 when the Cockpit's "I have a budget" card links here
+// via /planner?sport=formula_one — the sport stays fully editable (toggle
+// off, add others) and no other field is prefilled. Only a known SPORTS
+// value is accepted; anything else is ignored rather than silently
+// defaulting. Approved — Phase 2, Card 2.
+function getPreselectedSports(searchParams: URLSearchParams): Sport[] {
+  const param = searchParams.get("sport");
+  const match = SPORTS.find((s) => s.value === param);
+  return match ? [match.value] : [];
+}
+
 export default function PlannerIntakeForm({ originMarkets }: { originMarkets: OriginMarketGroup[] }) {
   const router = useRouter();
-  const [sports, setSports] = useState<Sport[]>([]);
+  const searchParams = useSearchParams();
+  const [sports, setSports] = useState<Sport[]>(() => getPreselectedSports(searchParams));
   const [budgetBand, setBudgetBand] = useState<string>("");
   const [timeWindow, setTimeWindow] = useState<string>("");
   const [tripLengthDays, setTripLengthDays] = useState<string>("");
@@ -45,6 +58,8 @@ export default function PlannerIntakeForm({ originMarkets }: { originMarkets: Or
   const canSubmit =
     sports.length > 0 && budgetBand !== "" && timeWindow !== "" && tripLengthDays.trim() !== "" && originMarket !== "";
 
+  const fromCockpit = searchParams.get("from") === "cockpit";
+
   const handleSubmit = () => {
     if (!canSubmit) return;
     const band = BUDGET_BANDS.find((b) => b.value === budgetBand)!;
@@ -56,14 +71,28 @@ export default function PlannerIntakeForm({ originMarkets }: { originMarkets: Or
       tripLengthDays,
       originMarket,
     });
+    // Preserves ?from=cockpit into the results page — same pattern as the
+    // Trip Intelligence quiz fix, same root cause: rebuilding the URL from
+    // only the intake fields silently dropped any other param.
+    if (fromCockpit) params.set("from", "cockpit");
     router.push(`/planner/results?${params.toString()}`);
   };
 
   return (
     <div className="max-w-2xl mx-auto px-6 sm:px-8 py-16">
-      <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00] mb-4">
-        Trip Planner
-      </p>
+      <div className="flex items-center justify-between gap-2 mb-4">
+        <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00]">
+          Trip Planner
+        </p>
+        {fromCockpit && (
+          <Link
+            href="/formula-1"
+            className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+          >
+            ← Back to F1 Cockpit
+          </Link>
+        )}
+      </div>
       <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
         Your next bucket-list sports trip starts here
       </h1>

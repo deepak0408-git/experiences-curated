@@ -56,11 +56,24 @@ export default async function TripIntelligenceResultsPage({
   const heroDisplay = displayInfoMap.get(matchResponse.hero.sportingEventId);
   const alternativeCandidates = matchResponse.alternatives.map((alt) => candidatesBySlug.get(alt.sourceSlug)!);
 
+  const fromParam = resolvedParams.from;
+  const from = typeof fromParam === "string" ? fromParam : undefined;
+
   return (
     <main className="min-h-screen bg-[#0A0A0A]">
-      <HomepageNav email={user?.email ?? null} />
+      <HomepageNav email={user?.email ?? null} hideSecondaryLink hideMyTravels />
       <div className="max-w-5xl mx-auto px-6 sm:px-8 py-16">
-        <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00] mb-4">Your match</p>
+        <div className="flex items-center justify-between gap-2 mb-4">
+          <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00]">Your match</p>
+          {from === "cockpit" && (
+            <Link
+              href="/formula-1"
+              className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+            >
+              ← Back to F1 Cockpit
+            </Link>
+          )}
+        </div>
 
         <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
           {matchResponse.hero.grandPrixName} is your best fit

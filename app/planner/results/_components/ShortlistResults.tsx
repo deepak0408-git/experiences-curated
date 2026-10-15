@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import GateModal, { type GateTrigger } from "./GateModal";
 import TradeoffPanel from "./TradeoffPanel";
 import { SPORT_LABELS, TIME_WINDOW_LABELS, formatMoneyRange, rankEvents, type MockEvent } from "../../_lib/mockEvents";
@@ -45,6 +45,8 @@ export default function ShortlistResults({
   initialTradeoffSlug?: string | null;
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const fromCockpit = searchParams.get("from") === "cockpit";
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
   const [tradeoffSlug, setTradeoffSlug] = useState<string | null>(initialTradeoffSlug ?? null);
   const [compareSlugs, setCompareSlugs] = useState<string[]>([]);
@@ -141,15 +143,25 @@ export default function ShortlistResults({
 
   return (
     <div className="max-w-2xl mx-auto px-6 sm:px-8 py-16">
-      <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00] mb-4">
-        Trip Planner
-      </p>
+      <div className="flex items-center justify-between gap-2 mb-4">
+        <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00]">
+          Trip Planner
+        </p>
+        {fromCockpit && (
+          <Link
+            href="/formula-1"
+            className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+          >
+            ← Back to F1 Cockpit
+          </Link>
+        )}
+      </div>
 
       <div className="flex items-start justify-between gap-4 mb-2">
         <h1 className="text-2xl sm:text-3xl font-black text-white">
           Here&apos;s what fits your budget
         </h1>
-        <Link href="/planner" className="text-xs text-[#6A6A6A] hover:text-[#AAFF00] transition-colors whitespace-nowrap mt-2">
+        <Link href={fromCockpit ? "/planner?sport=formula_one&from=cockpit" : "/planner"} className="text-xs text-[#6A6A6A] hover:text-[#AAFF00] transition-colors whitespace-nowrap mt-2">
           ← Back to search
         </Link>
       </div>
@@ -431,6 +443,9 @@ export default function ShortlistResults({
                   tripLengthDays: String(tripLengthDays),
                   originMarket,
                 });
+                // Preserves ?from=cockpit into the compare page — same bug
+                // pattern as the quiz/planner-intake fixes.
+                if (fromCockpit) params.set("from", "cockpit");
                 router.push(`/planner/results/compare?${params.toString()}`);
               }}
               className="px-6 py-2.5 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-[#AAFF00]"

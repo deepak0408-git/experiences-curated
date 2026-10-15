@@ -169,10 +169,13 @@ function eventStatus(ev: { startDate: string; endDate: string; packStatus: strin
 
 export default async function DestinationPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ from?: string }>;
 }) {
   const { slug } = await params;
+  const { from } = await searchParams;
   const dest = await getDestinationBySlug(slug);
   const nearbyEvents = await getNearbyDestinationEvents({ id: dest.id, lat: dest.lat, lng: dest.lng });
   const [exps, directEvents, relatedArticles, { user }] = await Promise.all([
@@ -258,11 +261,21 @@ export default async function DestinationPage({
         </div>
       ) : (
         <div className="bg-[#141414] px-8 pt-12 pb-10 max-w-5xl mx-auto">
-          <nav className="flex items-center gap-2 text-xs text-[#6A6A6A] mb-6">
-            <Link href="/" className="hover:text-[#AAFF00] transition-colors">Home</Link>
-            <span>·</span>
-            <span className="text-[#A3A3A3]">Destinations</span>
-          </nav>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-2 mb-6">
+            <nav className="flex items-center gap-2 text-xs text-[#6A6A6A]">
+              <Link href="/" className="hover:text-[#AAFF00] transition-colors">Home</Link>
+              <span>·</span>
+              <span className="text-[#A3A3A3]">Destinations</span>
+            </nav>
+            {from === "cockpit" && (
+              <Link
+                href="/formula-1"
+                className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+              >
+                ← Back to F1 Cockpit
+              </Link>
+            )}
+          </div>
           <span className="inline-block text-xs font-black tracking-widest uppercase text-[#A3A3A3] mb-2">
             {dest.destinationType.replace("_", " ")} · {COUNTRY_NAMES[dest.countryCode.toUpperCase()] ?? dest.countryCode.toUpperCase()}
           </span>
@@ -275,13 +288,23 @@ export default async function DestinationPage({
       <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12">
         {/* Breadcrumb (only shown when hero image exists) */}
         {dest.heroImageUrl && (
-          <nav className="flex items-center gap-2 text-xs text-[#6A6A6A] mb-8">
-            <Link href="/" className="hover:text-[#AAFF00] transition-colors">Home</Link>
-            <span>·</span>
-            <span>Destinations</span>
-            <span>·</span>
-            <span className="text-[#A3A3A3]">{dest.name}</span>
-          </nav>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-2 mb-8">
+            <nav className="flex items-center gap-2 text-xs text-[#6A6A6A]">
+              <Link href="/" className="hover:text-[#AAFF00] transition-colors">Home</Link>
+              <span>·</span>
+              <span>Destinations</span>
+              <span>·</span>
+              <span className="text-[#A3A3A3]">{dest.name}</span>
+            </nav>
+            {from === "cockpit" && (
+              <Link
+                href="/formula-1"
+                className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+              >
+                ← Back to F1 Cockpit
+              </Link>
+            )}
+          </div>
         )}
 
         {/* Editorial hook — same body size as the hub-and-spoke event pack's

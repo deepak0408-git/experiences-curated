@@ -114,13 +114,13 @@ export default function BrandHero({
             Plan the trip. Live the event.
           </h1>
           <p className="mt-4 text-sm sm:text-base text-white/60 leading-relaxed font-light sm:whitespace-nowrap">
-            Research-driven sports travel planning for the world&apos;s greatest sporting events.
+            Discover the right sporting event. Find your best match. Plan tickets, stays and experiences — all in one place.
           </p>
 
           <div className="mt-8">
             {/* NOW FEATURED label */}
             <p className="text-xs font-black text-[#AAFF00] mb-3">
-              Now featured
+              Now featured events
             </p>
 
             {/* Featured event rows — stacked on mobile, 2x2 on desktop */}

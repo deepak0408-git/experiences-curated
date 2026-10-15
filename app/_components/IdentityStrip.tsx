@@ -2,7 +2,7 @@ export default function IdentityStrip() {
   const pillars = [
     {
       heading: "HANDPICKED",
-      body: "Every experience researched and written by someone who's been there.",
+      body: "Local knowledge and firsthand research, not aggregated listings.",
     },
     {
       heading: "BUILT FOR SPORT",

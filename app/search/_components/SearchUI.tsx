@@ -169,12 +169,12 @@ function FilterSection({ title, children }: { title: string; children: React.Rea
 }
 
 const refinementClassNames = {
-  list: "space-y-1.5",
-  item: "",
-  label: "flex items-center gap-2 cursor-pointer group/label",
-  checkbox: "rounded-sm border-[#3A3A3A] text-[#AAFF00] focus:ring-[#AAFF00] cursor-pointer bg-[#1A1A1A]",
-  labelText: "text-sm text-[#A3A3A3] group-hover/label:text-white transition-colors flex-1",
-  count: "text-xs text-[#6A6A6A] tabular-nums",
+  list: "space-y-1.5 w-full",
+  item: "w-full min-w-0",
+  label: "flex items-center gap-2 cursor-pointer group/label w-full min-w-0",
+  checkbox: "flex-shrink-0 rounded-sm border-[#3A3A3A] text-[#AAFF00] focus:ring-[#AAFF00] cursor-pointer bg-[#1A1A1A]",
+  labelText: "text-sm text-[#A3A3A3] group-hover/label:text-white transition-colors flex-1 min-w-0 truncate",
+  count: "text-xs text-[#6A6A6A] tabular-nums flex-shrink-0",
   selectedItem: "[&_span]:font-black [&_span]:text-white",
 };
 
@@ -193,7 +193,7 @@ function MobileFilterDrawer({ open, onClose }: { open: boolean; onClose: () => v
   return (
     <div className="fixed inset-0 z-50 md:hidden">
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
-      <div className="absolute bottom-0 left-0 right-0 bg-[#141414] rounded-t-sm max-h-[90vh] flex flex-col">
+      <div className="absolute bottom-0 left-0 right-0 w-full bg-[#141414] rounded-t-sm max-h-[90vh] flex flex-col overflow-x-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b border-[#2A2A2A]">
           <p className="text-sm font-black text-white">
             Search & Filter{activeCount > 0 ? ` · ${activeCount} active` : ""}
@@ -284,6 +284,7 @@ export function SearchUI({
   archetype,
   userEmail,
   hideProCtas = false,
+  fromCockpit = false,
 }: {
   appId: string;
   searchKey: string;
@@ -297,6 +298,10 @@ export function SearchUI({
   archetype?: string | null;
   userEmail?: string | null;
   hideProCtas?: boolean;
+  // Set when the visitor arrived via ?from=cockpit — shows a "Back to F1
+  // Cockpit" link at the end of the header row. Approved — Phase 2
+  // Decision 2.
+  fromCockpit?: boolean;
 }) {
   const searchClient = useMemo(() => liteClient(appId, searchKey), [appId, searchKey]);
 
@@ -372,6 +377,14 @@ export function SearchUI({
                 is unlimited.
               </span>
             )}
+            {fromCockpit && (
+              <Link
+                href="/formula-1"
+                className="hidden md:inline flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors whitespace-nowrap"
+              >
+                ← F1 Cockpit
+              </Link>
+            )}
             {userEmail && (
               <Link
                 href="/profile"
@@ -383,6 +396,21 @@ export function SearchUI({
               </Link>
             )}
           </div>
+          {/* Mobile-only Cockpit return row — kept off the main header row,
+              which is already packed edge-to-edge on narrow screens
+              (logo, filter button) and was overflowing horizontally when
+              this link competed for the same row. Founder-flagged, 15 Oct
+              2026. Desktop keeps the inline version in the row above. */}
+          {fromCockpit && (
+            <div className="md:hidden px-4 sm:px-6 pb-3">
+              <Link
+                href="/formula-1"
+                className="text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+              >
+                ← Back to F1 Cockpit
+              </Link>
+            </div>
+          )}
         </div>
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex gap-8 min-w-0">

@@ -51,13 +51,13 @@ export default async function CalendarSportPage({
   searchParams,
 }: {
   params: Promise<{ sport: string }>;
-  searchParams: Promise<{ years?: string }>;
+  searchParams: Promise<{ years?: string; from?: string }>;
 }) {
   const { sport } = await params;
   const entry = SPORT_SLUGS[sport];
   if (!entry) notFound();
 
-  const { years } = await searchParams;
+  const { years, from } = await searchParams;
   const yearList = years?.split(",").filter(Boolean).map(Number) ?? [];
   const { user } = await getAuthUser();
   const events = await getCalendarEvents(entry.enumValue, yearList);
@@ -67,9 +67,19 @@ export default async function CalendarSportPage({
       <HomepageNav email={user?.email ?? null} />
 
       <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12 flex-1 w-full">
-        <h1 className="text-3xl sm:text-4xl font-black text-white mb-3 text-balance">
-          {`${entry.label} 2026-2027 Calendar`}
-        </h1>
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <h1 className="text-3xl sm:text-4xl font-black text-white text-balance">
+            {`${entry.label} 2026-2027 Calendar`}
+          </h1>
+          {from === "cockpit" && (
+            <Link
+              href="/formula-1"
+              className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+            >
+              ← Back to F1 Cockpit
+            </Link>
+          )}
+        </div>
         <p className={`text-sm text-[#A3A3A3] max-w-2xl ${SCOPE_NOTES[sport] ? "mb-2" : "mb-8"}`}>
           {`Every ${entry.label} event on the official 2026-2027 calendar, whether or not we've built a guide for it yet.`}
         </p>

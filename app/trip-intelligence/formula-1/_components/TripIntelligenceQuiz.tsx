@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { TripIntelligenceAnswers } from "../_lib/types";
 import { QUESTIONS } from "../_lib/questions";
@@ -28,6 +29,12 @@ export default function TripIntelligenceQuiz() {
   // free/ungated (no sign-in interruption to survive, but the pattern is
   // still the right one for back-button/bookmark/share support).
   const [answers, setAnswers] = useState<PartialAnswers>(() => readAnswersFromParams(searchParams));
+  // Captured once at mount, not re-read on every render — `from` doesn't
+  // change while this component is alive, and putting the live
+  // useSearchParams() object in the effect below's dependency array caused
+  // a "final argument changed size between renders" crash under Fast
+  // Refresh. A ref avoids that without needing a second effect.
+  const fromCockpitRef = useRef(searchParams.get("from") === "cockpit");
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -35,6 +42,13 @@ export default function TripIntelligenceQuiz() {
       const v = answers[key];
       if (v) params.set(key, v);
     }
+    // Preserves ?from=cockpit through this URL rewrite — this effect runs
+    // on mount (before any question is answered) and previously rebuilt the
+    // URL from only the answer keys, silently dropping `from` the instant
+    // the page loaded. Caught live 15 Oct 2026: the back-link never
+    // rendered because the param was gone before the component could read
+    // it from the current URL.
+    if (fromCockpitRef.current) params.set("from", "cockpit");
     const qs = params.toString();
     const url = qs ? `/trip-intelligence/formula-1?${qs}` : "/trip-intelligence/formula-1";
     window.history.replaceState(null, "", url);
@@ -51,7 +65,17 @@ export default function TripIntelligenceQuiz() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 sm:px-8 py-16">
-      <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00] mb-4">Trip Intelligence</p>
+      <div className="flex items-center justify-between gap-2 mb-4">
+        <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00]">Trip Intelligence</p>
+        {fromCockpitRef.current && (
+          <Link
+            href="/formula-1"
+            className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+          >
+            ← Back to F1 Cockpit
+          </Link>
+        )}
+      </div>
 
       <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
         Which Grand Prix best matches the experience you want?
@@ -92,6 +116,10 @@ export default function TripIntelligenceQuiz() {
           for (const key of ANSWER_KEYS) {
             params.set(key, answers[key]!);
           }
+          // Preserves ?from=cockpit through to the results page — otherwise
+          // the Cockpit's "Back to F1 Cockpit" context was lost the moment a
+          // visitor submitted the quiz, even though it survived up to here.
+          if (fromCockpitRef.current) params.set("from", "cockpit");
           router.push(`/trip-intelligence/formula-1/results?${params.toString()}`);
         }}
         className={

@@ -87,8 +87,11 @@ function resolveBackLink(
   params: URLSearchParams,
   slug: string,
   eventName: string
-): { href: string; label: string } {
+): { href: string; label: string; isCockpit?: boolean } {
   const from = params.get("from");
+  if (from === "cockpit") {
+    return { href: "/formula-1", label: "← Back to F1 Cockpit", isCockpit: true };
+  }
   if (from === "picker") {
     return { href: "/ticket-intelligence", label: "← Back to all events" };
   }
@@ -227,7 +230,11 @@ export default function TicketQuiz({
         </p>
         <Link
           href={backLink.current.href}
-          className="text-xs font-semibold text-[#6A6A6A] hover:text-[#AAFF00] underline transition-colors"
+          className={
+            backLink.current.isCockpit
+              ? "text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+              : "text-xs font-semibold text-[#6A6A6A] hover:text-[#AAFF00] underline transition-colors"
+          }
         >
           {backLink.current.label}
         </Link>

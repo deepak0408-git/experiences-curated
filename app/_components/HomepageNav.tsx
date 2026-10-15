@@ -7,6 +7,8 @@ export default function HomepageNav({
   showSearch = false,
   overlay = false,
   secondaryLink,
+  hideSecondaryLink = false,
+  hideMyTravels = false,
 }: {
   email: string | null;
   showSearch?: boolean;
@@ -20,6 +22,15 @@ export default function HomepageNav({
   // label ("Planning Method") while desktop keeps the full name. Fixed 26
   // Jul 2026 from a live mobile screenshot.
   secondaryLink?: { href: string; label: string; mobileLabel?: string };
+  // F1 Cockpit, Trip Intelligence and Ticket Intelligence pages only
+  // (founder request, 15 Oct 2026) — Trip Board isn't a useful nav shortcut
+  // there since the Cockpit's own Card 4 modal already surfaces "Continue
+  // my Trip Board". Defaults false so no other page changes.
+  hideSecondaryLink?: boolean;
+  // Same pages, same request — "My Travels" (logged trip history) isn't a
+  // relevant shortcut on these F1-planning-focused pages either. Defaults
+  // false so no other page changes.
+  hideMyTravels?: boolean;
 }) {
   const secondary = secondaryLink ?? { href: "/trip-board", label: "Trip Board" };
   return (
@@ -35,17 +46,19 @@ export default function HomepageNav({
               <span className={`hidden sm:inline ${overlay ? "text-white/20" : "text-[#2A2A2A]"}`}>|</span>
             </>
           )}
-          <Link href={secondary.href} className={`text-xs sm:text-sm transition-colors whitespace-nowrap hover:text-[#AAFF00] ${overlay ? "text-white/80" : "text-[#6A6A6A]"}`}>
-            {secondary.mobileLabel ? (
-              <>
-                <span className="sm:hidden">{secondary.mobileLabel}</span>
-                <span className="hidden sm:inline">{secondary.label}</span>
-              </>
-            ) : (
-              secondary.label
-            )}
-          </Link>
-          {email && (
+          {!hideSecondaryLink && (
+            <Link href={secondary.href} className={`text-xs sm:text-sm transition-colors whitespace-nowrap hover:text-[#AAFF00] ${overlay ? "text-white/80" : "text-[#6A6A6A]"}`}>
+              {secondary.mobileLabel ? (
+                <>
+                  <span className="sm:hidden">{secondary.mobileLabel}</span>
+                  <span className="hidden sm:inline">{secondary.label}</span>
+                </>
+              ) : (
+                secondary.label
+              )}
+            </Link>
+          )}
+          {email && !hideMyTravels && (
             <Link href="/my-travels" className={`hidden sm:block text-sm transition-colors hover:text-[#AAFF00] ${overlay ? "text-white/80" : "text-[#6A6A6A]"}`}>
               My Travels
             </Link>

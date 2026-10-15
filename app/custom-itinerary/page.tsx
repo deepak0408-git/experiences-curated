@@ -15,7 +15,12 @@ const CHECK = (
   </svg>
 );
 
-export default function CustomItineraryPage() {
+export default async function CustomItineraryPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ from?: string }>;
+}) {
+  const { from } = await searchParams;
   const successUrl =
     (process.env.NEXT_PUBLIC_APP_URL ?? "https://experiences-curated.com") + "/custom-itinerary/thanks";
 
@@ -31,13 +36,22 @@ export default function CustomItineraryPage() {
           </Link>
         </div>
       </header>
-
       {/* Hero */}
       <section className="border-b border-[#2A2A2A] py-14 sm:py-16">
         <div className="max-w-3xl mx-auto px-3">
-          <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00] mb-5">
-            Custom Itinerary Planning
-          </p>
+          <div className="flex items-center justify-between gap-2 mb-5">
+            <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00]">
+              Custom Itinerary Planning
+            </p>
+            {from === "cockpit" && (
+              <Link
+                href="/formula-1"
+                className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+              >
+                ← Back to F1 Cockpit
+              </Link>
+            )}
+          </div>
           <h1 className="text-3xl sm:text-4xl font-black max-w-[34ch] leading-tight tracking-tight mb-3">
             Your dates, your sport, your budget —<br />
             <span className="text-[#AAFF00]">we build the whole trip around it.</span>

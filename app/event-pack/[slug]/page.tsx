@@ -358,10 +358,18 @@ export default async function EventPackPage({
   searchParams,
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ status?: string }>;
+  searchParams: Promise<{ status?: string; from?: string }>;
 }) {
   const { slug } = await params;
-  const { status } = await searchParams;
+  const { status, from } = await searchParams;
+  // Threads the Cockpit's contextual-return origin through purchase —
+  // checkout's successUrl is caller-supplied (DodoCheckout/PaddleCheckout
+  // don't derive it), so without this a purchase begun from the Cockpit
+  // would land back on the pack page with no "Back to F1 Cockpit" context.
+  // Only appended when a visitor actually arrived with ?from=cockpit —
+  // every other visitor's successUrl is unchanged. Approved — Phase 2
+  // Decision 2.
+  const fromCockpitSuffix = from === "cockpit" ? "?from=cockpit" : "";
 
   const [event] = await db
     .select()
@@ -382,7 +390,7 @@ export default async function EventPackPage({
   // route. Built per the hub-and-spoke-event-pack skill.
   if (event.packFormat === "hub_and_spoke") {
     const { default: HubPage } = await import("./_hub-and-spoke/HubPage");
-    return <HubPage slug={slug} />;
+    return <HubPage slug={slug} from={from} />;
   }
 
   // Teaser cards — top 2 by packRank, fall back to unranked published experiences
@@ -595,9 +603,19 @@ export default async function EventPackPage({
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 px-8 pb-8 max-w-5xl mx-auto">
-          <span className="inline-block text-xs font-black tracking-widest uppercase text-black bg-[#AAFF00] px-3 py-1 rounded-sm mb-3">
-            {SPORT_LABELS[event.sport] ?? event.sport} · Event Pack
-          </span>
+          <div className="flex items-center justify-between gap-2 mb-3">
+            <span className="inline-block text-xs font-black tracking-widest uppercase text-black bg-[#AAFF00] px-3 py-1 rounded-sm">
+              {SPORT_LABELS[event.sport] ?? event.sport} · Event Pack
+            </span>
+            {from === "cockpit" && (
+              <Link
+                href="/formula-1"
+                className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+              >
+                ← Back to F1 Cockpit
+              </Link>
+            )}
+          </div>
           <h1 className="text-3xl sm:text-4xl font-black text-white leading-tight tracking-tight max-w-2xl">
             {event.name}
           </h1>
@@ -726,8 +744,8 @@ export default async function EventPackPage({
                         eventName={event.name}
                         priceTier={isEarlyBird ? "early_bird" : "standard"}
                         successUrl={user?.email
-                          ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}`
-                          : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
+                          ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}${fromCockpitSuffix}`
+                          : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome${fromCockpitSuffix}`}
                         buttonClassName="w-full inline-flex items-center justify-center px-6 py-3 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors"
                       />
                     ) : (
@@ -740,8 +758,8 @@ export default async function EventPackPage({
                       priceTier={isEarlyBird ? "early_bird" : "standard"}
                       clientToken={process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN ?? ""}
                       successUrl={user?.email
-                        ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}`
-                        : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
+                        ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}${fromCockpitSuffix}`
+                        : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome${fromCockpitSuffix}`}
                       redirectDelay={user?.email ? 4000 : 2500}
                       environment={paddleEnv}
                       userEmail={user?.email ?? undefined}
@@ -890,8 +908,8 @@ export default async function EventPackPage({
                     eventName={event.name}
                     priceTier={isEarlyBird ? "early_bird" : "standard"}
                     successUrl={user?.email
-                      ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}`
-                      : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
+                      ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}${fromCockpitSuffix}`
+                      : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome${fromCockpitSuffix}`}
                   />
                 ) : (
                   <p className="text-xs text-[#6A6A6A]">Checkout coming soon.</p>
@@ -903,8 +921,8 @@ export default async function EventPackPage({
                   priceTier={isEarlyBird ? "early_bird" : "standard"}
                   clientToken={process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN ?? ""}
                   successUrl={user?.email
-                    ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}`
-                    : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome`}
+                    ? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}${fromCockpitSuffix}`
+                    : `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/event-pack/${slug}/welcome${fromCockpitSuffix}`}
                   redirectDelay={user?.email ? 4000 : 2500}
                   environment={paddleEnv}
                 />

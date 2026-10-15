@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { SPORT_LABELS, TIME_WINDOW_LABELS, sumLineItems, formatMoneyRange, rankEvents, type MockEvent, type CostLineItem } from "../../../_lib/mockEvents";
 import { saveComparison } from "../../../_lib/actions";
 
@@ -107,6 +108,8 @@ export default function ComparisonView({
     originMarket: string;
   };
 }) {
+  const searchParams = useSearchParams();
+  const fromCockpit = searchParams.get("from") === "cockpit";
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -130,14 +133,16 @@ export default function ComparisonView({
   // "Any sport · $0-0 · Nothing matches" instead of the real results. Always
   // reconstruct the full search from `intake`, same pattern used elsewhere
   // in this file for the compare/click-tracking URLs.
-  const backToResultsUrl = `/planner/results?${new URLSearchParams({
+  const backToResultsParams = new URLSearchParams({
     sports: intake.sports.join(","),
     budgetMin: String(intake.budgetMin),
     budgetMax: String(intake.budgetMax),
     timeWindow: intake.timeWindow,
     tripLengthDays: String(intake.tripLengthDays),
     originMarket: intake.originMarket,
-  }).toString()}`;
+  });
+  if (fromCockpit) backToResultsParams.set("from", "cockpit");
+  const backToResultsUrl = `/planner/results?${backToResultsParams.toString()}`;
 
   if (events.length < 2) {
     return (
@@ -226,9 +231,19 @@ export default function ComparisonView({
 
   return (
     <div className="max-w-3xl lg:max-w-5xl mx-auto px-6 sm:px-8 py-16">
-      <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00] mb-4">
-        Trip Planner
-      </p>
+      <div className="flex items-center justify-between gap-2 mb-4">
+        <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00]">
+          Trip Planner
+        </p>
+        {fromCockpit && (
+          <Link
+            href="/formula-1"
+            className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+          >
+            ← Back to F1 Cockpit
+          </Link>
+        )}
+      </div>
 
       <div className="flex items-start justify-between gap-4 mb-2">
         <h1 className="text-2xl sm:text-3xl font-black text-white">

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { getAuthUser } from "@/lib/supabase/server";
 import HomepageNav from "@/app/_components/HomepageNav";
@@ -16,7 +17,9 @@ export default async function PlannerPage() {
   return (
     <main className="min-h-screen bg-[#0A0A0A]">
       <HomepageNav email={user?.email ?? null} secondaryLink={{ href: "/planning-methodology", label: "Planning Methodology", mobileLabel: "Planning Method" }} />
-      <PlannerIntakeForm originMarkets={originMarkets} />
+      <Suspense>
+        <PlannerIntakeForm originMarkets={originMarkets} />
+      </Suspense>
     </main>
   );
 }

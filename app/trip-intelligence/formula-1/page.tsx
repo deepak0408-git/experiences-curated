@@ -15,7 +15,7 @@ export default async function TripIntelligenceQuizPage() {
 
   return (
     <main className="min-h-screen bg-[#0A0A0A]">
-      <HomepageNav email={user?.email ?? null} />
+      <HomepageNav email={user?.email ?? null} hideSecondaryLink hideMyTravels />
       <Suspense>
         <TripIntelligenceQuiz />
       </Suspense>

@@ -28,9 +28,9 @@ const SPORT_LABELS: Record<string, string> = {
 export default async function BlogIndexPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string; sport?: string }>;
+  searchParams: Promise<{ category?: string; sport?: string; from?: string }>;
 }) {
-  const { category, sport } = await searchParams;
+  const { category, sport, from } = await searchParams;
   const { user } = await getAuthUser();
   const isFiltered = Boolean(category || sport);
   const [articles, allArticles] = await Promise.all([
@@ -51,6 +51,7 @@ export default async function BlogIndexPage({
     const nextSport = "sport" in next ? next.sport : sport;
     if (nextCategory) params.set("category", nextCategory);
     if (nextSport) params.set("sport", nextSport);
+    if (from) params.set("from", from);
     const qs = params.toString();
     return qs ? `/blog?${qs}` : "/blog";
   }
@@ -60,9 +61,19 @@ export default async function BlogIndexPage({
       <HomepageNav email={user?.email ?? null} />
 
       <div className="max-w-5xl mx-auto px-6 sm:px-8 py-12 flex-1 w-full">
-        <h1 className="text-3xl sm:text-4xl font-black text-white mb-3 text-balance">
-          Sports Travel Blog
-        </h1>
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <h1 className="text-3xl sm:text-4xl font-black text-white text-balance">
+            Sports Travel Blog
+          </h1>
+          {from === "cockpit" && (
+            <Link
+              href="/formula-1"
+              className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+            >
+              ← Back to F1 Cockpit
+            </Link>
+          )}
+        </div>
         <p className="text-sm text-[#A3A3A3] mb-8 max-w-2xl">
           History, rivalries, and the events every fan should see live — before you plan a single flight.
         </p>

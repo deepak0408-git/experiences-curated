@@ -17,9 +17,10 @@ export const metadata: Metadata = {
 export default async function TripBoardPage({
   searchParams,
 }: {
-  searchParams: Promise<{ board?: string }>;
+  searchParams: Promise<{ board?: string; from?: string }>;
 }) {
   const { user: authUser } = await getAuthUser();
+  const { from } = await searchParams;
 
   if (!authUser) {
     return (
@@ -32,12 +33,22 @@ export default async function TripBoardPage({
           </div>
         </nav>
         <div className="max-w-sm mx-auto px-6 py-24 text-center">
-          <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-4">Trip Board</p>
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00]">Trip Board</p>
+            {from === "cockpit" && (
+              <>
+                <span className="text-[#2A2A2A]">·</span>
+                <Link href="/formula-1" className="text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors">
+                  ← Back to F1 Cockpit
+                </Link>
+              </>
+            )}
+          </div>
           <h1 className="text-2xl font-black text-white mb-3">Sign in to see your board</h1>
           <p className="text-sm text-[#A3A3A3] leading-6 mb-8">
             Enter your email and we&apos;ll send you a sign-in link. No password needed.
           </p>
-          <TripBoardSignIn />
+          <TripBoardSignIn from={from} />
         </div>
       </div>
     );
@@ -168,6 +179,7 @@ export default async function TripBoardPage({
       dbUserId={dbUser.id}
       upcomingEvents={upcomingEvents}
       hideProCtas={process.env.HIDE_PRO === "true"}
+      from={from}
     />
   );
 }

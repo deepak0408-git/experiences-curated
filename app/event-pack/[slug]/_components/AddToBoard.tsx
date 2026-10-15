@@ -5,20 +5,45 @@ import Link from "next/link";
 import { addExperiencesToBoard, removeSavedItemByExperienceId } from "@/app/trip-board/actions";
 
 export function AddAllToBoard({ experienceIds }: { experienceIds: string[] }) {
-  const [done, setDone] = useState(false);
+  const [status, setStatus] = useState<"idle" | "done" | "error">("idle");
+  const [addedCount, setAddedCount] = useState(0);
   const [isPending, startTransition] = useTransition();
 
   const handle = () => {
     startTransition(async () => {
-      await addExperiencesToBoard(experienceIds);
-      setDone(true);
+      // Surfaces the action's actual result instead of always showing
+      // success — previously ignored { error } entirely, so an
+      // unauthenticated or failed add silently looked identical to a
+      // successful one. Approved — Phase 2 Decision 3 (graceful error
+      // handling, clear success/error feedback).
+      const result = await addExperiencesToBoard(experienceIds);
+      if (result.error) {
+        setStatus("error");
+        return;
+      }
+      setAddedCount(result.count ?? experienceIds.length);
+      setStatus("done");
     });
   };
 
-  if (done) {
+  if (status === "done") {
     return (
-      <span className="text-sm text-[#AAFF00] font-medium">
-        ✓ {experienceIds.length} experiences added to your Trip Board
+      <span className="flex items-center gap-2 flex-wrap text-sm">
+        <span className="text-[#AAFF00] font-medium">✓ {addedCount} experience{addedCount !== 1 ? "s" : ""} added to your Trip Board</span>
+        <Link href="/trip-board" className="text-xs text-[#6A6A6A] hover:text-[#AAFF00] transition-colors underline underline-offset-2">
+          View Trip Board
+        </Link>
+      </span>
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <span className="flex items-center gap-2 flex-wrap text-sm">
+        <span className="text-[#6A6A6A]">Couldn&apos;t add to your Trip Board — </span>
+        <Link href="/sign-in" className="text-xs text-[#AAFF00] hover:text-[#BBFF33] transition-colors underline underline-offset-2">
+          sign in and try again
+        </Link>
       </span>
     );
   }

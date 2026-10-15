@@ -14,6 +14,7 @@ import CalendarSection from "./_components/CalendarSection";
 import ScrollFadeInit from "./_components/ScrollFadeInit";
 import BrandHero from "./_components/BrandHero";
 import TestimonialStrip from "./_components/TestimonialStrip";
+import CockpitHomepageFeature from "./_components/CockpitHomepageFeature";
 import { getAuthUser } from "@/lib/supabase/server";
 import { getPackPricing } from "@/lib/packPricing";
 import { getDestinationsForHomepage } from "@/lib/queries/destinations";
@@ -210,6 +211,12 @@ export default async function HomePage() {
           showPlannerLink={process.env.SHOW_PLANNER_TEASER === "true"}
         />
       </div>
+
+      {/* F1 Cockpit homepage feature — immediately after the masthead,
+          before the Trip Planner showcase, per spec. Behind SHOW_F1_COCKPIT,
+          same flag as /formula-1 itself (component no-ops when unset).
+          Approved — Phase 2 Decision 5 (controlled launch). */}
+      <CockpitHomepageFeature />
 
       {/* Zone 1.5 — Trip Planner teaser: the alternate path for visitors who
           are sport-decided but event-undecided. Sits before Identity Strip

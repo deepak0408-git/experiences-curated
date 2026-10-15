@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function TripBoardSignIn() {
+export default function TripBoardSignIn({ from }: { from?: string } = {}) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "sent" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -13,10 +13,13 @@ export default function TripBoardSignIn() {
     setStatus("loading");
     setErrorMessage(null);
 
+    // Preserves ?from=cockpit through the magic-link redirect, same as the
+    // SignInLink fix — otherwise a Cockpit visitor signing in here loses
+    // the "Back to F1 Cockpit" context. Approved — Phase 2 Decision 2.
     const res = await fetch("/api/auth/magic-link", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: email.trim(), next: "/trip-board" }),
+      body: JSON.stringify({ email: email.trim(), next: from === "cockpit" ? "/trip-board?from=cockpit" : "/trip-board" }),
     });
 
     if (!res.ok) {

@@ -6,6 +6,7 @@ import PostHogPageContext from "@/app/_components/PostHogPageContext";
 import { getSpokeData, getSpokesForEvent, getSpokeImage, getPurchaseStatus, isSpokeUnlocked, MINI_PACK_PRODUCT_TYPE_BY_SPOKE } from "./_lib/getSpokeData";
 import { getPackPricing } from "./_lib/packPricing";
 import { getMiniPackPricing } from "@/lib/packPricing";
+import { AddAllToBoard } from "../_components/AddToBoard";
 
 // Mini-packs pilot — one short (<10 word) description per guide, shown on
 // the "Or just what you need" cards below. Same 3 spoke ids across every
@@ -598,7 +599,7 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
   },
 };
 
-export default async function HubPage({ slug }: { slug: string }) {
+export default async function HubPage({ slug, from }: { slug: string; from?: string }) {
   const { event, dateRange, linkedExperiences } = await getSpokeData(slug);
   const spokes = getSpokesForEvent(slug);
   const config = INTRO_BY_EVENT[slug];
@@ -759,10 +760,20 @@ export default async function HubPage({ slug }: { slug: string }) {
         {/* Favourite/Share row — per beta feedback 4 Aug 2026. Favouriting
             requires sign-in (same as saving an experience); a signed-out
             visitor sees only Share, not a toggle they can't use. */}
-        <div className="flex items-center gap-3 mb-6 flex-wrap">
-          {user && <FavouriteToggle sportingEventId={event.id} slug={slug} initiallySaved={initiallySaved} />}
-          <ShareGuideButton slug={slug} eventName={event.name} />
-          {user && <RateGuideButton sportingEventId={event.id} slug={slug} initialRating={myRating} />}
+        <div className="flex items-center justify-between gap-3 mb-6 flex-wrap">
+          <div className="flex items-center gap-3 flex-wrap">
+            {user && <FavouriteToggle sportingEventId={event.id} slug={slug} initiallySaved={initiallySaved} />}
+            <ShareGuideButton slug={slug} eventName={event.name} />
+            {user && <RateGuideButton sportingEventId={event.id} slug={slug} initialRating={myRating} />}
+          </div>
+          {from === "cockpit" && (
+            <Link
+              href="/formula-1"
+              className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+            >
+              ← Back to F1 Cockpit
+            </Link>
+          )}
         </div>
 
         {/* Intro + purchase CTA — same 2-column layout as the classic pack
@@ -1030,7 +1041,21 @@ export default async function HubPage({ slug }: { slug: string }) {
           </div>
         )}
 
-        <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mt-10 mb-4">Plan your trip</p>
+        {/* Bulk Add All to Trip Board — extends the classic pack's existing
+            AddAllToBoard (PackView.tsx ~line 1264) to hub-and-spoke, where it
+            was previously missing: SpokeExperienceCard only offered
+            single-item AddOneToBoard. Every real/current F1 event is
+            hub-and-spoke format, so without this an F1 visitor could save
+            experiences only one at a time. Same hasPurchased server-verified
+            gate as the rest of this page (never a client-controlled check) —
+            unpurchased visitors never see this bar at all. Approved — Phase 2
+            Decision 3. */}
+        <div className="flex items-center gap-4 mt-10 mb-4">
+          <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00]">Plan your trip</p>
+          {hasPurchased && linkedExperiences.length > 0 && (
+            <AddAllToBoard experienceIds={linkedExperiences.map((e) => e.id)} />
+          )}
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {spokes.map((spoke) => {
             const imageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
