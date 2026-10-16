@@ -251,7 +251,7 @@ const PACK_SECTIONS_BY_EVENT: Record<string, { label: string; description: strin
         "Francorchamps hotels 2km from the gates, Malmedy and Spa-town options, and what fills fastest for race weekend",
     },
   ],
-  "hungarian-gp-2026": [
+  "hungarian-grand-prix": [
     {
       label: "At the Circuit",
       description:

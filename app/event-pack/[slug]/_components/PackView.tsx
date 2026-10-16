@@ -351,7 +351,7 @@ const PACK_EDITORIAL: Record<string, PackEditorial> = {
     },
   },
 
-  "hungarian-gp-2026": {
+  "hungarian-grand-prix": {
     brief:
       "The Hungarian Grand Prix is the calendar's affordability outlier, and once you're standing in the natural bowl the Hungaroring sits in, you understand why that matters more here than it would anywhere else. This is a tight, technical circuit outside Budapest, one reliable overtaking corner at Turn 1, a slow chicane at Turns 6-7 that quietly separates clean laps from scrappy ones, and terrain shaped like an amphitheatre that makes General Admission genuinely good rather than a fallback for people who couldn't afford a seat.\n\nThis pack is built around one idea: Hungary rewards people who don't over-plan the seating question. A General Admission ticket here costs a fraction of what the same tier runs at Spa or Monza, and the hillside gives real sightlines across multiple corners without a fixed seat. Grandstand options exist too — T1 for the corner where overtakes actually happen, the covered Hungaroring Grandstand for shelter and a pit-straight view — but they're an upgrade on a strong base, not a rescue from a weak one. The Ticket Guide experience walks through the full tier comparison; the Where to Sit experience compares the specific stands.\n\nA few things worth knowing before you commit to a plan. Budapest sits 25 minutes from the circuit, close enough that basing there and commuting by metro and suburban rail is not just viable but genuinely the default choice most visitors make. Late July in Hungary runs hot, regularly past 30°C, with afternoon storms that don't always announce themselves. And because prices here are so much lower than the rest of the calendar, it's easy to assume availability holds longer than it actually does — the covered grandstand and the popular corners sell out weeks ahead even while General Admission tickets remain available right up to the gates. The sections here follow the shape of the weekend — what to sort before you travel, where to watch from, where to stay, and what Budapest itself offers beyond the circuit.",
     sectionIntros: {
@@ -810,7 +810,7 @@ const INSIDER_TIPS: Record<string, Record<string, string[]>> = {
     ],
   },
 
-  "hungarian-gp-2026": {
+  "hungarian-grand-prix": {
     "Where to Sit": [
       "If you can only book one grandstand, T1 gives the highest chance of seeing an actual overtake, it's the circuit's one reliable passing zone.",
       "Weather-check your dates before booking an uncovered stand — if any forecast shows rain risk, the Hungaroring Grandstand is worth the premium purely for the roof.",
@@ -1100,7 +1100,7 @@ const TOURNAMENT_RHYTHM: Record<string, RhythmEntry[]> = {
     },
   ],
 
-  "hungarian-gp-2026": [
+  "hungarian-grand-prix": [
     {
       label: "Friday 24 Jul — Practice 1 & 2",
       body: "A standard weekend, no sprint format, two practice sessions on Friday and the quietest day on circuit. This is the day to walk the natural bowl and work out which part of the General Admission hillside actually suits you, the terrain shifts the sightlines more than you'd expect from a flat map. If you're weighing a grandstand for the rest of the weekend, use Friday to stand where you're considering booking and see how it actually feels before committing.",
