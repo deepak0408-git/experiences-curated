@@ -207,11 +207,7 @@ export default function TicketQuiz({
         </p>
         <Link
           href={backLink.current.href}
-          className={
-            backLink.current.isCockpit
-              ? "text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
-              : "text-xs font-semibold text-[#6A6A6A] hover:text-[#AAFF00] underline transition-colors"
-          }
+          className="text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
         >
           {backLink.current.label}
         </Link>

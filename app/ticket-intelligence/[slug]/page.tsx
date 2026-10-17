@@ -7,7 +7,7 @@ import { db } from "@/lib/db";
 import { purchases } from "@/schema/database";
 import { and, eq } from "drizzle-orm";
 import { getSeatingData, hasFullPlannerCostData } from "./_lib/getSeatingData";
-import { hasActiveSeasonPass } from "../_lib/seasonPassAccess";
+import { hasActiveSeasonPass, hasActiveAnnualProForEvent } from "../_lib/seasonPassAccess";
 import TicketQuiz from "./_components/TicketQuiz";
 
 // Ticket Intelligence — standalone $10 quiz+scoring decision tool ("sell the
@@ -88,7 +88,14 @@ export default async function TicketIntelligencePage({
     // per-event buyer (no paywall once they answer), with no separate
     // purchases row for this event at all. Checked second (existing
     // purchase is the common case, cheaper to short-circuit on).
-    alreadyPurchased = hasPerEventPurchase || (await hasActiveSeasonPass(user.email, data.event.editionYear));
+    //
+    // Annual Pro (28 Oct 2026) — same "already unlocked" treatment for an
+    // Annual Pro subscriber whose currentPeriodEnd covers this event's
+    // date. Checked last (rarest case, requires its own query).
+    alreadyPurchased =
+      hasPerEventPurchase ||
+      (await hasActiveSeasonPass(user.email, data.event.editionYear)) ||
+      (await hasActiveAnnualProForEvent(user.email, data.event.startDate));
   }
 
   // ?retake=<timestamp> (linked from the result page's "Retake the quiz",

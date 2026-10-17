@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { ticketIntelligenceSeasonPasses } from "@/schema/database";
 import { and, eq, sql } from "drizzle-orm";
+import { getProDetails } from "@/lib/pro";
 
 // Shared season-pass access check — used everywhere Ticket Intelligence
 // currently checks `purchases` for a per-event `ticket_intelligence` row
@@ -53,4 +54,26 @@ export async function hasAnyActiveSeasonPass(email: string): Promise<boolean> {
     )
     .limit(1);
   return !!row;
+}
+
+// Annual Pro (28 Oct 2026) — an Annual Pro subscriber gets free Ticket
+// Intelligence access for any F1 event whose START date falls before their
+// subscription's currentPeriodEnd, with no separate purchase or Season
+// Pass needed. Monthly Pro gets no special treatment here — same
+// annual-only asymmetry as the event-pack gate
+// (event-pack/[slug]/page.tsx's isAnnualProActive).
+//
+// Checked against startDate, not endDate — founder correction, 17 Oct
+// 2026: a multi-day event (e.g. Miami GP 2027, 30 Apr-2 May) that STARTS
+// on the exact day a subscriber's Pro expires should still unlock, since
+// the subscriber was still active when the event began. An endDate check
+// failed this case (endDate May 2 fell after a currentPeriodEnd of Apr
+// 30), even though the subscriber was clearly covered on race weekend.
+// Compared start-of-day UTC (not end-of-day, unlike the `isEventPast`
+// idiom elsewhere) against currentPeriodEnd so a start date equal to the
+// expiry date still passes.
+export async function hasActiveAnnualProForEvent(email: string, eventStartDate: string): Promise<boolean> {
+  const { isAnnual, currentPeriodEnd } = await getProDetails(email);
+  if (!isAnnual || !currentPeriodEnd) return false;
+  return new Date(`${eventStartDate}T00:00:00Z`) <= currentPeriodEnd;
 }

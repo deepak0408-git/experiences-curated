@@ -441,10 +441,10 @@ export default async function HomePage() {
                 Annual Pro
               </p>
               <p className="text-lg font-black text-white leading-snug">
-                Every event pack, included. One subscription.
+                The full event planning kit, included. One subscription.
               </p>
               <p className="mt-2 text-sm text-[#A3A3A3] leading-6">
-                Annual Pro members get free access to every pack we publish — no separate purchase needed. Plus unlimited reads, Trip Boards, and booking contacts.
+                Annual Pro members get free access to seat matching and every event pack we publish — no separate purchase needed. Plus unlimited reads, Trip Boards, and booking contacts.
               </p>
             </div>
             <div className="flex-shrink-0">

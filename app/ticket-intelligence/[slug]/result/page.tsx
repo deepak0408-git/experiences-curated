@@ -6,7 +6,7 @@ import { db } from "@/lib/db";
 import { purchases, sportingEvents } from "@/schema/database";
 import { and, eq } from "drizzle-orm";
 import { getSeatingData, hasFullPlannerCostData } from "../_lib/getSeatingData";
-import { hasActiveSeasonPass } from "../../_lib/seasonPassAccess";
+import { hasActiveSeasonPass, hasActiveAnnualProForEvent } from "../../_lib/seasonPassAccess";
 import { scoreSeats } from "../_lib/scoreSeats";
 import { resolveBackLink } from "../_lib/resolveBackLink";
 import type { QuizAnswers } from "../_lib/types";
@@ -74,6 +74,7 @@ export default async function TicketIntelligenceResultPage({
       packStatus: sportingEvents.packStatus,
       isHidden: sportingEvents.isHidden,
       destinationId: sportingEvents.destinationId,
+      startDate: sportingEvents.startDate,
     })
     .from(sportingEvents)
     .where(eq(sportingEvents.slug, slug))
@@ -103,7 +104,14 @@ export default async function TicketIntelligenceResultPage({
   // since a pass holder isn't paying per event — founder direction, 28 Sep
   // 2026), so it only ever satisfies the query-string answers path below,
   // never the answersFromStored recovery path.
-  const hasAccess = !!purchase || (await hasActiveSeasonPass(user.email, event.editionYear));
+  //
+  // Annual Pro (28 Oct 2026) — same treatment as the Season Pass: grants
+  // access with no stored answers of its own, so it also only ever
+  // satisfies the query-string answers path below.
+  const hasAccess =
+    !!purchase ||
+    (await hasActiveSeasonPass(user.email, event.editionYear)) ||
+    (await hasActiveAnnualProForEvent(user.email, event.startDate));
 
   const data = await getSeatingData(slug);
   if (!data?.event) redirect(`/ticket-intelligence/${slug}`);
@@ -133,11 +141,7 @@ export default async function TicketIntelligenceResultPage({
             </p>
             <Link
               href={backLink.href}
-              className={
-                backLink.isCockpit
-                  ? "text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
-                  : "text-xs font-semibold text-[#6A6A6A] hover:text-[#AAFF00] underline transition-colors"
-              }
+              className="text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
             >
               {backLink.label}
             </Link>

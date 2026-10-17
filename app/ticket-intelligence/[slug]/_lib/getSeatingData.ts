@@ -31,6 +31,12 @@ async function getSeatingDataUncached(slug: string) {
       // Season Pass gating (seasonPassAccess.ts) matches against this —
       // added 28 Sep 2026.
       editionYear: sportingEvents.editionYear,
+      // Annual Pro gating (hasActiveAnnualProForEvent, seasonPassAccess.ts)
+      // matches this against the subscriber's currentPeriodEnd — added 28
+      // Oct 2026. Uses startDate, not endDate — a multi-day event that
+      // STARTS before/on the subscriber's expiry still unlocks, even if it
+      // ends after (founder correction, 17 Oct 2026, Miami GP 2027 case).
+      startDate: sportingEvents.startDate,
       // isBuilt gating for TicketIntelligenceSidebar's "Get the event
       // guide" CTA — same formula as the Season Planner's isBuilt
       // (ShortlistResults.tsx), added 28 Sep 2026 after the sidebar was

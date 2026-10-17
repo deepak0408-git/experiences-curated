@@ -24,6 +24,11 @@ const PRO_FEATURES: { label: string; detail: string; annualOnly?: boolean; comin
     annualOnly: true,
   },
   {
+    label: "All seat matching functionality, free",
+    detail: "Includes unlimited Ticket Intelligence seat matching for every event while your subscription is active",
+    annualOnly: true,
+  },
+  {
     label: "Unlimited experience reads",
     detail: "Browse every experience in every guide — no 3-read cap",
     annualOnly: false,
@@ -143,7 +148,7 @@ export default async function ProPage() {
             The version for people who take trips seriously
           </h1>
           <p className="text-[#A3A3A3] text-sm leading-7">
-            Event guides give you great experiences. Pro adds the layer that turns a good trip into one you'll talk about — private booking contacts, concierge-only picks, and reminders before the good things sell out.
+            Event guides give you great experiences. Pro adds the intelligence layer that turns a good trip into one you'll talk about — best seats matching, private booking contacts, concierge-only picks, and reminders before the good things sell out.
           </p>
         </div>
 

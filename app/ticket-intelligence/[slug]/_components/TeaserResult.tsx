@@ -112,11 +112,7 @@ export default function TeaserResult({
           </p>
           <Link
             href={backLink.href}
-            className={
-              backLink.isCockpit
-                ? "text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
-                : "text-xs font-semibold text-[#6A6A6A] hover:text-[#AAFF00] underline transition-colors"
-            }
+            className="text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
           >
             {backLink.label}
           </Link>
@@ -164,11 +160,7 @@ export default function TeaserResult({
         </p>
         <Link
           href={backLink.href}
-          className={
-            backLink.isCockpit
-              ? "text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
-              : "text-xs font-semibold text-[#6A6A6A] hover:text-[#AAFF00] underline transition-colors"
-          }
+          className="text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
         >
           {backLink.label}
         </Link>

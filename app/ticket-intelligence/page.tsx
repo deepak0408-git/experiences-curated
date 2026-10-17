@@ -7,6 +7,7 @@ import { getTicketIntelligenceEvents } from "./[slug]/_lib/getSeatingData";
 import SeasonPassCheckout from "./_components/SeasonPassCheckout";
 import LocalCurrencyHint from "@/app/event-pack/[slug]/_components/LocalCurrencyHint";
 import { hasAnyActiveSeasonPass } from "./_lib/seasonPassAccess";
+import { getProDetails } from "@/lib/pro";
 
 // Ticket Intelligence event picker — top-level index route, same pattern as
 // /planner and /calendar. The discovery surface fans land on when they
@@ -31,10 +32,27 @@ function formatDateRange(startDate: string, endDate: string) {
   return `${startFmt}–${endFmt}`;
 }
 
+function formatDate(date: Date) {
+  return date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+}
+
 export default async function TicketIntelligenceHomePage() {
   const { user } = await getAuthUser();
   const events = await getTicketIntelligenceEvents();
   const ownsSeasonPass = user?.email ? await hasAnyActiveSeasonPass(user.email) : false;
+  // Annual Pro (28 Oct 2026) — a fan with free access via Annual Pro
+  // shouldn't be shown the $25 Season Pass upsell as if they still needed
+  // to buy something. Pulled via getProDetails directly (not
+  // hasActiveAnnualPro) so currentPeriodEnd is available to show the exact
+  // cutoff date in the "Included with Annual Pro until <date>" message —
+  // founder direction 17 Oct 2026, to remove any ambiguity about which
+  // races are actually covered (access is still checked per-race against
+  // each event's own startDate on the quiz/result pages; this date is
+  // informational only).
+  const { isAnnual, currentPeriodEnd } = user?.email
+    ? await getProDetails(user.email)
+    : { isAnnual: false, currentPeriodEnd: null };
+  const hasAnnualPro = isAnnual && currentPeriodEnd != null && currentPeriodEnd > new Date();
 
   return (
     <main className="min-h-screen bg-[#0A0A0A]">
@@ -111,6 +129,16 @@ export default async function TicketIntelligenceHomePage() {
                   unlocks automatically, no separate payment.
                 </p>
                 <p className="text-sm font-black text-[#AAFF00]">✓ Season Pass active</p>
+              </>
+            ) : hasAnnualPro ? (
+              <>
+                <p className="text-sm text-[#A3A3A3] mb-4">
+                  Your Annual Pro subscription unlocks Ticket Intelligence for every event ending before your
+                  current billing period expires — pick any eligible event, your match unlocks automatically.
+                </p>
+                <p className="text-sm font-black text-[#AAFF00]">
+                  ✓ Included with Annual Pro until {formatDate(currentPeriodEnd!)}
+                </p>
               </>
             ) : (
               <>
