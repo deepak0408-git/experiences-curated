@@ -14,6 +14,37 @@ export const SPOKES_BY_EVENT: Record<string, SpokeConfig[]> = {
   // memory). Weather/Arrival/Tickets use the skill's standing cross-event
   // default images (imageOverride), set here at config-creation time per
   // the skill's explicit rule.
+  // Hungarian Grand Prix — classic->hub-and-spoke migration + 2026->2027
+  // rollover, 16 Oct 2026. 20 real experiences, all published — 7 covering
+  // grandstands/tickets/hospitality (rewritten/expanded same session after
+  // the Ticket Intelligence build surfaced real seat-coverage gaps), plus
+  // transit, camping, a neighbourhood guide, 2 hotels, 2 dining, 2
+  // activity/culture, 1 day trip. imageSlug values assigned from each
+  // spoke's own linked-experience hero images (no net-new sourcing needed —
+  // every experience already had a hero), one distinct experience per spoke,
+  // no reuse. Weather/Arrival/Tickets keep the standing cross-event default
+  // images (imageOverride) set here at config-creation time per the skill's
+  // explicit rule.
+  "hungarian-grand-prix": [
+    { id: "cost", label: "Cost Guide", question: "How much does a Hungarian Grand Prix weekend cost?", status: "teaser", imageSlug: "hungaroring-grandstand-both-tiers-" },
+    { id: "tickets", label: "Ticket Guide", question: "Which Hungaroring grandstand is the best buy?", status: "teaser", imageSlug: "hungarian-gp-ticket-guide-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },
+    { id: "hotels", label: "Where to Stay", question: "Where should I stay for the Hungarian Grand Prix?", status: "teaser", imageSlug: "four-seasons-gresham-palace-" },
+    { id: "getting-there", label: "Getting There", question: "How do I get to the Hungaroring?", status: "public", imageSlug: "getting-to-hungaroring-" },
+    { id: "weather", label: "Weather & What to Pack", question: "What's the weather like at the Hungarian Grand Prix, and what should I pack?", status: "public", imageSlug: "general-admission-fan-zone-hungaroring-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-packing.jpg" },
+    { id: "first-timer-guide", label: "First-Timer's Guide", question: "What do I need to know for my first Hungarian Grand Prix?", status: "public", imageSlug: "f1-fan-lounge-hungaroring-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/hungarian-grand-prix-first-timer-spoke.jpg" },
+    // where-to-eat imageOverride: "Goulash in Budapest" by Asif Masimov
+    // (masimov.de), CC BY 3.0 Unported, via Wikimedia Commons —
+    // https://commons.wikimedia.org/wiki/File:Goulash_in_Budapest.jpg
+    { id: "where-to-eat", label: "Where to Eat", question: "Where to eat in Budapest during race weekend?", status: "teaser", imageSlug: "getto-gulyas-jewish-quarter-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/hungarian-grand-prix-where-to-eat-spoke.jpg" },
+    // day-trips imageOverride: "Széchenyi Chain Bridge in Budapest at night"
+    // by Wilfredo R. Rodriguez H. (Wilfredor), CC0 1.0 (public domain), via
+    // Wikimedia Commons — https://commons.wikimedia.org/wiki/File:Sz%C3%A9chenyi_Chain_Bridge_in_Budapest_at_night.jpg
+    { id: "day-trips", label: "Day Trips", question: "What are the best things to do in Budapest beyond the race?", status: "teaser", imageSlug: "a-day-in-budapest-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/hungarian-grand-prix-day-trips-spoke.jpg", heroImagePosition: "center 45%" },
+    { id: "itinerary", label: "Trip Schedule", question: "What does a Hungarian Grand Prix weekend actually look like?", status: "teaser", imageSlug: "szimpla-kert-jewish-quarter-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/hungarian-grand-prix-schedule-spoke.jpg" },
+    { id: "arrival", label: "Arrival & Queue Guide", question: "What time should I arrive at Hungaroring gates?", status: "public", imageSlug: "t1-grandstand-piquet-corner-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-arrival.jpg" },
+    { id: "map", label: "Venue Map", question: "What facilities are available at the Hungaroring?", status: "public", imageSlug: "pit-exit-1-grandstand-" },
+    { id: "luxury", label: "Luxury Guide", question: "What's the best hospitality option at the Hungarian Grand Prix?", status: "teaser", imageSlug: "paddock-club-hungaroring-" },
+  ],
   "belgian-grand-prix": [
     { id: "cost", label: "Cost Guide", question: "How much does a Belgian Grand Prix weekend cost?", status: "teaser", imageSlug: "pouhon-corner-silver3-" },
     { id: "tickets", label: "Ticket Guide", question: "Which Spa grandstand is the best buy?", status: "teaser", imageSlug: "eau-rouge-raidillon-gold3-", imageOverride: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events%2Fhero%2Fbahrain-grand-prix-cost.jpg" },

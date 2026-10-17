@@ -126,8 +126,8 @@ export default async function SpokeShell({
             src={heroImageUrl}
             alt=""
             fill
-            className="object-cover opacity-90"
-            style={heroImagePosition ? { objectPosition: heroImagePosition } : undefined}
+            className={`object-cover opacity-90 ${heroImagePosition ? "lg:[object-position:var(--spoke-hero-position)]" : ""}`}
+            style={heroImagePosition ? ({ "--spoke-hero-position": heroImagePosition } as React.CSSProperties) : undefined}
             sizes="100vw"
             priority
           />

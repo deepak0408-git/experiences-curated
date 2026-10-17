@@ -1,4 +1,17 @@
 import type { ComponentType } from "react";
+import HUNCostSpoke from "./hungarian-grand-prix/CostSpoke";
+import HUNTicketsSpoke from "./hungarian-grand-prix/TicketsSpoke";
+import HUNHotelsSpoke from "./hungarian-grand-prix/HotelsSpoke";
+import HUNGettingThereSpoke from "./hungarian-grand-prix/GettingThereSpoke";
+import HUNWeatherSpoke from "./hungarian-grand-prix/WeatherSpoke";
+import HUNFirstTimerGuideSpoke from "./hungarian-grand-prix/FirstTimerGuideSpoke";
+import HUNWhereToEatSpoke from "./hungarian-grand-prix/WhereToEatSpoke";
+import HUNDayTripsSpoke from "./hungarian-grand-prix/DayTripsSpoke";
+import HUNItinerarySpoke from "./hungarian-grand-prix/ItinerarySpoke";
+import HUNArrivalSpoke from "./hungarian-grand-prix/ArrivalSpoke";
+import HUNMapSpoke from "./hungarian-grand-prix/MapSpoke";
+import HUNLuxurySpoke from "./hungarian-grand-prix/LuxurySpoke";
+
 import BGPCostSpoke from "./belgian-grand-prix/CostSpoke";
 import BGPTicketsSpoke from "./belgian-grand-prix/TicketsSpoke";
 import BGPHotelsSpoke from "./belgian-grand-prix/HotelsSpoke";
@@ -279,6 +292,20 @@ type SpokeComponent = ComponentType<{ eventSlug: string }>;
 // folder and a SPOKES_BY_EVENT entry in _lib/spokeConfig.ts) — nothing
 // else in the routing layer changes.
 export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = {
+  "hungarian-grand-prix": {
+    cost: HUNCostSpoke,
+    tickets: HUNTicketsSpoke,
+    hotels: HUNHotelsSpoke,
+    "getting-there": HUNGettingThereSpoke,
+    weather: HUNWeatherSpoke,
+    "first-timer-guide": HUNFirstTimerGuideSpoke,
+    "where-to-eat": HUNWhereToEatSpoke,
+    "day-trips": HUNDayTripsSpoke,
+    itinerary: HUNItinerarySpoke,
+    arrival: HUNArrivalSpoke,
+    map: HUNMapSpoke,
+    luxury: HUNLuxurySpoke,
+  },
   "belgian-grand-prix": {
     cost: BGPCostSpoke,
     tickets: BGPTicketsSpoke,
@@ -593,6 +620,20 @@ export const SPOKE_COMPONENTS: Record<string, Record<string, SpokeComponent>> = 
 };
 
 export const SPOKE_METADATA: Record<string, Record<string, string>> = {
+  "hungarian-grand-prix": {
+    cost: "How Much Does the Hungarian Grand Prix Cost? — Hungaroring Budget Guide",
+    tickets: "Hungaroring Ticket Guide — General Admission to Hospitality",
+    hotels: "Where to Stay for the Hungarian Grand Prix — Budapest or Gödöllő",
+    "getting-there": "Getting to the Hungaroring — Hungarian Grand Prix Transit Guide",
+    weather: "Budapest Weather in July — What to Pack for the Hungarian Grand Prix",
+    "first-timer-guide": "First-Timer's Guide — the Hungarian Grand Prix at the Hungaroring",
+    "where-to-eat": "Where to Eat at the Hungarian Grand Prix — Budapest Weekend",
+    "day-trips": "Best Day Trips — Hungarian Grand Prix Weekend, Including Budapest",
+    itinerary: "Sample Hungarian Grand Prix Weekend Itinerary",
+    arrival: "The Hungaroring — Arrival & Gate Guide",
+    map: "Hungaroring Circuit Map — History, Facilities, and the Piquet Corner",
+    luxury: "Luxury Guide for the Hungarian Grand Prix — Paddock Club and More",
+  },
   "belgian-grand-prix": {
     cost: "How Much Does the Belgian Grand Prix Cost? — Spa Budget Guide",
     tickets: "Spa-Francorchamps Ticket Guide — Bronze to Gold Grandstand",

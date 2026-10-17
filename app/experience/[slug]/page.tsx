@@ -82,6 +82,36 @@ const EXPERIENCE_TO_SPOKE_BY_EVENT: Record<string, Record<string, { spokeId: str
     "spa-francorchamps-track-experiences-": { spokeId: "map", spokeLabel: "Venue Map" },
     "paddock-club-belgian-gp-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
   },
+  // Added 16 Oct 2026 — all 20 active experiences wired into this pack's
+  // spokes had no EXPERIENCE_TO_SPOKE_BY_EVENT entry at all (gap caught by
+  // the founder on the T1 Grandstand card's back-link, same class of bug as
+  // Border-Gavaskar Trophy's 9 Oct 2026 gap below). None of these 20 are
+  // shared with another event (confirmed via sporting_event_experiences),
+  // so this is a one-event addition, not a shared-experience merge.
+  // "where-to-sit-hungaroring-" is archived (superseded by the grandstand
+  // restructure) and intentionally has no entry here.
+  "hungarian-grand-prix": {
+    "hungaroring-grandstand-both-tiers-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "t1-grandstand-piquet-corner-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "grid-1-grandstand-starting-grid-view-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "grid-2-grandstand-final-corner-view-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "pit-exit-1-grandstand-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "the-chicane-hungaroring-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "general-admission-fan-zone-hungaroring-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "hungarian-gp-ticket-guide-": { spokeId: "tickets", spokeLabel: "Ticket Guide" },
+    "four-seasons-gresham-palace-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "godollo-near-circuit-stay-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "staying-in-pest-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "camping-hungaroring-": { spokeId: "hotels", spokeLabel: "Where to Stay" },
+    "getting-to-hungaroring-": { spokeId: "getting-there", spokeLabel: "Getting There" },
+    "getto-gulyas-jewish-quarter-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "stand25-bisztro-": { spokeId: "where-to-eat", spokeLabel: "Where to Eat" },
+    "a-day-in-budapest-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "szechenyi-thermal-bath-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "szimpla-kert-jewish-quarter-": { spokeId: "day-trips", spokeLabel: "Day Trips" },
+    "f1-fan-lounge-hungaroring-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+    "paddock-club-hungaroring-": { spokeId: "luxury", spokeLabel: "Luxury Guide" },
+  },
   // Added 9 Oct 2026 — all 27 experiences wired into this pack's spokes had
   // no EXPERIENCE_TO_SPOKE_BY_EVENT entry at all (gap caught by the founder
   // while browsing a hotel card's back-link). None of these 27 are shared
@@ -736,6 +766,8 @@ const MULTI_VENUE_RATINGS: Record<string, { venueCount: number; venueNoun: strin
   "where-to-stay-ahmedabad-": { venueCount: 3, venueNoun: "hotels" },
   "ahmedabad-thali-manek-chowk-": { venueCount: 2, venueNoun: "eateries" },
   "kankaria-riverfront-": { venueCount: 2, venueNoun: "sites" },
+  "staying-in-pest-": { venueCount: 5, venueNoun: "hotels" },
+  "a-day-in-budapest-": { venueCount: 5, venueNoun: "sights" },
   "qatar-gp-pearl-katara-": { venueCount: 2, venueNoun: "districts" },
   "where-to-stay-sydney-fourth-test-": { venueCount: 2, venueNoun: "hotels" },
   "fremantle-day-trip-from-perth-": { venueCount: 3, venueNoun: "places" },
@@ -1438,6 +1470,7 @@ export default async function ExperiencePage({
               slug.startsWith("ahmedabad-old-city-") ? "lg:object-[center_43%]" :
               slug.startsWith("statue-of-unity-") ? "lg:object-[center_42%]" :
               slug.startsWith("bgt-rivalry-history-") ? "lg:object-[center_25%]" :
+              slug.startsWith("t1-grandstand-piquet-corner-") ? "lg:object-[center_20%]" :
               ""
             }`}
             sizes="100vw"

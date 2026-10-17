@@ -6,7 +6,6 @@ import PostHogPageContext from "@/app/_components/PostHogPageContext";
 import { getSpokeData, getSpokesForEvent, getSpokeImage, getPurchaseStatus, isSpokeUnlocked, MINI_PACK_PRODUCT_TYPE_BY_SPOKE } from "./_lib/getSpokeData";
 import { getPackPricing } from "./_lib/packPricing";
 import { getMiniPackPricing } from "@/lib/packPricing";
-import { AddAllToBoard } from "../_components/AddToBoard";
 
 // Mini-packs pilot — one short (<10 word) description per guide, shown on
 // the "Or just what you need" cards below. Same 3 spoke ids across every
@@ -95,6 +94,21 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
   // migrate-from-classic-to-hub-spoke skill 4d. Sourced from the event
   // row's own preTripBriefLines content and lib/pack-content.ts's existing
   // localInfo table for this event.
+  // Added as part of the classic->hub-and-spoke migration + 2026->2027
+  // rollover, 16 Oct 2026. Real facts sourced from F1's official 2027
+  // calendar (no sprint marker for Hungary — confirmed standard weekend),
+  // this event's own existing pre-trip-brief/localInfo content, the
+  // Ticket Intelligence build (gate/bag policy), and hungaroring.hu's
+  // official 2026 FAQ.
+  "hungarian-grand-prix": [
+    { label: "Weekend format", value: "2027 runs the standard weekend format, confirmed — no sprint session on F1's official 2027 calendar for Hungary. Two practice sessions Friday, final practice and qualifying Saturday, race Sunday. Confirmed dates: 30 July - 1 August 2027. Exact session clock times not yet published, check formula1.com closer to race week." },
+    { label: "Gate times", value: "Gates open 7:30am on Friday, Saturday, and Sunday. Closing times run later Friday/Saturday (19:30) than Sunday (20:00)." },
+    { label: "Bag policy", value: "20 litres maximum per bag, including any camera and its accessories. Glass items, cool boxes, and cooking/camping chairs are banned. No bag storage at the gates." },
+    { label: "Payment", value: "Fully cashless — load cash onto a Festipay card at the gate if you don't want to use a bank card directly; unused balance refunds fee-free at the end of the weekend." },
+    { label: "Weather", value: "Late July regularly pushes past 30°C, with afternoon storms that can arrive without much warning.", href: "https://www.accuweather.com/en/hu/budapest/187423/10-day-weather-forecast/187423", linkLabel: "AccuWeather forecast" },
+    { label: "Getting to the circuit", value: "M2 metro to Örs vezér tere, then HÉV suburban rail toward Kerepes, then a free shuttle bus to Gate 3. Standard BKK public transport ticket covers the metro and HÉV legs." },
+    { label: "Emergencies", value: "Emergency services: 112 · Nearest major hospital: Péterfy Sándor Utcai Hospital and Trauma Center, Péterfy Sándor utca 8-20, Budapest" },
+  ],
   "belgian-grand-prix": [
     { label: "Weekend format", value: "2027 runs the standard weekend format, confirmed, no sprint session, two practice sessions Friday, final practice and qualifying Saturday, race Sunday. Confirmed dates: 23-25 July 2027. Exact session clock times not yet published, check formula1.com closer to race week." },
     { label: "Gate times", value: "Gates from around 06:00 on each race day. Check the official Formula 1 app for confirmed daily timings, these can shift session to session." },
@@ -321,6 +335,17 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
 
 // Exported (27 Aug 2026) — same reasoning as QUICK_REFERENCE_BY_EVENT above.
 export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: string; heroFallbackImageSlug: string; introText: string }> = {
+  // Real intro drawn directly from this event's own classic-pack editorial
+  // overview (PackView.tsx's PACK_EDITORIAL["hungarian-gp-2026"].brief,
+  // founder-approved content, not invented) — rewritten for the hub-and-
+  // spoke hub's intro format, 16 Oct 2026.
+  "hungarian-grand-prix": {
+    displayName: "Hungarian Grand Prix",
+    venueLine: "Held at the Hungaroring, Mogyoród — a tight, technical circuit in a natural bowl outside Budapest, and the calendar's affordability outlier.",
+    heroFallbackImageSlug: "hungaroring-grandstand-both-tiers-",
+    introText:
+      "The Hungarian Grand Prix is the calendar's affordability outlier, and once you're standing in the natural bowl the Hungaroring sits in, you understand why that matters more here than it would anywhere else. This is a tight, technical circuit outside Budapest, one reliable overtaking corner at Turn 1 — officially Piquet corner since 2025 — and terrain shaped like an amphitheatre that makes General Admission genuinely good rather than a fallback for people who couldn't afford a seat.\n\nThis pack is built around one idea: Hungary rewards people who don't over-plan the seating question. A General Admission ticket here costs a fraction of what the same tier runs at Spa or Monza, and the hillside gives real sightlines across multiple corners without a fixed seat. Grandstand options exist too, each rebuilt and renamed ahead of the 2025 race — T1 for the corner where overtakes actually happen, the covered main grandstand for shelter and a pit-straight view — but they're an upgrade on a strong base, not a rescue from a weak one.\n\nBudapest sits 25 minutes from the circuit, close enough that basing there and commuting by metro and suburban rail is the default choice most visitors make. Late July runs hot, regularly past 30°C, with afternoon storms that don't always announce themselves. Everything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+  },
   "us-open-2026": {
     displayName: "US Open",
     venueLine: "Held at the USTA Billie Jean King National Tennis Center, Flushing Meadows, Queens — the world's largest tennis stadium, and the loudest Grand Slam on the calendar.",
@@ -702,7 +727,7 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
             src={hubHeroUrl}
             alt={displayEventName}
             fill
-            className={`object-cover opacity-90 ${slug === "shanghai-masters" ? "lg:object-[center_65%]" : ""} ${slug === "brazilian-grand-prix" ? "lg:object-[center_70%]" : ""} ${slug === "australian-grand-prix" ? "lg:object-[center_75%]" : ""}`}
+            className={`object-cover opacity-90 ${slug === "shanghai-masters" ? "lg:object-[center_65%]" : ""} ${slug === "brazilian-grand-prix" ? "lg:object-[center_70%]" : ""} ${slug === "australian-grand-prix" ? "lg:object-[center_75%]" : ""} ${slug === "hungarian-grand-prix" ? "lg:object-[center_35%]" : ""}`}
             sizes="100vw"
             priority
           />
@@ -1041,20 +1066,8 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
           </div>
         )}
 
-        {/* Bulk Add All to Trip Board — extends the classic pack's existing
-            AddAllToBoard (PackView.tsx ~line 1264) to hub-and-spoke, where it
-            was previously missing: SpokeExperienceCard only offered
-            single-item AddOneToBoard. Every real/current F1 event is
-            hub-and-spoke format, so without this an F1 visitor could save
-            experiences only one at a time. Same hasPurchased server-verified
-            gate as the rest of this page (never a client-controlled check) —
-            unpurchased visitors never see this bar at all. Approved — Phase 2
-            Decision 3. */}
         <div className="flex items-center gap-4 mt-10 mb-4">
           <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00]">Plan your trip</p>
-          {hasPurchased && linkedExperiences.length > 0 && (
-            <AddAllToBoard experienceIds={linkedExperiences.map((e) => e.id)} />
-          )}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {spokes.map((spoke) => {

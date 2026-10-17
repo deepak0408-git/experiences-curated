@@ -596,7 +596,9 @@ export default async function EventPackPage({
             src={event.heroImageUrl}
             alt={event.name}
             fill
-            className="object-cover opacity-90"
+            className={`object-cover opacity-90 ${
+              event.slug === "hungarian-grand-prix" ? "lg:object-[center_40%]" : ""
+            }`}
             sizes="100vw"
             priority
           />

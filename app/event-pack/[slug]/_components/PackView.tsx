@@ -1231,7 +1231,9 @@ export default async function PackView({
             src={heroImageUrl}
             alt={eventName}
             fill
-            className="object-cover opacity-90"
+            className={`object-cover opacity-90 ${
+              eventSlug === "hungarian-grand-prix" ? "lg:object-[center_40%]" : ""
+            }`}
             sizes="100vw"
             priority
           />

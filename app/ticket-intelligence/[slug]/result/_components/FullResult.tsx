@@ -61,6 +61,12 @@ const CIRCUIT_MAP_BY_EVENT: Record<
     alt: "Interlagos circuit layout with grandstand zones, Heineken Village, and Orange Tree Club marked",
     aspectClassName: "aspect-[2080/1170]",
   },
+  "hungarian-grand-prix": {
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/hungarian-grand-prix-circuit-map.jpg",
+    alt: "Hungaroring circuit layout with every gate, grandstand and General Admission area marked",
+    aspectClassName: "aspect-[3500/2956]",
+    credit: "Map: gpticketshop.hu",
+  },
   "united-states-grand-prix": {
     url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/united-states-grand-prix-venue-map.png",
     alt: "Circuit of the Americas layout with grandstand zones, General Admission areas, and hospitality locations marked",
@@ -203,6 +209,16 @@ const RESELLER_LINKS_BY_EVENT: Record<
   string,
   { officialLabel: string; officialUrl: string; p1Label: string; p1Url: string; soldOutNote: string }
 > = {
+  // Copied directly from the Hungarian GP Tickets spoke's "Where to
+  // actually buy your ticket" block (app/event-pack/[slug]/_hub-and-spoke/
+  // spokes/hungarian-grand-prix/TicketsSpoke.tsx), per this map's own rule.
+  "hungarian-grand-prix": {
+    officialLabel: "Official Hungarian GP tickets →",
+    officialUrl: "https://www.gpticketshop.hu",
+    p1Label: "P1 Travel — Hungarian GP →",
+    p1Url: "https://www.p1travel.com/en-GB/motorsports/formula-1/hungarian-gp-2027-fri-sat-sun",
+    soldOutNote: "the covered main grandstand — Hungaroring and Hungaroring Platinum — has historically sold out first given it's the circuit's only weather-proof seat",
+  },
   // No TicketsSpoke.tsx exists yet for this event (no hub-and-spoke content
   // built as of 14 Oct 2026) — officialUrl/soldOutNote below are placeholder
   // copy, NOT copied from a curator-reviewed spoke per this map's own rule,
