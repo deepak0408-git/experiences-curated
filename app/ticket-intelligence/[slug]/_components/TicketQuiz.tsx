@@ -14,6 +14,7 @@ import type {
   Q7Budget,
 } from "../_lib/types";
 import { scoreSeats } from "../_lib/scoreSeats";
+import { resolveBackLink, appendFromParams } from "../_lib/resolveBackLink";
 import TeaserResult from "./TeaserResult";
 import TicketIntelligenceSidebar from "./TicketIntelligenceSidebar";
 
@@ -79,41 +80,6 @@ function readAnswersFromParams(params: URLSearchParams): PartialAnswers {
   return out;
 }
 
-// Resolves the sidebar's "from" context into a real href + label. "from" is
-// one of: "picker" (main /ticket-intelligence page), "experience:<slug>"
-// (an experience page), "spoke:<id>" (a spoke page, with ?fromLabel=<text>
-// for its display name), or absent (default: the event hub page).
-function resolveBackLink(
-  params: URLSearchParams,
-  slug: string,
-  eventName: string
-): { href: string; label: string; isCockpit?: boolean } {
-  const from = params.get("from");
-  if (from === "cockpit") {
-    return { href: "/formula-1", label: "← Back to F1 Cockpit", isCockpit: true };
-  }
-  if (from === "picker") {
-    return { href: "/ticket-intelligence", label: "← Back to all events" };
-  }
-  if (from?.startsWith("experience:")) {
-    const experienceSlug = from.slice("experience:".length);
-    if (experienceSlug) {
-      return { href: `/experience/${experienceSlug}`, label: "← Back to this experience" };
-    }
-  }
-  if (from?.startsWith("spoke:")) {
-    const spokeId = from.slice("spoke:".length);
-    const fromLabel = params.get("fromLabel");
-    if (spokeId) {
-      return {
-        href: `/event-pack/${slug}/${spokeId}`,
-        label: fromLabel ? `← Back to ${fromLabel}` : `← Back to ${eventName} guide`,
-      };
-    }
-  }
-  return { href: `/event-pack/${slug}`, label: `← Back to ${eventName} guide` };
-}
-
 export default function TicketQuiz({
   slug,
   eventId,
@@ -147,6 +113,14 @@ export default function TicketQuiz({
   // display name). Read once on mount, same pattern as retakeValue above,
   // so it survives the URL-sync effect rewriting the query string below.
   const backLink = useRef(resolveBackLink(searchParams, slug, eventName));
+  // "from"/"fromLabel" (e.g. ?from=cockpit from the F1 Cockpit) need the
+  // same ref-snapshot treatment as retakeValue/backLink above — read once on
+  // mount so they survive the URL-sync effect rewriting the query string
+  // below. Without this, the very first answered question dropped "from"
+  // from the URL (the effect below only ever wrote q1-q7/revealed/retake),
+  // which meant checkout's successUrl and the final /result page never knew
+  // the fan came from the Cockpit. Bug found live 17 Oct 2026.
+  const fromParams = useRef(searchParams);
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -156,6 +130,7 @@ export default function TicketQuiz({
     }
     if (revealed) params.set("revealed", "1");
     if (retakeValue.current) params.set("retake", retakeValue.current);
+    appendFromParams(fromParams.current, params);
     const qs = params.toString();
     const url = qs ? `/ticket-intelligence/${slug}?${qs}` : `/ticket-intelligence/${slug}`;
     window.history.replaceState(null, "", url);
@@ -192,6 +167,7 @@ export default function TicketQuiz({
       q5: answers.q5!,
       q7: answers.q7!,
     });
+    appendFromParams(fromParams.current, answerParams);
     const successUrl =
       typeof window !== "undefined"
         ? `${window.location.origin}/ticket-intelligence/${slug}/result?${answerParams.toString()}`
@@ -214,6 +190,7 @@ export default function TicketQuiz({
         }}
         alreadyPurchased={alreadyPurchased}
         fallbackExperienceSlug={fallbackExperienceSlug}
+        backLink={backLink.current}
       />
     );
   }

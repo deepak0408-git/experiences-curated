@@ -56,6 +56,26 @@ const CIRCUIT_MAP_BY_EVENT: Record<
     // skill §5).
     lightFrame: true,
   },
+  "spanish-grand-prix": {
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/spanish-grand-prix-circuit-map.svg",
+    alt: "Madring circuit layout with all 22 numbered turns and every circuit_seating_profile grandstand/hospitality seat marked",
+    aspectClassName: "aspect-[290/160]",
+    credit: "Base map: Wikimedia Commons, CC0.",
+    // Grandstand/hospitality markers (Main Straight 1A/1B/1C, Straight 3,
+    // Turn 4A, Turn 10, Monumental 12B/12C, Straight 13A/14A, Turn 14B/15,
+    // Pelouse, Champions Club, Paddock Club) added 17 Oct 2026 as inline
+    // SVG overlay on the base CC0 map, positioned against its own
+    // switch-TurnN text-label coordinates and cross-referenced against the
+    // official 2026 Madring venue map (GA/GB/GC/GD/GE/GK stand-code
+    // system, founder-provided) — no MapSpoke.tsx/event-pack exists yet for
+    // this event (Trip Intelligence placeholder only), so this was built
+    // directly rather than reused from one (see ticket-intelligence-researcher
+    // skill §5). Base map's own original corner-name text labels (Hortaleza,
+    // El Búnker, etc.) removed per founder direction to reduce crowding —
+    // turn-number circles kept. Map has its own baked-in white background
+    // rect, so lightFrame is not needed here (unlike the transparent-
+    // background maps above).
+  },
   "brazilian-grand-prix": {
     url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/sporting-events/hero/brazilian-grand-prix-map.png",
     alt: "Interlagos circuit layout with grandstand zones, Heineken Village, and Orange Tree Club marked",
@@ -230,6 +250,19 @@ const RESELLER_LINKS_BY_EVENT: Record<
     p1Label: "P1 Travel — Austrian GP →",
     p1Url: "https://www.p1travel.com/en/motorsports/formula-1/austrian-gp-2027-fri-sat-sun",
     soldOutNote: "Steiermark and the full-weekend Start-Ziel grandstand were already sold out on the official site as of 14 Oct 2026, over 8 months ahead of the race",
+  },
+  // No TicketsSpoke.tsx exists yet for this event (no hub-and-spoke content
+  // built as of 17 Oct 2026, Trip Intelligence placeholder only) —
+  // officialUrl/soldOutNote below are placeholder copy, NOT copied from a
+  // curator-reviewed spoke per this map's own rule, same honest-placeholder
+  // pattern as Austrian GP's entry above. Replace both once a real Tickets
+  // spoke is built for Spanish GP 2027.
+  "spanish-grand-prix": {
+    officialLabel: "Official Madring tickets →",
+    officialUrl: "https://ticketsf1.madring.com/en/",
+    p1Label: "P1 Travel — Spanish GP →",
+    p1Url: "https://www.p1travel.com/en-GB/motorsports/formula-1/spanish-gp-2027-fri-sat-sun",
+    soldOutNote: "Monumental 12C Covered Silver was already sold out on Fever's official sales page as of 17 Oct 2026, nearly 11 months ahead of the race",
   },
   "brazilian-grand-prix": {
     officialLabel: "Official São Paulo GP tickets →",

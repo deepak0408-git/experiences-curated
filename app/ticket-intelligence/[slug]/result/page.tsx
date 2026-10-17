@@ -8,6 +8,7 @@ import { and, eq } from "drizzle-orm";
 import { getSeatingData, hasFullPlannerCostData } from "../_lib/getSeatingData";
 import { hasActiveSeasonPass } from "../../_lib/seasonPassAccess";
 import { scoreSeats } from "../_lib/scoreSeats";
+import { resolveBackLink } from "../_lib/resolveBackLink";
 import type { QuizAnswers } from "../_lib/types";
 import FullResult from "./_components/FullResult";
 import RetakeLink from "./_components/RetakeLink";
@@ -109,6 +110,14 @@ export default async function TicketIntelligenceResultPage({
 
   const answers = answersFromQuery(query) ?? (purchase ? answersFromStored(purchase.storedAnswers) : null);
 
+  // Same "from" context (?from=cockpit etc.) the quiz page resolves, carried
+  // here via TicketQuiz's successUrl (checkout round trip) so the back-link
+  // stays attached all the way to the final result, not just the quiz page.
+  // Bug found live 17 Oct 2026: a fan who reached the quiz via ?from=cockpit
+  // never saw "Back to F1 Cockpit" here because the quiz's own URL-sync
+  // effect dropped "from" before it ever reached checkout.
+  const backLink = resolveBackLink(new URLSearchParams(query as Record<string, string>), slug, data.event.name);
+
   return (
     <main className="min-h-screen bg-[#0A0A0A]">
       <HomepageNav email={user.email} />
@@ -118,9 +127,21 @@ export default async function TicketIntelligenceResultPage({
               sidebar's top edge lines up with the h1 title row, not one row
               below it. Moved here 27 Sep 2026 after the founder flagged the
               sidebar was starting a row too low. */}
-          <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00] mb-4">
-            Your match
-          </p>
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00]">
+              Your match
+            </p>
+            <Link
+              href={backLink.href}
+              className={
+                backLink.isCockpit
+                  ? "text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+                  : "text-xs font-semibold text-[#6A6A6A] hover:text-[#AAFF00] underline transition-colors"
+              }
+            >
+              {backLink.label}
+            </Link>
+          </div>
           {/* Same grid pattern as SpokeShell.tsx — sidebar reuses the
               4-action model (RetakeLink, budget, calendar, get the guide)
               instead of the single bottom-of-page "Planning to travel?"

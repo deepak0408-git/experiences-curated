@@ -54,6 +54,7 @@ export default function TeaserResult({
   onEditAnswers,
   alreadyPurchased,
   fallbackExperienceSlug,
+  backLink,
 }: {
   eventName: string;
   eventId: string;
@@ -68,6 +69,7 @@ export default function TeaserResult({
   onEditAnswers: () => void;
   alreadyPurchased: boolean;
   fallbackExperienceSlug: string | null;
+  backLink: { href: string; label: string; isCockpit?: boolean };
 }) {
   const { top } = result;
   const seatTypeLabel = SEAT_TYPE_LABEL[top.seat.seatType] ?? top.seat.seatType;
@@ -101,9 +103,24 @@ export default function TeaserResult({
     // sidebar was added to the other two. Bug found live 27 Sep 2026.
     return (
       <div className="max-w-5xl mx-auto px-6 sm:px-8 py-16">
-        <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00] mb-4">
-          Your match
-        </p>
+        {/* Back-link added 17 Oct 2026 — this branch had none at all before,
+            the same gap the quiz page and result page had for ?from=cockpit
+            etc. (see TicketQuiz.tsx/result/page.tsx comments). */}
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00]">
+            Your match
+          </p>
+          <Link
+            href={backLink.href}
+            className={
+              backLink.isCockpit
+                ? "text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+                : "text-xs font-semibold text-[#6A6A6A] hover:text-[#AAFF00] underline transition-colors"
+            }
+          >
+            {backLink.label}
+          </Link>
+        </div>
         <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-start">
           <div className="max-w-2xl">
             <FullResult
@@ -138,9 +155,24 @@ export default function TeaserResult({
 
   return (
     <div className="max-w-2xl mx-auto px-6 sm:px-8 py-16">
-      <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00] mb-4">
-        Your match is ready
-      </p>
+      {/* Back-link added 17 Oct 2026 — same gap as the alreadyPurchased
+          branch above (see its comment). This is the signed-out/unpaid
+          teaser, the most common path into this component. */}
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00]">
+          Your match is ready
+        </p>
+        <Link
+          href={backLink.href}
+          className={
+            backLink.isCockpit
+              ? "text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+              : "text-xs font-semibold text-[#6A6A6A] hover:text-[#AAFF00] underline transition-colors"
+          }
+        >
+          {backLink.label}
+        </Link>
+      </div>
       <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
         Based on your answers, your best fit at {eventName} is...
       </h1>

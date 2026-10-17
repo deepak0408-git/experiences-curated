@@ -1,6 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { appendFromParams } from "../../_lib/resolveBackLink";
 
 // Client component so the retake value can be generated fresh ON CLICK
 // (Date.now()), not baked into a static href at render time — a plain
@@ -13,11 +14,18 @@ import { useRouter } from "next/navigation";
 // since the link's href never changed between clicks.
 export default function RetakeLink({ eventSlug }: { eventSlug: string }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   return (
     <button
       type="button"
       onClick={() => {
-        router.push(`/ticket-intelligence/${eventSlug}?retake=${Date.now()}`);
+        // Preserve ?from=cockpit (etc.) into the fresh retake navigation —
+        // same bug class as TicketQuiz's URL-sync effect (see its comment):
+        // without this, retaking from the result page silently dropped the
+        // fan's original entry-point context.
+        const params = new URLSearchParams({ retake: String(Date.now()) });
+        appendFromParams(searchParams, params);
+        router.push(`/ticket-intelligence/${eventSlug}?${params.toString()}`);
         // Explicit reset alongside router.push's own scroll-restoration —
         // belt and suspenders after the same "landed mid-page" class of
         // bug on the quiz reveal button (TicketQuiz.tsx).
