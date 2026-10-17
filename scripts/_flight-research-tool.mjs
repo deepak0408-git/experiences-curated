@@ -105,6 +105,19 @@ async function fetchGoogleFlights(browser) {
     const q = `Flights from ${originCity} to ${destCity} on ${depDate} through ${retDate}`;
     await page.goto(`https://www.google.com/travel/flights?hl=en-US&gl=US&curr=USD&q=${encodeURIComponent(q)}`, { waitUntil: "domcontentloaded", timeout: 30000 });
     await page.waitForTimeout(6000);
+    // Explicit economy-class filter — Google Flights' free-text `q=` search has
+    // no cabin-class URL param, and its own default can silently surface a mix
+    // of premium-economy/business fares alongside economy on some routes (found
+    // on Paris->Budapest, 16 Oct 2026: a real, internally-dense but disconnected
+    // $745-1440 premium cluster was captured and dragged the "final" range up
+    // to $787 even though the real economy dense body topped out at $634).
+    // The UI's own "Economy" class-filter chip must be clicked explicitly.
+    try {
+      await page.click("text=Economy", { timeout: 5000 });
+      await page.waitForTimeout(500);
+      await page.click("text=Economy", { timeout: 5000 }); // select "Economy" in the dropdown
+      await page.waitForTimeout(2000);
+    } catch {}
     try {
       await page.click("text=View more flights", { timeout: 5000 });
       await page.waitForTimeout(3000);

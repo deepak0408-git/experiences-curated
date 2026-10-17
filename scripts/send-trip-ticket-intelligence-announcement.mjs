@@ -29,7 +29,7 @@ console.log(`\n${TEST_MODE ? "[TEST] Sending" : "Sending"} to ${recipients.lengt
 recipients.forEach((r) => console.log(" ", r.email));
 console.log();
 
-const subject = `Two new tools: find your race, find your seat`;
+const subject = `Two new F1 planning tools: find your race, find your seats`;
 
 const html = `
   <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0A0A0A">
@@ -38,7 +38,7 @@ const html = `
     <p style="font-size:14px;color:#A3A3A3;line-height:1.6;margin-bottom:16px">Hi there,</p>
 
     <p style="font-size:14px;color:#A3A3A3;line-height:1.6;margin-bottom:24px">
-      We've just shipped two tools we think F1 fans — and anyone curious about going to a race for the first time — will actually use.
+      Big news — we've just shipped two tools we think F1 fans, and anyone curious about going to a race for the first time, are going to love.
     </p>
 
     <p style="font-size:14px;color:#ffffff;font-weight:900;line-height:1.6;margin-bottom:8px">Trip Intelligence</p>
