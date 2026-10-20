@@ -9,6 +9,7 @@
 // slot and classes as before; only the prop shape and its position in the
 // card changed (now directly under the date line, same amber-text styling
 // margin comparisons used, applying to both co-leader and alternative cards).
+import Link from "next/link";
 import AlternativeGuideCta from "../../../formula-1/results/_components/AlternativeGuideCta";
 
 function formatDateRange(startDate: string, endDate: string): string {
@@ -41,6 +42,7 @@ export default function ResultCard({
   sport,
   isEventGuideBuilt,
   userEmail,
+  ticketIntelligenceSlug,
 }: {
   headline: string;
   grandSlamName: string;
@@ -59,6 +61,7 @@ export default function ResultCard({
   sport?: string;
   isEventGuideBuilt?: boolean;
   userEmail?: string | null;
+  ticketIntelligenceSlug?: string | null;
 }) {
   const highlighted = isHero || isCoLeader;
   return (
@@ -126,7 +129,7 @@ export default function ResultCard({
         )}
 
         {(!isHero || isCoLeader) && eventSlug && eventId && sport && (
-          <div className="mb-4">
+          <div className="mb-4 flex flex-wrap items-center gap-3">
             <AlternativeGuideCta
               eventSlug={eventSlug}
               eventId={eventId}
@@ -134,6 +137,19 @@ export default function ResultCard({
               isBuilt={isEventGuideBuilt ?? false}
               userEmail={userEmail ?? null}
             />
+            {/* "Find your ticket" — shown next to "Get the guide" only when
+                Ticket Intelligence actually exists for this event (caller
+                resolves ticketIntelligenceSlug from
+                GrandSlamDisplayInfo.hasTicketIntelligence's fail-closed
+                gate). Founder direction, 20 Oct 2026. */}
+            {ticketIntelligenceSlug && (
+              <Link
+                href={`/ticket-intelligence/tennis/${ticketIntelligenceSlug}`}
+                className="inline-flex items-center rounded-sm border border-[#AAFF00] text-[#AAFF00] hover:bg-[#AAFF00] hover:text-black transition-colors px-4 py-2.5"
+              >
+                <span className="text-sm font-black">Find your ticket</span>
+              </Link>
+            )}
           </div>
         )}
       </div>

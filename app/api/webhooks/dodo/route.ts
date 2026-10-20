@@ -7,10 +7,11 @@ import { db } from "@/lib/db";
 import { purchases, sportingEvents, proSubscriptions, users, customItineraryOrders, ticketIntelligenceSeasonPasses } from "@/schema/database";
 
 const CUSTOM_ITINERARY_PRODUCT_ID = "pdt_0NmN6uswSvFETzX6GUQOU";
-// Ticket Intelligence Season Pass — US$25, covers every 2026 + 2027 event.
-// Added 28 Sep 2026. TEST_MODE product created same day for local checkout
-// testing (separate Dodo catalog, same pattern as every other product ID
-// pair in this codebase — see TeaserResult.tsx's LIVE/TEST split).
+// Ticket Intelligence Season Pass — US$25, covers every 2026 + 2027 F1
+// event. Added 28 Sep 2026. TEST_MODE product created same day for local
+// checkout testing (separate Dodo catalog, same pattern as every other
+// product ID pair in this codebase — see TeaserResult.tsx's LIVE/TEST
+// split).
 const SEASON_PASS_LIVE_PRODUCT_ID = "pdt_0NoZDkyBBmaePFV5Hq9Ww";
 const SEASON_PASS_TEST_PRODUCT_ID = "pdt_0NoZIdoLaL3GxoWvIsg6D";
 const SEASON_PASS_PRODUCT_ID =
@@ -22,6 +23,27 @@ const SEASON_PASS_PRODUCT_ID =
 // supersedes this one, per founder direction 28 Sep 2026 — not derived from
 // a date range.
 const SEASON_PASS_EDITION_YEARS = [2026, 2027];
+
+// Tennis Ticket Intelligence Season Pass — US$15, covers every tennis
+// Grand Slam. Added 20 Oct 2026, same shape as F1's pass above but its own
+// product and own `sport` tag (see schema/database.ts's sport column on
+// ticketIntelligenceSeasonPasses) so the two season passes never
+// cross-unlock each other. NO TEST_MODE product exists yet for this one
+// (founder direction, 20 Oct 2026, live IDs only for now) — local test-mode
+// checkout for the tennis pass will NOT work until a test product is
+// created and swapped in here.
+const TENNIS_SEASON_PASS_LIVE_PRODUCT_ID = "pdt_0Nq8A2yPMuxyADLUBZqkl";
+const TENNIS_SEASON_PASS_PRODUCT_ID = TENNIS_SEASON_PASS_LIVE_PRODUCT_ID;
+const TENNIS_SEASON_PASS_EDITION_YEARS = [2026, 2027];
+
+// Tennis Ticket Intelligence per-event purchase — US$10, same
+// "ticket_intelligence" productType as F1's per-event purchase (both write
+// to the same `purchases` table, keyed by sportingEventId, so no schema
+// change was needed there). Its own Dodo product ID only because F1 and
+// tennis are priced/sold as separate Dodo catalog entries, not because the
+// purchases-table mechanics differ at all.
+const TENNIS_TICKET_INTELLIGENCE_LIVE_PRODUCT_ID = "pdt_0Nq89y91QscnR5CYcV64o";
+const TENNIS_TICKET_INTELLIGENCE_PRODUCT_ID = TENNIS_TICKET_INTELLIGENCE_LIVE_PRODUCT_ID;
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -281,7 +303,16 @@ export async function POST(request: NextRequest) {
   // ticketIntelligenceSeasonPasses for why. Refunds are handled manually for
   // now (status flipped by hand) — no refund event branch here, per founder
   // direction 28 Sep 2026.
-  if (productId === SEASON_PASS_PRODUCT_ID) {
+  //
+  // Tennis Season Pass (20 Oct 2026) reuses this exact block — same table,
+  // same insert shape — branching only on which product matched to pick
+  // the right sport/editionSeason/copy. A single `if` covering both product
+  // IDs, not a duplicated second block, so the two passes can never drift
+  // out of sync on everything except what's sport-specific.
+  if (productId === SEASON_PASS_PRODUCT_ID || productId === TENNIS_SEASON_PASS_PRODUCT_ID) {
+    const isTennisPass = productId === TENNIS_SEASON_PASS_PRODUCT_ID;
+    const passSport = isTennisPass ? "tennis" : "formula_one";
+    const passEditionYears = isTennisPass ? TENNIS_SEASON_PASS_EDITION_YEARS : SEASON_PASS_EDITION_YEARS;
     const passCurrency = payment.currency ?? "USD";
     const passPricePaid = String(payment.total_amount / 100);
 
@@ -290,7 +321,8 @@ export async function POST(request: NextRequest) {
         .insert(ticketIntelligenceSeasonPasses)
         .values({
           email,
-          editionSeason: SEASON_PASS_EDITION_YEARS,
+          sport: passSport,
+          editionSeason: passEditionYears,
           dodoOrderId: payment.payment_id,
           dodoCustomerId: payment.customer.customer_id,
           dodoProductId: productId,
@@ -305,7 +337,7 @@ export async function POST(request: NextRequest) {
         console.log("[dodo webhook] season pass already recorded (conflict), skipping email");
         return NextResponse.json({ received: true });
       }
-      console.log(`[dodo webhook] ✓ season pass recorded — email: ${email}`);
+      console.log(`[dodo webhook] ✓ season pass recorded — email: ${email}, sport: ${passSport}`);
     } catch (err) {
       console.error("[dodo webhook] failed to insert season pass:", err);
       return NextResponse.json({ error: "DB insert failed" }, { status: 500 });
@@ -329,20 +361,35 @@ export async function POST(request: NextRequest) {
     const passCurrencySymbol =
       passCurrency === "GBP" ? "£" : passCurrency === "USD" ? "US$" : passCurrency === "EUR" ? "€" : passCurrency + " ";
 
+    const passEmailCopy = isTennisPass
+      ? {
+          subject: "Your Tennis Ticket Intelligence Season Pass is active",
+          heading: "Your Tennis Season Pass is active.",
+          body: "You now have Ticket Intelligence access to every Grand Slam — answer the 7 quick questions on any event's page and your full match unlocks instantly, no separate payment.",
+          browseUrl: `${siteUrl}/ticket-intelligence/tennis`,
+          passLabel: "Tennis Season Pass",
+        }
+      : {
+          subject: "Your 2026/27 Ticket Intelligence Season Pass is active",
+          heading: "Your Season Pass is active.",
+          body: "You now have Ticket Intelligence access to every 2026 and 2027 event — answer the 6 quick questions on any event's page and your full seat match unlocks instantly, no separate payment.",
+          browseUrl: `${siteUrl}/ticket-intelligence`,
+          passLabel: "2026/27 Season Pass",
+        };
+
     try {
       await resend.emails.send({
         from: "Experiences | Curated <hello@experiences-curated.com>",
         to: email,
-        subject: "Your 2026/27 Ticket Intelligence Season Pass is active",
+        subject: passEmailCopy.subject,
         html: `
           <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#0A0A0A">
             <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#AAFF00;margin-bottom:28px">Experiences | Curated</p>
-            <p style="font-size:20px;font-weight:900;color:#ffffff;margin-bottom:12px">Your Season Pass is active.</p>
+            <p style="font-size:20px;font-weight:900;color:#ffffff;margin-bottom:12px">${passEmailCopy.heading}</p>
             <p style="font-size:14px;color:#A3A3A3;line-height:1.6;margin-bottom:28px">
-              You now have Ticket Intelligence access to every 2026 and 2027 event — answer the 6 quick
-              questions on any event's page and your full seat match unlocks instantly, no separate payment.
+              ${passEmailCopy.body}
             </p>
-            <a href="${siteUrl}/ticket-intelligence"
+            <a href="${passEmailCopy.browseUrl}"
                style="display:inline-block;background:#AAFF00;color:#000;text-decoration:none;padding:14px 28px;border-radius:2px;font-size:14px;font-weight:900;margin-bottom:40px">
               Browse events →
             </a>
@@ -353,7 +400,7 @@ export async function POST(request: NextRequest) {
               </tr>
               <tr>
                 <td style="padding:6px 0">Pass</td>
-                <td style="padding:6px 0;text-align:right;color:#ffffff">2026/27 Season Pass</td>
+                <td style="padding:6px 0;text-align:right;color:#ffffff">${passEmailCopy.passLabel}</td>
               </tr>
               <tr>
                 <td style="padding:6px 0">Amount paid</td>
@@ -381,10 +428,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Missing sporting_event_id" }, { status: 400 });
   }
 
-  let sportingEvent: { id: string; slug: string; name: string; editionYear: number } | undefined;
+  let sportingEvent: { id: string; slug: string; name: string; editionYear: number; sport: string } | undefined;
   try {
     [sportingEvent] = await db
-      .select({ id: sportingEvents.id, slug: sportingEvents.slug, name: sportingEvents.name, editionYear: sportingEvents.editionYear })
+      .select({ id: sportingEvents.id, slug: sportingEvents.slug, name: sportingEvents.name, editionYear: sportingEvents.editionYear, sport: sportingEvents.sport })
       .from(sportingEvents)
       .where(eq(sportingEvents.id, sportingEventId))
       .limit(1);
@@ -495,10 +542,19 @@ export async function POST(request: NextRequest) {
     : isTicketIntelligence
       ? `${sportingEvent.name} Ticket Intelligence match`
       : `${sportingEvent.name} ${MINI_PACK_LABEL[productType]}`;
+  // Ticket Intelligence's result route differs by sport — tennis lives
+  // under /ticket-intelligence/tennis/[slug], F1 under
+  // /ticket-intelligence/[slug]. This event's own `sport` column decides
+  // the branch (never hardcoded per-event). Bug found + fixed 20 Oct 2026:
+  // this previously always linked to the F1 route regardless of sport, so
+  // a tennis Ticket Intelligence buyer's confirmation email would have
+  // 404'd/landed on the wrong event's quiz.
   const productSpokeUrl = isFullPack
     ? packUrl
     : isTicketIntelligence
-      ? `${siteUrl}/ticket-intelligence/${sportingEvent.slug}`
+      ? sportingEvent.sport === "tennis"
+        ? `${siteUrl}/ticket-intelligence/tennis/${sportingEvent.slug}/result`
+        : `${siteUrl}/ticket-intelligence/${sportingEvent.slug}`
       : `${packUrl}/${productType === "tickets_guide" ? "tickets" : productType === "hotels_guide" ? "hotels" : "itinerary"}`;
 
   try {

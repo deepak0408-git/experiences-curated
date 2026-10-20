@@ -2,6 +2,7 @@
 // Intelligence's SeatCard pattern (one shared component, "Runner-up"/"3rd
 // option" headline for alternatives).
 
+import Link from "next/link";
 import type { FanInsightsData } from "../../_lib/getGrandPrixData";
 import AlternativeGuideCta from "./AlternativeGuideCta";
 
@@ -39,6 +40,7 @@ export default function ResultCard({
   sport,
   isEventGuideBuilt,
   userEmail,
+  ticketIntelligenceSlug,
 }: {
   headline: string;
   grandPrixName: string;
@@ -57,6 +59,7 @@ export default function ResultCard({
   sport?: string;
   isEventGuideBuilt?: boolean;
   userEmail?: string | null;
+  ticketIntelligenceSlug?: string | null;
 }) {
   return (
     <div
@@ -110,7 +113,7 @@ export default function ResultCard({
         )}
 
         {!isHero && eventSlug && eventId && sport && (
-          <div className="mb-4">
+          <div className="mb-4 flex flex-wrap items-center gap-3">
             <AlternativeGuideCta
               eventSlug={eventSlug}
               eventId={eventId}
@@ -118,6 +121,19 @@ export default function ResultCard({
               isBuilt={isEventGuideBuilt ?? false}
               userEmail={userEmail ?? null}
             />
+            {/* "Find your seat" — shown next to "Get the guide" only when
+                Ticket Intelligence actually exists for this event
+                (hasTicketIntelligence, row-existence check against
+                circuit_seating_profile). Same pattern added to Tennis Trip
+                Intelligence's ResultCard.tsx, 20 Oct 2026. */}
+            {ticketIntelligenceSlug && (
+              <Link
+                href={`/ticket-intelligence/${ticketIntelligenceSlug}`}
+                className="inline-flex items-center rounded-sm border border-[#AAFF00] text-[#AAFF00] hover:bg-[#AAFF00] hover:text-black transition-colors px-4 py-2.5"
+              >
+                <span className="text-sm font-black">Find your seat</span>
+              </Link>
+            )}
           </div>
         )}
 

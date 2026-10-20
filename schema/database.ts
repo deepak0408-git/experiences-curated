@@ -757,6 +757,14 @@ export const ticketIntelligenceSeasonPasses = pgTable("ticket_intelligence_seaso
   id: uuid("id").primaryKey().defaultRandom(),
   userId: uuid("user_id").references(() => users.id),
   email: varchar("email", { length: 255 }).notNull(),
+  // Added 20 Oct 2026 for Tennis Ticket Intelligence's own Season Pass
+  // (US$15, separate Dodo product from F1's US$25 pass). Without this, a
+  // pass bought for one sport silently unlocked the other too, since
+  // hasActiveSeasonPass() only ever checked email + editionYear — see
+  // feedback on this gap, 20 Oct 2026. Defaults to "formula_one" so every
+  // pre-existing row (all F1, pre-dating tennis) backfills correctly with
+  // no manual data fix needed.
+  sport: sportEnum("sport").notNull().default("formula_one"),
   editionSeason: smallint("edition_season").array().notNull(),
   dodoOrderId: varchar("dodo_order_id", { length: 100 }).notNull().unique(),
   dodoCustomerId: varchar("dodo_customer_id", { length: 100 }),
@@ -1204,6 +1212,77 @@ export const circuitSeatingProfile = pgTable("circuit_seating_profile", {
 }, (t) => [
   uniqueIndex("circuit_seating_profile_event_seat_name_unique").on(t.sportingEventId, t.seatName),
 ]);
+
+// ─── Tennis Ticket Intelligence (Australian Open 2027 pilot) ───────────────
+// Self-contained tennis branch, isolated from circuitSeatingProfile/F1
+// Ticket Intelligence above — see Stage 1/2 spec, 19-20 Oct 2026. Uses
+// "ticket options" terminology deliberately (NOT "experiences" — those are
+// fan experiences/dining/stays elsewhere in this schema). One operational
+// set of 43 rows per evergreen tennis event, updated in place at annual
+// rollover — no edition-year-keyed historical rows, unlike
+// plannerTicketTierCost etc. Archival is explicitly out of scope for this
+// pilot (future separate project per founder direction).
+export const tennisArenaCodeEnum = pgEnum("tennis_arena_code", ["RLA", "MCA", "JCA", "GP"]);
+export const tennisStageCodeEnum = pgEnum("tennis_stage_code", ["Early", "Middle", "Late"]);
+export const tennisSessionCodeEnum = pgEnum("tennis_session_code", ["Day", "Night"]);
+
+export const tennisTicketIntelligenceOptions = pgTable("tennis_ticket_intelligence_options", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sportingEventId: uuid("sporting_event_id").notNull().references(() => sportingEvents.id),
+  // Stable 1-43 identity — the frozen model's tie-break key ("ascending
+  // numeric option ID"). Never reassigned across rollovers.
+  optionNumber: smallint("option_number").notNull(),
+  arenaCode: tennisArenaCodeEnum("arena_code").notNull(),
+  arenaName: varchar("arena_name", { length: 100 }).notNull(),
+  stageCode: tennisStageCodeEnum("stage_code").notNull(),
+  stageLabel: varchar("stage_label", { length: 50 }).notNull(),
+  roundsLabel: varchar("rounds_label", { length: 100 }).notNull(),
+  // Null only for Ground Pass (arenaCode = GP) — flexible grounds access,
+  // not a guaranteed day/night session. Never defaulted to a guess.
+  sessionCode: tennisSessionCodeEnum("session_code"),
+  sessionLabel: varchar("session_label", { length: 150 }).notNull(),
+  seatingCode: varchar("seating_code", { length: 10 }).notNull(),
+  seatingLabel: varchar("seating_label", { length: 150 }).notNull(),
+  // Modeled cost index, NOT a live ticket price — same discipline as
+  // circuitSeatingProfile/plannerTicketTierCost.
+  costIndex: numeric("cost_index", { precision: 6, scale: 2 }).notNull(),
+  costStars: smallint("cost_stars").notNull(),
+  // Draft/candidate wording pending editorial ratification — see
+  // tennisTicketIntelligenceEditionStatus.catalogueRatified. Never served
+  // publicly while that flag is false.
+  descriptionText: text("description_text").notNull(),
+  sourceNote: text("source_note").notNull(),
+  lastVerifiedDate: timestamp("last_verified_date").notNull().defaultNow(),
+  // Nullable — full public R2 URL of this option's approved illustrative
+  // hero image. Added 20 Oct 2026 for the results-page image deployment;
+  // null until a real asset is wired in, so this stays safe for other
+  // editions/future records with no image yet. Never recalculated or
+  // derived — always the exact verified URL from the upload step.
+  heroImage: text("hero_image"),
+}, (t) => [
+  uniqueIndex("tennis_ticket_intelligence_options_event_option_unique").on(t.sportingEventId, t.optionNumber),
+]);
+
+// Edition-activation + editorial-ratification gate. Two independent
+// booleans — "built and edition-current" vs. "editorially approved for
+// real fans" are different questions, and both must be true before the
+// route serves results publicly. Fail-closed: if sportingEvents.editionYear
+// ever advances past reviewedEditionYear before this row is re-reviewed,
+// the route must show an unavailable state, never stale prior-edition
+// content. Mirrors the existing prePartyBrief-style activation pattern
+// already in production for event packs.
+export const tennisTicketIntelligenceEditionStatus = pgTable("tennis_ticket_intelligence_edition_status", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sportingEventId: uuid("sporting_event_id").notNull().unique().references(() => sportingEvents.id),
+  reviewedEditionYear: smallint("reviewed_edition_year").notNull(),
+  activatedAt: timestamp("activated_at"),
+  activatedBy: text("activated_by"),
+  // Reconstructed language catalogue (10_RECONSTRUCTED_LANGUAGE_CATALOGUE)
+  // is a proposed replacement candidate, explicitly NOT verbatim original
+  // approved text — must stay false until the founder ratifies the
+  // descriptionText/comparison wording, independent of activatedAt.
+  catalogueRatified: boolean("catalogue_ratified").notNull().default(false),
+});
 
 // Local travel and food/daily spend — simplified per-destination bands, not
 // per-event and not tiered (these don't vary enough within one destination to

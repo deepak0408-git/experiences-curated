@@ -4,6 +4,7 @@ import { tripIntelligenceTennisGrandSlamProfiles, sportingEvents } from "@/schem
 import { inArray } from "drizzle-orm";
 import { buildCandidates } from "./buildCandidates";
 import type { GrandSlamCandidate } from "./types";
+import { hasTennisTicketIntelligence } from "@/app/ticket-intelligence/tennis/[slug]/_lib/getTennisOptionsData";
 
 // Uncached — matches F1's getGrandPrixData.ts deliberate choice. Ratings
 // get corrected directly in the DB with no revalidateTag/revalidatePath
@@ -26,6 +27,7 @@ export interface GrandSlamDisplayInfo {
   startDate: string;
   endDate: string;
   isEventGuideBuilt: boolean;
+  hasTicketIntelligence: boolean;
 }
 
 // Same isBuilt formula as F1's getGrandPrixData.ts / Ticket Intelligence's
@@ -52,11 +54,21 @@ const getGrandSlamDisplayInfoCached = unstable_cache(
         endDate: sportingEvents.endDate,
         packStatus: sportingEvents.packStatus,
         isHidden: sportingEvents.isHidden,
+        editionYear: sportingEvents.editionYear,
       })
       .from(sportingEvents)
       .where(inArray(sportingEvents.id, sportingEventIds));
 
-    return events.map((e) => ({
+    // Same fail-closed gate as the event-pack hub's "Find your seat" card
+    // (hasTennisTicketIntelligence — options exist AND activated AND
+    // ratified AND edition-year matched), not just row existence, so this
+    // never points Trip Intelligence at a quiz that isn't actually live
+    // yet. Slug-driven via eventId, no hardcoded per-event Set.
+    const ticketIntelligenceFlags = await Promise.all(
+      events.map((e) => hasTennisTicketIntelligence(e.id, e.editionYear))
+    );
+
+    return events.map((e, i) => ({
       sportingEventId: e.id,
       slug: e.slug,
       name: e.name,
@@ -66,6 +78,7 @@ const getGrandSlamDisplayInfoCached = unstable_cache(
       startDate: e.startDate,
       endDate: e.endDate,
       isEventGuideBuilt: isEventGuideBuilt(e.packStatus, e.isHidden),
+      hasTicketIntelligence: ticketIntelligenceFlags[i],
     }));
   },
   ["trip-intelligence-tennis-display-info"],

@@ -39,7 +39,7 @@ function formatDate(date: Date) {
 export default async function TicketIntelligenceHomePage() {
   const { user } = await getAuthUser();
   const events = await getTicketIntelligenceEvents();
-  const ownsSeasonPass = user?.email ? await hasAnyActiveSeasonPass(user.email) : false;
+  const ownsSeasonPass = user?.email ? await hasAnyActiveSeasonPass(user.email, "formula_one") : false;
   // Annual Pro (28 Oct 2026) — a fan with free access via Annual Pro
   // shouldn't be shown the $25 Season Pass upsell as if they still needed
   // to buy something. Pulled via getProDetails directly (not

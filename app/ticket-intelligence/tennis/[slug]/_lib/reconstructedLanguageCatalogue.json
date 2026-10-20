@@ -1,0 +1,580 @@
+{
+  "title": "Curated Explanation Language Catalogue — Reconstructed Candidate for Owner Ratification",
+  "version": "1.0-recovery-candidate",
+  "approval_status": "PENDING_OWNER_RATIFICATION",
+  "not_verbatim_original": true,
+  "provenance": "Recovered frozen numerical and editorial constraints plus owner-supplied selection transcript. All 43 option descriptions and generic comparisons below are NEW RECONSTRUCTIONS, not claimed original text.",
+  "option_descriptions": [
+    {
+      "statement_id": "TTO_001_DESCRIPTION",
+      "option_id": "001",
+      "text": "Enjoy Rod Laver Arena during the opening rounds (Rounds 1–3), with an elevated baseline perspective in the day session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Early",
+      "session": "Day",
+      "seating": "UB",
+      "cost_index": 61.38
+    },
+    {
+      "statement_id": "TTO_002_DESCRIPTION",
+      "option_id": "002",
+      "text": "Enjoy Rod Laver Arena during the opening rounds (Rounds 1–3), with a closer, behind-the-court baseline perspective in the day session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Early",
+      "session": "Day",
+      "seating": "LB",
+      "cost_index": 69.18
+    },
+    {
+      "statement_id": "TTO_003_DESCRIPTION",
+      "option_id": "003",
+      "text": "Enjoy Rod Laver Arena during the opening rounds (Rounds 1–3), with an elevated side-on perspective in the day session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Early",
+      "session": "Day",
+      "seating": "US",
+      "cost_index": 61.38
+    },
+    {
+      "statement_id": "TTO_004_DESCRIPTION",
+      "option_id": "004",
+      "text": "Enjoy Rod Laver Arena during the opening rounds (Rounds 1–3), with a closer side-on perspective in the day session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Early",
+      "session": "Day",
+      "seating": "LS",
+      "cost_index": 67.82
+    },
+    {
+      "statement_id": "TTO_005_DESCRIPTION",
+      "option_id": "005",
+      "text": "Enjoy Rod Laver Arena during the opening rounds (Rounds 1–3), with an elevated baseline perspective in the night session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Early",
+      "session": "Night",
+      "seating": "UB",
+      "cost_index": 64.75
+    },
+    {
+      "statement_id": "TTO_006_DESCRIPTION",
+      "option_id": "006",
+      "text": "Enjoy Rod Laver Arena during the opening rounds (Rounds 1–3), with a closer, behind-the-court baseline perspective in the night session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Early",
+      "session": "Night",
+      "seating": "LB",
+      "cost_index": 72.51
+    },
+    {
+      "statement_id": "TTO_007_DESCRIPTION",
+      "option_id": "007",
+      "text": "Enjoy Rod Laver Arena during the opening rounds (Rounds 1–3), with an elevated side-on perspective in the night session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Early",
+      "session": "Night",
+      "seating": "US",
+      "cost_index": 64.75
+    },
+    {
+      "statement_id": "TTO_008_DESCRIPTION",
+      "option_id": "008",
+      "text": "Enjoy Rod Laver Arena during the opening rounds (Rounds 1–3), with a closer side-on perspective in the night session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Early",
+      "session": "Night",
+      "seating": "LS",
+      "cost_index": 71.18
+    },
+    {
+      "statement_id": "TTO_009_DESCRIPTION",
+      "option_id": "009",
+      "text": "Enjoy Margaret Court Arena during the opening rounds (Rounds 1–3), with an elevated arena view in the day session. The arena offers a substantial but more contained setting than Rod Laver.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "MCA",
+      "stage": "Early",
+      "session": "Day",
+      "seating": "U",
+      "cost_index": 59.71
+    },
+    {
+      "statement_id": "TTO_010_DESCRIPTION",
+      "option_id": "010",
+      "text": "Enjoy Margaret Court Arena during the opening rounds (Rounds 1–3), with a closer side-on perspective in the day session. The arena offers a substantial but more contained setting than Rod Laver.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "MCA",
+      "stage": "Early",
+      "session": "Day",
+      "seating": "LS",
+      "cost_index": 63.56
+    },
+    {
+      "statement_id": "TTO_011_DESCRIPTION",
+      "option_id": "011",
+      "text": "Enjoy Margaret Court Arena during the opening rounds (Rounds 1–3), with a closer, behind-the-court baseline perspective in the day session. The arena offers a substantial but more contained setting than Rod Laver.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "MCA",
+      "stage": "Early",
+      "session": "Day",
+      "seating": "LB",
+      "cost_index": 67.91
+    },
+    {
+      "statement_id": "TTO_012_DESCRIPTION",
+      "option_id": "012",
+      "text": "Enjoy Margaret Court Arena during the opening rounds (Rounds 1–3), with an elevated arena view in the night session. The arena offers a substantial but more contained setting than Rod Laver.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "MCA",
+      "stage": "Early",
+      "session": "Night",
+      "seating": "U",
+      "cost_index": 55.06
+    },
+    {
+      "statement_id": "TTO_013_DESCRIPTION",
+      "option_id": "013",
+      "text": "Enjoy Margaret Court Arena during the opening rounds (Rounds 1–3), with a closer side-on perspective in the night session. The arena offers a substantial but more contained setting than Rod Laver.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "MCA",
+      "stage": "Early",
+      "session": "Night",
+      "seating": "LS",
+      "cost_index": 58.95
+    },
+    {
+      "statement_id": "TTO_014_DESCRIPTION",
+      "option_id": "014",
+      "text": "Enjoy Margaret Court Arena during the opening rounds (Rounds 1–3), with a closer, behind-the-court baseline perspective in the night session. The arena offers a substantial but more contained setting than Rod Laver.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "MCA",
+      "stage": "Early",
+      "session": "Night",
+      "seating": "LB",
+      "cost_index": 63.33
+    },
+    {
+      "statement_id": "TTO_015_DESCRIPTION",
+      "option_id": "015",
+      "text": "Enjoy John Cain Arena during the opening rounds (Rounds 1–3), with a reserved arena seat in the day session. The precise reserved seating zone is not specified, so no particular viewing angle is promised.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "JCA",
+      "stage": "Early",
+      "session": "Day",
+      "seating": "RS",
+      "cost_index": 59.56
+    },
+    {
+      "statement_id": "TTO_016_DESCRIPTION",
+      "option_id": "016",
+      "text": "Enjoy John Cain Arena during the opening rounds (Rounds 1–3), with a reserved arena seat in the night session. The precise reserved seating zone is not specified, so no particular viewing angle is promised.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "JCA",
+      "stage": "Early",
+      "session": "Night",
+      "seating": "RS",
+      "cost_index": 55.85
+    },
+    {
+      "statement_id": "TTO_017_DESCRIPTION",
+      "option_id": "017",
+      "text": "Explore eligible outside courts with a Ground Pass during the opening rounds, when there is generally more tennis spread across the grounds. It provides flexible movement rather than a reserved arena seat.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "GP",
+      "stage": "Early",
+      "session": null,
+      "seating": "GP",
+      "cost_index": 49.71
+    },
+    {
+      "statement_id": "TTO_018_DESCRIPTION",
+      "option_id": "018",
+      "text": "Enjoy Rod Laver Arena during the fourth round or quarterfinal period, with an elevated baseline perspective in the day session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Middle",
+      "session": "Day",
+      "seating": "UB",
+      "cost_index": 72.2
+    },
+    {
+      "statement_id": "TTO_019_DESCRIPTION",
+      "option_id": "019",
+      "text": "Enjoy Rod Laver Arena during the fourth round or quarterfinal period, with a closer, behind-the-court baseline perspective in the day session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Middle",
+      "session": "Day",
+      "seating": "LB",
+      "cost_index": 79.96
+    },
+    {
+      "statement_id": "TTO_020_DESCRIPTION",
+      "option_id": "020",
+      "text": "Enjoy Rod Laver Arena during the fourth round or quarterfinal period, with an elevated side-on perspective in the day session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Middle",
+      "session": "Day",
+      "seating": "US",
+      "cost_index": 72.14
+    },
+    {
+      "statement_id": "TTO_021_DESCRIPTION",
+      "option_id": "021",
+      "text": "Enjoy Rod Laver Arena during the fourth round or quarterfinal period, with a closer side-on perspective in the day session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Middle",
+      "session": "Day",
+      "seating": "LS",
+      "cost_index": 78.6
+    },
+    {
+      "statement_id": "TTO_022_DESCRIPTION",
+      "option_id": "022",
+      "text": "Enjoy Rod Laver Arena during the fourth round or quarterfinal period, with an elevated baseline perspective in the night session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Middle",
+      "session": "Night",
+      "seating": "UB",
+      "cost_index": 76.14
+    },
+    {
+      "statement_id": "TTO_023_DESCRIPTION",
+      "option_id": "023",
+      "text": "Enjoy Rod Laver Arena during the fourth round or quarterfinal period, with a closer, behind-the-court baseline perspective in the night session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Middle",
+      "session": "Night",
+      "seating": "LB",
+      "cost_index": 83.92
+    },
+    {
+      "statement_id": "TTO_024_DESCRIPTION",
+      "option_id": "024",
+      "text": "Enjoy Rod Laver Arena during the fourth round or quarterfinal period, with an elevated side-on perspective in the night session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Middle",
+      "session": "Night",
+      "seating": "US",
+      "cost_index": 76.09
+    },
+    {
+      "statement_id": "TTO_025_DESCRIPTION",
+      "option_id": "025",
+      "text": "Enjoy Rod Laver Arena during the fourth round or quarterfinal period, with a closer side-on perspective in the night session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Middle",
+      "session": "Night",
+      "seating": "LS",
+      "cost_index": 82.57
+    },
+    {
+      "statement_id": "TTO_026_DESCRIPTION",
+      "option_id": "026",
+      "text": "Enjoy Margaret Court Arena during the fourth round or quarterfinal period, with an elevated arena view in the day session. The arena offers a substantial but more contained setting than Rod Laver.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "MCA",
+      "stage": "Middle",
+      "session": "Day",
+      "seating": "U",
+      "cost_index": 68.32
+    },
+    {
+      "statement_id": "TTO_027_DESCRIPTION",
+      "option_id": "027",
+      "text": "Enjoy Margaret Court Arena during the fourth round or quarterfinal period, with a closer side-on perspective in the day session. The arena offers a substantial but more contained setting than Rod Laver.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "MCA",
+      "stage": "Middle",
+      "session": "Day",
+      "seating": "LS",
+      "cost_index": 72.08
+    },
+    {
+      "statement_id": "TTO_028_DESCRIPTION",
+      "option_id": "028",
+      "text": "Enjoy Margaret Court Arena during the fourth round or quarterfinal period, with a closer, behind-the-court baseline perspective in the day session. The arena offers a substantial but more contained setting than Rod Laver.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "MCA",
+      "stage": "Middle",
+      "session": "Day",
+      "seating": "LB",
+      "cost_index": 76.46
+    },
+    {
+      "statement_id": "TTO_029_DESCRIPTION",
+      "option_id": "029",
+      "text": "Enjoy Margaret Court Arena during the fourth round or quarterfinal period, with an elevated arena view in the night session. The arena offers a substantial but more contained setting than Rod Laver.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "MCA",
+      "stage": "Middle",
+      "session": "Night",
+      "seating": "U",
+      "cost_index": 65.36
+    },
+    {
+      "statement_id": "TTO_030_DESCRIPTION",
+      "option_id": "030",
+      "text": "Enjoy Margaret Court Arena during the fourth round or quarterfinal period, with a closer side-on perspective in the night session. The arena offers a substantial but more contained setting than Rod Laver.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "MCA",
+      "stage": "Middle",
+      "session": "Night",
+      "seating": "LS",
+      "cost_index": 69.11
+    },
+    {
+      "statement_id": "TTO_031_DESCRIPTION",
+      "option_id": "031",
+      "text": "Enjoy Margaret Court Arena during the fourth round or quarterfinal period, with a closer, behind-the-court baseline perspective in the night session. The arena offers a substantial but more contained setting than Rod Laver.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "MCA",
+      "stage": "Middle",
+      "session": "Night",
+      "seating": "LB",
+      "cost_index": 73.5
+    },
+    {
+      "statement_id": "TTO_032_DESCRIPTION",
+      "option_id": "032",
+      "text": "Enjoy John Cain Arena during the fourth round or quarterfinal period, with a reserved arena seat in the day session. The precise reserved seating zone is not specified, so no particular viewing angle is promised.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "JCA",
+      "stage": "Middle",
+      "session": "Day",
+      "seating": "RS",
+      "cost_index": 66.23
+    },
+    {
+      "statement_id": "TTO_033_DESCRIPTION",
+      "option_id": "033",
+      "text": "Enjoy John Cain Arena during the fourth round or quarterfinal period, with a reserved arena seat in the night session. The precise reserved seating zone is not specified, so no particular viewing angle is promised.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "JCA",
+      "stage": "Middle",
+      "session": "Night",
+      "seating": "RS",
+      "cost_index": 64.54
+    },
+    {
+      "statement_id": "TTO_034_DESCRIPTION",
+      "option_id": "034",
+      "text": "Explore eligible outside courts with a Ground Pass during the fourth-round and quarterfinal period, subject to the day’s schedule. It provides flexible movement rather than a reserved arena seat.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "GP",
+      "stage": "Middle",
+      "session": null,
+      "seating": "GP",
+      "cost_index": 54.65
+    },
+    {
+      "statement_id": "TTO_035_DESCRIPTION",
+      "option_id": "035",
+      "text": "Enjoy Rod Laver Arena during the semifinal or final period, with an elevated baseline perspective in the day session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Late",
+      "session": "Day",
+      "seating": "UB",
+      "cost_index": 84.75
+    },
+    {
+      "statement_id": "TTO_036_DESCRIPTION",
+      "option_id": "036",
+      "text": "Enjoy Rod Laver Arena during the semifinal or final period, with a closer, behind-the-court baseline perspective in the day session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Late",
+      "session": "Day",
+      "seating": "LB",
+      "cost_index": 92.51
+    },
+    {
+      "statement_id": "TTO_037_DESCRIPTION",
+      "option_id": "037",
+      "text": "Enjoy Rod Laver Arena during the semifinal or final period, with an elevated side-on perspective in the day session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Late",
+      "session": "Day",
+      "seating": "US",
+      "cost_index": 84.7
+    },
+    {
+      "statement_id": "TTO_038_DESCRIPTION",
+      "option_id": "038",
+      "text": "Enjoy Rod Laver Arena during the semifinal or final period, with a closer side-on perspective in the day session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Late",
+      "session": "Day",
+      "seating": "LS",
+      "cost_index": 91.18
+    },
+    {
+      "statement_id": "TTO_039_DESCRIPTION",
+      "option_id": "039",
+      "text": "Enjoy Rod Laver Arena during the semifinal or final period, with an elevated baseline perspective in the night session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Late",
+      "session": "Night",
+      "seating": "UB",
+      "cost_index": 89.6
+    },
+    {
+      "statement_id": "TTO_040_DESCRIPTION",
+      "option_id": "040",
+      "text": "Enjoy Rod Laver Arena during the semifinal or final period, with a closer, behind-the-court baseline perspective in the night session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Late",
+      "session": "Night",
+      "seating": "LB",
+      "cost_index": 95
+    },
+    {
+      "statement_id": "TTO_041_DESCRIPTION",
+      "option_id": "041",
+      "text": "Enjoy Rod Laver Arena during the semifinal or final period, with an elevated side-on perspective in the night session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Late",
+      "session": "Night",
+      "seating": "US",
+      "cost_index": 89.56
+    },
+    {
+      "statement_id": "TTO_042_DESCRIPTION",
+      "option_id": "042",
+      "text": "Enjoy Rod Laver Arena during the semifinal or final period, with a closer side-on perspective in the night session. The flagship arena offers a big-stadium atmosphere.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "RLA",
+      "stage": "Late",
+      "session": "Night",
+      "seating": "LS",
+      "cost_index": 95
+    },
+    {
+      "statement_id": "TTO_043_DESCRIPTION",
+      "option_id": "043",
+      "text": "A later-round Ground Pass lets you experience the tournament grounds, but does not guarantee substantial outside-court match action during the semifinals and finals. It provides flexible movement rather than a reserved arena seat.",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL",
+      "arena": "GP",
+      "stage": "Late",
+      "session": null,
+      "seating": "GP",
+      "cost_index": 45
+    }
+  ],
+  "comparison_templates": [
+    {
+      "statement_id": "CMP_SAME_ARENA_BASELINE_LOWER",
+      "text": "The lower-baseline option keeps the same arena and session, with a closer behind-the-court view; it may carry a higher modeled cost.",
+      "condition": "same arena/stage/session; alternative LB; hero UB; only mention higher cost when index gap >=3 and directional",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL"
+    },
+    {
+      "statement_id": "CMP_SAME_ARENA_BASELINE_UPPER",
+      "text": "The upper-baseline option keeps the same arena and session, with an elevated behind-the-court view and potentially lower modeled cost.",
+      "condition": "same arena/stage/session; alternative UB; hero LB; cost claim only if supported",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL"
+    },
+    {
+      "statement_id": "CMP_BASELINE_SIDELINE",
+      "text": "Both options are closely matched; the main difference is the viewing angle, from behind the baseline versus a side-on perspective.",
+      "condition": "baseline vs sideline; especially exact ties; no superiority",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL"
+    },
+    {
+      "statement_id": "CMP_RLA_MCA",
+      "text": "Margaret Court offers another substantial arena experience in a more contained setting than Rod Laver.",
+      "condition": "hero RLA, alternative MCA",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL"
+    },
+    {
+      "statement_id": "CMP_MCA_RLA",
+      "text": "Rod Laver offers the tournament’s flagship big-stadium setting as an alternative to Margaret Court.",
+      "condition": "hero MCA, alternative RLA",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL"
+    },
+    {
+      "statement_id": "CMP_JCA_RESERVED",
+      "text": "John Cain offers a lively, more intimate arena setting with a reserved seat; the precise seat location is not specified.",
+      "condition": "alternative JCA; avoid invented zone",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL"
+    },
+    {
+      "statement_id": "CMP_GP_VS_RESERVED",
+      "text": "A Ground Pass emphasizes moving among eligible outside courts rather than holding a reserved arena seat.",
+      "condition": "GP vs reserved; never claim only GP permits grounds exploration",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL"
+    },
+    {
+      "statement_id": "CMP_RESERVED_VS_GP",
+      "text": "A reserved arena ticket offers a dedicated arena seat, while still potentially allowing exploration of eligible areas of the grounds.",
+      "condition": "reserved vs GP; access subject to ticket terms",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL"
+    },
+    {
+      "statement_id": "CMP_DAY_NIGHT",
+      "text": "This alternative offers a different time-of-day experience, switching between daytime tennis and a session under the lights.",
+      "condition": "day to night; reverse phrasing when night to day",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL"
+    },
+    {
+      "statement_id": "CMP_STAGE_EARLY_MIDDLE",
+      "text": "This alternative changes the tournament stage, between the opening rounds and the fourth-round or quarterfinal period.",
+      "condition": "early to middle; both must pass date eligibility",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL"
+    },
+    {
+      "statement_id": "CMP_STAGE_MIDDLE_LATE",
+      "text": "This alternative changes the tournament stage, between the fourth-round or quarterfinal period and the semifinals or finals.",
+      "condition": "middle to late; both must pass date eligibility",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL"
+    },
+    {
+      "statement_id": "CMP_COST_LOWER",
+      "text": "This option has a lower modeled cost than the leading recommendation.",
+      "condition": "cost gap >=3; directional; value relevance; no live price",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL"
+    },
+    {
+      "statement_id": "CMP_COST_HIGHER",
+      "text": "This option has a higher modeled cost than the leading recommendation.",
+      "condition": "cost gap >=3; directional; no live price",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL"
+    },
+    {
+      "statement_id": "CMP_NEAR_TIE",
+      "text": "Both are closely matched to your preferences; the more useful distinction is the actual seating, arena, stage or session difference.",
+      "condition": "exact/near ties; must accompany concrete difference",
+      "source_status": "RECONSTRUCTED_FOR_APPROVAL"
+    },
+    {
+      "statement_id": "CMP_JCA_VS_RLA",
+      "text": "Rod Laver offers the tournament's flagship big-stadium atmosphere, compared with John Cain's more intimate arena setting.",
+      "condition": "hero JCA, alternative RLA",
+      "source_status": "EDITORIALLY_APPROVED_20_OCT_2026"
+    },
+    {
+      "statement_id": "CMP_JCA_VS_MCA",
+      "text": "Margaret Court Arena offers a specified seating perspective, while John Cain Arena's reserved-seat option does not identify a particular seating zone.",
+      "condition": "hero JCA, alternative MCA",
+      "source_status": "EDITORIALLY_APPROVED_20_OCT_2026"
+    }
+  ]
+}

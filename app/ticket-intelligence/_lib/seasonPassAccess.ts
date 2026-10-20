@@ -1,7 +1,9 @@
 import { db } from "@/lib/db";
-import { ticketIntelligenceSeasonPasses } from "@/schema/database";
+import { ticketIntelligenceSeasonPasses, sportEnum } from "@/schema/database";
 import { and, eq, sql } from "drizzle-orm";
 import { getProDetails } from "@/lib/pro";
+
+type Sport = (typeof sportEnum.enumValues)[number];
 
 // Shared season-pass access check — used everywhere Ticket Intelligence
 // currently checks `purchases` for a per-event `ticket_intelligence` row
@@ -15,7 +17,12 @@ import { getProDetails } from "@/lib/pro";
 // direct year membership check. A newly created event with editionYear 2027
 // is automatically covered by any pass whose editionSeason includes 2027,
 // with no backfill needed.
-export async function hasActiveSeasonPass(email: string, editionYear: number): Promise<boolean> {
+//
+// sport added 20 Oct 2026 alongside Tennis Ticket Intelligence's own
+// Season Pass — without this filter, an F1 Season Pass holder would
+// silently also unlock every tennis Grand Slam's Ticket Intelligence (and
+// vice versa), since this check previously had no sport boundary at all.
+export async function hasActiveSeasonPass(email: string, editionYear: number, sport: Sport): Promise<boolean> {
   const [row] = await db
     .select({ id: ticketIntelligenceSeasonPasses.id })
     .from(ticketIntelligenceSeasonPasses)
@@ -23,6 +30,7 @@ export async function hasActiveSeasonPass(email: string, editionYear: number): P
       and(
         eq(ticketIntelligenceSeasonPasses.email, email),
         eq(ticketIntelligenceSeasonPasses.status, "active"),
+        eq(ticketIntelligenceSeasonPasses.sport, sport),
         sql`${ticketIntelligenceSeasonPasses.editionSeason} @> ARRAY[${editionYear}]::smallint[]`
       )
     )
@@ -40,7 +48,10 @@ export async function hasActiveSeasonPass(email: string, editionYear: number): P
 // Sep 2026: "edition_season should cover today's date." Gap found live the
 // same day: the picker page's own ownership check originally had no year
 // check at all.
-export async function hasAnyActiveSeasonPass(email: string): Promise<boolean> {
+// sport added 20 Oct 2026, same reason as hasActiveSeasonPass above —
+// required, not defaulted, so every call site must deliberately state
+// which sport's picker page it's checking against.
+export async function hasAnyActiveSeasonPass(email: string, sport: Sport): Promise<boolean> {
   const currentYear = new Date().getFullYear();
   const [row] = await db
     .select({ id: ticketIntelligenceSeasonPasses.id })
@@ -49,6 +60,7 @@ export async function hasAnyActiveSeasonPass(email: string): Promise<boolean> {
       and(
         eq(ticketIntelligenceSeasonPasses.email, email),
         eq(ticketIntelligenceSeasonPasses.status, "active"),
+        eq(ticketIntelligenceSeasonPasses.sport, sport),
         sql`${ticketIntelligenceSeasonPasses.editionSeason} @> ARRAY[${currentYear}]::smallint[]`
       )
     )

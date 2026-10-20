@@ -171,6 +171,7 @@ export default async function TripIntelligenceTennisResultsPage({
                       sport="tennis"
                       isEventGuideBuilt={display?.isEventGuideBuilt ?? false}
                       userEmail={user?.email ?? null}
+                      ticketIntelligenceSlug={display?.hasTicketIntelligence ? display.slug : null}
                     />
                   );
                 })}
@@ -183,6 +184,11 @@ export default async function TripIntelligenceTennisResultsPage({
                   isBuilt={displayInfoMap.get(hero.sportingEventId)?.isEventGuideBuilt ?? false}
                   userEmail={user?.email ?? null}
                   showEventGuide={false}
+                  ticketIntelligenceSlug={
+                    displayInfoMap.get(hero.sportingEventId)?.hasTicketIntelligence
+                      ? (displayInfoMap.get(hero.sportingEventId)?.slug ?? null)
+                      : null
+                  }
                 />
               </div>
             </div>
@@ -229,6 +235,11 @@ export default async function TripIntelligenceTennisResultsPage({
                         sport={isCoLeaderTie ? "tennis" : undefined}
                         isEventGuideBuilt={isCoLeaderTie ? (candidateDisplay?.isEventGuideBuilt ?? false) : undefined}
                         userEmail={isCoLeaderTie ? (user?.email ?? null) : undefined}
+                        ticketIntelligenceSlug={
+                          isCoLeaderTie
+                            ? (candidateDisplay?.hasTicketIntelligence ? candidateDisplay.slug : null)
+                            : undefined
+                        }
                       />
                     );
                   });
@@ -248,6 +259,11 @@ export default async function TripIntelligenceTennisResultsPage({
                   isBuilt={displayInfoMap.get(hero.sportingEventId)?.isEventGuideBuilt ?? false}
                   userEmail={user?.email ?? null}
                   showEventGuide={!isCoLeaderTie}
+                  ticketIntelligenceSlug={
+                    displayInfoMap.get(hero.sportingEventId)?.hasTicketIntelligence
+                      ? (displayInfoMap.get(hero.sportingEventId)?.slug ?? null)
+                      : null
+                  }
                 />
               </div>
 
@@ -289,6 +305,7 @@ export default async function TripIntelligenceTennisResultsPage({
                           sport="tennis"
                           isEventGuideBuilt={altDisplay?.isEventGuideBuilt ?? false}
                           userEmail={user?.email ?? null}
+                          ticketIntelligenceSlug={altDisplay?.hasTicketIntelligence ? altDisplay.slug : null}
                         />
                       );
                     });

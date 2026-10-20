@@ -30,6 +30,15 @@ const MINI_PACK_DESCRIPTION: Record<"tickets" | "hotels" | "itinerary", string> 
 // per event. See feedback_avoid_hardcoded_per_entity_tables memory.
 import { hasTicketIntelligence } from "@/app/ticket-intelligence/[slug]/_lib/getSeatingData";
 
+// Tennis Ticket Intelligence — same "Find your seat" card pattern as F1's
+// Ticket Intelligence above, but gated by hasTennisTicketIntelligence
+// (tennis_ticket_intelligence_options rows AND the edition-activation +
+// catalogue-ratification gate), not just row existence — see that
+// function's own comment for why tennis needs the extra check F1 doesn't.
+// Data-driven by event.sport + event.id, never a hardcoded per-slug Set —
+// lights up automatically for any tennis event once seeded and activated.
+import { hasTennisTicketIntelligence } from "@/app/ticket-intelligence/tennis/[slug]/_lib/getTennisOptionsData";
+
 import { STATUS_LABEL, MINI_PACK_LABEL_BY_PRODUCT_TYPE, MINI_PACK_UNLOCK_DESCRIPTION_BY_PRODUCT_TYPE } from "./_components/SpokeShell";
 import DodoCheckout from "../_components/DodoCheckout";
 import LocalCurrencyHint from "../_components/LocalCurrencyHint";
@@ -651,6 +660,8 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
   // no-op automatically for every other hub-and-spoke event.
   const miniPackPricing = getMiniPackPricing(slug);
   const showTicketIntelligence = await hasTicketIntelligence(event.id);
+  const showTennisTicketIntelligence =
+    event.sport === "tennis" && (await hasTennisTicketIntelligence(event.id, event.editionYear));
   const initiallySaved = user ? await isEventPackSaved(event.id) : false;
   const myRating = user ? await getMyEventPackRating(event.id) : null;
 
@@ -1061,6 +1072,35 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
                     Get Your Match
                   </Link>
                 )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tennis Ticket Intelligence card — same visual pattern as F1's
+            above, but no purchase gate (this pilot has no commerce layer —
+            see Stage 2 Authorization §7), so always a plain "Get Your
+            Match" link. Copy says "7 questions"/"seating option" to match
+            the tennis quiz's real question count and its arena+stage+
+            seating (not single-grandstand) result shape — founder
+            direction, 20 Oct 2026. */}
+        {showTennisTicketIntelligence && (
+          <div className="mt-10">
+            <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-4">Find your seat</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4 flex flex-col gap-2">
+                <div>
+                  <p className="text-sm font-semibold text-white mb-1">Your Personalized Ticket Match</p>
+                  <p className="text-xs text-[#6A6A6A] leading-5">
+                    Answer 7 questions about how YOU want to watch — get matched to the exact ticket option that fits
+                  </p>
+                </div>
+                <Link
+                  href={`/ticket-intelligence/tennis/${slug}?from=${slug}`}
+                  className="w-full inline-flex items-center justify-center px-4 py-2 rounded-sm border border-[#AAFF00]/50 text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00]/10 transition-colors"
+                >
+                  Get Your Match
+                </Link>
               </div>
             </div>
           </div>

@@ -110,7 +110,7 @@ export default async function TicketIntelligenceResultPage({
   // satisfies the query-string answers path below.
   const hasAccess =
     !!purchase ||
-    (await hasActiveSeasonPass(user.email, event.editionYear)) ||
+    (await hasActiveSeasonPass(user.email, event.editionYear, "formula_one")) ||
     (await hasActiveAnnualProForEvent(user.email, event.startDate));
 
   const data = await getSeatingData(slug);

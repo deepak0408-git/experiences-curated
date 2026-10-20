@@ -2,10 +2,13 @@ import Link from "next/link";
 import EventGuideCta from "../../../formula-1/results/_components/EventGuideCta";
 
 // Adapted from app/trip-intelligence/formula-1/results/_components/ActionSideBar.tsx.
-// Omits the "Find your seat" Ticket Intelligence link — Ticket Intelligence
-// (circuitSeatingProfile) only has F1 seat data today, no tennis venues —
-// per the discovery note in the approved plan. Reuses EventGuideCta as-is
-// (generic, no F1-specific logic).
+// Reuses EventGuideCta as-is (generic, no F1-specific logic).
+//
+// "Find your ticket" (20 Oct 2026) — same pattern as F1's "Find your seat"
+// link: shown only when ticketIntelligenceSlug is non-null (the caller
+// resolves this from GrandSlamDisplayInfo.hasTicketIntelligence, itself
+// sourced from hasTennisTicketIntelligence's fail-closed gate — never a
+// hardcoded per-event check), sits directly above the Event Guide CTA.
 //
 // When there are 2+ co-leading winners, there's no single "best fit event"
 // to point the sidebar's event-guide CTA at — showEventGuide=false omits
@@ -18,12 +21,14 @@ export default function ActionSideBar({
   isBuilt,
   userEmail,
   showEventGuide = true,
+  ticketIntelligenceSlug,
 }: {
   eventSlug: string;
   eventId: string;
   isBuilt: boolean;
   userEmail: string | null;
   showEventGuide?: boolean;
+  ticketIntelligenceSlug?: string | null;
 }) {
   return (
     <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
@@ -65,8 +70,8 @@ export default function ActionSideBar({
       <Link
         href="/?sport=tennis#on-the-calendar"
         className={
-          showEventGuide
-            ? "flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+          ticketIntelligenceSlug || showEventGuide
+            ? "flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
             : "flex items-center gap-2.5 py-3 hover:opacity-80 transition-opacity"
         }
       >
@@ -76,6 +81,23 @@ export default function ActionSideBar({
           <span className="block text-xs text-[#6A6A6A] mt-0.5">Don&apos;t miss the next one</span>
         </span>
       </Link>
+
+      {ticketIntelligenceSlug && (
+        <Link
+          href={`/ticket-intelligence/tennis/${ticketIntelligenceSlug}`}
+          className={
+            showEventGuide
+              ? "flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+              : "flex items-center gap-2.5 py-3 hover:opacity-80 transition-opacity"
+          }
+        >
+          <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
+          <span className="flex-1">
+            <span className="block text-sm font-bold text-[#A3A3A3]">Find your ticket</span>
+            <span className="block text-xs text-[#6A6A6A] mt-0.5">Match the arena and ticket option</span>
+          </span>
+        </Link>
+      )}
 
       {showEventGuide && (
         <EventGuideCta eventSlug={eventSlug} eventId={eventId} sport="tennis" isBuilt={isBuilt} userEmail={userEmail} />

@@ -144,6 +144,7 @@ export default async function TripIntelligenceResultsPage({
                     sport={altDisplay?.sport}
                     isEventGuideBuilt={altDisplay?.isEventGuideBuilt ?? false}
                     userEmail={user?.email ?? null}
+                    ticketIntelligenceSlug={altDisplay?.hasTicketIntelligence ? altDisplay.slug : null}
                   />
                 );
               })}

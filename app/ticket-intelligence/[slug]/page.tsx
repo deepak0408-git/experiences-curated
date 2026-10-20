@@ -94,7 +94,7 @@ export default async function TicketIntelligencePage({
     // date. Checked last (rarest case, requires its own query).
     alreadyPurchased =
       hasPerEventPurchase ||
-      (await hasActiveSeasonPass(user.email, data.event.editionYear)) ||
+      (await hasActiveSeasonPass(user.email, data.event.editionYear, "formula_one")) ||
       (await hasActiveAnnualProForEvent(user.email, data.event.startDate));
   }
 

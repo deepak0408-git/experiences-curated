@@ -5,6 +5,9 @@ import { notFound } from "next/navigation";
 
 const PUBLISHED = eq(blogArticles.status, "published");
 
+const VALID_CONTENT_CATEGORIES = new Set(["history", "rivalry", "why_go", "bucket_list", "travel_craft"]);
+const VALID_SPORTS = new Set(["tennis", "cricket", "football", "rugby", "golf", "formula_one", "cycling", "athletics", "other"]);
+
 // No status filter here — matches getExperienceBySlug's pattern exactly.
 // An in_review article is reachable at its real /blog/[slug] URL by direct
 // link only (never surfaced by the index/related/series queries below,
@@ -227,10 +230,16 @@ export async function getArticlesForDestination(
 // tier throughout.
 export async function getBlogArticles(opts?: { category?: string; sport?: string }) {
   const conditions = [PUBLISHED];
-  if (opts?.category) {
+  // category/sport come straight from the URL query string (app/blog/page.tsx
+  // searchParams) — an unrecognized value must never reach the enum-typed
+  // columns below, or Postgres throws "invalid input value for enum" and the
+  // page 500s. Caught live 19 Oct 2026 via a bot probing /blog with fuzzed
+  // numeric params. Unrecognized values are dropped (degrade to unfiltered),
+  // not rejected with an error.
+  if (opts?.category && VALID_CONTENT_CATEGORIES.has(opts.category)) {
     conditions.push(eq(blogArticles.contentCategory, opts.category as "history" | "rivalry" | "why_go" | "bucket_list" | "travel_craft"));
   }
-  if (opts?.sport) {
+  if (opts?.sport && VALID_SPORTS.has(opts.sport)) {
     conditions.push(sql`${opts.sport} = ANY(${blogArticles.sport})`);
   }
 
