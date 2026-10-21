@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { SPORT_LABELS, TIME_WINDOW_LABELS, sumLineItems, formatMoneyRange, rankEvents, type MockEvent, type CostLineItem } from "../../../_lib/mockEvents";
 import { saveComparison } from "../../../_lib/actions";
+import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 
 // Mobile-only swipeable single-event view — the desktop table's horizontal
 // scroll defeats the point of "side by side" comparison on a phone (you
@@ -109,7 +110,8 @@ export default function ComparisonView({
   };
 }) {
   const searchParams = useSearchParams();
-  const fromCockpit = searchParams.get("from") === "cockpit";
+  const fromParam = searchParams.get("from");
+  const cockpitBackLink = resolveCockpitBackLink(fromParam);
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -141,7 +143,7 @@ export default function ComparisonView({
     tripLengthDays: String(intake.tripLengthDays),
     originMarket: intake.originMarket,
   });
-  if (fromCockpit) backToResultsParams.set("from", "cockpit");
+  if (cockpitBackLink) backToResultsParams.set("from", fromParam!);
   const backToResultsUrl = `/planner/results?${backToResultsParams.toString()}`;
 
   if (events.length < 2) {
@@ -235,12 +237,12 @@ export default function ComparisonView({
         <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00]">
           Trip Planner
         </p>
-        {fromCockpit && (
+        {cockpitBackLink && (
           <Link
-            href="/formula-1"
+            href={cockpitBackLink.href}
             className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
           >
-            ← Back to F1 Cockpit
+            {cockpitBackLink.label}
           </Link>
         )}
       </div>

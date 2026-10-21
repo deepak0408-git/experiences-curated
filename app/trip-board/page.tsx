@@ -9,6 +9,7 @@ import TripBoardSignIn from "./_components/TripBoardSignIn";
 import TripBoardPlanner from "./_components/TripBoardPlanner";
 import type { PlannerItem, UpcomingEvent } from "./_components/TripBoardPlanner";
 import { getOrCreateDefaultBoard, getUserBoards } from "@/lib/trip-boards";
+import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 
 export const metadata: Metadata = {
   title: "Trip Board — Experiences | Curated",
@@ -21,6 +22,7 @@ export default async function TripBoardPage({
 }) {
   const { user: authUser } = await getAuthUser();
   const { from } = await searchParams;
+  const cockpitBackLink = resolveCockpitBackLink(from);
 
   if (!authUser) {
     return (
@@ -35,11 +37,11 @@ export default async function TripBoardPage({
         <div className="max-w-sm mx-auto px-6 py-24 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00]">Trip Board</p>
-            {from === "cockpit" && (
+            {cockpitBackLink && (
               <>
                 <span className="text-[#2A2A2A]">·</span>
-                <Link href="/formula-1" className="text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors">
-                  ← Back to F1 Cockpit
+                <Link href={cockpitBackLink.href} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors">
+                  {cockpitBackLink.label}
                 </Link>
               </>
             )}

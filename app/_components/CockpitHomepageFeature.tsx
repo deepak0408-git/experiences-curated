@@ -13,7 +13,7 @@ export default function CockpitHomepageFeature() {
     <section className="bg-[#0A0A0A]">
       <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14">
         <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-4">F1 Travel Planning Cockpit</p>
-        <h2 className="text-2xl font-black text-white leading-snug mb-8">Your Formula 1 journey, from first thought to final lap.</h2>
+        <h2 className="text-2xl font-black text-white leading-snug mb-8">Your Formula 1 journey, from first thought to final lap</h2>
         <CockpitHomepageCtaLink className="group relative block overflow-hidden rounded-sm border border-[#2A2A2A] hover:border-[#AAFF00] transition-colors duration-300">
           <div className="relative h-[220px] sm:h-[280px]">
             <Image

@@ -15,6 +15,7 @@ import type { TripIntelligenceTennisAnswers } from "../_lib/types";
 import type { CandidateScore, TieGroup } from "../_lib/types";
 import ResultCard from "./_components/ResultCard";
 import ActionSideBar from "./_components/ActionSideBar";
+import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 
 export const metadata: Metadata = {
   title: "Your Grand Slam Match",
@@ -90,6 +91,8 @@ export default async function TripIntelligenceTennisResultsPage({
   if (!answers) {
     notFound();
   }
+  const fromParam = typeof resolvedParams.from === "string" ? resolvedParams.from : null;
+  const cockpitBackLink = resolveCockpitBackLink(fromParam);
 
   const { user } = await getAuthUser();
   const candidates = await getAllGrandSlamCandidates();
@@ -133,7 +136,17 @@ export default async function TripIntelligenceTennisResultsPage({
     <main className="min-h-screen bg-[#0A0A0A]">
       <HomepageNav email={user?.email ?? null} />
       <div className="max-w-5xl mx-auto px-6 sm:px-8 py-16">
-        <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00] mb-4">Your match</p>
+        <div className="flex items-center justify-between gap-2 mb-4">
+          <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00]">Your match</p>
+          {cockpitBackLink && (
+            <Link
+              href={cockpitBackLink.href}
+              className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+            >
+              {cockpitBackLink.label}
+            </Link>
+          )}
+        </div>
 
         <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">{heading}</h1>
         <Link

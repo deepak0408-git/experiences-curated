@@ -8,6 +8,7 @@ import GateModal, { type GateTrigger } from "./GateModal";
 import TradeoffPanel from "./TradeoffPanel";
 import { SPORT_LABELS, TIME_WINDOW_LABELS, formatMoneyRange, rankEvents, type MockEvent } from "../../_lib/mockEvents";
 import { saveShortlist, notifyMe } from "../../_lib/actions";
+import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 
 // Interim per-event hero image focal-point override, keyed by slug — same
 // hardcoded-slug-check pattern already used for experiences (no
@@ -46,7 +47,13 @@ export default function ShortlistResults({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const fromCockpit = searchParams.get("from") === "cockpit";
+  const fromParam = searchParams.get("from");
+  const cockpitBackLink = resolveCockpitBackLink(fromParam);
+  // "Back to search" needs the sport that actually brought this visitor
+  // here (sports[0], since a Cockpit-originated search is always
+  // single-sport), not a hardcoded formula_one — a tennis-cockpit visitor
+  // was previously sent back to a Formula 1-filtered search.
+  const backToSearchSport = sports[0];
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
   const [tradeoffSlug, setTradeoffSlug] = useState<string | null>(initialTradeoffSlug ?? null);
   const [compareSlugs, setCompareSlugs] = useState<string[]>([]);
@@ -147,12 +154,12 @@ export default function ShortlistResults({
         <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00]">
           Trip Planner
         </p>
-        {fromCockpit && (
+        {cockpitBackLink && (
           <Link
-            href="/formula-1"
+            href={cockpitBackLink.href}
             className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
           >
-            ← Back to F1 Cockpit
+            {cockpitBackLink.label}
           </Link>
         )}
       </div>
@@ -161,7 +168,7 @@ export default function ShortlistResults({
         <h1 className="text-2xl sm:text-3xl font-black text-white">
           Here&apos;s what fits your budget
         </h1>
-        <Link href={fromCockpit ? "/planner?sport=formula_one&from=cockpit" : "/planner"} className="text-xs text-[#6A6A6A] hover:text-[#AAFF00] transition-colors whitespace-nowrap mt-2">
+        <Link href={cockpitBackLink ? `/planner?sport=${backToSearchSport}&from=${fromParam}` : "/planner"} className="text-xs text-[#6A6A6A] hover:text-[#AAFF00] transition-colors whitespace-nowrap mt-2">
           ← Back to search
         </Link>
       </div>
@@ -443,9 +450,9 @@ export default function ShortlistResults({
                   tripLengthDays: String(tripLengthDays),
                   originMarket,
                 });
-                // Preserves ?from=cockpit into the compare page — same bug
-                // pattern as the quiz/planner-intake fixes.
-                if (fromCockpit) params.set("from", "cockpit");
+                // Preserves ?from=<cockpit value> into the compare page —
+                // same bug pattern as the quiz/planner-intake fixes.
+                if (cockpitBackLink) params.set("from", fromParam!);
                 router.push(`/planner/results/compare?${params.toString()}`);
               }}
               className="px-6 py-2.5 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-[#AAFF00]"

@@ -13,6 +13,7 @@ import type { QuizAnswers } from "../_lib/types";
 import FullResult from "./_components/FullResult";
 import RetakeLink from "./_components/RetakeLink";
 import TennisTicketIntelligenceSidebar from "../_components/TennisTicketIntelligenceSidebar";
+import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 
 // Tennis equivalent of app/ticket-intelligence/[slug]/result/page.tsx —
 // verifies a real purchases row (product type "ticket_intelligence") OR an
@@ -103,6 +104,11 @@ export default async function TennisTicketIntelligenceResultPage({
     (await hasActiveAnnualProForEvent(user.email, event.startDate));
 
   const answers = answersFromQuery(query) ?? (purchase ? answersFromStored(purchase.storedAnswers) : null);
+  // ?from=cockpit / ?from=tennis-cockpit survives the checkout round trip
+  // via TennisTicketQuiz.tsx's successUrl — this page just didn't read it
+  // until now, so a purchase begun from the Tennis Cockpit landed on
+  // /result with no way back. Fixed 21 Oct 2026.
+  const cockpitBackLink = resolveCockpitBackLink(query.from);
 
   return (
     <main className="min-h-screen bg-[#0A0A0A]">
@@ -111,6 +117,14 @@ export default async function TennisTicketIntelligenceResultPage({
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-16">
           <div className="flex items-center justify-between mb-4">
             <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00]">Your match</p>
+            {cockpitBackLink && (
+              <Link
+                href={cockpitBackLink.href}
+                className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+              >
+                {cockpitBackLink.label}
+              </Link>
+            )}
           </div>
           <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-start">
             <div className="max-w-2xl">

@@ -284,7 +284,7 @@ export function SearchUI({
   archetype,
   userEmail,
   hideProCtas = false,
-  fromCockpit = false,
+  cockpitBackLink = null,
 }: {
   appId: string;
   searchKey: string;
@@ -298,10 +298,12 @@ export function SearchUI({
   archetype?: string | null;
   userEmail?: string | null;
   hideProCtas?: boolean;
-  // Set when the visitor arrived via ?from=cockpit — shows a "Back to F1
-  // Cockpit" link at the end of the header row. Approved — Phase 2
-  // Decision 2.
-  fromCockpit?: boolean;
+  // Set when the visitor arrived via ?from=cockpit or ?from=tennis-cockpit
+  // — shows a "Back to Cockpit" link at the end of the header row, pointed
+  // at whichever Cockpit the visitor actually came from. Approved — Phase
+  // 2 Decision 2 (F1); generalized 21 Oct 2026 via resolveCockpitBackLink
+  // so a tennis-cockpit visitor no longer gets routed back to /formula-1.
+  cockpitBackLink?: { href: string; label: string; shortLabel: string } | null;
 }) {
   const searchClient = useMemo(() => liteClient(appId, searchKey), [appId, searchKey]);
 
@@ -377,12 +379,12 @@ export function SearchUI({
                 is unlimited.
               </span>
             )}
-            {fromCockpit && (
+            {cockpitBackLink && (
               <Link
-                href="/formula-1"
+                href={cockpitBackLink.href}
                 className="hidden md:inline flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors whitespace-nowrap"
               >
-                ← F1 Cockpit
+                {cockpitBackLink.shortLabel}
               </Link>
             )}
             {userEmail && (
@@ -401,13 +403,13 @@ export function SearchUI({
               (logo, filter button) and was overflowing horizontally when
               this link competed for the same row. Founder-flagged, 15 Oct
               2026. Desktop keeps the inline version in the row above. */}
-          {fromCockpit && (
+          {cockpitBackLink && (
             <div className="md:hidden px-4 sm:px-6 pb-3">
               <Link
-                href="/formula-1"
+                href={cockpitBackLink.href}
                 className="text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
               >
-                ← Back to F1 Cockpit
+                {cockpitBackLink.label}
               </Link>
             </div>
           )}

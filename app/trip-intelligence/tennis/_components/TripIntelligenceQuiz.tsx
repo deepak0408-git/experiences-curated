@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { TripIntelligenceTennisAnswers } from "../_lib/types";
 import { QUESTIONS } from "../_lib/questions";
 import QuestionBlock from "./QuestionBlock";
+import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 
 type PartialAnswers = Partial<TripIntelligenceTennisAnswers>;
 
@@ -25,6 +27,15 @@ export default function TripIntelligenceQuiz() {
   // Same URL-query-param state pattern as F1's TripIntelligenceQuiz.tsx —
   // survives back-button/bookmark/share without needing server session state.
   const [answers, setAnswers] = useState<PartialAnswers>(() => readAnswersFromParams(searchParams));
+  // Read once via a ref (not state) so it survives the URL-rewrite effect
+  // below re-running on every answer change — a ref avoids a "final
+  // argument changed size between renders" crash under Fast Refresh, same
+  // reasoning as F1's TripIntelligenceQuiz.tsx. Fixed 21 Oct 2026 — this
+  // component previously had no `from` awareness at all, so a visitor
+  // arriving via ?from=tennis-cockpit lost that param (and any backlink)
+  // the instant they answered the first question.
+  const fromRef = useRef(searchParams.get("from"));
+  const cockpitBackLink = resolveCockpitBackLink(fromRef.current);
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -32,6 +43,7 @@ export default function TripIntelligenceQuiz() {
       const v = answers[key];
       if (v) params.set(key, v);
     }
+    if (fromRef.current) params.set("from", fromRef.current);
     const qs = params.toString();
     const url = qs ? `/trip-intelligence/tennis?${qs}` : "/trip-intelligence/tennis";
     window.history.replaceState(null, "", url);
@@ -48,7 +60,17 @@ export default function TripIntelligenceQuiz() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 sm:px-8 py-16">
-      <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00] mb-4">Trip Intelligence</p>
+      <div className="flex items-center justify-between gap-2 mb-4">
+        <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00]">Trip Intelligence</p>
+        {cockpitBackLink && (
+          <Link
+            href={cockpitBackLink.href}
+            className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+          >
+            {cockpitBackLink.label}
+          </Link>
+        )}
+      </div>
 
       <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
         Which Grand Slam best matches the experience you want?
@@ -89,6 +111,11 @@ export default function TripIntelligenceQuiz() {
           for (const key of ANSWER_KEYS) {
             params.set(key, answers[key]!);
           }
+          // Preserves ?from=cockpit / ?from=tennis-cockpit through to the
+          // results page — otherwise a Cockpit's back-link context was
+          // lost the moment a visitor submitted the quiz, even though it
+          // survived up to here.
+          if (fromRef.current) params.set("from", fromRef.current);
           router.push(`/trip-intelligence/tennis/results?${params.toString()}`);
         }}
         className={

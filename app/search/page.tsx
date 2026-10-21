@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { userProfiles } from "@/schema/database";
 import { eq } from "drizzle-orm";
 import { unstable_noStore as noStore } from "next/cache";
+import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 
 export const dynamic = "force-dynamic";
 
@@ -45,7 +46,7 @@ export default async function SearchPage({
       archetype={archetype}
       userEmail={user?.email ?? null}
       hideProCtas={process.env.HIDE_PRO === "true"}
-      fromCockpit={from === "cockpit"}
+      cockpitBackLink={resolveCockpitBackLink(from)}
     />
   );
 }

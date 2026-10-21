@@ -14,6 +14,7 @@ import ShareButton from "./ShareButton";
 import NewBoardModal from "./NewBoardModal";
 import { renameBoard, deleteBoard } from "../actions";
 import MoveToBoard from "./MoveToBoard";
+import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 
 // Same map used on the homepage — the raw DB enum ("formula_one") was being
 // rendered directly with a naive capitalize, producing "Formula_one" (then
@@ -82,13 +83,15 @@ interface Props {
   dbUserId: string;
   upcomingEvents: UpcomingEvent[];
   hideProCtas?: boolean;
-  // Set when the visitor arrived via ?from=cockpit — shows a "Back to F1
-  // Cockpit" return link. Never set for any other entry point. Approved —
-  // Phase 2 Decision 2.
+  // Set when the visitor arrived via ?from=cockpit or ?from=tennis-cockpit
+  // — shows a "Back to Cockpit" return link to the matching Cockpit. Never
+  // set for any other entry point. Approved — Phase 2 Decision 2 (F1);
+  // generalized 21 Oct 2026 for the Tennis Cockpit.
   from?: string;
 }
 
 export default function TripBoardPlanner({ initialItems, userId, userEmail, isPro, boards, activeBoardId, upcomingEvents, hideProCtas = false, from }: Props) {
+  const cockpitBackLink = resolveCockpitBackLink(from);
   const [items, setItems] = useState<PlannerItem[]>(initialItems);
   const [showNewBoard, setShowNewBoard] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -272,9 +275,9 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
 
           {/* Right — actions */}
           <div className="flex flex-col items-start sm:items-end gap-3">
-            {from === "cockpit" && (
-              <Link href="/formula-1" className="text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors">
-                ← Back to F1 Cockpit
+            {cockpitBackLink && (
+              <Link href={cockpitBackLink.href} className="text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors">
+                {cockpitBackLink.label}
               </Link>
             )}
             <div className="flex items-center gap-2">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { isCockpitFrom } from "@/lib/cockpitBackLink";
 
 export default function TripBoardSignIn({ from }: { from?: string } = {}) {
   const [email, setEmail] = useState("");
@@ -13,13 +14,15 @@ export default function TripBoardSignIn({ from }: { from?: string } = {}) {
     setStatus("loading");
     setErrorMessage(null);
 
-    // Preserves ?from=cockpit through the magic-link redirect, same as the
-    // SignInLink fix — otherwise a Cockpit visitor signing in here loses
-    // the "Back to F1 Cockpit" context. Approved — Phase 2 Decision 2.
+    // Preserves ?from=<cockpit value> through the magic-link redirect, same
+    // as the SignInLink fix — otherwise a Cockpit visitor signing in here
+    // loses their "Back to Cockpit" context. Generalized from the original
+    // F1-only "cockpit" literal (Approved — Phase 2 Decision 2) to also
+    // cover the Tennis Cockpit's own ?from=tennis-cockpit value.
     const res = await fetch("/api/auth/magic-link", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: email.trim(), next: from === "cockpit" ? "/trip-board?from=cockpit" : "/trip-board" }),
+      body: JSON.stringify({ email: email.trim(), next: isCockpitFrom(from) ? `/trip-board?from=${from}` : "/trip-board" }),
     });
 
     if (!res.ok) {

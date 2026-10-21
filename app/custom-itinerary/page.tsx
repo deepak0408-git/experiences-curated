@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import CustomItineraryCheckout from "./_components/CustomItineraryCheckout";
+import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 
 export const metadata: Metadata = {
   title: "Custom Itinerary Planning — Experiences | Curated",
@@ -21,6 +22,7 @@ export default async function CustomItineraryPage({
   searchParams: Promise<{ from?: string }>;
 }) {
   const { from } = await searchParams;
+  const cockpitBackLink = resolveCockpitBackLink(from);
   const successUrl =
     (process.env.NEXT_PUBLIC_APP_URL ?? "https://experiences-curated.com") + "/custom-itinerary/thanks";
 
@@ -43,12 +45,12 @@ export default async function CustomItineraryPage({
             <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00]">
               Custom Itinerary Planning
             </p>
-            {from === "cockpit" && (
+            {cockpitBackLink && (
               <Link
-                href="/formula-1"
+                href={cockpitBackLink.href}
                 className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
               >
-                ← Back to F1 Cockpit
+                {cockpitBackLink.label}
               </Link>
             )}
           </div>

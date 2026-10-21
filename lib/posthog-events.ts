@@ -44,4 +44,20 @@ export const phEvent = {
     posthog.capture("cockpit_calendar_card_clicked", props),
   cockpitDeeperTileClicked: (props: { tile: "articles" | "experiences" | "destinations" }) =>
     posthog.capture("cockpit_deeper_tile_clicked", props),
+
+  // Tennis Travel Planning Cockpit — separate namespace from the F1
+  // cockpit* events above (same pattern as the two sports' already-separate
+  // Trip Intelligence/Ticket Intelligence implementations), so each
+  // Cockpit's engagement can be analyzed independently.
+  tennisCockpitHomepageCtaClicked: () => posthog.capture("tennis_cockpit_homepage_cta_clicked"),
+  tennisCockpitCardClicked: (props: { card: "exploring" | "budget" | "chosen_event" | "planning" }) =>
+    posthog.capture("tennis_cockpit_card_clicked", props),
+  tennisCockpitModalOpened: (props: { modal: "event_selector" | "trip_planning"; source: "card" | "calendar" }) =>
+    posthog.capture("tennis_cockpit_modal_opened", props),
+  tennisCockpitEventSelected: (props: { eventSlug: string }) =>
+    posthog.capture("tennis_cockpit_event_selected", props),
+  tennisCockpitCalendarCardClicked: (props: { eventSlug: string }) =>
+    posthog.capture("tennis_cockpit_calendar_card_clicked", props),
+  tennisCockpitDeeperTileClicked: (props: { tile: "articles" | "experiences" | "destinations" }) =>
+    posthog.capture("tennis_cockpit_deeper_tile_clicked", props),
 };

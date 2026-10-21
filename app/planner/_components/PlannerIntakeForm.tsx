@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { OriginMarketGroup } from "../_lib/getOriginMarkets";
+import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 
 const SPORTS = [
   { value: "cricket", label: "Cricket" },
@@ -58,7 +59,8 @@ export default function PlannerIntakeForm({ originMarkets }: { originMarkets: Or
   const canSubmit =
     sports.length > 0 && budgetBand !== "" && timeWindow !== "" && tripLengthDays.trim() !== "" && originMarket !== "";
 
-  const fromCockpit = searchParams.get("from") === "cockpit";
+  const fromParam = searchParams.get("from");
+  const cockpitBackLink = resolveCockpitBackLink(fromParam);
 
   const handleSubmit = () => {
     if (!canSubmit) return;
@@ -71,10 +73,10 @@ export default function PlannerIntakeForm({ originMarkets }: { originMarkets: Or
       tripLengthDays,
       originMarket,
     });
-    // Preserves ?from=cockpit into the results page — same pattern as the
-    // Trip Intelligence quiz fix, same root cause: rebuilding the URL from
-    // only the intake fields silently dropped any other param.
-    if (fromCockpit) params.set("from", "cockpit");
+    // Preserves ?from=<cockpit value> into the results page — same pattern
+    // as the Trip Intelligence quiz fix, same root cause: rebuilding the
+    // URL from only the intake fields silently dropped any other param.
+    if (cockpitBackLink) params.set("from", fromParam!);
     router.push(`/planner/results?${params.toString()}`);
   };
 
@@ -84,12 +86,12 @@ export default function PlannerIntakeForm({ originMarkets }: { originMarkets: Or
         <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00]">
           Trip Planner
         </p>
-        {fromCockpit && (
+        {cockpitBackLink && (
           <Link
-            href="/formula-1"
+            href={cockpitBackLink.href}
             className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
           >
-            ← Back to F1 Cockpit
+            {cockpitBackLink.label}
           </Link>
         )}
       </div>

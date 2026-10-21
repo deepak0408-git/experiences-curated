@@ -810,6 +810,14 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
               ← Back to F1 Cockpit
             </Link>
           )}
+          {from === "tennis-cockpit" && (
+            <Link
+              href="/tennis"
+              className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+            >
+              ← Back to Tennis Cockpit
+            </Link>
+          )}
         </div>
 
         {/* Intro + purchase CTA — same 2-column layout as the classic pack

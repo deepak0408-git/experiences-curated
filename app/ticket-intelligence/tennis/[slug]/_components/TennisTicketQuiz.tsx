@@ -7,6 +7,7 @@ import type { QuizAnswers, Q1Priority, Q2Stage, Q3Viewing, Q4Session, Q5Seating,
 import { scoreTennisOptions } from "../_lib/scoreTennisOptions";
 import TeaserResult from "./TeaserResult";
 import TennisTicketIntelligenceSidebar from "./TennisTicketIntelligenceSidebar";
+import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 
 // Approved final Q1-Q7 wording — Stage 2 Authorization, 20 Oct 2026. Do not
 // paraphrase, shorten, or reorder these without a separately-approved
@@ -109,12 +110,17 @@ export default function TennisTicketQuiz({
   const [answers, setAnswers] = useState<PartialAnswers>(() => readAnswersFromParams(searchParams));
   const [revealed, setRevealed] = useState(() => searchParams.get("revealed") === "1");
   const retakeValue = useRef(searchParams.get("retake"));
-  // Contextual back-link — only shown when this page was reached from this
-  // event's own guide (?from=<slug>). Read once on mount so it survives
-  // the URL-sync effect rewriting the query string below.
+  // Contextual back-link — shown when this page was reached either from
+  // this event's own guide (?from=<slug>) or from a sport Cockpit
+  // (?from=cockpit / ?from=tennis-cockpit). Read once on mount so it
+  // survives the URL-sync effect rewriting the query string below. Fixed
+  // 21 Oct 2026 — this previously only ever matched the slug case, so a
+  // visitor who arrived via ?from=tennis-cockpit saw no back-link at all.
   const fromParam = useRef(searchParams.get("from"));
+  const cockpitBackLink = resolveCockpitBackLink(fromParam.current);
   const backLink =
-    fromParam.current === slug ? { href: `/event-pack/${slug}`, label: `← Back to ${eventName} guide` } : null;
+    cockpitBackLink ??
+    (fromParam.current === slug ? { href: `/event-pack/${slug}`, label: `← Back to ${eventName} guide` } : null);
 
   const set = <K extends keyof QuizAnswers>(key: K, value: QuizAnswers[K]) => {
     setAnswers((prev) => ({ ...prev, [key]: value }));

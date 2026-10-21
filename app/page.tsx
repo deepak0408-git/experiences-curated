@@ -15,6 +15,7 @@ import ScrollFadeInit from "./_components/ScrollFadeInit";
 import BrandHero from "./_components/BrandHero";
 import TestimonialStrip from "./_components/TestimonialStrip";
 import CockpitHomepageFeature from "./_components/CockpitHomepageFeature";
+import TennisCockpitHomepageFeature from "./_components/TennisCockpitHomepageFeature";
 import { getAuthUser } from "@/lib/supabase/server";
 import { getPackPricing } from "@/lib/packPricing";
 import { getDestinationsForHomepage } from "@/lib/queries/destinations";
@@ -217,6 +218,12 @@ export default async function HomePage() {
           same flag as /formula-1 itself (component no-ops when unset).
           Approved — Phase 2 Decision 5 (controlled launch). */}
       <CockpitHomepageFeature />
+
+      {/* Tennis Cockpit homepage feature — same placement pattern as the F1
+          feature directly above, independent SHOW_TENNIS_COCKPIT flag so
+          each sport's Cockpit can launch on its own schedule (component
+          no-ops when unset). */}
+      <TennisCockpitHomepageFeature />
 
       {/* Zone 1.5 — Trip Planner teaser: the alternate path for visitors who
           are sport-decided but event-undecided. Sits before Identity Strip

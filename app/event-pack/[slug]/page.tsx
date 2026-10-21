@@ -362,14 +362,16 @@ export default async function EventPackPage({
 }) {
   const { slug } = await params;
   const { status, from } = await searchParams;
-  // Threads the Cockpit's contextual-return origin through purchase —
+  // Threads a Cockpit's contextual-return origin through purchase —
   // checkout's successUrl is caller-supplied (DodoCheckout/PaddleCheckout
-  // don't derive it), so without this a purchase begun from the Cockpit
-  // would land back on the pack page with no "Back to F1 Cockpit" context.
-  // Only appended when a visitor actually arrived with ?from=cockpit —
-  // every other visitor's successUrl is unchanged. Approved — Phase 2
-  // Decision 2.
-  const fromCockpitSuffix = from === "cockpit" ? "?from=cockpit" : "";
+  // don't derive it), so without this a purchase begun from a Cockpit
+  // would land back on the pack page with no "Back to Cockpit" context.
+  // Only appended when a visitor actually arrived with ?from=cockpit or
+  // ?from=tennis-cockpit — every other visitor's successUrl is unchanged.
+  // Generalized from the original F1-only "cockpit" literal (Approved —
+  // Phase 2 Decision 2) so the Tennis Cockpit's own ?from=tennis-cockpit
+  // round-trips the same way, rather than colliding with F1's value.
+  const fromCockpitSuffix = from === "cockpit" || from === "tennis-cockpit" ? `?from=${from}` : "";
 
   const [event] = await db
     .select()
@@ -615,6 +617,14 @@ export default async function EventPackPage({
                 className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
               >
                 ← Back to F1 Cockpit
+              </Link>
+            )}
+            {from === "tennis-cockpit" && (
+              <Link
+                href="/tennis"
+                className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
+              >
+                ← Back to Tennis Cockpit
               </Link>
             )}
           </div>

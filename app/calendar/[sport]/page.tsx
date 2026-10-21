@@ -6,6 +6,7 @@ import HomepageNav from "@/app/_components/HomepageNav";
 import { getCalendarEvents } from "@/lib/queries/calendar";
 import CalendarEventList from "../_components/CalendarEventList";
 import YearFilter from "../_components/YearFilter";
+import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 
 // URL slugs (design doc: /calendar/formula-1, /calendar/tennis, etc.) don't
 // match the sportEnum's DB values 1:1 (formula_one has an underscore) — this
@@ -61,6 +62,7 @@ export default async function CalendarSportPage({
   const yearList = years?.split(",").filter(Boolean).map(Number) ?? [];
   const { user } = await getAuthUser();
   const events = await getCalendarEvents(entry.enumValue, yearList);
+  const cockpitBackLink = resolveCockpitBackLink(from);
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] flex flex-col">
@@ -71,12 +73,12 @@ export default async function CalendarSportPage({
           <h1 className="text-3xl sm:text-4xl font-black text-white text-balance">
             {`${entry.label} 2026-2027 Calendar`}
           </h1>
-          {from === "cockpit" && (
+          {cockpitBackLink && (
             <Link
-              href="/formula-1"
+              href={cockpitBackLink.href}
               className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
             >
-              ← Back to F1 Cockpit
+              {cockpitBackLink.label}
             </Link>
           )}
         </div>

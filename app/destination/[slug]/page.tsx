@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 import {
   getDestinationBySlug,
   getDestinationExperiences,
@@ -176,6 +177,7 @@ export default async function DestinationPage({
 }) {
   const { slug } = await params;
   const { from } = await searchParams;
+  const cockpitBackLink = resolveCockpitBackLink(from);
   const dest = await getDestinationBySlug(slug);
   const nearbyEvents = await getNearbyDestinationEvents({ id: dest.id, lat: dest.lat, lng: dest.lng });
   const [exps, directEvents, relatedArticles, { user }] = await Promise.all([
@@ -267,12 +269,12 @@ export default async function DestinationPage({
               <span>·</span>
               <span className="text-[#A3A3A3]">Destinations</span>
             </nav>
-            {from === "cockpit" && (
+            {cockpitBackLink && (
               <Link
-                href="/formula-1"
+                href={cockpitBackLink.href}
                 className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
               >
-                ← Back to F1 Cockpit
+                {cockpitBackLink.label}
               </Link>
             )}
           </div>
@@ -296,12 +298,12 @@ export default async function DestinationPage({
               <span>·</span>
               <span className="text-[#A3A3A3]">{dest.name}</span>
             </nav>
-            {from === "cockpit" && (
+            {cockpitBackLink && (
               <Link
-                href="/formula-1"
+                href={cockpitBackLink.href}
                 className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
               >
-                ← Back to F1 Cockpit
+                {cockpitBackLink.label}
               </Link>
             )}
           </div>

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getAuthUser } from "@/lib/supabase/server";
 import HomepageNav from "@/app/_components/HomepageNav";
 import { getBlogArticles } from "@/lib/queries/blog";
+import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 
 export const metadata: Metadata = {
   title: "Sports Travel Blog — Experiences | Curated",
@@ -31,6 +32,7 @@ export default async function BlogIndexPage({
   searchParams: Promise<{ category?: string; sport?: string; from?: string }>;
 }) {
   const { category, sport, from } = await searchParams;
+  const cockpitBackLink = resolveCockpitBackLink(from);
   const { user } = await getAuthUser();
   const isFiltered = Boolean(category || sport);
   const [articles, allArticles] = await Promise.all([
@@ -65,12 +67,12 @@ export default async function BlogIndexPage({
           <h1 className="text-3xl sm:text-4xl font-black text-white text-balance">
             Sports Travel Blog
           </h1>
-          {from === "cockpit" && (
+          {cockpitBackLink && (
             <Link
-              href="/formula-1"
+              href={cockpitBackLink.href}
               className="flex-shrink-0 text-xs text-[#AAFF00] hover:text-[#BBFF33] font-semibold underline underline-offset-2 transition-colors"
             >
-              ← Back to F1 Cockpit
+              {cockpitBackLink.label}
             </Link>
           )}
         </div>
