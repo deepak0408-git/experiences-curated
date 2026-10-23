@@ -3,7 +3,10 @@
 // no shared runtime imports. Pilot event: Australian Open 2027. See Stage 1/2
 // spec (19-20 Oct 2026) for the frozen 43-option model and scoring contract.
 
-export type ArenaCode = "RLA" | "MCA" | "JCA" | "GP";
+// PC/SL/SM/C14 added for French Open 2027 (Philippe-Chatrier, Suzanne-
+// Lenglen, Simonne-Mathieu, Court 14) — additive, AO's RLA/MCA/JCA/GP
+// untouched. Matches the widened tennis_arena_code Postgres enum.
+export type ArenaCode = "RLA" | "MCA" | "JCA" | "GP" | "PC" | "SL" | "SM" | "C14";
 export type StageCode = "Early" | "Middle" | "Late";
 export type SessionCode = "Day" | "Night" | null;
 
@@ -26,6 +29,29 @@ export interface TicketOption {
   // Full public R2 URL of this option's approved illustrative hero image,
   // or null until one is wired in. Added 20 Oct 2026.
   heroImage: string | null;
+  // Paired stand name (e.g. "Lacoste or Brugnon") — Philippe-Chatrier
+  // French Open options only, null everywhere else. Added 22 Oct 2026.
+  stand: string | null;
+  // Per-option Q7 date-eligibility window (YYYY-MM-DD), both null or both
+  // set. When present, scoreTennisOptions.ts uses these directly instead
+  // of the stage-keyed STAGE_DATE_RANGE fallback. Added 22 Oct 2026 for
+  // French Open, whose dates vary within one stageCode. Australian Open's
+  // existing rows leave both null.
+  eligibleFrom: string | null;
+  eligibleTo: string | null;
+  // Raw per-answer C1/C5 compatibility values — all 4 of a group present
+  // or all null. When present, scoreTennisOptions.ts reads these directly
+  // instead of its AO-only arena-keyed lookup tables. Added 22 Oct 2026
+  // for French Open, whose approved workbook supplies these per-option.
+  // Australian Open's existing rows leave all 8 null.
+  c1LotsOfTennis: number | null;
+  c1BigStadium: number | null;
+  c1CloseUpCourts: number | null;
+  c1BalancedExperience: number | null;
+  c5CloseToAction: number | null;
+  c5BalancedView: number | null;
+  c5NoPreference: number | null;
+  c5FlexibleExplore: number | null;
 }
 
 // ── Questionnaire answers ───────────────────────────────────────────────

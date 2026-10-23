@@ -70,3 +70,17 @@ scratchpad_*
 .dev-server.log
 .dev-server-err.log
 Capture.PNG
+
+# handoff/delivery packages and raw data dumps — not source code
+*.zip
+deliverables/
+scripts/_rg27-source/
+scripts/*-audit.csv
+scripts/*-changes.csv
+scripts/*-conflicts.csv
+scripts/*-for-review.csv
+scripts/regression-output.jsonl
+scripts/_build-*-audit.mjs
+scripts/_export-*-handoff.mjs
+scripts/_export-*-pending-explanations.mjs
+Roland_Garros_2027_Post_C4_Q3_Explanation_Final_Editorial_Patched.csv

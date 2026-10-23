@@ -7,7 +7,7 @@ import {
   plannerDestinationBands,
   plannerFlightCost,
 } from "@/schema/database";
-import { eq, inArray } from "drizzle-orm";
+import { and, eq, gte, inArray } from "drizzle-orm";
 import { formatMoneyRange, type CostLineItem, type MockEvent } from "./mockEvents";
 
 // Real replacement for MOCK_EVENTS — assembles the same shape the UI already
@@ -32,6 +32,7 @@ export async function getPlannerEvents(tripLengthDays: number, originMarket: str
 
 async function getPlannerEventsUnsafe(tripLengthDays: number, originMarket: string): Promise<MockEvent[]> {
   const days = Math.max(1, tripLengthDays || 1);
+  const today = new Date().toISOString().slice(0, 10);
   const events = await db
     .select({
       id: sportingEvents.id,
@@ -51,7 +52,12 @@ async function getPlannerEventsUnsafe(tripLengthDays: number, originMarket: stri
     })
     .from(sportingEvents)
     .leftJoin(destinations, eq(sportingEvents.destinationId, destinations.id))
-    .where(inArray(sportingEvents.packStatus, ["planned", "building", "built_hidden", "live"]));
+    .where(
+      and(
+        inArray(sportingEvents.packStatus, ["planned", "building", "built_hidden", "live"]),
+        gte(sportingEvents.endDate, today),
+      ),
+    );
 
   // Batch-fetch every planner_* table ONCE instead of 4 queries per event —
   // this was a serial N+1 loop (4 sequential awaits × ~17 events = 60-70+

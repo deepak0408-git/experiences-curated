@@ -1222,8 +1222,27 @@ export const circuitSeatingProfile = pgTable("circuit_seating_profile", {
 // rollover — no edition-year-keyed historical rows, unlike
 // plannerTicketTierCost etc. Archival is explicitly out of scope for this
 // pilot (future separate project per founder direction).
-export const tennisArenaCodeEnum = pgEnum("tennis_arena_code", ["RLA", "MCA", "JCA", "GP"]);
+// PC/SL/SM/C14 (Philippe-Chatrier, Suzanne-Lenglen, Simonne-Mathieu, Court
+// 14) added for French Open 2027 onboarding, 22 Oct 2026 — additive only,
+// RLA/MCA/JCA/GP (Australian Open) values untouched. French Open's Ground
+// Pass / Outside Courts rows reuse the existing GP code (same concept,
+// confirmed against the approved parameter workbook's Q3 hard-filter note:
+// "Q3 Reserved hard-excludes Ground Pass" — identical rule to AO's).
+export const tennisArenaCodeEnum = pgEnum("tennis_arena_code", ["RLA", "MCA", "JCA", "GP", "PC", "SL", "SM", "C14"]);
+// French Open's "Internal stage" column (Early/Middle/Late/Transition/Late
+// access) collapses to these same three values for scoring purposes —
+// Transition scores identically to Middle and "Late access" identically to
+// Late in the approved C2 stage-compatibility table (verified against the
+// approved parameter workbook: Transition's C2 row is [0.45,1,0.45], same
+// as Middle; Late access's is [0.1,0.45,1], same as Late). The fan-facing
+// distinction (if any) lives in stageLabel, not a new enum value.
 export const tennisStageCodeEnum = pgEnum("tennis_stage_code", ["Early", "Middle", "Late"]);
+// French Open's Semifinals/Finals sessions (Philippe-Chatrier, Late stage)
+// score identically to "Day" in the approved C4 compatibility table
+// (Day=1.00, Night=0.10, Either=1.00 — verified against the approved
+// parameter workbook) — stored as sessionCode "Day" with the real
+// fan-facing name ("Semifinals"/"Finals") carried in sessionLabel, same
+// pattern as stageCode/stageLabel above. No new enum value needed.
 export const tennisSessionCodeEnum = pgEnum("tennis_session_code", ["Day", "Night"]);
 
 export const tennisTicketIntelligenceOptions = pgTable("tennis_ticket_intelligence_options", {
@@ -1245,7 +1264,19 @@ export const tennisTicketIntelligenceOptions = pgTable("tennis_ticket_intelligen
   seatingLabel: varchar("seating_label", { length: 150 }).notNull(),
   // Modeled cost index, NOT a live ticket price — same discipline as
   // circuitSeatingProfile/plannerTicketTierCost.
-  costIndex: numeric("cost_index", { precision: 6, scale: 2 }).notNull(),
+  // Widened from numeric(6,2) to numeric(20,15) 23 Oct 2026 — AO's own
+  // frozen source data is always exactly 2 decimal places (verified
+  // against scripts/_tennis-options-source.json), so (6,2) was correctly
+  // sized for AO and this widening is a pure no-op for AO's existing
+  // values (adds trailing zeros only, same effective number). French
+  // Open's approved parameter workbook supplies cost_index as raw
+  // floating-point computation output (up to 15 decimal digits, e.g.
+  // 71.1150831521699) which (6,2) was silently truncating to 71.12 on
+  // insert — Postgres numeric() rounds to the declared scale without
+  // erroring, so this loss was invisible until an independent validation
+  // caught the scoring-precision discrepancy. (20,15) comfortably covers
+  // the observed 2-integer-digit/15-decimal-digit range with margin.
+  costIndex: numeric("cost_index", { precision: 20, scale: 15 }).notNull(),
   costStars: smallint("cost_stars").notNull(),
   // Draft/candidate wording pending editorial ratification — see
   // tennisTicketIntelligenceEditionStatus.catalogueRatified. Never served
@@ -1259,6 +1290,46 @@ export const tennisTicketIntelligenceOptions = pgTable("tennis_ticket_intelligen
   // editions/future records with no image yet. Never recalculated or
   // derived — always the exact verified URL from the upload step.
   heroImage: text("hero_image"),
+  // Nullable — paired stand name for Philippe-Chatrier recommendations
+  // only (French Open 2027 onboarding, 22 Oct 2026). "Lacoste or Brugnon"
+  // (Baseline) / "Borotra or Cochet" (Sideline), seeded directly per the
+  // approved stand-implementation handoff — never inferred at render time
+  // from seating_code. Null for every Australian Open row and every
+  // French Open option outside Philippe-Chatrier.
+  stand: text("stand"),
+  // Nullable — per-option Q7 date-eligibility window ("Eligible
+  // from"/"Eligible to" in the approved parameter workbook). Added for
+  // French Open 2027 onboarding, 22 Oct 2026, because French Open's dates
+  // vary WITHIN one stage_code (e.g. Philippe-Chatrier "Late": Semifinals
+  // = 2027-06-03..04, Finals = 2027-06-05..06 — two different windows,
+  // same stage), which the existing stage-keyed STAGE_DATE_RANGE lookup in
+  // scoreTennisOptions.ts cannot represent. scoreTennisOptions.ts prefers
+  // these per-option dates when both are present, falling back to the
+  // stage-keyed map otherwise — Australian Open's 43 rows leave these
+  // null and keep using the stage-keyed map exactly as before, unchanged.
+  eligibleFrom: date("eligible_from"),
+  eligibleTo: date("eligible_to"),
+  // Nullable raw C1/C5 per-answer compatibility values, added for French
+  // Open 2027 onboarding, 22 Oct 2026. Australian Open's C1 (per-arena)
+  // and C5 (per-seating-zone) compatibility values are hardcoded lookup
+  // tables in scoreTennisOptions.ts (Q1_ARENA_COMPATIBILITY,
+  // Q5_ZONE_COMPATIBILITY) — French Open's approved parameter workbook
+  // instead supplies these as 4 exact per-option values each (already
+  // computed per-row, including a per-orientation +0.01-capped C5
+  // adjustment that has no equivalent in AO's arena-keyed table shape).
+  // c1Compatibility/c5Compatibility read these columns directly when all 4
+  // of a group are present, falling back to AO's existing code tables
+  // otherwise — AO's 43 rows leave all 8 null and are completely
+  // unaffected. Per founder direction: store the approved values as data
+  // rather than re-deriving a second, hand-transcribed lookup table.
+  c1LotsOfTennis: numeric("c1_lots_of_tennis", { precision: 4, scale: 2 }),
+  c1BigStadium: numeric("c1_big_stadium", { precision: 4, scale: 2 }),
+  c1CloseUpCourts: numeric("c1_close_up_courts", { precision: 4, scale: 2 }),
+  c1BalancedExperience: numeric("c1_balanced_experience", { precision: 4, scale: 2 }),
+  c5CloseToAction: numeric("c5_close_to_action", { precision: 4, scale: 2 }),
+  c5BalancedView: numeric("c5_balanced_view", { precision: 4, scale: 2 }),
+  c5NoPreference: numeric("c5_no_preference", { precision: 4, scale: 2 }),
+  c5FlexibleExplore: numeric("c5_flexible_explore", { precision: 4, scale: 2 }),
 }, (t) => [
   uniqueIndex("tennis_ticket_intelligence_options_event_option_unique").on(t.sportingEventId, t.optionNumber),
 ]);

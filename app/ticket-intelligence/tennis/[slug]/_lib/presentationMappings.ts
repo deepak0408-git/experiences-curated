@@ -40,6 +40,17 @@ export function sessionExplanation(sessionCode: TicketOption["sessionCode"]): { 
 // Keyed by `${arenaCode}_${seatingCode}` except Ground Pass. Every key here
 // was verified present in scripts/_tennis-options-source.json — 9 distinct
 // combinations, all 9 covered, zero unmapped values found.
+//
+// French Open entries (PC/SL/SM/C14) added 22 Oct 2026 — same purely
+// structural, factual-only register as the existing AO entries above:
+// court name + seating category + orientation only, no subjective claims
+// (no "better view"/"premium"/"closer atmosphere" language), per founder
+// approval. seatingCode scheme: `${CATEGORY}_${BL|SL}` where CATEGORY is
+// GOLD/C1/C2/C3 (Philippe-Chatrier, Suzanne-Lenglen) or C1 only
+// (Simonne-Mathieu, Court 14 — their one reserved category in the approved
+// workbook). Every key below was verified against the approved parameter
+// workbook's Court/Category/Orientation columns (20 distinct French Open
+// seating combinations across 4 courts, all covered).
 const SEATING_MAP: Record<string, { value: string; explanation: string }> = {
   JCA_RS: {
     value: "Reserved arena seat",
@@ -72,6 +83,86 @@ const SEATING_MAP: Record<string, { value: string; explanation: string }> = {
   RLA_LS: {
     value: "Lower-level sideline seating",
     explanation: "A closer, side-on perspective of the court.",
+  },
+  PC_GOLD_BL: {
+    value: "Gold category, baseline seat",
+    explanation: "A reserved seat at Court Philippe-Chatrier, Gold category, in the baseline section.",
+  },
+  PC_GOLD_SL: {
+    value: "Gold category, sideline seat",
+    explanation: "A reserved seat at Court Philippe-Chatrier, Gold category, in the sideline section.",
+  },
+  PC_C1_BL: {
+    value: "Category 1, baseline seat",
+    explanation: "A reserved seat at Court Philippe-Chatrier, Category 1, in the baseline section.",
+  },
+  PC_C1_SL: {
+    value: "Category 1, sideline seat",
+    explanation: "A reserved seat at Court Philippe-Chatrier, Category 1, in the sideline section.",
+  },
+  PC_C2_BL: {
+    value: "Category 2, baseline seat",
+    explanation: "A reserved seat at Court Philippe-Chatrier, Category 2, in the baseline section.",
+  },
+  PC_C2_SL: {
+    value: "Category 2, sideline seat",
+    explanation: "A reserved seat at Court Philippe-Chatrier, Category 2, in the sideline section.",
+  },
+  PC_C3_BL: {
+    value: "Category 3, baseline seat",
+    explanation: "A reserved seat at Court Philippe-Chatrier, Category 3, in the baseline section.",
+  },
+  PC_C3_SL: {
+    value: "Category 3, sideline seat",
+    explanation: "A reserved seat at Court Philippe-Chatrier, Category 3, in the sideline section.",
+  },
+  SL_GOLD_BL: {
+    value: "Gold category, baseline seat",
+    explanation: "A reserved seat at Court Suzanne-Lenglen, Gold category, in the baseline section.",
+  },
+  SL_GOLD_SL: {
+    value: "Gold category, sideline seat",
+    explanation: "A reserved seat at Court Suzanne-Lenglen, Gold category, in the sideline section.",
+  },
+  SL_C1_BL: {
+    value: "Category 1, baseline seat",
+    explanation: "A reserved seat at Court Suzanne-Lenglen, Category 1, in the baseline section.",
+  },
+  SL_C1_SL: {
+    value: "Category 1, sideline seat",
+    explanation: "A reserved seat at Court Suzanne-Lenglen, Category 1, in the sideline section.",
+  },
+  SL_C2_BL: {
+    value: "Category 2, baseline seat",
+    explanation: "A reserved seat at Court Suzanne-Lenglen, Category 2, in the baseline section.",
+  },
+  SL_C2_SL: {
+    value: "Category 2, sideline seat",
+    explanation: "A reserved seat at Court Suzanne-Lenglen, Category 2, in the sideline section.",
+  },
+  SL_C3_BL: {
+    value: "Category 3, baseline seat",
+    explanation: "A reserved seat at Court Suzanne-Lenglen, Category 3, in the baseline section.",
+  },
+  SL_C3_SL: {
+    value: "Category 3, sideline seat",
+    explanation: "A reserved seat at Court Suzanne-Lenglen, Category 3, in the sideline section.",
+  },
+  SM_C1_BL: {
+    value: "Category 1, baseline seat",
+    explanation: "A reserved seat at Court Simonne-Mathieu, in the baseline section.",
+  },
+  SM_C1_SL: {
+    value: "Category 1, sideline seat",
+    explanation: "A reserved seat at Court Simonne-Mathieu, in the sideline section.",
+  },
+  C14_C1_BL: {
+    value: "Category 1, baseline seat",
+    explanation: "A reserved seat at Court 14, in the baseline section.",
+  },
+  C14_C1_SL: {
+    value: "Category 1, sideline seat",
+    explanation: "A reserved seat at Court 14, in the sideline section.",
   },
 };
 
@@ -118,6 +209,29 @@ export function experiencePresentation(arenaCode: TicketOption["arenaCode"]): { 
       return {
         value: "Explore the outside courts",
         explanation: "Move between eligible outside courts and experience tennis across the grounds.",
+      };
+    // French Open entries added 22 Oct 2026 — purely factual (court name +
+    // its documented role only, no subjective claims), per founder
+    // approval. Court roles taken from the approved parameter workbook.
+    case "PC":
+      return {
+        value: "Flagship court tennis",
+        explanation: "Roland-Garros's main court, Court Philippe-Chatrier, including semifinal and final sessions.",
+      };
+    case "SL":
+      return {
+        value: "Show-court tennis",
+        explanation: "Court Suzanne-Lenglen, Roland-Garros's second show court.",
+      };
+    case "SM":
+      return {
+        value: "Court tennis",
+        explanation: "Court Simonne-Mathieu, a reserved-seating court at Roland-Garros.",
+      };
+    case "C14":
+      return {
+        value: "Court tennis",
+        explanation: "Court 14, a reserved-seating court at Roland-Garros.",
       };
   }
 }

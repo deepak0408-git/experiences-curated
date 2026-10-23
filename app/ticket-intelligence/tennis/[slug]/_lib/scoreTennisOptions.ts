@@ -35,10 +35,38 @@ const Q1_GROUND_PASS_BY_STAGE: Record<"Early" | "Middle" | "Late", number[]> = {
   Late: [0.6, 0.4, 0.6, 0.7],
 };
 
+// Raw per-option C1 values, in Q1_ANSWER_INDEX order, when the option
+// supplies all 4 (French Open) — see types.ts's c1* fields comment.
+// Checks == null (not === null) deliberately — catches both null (the
+// DB/TS-typed "not supplied" value) and undefined (plain-JS callers, e.g.
+// the regression harness's hand-built option objects, which simply omit
+// these keys rather than setting them to null); treating only one of the
+// two as "absent" would silently feed undefined into the raw[idx] lookup
+// below and produce NaN instead of falling back to AO's code tables.
+function rawC1(option: TicketOption): number[] | null {
+  if (
+    option.c1LotsOfTennis == null ||
+    option.c1BigStadium == null ||
+    option.c1CloseUpCourts == null ||
+    option.c1BalancedExperience == null
+  ) {
+    return null;
+  }
+  return [option.c1LotsOfTennis, option.c1BigStadium, option.c1CloseUpCourts, option.c1BalancedExperience];
+}
+
 function c1Compatibility(option: TicketOption, q1: QuizAnswers["q1"]): number {
   const idx = Q1_ANSWER_INDEX[q1];
+  const raw = rawC1(option);
+  if (raw) return raw[idx];
+  // Australian Open fallback — unchanged arena-keyed code tables.
   if (option.arenaCode === "GP") {
     return Q1_GROUND_PASS_BY_STAGE[option.stageCode][idx];
+  }
+  if (option.arenaCode !== "RLA" && option.arenaCode !== "MCA" && option.arenaCode !== "JCA") {
+    throw new Error(
+      `c1Compatibility: option ${option.optionNumber} (arenaCode "${option.arenaCode}") has no raw C1 data and is not an Australian Open arena code — stop and report, never guess a compatibility value.`
+    );
   }
   return Q1_ARENA_COMPATIBILITY[option.arenaCode][idx];
 }
@@ -127,10 +155,34 @@ const Q5_ZONE_COMPATIBILITY: Record<string, number[]> = {
   GP_GP: [0.8, 0.65, 0.5, 1],
 };
 
+// Raw per-option C5 values, in Q5_ANSWER_INDEX order, when the option
+// supplies all 4 (French Open) — see types.ts's c5* fields comment and
+// rawC1's comment above on why this checks == null rather than === null.
+function rawC5(option: TicketOption): number[] | null {
+  if (
+    option.c5CloseToAction == null ||
+    option.c5BalancedView == null ||
+    option.c5NoPreference == null ||
+    option.c5FlexibleExplore == null
+  ) {
+    return null;
+  }
+  return [option.c5CloseToAction, option.c5BalancedView, option.c5NoPreference, option.c5FlexibleExplore];
+}
+
 function c5Compatibility(option: TicketOption, q5: QuizAnswers["q5"]): number {
+  const idx = Q5_ANSWER_INDEX[q5];
+  const raw = rawC5(option);
+  if (raw) return raw[idx];
+  // Australian Open fallback — unchanged arena-keyed code table.
   const zoneKey = option.arenaCode === "GP" ? "GP_GP" : `${option.arenaCode}_${option.seatingCode}`;
   const row = Q5_ZONE_COMPATIBILITY[zoneKey];
-  return row[Q5_ANSWER_INDEX[q5]];
+  if (!row) {
+    throw new Error(
+      `c5Compatibility: option ${option.optionNumber} (zone "${zoneKey}") has no raw C5 data and no entry in the Australian Open zone table — stop and report, never guess a compatibility value.`
+    );
+  }
+  return row[idx];
 }
 
 // Q6 — cost-sensitivity alpha exponent. Lower alpha = less cost-averse
@@ -169,7 +221,27 @@ function rangesOverlap(aStart: string, aEnd: string, bStart: string, bEnd: strin
   return aStart <= bEnd && bStart <= aEnd;
 }
 
-function passesQ7Eligibility(option: TicketOption, answers: QuizAnswers): boolean {
+// Resolves the option's own eligibility window: per-option eligibleFrom/
+// eligibleTo when both are present (required for French Open, whose dates
+// vary within one stageCode — see schema/database.ts's eligibleFrom/
+// eligibleTo comment), otherwise the stage-keyed STAGE_DATE_RANGE fallback
+// (Australian Open's only representation, unchanged). tournamentStart/End
+// are likewise resolved per-event for the "adjustable" window-clamp below,
+// falling back to AO's own hardcoded constants when not supplied by the
+// caller — AO's call sites pass no override and get byte-identical
+// behavior to before this change.
+export function resolveOptionRange(option: TicketOption): { start: string; end: string } {
+  if (option.eligibleFrom && option.eligibleTo) {
+    return { start: option.eligibleFrom, end: option.eligibleTo };
+  }
+  return STAGE_DATE_RANGE[option.stageCode];
+}
+
+function passesQ7Eligibility(
+  option: TicketOption,
+  answers: QuizAnswers,
+  tournamentWindow: { start: string; end: string }
+): boolean {
   if (answers.q7 === "flexible_tournament") return true; // no exclusions, ever
 
   if (!answers.fromDate || !answers.toDate) {
@@ -179,7 +251,7 @@ function passesQ7Eligibility(option: TicketOption, answers: QuizAnswers): boolea
     return false;
   }
 
-  const optionRange = STAGE_DATE_RANGE[option.stageCode];
+  const optionRange = resolveOptionRange(option);
   let windowStart = answers.fromDate;
   let windowEnd = answers.toDate;
 
@@ -187,17 +259,40 @@ function passesQ7Eligibility(option: TicketOption, answers: QuizAnswers): boolea
     windowStart = addDays(answers.fromDate, -2);
     windowEnd = addDays(answers.toDate, 2);
     // "constrained to the tournament schedule"
-    if (windowStart < TOURNAMENT_START) windowStart = TOURNAMENT_START;
-    if (windowEnd > TOURNAMENT_END) windowEnd = TOURNAMENT_END;
+    if (windowStart < tournamentWindow.start) windowStart = tournamentWindow.start;
+    if (windowEnd > tournamentWindow.end) windowEnd = tournamentWindow.end;
   }
 
   return rangesOverlap(windowStart, windowEnd, optionRange.start, optionRange.end);
 }
 
-function passesHardFilters(option: TicketOption, answers: QuizAnswers): boolean {
+// Tournament-wide clamp bound for Q7 "adjustable" mode (±2 days,
+// "constrained to the tournament schedule") — derived from the actual
+// option set passed in, so each event's own real window applies
+// automatically with no per-event constant to maintain. Falls back to AO's
+// original hardcoded TOURNAMENT_START/END only if an option set is
+// supplied with no resolvable range at all (never expected in practice,
+// since every option always resolves via resolveOptionRange).
+// Exported so the quiz UI's date-picker min/max can use the same
+// per-event resolution as the scoring engine's own Q7 clamp, instead of a
+// separately-hardcoded constant that could drift from it.
+export function tournamentWindowFor(options: TicketOption[]): { start: string; end: string } {
+  const ranges = options.map(resolveOptionRange);
+  if (ranges.length === 0) return { start: TOURNAMENT_START, end: TOURNAMENT_END };
+  return {
+    start: ranges.reduce((min, r) => (r.start < min ? r.start : min), ranges[0].start),
+    end: ranges.reduce((max, r) => (r.end > max ? r.end : max), ranges[0].end),
+  };
+}
+
+function passesHardFilters(
+  option: TicketOption,
+  answers: QuizAnswers,
+  tournamentWindow: { start: string; end: string }
+): boolean {
   // Ground Pass ineligible if Reserved (Q3 rule).
   if (option.arenaCode === "GP" && answers.q3 === "reserved") return false;
-  if (!passesQ7Eligibility(option, answers)) return false;
+  if (!passesQ7Eligibility(option, answers, tournamentWindow)) return false;
   return true;
 }
 
@@ -206,15 +301,21 @@ function passesHardFilters(option: TicketOption, answers: QuizAnswers): boolean 
 // regression harness for per-option eligibility reporting — never called
 // by scoreTennisOptions itself, so it cannot affect scoring/ranking
 // behavior. An option can fail zero, one, or both checks independently.
+// tournamentWindow defaults to this one option's own range when the caller
+// doesn't supply the full option set — fine for single-option diagnostics
+// since the clamp only matters relative to the full event's span; the
+// regression harness (which has the full option list) may pass a tighter
+// value explicitly if needed.
 export function getEligibilityDiagnostics(
   option: TicketOption,
-  answers: QuizAnswers
+  answers: QuizAnswers,
+  tournamentWindow: { start: string; end: string } = resolveOptionRange(option)
 ): { eligible: boolean; reasons: string[] } {
   const reasons: string[] = [];
   if (option.arenaCode === "GP" && answers.q3 === "reserved") {
     reasons.push("ground_pass_reserved_conflict");
   }
-  if (!passesQ7Eligibility(option, answers)) {
+  if (!passesQ7Eligibility(option, answers, tournamentWindow)) {
     reasons.push("q7_date_ineligible");
   }
   return { eligible: reasons.length === 0, reasons };
@@ -251,7 +352,8 @@ function scoreOption(option: TicketOption, answers: QuizAnswers): ScoredOption {
 // Exported for the portable regression harness (ChatGPT's independent
 // 31,104-profile run) as well as the app's own quiz/result pages.
 export function scoreTennisOptions(options: TicketOption[], answers: QuizAnswers): ScoreResult {
-  const eligible = options.filter((o) => passesHardFilters(o, answers));
+  const tournamentWindow = tournamentWindowFor(options);
+  const eligible = options.filter((o) => passesHardFilters(o, answers, tournamentWindow));
   const excludedCount = options.length - eligible.length;
 
   const scored = eligible

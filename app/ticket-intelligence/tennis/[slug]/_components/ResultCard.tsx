@@ -64,11 +64,18 @@ function CostStars({ costStars }: { costStars: number }) {
 
 export default function ResultCard({
   label,
+  eventName,
   scored,
   explanation,
   comparisonHeading,
 }: {
   label: "BEST MATCH" | "ALTERNATIVE";
+  // Full event name + edition year (e.g. "Australian Open 2027", "French
+  // Open 2027") — replaces a literal "Australian Open 2027" string that
+  // was hardcoded here for every tournament. For AO this renders
+  // byte-identically to before, since AO's real eventName is that exact
+  // string.
+  eventName: string;
   scored: ScoredOption;
   explanation: Rationale;
   // "WHY THIS SUITS YOU" for the hero, "WHY CONSIDER THIS INSTEAD?" for an
@@ -79,7 +86,23 @@ export default function ResultCard({
 }) {
   const { option } = scored;
   const imageUrl = option.heroImage;
-  const stage = stageExplanation(option.stageCode);
+  // stageExplanation(stageCode) alone collapses French Open's Semifinals
+  // and Finals into one generic "Final rounds" label, since both share
+  // stageCode "Late" by design (they score identically in the approved
+  // C2 model — see scoreTennisOptions.ts). roundsLabel already carries
+  // the real distinction ("Semifinal rounds" / "Championship finals"),
+  // so it's read here, at the French Open call site only, rather than
+  // inside stageExplanation() itself — Australian Open's Late-stage
+  // options use roundsLabel values ("Final rounds") that don't match
+  // either override string below, so they fall through to
+  // stageExplanation()'s own unchanged "Final rounds" output, byte-
+  // identical to before this change.
+  const stage =
+    option.stageCode === "Late" && option.roundsLabel === "Semifinal rounds"
+      ? { value: "Semifinal rounds", explanation: "The semifinal matches, as the tournament nears its concluding stages." }
+      : option.stageCode === "Late" && option.roundsLabel === "Championship finals"
+        ? { value: "Championship finals", explanation: "The men's and women's singles finals, the tournament's final matches." }
+        : stageExplanation(option.stageCode);
   const session = sessionExplanation(option.sessionCode);
   const seating = seatingPresentation(option);
   const experience = experiencePresentation(option.arenaCode);
@@ -122,7 +145,20 @@ export default function ResultCard({
         <h3 className="text-2xl font-black text-white mb-1">{arenaDisplayName(option)}</h3>
 
         {/* 4.4 — supporting identity */}
-        <p className="text-sm text-[#A3A3A3] mb-4">Australian Open 2027</p>
+        <p className={`text-sm text-[#A3A3A3] ${option.stand ? "mb-1" : "mb-4"}`}>{eventName}</p>
+
+        {/* Stand — Philippe-Chatrier French Open recommendations only.
+            Reads the exact approved value stored on the option row
+            (tennisTicketIntelligenceOptions.stand); never inferred from
+            seating_code. Omitted entirely when null — Australian Open and
+            every other French Open court never render this line. Per the
+            approved stand-implementation handoff: placed directly below
+            the title/identity and before the attribute panel/explanation. */}
+        {option.stand && (
+          <p className="text-sm text-[#A3A3A3] mb-4">
+            <span className="font-black text-white">Stand:</span> {option.stand}
+          </p>
+        )}
 
         {/* 5 — bordered attribute panel, 2x2 grid on sm+ (Seating/Time on
             top, When/Experience below), single stacked column on mobile.

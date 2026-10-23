@@ -97,7 +97,15 @@ function sentenceOne(signals: Signal[]): string {
   return "This recommendation brings together the strongest overall fit across your selected preferences.";
 }
 
-const ARENA_CONTEXT_SENTENCE: Record<TicketOption["arenaCode"], string> = {
+// Partial, not Record<ArenaCode, string> — ArenaCode was widened to
+// include French Open's PC/SL/SM/C14 (22 Oct 2026), but this whole module
+// is Australian Open-only by design (French Open uses its own approved
+// lookup, frenchOpenExplanation.ts — see FullResult.tsx's isFrenchOpen
+// branch, which never calls heroRationale/alternativeRationale for French
+// Open). AO's own 4 entries are untouched; heroRationale() below fails
+// loud rather than silently rendering "undefined" if this is ever called
+// with an arena code outside AO's set.
+const ARENA_CONTEXT_SENTENCE: Partial<Record<TicketOption["arenaCode"], string>> = {
   RLA: "Rod Laver Arena provides the tournament's flagship stadium setting.",
   MCA: "Margaret Court Arena offers a substantial show-court experience.",
   JCA: "John Cain Arena offers a lively, more intimate arena setting.",
@@ -133,6 +141,11 @@ export function heroRationale(answers: QuizAnswers, hero: ScoredOption): Rationa
   const overlapPhrases = ARENA_PHRASE_OVERLAP[hero.option.arenaCode] ?? [];
   const omitSentenceTwo = overlapPhrases.some((p) => s1.includes(p));
   const s2 = ARENA_CONTEXT_SENTENCE[hero.option.arenaCode];
+  if (s2 === undefined) {
+    throw new Error(
+      `recommendationRationale.ts (Australian Open-only) called with unsupported arenaCode "${hero.option.arenaCode}" — French Open must route through frenchOpenExplanation.ts instead, never this module.`
+    );
+  }
 
   return {
     text: omitSentenceTwo ? s1 : `${s1} ${s2}`,

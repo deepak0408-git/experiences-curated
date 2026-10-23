@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { QuizAnswers, Q1Priority, Q2Stage, Q3Viewing, Q4Session, Q5Seating, Q6Budget, Q7Flexibility, TicketOption } from "../_lib/types";
-import { scoreTennisOptions } from "../_lib/scoreTennisOptions";
+import { scoreTennisOptions, tournamentWindowFor } from "../_lib/scoreTennisOptions";
 import TeaserResult from "./TeaserResult";
 import TennisTicketIntelligenceSidebar from "./TennisTicketIntelligenceSidebar";
 import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
@@ -59,9 +59,6 @@ const Q7_OPTIONS: { value: Q7Flexibility; label: string }[] = [
   { value: "flexible_tournament", label: "I'm flexible across the tournament" },
 ];
 
-const TOURNAMENT_MIN = "2027-01-17";
-const TOURNAMENT_MAX = "2027-01-31";
-
 interface Props {
   slug: string;
   eventName: string;
@@ -101,6 +98,13 @@ export default function TennisTicketQuiz({
   userEmail,
   alreadyPurchased,
 }: Props) {
+  // Date-picker min/max — derived from this event's own options (same
+  // per-event resolution scoreTennisOptions.ts's Q7 clamp uses), not a
+  // hardcoded constant. For Australian Open (no eligibleFrom/eligibleTo on
+  // any option) this resolves to the same 2027-01-17..31 window as before;
+  // for French Open it resolves to that event's real May 23 - June 6
+  // window automatically.
+  const { start: tournamentMin, end: tournamentMax } = tournamentWindowFor(options);
   const searchParams = useSearchParams();
   // Answers restored from the URL on mount — required because signing in
   // mid-flow (the unlock step, for a fan who reached the paywall without
@@ -276,8 +280,8 @@ export default function TennisTicketQuiz({
                 <span className="block text-xs text-[#A3A3A3] mb-1">From</span>
                 <input
                   type="date"
-                  min={TOURNAMENT_MIN}
-                  max={TOURNAMENT_MAX}
+                  min={tournamentMin}
+                  max={tournamentMax}
                   value={answers.fromDate ?? ""}
                   onChange={(e) => set("fromDate", e.target.value || null)}
                   className="w-full px-3 py-2 rounded-sm bg-[#141414] border border-[#2A2A2A] text-white text-sm"
@@ -287,8 +291,8 @@ export default function TennisTicketQuiz({
                 <span className="block text-xs text-[#A3A3A3] mb-1">To</span>
                 <input
                   type="date"
-                  min={TOURNAMENT_MIN}
-                  max={TOURNAMENT_MAX}
+                  min={tournamentMin}
+                  max={tournamentMax}
                   value={answers.toDate ?? ""}
                   onChange={(e) => set("toDate", e.target.value || null)}
                   className="w-full px-3 py-2 rounded-sm bg-[#141414] border border-[#2A2A2A] text-white text-sm"

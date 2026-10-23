@@ -81,6 +81,17 @@ async function getTennisDataUncached(slug: string) {
       costStars: r.costStars,
       descriptionText: r.descriptionText,
       heroImage: r.heroImage,
+      stand: r.stand,
+      eligibleFrom: r.eligibleFrom,
+      eligibleTo: r.eligibleTo,
+      c1LotsOfTennis: r.c1LotsOfTennis === null ? null : Number(r.c1LotsOfTennis),
+      c1BigStadium: r.c1BigStadium === null ? null : Number(r.c1BigStadium),
+      c1CloseUpCourts: r.c1CloseUpCourts === null ? null : Number(r.c1CloseUpCourts),
+      c1BalancedExperience: r.c1BalancedExperience === null ? null : Number(r.c1BalancedExperience),
+      c5CloseToAction: r.c5CloseToAction === null ? null : Number(r.c5CloseToAction),
+      c5BalancedView: r.c5BalancedView === null ? null : Number(r.c5BalancedView),
+      c5NoPreference: r.c5NoPreference === null ? null : Number(r.c5NoPreference),
+      c5FlexibleExplore: r.c5FlexibleExplore === null ? null : Number(r.c5FlexibleExplore),
     }))
     .sort((a, b) => a.optionNumber - b.optionNumber);
 
