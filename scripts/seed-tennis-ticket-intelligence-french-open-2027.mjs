@@ -4,6 +4,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import postgres from "postgres";
+import { revalidateCacheTags } from "./_lib/revalidate-cache.mjs";
+import { CACHE_TAGS } from "./_lib/cache-tags.mjs";
 
 // Seeds the 87 French Open 2027 tennis_ticket_intelligence_options rows
 // from the founder-approved implementation package
@@ -320,3 +322,8 @@ const [{ count: aoCount }] = await sql`
 console.log(`Australian Open option rows (should still be 43): ${aoCount}`);
 
 await sql.end();
+
+// Re-seeding after activation (a correction pass, not first seed) would
+// otherwise leave the fixed rows stale behind the cache for up to an hour —
+// see feedback_unstable_cache_tags_and_revalidation memory.
+await revalidateCacheTags([CACHE_TAGS.TENNIS_TICKET_INTELLIGENCE, CACHE_TAGS.TRIP_INTELLIGENCE_TENNIS]);

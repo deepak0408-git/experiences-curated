@@ -6,15 +6,20 @@ import {
 } from "@/schema/database";
 import { and, eq } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 import type { TicketOption } from "./types";
 
 // Tennis Ticket Intelligence data fetch — self-contained from F1's
 // getSeatingData.ts (no shared import). Same 1-hour cache pattern as the
 // rest of this app's Ticket Intelligence/Trip Intelligence data readers.
+// tags: tagged + wired to revalidateTag 24 Oct 2026 (see
+// feedback_unstable_cache_tags_and_revalidation memory) — a curator
+// activating a new event's Ticket Intelligence no longer has to wait up to
+// an hour for this to catch up.
 const getTennisDataCached = unstable_cache(
   async (slug: string) => getTennisDataUncached(slug),
   ["tennis-ticket-intelligence-data"],
-  { revalidate: 3600 }
+  { revalidate: 3600, tags: [CACHE_TAGS.TENNIS_TICKET_INTELLIGENCE] }
 );
 
 export async function getTennisOptionsData(slug: string) {
@@ -134,7 +139,7 @@ const hasTennisTicketIntelligenceCached = unstable_cache(
     return !!row;
   },
   ["tennis-ticket-intelligence-has-options"],
-  { revalidate: 3600 }
+  { revalidate: 3600, tags: [CACHE_TAGS.TENNIS_TICKET_INTELLIGENCE] }
 );
 
 export async function hasTennisTicketIntelligence(eventId: string, editionYear: number): Promise<boolean> {

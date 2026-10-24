@@ -16,6 +16,7 @@ import ExperienceActionSidebar from "./_components/ExperienceActionSidebar";
 import { isRealAffiliateLink } from "../../event-pack/[slug]/_hub-and-spoke/_lib/getSpokeData";
 import { hasTicketIntelligence } from "../../ticket-intelligence/[slug]/_lib/getSeatingData";
 import { shortEventName, stripYear } from "@/lib/eventShortNames";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 
 // Hub-and-spoke "back to spoke" link — maps an experience's slug prefix to
 // the spoke it's most at home in for a given event, per explicit curator
@@ -1096,7 +1097,13 @@ export default async function ExperiencePage({
       return { exp, ratingRow, eventPackSlug, eventPackName, eventPackFormat, eventPackSport, eventPackId, hasLivePack, eventPackDestinationName, eventPackTourCities, sharedEventCount, related };
     },
     ["experience-page"],
-    { revalidate: 3600 }
+    // tags: tagged + wired to revalidateTag 24 Oct 2026 — revalidatePath
+    // (called below by publishExperience/unpublishExperience/archiveExperience
+    // in ./actions.ts) is not a documented, reliable way to bust a manually
+    // created unstable_cache entry; revalidateTag is. Shared coarse tag,
+    // same tradeoff as getSpokeData.ts/getSeatingData.ts. See
+    // feedback_unstable_cache_tags_and_revalidation memory.
+    { revalidate: 3600, tags: [CACHE_TAGS.EXPERIENCE_PAGE] }
   );
 
   const cached = await getExperienceData(slug);

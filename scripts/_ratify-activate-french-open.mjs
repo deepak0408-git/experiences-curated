@@ -1,6 +1,8 @@
 import { config } from "dotenv";
 config({ path: ".env.local" });
 import postgres from "postgres";
+import { revalidateCacheTags } from "./_lib/revalidate-cache.mjs";
+import { CACHE_TAGS } from "./_lib/cache-tags.mjs";
 
 const FO = "e6f2b585-196e-4842-8648-753a40979f4f";
 const sql = postgres(process.env.DATABASE_URL, { ssl: "require", prepare: false });
@@ -21,3 +23,9 @@ const ao = await sql`SELECT * FROM tennis_ticket_intelligence_edition_status WHE
 console.log("AO edition status (should be unchanged):", ao[0]);
 
 await sql.end();
+
+// Without this, the "has Ticket Intelligence" gate on Trip Intelligence /
+// the event pack hub stayed stale for up to an hour after this exact
+// activation ran, 23-24 Oct 2026 — see
+// feedback_unstable_cache_tags_and_revalidation memory.
+await revalidateCacheTags([CACHE_TAGS.TENNIS_TICKET_INTELLIGENCE, CACHE_TAGS.TRIP_INTELLIGENCE_TENNIS]);

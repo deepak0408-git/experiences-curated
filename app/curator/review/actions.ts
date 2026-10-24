@@ -3,8 +3,9 @@
 import { db } from "@/lib/db";
 import { experiences, sportingEvents } from "@/schema/database";
 import { eq, asc, desc, inArray, sql } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { indexExperience, removeFromIndex } from "@/lib/algolia";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 
 // bodyContent/whyItsSpecial were previously selected as full text just to
 // compute a word count and a presence check in the review list UI — the
@@ -49,6 +50,18 @@ async function getSlug(id: string): Promise<string | null> {
   return row?.slug ?? null;
 }
 
+// Experiences can be linked into a hub-and-spoke event pack's spoke
+// content (via sporting_event_experiences), so publishing/archiving one
+// must also bust getSpokeData's cache, not just the classic /experience
+// page's — otherwise a spoke card can keep showing a since-archived
+// experience, or omit a freshly published one, for up to an hour.
+function revalidateExperienceCaches() {
+  // "max" = immediate full invalidation (Next.js 16 made the second
+  // argument to revalidateTag required).
+  revalidateTag(CACHE_TAGS.EXPERIENCE_PAGE, "max");
+  revalidateTag(CACHE_TAGS.HUB_AND_SPOKE_SPOKE_DATA, "max");
+}
+
 export async function publishExperience(id: string) {
   const slug = await getSlug(id);
   await db
@@ -59,6 +72,7 @@ export async function publishExperience(id: string) {
   revalidatePath("/curator/review");
   revalidatePath("/");
   if (slug) revalidatePath(`/experience/${slug}`);
+  revalidateExperienceCaches();
 }
 
 export async function archiveExperience(id: string) {
@@ -71,6 +85,7 @@ export async function archiveExperience(id: string) {
   revalidatePath("/curator/review");
   revalidatePath("/");
   if (slug) revalidatePath(`/experience/${slug}`);
+  revalidateExperienceCaches();
 }
 
 export async function unpublishExperience(id: string) {
@@ -83,6 +98,7 @@ export async function unpublishExperience(id: string) {
   revalidatePath("/curator/review");
   revalidatePath("/");
   if (slug) revalidatePath(`/experience/${slug}`);
+  revalidateExperienceCaches();
 }
 
 export async function returnToDraft(id: string, notes: string) {

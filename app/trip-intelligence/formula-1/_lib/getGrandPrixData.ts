@@ -4,6 +4,7 @@ import { tripIntelligenceGrandPrixProfiles, tripIntelligenceFanInsights, sportin
 import { eq, inArray } from "drizzle-orm";
 import { buildCandidates } from "./buildCandidates";
 import type { GrandPrixCandidate } from "./types";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 
 // Uncached, unlike the other reads in this file — ratings get corrected
 // directly in the DB (scripts or manual edits) with no code path to call
@@ -80,7 +81,11 @@ const getGrandPrixDisplayInfoCached = unstable_cache(
     }));
   },
   ["trip-intelligence-display-info"],
-  { revalidate: 3600 },
+  // tags: tagged + wired to revalidateTag 24 Oct 2026, closing the same gap
+  // the "Uncached" comment above describes for getAllGrandPrixCandidates —
+  // this function has the identical staleness risk and wasn't fixed at the
+  // time (see feedback_unstable_cache_tags_and_revalidation memory).
+  { revalidate: 3600, tags: [CACHE_TAGS.TRIP_INTELLIGENCE_F1, CACHE_TAGS.TICKET_INTELLIGENCE_F1] },
 );
 
 export async function getGrandPrixDisplayInfo(sportingEventIds: string[]): Promise<Map<string, GrandPrixDisplayInfo>> {
@@ -112,7 +117,7 @@ const getFanInsightsCached = unstable_cache(
       }));
   },
   ["trip-intelligence-fan-insights"],
-  { revalidate: 3600 },
+  { revalidate: 3600, tags: [CACHE_TAGS.TRIP_INTELLIGENCE_F1] },
 );
 
 export async function getFanInsights(sportingEventIds: string[]): Promise<Map<string, FanInsightsData>> {

@@ -17,6 +17,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getProDetails } from "@/lib/pro";
 import { grantFreeAccess } from "../../actions";
 import { SPOKES_BY_EVENT } from "./spokeConfig";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 
 const SEASONAL_BAND_BY_MONTH = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 
@@ -34,10 +35,19 @@ const SEASONAL_BAND_BY_MONTH = ["jan", "feb", "mar", "apr", "may", "jun", "jul",
 // almost certainly the single largest Postgres egress driver. 1-hour
 // revalidate matches the same pattern already used on the classic
 // experience page (app/experience/[slug]/page.tsx).
+// unstable_cache's `tags` option is a fixed array set at wrap time — it
+// cannot read the `slug` argument passed to the wrapped function, so a
+// true per-slug tag isn't possible with this API (confirmed against
+// Next.js docs, 24 Oct 2026). One shared tag means revalidateTag busts
+// every live event pack's cached data at once, not just the one that
+// changed — broader than ideal, but still correct (a cheap DB re-read for
+// every pack beats staying stale for up to an hour on the one that
+// changed), and far simpler than migrating this to the newer 'use cache' +
+// cacheTag API (which does support per-argument tags) just for this.
 const getSpokeDataCached = unstable_cache(
   async (slug: string) => getSpokeDataUncached(slug),
   ["hub-and-spoke-spoke-data"],
-  { revalidate: 3600 }
+  { revalidate: 3600, tags: [CACHE_TAGS.HUB_AND_SPOKE_SPOKE_DATA] }
 );
 
 // unstable_cache serializes its return value through JSON, so any real Date

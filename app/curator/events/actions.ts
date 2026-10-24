@@ -3,10 +3,11 @@
 import { db } from "@/lib/db";
 import { sportingEvents, proSubscriptions, experiences } from "@/schema/database";
 import { eq, gte, asc, and, sql, inArray } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { Resend } from "resend";
 import { algoliasearch } from "algoliasearch";
 import { createClient } from "@supabase/supabase-js";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -225,6 +226,24 @@ export async function saveHomepageSlots(
 
   revalidatePath("/curator/events");
   revalidatePath("/");
+
+  // isHidden/packStatus/activatedAt changes here feed every "is this event's
+  // guide/ticket intelligence live" gate across the app — none of which
+  // revalidatePath above reaches. Without this, activating or deactivating
+  // an event here can leave its event pack, Ticket Intelligence, and Trip
+  // Intelligence display stale for up to an hour (same root cause as the
+  // French Open 2027 Tennis Ticket Intelligence gap, 24 Oct 2026 — see
+  // feedback_unstable_cache_tags_and_revalidation memory). Only fires when
+  // something actually changed, matching changedEventIds's existing scope.
+  if (changedEventIds.length > 0) {
+    // "max" = immediate full invalidation (Next.js 16 made the second
+    // argument to revalidateTag required).
+    revalidateTag(CACHE_TAGS.HUB_AND_SPOKE_SPOKE_DATA, "max");
+    revalidateTag(CACHE_TAGS.TRIP_INTELLIGENCE_F1, "max");
+    revalidateTag(CACHE_TAGS.TRIP_INTELLIGENCE_TENNIS, "max");
+    revalidateTag(CACHE_TAGS.TICKET_INTELLIGENCE_F1, "max");
+    revalidateTag(CACHE_TAGS.TENNIS_TICKET_INTELLIGENCE, "max");
+  }
 
   // Notify annual Pro subscribers about newly activated events — fire and forget
   if (newlyActivated.length > 0) {

@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { sportingEvents, circuitSeatingProfile, plannerTicketTierCost, plannerHotelTierCost, plannerFlightCost, plannerDestinationBands, experiences, sportingEventExperiences } from "@/schema/database";
 import { and, eq, gte, ilike, inArray, or, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 import type { Seat } from "./types";
 
 // Ticket Intelligence data fetch — slug-driven, one event at a time (pilot:
@@ -10,10 +11,13 @@ import type { Seat } from "./types";
 // scripts/seed-brazilian-gp-circuit-seating.mjs). Cached per-slug, same
 // 1-hour revalidate pattern as getSpokeData.ts — this data changes only
 // when a curator re-runs the seed script, not per-request.
+// tags: tagged + wired to revalidateTag 24 Oct 2026 (see
+// feedback_unstable_cache_tags_and_revalidation memory) — same shared
+// coarse-tag tradeoff as getSpokeData.ts (unstable_cache can't tag per-slug).
 const getSeatingDataCached = unstable_cache(
   async (slug: string) => getSeatingDataUncached(slug),
   ["ticket-intelligence-seating-data"],
-  { revalidate: 3600 }
+  { revalidate: 3600, tags: [CACHE_TAGS.TICKET_INTELLIGENCE_F1] }
 );
 
 export async function getSeatingData(slug: string) {
@@ -175,7 +179,7 @@ const hasTicketIntelligenceCached = unstable_cache(
     return !!row;
   },
   ["ticket-intelligence-has-seats"],
-  { revalidate: 3600 }
+  { revalidate: 3600, tags: [CACHE_TAGS.TICKET_INTELLIGENCE_F1] }
 );
 
 // Real, row-existence check across ALL FIVE Season Planner cost categories
@@ -222,7 +226,7 @@ const hasFullPlannerCostDataCached = unstable_cache(
     return tickets.length > 0 && hotels.length > 0 && flights.length > 0 && bands.length > 0;
   },
   ["ticket-intelligence-has-full-planner-cost-data"],
-  { revalidate: 3600 }
+  { revalidate: 3600, tags: [CACHE_TAGS.TICKET_INTELLIGENCE_F1] }
 );
 
 export async function hasFullPlannerCostData(
@@ -275,7 +279,7 @@ export interface TicketIntelligenceEventSummary {
 const getTicketIntelligenceEventsCached = unstable_cache(
   async () => getTicketIntelligenceEventsUncached(),
   ["ticket-intelligence-events-list"],
-  { revalidate: 3600 }
+  { revalidate: 3600, tags: [CACHE_TAGS.TICKET_INTELLIGENCE_F1] }
 );
 
 export async function getTicketIntelligenceEvents(): Promise<TicketIntelligenceEventSummary[]> {

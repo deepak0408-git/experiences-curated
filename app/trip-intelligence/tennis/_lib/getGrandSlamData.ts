@@ -5,6 +5,7 @@ import { inArray } from "drizzle-orm";
 import { buildCandidates } from "./buildCandidates";
 import type { GrandSlamCandidate } from "./types";
 import { hasTennisTicketIntelligence } from "@/app/ticket-intelligence/tennis/[slug]/_lib/getTennisOptionsData";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 
 // Uncached — matches F1's getGrandPrixData.ts deliberate choice. Ratings
 // get corrected directly in the DB with no revalidateTag/revalidatePath
@@ -82,7 +83,12 @@ const getGrandSlamDisplayInfoCached = unstable_cache(
     }));
   },
   ["trip-intelligence-tennis-display-info"],
-  { revalidate: 3600 },
+  // tags: tagged + wired to revalidateTag 24 Oct 2026 — this was the exact
+  // cache that stayed stale after French Open 2027's Ticket Intelligence
+  // activation (see feedback_unstable_cache_tags_and_revalidation memory).
+  // Includes the tennis-ticket-intelligence tag too since this function
+  // calls hasTennisTicketIntelligence internally.
+  { revalidate: 3600, tags: [CACHE_TAGS.TRIP_INTELLIGENCE_TENNIS, CACHE_TAGS.TENNIS_TICKET_INTELLIGENCE] },
 );
 
 export async function getGrandSlamDisplayInfo(sportingEventIds: string[]): Promise<Map<string, GrandSlamDisplayInfo>> {
