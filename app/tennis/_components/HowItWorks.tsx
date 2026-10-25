@@ -3,7 +3,7 @@ import { Search, CalendarDays, Ticket, MapPin, Flag } from "lucide-react";
 const STEPS = [
   { Icon: Search, title: "Discover", desc: "Find the tournament that fits you." },
   { Icon: CalendarDays, title: "Compare", desc: "Explore dates, costs and options." },
-  { Icon: Ticket, title: "Find", desc: "Get the right seats and plan your week." },
+  { Icon: Ticket, title: "Find", desc: "Get the right ticket and plan your week." },
   { Icon: MapPin, title: "Plan", desc: "Build your itinerary and explore beyond the grounds." },
   { Icon: Flag, title: "Prepare", desc: "Get tournament-ready and make every moment count." },
 ];

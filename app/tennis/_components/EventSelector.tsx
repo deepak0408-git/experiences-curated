@@ -173,7 +173,7 @@ export default function EventSelector({
                           href={`/ticket-intelligence/tennis/${event.slug}?from=tennis-cockpit`}
                           className="inline-flex items-center rounded-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors px-3 py-2 text-xs font-black text-black"
                         >
-                          Find your seat →
+                          Find your ticket →
                         </Link>
                       ) : (
                         <p className="text-xs text-[#6A6A6A]">Currently unavailable</p>

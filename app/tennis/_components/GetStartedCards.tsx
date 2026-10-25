@@ -35,7 +35,7 @@ const CARDS = [
     image: "/tennis/get-started-chosen-event.jpg",
     title: "I've chosen my tournament",
     label: "Ticket Intelligence & Event Guides",
-    subtitle: "Find best seats and plan your trip",
+    subtitle: "Find your ticket and plan your trip",
   },
   {
     key: "planning",

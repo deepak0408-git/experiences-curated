@@ -4,7 +4,7 @@ import { Compass, Wallet, Ticket, CalendarDays } from "lucide-react";
 const INFO_ICONS = [
   { Icon: Compass, label: "Find your tournament" },
   { Icon: Wallet, label: "Plan your budget" },
-  { Icon: Ticket, label: "Find your seats" },
+  { Icon: Ticket, label: "Find your ticket" },
   { Icon: CalendarDays, label: "Build your itinerary" },
 ];
 
