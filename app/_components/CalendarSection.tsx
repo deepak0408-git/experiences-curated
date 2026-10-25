@@ -38,6 +38,11 @@ type CalendarEvent = {
   venue: string | null;
   es: { state: "upcoming" | "live" | "past"; toStart: number; toEnd: number };
   hasTicketIntelligence: boolean;
+  // Sport-specific Ticket Intelligence route — F1's lives at
+  // /ticket-intelligence/[slug], tennis's at /ticket-intelligence/tennis/[slug].
+  // Added 25 Oct 2026 alongside tennis support for this CTA; falls back to
+  // the F1 path shape for any event that doesn't set it explicitly.
+  ticketIntelligenceHref?: string;
 };
 
 export default function CalendarSection({ events }: { events: CalendarEvent[] }) {
@@ -215,10 +220,10 @@ export default function CalendarSection({ events }: { events: CalendarEvent[] })
                   </Link>
                   {ev.hasTicketIntelligence && (
                     <Link
-                      href={`/ticket-intelligence/${ev.slug}`}
+                      href={ev.ticketIntelligenceHref ?? `/ticket-intelligence/${ev.slug}`}
                       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm bg-[#AAFF00] text-black text-sm font-black tracking-wide hover:bg-[#BBFF33] transition-colors whitespace-nowrap"
                     >
-                      Find your perfect seat
+                      {ev.sport === "tennis" ? "Find your perfect ticket" : "Find your perfect seat"}
                     </Link>
                   )}
                 </div>

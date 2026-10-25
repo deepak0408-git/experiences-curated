@@ -43,3 +43,30 @@ export const RG2027_ARENA_MAPS = [
     url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/tennis-ticket-intelligence/french-open/2027/arena-maps/RG2027_court-14_seating_map.png",
   },
 ] as const;
+
+// Wimbledon 2027 — the 4 approved seating maps from the founder-supplied
+// implementation package, added 25 Oct 2026. Per the package's
+// IMPLEMENTATION_CONTRACT.md: "the No.2 and No.3 maps were cropped from
+// the approved Option 1 composite; do not regenerate or redraw." Kept as
+// a fully separate constant (not appended to AO2027_ARENA_MAPS/
+// RG2027_ARENA_MAPS) so neither prior tournament's map list is touched by
+// this addition. Credit per the approved package: the All England Lawn
+// Tennis Club, Wimbledon.com (rendered by ArenaMapsSection.tsx).
+export const WIM2027_ARENA_MAPS = [
+  {
+    arena: "Centre Court",
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/tennis-ticket-intelligence/wimbledon/2027/arena-maps/WIM2027_centre-court_seating_map.png",
+  },
+  {
+    arena: "No. 1 Court",
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/tennis-ticket-intelligence/wimbledon/2027/arena-maps/WIM2027_no1-court_seating_map.png",
+  },
+  {
+    arena: "No. 2 Court",
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/tennis-ticket-intelligence/wimbledon/2027/arena-maps/WIM2027_no2-court_seating_map.png",
+  },
+  {
+    arena: "No. 3 Court",
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/tennis-ticket-intelligence/wimbledon/2027/arena-maps/WIM2027_no3-court_seating_map.png",
+  },
+] as const;

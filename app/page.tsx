@@ -18,6 +18,7 @@ import CockpitHomepageFeature from "./_components/CockpitHomepageFeature";
 import TennisCockpitHomepageFeature from "./_components/TennisCockpitHomepageFeature";
 import { getAuthUser } from "@/lib/supabase/server";
 import { getPackPricing } from "@/lib/packPricing";
+import { hasTennisTicketIntelligence } from "./ticket-intelligence/tennis/[slug]/_lib/getTennisOptionsData";
 import { getDestinationsForHomepage } from "@/lib/queries/destinations";
 
 // Revalidate every 5 minutes — events and experience counts change rarely.
@@ -162,7 +163,7 @@ export default async function HomePage() {
   }
 
   // Which calendar events have Ticket Intelligence built (any seeded rows
-  // in circuit_seating_profile) — gates the "Find your perfect seat" CTA.
+  // in circuit_seating_profile) — gates F1's "Find your perfect seat" CTA.
   const tiRows = calendarEventIds.length > 0
     ? await db
         .selectDistinct({ eventId: circuitSeatingProfile.sportingEventId })
@@ -170,6 +171,20 @@ export default async function HomePage() {
         .where(inArray(circuitSeatingProfile.sportingEventId, calendarEventIds))
     : [];
   const tiEventIds = new Set(tiRows.map((r) => r.eventId));
+
+  // Tennis's equivalent gate — a separate table (tennis_ticket_intelligence_options)
+  // and a stricter fail-closed check (options exist AND activated AND
+  // ratified AND edition-year matched; see hasTennisTicketIntelligence's own
+  // comment), not just row existence like F1's check above. Only queried for
+  // tennis calendar events, added 25 Oct 2026 — previously this CTA never
+  // appeared for any tennis event on the homepage calendar, since tiEventIds
+  // only ever looked at the F1 table.
+  const tennisTiFlags = await Promise.all(
+    calendarEvents
+      .filter((ev) => ev.sport === "tennis")
+      .map(async (ev) => [ev.id, await hasTennisTicketIntelligence(ev.id, ev.editionYear)] as const)
+  );
+  const tennisTiEventIds = new Set(tennisTiFlags.filter(([, has]) => has).map(([id]) => id));
 
   const featuredEventsForHero = await Promise.all(
     featuredSorted.map(async (ev) => ({
@@ -192,7 +207,10 @@ export default async function HomePage() {
     heroImageUrl: ev.heroImageUrl,
     expCount: expCountMap[ev.id] ?? 0,
     glimpse: glimpseMap[ev.id] ?? [],
-    hasTicketIntelligence: tiEventIds.has(ev.id),
+    hasTicketIntelligence: tiEventIds.has(ev.id) || tennisTiEventIds.has(ev.id),
+    ticketIntelligenceHref: tennisTiEventIds.has(ev.id)
+      ? `/ticket-intelligence/tennis/${ev.slug}`
+      : `/ticket-intelligence/${ev.slug}`,
     venue: ev.slug === "india-in-england-cricket-2026"
       ? "Birmingham · London · Nottingham · more"
       : ev.venueName,

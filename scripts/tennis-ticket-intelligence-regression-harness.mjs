@@ -64,6 +64,14 @@ const { selectHeroExplanation, selectAlternativeExplanation } = await import(
 );
 
 const optionsSource = JSON.parse(fs.readFileSync(path.join(dir, "_tennis-options-source.json"), "utf8"));
+// scoreTennisOptions.ts now requires an explicit eventSlug (25 Oct 2026,
+// third Q4-neutrality pass) — read from the source file's own
+// event_slug field rather than hardcoded, so this harness stays correct
+// if ever repointed at a different tournament's source JSON.
+const eventSlug = optionsSource.event_slug;
+if (!eventSlug) {
+  throw new Error("_tennis-options-source.json has no event_slug field — cannot call scoreTennisOptions without an explicit tournament identifier.");
+}
 
 // scoreTennisOptions expects camelCase TicketOption fields (same shape
 // getTennisOptionsData.ts produces from the DB) — map once from the
@@ -153,7 +161,7 @@ function computeEligibility(answers) {
 
 // ── Run one profile end-to-end: scoring + both explanation calls ────────
 export function runProfile(answers) {
-  const result = scoreTennisOptions(options, answers);
+  const result = scoreTennisOptions(options, answers, eventSlug);
   const { eligibleIds, excluded } = computeEligibility(answers);
 
   const heroExplanation = result.hero ? selectHeroExplanation(result.hero) : null;

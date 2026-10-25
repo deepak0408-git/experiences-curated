@@ -1,7 +1,7 @@
 import { CalendarDays, Sun, Moon, Armchair, Sparkles } from "lucide-react";
 import type { ScoredOption } from "../_lib/types";
 import type { Rationale } from "../_lib/recommendationRationale";
-import { stageExplanation, sessionExplanation, seatingPresentation, experiencePresentation, arenaDisplayName } from "../_lib/presentationMappings";
+import { stageExplanation, sessionExplanation, wimbledonDaySessionExplanation, seatingPresentation, experiencePresentation, arenaDisplayName } from "../_lib/presentationMappings";
 
 // Results-page card — design spec 20 Oct 2026. Built fresh to this spec's
 // explicit instructions (image-above-name, 4-row stacked icon panel,
@@ -103,7 +103,14 @@ export default function ResultCard({
       : option.stageCode === "Late" && option.roundsLabel === "Championship finals"
         ? { value: "Championship finals", explanation: "The men's and women's singles finals, the tournament's final matches." }
         : stageExplanation(option.stageCode);
-  const session = sessionExplanation(option.sessionCode);
+  // P1 fix, 25 Oct 2026: arenaCode === "GP" is the only reliable "is this
+  // Ground Pass" signal — sessionCode === null alone isn't, since Wimbledon's
+  // 22 reserved-court options also carry sessionCode=null (no separate
+  // ticketed day/night session to score against; see Q4-neutrality smoke
+  // tests). session stays null only for Ground Pass now, so the ternary
+  // below still renders the Ground Pass branch correctly for GP.
+  const isGroundPass = option.arenaCode === "GP";
+  const session = isGroundPass ? null : sessionExplanation(option.sessionCode) ?? wimbledonDaySessionExplanation();
   const seating = seatingPresentation(option);
   const experience = experiencePresentation(option.arenaCode);
 

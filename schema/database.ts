@@ -1228,7 +1228,15 @@ export const circuitSeatingProfile = pgTable("circuit_seating_profile", {
 // Pass / Outside Courts rows reuse the existing GP code (same concept,
 // confirmed against the approved parameter workbook's Q3 hard-filter note:
 // "Q3 Reserved hard-excludes Ground Pass" — identical rule to AO's).
-export const tennisArenaCodeEnum = pgEnum("tennis_arena_code", ["RLA", "MCA", "JCA", "GP", "PC", "SL", "SM", "C14"]);
+// CC/C1/C2/C3 (Centre Court, No.1 Court, No.2 Court, No.3 Court) added for
+// Wimbledon 2027 onboarding, 25 Oct 2026 — additive only, all prior values
+// untouched. Wimbledon's Ground Pass ("The Hill") reuses the existing GP
+// code, same concept/rule as AO and French Open ("Q3 Reserved hard-
+// excludes Ground Pass"). Note: "C1" here is an arena code (No.1 Court),
+// unrelated to the C1/C5 compatibility-group column prefixes below — same
+// kind of label reuse as French Open's seating-code category names,
+// different namespace, not an actual conflict.
+export const tennisArenaCodeEnum = pgEnum("tennis_arena_code", ["RLA", "MCA", "JCA", "GP", "PC", "SL", "SM", "C14", "CC", "C1", "C2", "C3"]);
 // French Open's "Internal stage" column (Early/Middle/Late/Transition/Late
 // access) collapses to these same three values for scoring purposes —
 // Transition scores identically to Middle and "Late access" identically to
@@ -1322,14 +1330,24 @@ export const tennisTicketIntelligenceOptions = pgTable("tennis_ticket_intelligen
   // otherwise — AO's 43 rows leave all 8 null and are completely
   // unaffected. Per founder direction: store the approved values as data
   // rather than re-deriving a second, hand-transcribed lookup table.
-  c1LotsOfTennis: numeric("c1_lots_of_tennis", { precision: 4, scale: 2 }),
-  c1BigStadium: numeric("c1_big_stadium", { precision: 4, scale: 2 }),
-  c1CloseUpCourts: numeric("c1_close_up_courts", { precision: 4, scale: 2 }),
-  c1BalancedExperience: numeric("c1_balanced_experience", { precision: 4, scale: 2 }),
-  c5CloseToAction: numeric("c5_close_to_action", { precision: 4, scale: 2 }),
-  c5BalancedView: numeric("c5_balanced_view", { precision: 4, scale: 2 }),
-  c5NoPreference: numeric("c5_no_preference", { precision: 4, scale: 2 }),
-  c5FlexibleExplore: numeric("c5_flexible_explore", { precision: 4, scale: 2 }),
+  // Widened from (4,2) to (5,3) 25 Oct 2026 — independent regression
+  // found Wimbledon's approved c1_balanced_experience value for Ground
+  // Pass (0.825, options 23-25) was being silently rounded to 0.83 on
+  // insert, since (4,2) only stores 2 decimal places. Same class of bug
+  // as costIndex's (6,2) -> (20,15) widening above (French Open's
+  // precision loss, 23 Oct 2026) — numeric() rounds to the declared
+  // scale without erroring, so this is invisible until an independent
+  // validation catches the discrepancy. (5,3) covers the observed
+  // 1-integer-digit/3-decimal-digit range with margin; a no-op for every
+  // existing AO/French Open value, which are all <= 2 decimal places.
+  c1LotsOfTennis: numeric("c1_lots_of_tennis", { precision: 5, scale: 3 }),
+  c1BigStadium: numeric("c1_big_stadium", { precision: 5, scale: 3 }),
+  c1CloseUpCourts: numeric("c1_close_up_courts", { precision: 5, scale: 3 }),
+  c1BalancedExperience: numeric("c1_balanced_experience", { precision: 5, scale: 3 }),
+  c5CloseToAction: numeric("c5_close_to_action", { precision: 5, scale: 3 }),
+  c5BalancedView: numeric("c5_balanced_view", { precision: 5, scale: 3 }),
+  c5NoPreference: numeric("c5_no_preference", { precision: 5, scale: 3 }),
+  c5FlexibleExplore: numeric("c5_flexible_explore", { precision: 5, scale: 3 }),
 }, (t) => [
   uniqueIndex("tennis_ticket_intelligence_options_event_option_unique").on(t.sportingEventId, t.optionNumber),
 ]);

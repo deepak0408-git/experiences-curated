@@ -105,7 +105,7 @@ const PROFILES = [
 ];
 for (const [i, answers] of PROFILES.entries()) {
   try {
-    const result = scoreTennisOptions(foOptions, answers);
+    const result = scoreTennisOptions(foOptions, answers, "french-open");
     check(`profile ${i + 1}: has a hero`, !!result.hero, JSON.stringify(answers));
     const explanations = selectFrenchOpenExplanations(answers, result.hero, result.alternative1, result.alternative2);
     check(`profile ${i + 1}: hero explanation resolves`, !!explanations.hero.text, JSON.stringify(answers));
@@ -118,7 +118,7 @@ for (const [i, answers] of PROFILES.entries()) {
 console.log("\n[Test 2] Q3 Reserved hard-excludes Ground Pass options 85/86/87");
 {
   const answers = { q1: "lots_of_tennis", q2: "early", q3: "reserved", q4: "day", q5: "no_preference", q6: "balanced", q7: "flexible_tournament", fromDate: null, toDate: null };
-  const result = scoreTennisOptions(foOptions, answers);
+  const result = scoreTennisOptions(foOptions, answers, "french-open");
   const groundPassIds = new Set([85, 86, 87]);
   const surfaced = [result.hero, result.alternative1, result.alternative2].filter(Boolean).map((s) => s.option.optionNumber);
   check("no Ground Pass option (85/86/87) surfaced when Q3=reserved", surfaced.every((id) => !groundPassIds.has(id)), `surfaced: ${surfaced}`);
@@ -129,10 +129,10 @@ console.log("\n[Test 2] Q3 Reserved hard-excludes Ground Pass options 85/86/87")
 console.log("\n[Test 3] Q7 date eligibility uses French Open's real window");
 {
   const answers = { q1: "lots_of_tennis", q2: "early", q3: "reserved", q4: "day", q5: "no_preference", q6: "balanced", q7: "fixed", fromDate: "2027-05-23", toDate: "2027-05-23" };
-  const result = scoreTennisOptions(foOptions, answers);
+  const result = scoreTennisOptions(foOptions, answers, "french-open");
   check("fixed date 2027-05-23 (real FO opening day) finds a hero", !!result.hero);
   const aoOnlyDateAnswers = { ...answers, fromDate: "2027-01-17", toDate: "2027-01-17" };
-  const aoResult = scoreTennisOptions(foOptions, aoOnlyDateAnswers);
+  const aoResult = scoreTennisOptions(foOptions, aoOnlyDateAnswers, "french-open");
   check("AO's own date (2027-01-17, outside FO's window) excludes ALL French Open options", aoResult.hero === undefined, `hero: ${aoResult.hero?.option.optionNumber}`);
 }
 
@@ -159,7 +159,7 @@ console.log("\n[Test 5] Australian Open spot-check (count + a scored profile)");
   check("AO options have no eligibleFrom/To (still using stage-keyed map)", aoOptions.every((o) => o.eligibleFrom === null && o.eligibleTo === null));
   check("AO options have no stand value", aoOptions.every((o) => o.stand === null));
   const answers = { q1: "big_stadium", q2: "later", q3: "reserved", q4: "night", q5: "close_to_action", q6: "premium", q7: "flexible_tournament", fromDate: null, toDate: null };
-  const result = scoreTennisOptions(aoOptions, answers);
+  const result = scoreTennisOptions(aoOptions, answers, "australian-open");
   check("AO scoring still produces a hero", !!result.hero);
 }
 

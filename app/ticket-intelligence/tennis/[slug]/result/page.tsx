@@ -8,7 +8,7 @@ import { and, eq } from "drizzle-orm";
 import { getTennisOptionsData } from "../_lib/getTennisOptionsData";
 import { hasFullPlannerCostData } from "../../../[slug]/_lib/getSeatingData";
 import { hasActiveSeasonPass, hasActiveAnnualProForEvent } from "../../../_lib/seasonPassAccess";
-import { scoreTennisOptions } from "../_lib/scoreTennisOptions";
+import { scoreTennisOptions, assertTennisEventSlug } from "../_lib/scoreTennisOptions";
 import type { QuizAnswers } from "../_lib/types";
 import FullResult from "./_components/FullResult";
 import RetakeLink from "./_components/RetakeLink";
@@ -131,7 +131,7 @@ export default async function TennisTicketIntelligenceResultPage({
               <FullResult
                 eventName={event.name}
                 eventSlug={slug}
-                result={scoreTennisOptions(data.options, answers)}
+                result={scoreTennisOptions(data.options, answers, assertTennisEventSlug(slug))}
                 answers={answers}
               />
             </div>

@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { QuizAnswers, Q1Priority, Q2Stage, Q3Viewing, Q4Session, Q5Seating, Q6Budget, Q7Flexibility, TicketOption } from "../_lib/types";
-import { scoreTennisOptions, tournamentWindowFor } from "../_lib/scoreTennisOptions";
+import { scoreTennisOptions, tournamentWindowFor, assertTennisEventSlug } from "../_lib/scoreTennisOptions";
+import { ticketIntelligenceHeadlineEventName } from "../_lib/presentationMappings";
 import TeaserResult from "./TeaserResult";
 import TennisTicketIntelligenceSidebar from "./TennisTicketIntelligenceSidebar";
 import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
@@ -124,7 +125,9 @@ export default function TennisTicketQuiz({
   const cockpitBackLink = resolveCockpitBackLink(fromParam.current);
   const backLink =
     cockpitBackLink ??
-    (fromParam.current === slug ? { href: `/event-pack/${slug}`, label: `← Back to ${eventName} guide` } : null);
+    (fromParam.current === slug
+      ? { href: `/event-pack/${slug}`, label: `← Back to ${ticketIntelligenceHeadlineEventName(slug, eventName)} guide` }
+      : null);
 
   const set = <K extends keyof QuizAnswers>(key: K, value: QuizAnswers[K]) => {
     setAnswers((prev) => ({ ...prev, [key]: value }));
@@ -156,7 +159,7 @@ export default function TennisTicketQuiz({
   const complete = answeredCount === ANSWER_KEYS.length && datesSatisfied;
 
   if (revealed && complete) {
-    const result = scoreTennisOptions(options, answers as QuizAnswers);
+    const result = scoreTennisOptions(options, answers as QuizAnswers, assertTennisEventSlug(slug));
     const answerParams = new URLSearchParams({
       q1: answers.q1!,
       q2: answers.q2!,
@@ -211,7 +214,9 @@ export default function TennisTicketQuiz({
       </div>
       <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-start">
         <div className="max-w-2xl">
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">Which {eventName} ticket fits you?</h1>
+          <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
+            Which {ticketIntelligenceHeadlineEventName(slug, eventName)} ticket fits you?
+          </h1>
           <p className="text-[#A3A3A3] text-base mb-4">
             7 quick questions. We&apos;ll match your answers against every real arena, stage, and seating option at
             this Grand Slam — no fluff, just the ticket that fits.

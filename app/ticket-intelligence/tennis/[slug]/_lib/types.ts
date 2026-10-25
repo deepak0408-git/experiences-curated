@@ -5,10 +5,25 @@
 
 // PC/SL/SM/C14 added for French Open 2027 (Philippe-Chatrier, Suzanne-
 // Lenglen, Simonne-Mathieu, Court 14) — additive, AO's RLA/MCA/JCA/GP
-// untouched. Matches the widened tennis_arena_code Postgres enum.
-export type ArenaCode = "RLA" | "MCA" | "JCA" | "GP" | "PC" | "SL" | "SM" | "C14";
+// untouched. CC/C1/C2/C3 added for Wimbledon 2027 (Centre Court, No.1
+// Court, No.2 Court, No.3 Court) — additive, all prior values untouched.
+// Matches the widened tennis_arena_code Postgres enum.
+export type ArenaCode = "RLA" | "MCA" | "JCA" | "GP" | "PC" | "SL" | "SM" | "C14" | "CC" | "C1" | "C2" | "C3";
 export type StageCode = "Early" | "Middle" | "Late";
 export type SessionCode = "Day" | "Night" | null;
+
+// Closed set of tournament slugs scoreTennisOptions.ts knows how to score
+// — added 25 Oct 2026 as part of making tournament context a mandatory,
+// explicit argument (never an optional/inferred one) to c4Compatibility's
+// Q4-neutrality rule. A plain `string` can't express "exactly one of
+// these three" at the type level (route params are always runtime
+// strings), so this exists specifically so TypeScript rejects a typo'd
+// or stale slug literal at every call site that passes one as a literal,
+// while scoreTennisOptions.ts itself still runtime-validates any value
+// actually received (including ones that arrive as plain strings from a
+// URL route param) and throws on anything outside this set — belt AND
+// suspenders, since a type can't stop a request's own query string.
+export type TennisEventSlug = "australian-open" | "french-open" | "wimbledon";
 
 // One row from tennis_ticket_intelligence_options.
 export interface TicketOption {

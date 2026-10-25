@@ -2,6 +2,8 @@ import type { QuizAnswers, ScoreResult } from "../../_lib/types";
 import { selectHeroExplanation, selectAlternativeExplanation } from "../../_lib/selectExplanation";
 import { heroRationale, alternativeRationale } from "../../_lib/recommendationRationale";
 import { selectFrenchOpenExplanations } from "../../_lib/frenchOpenExplanation";
+import { selectWimbledonExplanations } from "../../_lib/wimbledonExplanation";
+import { ticketIntelligenceHeadlineEventName } from "../../_lib/presentationMappings";
 import ResultCard from "../../_components/ResultCard";
 import ArenaMapsSection from "../../_components/ArenaMapsSection";
 import RetakeLink from "./RetakeLink";
@@ -14,7 +16,14 @@ import RetakeLink from "./RetakeLink";
 // specific to French Open's own approved editorial content — a future
 // Wimbledon/US Open onboarding would need its own equivalent catalogue and
 // its own slug entry here, never silently reusing French Open's.
+//
+// Wimbledon 2027 added 25 Oct 2026 — its own equivalent frozen-lookup
+// catalogue (wimbledonExplanation.ts / wimbledonExplanationCatalogue.json),
+// a separate slug entry per this file's own prior-art comment above.
+// Never routed through recommendationRationale.ts (AO's construction
+// engine), which throws on any arena code outside RLA/MCA/JCA/GP.
 const FRENCH_OPEN_EXPLANATION_SLUGS = new Set(["french-open"]);
+const WIMBLEDON_EXPLANATION_SLUGS = new Set(["wimbledon"]);
 
 // Tennis equivalent of app/ticket-intelligence/[slug]/result/_components/FullResult.tsx
 // — the real, unblurred result, shown only after access is verified. Built
@@ -35,24 +44,30 @@ export default function FullResult({
   answers: QuizAnswers;
 }) {
   const isFrenchOpen = FRENCH_OPEN_EXPLANATION_SLUGS.has(eventSlug);
+  const isWimbledon = WIMBLEDON_EXPLANATION_SLUGS.has(eventSlug);
 
   // selectHeroExplanation/selectAlternativeExplanation (the catalogue-based
   // S01-S14 selector) are still computed here for Australian Open — kept
   // for regression compatibility and auditability, per founder direction
   // 20 Oct 2026 — but their .text is no longer what's shown in the UI. AO's
   // displayed rationale comes from recommendationRationale.ts instead,
-  // completely unchanged by this branch. French Open has no equivalent
-  // audit-only catalogue call here — selectExplanation.ts's
+  // completely unchanged by this branch. French Open and Wimbledon have no
+  // equivalent audit-only catalogue call here — selectExplanation.ts's
   // reconstructedLanguageCatalogue.json is Australian Open's own catalogue
-  // (option IDs 001-043) and has no French Open entries; calling it with
-  // French Open's IDs 1-87 would either collide with AO's or throw, so it
-  // is deliberately never called for French Open.
+  // (option IDs 001-043) and has no French Open/Wimbledon entries; calling
+  // it with their option IDs would either collide with AO's or throw, so
+  // it is deliberately never called for either.
   let heroExplanation, alt1Explanation, alt2Explanation;
   if (isFrenchOpen) {
     const fo = selectFrenchOpenExplanations(answers, result.hero, result.alternative1, result.alternative2);
     heroExplanation = fo.hero;
     alt1Explanation = fo.alternative1;
     alt2Explanation = fo.alternative2;
+  } else if (isWimbledon) {
+    const wim = selectWimbledonExplanations(answers, result.hero, result.alternative1, result.alternative2);
+    heroExplanation = wim.hero;
+    alt1Explanation = wim.alternative1;
+    alt2Explanation = wim.alternative2;
   } else {
     selectHeroExplanation(result.hero);
     if (result.alternative1) selectAlternativeExplanation(result.alternative1, result.hero);
@@ -65,7 +80,9 @@ export default function FullResult({
 
   return (
     <div>
-      <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">Your {eventName} match</h1>
+      <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
+        Your {ticketIntelligenceHeadlineEventName(eventSlug, eventName)} match
+      </h1>
       {/* RetakeLink generates a fresh ?retake=<timestamp> value on every
           click — the explicit escape hatch past the quiz page's
           "already purchased → skip straight to result" redirect.
@@ -123,65 +140,75 @@ export default function FullResult({
       <ArenaMapsSection eventSlug={eventSlug} />
 
       {/* "Where to actually buy your ticket" — same section pattern as
-          F1's Ticket Intelligence result page, tennis-specific copy (no
-          P1 Travel-style secondary reseller named for this pilot —
-          official Ticketmaster channel only). Founder direction, 20 Oct
-          2026.
-          Made tournament-aware 22 Oct 2026 — previously hardcoded to
-          Australian Open/Ticketmaster AU for every tournament. Australian
-          Open's destination/copy is preserved exactly.
-          French Open's destination (tickets.rolandgarros.com) supplied
-          directly by the founder 23 Oct 2026 — the FFT's own official
-          ticketing site, not a third-party reseller like AO's Ticketmaster
-          channel, so the copy below is worded accordingly ("the official
-          Roland-Garros ticketing platform, run by the French Tennis
-          Federation" rather than AO's "authorised ticketing partner"
-          framing) rather than reusing AO's reseller-specific wording
-          verbatim. */}
+          F1's Ticket Intelligence result page. Founder direction, 20 Oct
+          2026. Refactored 25 Oct 2026 (Wimbledon onboarding) from a bare
+          isFrenchOpen ? : ternary with Australian Open hardcoded as the
+          "else" branch — that shape silently sent every non-French-Open
+          tournament to AO's Ticketmaster link, which would have included
+          Wimbledon. Now an explicit slug-keyed config per the approved
+          Wimbledon implementation contract's instruction: "unsupported
+          tournaments must not inherit another tournament's links." AO and
+          French Open's destinations/copy below are preserved byte-
+          identical to the prior ternary's two branches. Wimbledon's two
+          links (Experiences | Curated's own guidance page + the official
+          Wimbledon ticket info page) supplied directly by the founder, 25
+          Oct 2026 — distinct phrasing from AO/French Open since neither
+          link is a single "official and only" ticketing partner/platform
+          claim; this copy only points to information sources and never
+          implies Experiences | Curated sells tickets directly, per the
+          approved contract. */}
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mt-10">
         <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">
           Where to actually buy your ticket
         </p>
-        {isFrenchOpen ? (
-          <>
-            <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-              Buy directly from the official Roland-Garros ticketing platform, run by the French Tennis
-              Federation. Every genuine ticket is sold or resold through this one channel — anything offered
-              elsewhere, including on resale marketplaces and social media, carries no guarantee it will actually
-              get you through the gate.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <a
-                href="https://tickets.rolandgarros.com/en/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
-              >
-                Official Roland-Garros tickets →
-              </a>
-            </div>
-          </>
-        ) : (
-          <>
-            <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-              Buy directly from Ticketmaster, the Australian Open&apos;s official and only authorised ticketing
-              partner. Every genuine ticket is sold or resold through this one channel — anything offered
-              elsewhere, including on resale marketplaces and social media, carries no guarantee it will actually
-              get you through the gate.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <a
-                href="https://www.ticketmaster.com.au/ausopen"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
-              >
-                Official Australian Open tickets →
-              </a>
-            </div>
-          </>
-        )}
+        {(() => {
+          const config = TICKET_LINKS_BY_SLUG[eventSlug];
+          if (!config) return null;
+          return (
+            <>
+              <p className="text-sm text-[#A3A3A3] leading-6 mb-4">{config.copy}</p>
+              <div className="flex flex-wrap gap-4">
+                {config.links.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
+                  >
+                    {link.label} →
+                  </a>
+                ))}
+              </div>
+            </>
+          );
+        })()}
       </div>
     </div>
   );
 }
+
+// Slug-keyed ticket-purchasing destinations — see the comment above this
+// block's call site for why this replaced a bare isFrenchOpen ternary.
+// An eventSlug with no entry here renders nothing (the IIFE above returns
+// null) rather than inheriting another tournament's links.
+const TICKET_LINKS_BY_SLUG: Record<string, { copy: string; links: { href: string; label: string }[] }> = {
+  "australian-open": {
+    copy:
+      "Buy directly from Ticketmaster, the Australian Open's official and only authorised ticketing partner. Every genuine ticket is sold or resold through this one channel — anything offered elsewhere, including on resale marketplaces and social media, carries no guarantee it will actually get you through the gate.",
+    links: [{ href: "https://www.ticketmaster.com.au/ausopen", label: "Official Australian Open tickets" }],
+  },
+  "french-open": {
+    copy:
+      "Buy directly from the official Roland-Garros ticketing platform, run by the French Tennis Federation. Every genuine ticket is sold or resold through this one channel — anything offered elsewhere, including on resale marketplaces and social media, carries no guarantee it will actually get you through the gate.",
+    links: [{ href: "https://tickets.rolandgarros.com/en/", label: "Official Roland-Garros tickets" }],
+  },
+  wimbledon: {
+    copy:
+      "For our tactical, step-by-step guidance on how to actually get Wimbledon tickets, see our guide below. For the official word on ballots, resale, and Ground Pass queueing straight from the All England Lawn Tennis Club, check Wimbledon's own ticket information page.",
+    links: [
+      { href: "https://www.experiences-curated.com/event-pack/wimbledon/tickets", label: "Our Wimbledon ticket guidance" },
+      { href: "https://www.wimbledon.com/en_GB/tickets", label: "Official Wimbledon ticket information" },
+    ],
+  },
+};

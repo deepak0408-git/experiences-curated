@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { QuizAnswers, ScoreResult } from "../_lib/types";
-import { seatingPresentation, sessionExplanation } from "../_lib/presentationMappings";
+import { seatingPresentation, sessionExplanation, wimbledonDaySessionExplanation } from "../_lib/presentationMappings";
 import DodoCheckout from "@/app/event-pack/[slug]/_components/DodoCheckout";
 import LocalCurrencyHint from "@/app/event-pack/[slug]/_components/LocalCurrencyHint";
 import TennisTicketIntelligenceSidebar from "./TennisTicketIntelligenceSidebar";
@@ -56,7 +56,10 @@ export default function TeaserResult({
 }) {
   const { hero } = result;
   const seating = seatingPresentation(hero.option);
-  const session = sessionExplanation(hero.option.sessionCode);
+  // P1 fix, 25 Oct 2026: same arenaCode==="GP" fix as ResultCard.tsx — see
+  // that file's comment. sessionCode===null alone doesn't mean Ground
+  // Pass; Wimbledon's 22 reserved-court options are also null there.
+  const session = hero.option.arenaCode === "GP" ? null : sessionExplanation(hero.option.sessionCode) ?? wimbledonDaySessionExplanation();
 
   // A buyer who already paid (e.g. via "Retake the quiz") never sees the
   // paywall for a second teaser — fresh answers just render the same real,

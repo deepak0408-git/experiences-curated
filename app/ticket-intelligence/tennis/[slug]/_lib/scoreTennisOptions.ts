@@ -1,4 +1,4 @@
-import type { QuizAnswers, ScoredOption, ScoreResult, TicketOption } from "./types";
+import type { QuizAnswers, ScoredOption, ScoreResult, TennisEventSlug, TicketOption } from "./types";
 
 // Tennis Ticket Intelligence scoring — FROZEN numerical model, Stage 1/2 spec
 // (19-20 Oct 2026). Pure function, no DB/network access, re-run identically
@@ -118,15 +118,101 @@ function c3Compatibility(option: TicketOption, q3: QuizAnswers["q3"]): number | 
 
 // Q4 — compatibility[answer][optionSessionBucket]. optionSessionBucket is
 // "day" | "night" | "ground_pass" (Ground Pass has sessionCode = null).
+// AO-only model: every AO/French Open non-GP row has a real "Day"/"Night"
+// sessionCode (verified against both events' seeded data) — this day/night
+// distinction is specific to those two tournaments' ticket model.
 const Q4_COMPATIBILITY: Record<QuizAnswers["q4"], { day: number; night: number; ground_pass: number }> = {
   day: { day: 1, night: 0.1, ground_pass: 1 },
   night: { day: 0.1, night: 1, ground_pass: 0.35 },
   either: { day: 1, night: 1, ground_pass: 1 },
 };
 
-function c4Compatibility(option: TicketOption, q4: QuizAnswers["q4"]): number {
-  const bucket = option.arenaCode === "GP" ? "ground_pass" : option.sessionCode === "Day" ? "day" : "night";
-  return Q4_COMPATIBILITY[q4][bucket];
+// Wimbledon's approved scoring contract has NO day/night distinction at
+// all — C4 = 1 for every option regardless of Q4 answer, including Ground
+// Pass (confirmed directly in data/questionnaire_scoring_contract.json:
+// `"C4": 1`, a single flat constant with no GP-specific carve-out, unlike
+// C3's explicit GP_reserved/GP_exploring/GP_mix/GP_no_preference entries).
+//
+// History, kept because the two failed approaches below are exactly the
+// mistakes a future change to this function must not repeat:
+//  1. First attempt (25 Oct 2026) tried detecting Wimbledon purely from
+//     data shape — "a non-GP option with sessionCode === null" — on the
+//     theory that only Wimbledon's reserved-court rows have a null
+//     sessionCode. That part was correct, but it missed Ground Pass:
+//     AO's, French Open's, AND Wimbledon's GP rows ALL have
+//     sessionCode === null (verified directly against all three events'
+//     seeded data) — GP's "no fixed session" concept is shared across
+//     every tournament, so sessionCode alone cannot distinguish
+//     "Wimbledon's GP (C4 always neutral)" from "AO/French Open's GP (C4
+//     follows the day/night table, Q4=night -> 0.35)".
+//  2. Second attempt (still 25 Oct 2026) added an OPTIONAL `eventSlug?:
+//     string` parameter, checked first, to fix the GP gap. That closed
+//     the ranking defect (independently re-verified: 0 discrepancies)
+//     but left an architectural gap of its own — because the parameter
+//     was optional, any FUTURE call site that forgot to pass it would
+//     silently fall through to this function's non-Wimbledon branches
+//     and misscore Wimbledon without any error. Two real pre-existing
+//     call sites (scripts/_smoketest-french-open-ticket-intelligence.mjs,
+//     scripts/tennis-ticket-intelligence-regression-harness.mjs) already
+//     called this function with no eventSlug at all — harmless for THEM
+//     (they only ever score AO/French Open data), but proof the gap was
+//     real and already present in the repo, not hypothetical.
+//
+// Fix (25 Oct 2026, third pass): eventSlug is now REQUIRED, typed as the
+// closed TennisEventSlug union (not a bare string) so a literal typo at
+// a TypeScript call site is a compile error, AND validated again here at
+// runtime via the exhaustive switch below — because eventSlug ultimately
+// always originates as a runtime string (a URL route param or a script's
+// own hardcoded value), and no TypeScript type can stop an unvalidated
+// value from reaching here at runtime. There is no default/fallback
+// branch: every call MUST name a tournament this function explicitly
+// knows how to score, or it throws immediately rather than guessing.
+const KNOWN_TENNIS_EVENT_SLUGS: readonly TennisEventSlug[] = ["australian-open", "french-open", "wimbledon"];
+
+// Validates a raw route-param/string slug into the closed TennisEventSlug
+// union, for callers whose slug necessarily arrives as a runtime string
+// (the [slug] dynamic route segment, a hardcoded value in a plain .mjs
+// script with no type checking, etc.) rather than already being typed.
+// Throws — never returns a guessed/defaulted value — on anything outside
+// the three tournaments this module knows how to score. Both real app
+// call sites (TennisTicketQuiz.tsx, result/page.tsx) use this exactly
+// once, at the boundary where a plain string first needs to become a
+// TennisEventSlug, rather than each re-implementing the same check.
+export function assertTennisEventSlug(slug: string): TennisEventSlug {
+  if ((KNOWN_TENNIS_EVENT_SLUGS as readonly string[]).includes(slug)) {
+    return slug as TennisEventSlug;
+  }
+  throw new Error(
+    `assertTennisEventSlug: "${slug}" is not a recognized tennis event slug (expected one of ${KNOWN_TENNIS_EVENT_SLUGS.join(", ")}) — refusing to guess a tournament's scoring model. Stop and report.`
+  );
+}
+
+function c4Compatibility(option: TicketOption, q4: QuizAnswers["q4"], eventSlug: TennisEventSlug): number {
+  switch (eventSlug) {
+    case "wimbledon":
+      return 1; // no day/night distinction anywhere in Wimbledon's model, GP included
+    case "australian-open":
+    case "french-open": {
+      if (option.arenaCode === "GP") return Q4_COMPATIBILITY[q4].ground_pass;
+      if (option.sessionCode === null) {
+        throw new Error(
+          `c4Compatibility: option ${option.optionNumber} for eventSlug "${eventSlug}" has sessionCode === null but is not Ground Pass — AO/French Open's day/night model requires a real session value on every non-GP row. Stop and report, never guess a bucket.`
+        );
+      }
+      const bucket = option.sessionCode === "Day" ? "day" : "night";
+      return Q4_COMPATIBILITY[q4][bucket];
+    }
+    default: {
+      // Exhaustiveness guard: TypeScript already rejects any eventSlug
+      // outside TennisEventSlug at every typed call site, but this
+      // function can still be reached with an unvalidated runtime value
+      // (e.g. a stale/typo'd route param cast through `as`, or a plain
+      // .mjs caller with no type checking at all). Never default to any
+      // tournament's scoring rules for an unrecognized identifier.
+      const _exhaustive: never = eventSlug;
+      throw new Error(`c4Compatibility: unrecognized eventSlug "${_exhaustive}" — refusing to guess a tournament's scoring model. Stop and report.`);
+    }
+  }
 }
 
 // Q5 — compatibility_by_zone[zoneKey][answerIndex]. Zone key is
@@ -321,12 +407,12 @@ export function getEligibilityDiagnostics(
   return { eligible: reasons.length === 0, reasons };
 }
 
-function scoreOption(option: TicketOption, answers: QuizAnswers): ScoredOption {
+function scoreOption(option: TicketOption, answers: QuizAnswers, eventSlug: TennisEventSlug): ScoredOption {
   const c1 = c1Compatibility(option, answers.q1);
   const c2 = c2Compatibility(option, answers.q2);
   const c3raw = c3Compatibility(option, answers.q3);
   const c3 = c3raw ?? 0; // hard filter already excludes null-c3 (GP + reserved) upstream
-  const c4 = c4Compatibility(option, answers.q4);
+  const c4 = c4Compatibility(option, answers.q4, eventSlug);
   const c5 = c5Compatibility(option, answers.q5);
 
   const rawScore =
@@ -351,13 +437,19 @@ function scoreOption(option: TicketOption, answers: QuizAnswers): ScoredOption {
 
 // Exported for the portable regression harness (ChatGPT's independent
 // 31,104-profile run) as well as the app's own quiz/result pages.
-export function scoreTennisOptions(options: TicketOption[], answers: QuizAnswers): ScoreResult {
+// eventSlug is REQUIRED (25 Oct 2026, third Q4-neutrality pass — see
+// c4Compatibility's history comment for why an optional parameter here
+// was an architectural gap, not just a missed call site) and must be one
+// of the three tournaments this module actually knows how to score;
+// passing anything else throws rather than silently defaulting to any
+// one tournament's rules.
+export function scoreTennisOptions(options: TicketOption[], answers: QuizAnswers, eventSlug: TennisEventSlug): ScoreResult {
   const tournamentWindow = tournamentWindowFor(options);
   const eligible = options.filter((o) => passesHardFilters(o, answers, tournamentWindow));
   const excludedCount = options.length - eligible.length;
 
   const scored = eligible
-    .map((o) => scoreOption(o, answers))
+    .map((o) => scoreOption(o, answers, eventSlug))
     .sort((a, b) => {
       if (b.adjustedScore !== a.adjustedScore) return b.adjustedScore - a.adjustedScore;
       return a.option.optionNumber - b.option.optionNumber; // stable ascending-ID tie-break

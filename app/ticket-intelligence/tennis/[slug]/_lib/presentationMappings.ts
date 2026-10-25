@@ -1,5 +1,18 @@
 import type { TicketOption } from "./types";
 
+// Headline-only display override, added 25 Oct 2026 per founder direction.
+// sporting_events.name for Wimbledon is the full official name ("The
+// Championships, Wimbledon 2027") — correct and unchanged everywhere else
+// on the site (event pack, homepage, nav, this page's own back-link and
+// ResultCard identity line). Only the quiz title ("Which ... ticket fits
+// you?") and the results-page headline ("Your ... match") use this
+// shorter form instead, scoped to Tennis Ticket Intelligence's own two
+// headline call sites — never a sporting_events.name rename.
+export function ticketIntelligenceHeadlineEventName(eventSlug: string, eventName: string): string {
+  if (eventSlug === "wimbledon") return "Wimbledon 2027";
+  return eventName;
+}
+
 // Deterministic fan-facing presentation mappings — results-page design
 // spec, 20 Oct 2026. Pure data transforms, no scoring/eligibility/
 // explanation-selection logic here. Validated against every real
@@ -35,6 +48,29 @@ export function sessionExplanation(sessionCode: TicketOption["sessionCode"]): { 
     return { value: "Day session", explanation: "Daytime tennis during the tournament's scheduled day session." };
   }
   return null; // Ground Pass — no fixed session, handled separately in the card
+}
+
+// Wimbledon-only presentation override, added 25 Oct 2026 (P1 fix). All 22
+// non-Ground-Pass Wimbledon options have sessionCode=null — correct for
+// scoring (Wimbledon doesn't sell separate day/night session tickets, so
+// Q4 stays neutral; see Q4-neutrality smoke tests), but sessionExplanation()
+// returning null for that reason meant ResultCard.tsx's null-check wrongly
+// inferred "this must be Ground Pass" and showed Ground Pass wording on
+// every reserved Wimbledon court. Fixed by keying off arenaCode === "GP"
+// directly everywhere else in this file. value label matches AO/French
+// Open's real "Day session" wording exactly (sessionExplanation() above),
+// per founder direction — but the explanation line is deliberately NOT
+// copied verbatim from there: that sentence ("the tournament's scheduled
+// day session") is true for AO/French Open because they sell day session
+// as a distinct ticketed product; Wimbledon doesn't sell a session product
+// at all, so asserting that would invent a guarantee Wimbledon's ticketing
+// model doesn't make. Does not touch sessionCode, scoring, or Q4
+// neutrality — presentation only.
+export function wimbledonDaySessionExplanation(): { value: string; explanation: string } {
+  return {
+    value: "Day session",
+    explanation: "Wimbledon schedules play during the day, with no separate ticketed night session.",
+  };
 }
 
 // Keyed by `${arenaCode}_${seatingCode}` except Ground Pass. Every key here
@@ -164,6 +200,48 @@ const SEATING_MAP: Record<string, { value: string; explanation: string }> = {
     value: "Category 1, sideline seat",
     explanation: "A reserved seat at Court 14, in the sideline section.",
   },
+  // Wimbledon entries added 25 Oct 2026 — same purely structural,
+  // factual-only register as the existing entries above. seatingCode
+  // scheme: the approved parameter workbook's own "seating_tier" string
+  // (e.g. "A-T"), sanitized to a key-safe form (hyphen kept, used
+  // directly as the seating_code column value) for Centre Court/No.1
+  // Court's lettered rows; "RESERVED" for No.2/No.3 Court's single
+  // reserved-seating category (both courts have exactly one ticketed
+  // category each, per the approved CSV). Every key below was verified
+  // against the approved 25-option reference CSV's seating_tier column —
+  // 7 distinct Wimbledon seating combinations, all covered.
+  CC_A_T: {
+    value: "Seating block A–T",
+    explanation: "A reserved seat at Centre Court, in seating block A–T.",
+  },
+  CC_U_Z: {
+    value: "Seating block U–Z",
+    explanation: "A reserved seat at Centre Court, in seating block U–Z.",
+  },
+  CC_ZA_ZF: {
+    value: "Seating block ZA–ZF",
+    explanation: "A reserved seat at Centre Court, in seating block ZA–ZF.",
+  },
+  C1_A_Q: {
+    value: "Seating block A–Q",
+    explanation: "A reserved seat at No. 1 Court, in seating block A–Q.",
+  },
+  C1_R_W: {
+    value: "Seating block R–W",
+    explanation: "A reserved seat at No. 1 Court, in seating block R–W.",
+  },
+  C1_X_ZC: {
+    value: "Seating block X–ZC",
+    explanation: "A reserved seat at No. 1 Court, in seating block X–ZC.",
+  },
+  C2_RESERVED: {
+    value: "Reserved seat",
+    explanation: "A reserved seat at No. 2 Court.",
+  },
+  C3_RESERVED: {
+    value: "Reserved seat",
+    explanation: "A reserved seat at No. 3 Court.",
+  },
 };
 
 export function seatingPresentation(option: TicketOption): { value: string; explanation: string } {
@@ -232,6 +310,29 @@ export function experiencePresentation(arenaCode: TicketOption["arenaCode"]): { 
       return {
         value: "Court tennis",
         explanation: "Court 14, a reserved-seating court at Roland-Garros.",
+      };
+    // Wimbledon entries added 25 Oct 2026 — purely factual (court name +
+    // its documented role only, no subjective claims), same register as
+    // the AO/French Open entries above.
+    case "CC":
+      return {
+        value: "Flagship court tennis",
+        explanation: "Wimbledon's Centre Court, the tournament's main show court.",
+      };
+    case "C1":
+      return {
+        value: "Show-court tennis",
+        explanation: "No. 1 Court, Wimbledon's second show court.",
+      };
+    case "C2":
+      return {
+        value: "Court tennis",
+        explanation: "No. 2 Court, a reserved-seating court at Wimbledon.",
+      };
+    case "C3":
+      return {
+        value: "Court tennis",
+        explanation: "No. 3 Court, a reserved-seating court at Wimbledon.",
       };
   }
 }
