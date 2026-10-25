@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { QuizAnswers, ScoreResult } from "../_lib/types";
-import { seatingPresentation, sessionExplanation, wimbledonDaySessionExplanation } from "../_lib/presentationMappings";
+import { seatingPresentation, sessionExplanation, wimbledonDaySessionExplanation, ticketIntelligenceHeadlineEventName } from "../_lib/presentationMappings";
 import DodoCheckout from "@/app/event-pack/[slug]/_components/DodoCheckout";
 import LocalCurrencyHint from "@/app/event-pack/[slug]/_components/LocalCurrencyHint";
 import TennisTicketIntelligenceSidebar from "./TennisTicketIntelligenceSidebar";
@@ -132,7 +132,7 @@ export default function TeaserResult({
         )}
       </div>
       <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
-        Based on your answers, your best fit at {eventName} is...
+        Based on your answers, your best fit at {ticketIntelligenceHeadlineEventName(eventSlug, eventName)} is...
       </h1>
       <button
         type="button"
