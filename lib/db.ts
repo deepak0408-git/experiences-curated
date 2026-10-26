@@ -11,7 +11,10 @@ declare global {
 
 const client =
   global._pgClient ??
-  postgres(process.env.DATABASE_URL!, { prepare: false, ssl: "require" });
+  // max: 3 caps connections per serverless instance — without it each instance
+  // defaults to 10, and enough concurrent instances exhaust Supabase's pooler
+  // (fixed at 200 client connections on the Micro compute tier).
+  postgres(process.env.DATABASE_URL!, { prepare: false, ssl: "require", max: 3 });
 
 if (process.env.NODE_ENV !== "production") {
   global._pgClient = client;
