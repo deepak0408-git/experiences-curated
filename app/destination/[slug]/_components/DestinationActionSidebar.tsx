@@ -14,6 +14,7 @@ export default function DestinationActionSidebar({
   eventSlug,
   eventFormat,
   showTicketIntelligenceLink,
+  showTennisTicketIntelligenceLink,
 }: {
   eventSlug: string;
   eventFormat: string | null;
@@ -21,6 +22,13 @@ export default function DestinationActionSidebar({
   // ExperienceActionSidebar's showTicketIntelligenceLink, computed by the
   // page from event.sport + hasTicketIntelligence(event.id).
   showTicketIntelligenceLink: boolean;
+  // Tennis equivalent, added 28 Oct 2026 — gated by hasTennisTicketIntelligence
+  // (event.sport === "tennis" + the fail-closed activatedAt/catalogueRatified/
+  // editionYear check), mirroring showTicketIntelligenceLink above. Points at
+  // /ticket-intelligence/tennis/<slug> rather than F1's /ticket-intelligence/<slug>
+  // — the two sports use different URL shapes, so this is a separate flag/link
+  // rather than one generic "ticket intelligence" boolean.
+  showTennisTicketIntelligenceLink: boolean;
 }) {
   const canPlanCosts = eventFormat === "hub_and_spoke";
   return (
@@ -59,6 +67,19 @@ export default function DestinationActionSidebar({
           <span className="flex-1">
             <span className="block text-sm font-bold text-[#A3A3A3]">Find your perfect seat</span>
             <span className="block text-xs text-[#6A6A6A] mt-0.5">Answer 6 questions, get matched to a seat</span>
+          </span>
+        </Link>
+      )}
+
+      {showTennisTicketIntelligenceLink && (
+        <Link
+          href={`/ticket-intelligence/tennis/${eventSlug}`}
+          className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+        >
+          <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
+          <span className="flex-1">
+            <span className="block text-sm font-bold text-[#A3A3A3]">Find your ticket</span>
+            <span className="block text-xs text-[#6A6A6A] mt-0.5">Match the arena and ticket option</span>
           </span>
         </Link>
       )}

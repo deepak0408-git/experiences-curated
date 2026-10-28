@@ -80,6 +80,10 @@ export async function getDestinationSportingEvents(destinationId: string) {
       editorialOverview: sportingEvents.editorialOverview,
       heroImageUrl: sportingEvents.heroImageUrl,
       packFormat: sportingEvents.packFormat,
+      // Tennis Ticket Intelligence gate (hasTennisTicketIntelligence) needs
+      // editionYear alongside id — added 28 Oct 2026 for the destination
+      // page's "Find your ticket" link.
+      editionYear: sportingEvents.editionYear,
     })
     .from(sportingEvents)
     .where(and(eq(sportingEvents.destinationId, destinationId), gte(sportingEvents.endDate, today)))
@@ -119,6 +123,8 @@ export async function getNearbyDestinationEvents(destination: {
       editorialOverview: sportingEvents.editorialOverview,
       heroImageUrl: sportingEvents.heroImageUrl,
       packFormat: sportingEvents.packFormat,
+      // See getDestinationSportingEvents's matching comment above.
+      editionYear: sportingEvents.editionYear,
       nearDestinationName: destinations.name,
       distanceKm: sql<number>`
         6371 * acos(

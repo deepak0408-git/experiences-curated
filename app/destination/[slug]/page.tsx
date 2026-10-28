@@ -14,6 +14,7 @@ import {
 import { getArticlesForDestination } from "@/lib/queries/blog";
 import { getAuthUser } from "@/lib/supabase/server";
 import { hasTicketIntelligence } from "../../ticket-intelligence/[slug]/_lib/getSeatingData";
+import { hasTennisTicketIntelligence } from "../../ticket-intelligence/tennis/[slug]/_lib/getTennisOptionsData";
 import { isGetYourGuideLink, isBookingComLink } from "../../event-pack/[slug]/_hub-and-spoke/_lib/getSpokeData";
 import EventNotifyRow from "./_components/EventNotifyRow";
 import DestinationActionSidebar from "./_components/DestinationActionSidebar";
@@ -226,6 +227,20 @@ export default async function DestinationPage({
     )
   );
 
+  // "Find your ticket" gate — tennis equivalent of the F1 flag above, added
+  // 28 Oct 2026 (founder direction: wire the destination page's tennis
+  // "Find your ticket" link the same way the F1 one already works). Same
+  // fail-closed hasTennisTicketIntelligence gate Trip Intelligence uses
+  // (requires activatedAt/catalogueRatified/matching editionYear) — never a
+  // hardcoded per-event slug check. eventSlug itself doubles as the ticket-
+  // intelligence slug (e.g. "us-open", "wimbledon"), same as
+  // GrandSlamDisplayInfo.slug in getGrandSlamData.ts.
+  const tennisTicketIntelFlags = await Promise.all(
+    mergedEvents.map(async (ev) =>
+      ev.sport === "tennis" ? await hasTennisTicketIntelligence(ev.id, ev.editionYear) : false
+    )
+  );
+
   // GetYourGuide links across all Attractions experiences, Booking.com links
   // across all Where to Stay experiences — founder-confirmed 1 Oct 2026
   // (items #4/#5). Flattened across experiences in that section rather than
@@ -342,6 +357,7 @@ export default async function DestinationPage({
                       eventSlug={ev.slug}
                       eventFormat={ev.packFormat}
                       showTicketIntelligenceLink={ticketIntelFlags[i]}
+                      showTennisTicketIntelligenceLink={tennisTicketIntelFlags[i]}
                     />
                   </div>
                 </div>
