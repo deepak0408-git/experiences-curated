@@ -167,7 +167,7 @@ const Q4_COMPATIBILITY: Record<QuizAnswers["q4"], { day: number; night: number; 
 // value from reaching here at runtime. There is no default/fallback
 // branch: every call MUST name a tournament this function explicitly
 // knows how to score, or it throws immediately rather than guessing.
-const KNOWN_TENNIS_EVENT_SLUGS: readonly TennisEventSlug[] = ["australian-open", "french-open", "wimbledon"];
+const KNOWN_TENNIS_EVENT_SLUGS: readonly TennisEventSlug[] = ["australian-open", "french-open", "wimbledon", "us-open"];
 
 // Validates a raw route-param/string slug into the closed TennisEventSlug
 // union, for callers whose slug necessarily arrives as a runtime string
@@ -197,6 +197,23 @@ function c4Compatibility(option: TicketOption, q4: QuizAnswers["q4"], eventSlug:
       if (option.sessionCode === null) {
         throw new Error(
           `c4Compatibility: option ${option.optionNumber} for eventSlug "${eventSlug}" has sessionCode === null but is not Ground Pass — AO/French Open's day/night model requires a real session value on every non-GP row. Stop and report, never guess a bucket.`
+        );
+      }
+      const bucket = option.sessionCode === "Day" ? "day" : "night";
+      return Q4_COMPATIBILITY[q4][bucket];
+    }
+    case "us-open": {
+      // Frozen Phase 3 contract: "same session as Day/Night preference
+      // 1.00, opposite 0.10; Either 1.00. Grounds Admission is daytime."
+      // Unlike AO/French Open, US Open's Grounds Admission rows are
+      // seeded with a real sessionCode="Day" (verified against the
+      // approved master CSV — all 3 Grounds Admission rows carry
+      // session_code=Day), so this needs no GP-specific branch at all:
+      // every US Open row, GP included, has a real Day/Night session and
+      // uses the plain day/night bucket lookup below.
+      if (option.sessionCode === null) {
+        throw new Error(
+          `c4Compatibility: option ${option.optionNumber} for eventSlug "us-open" has sessionCode === null — every US Open row (including Grounds Admission) must carry a real Day/Night session per the frozen master CSV. Stop and report, never guess a bucket.`
         );
       }
       const bucket = option.sessionCode === "Day" ? "day" : "night";

@@ -52,6 +52,27 @@ export const RG2027_ARENA_MAPS = [
 // RG2027_ARENA_MAPS) so neither prior tournament's map list is touched by
 // this addition. Credit per the approved package: the All England Lawn
 // Tennis Club, Wimbledon.com (rendered by ArenaMapsSection.tsx).
+// US Open 2027 — the 3 founder-approved stadium maps from the Phase 5
+// handoff package (Stadium_Map_Mapping_APPROVED.csv, all 3 rows
+// approval_status=FOUNDER_APPROVED), uploaded 28 Oct 2026. Kept as a fully
+// separate constant, same reasoning as French Open/Wimbledon above. No
+// attribution field — unlike Wimbledon's All England Lawn Tennis Club
+// credit, the approved mapping carries no credit/attribution column.
+export const USO2027_ARENA_MAPS = [
+  {
+    arena: "Arthur Ashe Stadium",
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/tennis-ticket-intelligence/us-open/2027/arena-maps/USO27_AA_Arthur_Ashe_seating_map.png",
+  },
+  {
+    arena: "Louis Armstrong Stadium",
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/tennis-ticket-intelligence/us-open/2027/arena-maps/USO27_LA_Louis_Armstrong_seating_map.png",
+  },
+  {
+    arena: "Grandstand",
+    url: "https://pub-1f82767ac9104d8fb6843eda4d7971e3.r2.dev/tennis-ticket-intelligence/us-open/2027/arena-maps/USO27_GS_Grandstand_seating_map.png",
+  },
+] as const;
+
 export const WIM2027_ARENA_MAPS = [
   {
     arena: "Centre Court",

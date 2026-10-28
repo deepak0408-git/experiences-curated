@@ -1,4 +1,4 @@
-import { AO2027_ARENA_MAPS, RG2027_ARENA_MAPS, WIM2027_ARENA_MAPS } from "../_lib/arenaMaps";
+import { AO2027_ARENA_MAPS, RG2027_ARENA_MAPS, WIM2027_ARENA_MAPS, USO2027_ARENA_MAPS } from "../_lib/arenaMaps";
 import ZoomableArenaMap from "./ZoomableArenaMap";
 
 // Static reference content — spec 20 Oct 2026. Renders immediately after
@@ -43,6 +43,12 @@ const MAPS_BY_SLUG: Record<
     introCopy: "Explore the seating layouts of Wimbledon's four ticketed courts.",
     maps: WIM2027_ARENA_MAPS,
     attribution: "Credit: The All England Lawn Tennis Club, Wimbledon.com",
+  },
+  "us-open": {
+    label: "Stadium Maps",
+    introCopy: "Explore the seating layouts of the US Open's three ticketed stadiums.",
+    maps: USO2027_ARENA_MAPS,
+    attribution: "Credit: usopen.org",
   },
 };
 

@@ -85,11 +85,7 @@ export default function ActionSideBar({
       {ticketIntelligenceSlug && (
         <Link
           href={`/ticket-intelligence/tennis/${ticketIntelligenceSlug}`}
-          className={
-            showEventGuide
-              ? "flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
-              : "flex items-center gap-2.5 py-3 hover:opacity-80 transition-opacity"
-          }
+          className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
           <span className="flex-1">
@@ -98,6 +94,28 @@ export default function ActionSideBar({
           </span>
         </Link>
       )}
+
+      {/* Second-to-last item, directly above the Event Guide CTA —
+          founder direction, 28 Oct 2026: every Trip/Ticket Intelligence
+          sidebar (F1 and tennis, both surfaces) links to its sport's own
+          Travel Planning Cockpit (/formula-1 or /tennis). Same
+          showEventGuide-conditional border/margin pattern as the
+          "Find your ticket" link above it — no trailing border/margin when
+          this is the last item (co-leader case, showEventGuide=false). */}
+      <Link
+        href="/tennis"
+        className={
+          showEventGuide
+            ? "flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+            : "flex items-center gap-2.5 py-3 hover:opacity-80 transition-opacity"
+        }
+      >
+        <span className="text-base flex-shrink-0 w-5 text-center">🗺️</span>
+        <span className="flex-1">
+          <span className="block text-sm font-bold text-[#A3A3A3]">Visit Travel Planning Cockpit</span>
+          <span className="block text-xs text-[#6A6A6A] mt-0.5">Discover, compare and plan tennis trips</span>
+        </span>
+      </Link>
 
       {showEventGuide && (
         <EventGuideCta eventSlug={eventSlug} eventId={eventId} sport="tennis" isBuilt={isBuilt} userEmail={userEmail} />

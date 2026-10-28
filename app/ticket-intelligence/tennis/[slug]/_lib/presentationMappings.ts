@@ -242,6 +242,33 @@ const SEATING_MAP: Record<string, { value: string; explanation: string }> = {
     value: "Reserved seat",
     explanation: "A reserved seat at No. 3 Court.",
   },
+  // US Open entries added 28 Oct 2026 — the 6 real arenaCode_seatingCode
+  // combinations in the seeded 31-option catalogue (GP_GA is handled by
+  // seatingPresentation()'s early-return for arenaCode==="GP", not here).
+  AA_PROM: {
+    value: "Promenade",
+    explanation: "A reserved upper-tier seat at Arthur Ashe Stadium.",
+  },
+  AA_LOGE: {
+    value: "Loge",
+    explanation: "A reserved seat in Arthur Ashe Stadium's Loge level, with an elevated view.",
+  },
+  AA_COURT: {
+    value: "Courtside",
+    explanation: "A reserved seat close to the court at Arthur Ashe Stadium.",
+  },
+  LA_LOGE: {
+    value: "Loge",
+    explanation: "A reserved seat in Louis Armstrong Stadium's Loge level, with an elevated view.",
+  },
+  LA_COURT: {
+    value: "Courtside",
+    explanation: "A reserved seat close to the court at Louis Armstrong Stadium.",
+  },
+  GS_COURT: {
+    value: "Courtside Reserved",
+    explanation: "A reserved seat close to the court at Grandstand.",
+  },
 };
 
 export function seatingPresentation(option: TicketOption): { value: string; explanation: string } {
@@ -333,6 +360,25 @@ export function experiencePresentation(arenaCode: TicketOption["arenaCode"]): { 
       return {
         value: "Court tennis",
         explanation: "No. 3 Court, a reserved-seating court at Wimbledon.",
+      };
+    // US Open entries added 28 Oct 2026 — purely factual (stadium name +
+    // its documented role only, no subjective claims), same register as
+    // the AO/French Open/Wimbledon entries above. US Open's Grounds
+    // Admission reuses the existing "GP" case above, not a new value.
+    case "AA":
+      return {
+        value: "Flagship stadium tennis",
+        explanation: "Arthur Ashe Stadium, the US Open's main stadium, including night sessions and the championship final.",
+      };
+    case "LA":
+      return {
+        value: "Show-court tennis",
+        explanation: "Louis Armstrong Stadium, a major show court at the US Open.",
+      };
+    case "GS":
+      return {
+        value: "Court tennis",
+        explanation: "Grandstand, a more intimate reserved-seating stadium at the US Open.",
       };
   }
 }

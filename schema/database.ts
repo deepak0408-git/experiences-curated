@@ -1236,7 +1236,11 @@ export const circuitSeatingProfile = pgTable("circuit_seating_profile", {
 // unrelated to the C1/C5 compatibility-group column prefixes below — same
 // kind of label reuse as French Open's seating-code category names,
 // different namespace, not an actual conflict.
-export const tennisArenaCodeEnum = pgEnum("tennis_arena_code", ["RLA", "MCA", "JCA", "GP", "PC", "SL", "SM", "C14", "CC", "C1", "C2", "C3"]);
+// AA/LA/GS (Arthur Ashe Stadium, Louis Armstrong Stadium, Grandstand) added
+// for US Open 2027 onboarding, 28 Oct 2026 — additive only, all prior
+// values untouched (see scripts/_migrate-0019-tennis-us-open-arena-codes.mjs).
+// US Open's Grounds Admission reuses the existing GP code.
+export const tennisArenaCodeEnum = pgEnum("tennis_arena_code", ["RLA", "MCA", "JCA", "GP", "PC", "SL", "SM", "C14", "CC", "C1", "C2", "C3", "AA", "LA", "GS"]);
 // French Open's "Internal stage" column (Early/Middle/Late/Transition/Late
 // access) collapses to these same three values for scoring purposes —
 // Transition scores identically to Middle and "Late access" identically to

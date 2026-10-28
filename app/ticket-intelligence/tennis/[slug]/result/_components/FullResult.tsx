@@ -3,6 +3,7 @@ import { selectHeroExplanation, selectAlternativeExplanation } from "../../_lib/
 import { heroRationale, alternativeRationale } from "../../_lib/recommendationRationale";
 import { selectFrenchOpenExplanations } from "../../_lib/frenchOpenExplanation";
 import { selectWimbledonExplanations } from "../../_lib/wimbledonExplanation";
+import { selectUsOpenExplanations } from "../../_lib/usOpenExplanation";
 import { ticketIntelligenceHeadlineEventName } from "../../_lib/presentationMappings";
 import ResultCard from "../../_components/ResultCard";
 import ArenaMapsSection from "../../_components/ArenaMapsSection";
@@ -24,6 +25,14 @@ import RetakeLink from "./RetakeLink";
 // engine), which throws on any arena code outside RLA/MCA/JCA/GP.
 const FRENCH_OPEN_EXPLANATION_SLUGS = new Set(["french-open"]);
 const WIMBLEDON_EXPLANATION_SLUGS = new Set(["wimbledon"]);
+// US Open 2027 added 28 Oct 2026 — own equivalent hybrid selector
+// (usOpenExplanation.ts): a 16-profile/48-passage exact-reference
+// catalogue, same lookup-first pattern as French Open/Wimbledon, plus a
+// ported generative fallback for every other profile (unlike French
+// Open/Wimbledon, which have no generative fallback at all and throw
+// outside their catalogue). Own slug entry, never reusing another
+// tournament's catalogue, same reasoning as the two comments above.
+const US_OPEN_EXPLANATION_SLUGS = new Set(["us-open"]);
 
 // Tennis equivalent of app/ticket-intelligence/[slug]/result/_components/FullResult.tsx
 // — the real, unblurred result, shown only after access is verified. Built
@@ -45,6 +54,7 @@ export default function FullResult({
 }) {
   const isFrenchOpen = FRENCH_OPEN_EXPLANATION_SLUGS.has(eventSlug);
   const isWimbledon = WIMBLEDON_EXPLANATION_SLUGS.has(eventSlug);
+  const isUsOpen = US_OPEN_EXPLANATION_SLUGS.has(eventSlug);
 
   // selectHeroExplanation/selectAlternativeExplanation (the catalogue-based
   // S01-S14 selector) are still computed here for Australian Open — kept
@@ -68,6 +78,11 @@ export default function FullResult({
     heroExplanation = wim.hero;
     alt1Explanation = wim.alternative1;
     alt2Explanation = wim.alternative2;
+  } else if (isUsOpen) {
+    const uso = selectUsOpenExplanations(answers, result.hero, result.alternative1, result.alternative2);
+    heroExplanation = uso.hero;
+    alt1Explanation = uso.alternative1;
+    alt2Explanation = uso.alternative2;
   } else {
     selectHeroExplanation(result.hero);
     if (result.alternative1) selectAlternativeExplanation(result.alternative1, result.hero);
@@ -210,5 +225,16 @@ const TICKET_LINKS_BY_SLUG: Record<string, { copy: string; links: { href: string
       { href: "https://www.experiences-curated.com/event-pack/wimbledon/tickets", label: "Our Wimbledon ticket guidance" },
       { href: "https://www.wimbledon.com/en_GB/tickets", label: "Official Wimbledon ticket information" },
     ],
+  },
+  // US Open 2027 added 28 Oct 2026, founder-supplied official URL during
+  // visual UAT — same single-official-channel copy register as AO/French
+  // Open (the USTA is the sole official ticketing source, same "anything
+  // offered elsewhere carries no guarantee" caution), not the Wimbledon
+  // dual-link pattern (no separate Experiences | Curated US Open ticket
+  // guide page exists yet).
+  "us-open": {
+    copy:
+      "Buy directly from the official US Open ticketing platform, run by the USTA. Every genuine ticket is sold or resold through this one channel — anything offered elsewhere, including on resale marketplaces and social media, carries no guarantee it will actually get you through the gate.",
+    links: [{ href: "https://www.usopen.org/en_US/tickets/index.html", label: "Official US Open tickets" }],
   },
 };

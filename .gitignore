@@ -75,6 +75,7 @@ Capture.PNG
 *.zip
 deliverables/
 scripts/_rg27-source/
+scripts/_uso27-source/
 scripts/*-audit.csv
 scripts/*-changes.csv
 scripts/*-conflicts.csv

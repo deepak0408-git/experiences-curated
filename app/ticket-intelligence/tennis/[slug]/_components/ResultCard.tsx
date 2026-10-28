@@ -86,23 +86,35 @@ export default function ResultCard({
 }) {
   const { option } = scored;
   const imageUrl = option.heroImage;
-  // stageExplanation(stageCode) alone collapses French Open's Semifinals
-  // and Finals into one generic "Final rounds" label, since both share
-  // stageCode "Late" by design (they score identically in the approved
-  // C2 model — see scoreTennisOptions.ts). roundsLabel already carries
-  // the real distinction ("Semifinal rounds" / "Championship finals"),
-  // so it's read here, at the French Open call site only, rather than
-  // inside stageExplanation() itself — Australian Open's Late-stage
-  // options use roundsLabel values ("Final rounds") that don't match
-  // either override string below, so they fall through to
-  // stageExplanation()'s own unchanged "Final rounds" output, byte-
-  // identical to before this change.
+  // stageExplanation(stageCode) alone collapses French Open's and US
+  // Open's Semifinals and Finals into one generic "Final rounds" label,
+  // since both share stageCode "Late" by design (they score identically
+  // in the approved C2 model — see scoreTennisOptions.ts). roundsLabel
+  // already carries the real distinction, so it's read here, at the
+  // French Open/US Open call sites only, rather than inside
+  // stageExplanation() itself — Australian Open's Late-stage options use
+  // roundsLabel values ("Final rounds") that don't match any override
+  // string below, so they fall through to stageExplanation()'s own
+  // unchanged "Final rounds" output, byte-identical to before this change.
+  //
+  // US Open override added 28 Oct 2026, founder-flagged during visual
+  // UAT: option #15 (roundsLabel "Semifinals") and option #21 (roundsLabel
+  // "Championship finals") both rendered the identical generic "Final
+  // rounds / Semifinals and finals..." copy, which read as factually
+  // wrong for a semifinals-only ticket once a user saw both cards side by
+  // side. "Semifinals and finals" (US Open's catch-all roundsLabel, 1 of
+  // 31 options, not currently hit by any of the 16 frozen reference
+  // profiles) intentionally falls through to stageExplanation()'s
+  // existing combined copy — correct for that one row, since it genuinely
+  // spans both rounds.
   const stage =
     option.stageCode === "Late" && option.roundsLabel === "Semifinal rounds"
       ? { value: "Semifinal rounds", explanation: "The semifinal matches, as the tournament nears its concluding stages." }
       : option.stageCode === "Late" && option.roundsLabel === "Championship finals"
         ? { value: "Championship finals", explanation: "The men's and women's singles finals, the tournament's final matches." }
-        : stageExplanation(option.stageCode);
+        : option.stageCode === "Late" && option.roundsLabel === "Semifinals"
+          ? { value: "Semifinal rounds", explanation: "Semifinals, when the tournament reaches its highest-stakes matches." }
+          : stageExplanation(option.stageCode);
   // P1 fix, 25 Oct 2026: arenaCode === "GP" is the only reliable "is this
   // Ground Pass" signal — sessionCode === null alone isn't, since Wimbledon's
   // 22 reserved-court options also carry sessionCode=null (no separate
