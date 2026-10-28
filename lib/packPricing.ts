@@ -1,6 +1,8 @@
 import { eq } from "drizzle-orm";
-import { db } from "@/lib/db";
+import { db as sharedDb } from "@/lib/db";
 import { sportingEvents } from "@/schema/database";
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import type * as schema from "@/schema/database";
 
 // Single source of truth for every event pack's real Dodo/Paddle price IDs
 // and early-bird cutoff, keyed by event slug. Previously duplicated across
@@ -313,7 +315,15 @@ export function getMiniPackPricing(slug: string): Record<MiniPackSpokeId, MiniPa
 // /curator/price save). Never silently used for an existing, priced event.
 const FALLBACK_DISPLAY = { earlyBird: "US$10", standard: "US$15" };
 
-export async function getPackPricing(slug: string) {
+// dbOverride lets a caller pass its own (e.g. liveness-checked) connection
+// instead of the shared singleton — used by the homepage, see
+// lib/homepageDb.ts for why. Omitting it keeps the original, unchanged
+// behavior for every other caller.
+export async function getPackPricing(
+  slug: string,
+  dbOverride?: PostgresJsDatabase<typeof schema>
+) {
+  const db = dbOverride ?? sharedDb;
   const config = PACK_PRICING_CONFIG[slug];
   if (!config) return null;
 

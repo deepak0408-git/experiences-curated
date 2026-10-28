@@ -18,6 +18,9 @@ import CockpitHomepageFeature from "./_components/CockpitHomepageFeature";
 import TennisCockpitHomepageFeature from "./_components/TennisCockpitHomepageFeature";
 import { getAuthUser } from "@/lib/supabase/server";
 import { getPackPricing } from "@/lib/packPricing";
+import { getHomepageDb } from "@/lib/homepageDb";
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import type * as schema from "@/schema/database";
 import { hasTennisTicketIntelligence } from "./ticket-intelligence/tennis/[slug]/_lib/getTennisOptionsData";
 import { getDestinationsForHomepage } from "@/lib/queries/destinations";
 
@@ -60,7 +63,10 @@ function isFreeEventSlug(slug: string): boolean {
 // HOMEPAGE_PRICE_BY_EVENT (a 3rd duplicate of the same display data) removed
 // 28 Aug 2026 as part of the curator-driven pack pricing design (see memory
 // project_curator_driven_pack_pricing_design.md).
-async function eventPriceDisplay(slug: string): Promise<string> {
+async function eventPriceDisplay(
+  slug: string,
+  homepageDb: PostgresJsDatabase<typeof schema>
+): Promise<string> {
   if (isFreeEventSlug(slug)) return "Free";
   // Fallback changed from "us-open-2026" to "bmw-pga-championship-2026"
   // 5 Oct 2026 — "us-open-2026" retired as a fallback target as part of
@@ -68,13 +74,17 @@ async function eventPriceDisplay(slug: string): Promise<string> {
   // app/event-pack/[slug]/page.tsx for the same change). A generic
   // fallback for a still-classic event must point at another real,
   // still-classic event, never a hub-and-spoke one's pricing shape.
-  const pricing = (await getPackPricing(slug)) ?? (await getPackPricing("bmw-pga-championship-2026"))!;
+  const pricing =
+    (await getPackPricing(slug, homepageDb)) ?? (await getPackPricing("bmw-pga-championship-2026", homepageDb))!;
   return pricing.priceDisplay;
 }
 
-async function earlyBirdNudge(slug: string): Promise<{ show: boolean; cutoffLabel: string; standardPrice: string }> {
+async function earlyBirdNudge(
+  slug: string,
+  homepageDb: PostgresJsDatabase<typeof schema>
+): Promise<{ show: boolean; cutoffLabel: string; standardPrice: string }> {
   if (isFreeEventSlug(slug)) return { show: false, cutoffLabel: "", standardPrice: "" };
-  const pricing = await getPackPricing(slug);
+  const pricing = await getPackPricing(slug, homepageDb);
   if (!pricing || !pricing.isEarlyBird) return { show: false, cutoffLabel: "", standardPrice: "" };
   const d = new Date(pricing.earlyBirdCutoff);
   const cutoffLabel = d.toLocaleDateString("en-GB", { day: "numeric", month: "long" });
@@ -92,6 +102,14 @@ function eventState(startDate: string, endDate: string) {
 export default async function HomePage() {
   const today = new Date().toISOString().split("T")[0];
   const in365Days = new Date(Date.now() + 365 * 86_400_000).toISOString().split("T")[0];
+
+  // Liveness-checked connection for the pricing lookups below — see
+  // lib/homepageDb.ts for why these needed their own connection (recurring
+  // "canceling statement due to statement timeout" errors, Sentry issue
+  // 156921361, traced to stale connections surviving a Vercel function
+  // freeze). The rest of this page's queries below are unaffected and keep
+  // using the shared db import as before.
+  const homepageDb = await getHomepageDb();
 
   const { user } = await getAuthUser();
 
@@ -193,7 +211,7 @@ export default async function HomePage() {
       sport: ev.sport,
       startDate: ev.startDate,
       endDate: ev.endDate,
-      isFree: (await eventPriceDisplay(ev.slug)) === "Free",
+      isFree: (await eventPriceDisplay(ev.slug, homepageDb)) === "Free",
     }))
   );
 
