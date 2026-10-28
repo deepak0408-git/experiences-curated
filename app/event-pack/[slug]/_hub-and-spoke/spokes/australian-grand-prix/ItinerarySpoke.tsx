@@ -1,4 +1,5 @@
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 
 const SPOKE_ID = "itinerary";
@@ -12,12 +13,22 @@ const SPOKE_ID = "itinerary";
 // deliberately does not state specific times, using only the confirmed
 // day-by-day session skeleton and real activity content sourced from
 // DayTripsSpoke/WhereToEatSpoke/ArrivalSpoke's own experiences.
+//
+// Whole-spoke gating applied per the add-mini-guides-to-existing-event-pack
+// skill §3, 28 Oct 2026 — free teaser trimmed to bare day names only (no
+// Great Ocean Road / Yarra Valley / Lakeside Festival specifics), full
+// DayCard detail + hour-by-hour both moved behind isUnlocked (full pack or
+// the Itinerary Guide mini-pack), matching the qatar-grand-prix pattern.
 export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string }) {
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.itinerary;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "itinerary_guide" as const, owned: purchasedProductTypes.has("itinerary_guide") }
+    : undefined;
 
   return (
     <SpokeShell
@@ -27,14 +38,19 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="Australian Grand Prix"
       status="teaser"
       h1="2027's first-ever Sprint weekend at Albert Park — a genuinely different rhythm"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The weekend shape above is free. The pack adds the full day-by-day itinerary from Thursday's arrival to Sunday's race — how we'd actually sequence the Great Ocean Road and Yarra Valley around a Sprint weekend's compressed schedule, and the one combination that genuinely doesn't fit."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the full day-by-day itinerary from Thursday's arrival to Sunday's race — how we'd actually sequence the Great Ocean Road and Yarra Valley around a Sprint weekend's compressed schedule, and the one combination that genuinely doesn't fit."
     >
+      {/* Free teaser — bare day shape only, no specific activities/hour-by-hour.
+          Everything else gated behind isUnlocked (full pack or the Itinerary
+          mini-pack) — whole-spoke gating per the mini-packs pilot. */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
         2027 is the first time Formula 1&apos;s Sprint format has ever been used at Albert Park — a genuinely
         different weekend from recent years. Friday brings Practice 1 and Sprint Qualifying; Saturday brings the
@@ -44,18 +60,28 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       </p>
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Anyone who last attended before 2027 should recalibrate their weekend plan around this change rather than
-        assuming the old schedule still applies. Thursday, the day before any on-track action starts, is worth
-        building in deliberately — it&apos;s the one genuinely free day, and the natural slot for a longer
-        out-of-city day trip that a compressed Sprint weekend won&apos;t easily fit elsewhere.
+        assuming the old schedule still applies.
       </p>
 
-      <div className="flex flex-col gap-3 mb-8">
-        <DayCard day="Thursday — Arrival & a real day off" summary="Settle in, then the Great Ocean Road or Yarra Valley — the one day this weekend with zero session-time pressure" />
-        <DayCard day="Friday — Practice 1 & Sprint Qualifying" summary="Both sessions run, then an evening in South Melbourne or a first look at Federation Square and the CBD laneways" />
-        <DayCard day="Saturday — Sprint Race & Qualifying" summary="Two competitive sessions in one day sets Sunday's grid, then the Lakeside Festival once track action wraps" />
-        <DayCard day="Sunday — the Grand Prix" summary="Race day. Arrive with your gate and queue-timing plan from the Arrival guide already decided" />
-        <DayCard day="Optional Monday — before you fly out" summary="If your flight home isn't until later, consider a Melbourne day trip — the city's laneways, Federation Square, and St Kilda are all easy half-day stops with zero session-time pressure, or an MCG tour and a look around Melbourne Park if you'd rather do something structured" />
-      </div>
+      {!isUnlocked && (
+        <div className="flex flex-col gap-3 mb-8">
+          <DayCard day="Thursday" summary="Arrival" />
+          <DayCard day="Friday" summary="Practice 1 & Sprint Qualifying" />
+          <DayCard day="Saturday" summary="Sprint Race & Qualifying" />
+          <DayCard day="Sunday" summary="The Grand Prix" />
+          <DayCard day="Optional Monday" summary="A bookend day before flying out" />
+        </div>
+      )}
+
+      {isUnlocked && (
+        <div className="flex flex-col gap-3 mb-8">
+          <DayCard day="Thursday — Arrival & a real day off" summary="Settle in, then the Great Ocean Road or Yarra Valley — the one day this weekend with zero session-time pressure" />
+          <DayCard day="Friday — Practice 1 & Sprint Qualifying" summary="Both sessions run, then an evening in South Melbourne or a first look at Federation Square and the CBD laneways" />
+          <DayCard day="Saturday — Sprint Race & Qualifying" summary="Two competitive sessions in one day sets Sunday's grid, then the Lakeside Festival once track action wraps" />
+          <DayCard day="Sunday — the Grand Prix" summary="Race day. Arrive with your gate and queue-timing plan from the Arrival guide already decided" />
+          <DayCard day="Optional Monday — before you fly out" summary="If your flight home isn't until later, consider a Melbourne day trip — the city's laneways, Federation Square, and St Kilda are all easy half-day stops with zero session-time pressure, or an MCG tour and a look around Melbourne Park if you'd rather do something structured" />
+        </div>
+      )}
 
       {isUnlocked && (
         <div className="mt-2 pt-10 border-t border-[#2A2A2A]">

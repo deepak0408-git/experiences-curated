@@ -300,6 +300,7 @@ export const MINI_PACK_PRICING: Record<string, Record<MiniPackSpokeId, MiniPackP
   "las-vegas-grand-prix": defaultMiniPackEntries(),
   "qatar-grand-prix": defaultMiniPackEntries(),
   "abu-dhabi-grand-prix": defaultMiniPackEntries(),
+  "australian-grand-prix": defaultMiniPackEntries(),
 };
 
 export function getMiniPackPricing(slug: string): Record<MiniPackSpokeId, MiniPackPricingEntry> | null {

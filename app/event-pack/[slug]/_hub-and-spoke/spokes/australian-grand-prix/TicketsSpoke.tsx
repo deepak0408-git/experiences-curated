@@ -1,4 +1,5 @@
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
@@ -45,8 +46,12 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
   const { event, linkedExperiences, tickets } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, isPro, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.tickets;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "tickets_guide" as const, owned: purchasedProductTypes.has("tickets_guide") }
+    : undefined;
 
   const tier1 = tickets.find((t) => t.tier === "tier1");
   const tier2 = tickets.find((t) => t.tier === "tier2");
@@ -68,114 +73,130 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="Australian Grand Prix"
       status="teaser"
       h1="A genuine General Admission tier, plus four grandstands with real trade-offs"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The four tiers and what each one actually shows you are free above. The pack adds the full grandstand-by-grandstand comparison — including Jones, Stewart, Lauda, Waite, and the other stands not shown here — our direct verdict on Vettel vs. Brabham for a first Albert Park weekend, and which stand to move on first before it sells out."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Ticket Guide alone, or the full Event Pack, to unlock the full grandstand-by-grandstand comparison — what each tier actually shows you, real seating and weather-cover detail, our direct verdict on Vettel vs. Brabham for a first Albert Park weekend, and where to actually buy."
     >
+      {/* Free teaser — tier names only, no pricing/comparison/buy-links/verdict.
+          Everything else gated behind isUnlocked (full pack or the Ticket
+          Guide mini-pack) — whole-spoke gating per the mini-packs pilot. */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Albert Park is one of the few circuits left on the F1 calendar that still sells a genuine walk-around General
         Admission ticket alongside its grandstands — the Park Pass. That's a real structural difference from a
         grandstand-only venue like Interlagos: the cheapest way to attend is a wristband, not a fixed seat, and it
-        comes with real trade-offs of its own (see the comparison below).
+        comes with real trade-offs of its own.
       </p>
 
-      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Where to actually buy your ticket</p>
-        <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-          Buy directly from the official Australian Grand Prix Corporation site first. Tickets go on sale in stages —
-          Circuit Club members get first access from 1 October 2026, American Express cardholders get a presale
-          window from 2 October, and general public sales open 6 October 2026. The 2026 race drew a record 483,934
-          spectators across four days, the biggest crowd of Melbourne's F1 era — a new Sprint-format 2027 weekend is
-          likely to see comparable or higher demand, so buying inside the first general-sale window is the safer call
-          for any popular grandstand.
-        </p>
-        <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-          If official tickets are sold out, or you want a package with hospitality, hotel, or shuttle bundled in, P1
-          Travel is a genuine authorized F1 ticket partner — named directly on multiple circuits&apos; own official
-          reseller lists, rated 4.7 from over 10,000 reviews on Trustpilot, and in business since 2007.
-        </p>
-        <div className="flex flex-wrap gap-4">
-          <a
-            href="https://www.grandprix.com.au/en/tickets"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center px-4 py-2 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
-          >
-            Official Australian GP tickets →
-          </a>
-          <a
-            href="https://www.p1travel.com/en-GB/motorsports/formula-1"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors"
-          >
-            P1 Travel — Formula 1 →
-          </a>
+      {!isUnlocked && (
+        <div className="flex flex-col gap-2 mb-8">
+          {Array.from(new Set(TIER_META.map((t) => t.name))).map((name) => (
+            <p key={name} className="text-sm text-[#A3A3A3]">
+              <span className="text-white font-bold">{name}</span>
+            </p>
+          ))}
         </div>
-      </div>
-
-      <p className="hidden md:block text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Side by side</p>
-      <p className="md:hidden text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Options compared</p>
-      <div className="hidden md:block overflow-x-auto mb-4">
-        <table className="w-full text-sm border-collapse table-fixed">
-          <thead>
-            <tr className="border-b border-[#2A2A2A]">
-              <th className="w-1/4 text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Tier</th>
-              <th className="w-2/5 text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">What it shows</th>
-              <th className="w-[17.5%] text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Seating</th>
-              <th className="w-[17.5%] text-left py-2 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Weather cover</th>
-            </tr>
-          </thead>
-          <tbody>
-            {TIER_META.map((t) => (
-              <tr key={t.name} className="border-b border-[#2A2A2A] last:border-0">
-                <td className="py-3 pr-4 text-white font-bold align-top">{t.name}</td>
-                <td className="py-3 pr-4 text-[#A3A3A3] align-top">{t.shows}</td>
-                <td className="py-3 pr-4 text-[#A3A3A3] align-top">{t.seating}</td>
-                <td className="py-3 text-[#A3A3A3] align-top">{t.exposure}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="md:hidden flex flex-col gap-3 mb-4">
-        {TIER_META.map((t) => (
-          <div key={t.name} className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
-            <p className="text-sm font-bold text-white mb-2">{t.name}</p>
-            <div className="flex flex-col gap-1.5">
-              <p className="text-sm text-[#A3A3A3] leading-6">
-                <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">What it shows: </span>
-                {t.shows}
-              </p>
-              <p className="text-sm text-[#A3A3A3] leading-6">
-                <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Seating: </span>
-                {t.seating}
-              </p>
-              <p className="text-sm text-[#A3A3A3] leading-6">
-                <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Weather cover: </span>
-                {t.exposure}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">On pricing</p>
-        <p className="text-sm text-[#A3A3A3] leading-6">
-          Prices above are current planner-tier figures. Confirm current availability directly before buying — the
-          Piastri Grandstand, given the home-crowd connection to Melbourne&apos;s own F1 driver, is one of the
-          stands most likely to sell out earliest.
-        </p>
-      </div>
+      )}
 
       {isUnlocked && (
-        <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
+        <>
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Where to actually buy your ticket</p>
+            <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
+              Buy directly from the official Australian Grand Prix Corporation site first. Tickets go on sale in stages —
+              Circuit Club members get first access from 1 October 2026, American Express cardholders get a presale
+              window from 2 October, and general public sales open 6 October 2026. The 2026 race drew a record 483,934
+              spectators across four days, the biggest crowd of Melbourne's F1 era — a new Sprint-format 2027 weekend is
+              likely to see comparable or higher demand, so buying inside the first general-sale window is the safer call
+              for any popular grandstand.
+            </p>
+            <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
+              If official tickets are sold out, or you want a package with hospitality, hotel, or shuttle bundled in, P1
+              Travel is a genuine authorized F1 ticket partner — named directly on multiple circuits&apos; own official
+              reseller lists, rated 4.7 from over 10,000 reviews on Trustpilot, and in business since 2007.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <a
+                href="https://www.grandprix.com.au/en/tickets"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 rounded-sm bg-[#AAFF00] text-black text-xs font-black hover:bg-[#BBFF33] transition-colors"
+              >
+                Official Australian GP tickets →
+              </a>
+              <a
+                href="https://www.p1travel.com/en-GB/motorsports/formula-1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors"
+              >
+                P1 Travel — Formula 1 →
+              </a>
+            </div>
+          </div>
+
+          <p className="hidden md:block text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Side by side</p>
+          <p className="md:hidden text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Options compared</p>
+          <div className="hidden md:block overflow-x-auto mb-4">
+            <table className="w-full text-sm border-collapse table-fixed">
+              <thead>
+                <tr className="border-b border-[#2A2A2A]">
+                  <th className="w-1/4 text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Tier</th>
+                  <th className="w-2/5 text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">What it shows</th>
+                  <th className="w-[17.5%] text-left py-2 pr-4 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Seating</th>
+                  <th className="w-[17.5%] text-left py-2 text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Weather cover</th>
+                </tr>
+              </thead>
+              <tbody>
+                {TIER_META.map((t) => (
+                  <tr key={t.name} className="border-b border-[#2A2A2A] last:border-0">
+                    <td className="py-3 pr-4 text-white font-bold align-top">{t.name}</td>
+                    <td className="py-3 pr-4 text-[#A3A3A3] align-top">{t.shows}</td>
+                    <td className="py-3 pr-4 text-[#A3A3A3] align-top">{t.seating}</td>
+                    <td className="py-3 text-[#A3A3A3] align-top">{t.exposure}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="md:hidden flex flex-col gap-3 mb-4">
+            {TIER_META.map((t) => (
+              <div key={t.name} className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-4">
+                <p className="text-sm font-bold text-white mb-2">{t.name}</p>
+                <div className="flex flex-col gap-1.5">
+                  <p className="text-sm text-[#A3A3A3] leading-6">
+                    <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">What it shows: </span>
+                    {t.shows}
+                  </p>
+                  <p className="text-sm text-[#A3A3A3] leading-6">
+                    <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Seating: </span>
+                    {t.seating}
+                  </p>
+                  <p className="text-sm text-[#A3A3A3] leading-6">
+                    <span className="text-xs font-black tracking-widest uppercase text-[#6A6A6A]">Weather cover: </span>
+                    {t.exposure}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">On pricing</p>
+            <p className="text-sm text-[#A3A3A3] leading-6">
+              Prices above are current planner-tier figures. Confirm current availability directly before buying — the
+              Piastri Grandstand, given the home-crowd connection to Melbourne&apos;s own F1 driver, is one of the
+              stands most likely to sell out earliest.
+            </p>
+          </div>
+
+          <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
           {ticketGuide && (
             <div className="mb-8">
               <SpokeExperienceCard eventSlug={eventSlug} experience={ticketGuide} isPro={isPro} />
@@ -231,7 +252,8 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
             particular has a real chance of selling out earliest given the home-crowd connection. There&apos;s no
             realistic late-buyer path at face value once a popular stand sells through.
           </p>
-        </div>
+          </div>
+        </>
       )}
     </SpokeShell>
   );

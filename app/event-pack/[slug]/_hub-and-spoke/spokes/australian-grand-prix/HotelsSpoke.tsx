@@ -1,4 +1,5 @@
-import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus } from "../../_lib/getSpokeData";
+import { getSpokeData, getSpokeImage, getSpokesForEvent, getPurchaseStatus, isSpokeUnlocked } from "../../_lib/getSpokeData";
+import { getMiniPackPricing } from "@/lib/packPricing";
 import SpokeShell from "../../_components/SpokeShell";
 import SpokeExperienceCard from "../../_components/SpokeExperienceCard";
 
@@ -19,8 +20,12 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
   const heroImageUrl = spoke.imageOverride ?? getSpokeImage(linkedExperiences, spoke.imageSlug);
-  const { hasPurchased, justPurchased, isPro } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
-  const isUnlocked = hasPurchased;
+  const { hasPurchased, justPurchased, justPurchasedProductType, isPro, purchasedProductTypes } = await getPurchaseStatus(eventSlug, event.id, event.isHidden);
+  const isUnlocked = isSpokeUnlocked(SPOKE_ID, { hasPurchased, purchasedProductTypes });
+  const miniPack = getMiniPackPricing(eventSlug)?.hotels;
+  const miniPackOption = miniPack
+    ? { ...miniPack, productType: "hotels_guide" as const, owned: purchasedProductTypes.has("hotels_guide") }
+    : undefined;
 
   const whereToStay = linkedExperiences.find((e) => e.slug.includes("where-to-stay-melbourne-boxing-day-msvp80zu"));
 
@@ -32,13 +37,15 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       eventSport={event.sport}
       spokeId={SPOKE_ID}
       justPurchased={justPurchased}
+      justPurchasedProductType={justPurchasedProductType}
       eventName="Australian Grand Prix"
       status="teaser"
       h1="South Melbourne proximity, or CBD polish with a tram ride either way"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The area-by-area breakdown above is free. Unlock the pack for the exact hotel we'd book — 2 minutes from Albert Park Lake — plus direct booking links for it and two vetted hostels, the street-by-street call on St Kilda Road, and the one South Melbourne pocket that's genuinely walkable to Gate 1. This isn't a generic area guide — it's the specific names and links a first-time visitor actually needs to book."
+      miniPackOption={miniPackOption}
+      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Pack, to unlock the exact hotel we'd book — 2 minutes from Albert Park Lake — plus the full neighborhood deep-dive guide, direct booking links for it and two vetted hostels, the street-by-street call on St Kilda Road, and the one South Melbourne pocket that's genuinely walkable to Gate 1. This isn't a generic area guide — it's the specific names, links, and booking-timing detail a first-time visitor actually needs."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Albert Park sits about 5km south of Melbourne&apos;s CBD, in a different part of the city from the
@@ -75,12 +82,6 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
         </div>
       </div>
 
-      {whereToStay && (
-        <div className="mb-8">
-          <SpokeExperienceCard eventSlug={eventSlug} experience={whereToStay} isPro={isPro} hideProCtas />
-        </div>
-      )}
-
       <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8">
         <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Book early</p>
         <p className="text-sm text-[#A3A3A3] leading-6">
@@ -93,6 +94,12 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
 
       {isUnlocked && (
         <div className="mt-10 pt-10 border-t border-[#2A2A2A]">
+          {whereToStay && (
+            <div className="mb-8">
+              <SpokeExperienceCard eventSlug={eventSlug} experience={whereToStay} isPro={isPro} hideProCtas />
+            </div>
+          )}
+
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Which base we&apos;d pick</p>
           <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
             For a genuine first Albert Park weekend, St Kilda Road is the right default — real hotel selection, a
