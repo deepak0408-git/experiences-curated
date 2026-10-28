@@ -325,14 +325,14 @@ export default async function HomePage() {
               Why Experiences | Curated
             </p>
             <p className="text-2xl font-black text-white leading-snug">
-              An expert guide. Not a search engine. Not a booking platform.
+              An expert travel planning guide. From discovery and planning to preparation for D-day
             </p>
             <div className="mt-8 space-y-4">
               {[
                 {
                   icon: "✦",
-                  heading: "Written by fans, not algorithms",
-                  body: "Every experience is researched and written by someone who has been there — on the ground, at the event, with specific knowledge of what is actually worth your time.",
+                  heading: "Match the trip, then discover the best ticket",
+                  body: "Trip Intelligence matches you to the right event for how you want to experience it. Ticket Intelligence then matches you to the right seat once you're there — so you're never guessing on either call.",
                 },
                 {
                   icon: "✦",
