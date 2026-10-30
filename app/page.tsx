@@ -17,10 +17,6 @@ import TestimonialStrip from "./_components/TestimonialStrip";
 import CockpitHomepageFeature from "./_components/CockpitHomepageFeature";
 import TennisCockpitHomepageFeature from "./_components/TennisCockpitHomepageFeature";
 import { getAuthUser } from "@/lib/supabase/server";
-import { getPackPricing } from "@/lib/packPricing";
-import { getHomepageDb } from "@/lib/homepageDb";
-import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import type * as schema from "@/schema/database";
 import { hasTennisTicketIntelligence } from "./ticket-intelligence/tennis/[slug]/_lib/getTennisOptionsData";
 import { getDestinationsForHomepage } from "@/lib/queries/destinations";
 
@@ -38,59 +34,6 @@ function daysUntil(dateStr: string): number {
   return Math.ceil((new Date(dateStr).getTime() - Date.now()) / 86_400_000);
 }
 
-// FREE_EVENT_SLUGS format: "slug:YYYY-MM-DD,slug:YYYY-MM-DD,slug" — a slug with
-// no :date is free with no end date; a slug with :date is free through the end
-// of that day (UTC). Must match the parsing in app/event-pack/[slug]/page.tsx
-// exactly, or the pages disagree on which events are free (caught live on
-// homepage vs event-pack pages, 12 Jul 2026 — and again 13 Jul 2026, when the
-// :date suffix was found to be parsed everywhere but never actually compared
-// against today, so dated entries stayed free forever past their cutoff).
-function isFreeEventSlug(slug: string): boolean {
-  const entry = (process.env.FREE_EVENT_SLUGS ?? "")
-    .split(",")
-    .filter(Boolean)
-    .map((e) => {
-      const [entrySlug, endDate] = e.split(":");
-      return { slug: entrySlug.trim(), endDate: endDate?.trim() };
-    })
-    .find((e) => e.slug === slug);
-  if (!entry) return false;
-  if (!entry.endDate) return true;
-  return new Date() <= new Date(`${entry.endDate}T23:59:59Z`);
-}
-
-// Both functions below now read from the shared lib/packPricing.ts —
-// HOMEPAGE_PRICE_BY_EVENT (a 3rd duplicate of the same display data) removed
-// 28 Aug 2026 as part of the curator-driven pack pricing design (see memory
-// project_curator_driven_pack_pricing_design.md).
-async function eventPriceDisplay(
-  slug: string,
-  homepageDb: PostgresJsDatabase<typeof schema>
-): Promise<string> {
-  if (isFreeEventSlug(slug)) return "Free";
-  // Fallback changed from "us-open-2026" to "bmw-pga-championship-2026"
-  // 5 Oct 2026 — "us-open-2026" retired as a fallback target as part of
-  // the US Open evergreen-slug migration (see lib/packPricing.ts and
-  // app/event-pack/[slug]/page.tsx for the same change). A generic
-  // fallback for a still-classic event must point at another real,
-  // still-classic event, never a hub-and-spoke one's pricing shape.
-  const pricing =
-    (await getPackPricing(slug, homepageDb)) ?? (await getPackPricing("bmw-pga-championship-2026", homepageDb))!;
-  return pricing.priceDisplay;
-}
-
-async function earlyBirdNudge(
-  slug: string,
-  homepageDb: PostgresJsDatabase<typeof schema>
-): Promise<{ show: boolean; cutoffLabel: string; standardPrice: string }> {
-  if (isFreeEventSlug(slug)) return { show: false, cutoffLabel: "", standardPrice: "" };
-  const pricing = await getPackPricing(slug, homepageDb);
-  if (!pricing || !pricing.isEarlyBird) return { show: false, cutoffLabel: "", standardPrice: "" };
-  const d = new Date(pricing.earlyBirdCutoff);
-  const cutoffLabel = d.toLocaleDateString("en-GB", { day: "numeric", month: "long" });
-  return { show: true, cutoffLabel, standardPrice: pricing.standardDisplay };
-}
-
 function eventState(startDate: string, endDate: string) {
   const toStart = daysUntil(startDate);
   const toEnd = daysUntil(endDate);
@@ -102,14 +45,6 @@ function eventState(startDate: string, endDate: string) {
 export default async function HomePage() {
   const today = new Date().toISOString().split("T")[0];
   const in365Days = new Date(Date.now() + 365 * 86_400_000).toISOString().split("T")[0];
-
-  // Liveness-checked connection for the pricing lookups below — see
-  // lib/homepageDb.ts for why these needed their own connection (recurring
-  // "canceling statement due to statement timeout" errors, Sentry issue
-  // 156921361, traced to stale connections surviving a Vercel function
-  // freeze). The rest of this page's queries below are unaffected and keep
-  // using the shared db import as before.
-  const homepageDb = await getHomepageDb();
 
   const { user } = await getAuthUser();
 
@@ -204,26 +139,20 @@ export default async function HomePage() {
   );
   const tennisTiEventIds = new Set(tennisTiFlags.filter(([, has]) => has).map(([id]) => id));
 
-  // Sequential, not Promise.all — these all share one connection
-  // (homepageDb), and postgres.js pipelines concurrent queries on a shared
-  // connection by default. Supabase support (ticket SU-529834, 30 Oct 2026)
-  // confirmed pipelining is unsafe against Supavisor's transaction-mode
-  // pooler and is the likely cause of the recurring homepage statement
-  // timeouts (Sentry issue 156921361) — see memory
-  // project_homepage_db_statement_timeout_incident.md for the full
-  // investigation. Running these one at a time keeps only one query in
-  // flight on homepageDb at any moment.
-  const featuredEventsForHero = [];
-  for (const ev of featuredSorted) {
-    featuredEventsForHero.push({
-      slug: ev.slug,
-      name: ev.name,
-      sport: ev.sport,
-      startDate: ev.startDate,
-      endDate: ev.endDate,
-      isFree: (await eventPriceDisplay(ev.slug, homepageDb)) === "Free",
-    });
-  }
+  // isFree previously computed here via a per-event DB query
+  // (eventPriceDisplay -> getPackPricing), but BrandHero never reads it —
+  // confirmed 30 Oct 2026 while investigating recurring homepage DB
+  // timeouts (Sentry issue 156921361, memory
+  // project_homepage_db_statement_timeout_incident.md). Removed: this was
+  // a dead-code query firing on every homepage load for a value nothing
+  // displays.
+  const featuredEventsForHero = featuredSorted.map((ev) => ({
+    slug: ev.slug,
+    name: ev.name,
+    sport: ev.sport,
+    startDate: ev.startDate,
+    endDate: ev.endDate,
+  }));
 
   const calendarCardData = calendarEvents.map((ev) => ({
     id: ev.id,

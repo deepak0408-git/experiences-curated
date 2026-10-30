@@ -57,7 +57,6 @@ type FeaturedEvent = {
   sport: string;
   startDate: string;
   endDate: string;
-  isFree: boolean;
 };
 
 export default function BrandHero({
