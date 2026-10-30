@@ -204,16 +204,26 @@ export default async function HomePage() {
   );
   const tennisTiEventIds = new Set(tennisTiFlags.filter(([, has]) => has).map(([id]) => id));
 
-  const featuredEventsForHero = await Promise.all(
-    featuredSorted.map(async (ev) => ({
+  // Sequential, not Promise.all — these all share one connection
+  // (homepageDb), and postgres.js pipelines concurrent queries on a shared
+  // connection by default. Supabase support (ticket SU-529834, 30 Oct 2026)
+  // confirmed pipelining is unsafe against Supavisor's transaction-mode
+  // pooler and is the likely cause of the recurring homepage statement
+  // timeouts (Sentry issue 156921361) — see memory
+  // project_homepage_db_statement_timeout_incident.md for the full
+  // investigation. Running these one at a time keeps only one query in
+  // flight on homepageDb at any moment.
+  const featuredEventsForHero = [];
+  for (const ev of featuredSorted) {
+    featuredEventsForHero.push({
       slug: ev.slug,
       name: ev.name,
       sport: ev.sport,
       startDate: ev.startDate,
       endDate: ev.endDate,
       isFree: (await eventPriceDisplay(ev.slug, homepageDb)) === "Free",
-    }))
-  );
+    });
+  }
 
   const calendarCardData = calendarEvents.map((ev) => ({
     id: ev.id,
