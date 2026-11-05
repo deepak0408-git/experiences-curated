@@ -1,5 +1,6 @@
 import "server-only";
 import { db } from "@/lib/db";
+import { withReadDbRetry } from "@/lib/db-retry";
 import { sportingEvents } from "@/schema/database";
 import { eq, and, gte, asc } from "drizzle-orm";
 import { hasTennisTicketIntelligence } from "@/app/ticket-intelligence/tennis/[slug]/_lib/getTennisOptionsData";
@@ -32,22 +33,26 @@ export type CockpitEvent = {
 export async function getCockpitTennisEvents(): Promise<CockpitEvent[]> {
   const today = new Date().toISOString().split("T")[0];
 
-  const rows = await db
-    .select({
-      id: sportingEvents.id,
-      slug: sportingEvents.slug,
-      name: sportingEvents.name,
-      startDate: sportingEvents.startDate,
-      endDate: sportingEvents.endDate,
-      venueName: sportingEvents.venueName,
-      heroImageUrl: sportingEvents.heroImageUrl,
-      packStatus: sportingEvents.packStatus,
-      isHidden: sportingEvents.isHidden,
-      editionYear: sportingEvents.editionYear,
-    })
-    .from(sportingEvents)
-    .where(and(eq(sportingEvents.sport, "tennis"), gte(sportingEvents.endDate, today)))
-    .orderBy(asc(sportingEvents.startDate));
+  const rows = await withReadDbRetry(
+    () =>
+      db
+        .select({
+          id: sportingEvents.id,
+          slug: sportingEvents.slug,
+          name: sportingEvents.name,
+          startDate: sportingEvents.startDate,
+          endDate: sportingEvents.endDate,
+          venueName: sportingEvents.venueName,
+          heroImageUrl: sportingEvents.heroImageUrl,
+          packStatus: sportingEvents.packStatus,
+          isHidden: sportingEvents.isHidden,
+          editionYear: sportingEvents.editionYear,
+        })
+        .from(sportingEvents)
+        .where(and(eq(sportingEvents.sport, "tennis"), gte(sportingEvents.endDate, today)))
+        .orderBy(asc(sportingEvents.startDate)),
+    { operation: "getCockpitTennisEvents.rows" },
+  );
 
   const withTi = await Promise.all(
     rows.map(async (r) => ({

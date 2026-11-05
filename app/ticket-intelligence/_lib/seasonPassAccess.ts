@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { withReadDbRetry } from "@/lib/db-retry";
 import { ticketIntelligenceSeasonPasses, sportEnum } from "@/schema/database";
 import { and, eq, sql } from "drizzle-orm";
 import { getProDetails } from "@/lib/pro";
@@ -23,18 +24,22 @@ type Sport = (typeof sportEnum.enumValues)[number];
 // silently also unlock every tennis Grand Slam's Ticket Intelligence (and
 // vice versa), since this check previously had no sport boundary at all.
 export async function hasActiveSeasonPass(email: string, editionYear: number, sport: Sport): Promise<boolean> {
-  const [row] = await db
-    .select({ id: ticketIntelligenceSeasonPasses.id })
-    .from(ticketIntelligenceSeasonPasses)
-    .where(
-      and(
-        eq(ticketIntelligenceSeasonPasses.email, email),
-        eq(ticketIntelligenceSeasonPasses.status, "active"),
-        eq(ticketIntelligenceSeasonPasses.sport, sport),
-        sql`${ticketIntelligenceSeasonPasses.editionSeason} @> ARRAY[${editionYear}]::smallint[]`
-      )
-    )
-    .limit(1);
+  const [row] = await withReadDbRetry(
+    () =>
+      db
+        .select({ id: ticketIntelligenceSeasonPasses.id })
+        .from(ticketIntelligenceSeasonPasses)
+        .where(
+          and(
+            eq(ticketIntelligenceSeasonPasses.email, email),
+            eq(ticketIntelligenceSeasonPasses.status, "active"),
+            eq(ticketIntelligenceSeasonPasses.sport, sport),
+            sql`${ticketIntelligenceSeasonPasses.editionSeason} @> ARRAY[${editionYear}]::smallint[]`
+          )
+        )
+        .limit(1),
+    { operation: "hasActiveSeasonPass" },
+  );
   return !!row;
 }
 
@@ -53,18 +58,22 @@ export async function hasActiveSeasonPass(email: string, editionYear: number, sp
 // which sport's picker page it's checking against.
 export async function hasAnyActiveSeasonPass(email: string, sport: Sport): Promise<boolean> {
   const currentYear = new Date().getFullYear();
-  const [row] = await db
-    .select({ id: ticketIntelligenceSeasonPasses.id })
-    .from(ticketIntelligenceSeasonPasses)
-    .where(
-      and(
-        eq(ticketIntelligenceSeasonPasses.email, email),
-        eq(ticketIntelligenceSeasonPasses.status, "active"),
-        eq(ticketIntelligenceSeasonPasses.sport, sport),
-        sql`${ticketIntelligenceSeasonPasses.editionSeason} @> ARRAY[${currentYear}]::smallint[]`
-      )
-    )
-    .limit(1);
+  const [row] = await withReadDbRetry(
+    () =>
+      db
+        .select({ id: ticketIntelligenceSeasonPasses.id })
+        .from(ticketIntelligenceSeasonPasses)
+        .where(
+          and(
+            eq(ticketIntelligenceSeasonPasses.email, email),
+            eq(ticketIntelligenceSeasonPasses.status, "active"),
+            eq(ticketIntelligenceSeasonPasses.sport, sport),
+            sql`${ticketIntelligenceSeasonPasses.editionSeason} @> ARRAY[${currentYear}]::smallint[]`
+          )
+        )
+        .limit(1),
+    { operation: "hasAnyActiveSeasonPass" },
+  );
   return !!row;
 }
 

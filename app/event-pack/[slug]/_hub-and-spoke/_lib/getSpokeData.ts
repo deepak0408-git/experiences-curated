@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { withReadDbRetry } from "@/lib/db-retry";
 import {
   sportingEvents,
   experiences,
@@ -68,38 +69,45 @@ export async function getSpokeData(slug: string) {
 }
 
 async function getSpokeDataUncached(slug: string) {
-  const [event] = await db.select().from(sportingEvents).where(eq(sportingEvents.slug, slug)).limit(1);
+  const [event] = await withReadDbRetry(
+    () => db.select().from(sportingEvents).where(eq(sportingEvents.slug, slug)).limit(1),
+    { operation: "getSpokeData.event" },
+  );
   if (!event) notFound();
 
-  const linkedExperiences = await db
-    .select({
-      id: experiences.id,
-      slug: experiences.slug,
-      title: experiences.title,
-      subtitle: experiences.subtitle,
-      experienceType: experiences.experienceType,
-      budgetTier: experiences.budgetTier,
-      neighborhood: experiences.neighborhood,
-      heroImageUrl: experiences.heroImageUrl,
-      practicalInfo: experiences.practicalInfo,
-      whyItsSpecial: experiences.whyItsSpecial,
-      insiderTips: experiences.insiderTips,
-      whatToAvoid: experiences.whatToAvoid,
-      bookingLinks: experiences.bookingLinks,
-      packRank: sportingEventExperiences.packRank,
-      googleMapsRating: experiences.googleMapsRating,
-      googleMapsReviewCount: experiences.googleMapsReviewCount,
-      googleMapsUrl: experiences.googleMapsUrl,
-    })
-    .from(sportingEventExperiences)
-    .innerJoin(experiences, eq(experiences.id, sportingEventExperiences.experienceId))
-    .where(
-      and(
-        eq(sportingEventExperiences.sportingEventId, event.id),
-        eq(experiences.status, "published")
-      )
-    )
-    .orderBy(sportingEventExperiences.packRank);
+  const linkedExperiences = await withReadDbRetry(
+    () =>
+      db
+        .select({
+          id: experiences.id,
+          slug: experiences.slug,
+          title: experiences.title,
+          subtitle: experiences.subtitle,
+          experienceType: experiences.experienceType,
+          budgetTier: experiences.budgetTier,
+          neighborhood: experiences.neighborhood,
+          heroImageUrl: experiences.heroImageUrl,
+          practicalInfo: experiences.practicalInfo,
+          whyItsSpecial: experiences.whyItsSpecial,
+          insiderTips: experiences.insiderTips,
+          whatToAvoid: experiences.whatToAvoid,
+          bookingLinks: experiences.bookingLinks,
+          packRank: sportingEventExperiences.packRank,
+          googleMapsRating: experiences.googleMapsRating,
+          googleMapsReviewCount: experiences.googleMapsReviewCount,
+          googleMapsUrl: experiences.googleMapsUrl,
+        })
+        .from(sportingEventExperiences)
+        .innerJoin(experiences, eq(experiences.id, sportingEventExperiences.experienceId))
+        .where(
+          and(
+            eq(sportingEventExperiences.sportingEventId, event.id),
+            eq(experiences.status, "published")
+          )
+        )
+        .orderBy(sportingEventExperiences.packRank),
+    { operation: "getSpokeData.linkedExperiences" },
+  );
 
   // Derived from the event's own start date, and used below to filter both
   // hotels and flights to the correct month's seeded pricing — without this,
@@ -118,32 +126,47 @@ async function getSpokeDataUncached(slug: string) {
   // duplicating/misattributing prices. Always filter to event.editionYear,
   // the edition currently being viewed on this page. See memory
   // project_planner_cost_edition_year_migration.
-  const hotels = event.destinationId
-    ? await db.select().from(plannerHotelTierCost).where(and(
-        eq(plannerHotelTierCost.destinationId, event.destinationId),
-        eq(plannerHotelTierCost.editionYear, event.editionYear),
-        eq(plannerHotelTierCost.seasonalBand, eventSeasonalBand)
-      ))
+  const destinationId = event.destinationId;
+  const hotels = destinationId
+    ? await withReadDbRetry(
+        () =>
+          db.select().from(plannerHotelTierCost).where(and(
+            eq(plannerHotelTierCost.destinationId, destinationId),
+            eq(plannerHotelTierCost.editionYear, event.editionYear),
+            eq(plannerHotelTierCost.seasonalBand, eventSeasonalBand)
+          )),
+        { operation: "getSpokeData.hotels" },
+      )
     : [];
-  const tickets = await db.select().from(plannerTicketTierCost).where(and(eq(plannerTicketTierCost.sportingEventId, event.id), eq(plannerTicketTierCost.editionYear, event.editionYear)));
-  const [destinationBand] = event.destinationId
-    ? await db.select().from(plannerDestinationBands).where(eq(plannerDestinationBands.destinationId, event.destinationId))
+  const tickets = await withReadDbRetry(
+    () => db.select().from(plannerTicketTierCost).where(and(eq(plannerTicketTierCost.sportingEventId, event.id), eq(plannerTicketTierCost.editionYear, event.editionYear))),
+    { operation: "getSpokeData.tickets" },
+  );
+  const [destinationBand] = destinationId
+    ? await withReadDbRetry(
+        () => db.select().from(plannerDestinationBands).where(eq(plannerDestinationBands.destinationId, destinationId)),
+        { operation: "getSpokeData.destinationBand" },
+      )
     : [];
-  const flights = event.destinationId
-    ? await db
-        .select({
-          originMarket: plannerFlightCost.originMarket,
-          costLow: plannerFlightCost.costLow,
-          costHigh: plannerFlightCost.costHigh,
-          region: plannerOriginMarkets.region,
-        })
-        .from(plannerFlightCost)
-        .innerJoin(plannerOriginMarkets, eq(plannerOriginMarkets.city, plannerFlightCost.originMarket))
-        .where(and(
-          eq(plannerFlightCost.destinationId, event.destinationId),
-          eq(plannerFlightCost.editionYear, event.editionYear),
-          eq(plannerFlightCost.seasonalBand, eventSeasonalBand)
-        ))
+  const flights = destinationId
+    ? await withReadDbRetry(
+        () =>
+          db
+            .select({
+              originMarket: plannerFlightCost.originMarket,
+              costLow: plannerFlightCost.costLow,
+              costHigh: plannerFlightCost.costHigh,
+              region: plannerOriginMarkets.region,
+            })
+            .from(plannerFlightCost)
+            .innerJoin(plannerOriginMarkets, eq(plannerOriginMarkets.city, plannerFlightCost.originMarket))
+            .where(and(
+              eq(plannerFlightCost.destinationId, destinationId),
+              eq(plannerFlightCost.editionYear, event.editionYear),
+              eq(plannerFlightCost.seasonalBand, eventSeasonalBand)
+            )),
+        { operation: "getSpokeData.flights" },
+      )
     : [];
 
   return {
@@ -265,32 +288,41 @@ export async function getPurchaseStatus(slug: string, eventId: string, isHidden:
     ? await getProDetails(user.email)
     : { isPro: false, isAnnual: false, currentPeriodEnd: null };
 
-  if (user?.email) {
+  const userEmail = user?.email;
+  if (userEmail) {
     // Evergreen-slug events reuse the same sportingEvents row across
     // editions — a purchase for an earlier edition must not count as
     // "purchased" against the current live edition. See
     // project_evergreen_purchase_edition_gap memory.
-    const [event] = await db
-      .select({ editionYear: sportingEvents.editionYear })
-      .from(sportingEvents)
-      .where(eq(sportingEvents.id, eventId))
-      .limit(1);
+    const [event] = await withReadDbRetry(
+      () =>
+        db
+          .select({ editionYear: sportingEvents.editionYear })
+          .from(sportingEvents)
+          .where(eq(sportingEvents.id, eventId))
+          .limit(1),
+      { operation: "getPurchaseStatus.event" },
+    );
 
     // Fetch every active purchase row for this (email, event, current
     // edition) — mini-packs pilot allows more than one (e.g. tickets_guide +
     // hotels_guide), so this can no longer assume/limit to a single row the
     // way it did before productType existed.
     const rows = event
-      ? await db
-          .select({ id: purchases.id, createdAt: purchases.createdAt, productType: purchases.productType })
-          .from(purchases)
-          .where(and(
-            eq(purchases.email, user.email),
-            eq(purchases.sportingEventId, eventId),
-            eq(purchases.status, "active"),
-            eq(purchases.editionYear, event.editionYear)
-          ))
-          .orderBy(purchases.createdAt)
+      ? await withReadDbRetry(
+          () =>
+            db
+              .select({ id: purchases.id, createdAt: purchases.createdAt, productType: purchases.productType })
+              .from(purchases)
+              .where(and(
+                eq(purchases.email, userEmail),
+                eq(purchases.sportingEventId, eventId),
+                eq(purchases.status, "active"),
+                eq(purchases.editionYear, event.editionYear)
+              ))
+              .orderBy(purchases.createdAt),
+          { operation: "getPurchaseStatus.purchaseRows" },
+        )
       : [];
 
     for (const row of rows) {

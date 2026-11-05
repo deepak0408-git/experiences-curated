@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { withReadDbRetry } from "@/lib/db-retry";
 import { destinations, experiences, sportingEvents } from "@/schema/database";
 import { eq, and, asc, desc, isNotNull, gte, sql } from "drizzle-orm";
 import { notFound } from "next/navigation";
@@ -10,11 +11,15 @@ import { notFound } from "next/navigation";
 const NEARBY_RADIUS_KM = 200;
 
 export async function getDestinationBySlug(slug: string) {
-  const results = await db
-    .select()
-    .from(destinations)
-    .where(eq(destinations.slug, slug))
-    .limit(1);
+  const results = await withReadDbRetry(
+    () =>
+      db
+        .select()
+        .from(destinations)
+        .where(eq(destinations.slug, slug))
+        .limit(1),
+    { operation: "getDestinationBySlug" },
+  );
 
   if (!results.length) notFound();
   return results[0];
@@ -161,18 +166,22 @@ export type NearbyDestinationEvent = Awaited<ReturnType<typeof getNearbyDestinat
 // Destinations featured on the homepage "Browse by Destination" section —
 // curator-set via homepageSlot, same pattern as sportingEvents.homepageSlot.
 export async function getDestinationsForHomepage() {
-  return db
-    .select({
-      id: destinations.id,
-      slug: destinations.slug,
-      name: destinations.name,
-      countryCode: destinations.countryCode,
-      heroImageUrl: destinations.heroImageUrl,
-      homepageSlot: destinations.homepageSlot,
-    })
-    .from(destinations)
-    .where(isNotNull(destinations.homepageSlot))
-    .orderBy(asc(destinations.homepageSlot));
+  return withReadDbRetry(
+    () =>
+      db
+        .select({
+          id: destinations.id,
+          slug: destinations.slug,
+          name: destinations.name,
+          countryCode: destinations.countryCode,
+          heroImageUrl: destinations.heroImageUrl,
+          homepageSlot: destinations.homepageSlot,
+        })
+        .from(destinations)
+        .where(isNotNull(destinations.homepageSlot))
+        .orderBy(asc(destinations.homepageSlot)),
+    { operation: "getDestinationsForHomepage" },
+  );
 }
 
 export type HomepageDestination = Awaited<ReturnType<typeof getDestinationsForHomepage>>[number];

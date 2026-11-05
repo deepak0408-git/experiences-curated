@@ -1,5 +1,6 @@
 import "server-only";
 import { db } from "@/lib/db";
+import { withReadDbRetry } from "@/lib/db-retry";
 import { sportingEvents, circuitSeatingProfile } from "@/schema/database";
 import { eq, and, gte, asc, inArray } from "drizzle-orm";
 
@@ -27,28 +28,36 @@ export type CockpitEvent = {
 export async function getCockpitF1Events(): Promise<CockpitEvent[]> {
   const today = new Date().toISOString().split("T")[0];
 
-  const rows = await db
-    .select({
-      id: sportingEvents.id,
-      slug: sportingEvents.slug,
-      name: sportingEvents.name,
-      startDate: sportingEvents.startDate,
-      endDate: sportingEvents.endDate,
-      venueName: sportingEvents.venueName,
-      heroImageUrl: sportingEvents.heroImageUrl,
-      packStatus: sportingEvents.packStatus,
-      isHidden: sportingEvents.isHidden,
-    })
-    .from(sportingEvents)
-    .where(and(eq(sportingEvents.sport, "formula_one"), gte(sportingEvents.endDate, today)))
-    .orderBy(asc(sportingEvents.startDate));
+  const rows = await withReadDbRetry(
+    () =>
+      db
+        .select({
+          id: sportingEvents.id,
+          slug: sportingEvents.slug,
+          name: sportingEvents.name,
+          startDate: sportingEvents.startDate,
+          endDate: sportingEvents.endDate,
+          venueName: sportingEvents.venueName,
+          heroImageUrl: sportingEvents.heroImageUrl,
+          packStatus: sportingEvents.packStatus,
+          isHidden: sportingEvents.isHidden,
+        })
+        .from(sportingEvents)
+        .where(and(eq(sportingEvents.sport, "formula_one"), gte(sportingEvents.endDate, today)))
+        .orderBy(asc(sportingEvents.startDate)),
+    { operation: "getCockpitF1Events.rows" },
+  );
 
   const eventIds = rows.map((r) => r.id);
   const tiRows = eventIds.length > 0
-    ? await db
-        .selectDistinct({ eventId: circuitSeatingProfile.sportingEventId })
-        .from(circuitSeatingProfile)
-        .where(inArray(circuitSeatingProfile.sportingEventId, eventIds))
+    ? await withReadDbRetry(
+        () =>
+          db
+            .selectDistinct({ eventId: circuitSeatingProfile.sportingEventId })
+            .from(circuitSeatingProfile)
+            .where(inArray(circuitSeatingProfile.sportingEventId, eventIds)),
+        { operation: "getCockpitF1Events.tiRows" },
+      )
     : [];
   const tiEventIds = new Set(tiRows.map((r) => r.eventId));
 

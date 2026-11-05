@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import { db } from "@/lib/db";
+import { withReadDbRetry } from "@/lib/db-retry";
 import { experiences, savedItems, users, userProfiles, travelLogs, purchases, sportingEvents, sportingEventExperiences, destinations } from "@/schema/database";
 import { and, eq, ne, inArray, count, sql } from "drizzle-orm";
 import { getAuthUser } from "@/lib/supabase/server";
@@ -961,13 +962,17 @@ export default async function ExperiencePage({
     async (s: string) => {
       const exp = await getExperienceBySlug(s);
 
-      const [ratingRow] = await db
-        .select({
-          avgRating: sql<number>`round(avg(${travelLogs.rating})::numeric, 1)`,
-          ratingCount: count(travelLogs.id),
-        })
-        .from(travelLogs)
-        .where(eq(travelLogs.experienceId, exp.id));
+      const [ratingRow] = await withReadDbRetry(
+        () =>
+          db
+            .select({
+              avgRating: sql<number>`round(avg(${travelLogs.rating})::numeric, 1)`,
+              ratingCount: count(travelLogs.id),
+            })
+            .from(travelLogs)
+            .where(eq(travelLogs.experienceId, exp.id)),
+        { operation: "experiencePage.ratingRow" },
+      );
 
       let eventPackSlug = "wimbledon";
       let eventPackName = "Wimbledon";
@@ -999,22 +1004,26 @@ export default async function ExperiencePage({
       const spokeBackLinkForEventPack = getSpokeBackLink(s);
       const eventPackLookupSlug = spokeBackLinkForEventPack?.eventSlug;
       if (eventPackLookupSlug) {
-        const [ev] = await db
-          .select({
-            id: sportingEvents.id,
-            slug: sportingEvents.slug,
-            name: sportingEvents.name,
-            packFormat: sportingEvents.packFormat,
-            packStatus: sportingEvents.packStatus,
-            isHidden: sportingEvents.isHidden,
-            sport: sportingEvents.sport,
-            tourCities: sportingEvents.tourCities,
-            destinationName: destinations.name,
-          })
-          .from(sportingEvents)
-          .leftJoin(destinations, eq(sportingEvents.destinationId, destinations.id))
-          .where(eq(sportingEvents.slug, eventPackLookupSlug))
-          .limit(1);
+        const [ev] = await withReadDbRetry(
+          () =>
+            db
+              .select({
+                id: sportingEvents.id,
+                slug: sportingEvents.slug,
+                name: sportingEvents.name,
+                packFormat: sportingEvents.packFormat,
+                packStatus: sportingEvents.packStatus,
+                isHidden: sportingEvents.isHidden,
+                sport: sportingEvents.sport,
+                tourCities: sportingEvents.tourCities,
+                destinationName: destinations.name,
+              })
+              .from(sportingEvents)
+              .leftJoin(destinations, eq(sportingEvents.destinationId, destinations.id))
+              .where(eq(sportingEvents.slug, eventPackLookupSlug))
+              .limit(1),
+          { operation: "experiencePage.eventPackBySlug" },
+        );
         if (ev) {
           eventPackSlug = ev.slug;
           eventPackName = ev.name;
@@ -1026,22 +1035,27 @@ export default async function ExperiencePage({
           eventPackDestinationName = ev.destinationName;
         }
       } else if (exp.sportingEventId) {
-        const [ev] = await db
-          .select({
-            id: sportingEvents.id,
-            slug: sportingEvents.slug,
-            name: sportingEvents.name,
-            packFormat: sportingEvents.packFormat,
-            packStatus: sportingEvents.packStatus,
-            isHidden: sportingEvents.isHidden,
-            sport: sportingEvents.sport,
-            tourCities: sportingEvents.tourCities,
-            destinationName: destinations.name,
-          })
-          .from(sportingEvents)
-          .leftJoin(destinations, eq(sportingEvents.destinationId, destinations.id))
-          .where(eq(sportingEvents.id, exp.sportingEventId))
-          .limit(1);
+        const sportingEventId = exp.sportingEventId;
+        const [ev] = await withReadDbRetry(
+          () =>
+            db
+              .select({
+                id: sportingEvents.id,
+                slug: sportingEvents.slug,
+                name: sportingEvents.name,
+                packFormat: sportingEvents.packFormat,
+                packStatus: sportingEvents.packStatus,
+                isHidden: sportingEvents.isHidden,
+                sport: sportingEvents.sport,
+                tourCities: sportingEvents.tourCities,
+                destinationName: destinations.name,
+              })
+              .from(sportingEvents)
+              .leftJoin(destinations, eq(sportingEvents.destinationId, destinations.id))
+              .where(eq(sportingEvents.id, sportingEventId))
+              .limit(1),
+          { operation: "experiencePage.eventPackById" },
+        );
         if (ev) {
           eventPackSlug = ev.slug;
           eventPackName = ev.name;
@@ -1056,27 +1070,31 @@ export default async function ExperiencePage({
         }
       }
 
-      const related = await db
-        .select({
-          id: experiences.id,
-          title: experiences.title,
-          slug: experiences.slug,
-          heroImageUrl: experiences.heroImageUrl,
-          experienceType: experiences.experienceType,
-          subtitle: experiences.subtitle,
-          neighborhood: experiences.neighborhood,
-        })
-        .from(experiences)
-        .where(
-          and(
-            inArray(experiences.status, ["published", "in_review"]),
-            ne(experiences.slug, s),
-            exp.sportingEventId
-              ? eq(experiences.sportingEventId, exp.sportingEventId)
-              : eq(experiences.destinationId, exp.destinationId)
-          )
-        )
-        .limit(3);
+      const related = await withReadDbRetry(
+        () =>
+          db
+            .select({
+              id: experiences.id,
+              title: experiences.title,
+              slug: experiences.slug,
+              heroImageUrl: experiences.heroImageUrl,
+              experienceType: experiences.experienceType,
+              subtitle: experiences.subtitle,
+              neighborhood: experiences.neighborhood,
+            })
+            .from(experiences)
+            .where(
+              and(
+                inArray(experiences.status, ["published", "in_review"]),
+                ne(experiences.slug, s),
+                exp.sportingEventId
+                  ? eq(experiences.sportingEventId, exp.sportingEventId)
+                  : eq(experiences.destinationId, exp.destinationId)
+              )
+            )
+            .limit(3),
+        { operation: "experiencePage.related" },
+      );
 
       // How many distinct events this experience is actually linked to
       // (sporting_event_experiences is the golden-truth join table — see
@@ -1089,10 +1107,14 @@ export default async function ExperiencePage({
       // T3 #4), not a real fact about the experience. The "Explore all X
       // experiences" sidebar link drops the sport filter entirely for these
       // rather than risk sending a visitor to the wrong sport's results.
-      const [{ sharedEventCount }] = await db
-        .select({ sharedEventCount: count(sportingEventExperiences.id) })
-        .from(sportingEventExperiences)
-        .where(eq(sportingEventExperiences.experienceId, exp.id));
+      const [{ sharedEventCount }] = await withReadDbRetry(
+        () =>
+          db
+            .select({ sharedEventCount: count(sportingEventExperiences.id) })
+            .from(sportingEventExperiences)
+            .where(eq(sportingEventExperiences.experienceId, exp.id)),
+        { operation: "experiencePage.sharedEventCount" },
+      );
 
       return { exp, ratingRow, eventPackSlug, eventPackName, eventPackFormat, eventPackSport, eventPackId, hasLivePack, eventPackDestinationName, eventPackTourCities, sharedEventCount, related };
     },
@@ -1120,28 +1142,32 @@ export default async function ExperiencePage({
   let resolvedFromEventSlug: string | null = null;
   let suppressSpokeBackLink = false;
   if (fromEventSlug) {
-    const [linkedEvent] = await db
-      .select({
-        id: sportingEvents.id,
-        slug: sportingEvents.slug,
-        name: sportingEvents.name,
-        packFormat: sportingEvents.packFormat,
-        packStatus: sportingEvents.packStatus,
-        isHidden: sportingEvents.isHidden,
-        sport: sportingEvents.sport,
-        tourCities: sportingEvents.tourCities,
-        destinationName: destinations.name,
-      })
-      .from(sportingEventExperiences)
-      .innerJoin(sportingEvents, eq(sportingEventExperiences.sportingEventId, sportingEvents.id))
-      .leftJoin(destinations, eq(sportingEvents.destinationId, destinations.id))
-      .where(
-        and(
-          eq(sportingEventExperiences.experienceId, exp.id),
-          eq(sportingEvents.slug, fromEventSlug)
-        )
-      )
-      .limit(1);
+    const [linkedEvent] = await withReadDbRetry(
+      () =>
+        db
+          .select({
+            id: sportingEvents.id,
+            slug: sportingEvents.slug,
+            name: sportingEvents.name,
+            packFormat: sportingEvents.packFormat,
+            packStatus: sportingEvents.packStatus,
+            isHidden: sportingEvents.isHidden,
+            sport: sportingEvents.sport,
+            tourCities: sportingEvents.tourCities,
+            destinationName: destinations.name,
+          })
+          .from(sportingEventExperiences)
+          .innerJoin(sportingEvents, eq(sportingEventExperiences.sportingEventId, sportingEvents.id))
+          .leftJoin(destinations, eq(sportingEvents.destinationId, destinations.id))
+          .where(
+            and(
+              eq(sportingEventExperiences.experienceId, exp.id),
+              eq(sportingEvents.slug, fromEventSlug)
+            )
+          )
+          .limit(1),
+      { operation: "experiencePage.linkedEvent" },
+    );
     if (linkedEvent) {
       eventPackSlug = linkedEvent.slug;
       eventPackName = linkedEvent.name;
@@ -1180,11 +1206,15 @@ export default async function ExperiencePage({
   // requested 1 Oct 2026, same ?from= concept as the spoke ExperienceCard.
   let destinationBackLink: { slug: string; name: string } | null = null;
   if (fromDestination) {
-    const [linkedDestination] = await db
-      .select({ slug: destinations.slug, name: destinations.name })
-      .from(destinations)
-      .where(and(eq(destinations.slug, fromDestination), eq(destinations.id, exp.destinationId)))
-      .limit(1);
+    const [linkedDestination] = await withReadDbRetry(
+      () =>
+        db
+          .select({ slug: destinations.slug, name: destinations.name })
+          .from(destinations)
+          .where(and(eq(destinations.slug, fromDestination), eq(destinations.id, exp.destinationId)))
+          .limit(1),
+      { operation: "experiencePage.linkedDestination" },
+    );
     if (linkedDestination) {
       destinationBackLink = linkedDestination;
     }
@@ -1245,18 +1275,24 @@ export default async function ExperiencePage({
 
   // Pack purchasers get unlimited reads for experiences in their purchased event
   let hasPurchasedPack = false;
-  if (authUser?.email && exp.sportingEventId) {
-    const [purchase] = await db
-      .select({ id: purchases.id })
-      .from(purchases)
-      .where(
-        and(
-          eq(purchases.email, authUser.email),
-          eq(purchases.sportingEventId, exp.sportingEventId),
-          eq(purchases.status, "active")
-        )
-      )
-      .limit(1);
+  const authUserEmail = authUser?.email;
+  const expSportingEventId = exp.sportingEventId;
+  if (authUserEmail && expSportingEventId) {
+    const [purchase] = await withReadDbRetry(
+      () =>
+        db
+          .select({ id: purchases.id })
+          .from(purchases)
+          .where(
+            and(
+              eq(purchases.email, authUserEmail),
+              eq(purchases.sportingEventId, expSportingEventId),
+              eq(purchases.status, "active")
+            )
+          )
+          .limit(1),
+      { operation: "experiencePage.purchaseCheck" },
+    );
     hasPurchasedPack = !!purchase;
   }
   let isSaved = false;
@@ -1264,33 +1300,49 @@ export default async function ExperiencePage({
   let visitRating: number | null = null;
   let archetype: string | null = null;
   if (authUser) {
-    const [dbUser] = await db
-      .select({ id: users.id })
-      .from(users)
-      .where(eq(users.authId, authUser.id))
-      .limit(1);
+    const [dbUser] = await withReadDbRetry(
+      () =>
+        db
+          .select({ id: users.id })
+          .from(users)
+          .where(eq(users.authId, authUser.id))
+          .limit(1),
+      { operation: "experiencePage.dbUser" },
+    );
     if (dbUser) {
-      const [saved] = await db
-        .select({ id: savedItems.id })
-        .from(savedItems)
-        .where(and(eq(savedItems.userId, dbUser.id), eq(savedItems.experienceId, exp.id)))
-        .limit(1);
+      const [saved] = await withReadDbRetry(
+        () =>
+          db
+            .select({ id: savedItems.id })
+            .from(savedItems)
+            .where(and(eq(savedItems.userId, dbUser.id), eq(savedItems.experienceId, exp.id)))
+            .limit(1),
+        { operation: "experiencePage.savedCheck" },
+      );
       isSaved = !!saved;
 
-      const [log] = await db
-        .select({ rating: travelLogs.rating })
-        .from(travelLogs)
-        .where(and(eq(travelLogs.userId, dbUser.id), eq(travelLogs.experienceId, exp.id)))
-        .limit(1);
+      const [log] = await withReadDbRetry(
+        () =>
+          db
+            .select({ rating: travelLogs.rating })
+            .from(travelLogs)
+            .where(and(eq(travelLogs.userId, dbUser.id), eq(travelLogs.experienceId, exp.id)))
+            .limit(1),
+        { operation: "experiencePage.travelLog" },
+      );
       hasVisited = !!log;
       visitRating = log?.rating ?? null;
     }
-    if (authUser.email) {
-      const [profile] = await db
-        .select({ archetype: userProfiles.archetype })
-        .from(userProfiles)
-        .where(eq(userProfiles.email, authUser.email))
-        .limit(1);
+    if (authUserEmail) {
+      const [profile] = await withReadDbRetry(
+        () =>
+          db
+            .select({ archetype: userProfiles.archetype })
+            .from(userProfiles)
+            .where(eq(userProfiles.email, authUserEmail))
+            .limit(1),
+        { operation: "experiencePage.archetypeProfile" },
+      );
       archetype = profile?.archetype ?? null;
     }
   }

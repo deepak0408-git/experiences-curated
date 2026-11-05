@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
+import { withReadDbRetry } from "@/lib/db-retry";
 import { sportingEvents } from "@/schema/database";
 import { eq } from "drizzle-orm";
 import { SPOKE_COMPONENTS, SPOKE_METADATA } from "../_hub-and-spoke/spokes/registry";
@@ -27,7 +28,10 @@ export default async function SpokePage({
 }) {
   const { slug, spoke } = await params;
 
-  const [event] = await db.select({ packFormat: sportingEvents.packFormat }).from(sportingEvents).where(eq(sportingEvents.slug, slug)).limit(1);
+  const [event] = await withReadDbRetry(
+    () => db.select({ packFormat: sportingEvents.packFormat }).from(sportingEvents).where(eq(sportingEvents.slug, slug)).limit(1),
+    { operation: "eventPackSpoke.packFormat" },
+  );
   if (!event || event.packFormat !== "hub_and_spoke") notFound();
 
   const Component = SPOKE_COMPONENTS[slug]?.[spoke];

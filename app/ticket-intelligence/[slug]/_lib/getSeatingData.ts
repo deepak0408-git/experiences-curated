@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { withReadDbRetry } from "@/lib/db-retry";
 import { sportingEvents, circuitSeatingProfile, plannerTicketTierCost, plannerHotelTierCost, plannerFlightCost, plannerDestinationBands, experiences, sportingEventExperiences } from "@/schema/database";
 import { and, eq, gte, ilike, inArray, or, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
@@ -25,34 +26,38 @@ export async function getSeatingData(slug: string) {
 }
 
 async function getSeatingDataUncached(slug: string) {
-  const [event] = await db
-    .select({
-      id: sportingEvents.id,
-      slug: sportingEvents.slug,
-      name: sportingEvents.name,
-      heroImageUrl: sportingEvents.heroImageUrl,
-      isHidden: sportingEvents.isHidden,
-      // Season Pass gating (seasonPassAccess.ts) matches against this —
-      // added 28 Sep 2026.
-      editionYear: sportingEvents.editionYear,
-      // Annual Pro gating (hasActiveAnnualProForEvent, seasonPassAccess.ts)
-      // matches this against the subscriber's currentPeriodEnd — added 28
-      // Oct 2026. Uses startDate, not endDate — a multi-day event that
-      // STARTS before/on the subscriber's expiry still unlocks, even if it
-      // ends after (founder correction, 17 Oct 2026, Miami GP 2027 case).
-      startDate: sportingEvents.startDate,
-      // isBuilt gating for TicketIntelligenceSidebar's "Get the event
-      // guide" CTA — same formula as the Season Planner's isBuilt
-      // (ShortlistResults.tsx), added 28 Sep 2026 after the sidebar was
-      // found linking straight to a dead /event-pack/<slug> page for
-      // planned/not-yet-activated events (Miami GP 2027, caught live).
-      sport: sportingEvents.sport,
-      packStatus: sportingEvents.packStatus,
-      destinationId: sportingEvents.destinationId,
-    })
-    .from(sportingEvents)
-    .where(eq(sportingEvents.slug, slug))
-    .limit(1);
+  const [event] = await withReadDbRetry(
+    () =>
+      db
+        .select({
+          id: sportingEvents.id,
+          slug: sportingEvents.slug,
+          name: sportingEvents.name,
+          heroImageUrl: sportingEvents.heroImageUrl,
+          isHidden: sportingEvents.isHidden,
+          // Season Pass gating (seasonPassAccess.ts) matches against this —
+          // added 28 Sep 2026.
+          editionYear: sportingEvents.editionYear,
+          // Annual Pro gating (hasActiveAnnualProForEvent, seasonPassAccess.ts)
+          // matches this against the subscriber's currentPeriodEnd — added 28
+          // Oct 2026. Uses startDate, not endDate — a multi-day event that
+          // STARTS before/on the subscriber's expiry still unlocks, even if it
+          // ends after (founder correction, 17 Oct 2026, Miami GP 2027 case).
+          startDate: sportingEvents.startDate,
+          // isBuilt gating for TicketIntelligenceSidebar's "Get the event
+          // guide" CTA — same formula as the Season Planner's isBuilt
+          // (ShortlistResults.tsx), added 28 Sep 2026 after the sidebar was
+          // found linking straight to a dead /event-pack/<slug> page for
+          // planned/not-yet-activated events (Miami GP 2027, caught live).
+          sport: sportingEvents.sport,
+          packStatus: sportingEvents.packStatus,
+          destinationId: sportingEvents.destinationId,
+        })
+        .from(sportingEvents)
+        .where(eq(sportingEvents.slug, slug))
+        .limit(1),
+    { operation: "getSeatingData.event" },
+  );
 
   if (!event) return null;
 
@@ -74,27 +79,31 @@ async function getSeatingDataUncached(slug: string) {
   // guarantee for free.
   const showExperienceLinks = event.isHidden === false;
 
-  const rows = await db
-    .select({
-      id: circuitSeatingProfile.id,
-      seatName: circuitSeatingProfile.seatName,
-      seatType: circuitSeatingProfile.seatType,
-      zoneLabel: circuitSeatingProfile.zoneLabel,
-      actionTags: circuitSeatingProfile.actionTags,
-      covered: circuitSeatingProfile.covered,
-      minAge: circuitSeatingProfile.minAge,
-      singleDayAvailable: circuitSeatingProfile.singleDayAvailable,
-      reservedSeating: circuitSeatingProfile.reservedSeating,
-      tier: plannerTicketTierCost.tier,
-      costLow: plannerTicketTierCost.costLow,
-      costHigh: plannerTicketTierCost.costHigh,
-      linkedExperienceSlug: experiences.slug,
-      linkedExperienceImageUrl: experiences.heroImageUrl,
-    })
-    .from(circuitSeatingProfile)
-    .leftJoin(plannerTicketTierCost, eq(circuitSeatingProfile.ticketTierCostId, plannerTicketTierCost.id))
-    .leftJoin(experiences, eq(circuitSeatingProfile.linkedExperienceId, experiences.id))
-    .where(eq(circuitSeatingProfile.sportingEventId, event.id));
+  const rows = await withReadDbRetry(
+    () =>
+      db
+        .select({
+          id: circuitSeatingProfile.id,
+          seatName: circuitSeatingProfile.seatName,
+          seatType: circuitSeatingProfile.seatType,
+          zoneLabel: circuitSeatingProfile.zoneLabel,
+          actionTags: circuitSeatingProfile.actionTags,
+          covered: circuitSeatingProfile.covered,
+          minAge: circuitSeatingProfile.minAge,
+          singleDayAvailable: circuitSeatingProfile.singleDayAvailable,
+          reservedSeating: circuitSeatingProfile.reservedSeating,
+          tier: plannerTicketTierCost.tier,
+          costLow: plannerTicketTierCost.costLow,
+          costHigh: plannerTicketTierCost.costHigh,
+          linkedExperienceSlug: experiences.slug,
+          linkedExperienceImageUrl: experiences.heroImageUrl,
+        })
+        .from(circuitSeatingProfile)
+        .leftJoin(plannerTicketTierCost, eq(circuitSeatingProfile.ticketTierCostId, plannerTicketTierCost.id))
+        .leftJoin(experiences, eq(circuitSeatingProfile.linkedExperienceId, experiences.id))
+        .where(eq(circuitSeatingProfile.sportingEventId, event.id)),
+    { operation: "getSeatingData.seatRows" },
+  );
 
   const seats: Seat[] = rows.map((r) => ({
     id: r.id,
@@ -142,22 +151,26 @@ async function getSeatingDataUncached(slug: string) {
 // a general preference (not a Mexico-City-only special case), so it's
 // expressed as a priority ordering, never a hardcoded per-event slug.
 async function getFallbackTicketExperienceSlug(sportingEventId: string): Promise<string | null> {
-  const [row] = await db
-    .select({ slug: experiences.slug })
-    .from(experiences)
-    .innerJoin(sportingEventExperiences, eq(sportingEventExperiences.experienceId, experiences.id))
-    .where(
-      and(
-        eq(sportingEventExperiences.sportingEventId, sportingEventId),
-        or(
-          ilike(experiences.title, "%ticket guide%"),
-          ilike(experiences.title, "%where to sit%"),
-          ilike(experiences.title, "%ticket decision%")
+  const [row] = await withReadDbRetry(
+    () =>
+      db
+        .select({ slug: experiences.slug })
+        .from(experiences)
+        .innerJoin(sportingEventExperiences, eq(sportingEventExperiences.experienceId, experiences.id))
+        .where(
+          and(
+            eq(sportingEventExperiences.sportingEventId, sportingEventId),
+            or(
+              ilike(experiences.title, "%ticket guide%"),
+              ilike(experiences.title, "%where to sit%"),
+              ilike(experiences.title, "%ticket decision%")
+            )
+          )
         )
-      )
-    )
-    .orderBy(sql`CASE WHEN ${ilike(experiences.title, "%where to sit%")} THEN 0 ELSE 1 END`)
-    .limit(1);
+        .orderBy(sql`CASE WHEN ${ilike(experiences.title, "%where to sit%")} THEN 0 ELSE 1 END`)
+        .limit(1),
+    { operation: "getFallbackTicketExperienceSlug" },
+  );
   return row?.slug ?? null;
 }
 
@@ -171,11 +184,15 @@ async function getFallbackTicketExperienceSlug(sportingEventId: string): Promise
 // needed. Cached the same way and for the same reason as getSeatingData.
 const hasTicketIntelligenceCached = unstable_cache(
   async (eventId: string) => {
-    const [row] = await db
-      .select({ id: circuitSeatingProfile.id })
-      .from(circuitSeatingProfile)
-      .where(eq(circuitSeatingProfile.sportingEventId, eventId))
-      .limit(1);
+    const [row] = await withReadDbRetry(
+      () =>
+        db
+          .select({ id: circuitSeatingProfile.id })
+          .from(circuitSeatingProfile)
+          .where(eq(circuitSeatingProfile.sportingEventId, eventId))
+          .limit(1),
+      { operation: "hasTicketIntelligence" },
+    );
     return !!row;
   },
   ["ticket-intelligence-has-seats"],
@@ -202,26 +219,42 @@ const hasFullPlannerCostDataCached = unstable_cache(
   async (eventId: string, destinationId: string | null, editionYear: number) => {
     if (!destinationId) return false;
     const [tickets, hotels, flights, bands] = await Promise.all([
-      db
-        .select({ id: plannerTicketTierCost.id })
-        .from(plannerTicketTierCost)
-        .where(and(eq(plannerTicketTierCost.sportingEventId, eventId), eq(plannerTicketTierCost.editionYear, editionYear)))
-        .limit(1),
-      db
-        .select({ id: plannerHotelTierCost.id })
-        .from(plannerHotelTierCost)
-        .where(and(eq(plannerHotelTierCost.destinationId, destinationId), eq(plannerHotelTierCost.editionYear, editionYear)))
-        .limit(1),
-      db
-        .select({ id: plannerFlightCost.id })
-        .from(plannerFlightCost)
-        .where(and(eq(plannerFlightCost.destinationId, destinationId), eq(plannerFlightCost.editionYear, editionYear)))
-        .limit(1),
-      db
-        .select({ id: plannerDestinationBands.id })
-        .from(plannerDestinationBands)
-        .where(eq(plannerDestinationBands.destinationId, destinationId))
-        .limit(1),
+      withReadDbRetry(
+        () =>
+          db
+            .select({ id: plannerTicketTierCost.id })
+            .from(plannerTicketTierCost)
+            .where(and(eq(plannerTicketTierCost.sportingEventId, eventId), eq(plannerTicketTierCost.editionYear, editionYear)))
+            .limit(1),
+        { operation: "hasFullPlannerCostData.tickets" },
+      ),
+      withReadDbRetry(
+        () =>
+          db
+            .select({ id: plannerHotelTierCost.id })
+            .from(plannerHotelTierCost)
+            .where(and(eq(plannerHotelTierCost.destinationId, destinationId), eq(plannerHotelTierCost.editionYear, editionYear)))
+            .limit(1),
+        { operation: "hasFullPlannerCostData.hotels" },
+      ),
+      withReadDbRetry(
+        () =>
+          db
+            .select({ id: plannerFlightCost.id })
+            .from(plannerFlightCost)
+            .where(and(eq(plannerFlightCost.destinationId, destinationId), eq(plannerFlightCost.editionYear, editionYear)))
+            .limit(1),
+        { operation: "hasFullPlannerCostData.flights" },
+      ),
+      withReadDbRetry(
+        () =>
+          db
+            .select({ id: plannerDestinationBands.id })
+            .from(plannerDestinationBands)
+            .where(eq(plannerDestinationBands.destinationId, destinationId))
+            .limit(1),
+        { operation: "hasFullPlannerCostData.bands" },
+      ),
     ]);
     return tickets.length > 0 && hotels.length > 0 && flights.length > 0 && bands.length > 0;
   },
@@ -288,43 +321,47 @@ export async function getTicketIntelligenceEvents(): Promise<TicketIntelligenceE
 
 async function getTicketIntelligenceEventsUncached(): Promise<TicketIntelligenceEventSummary[]> {
   const today = new Date().toISOString().slice(0, 10);
-  const rows = await db
-    .select({
-      id: sportingEvents.id,
-      slug: sportingEvents.slug,
-      name: sportingEvents.name,
-      venueName: sportingEvents.venueName,
-      startDate: sportingEvents.startDate,
-      endDate: sportingEvents.endDate,
-      heroImageUrl: sportingEvents.heroImageUrl,
-      seatCount: sql<number>`count(${circuitSeatingProfile.id})`,
-    })
-    .from(sportingEvents)
-    .innerJoin(circuitSeatingProfile, eq(circuitSeatingProfile.sportingEventId, sportingEvents.id))
-    .where(
-      and(
-        inArray(sportingEvents.packStatus, ["planned", "building", "built_hidden", "live"]),
-        gte(sportingEvents.startDate, today),
-        // "Has plan costs" check — added 27 Sep 2026 after the founder
-        // caught The Ashes 2027 / Border-Gavaskar Trophy 2027 (packStatus
-        // eligible, but zero planner_ticket_tier_cost rows) leaking into
-        // this list during testing with the seat-data filter temporarily
-        // off. packStatus + date alone isn't a real "has plan costs"
-        // signal — this EXISTS check is.
-        sql`exists (select 1 from planner_ticket_tier_cost pttc where pttc.sporting_event_id = ${sportingEvents.id})`
-      )
-    )
-    .groupBy(
-      sportingEvents.id,
-      sportingEvents.slug,
-      sportingEvents.name,
-      sportingEvents.venueName,
-      sportingEvents.startDate,
-      sportingEvents.endDate,
-      sportingEvents.heroImageUrl
-    )
-    .having(sql`count(${circuitSeatingProfile.id}) > 0`)
-    .orderBy(sportingEvents.startDate);
+  const rows = await withReadDbRetry(
+    () =>
+      db
+        .select({
+          id: sportingEvents.id,
+          slug: sportingEvents.slug,
+          name: sportingEvents.name,
+          venueName: sportingEvents.venueName,
+          startDate: sportingEvents.startDate,
+          endDate: sportingEvents.endDate,
+          heroImageUrl: sportingEvents.heroImageUrl,
+          seatCount: sql<number>`count(${circuitSeatingProfile.id})`,
+        })
+        .from(sportingEvents)
+        .innerJoin(circuitSeatingProfile, eq(circuitSeatingProfile.sportingEventId, sportingEvents.id))
+        .where(
+          and(
+            inArray(sportingEvents.packStatus, ["planned", "building", "built_hidden", "live"]),
+            gte(sportingEvents.startDate, today),
+            // "Has plan costs" check — added 27 Sep 2026 after the founder
+            // caught The Ashes 2027 / Border-Gavaskar Trophy 2027 (packStatus
+            // eligible, but zero planner_ticket_tier_cost rows) leaking into
+            // this list during testing with the seat-data filter temporarily
+            // off. packStatus + date alone isn't a real "has plan costs"
+            // signal — this EXISTS check is.
+            sql`exists (select 1 from planner_ticket_tier_cost pttc where pttc.sporting_event_id = ${sportingEvents.id})`
+          )
+        )
+        .groupBy(
+          sportingEvents.id,
+          sportingEvents.slug,
+          sportingEvents.name,
+          sportingEvents.venueName,
+          sportingEvents.startDate,
+          sportingEvents.endDate,
+          sportingEvents.heroImageUrl
+        )
+        .having(sql`count(${circuitSeatingProfile.id}) > 0`)
+        .orderBy(sportingEvents.startDate),
+    { operation: "getTicketIntelligenceEvents" },
+  );
 
   return rows.map((r) => ({
     id: r.id,

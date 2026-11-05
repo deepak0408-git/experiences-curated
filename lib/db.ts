@@ -37,9 +37,28 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 pool.on("error", (error) => {
-  console.error("[DB] Unexpected idle pool client error", {
+  console.error("[DB] Idle pool client error", {
     message: error.message,
     code: (error as NodeJS.ErrnoException).code,
+    total: pool.totalCount,
+    idle: pool.idleCount,
+    waiting: pool.waitingCount,
+  });
+});
+
+pool.on("connect", () => {
+  console.info("[DB] Pool client connected", {
+    total: pool.totalCount,
+    idle: pool.idleCount,
+    waiting: pool.waitingCount,
+  });
+});
+
+pool.on("remove", () => {
+  console.info("[DB] Pool client removed", {
+    total: pool.totalCount,
+    idle: pool.idleCount,
+    waiting: pool.waitingCount,
   });
 });
 

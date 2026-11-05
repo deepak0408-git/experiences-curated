@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import HomepageNav from "@/app/_components/HomepageNav";
 import { getAuthUser } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
+import { withReadDbRetry } from "@/lib/db-retry";
 import { purchases } from "@/schema/database";
 import { and, eq } from "drizzle-orm";
 import { getSeatingData, hasFullPlannerCostData } from "./_lib/getSeatingData";
@@ -71,17 +72,22 @@ export default async function TicketIntelligencePage({
   let hasPerEventPurchase = false;
   let alreadyPurchased = false;
   if (user?.email) {
-    const [existing] = await db
-      .select({ id: purchases.id })
-      .from(purchases)
-      .where(
-        and(
-          eq(purchases.email, user.email),
-          eq(purchases.sportingEventId, data.event.id),
-          eq(purchases.productType, "ticket_intelligence")
-        )
-      )
-      .limit(1);
+    const userEmail = user.email;
+    const [existing] = await withReadDbRetry(
+      () =>
+        db
+          .select({ id: purchases.id })
+          .from(purchases)
+          .where(
+            and(
+              eq(purchases.email, userEmail),
+              eq(purchases.sportingEventId, data.event.id),
+              eq(purchases.productType, "ticket_intelligence")
+            )
+          )
+          .limit(1),
+      { operation: "ticketIntelligencePage.purchaseCheck" },
+    );
     hasPerEventPurchase = !!existing;
     // Season Pass (28 Sep 2026) — a fan with an active pass covering this
     // event's editionYear gets the same "already unlocked" treatment as a

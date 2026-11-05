@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { withReadDbRetry } from "@/lib/db-retry";
 import { blogArticles, sportingEvents } from "@/schema/database";
 import { and, eq, desc, asc, sql, inArray } from "drizzle-orm";
 import { notFound } from "next/navigation";
@@ -15,33 +16,37 @@ const VALID_SPORTS = new Set(["tennis", "cricket", "football", "rugby", "golf", 
 // "Preview" link work the same way curator/review's does, without a
 // separate draft-preview route.
 export async function getBlogArticleBySlug(slug: string) {
-  const [row] = await db
-    .select({
-      id: blogArticles.id,
-      slug: blogArticles.slug,
-      title: blogArticles.title,
-      sport: blogArticles.sport,
-      sportingEventId: blogArticles.sportingEventId,
-      contentCategory: blogArticles.contentCategory,
-      seriesSlug: blogArticles.seriesSlug,
-      seriesPosition: blogArticles.seriesPosition,
-      excerpt: blogArticles.excerpt,
-      bodyContent: blogArticles.bodyContent,
-      readMinutes: blogArticles.readMinutes,
-      heroImageUrl: blogArticles.heroImageUrl,
-      heroImageAlt: blogArticles.heroImageAlt,
-      heroImageCredit: blogArticles.heroImageCredit,
-      status: blogArticles.status,
-      publishedAt: blogArticles.publishedAt,
-      eventName: sportingEvents.name,
-      eventSlug: sportingEvents.slug,
-      eventPackStatus: sportingEvents.packStatus,
-      eventIsHidden: sportingEvents.isHidden,
-      eventPackFormat: sportingEvents.packFormat,
-    })
-    .from(blogArticles)
-    .leftJoin(sportingEvents, eq(blogArticles.sportingEventId, sportingEvents.id))
-    .where(eq(blogArticles.slug, slug));
+  const [row] = await withReadDbRetry(
+    () =>
+      db
+        .select({
+          id: blogArticles.id,
+          slug: blogArticles.slug,
+          title: blogArticles.title,
+          sport: blogArticles.sport,
+          sportingEventId: blogArticles.sportingEventId,
+          contentCategory: blogArticles.contentCategory,
+          seriesSlug: blogArticles.seriesSlug,
+          seriesPosition: blogArticles.seriesPosition,
+          excerpt: blogArticles.excerpt,
+          bodyContent: blogArticles.bodyContent,
+          readMinutes: blogArticles.readMinutes,
+          heroImageUrl: blogArticles.heroImageUrl,
+          heroImageAlt: blogArticles.heroImageAlt,
+          heroImageCredit: blogArticles.heroImageCredit,
+          status: blogArticles.status,
+          publishedAt: blogArticles.publishedAt,
+          eventName: sportingEvents.name,
+          eventSlug: sportingEvents.slug,
+          eventPackStatus: sportingEvents.packStatus,
+          eventIsHidden: sportingEvents.isHidden,
+          eventPackFormat: sportingEvents.packFormat,
+        })
+        .from(blogArticles)
+        .leftJoin(sportingEvents, eq(blogArticles.sportingEventId, sportingEvents.id))
+        .where(eq(blogArticles.slug, slug)),
+    { operation: "getBlogArticleBySlug" },
+  );
 
   if (!row) notFound();
   return row;
@@ -49,16 +54,20 @@ export async function getBlogArticleBySlug(slug: string) {
 
 // Sibling entries in the same named series, ordered by seriesPosition.
 export async function getSeriesSiblings(seriesSlug: string, excludeSlug: string) {
-  return db
-    .select({
-      slug: blogArticles.slug,
-      title: blogArticles.title,
-      seriesPosition: blogArticles.seriesPosition,
-    })
-    .from(blogArticles)
-    .where(and(eq(blogArticles.seriesSlug, seriesSlug), PUBLISHED))
-    .orderBy(asc(blogArticles.seriesPosition))
-    .then((rows) => rows.filter((r) => r.slug !== excludeSlug));
+  return withReadDbRetry(
+    () =>
+      db
+        .select({
+          slug: blogArticles.slug,
+          title: blogArticles.title,
+          seriesPosition: blogArticles.seriesPosition,
+        })
+        .from(blogArticles)
+        .where(and(eq(blogArticles.seriesSlug, seriesSlug), PUBLISHED))
+        .orderBy(asc(blogArticles.seriesPosition))
+        .then((rows) => rows.filter((r) => r.slug !== excludeSlug)),
+    { operation: "getSeriesSiblings" },
+  );
 }
 
 // Other one-off pieces in the same category, most recent first — used when
@@ -81,23 +90,27 @@ export async function getRelatedByCategory(
   sportingEventId: string | null,
   limit = 4,
 ) {
-  return db
-    .select({
-      slug: blogArticles.slug,
-      title: blogArticles.title,
-    })
-    .from(blogArticles)
-    .where(and(eq(blogArticles.contentCategory, contentCategory as "history" | "rivalry" | "why_go" | "bucket_list" | "travel_craft"), PUBLISHED))
-    .orderBy(
-      sportingEventId
-        ? sql`CASE WHEN ${blogArticles.sportingEventId} = ${sportingEventId} THEN 0 ELSE 1 END`
-        : sql`0::int`,
-      sql`CASE WHEN ${blogArticles.sport} && ARRAY[${sql.join(sport.map((s) => sql`${s}`), sql`, `)}]::sport[] THEN 0 ELSE 1 END`,
-      sql`array_length(${blogArticles.sport}, 1) asc`,
-      desc(blogArticles.publishedAt),
-    )
-    .limit(limit + 1)
-    .then((rows) => rows.filter((r) => r.slug !== excludeSlug).slice(0, limit));
+  return withReadDbRetry(
+    () =>
+      db
+        .select({
+          slug: blogArticles.slug,
+          title: blogArticles.title,
+        })
+        .from(blogArticles)
+        .where(and(eq(blogArticles.contentCategory, contentCategory as "history" | "rivalry" | "why_go" | "bucket_list" | "travel_craft"), PUBLISHED))
+        .orderBy(
+          sportingEventId
+            ? sql`CASE WHEN ${blogArticles.sportingEventId} = ${sportingEventId} THEN 0 ELSE 1 END`
+            : sql`0::int`,
+          sql`CASE WHEN ${blogArticles.sport} && ARRAY[${sql.join(sport.map((s) => sql`${s}`), sql`, `)}]::sport[] THEN 0 ELSE 1 END`,
+          sql`array_length(${blogArticles.sport}, 1) asc`,
+          desc(blogArticles.publishedAt),
+        )
+        .limit(limit + 1)
+        .then((rows) => rows.filter((r) => r.slug !== excludeSlug).slice(0, limit)),
+    { operation: "getRelatedByCategory" },
+  );
 }
 
 // Pack-side "Worth Reading" block (hub page) — the reverse direction of the
@@ -107,29 +120,37 @@ export async function getRelatedByCategory(
 // sport genuinely has zero published articles, returns fewer than `limit`
 // (or none), and the hub page renders nothing rather than a placeholder.
 export async function getArticlesForEvent(sportingEventId: string, sport: string, limit = 3) {
-  const eventMatches = await db
-    .select({ slug: blogArticles.slug, title: blogArticles.title, excerpt: blogArticles.excerpt, readMinutes: blogArticles.readMinutes, heroImageUrl: blogArticles.heroImageUrl })
-    .from(blogArticles)
-    .where(and(eq(blogArticles.sportingEventId, sportingEventId), PUBLISHED))
-    .orderBy(desc(blogArticles.publishedAt))
-    .limit(limit);
+  const eventMatches = await withReadDbRetry(
+    () =>
+      db
+        .select({ slug: blogArticles.slug, title: blogArticles.title, excerpt: blogArticles.excerpt, readMinutes: blogArticles.readMinutes, heroImageUrl: blogArticles.heroImageUrl })
+        .from(blogArticles)
+        .where(and(eq(blogArticles.sportingEventId, sportingEventId), PUBLISHED))
+        .orderBy(desc(blogArticles.publishedAt))
+        .limit(limit),
+    { operation: "getArticlesForEvent.eventMatches" },
+  );
 
   if (eventMatches.length >= limit) return eventMatches;
 
-  const sportMatches = await db
-    .select({ slug: blogArticles.slug, title: blogArticles.title, excerpt: blogArticles.excerpt, readMinutes: blogArticles.readMinutes, heroImageUrl: blogArticles.heroImageUrl })
-    .from(blogArticles)
-    .where(and(sql`${sport} = ANY(${blogArticles.sport})`, PUBLISHED))
-    // Single/narrow-sport articles first, then recency — a 4-sport
-    // travel-craft piece ("never book a same-day return flight") merely
-    // includes this sport, it isn't really about it. Without this, a
-    // recently-published cross-sport article can bump a genuinely
-    // sport-specific piece (e.g. a Federer/Nadal final) out of the fallback
-    // slots purely on publish date. Found live on Shanghai Masters, 10 Aug
-    // 2026 — the two fallback fill slots were both cross-sport travel-craft
-    // pieces instead of any real tennis-specific article.
-    .orderBy(sql`array_length(${blogArticles.sport}, 1) asc`, desc(blogArticles.publishedAt))
-    .limit(limit + eventMatches.length);
+  const sportMatches = await withReadDbRetry(
+    () =>
+      db
+        .select({ slug: blogArticles.slug, title: blogArticles.title, excerpt: blogArticles.excerpt, readMinutes: blogArticles.readMinutes, heroImageUrl: blogArticles.heroImageUrl })
+        .from(blogArticles)
+        .where(and(sql`${sport} = ANY(${blogArticles.sport})`, PUBLISHED))
+        // Single/narrow-sport articles first, then recency — a 4-sport
+        // travel-craft piece ("never book a same-day return flight") merely
+        // includes this sport, it isn't really about it. Without this, a
+        // recently-published cross-sport article can bump a genuinely
+        // sport-specific piece (e.g. a Federer/Nadal final) out of the fallback
+        // slots purely on publish date. Found live on Shanghai Masters, 10 Aug
+        // 2026 — the two fallback fill slots were both cross-sport travel-craft
+        // pieces instead of any real tennis-specific article.
+        .orderBy(sql`array_length(${blogArticles.sport}, 1) asc`, desc(blogArticles.publishedAt))
+        .limit(limit + eventMatches.length),
+    { operation: "getArticlesForEvent.sportMatches" },
+  );
 
   const seen = new Set(eventMatches.map((a) => a.slug));
   const fill = sportMatches.filter((a) => !seen.has(a.slug)).slice(0, limit - eventMatches.length);
@@ -162,10 +183,14 @@ export async function getArticlesForDestination(
   limit = 3,
   extraEvents: { id: string; sport: typeof sportingEvents.$inferSelect["sport"] }[] = []
 ) {
-  const destEventsRaw = await db
-    .select({ id: sportingEvents.id, sport: sportingEvents.sport })
-    .from(sportingEvents)
-    .where(eq(sportingEvents.destinationId, destinationId));
+  const destEventsRaw = await withReadDbRetry(
+    () =>
+      db
+        .select({ id: sportingEvents.id, sport: sportingEvents.sport })
+        .from(sportingEvents)
+        .where(eq(sportingEvents.destinationId, destinationId)),
+    { operation: "getArticlesForDestination.destEvents" },
+  );
 
   const destEvents = [...destEventsRaw, ...extraEvents];
   if (destEvents.length === 0) return [];
@@ -175,17 +200,25 @@ export async function getArticlesForDestination(
 
   const ARTICLE_COLS = { slug: blogArticles.slug, title: blogArticles.title, excerpt: blogArticles.excerpt, readMinutes: blogArticles.readMinutes, heroImageUrl: blogArticles.heroImageUrl, sport: blogArticles.sport };
 
-  const eventMatches = await db
-    .select(ARTICLE_COLS)
-    .from(blogArticles)
-    .where(and(inArray(blogArticles.sportingEventId, eventIds), PUBLISHED))
-    .orderBy(desc(blogArticles.publishedAt));
+  const eventMatches = await withReadDbRetry(
+    () =>
+      db
+        .select(ARTICLE_COLS)
+        .from(blogArticles)
+        .where(and(inArray(blogArticles.sportingEventId, eventIds), PUBLISHED))
+        .orderBy(desc(blogArticles.publishedAt)),
+    { operation: "getArticlesForDestination.eventMatches" },
+  );
 
-  const sportMatches = await db
-    .select(ARTICLE_COLS)
-    .from(blogArticles)
-    .where(and(sql`${blogArticles.sport} && ARRAY[${sql.join(sports.map((s) => sql`${s}`), sql`, `)}]::sport[]`, PUBLISHED))
-    .orderBy(sql`array_length(${blogArticles.sport}, 1) asc`, desc(blogArticles.publishedAt));
+  const sportMatches = await withReadDbRetry(
+    () =>
+      db
+        .select(ARTICLE_COLS)
+        .from(blogArticles)
+        .where(and(sql`${blogArticles.sport} && ARRAY[${sql.join(sports.map((s) => sql`${s}`), sql`, `)}]::sport[]`, PUBLISHED))
+        .orderBy(sql`array_length(${blogArticles.sport}, 1) asc`, desc(blogArticles.publishedAt)),
+    { operation: "getArticlesForDestination.sportMatches" },
+  );
 
   const picked: typeof eventMatches = [];
   const seen = new Set<string>();
@@ -249,19 +282,23 @@ export async function getBlogArticles(opts?: { category?: string; sport?: string
     desc(blogArticles.publishedAt),
   ];
 
-  return db
-    .select({
-      slug: blogArticles.slug,
-      title: blogArticles.title,
-      excerpt: blogArticles.excerpt,
-      sport: blogArticles.sport,
-      contentCategory: blogArticles.contentCategory,
-      seriesSlug: blogArticles.seriesSlug,
-      readMinutes: blogArticles.readMinutes,
-      heroImageUrl: blogArticles.heroImageUrl,
-      publishedAt: blogArticles.publishedAt,
-    })
-    .from(blogArticles)
-    .where(and(...conditions))
-    .orderBy(...orderBy);
+  return withReadDbRetry(
+    () =>
+      db
+        .select({
+          slug: blogArticles.slug,
+          title: blogArticles.title,
+          excerpt: blogArticles.excerpt,
+          sport: blogArticles.sport,
+          contentCategory: blogArticles.contentCategory,
+          seriesSlug: blogArticles.seriesSlug,
+          readMinutes: blogArticles.readMinutes,
+          heroImageUrl: blogArticles.heroImageUrl,
+          publishedAt: blogArticles.publishedAt,
+        })
+        .from(blogArticles)
+        .where(and(...conditions))
+        .orderBy(...orderBy),
+    { operation: "getBlogArticles" },
+  );
 }

@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { withReadDbRetry } from "@/lib/db-retry";
 import {
   sportingEvents,
   tennisTicketIntelligenceOptions,
@@ -27,31 +28,39 @@ export async function getTennisOptionsData(slug: string) {
 }
 
 async function getTennisDataUncached(slug: string) {
-  const [event] = await db
-    .select({
-      id: sportingEvents.id,
-      slug: sportingEvents.slug,
-      name: sportingEvents.name,
-      heroImageUrl: sportingEvents.heroImageUrl,
-      sport: sportingEvents.sport,
-      editionYear: sportingEvents.editionYear,
-      packStatus: sportingEvents.packStatus,
-      isHidden: sportingEvents.isHidden,
-      destinationId: sportingEvents.destinationId,
-      startDate: sportingEvents.startDate,
-      endDate: sportingEvents.endDate,
-    })
-    .from(sportingEvents)
-    .where(and(eq(sportingEvents.slug, slug), eq(sportingEvents.sport, "tennis")))
-    .limit(1);
+  const [event] = await withReadDbRetry(
+    () =>
+      db
+        .select({
+          id: sportingEvents.id,
+          slug: sportingEvents.slug,
+          name: sportingEvents.name,
+          heroImageUrl: sportingEvents.heroImageUrl,
+          sport: sportingEvents.sport,
+          editionYear: sportingEvents.editionYear,
+          packStatus: sportingEvents.packStatus,
+          isHidden: sportingEvents.isHidden,
+          destinationId: sportingEvents.destinationId,
+          startDate: sportingEvents.startDate,
+          endDate: sportingEvents.endDate,
+        })
+        .from(sportingEvents)
+        .where(and(eq(sportingEvents.slug, slug), eq(sportingEvents.sport, "tennis")))
+        .limit(1),
+    { operation: "getTennisOptionsData.event" },
+  );
 
   if (!event) return null;
 
-  const [editionStatus] = await db
-    .select()
-    .from(tennisTicketIntelligenceEditionStatus)
-    .where(eq(tennisTicketIntelligenceEditionStatus.sportingEventId, event.id))
-    .limit(1);
+  const [editionStatus] = await withReadDbRetry(
+    () =>
+      db
+        .select()
+        .from(tennisTicketIntelligenceEditionStatus)
+        .where(eq(tennisTicketIntelligenceEditionStatus.sportingEventId, event.id))
+        .limit(1),
+    { operation: "getTennisOptionsData.editionStatus" },
+  );
 
   // Fail-closed, per Stage 1/2 spec: both the edition match AND activation
   // AND catalogue ratification must hold before this is considered
@@ -64,10 +73,14 @@ async function getTennisDataUncached(slug: string) {
     editionStatus.activatedAt !== null &&
     editionStatus.catalogueRatified === true;
 
-  const rows = await db
-    .select()
-    .from(tennisTicketIntelligenceOptions)
-    .where(eq(tennisTicketIntelligenceOptions.sportingEventId, event.id));
+  const rows = await withReadDbRetry(
+    () =>
+      db
+        .select()
+        .from(tennisTicketIntelligenceOptions)
+        .where(eq(tennisTicketIntelligenceOptions.sportingEventId, event.id)),
+    { operation: "getTennisOptionsData.options" },
+  );
 
   const options: TicketOption[] = rows
     .map((r) => ({
@@ -116,11 +129,15 @@ async function getTennisDataUncached(slug: string) {
 // tennis's extra activation/ratification gate layered on top.
 const hasTennisTicketIntelligenceCached = unstable_cache(
   async (eventId: string, editionYear: number) => {
-    const [editionStatus] = await db
-      .select()
-      .from(tennisTicketIntelligenceEditionStatus)
-      .where(eq(tennisTicketIntelligenceEditionStatus.sportingEventId, eventId))
-      .limit(1);
+    const [editionStatus] = await withReadDbRetry(
+      () =>
+        db
+          .select()
+          .from(tennisTicketIntelligenceEditionStatus)
+          .where(eq(tennisTicketIntelligenceEditionStatus.sportingEventId, eventId))
+          .limit(1),
+      { operation: "hasTennisTicketIntelligence.editionStatus" },
+    );
 
     const isPubliclyAvailable =
       !!editionStatus &&
@@ -130,11 +147,15 @@ const hasTennisTicketIntelligenceCached = unstable_cache(
 
     if (!isPubliclyAvailable) return false;
 
-    const [row] = await db
-      .select({ id: tennisTicketIntelligenceOptions.id })
-      .from(tennisTicketIntelligenceOptions)
-      .where(eq(tennisTicketIntelligenceOptions.sportingEventId, eventId))
-      .limit(1);
+    const [row] = await withReadDbRetry(
+      () =>
+        db
+          .select({ id: tennisTicketIntelligenceOptions.id })
+          .from(tennisTicketIntelligenceOptions)
+          .where(eq(tennisTicketIntelligenceOptions.sportingEventId, eventId))
+          .limit(1),
+      { operation: "hasTennisTicketIntelligence.optionsCheck" },
+    );
 
     return !!row;
   },

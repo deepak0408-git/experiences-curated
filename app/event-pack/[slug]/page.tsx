@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { withReadDbRetry } from "@/lib/db-retry";
 import { sportingEvents, experiences, purchases, userProfiles, sportingEventExperiences } from "@/schema/database";
 import { eq, and, sql, asc, isNotNull, inArray } from "drizzle-orm";
 import { getAuthUser } from "@/lib/supabase/server";
@@ -21,21 +22,25 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const [event] = await db
-    .select({
-      name: sportingEvents.name,
-      editorialOverview: sportingEvents.editorialOverview,
-      heroImageUrl: sportingEvents.heroImageUrl,
-      startDate: sportingEvents.startDate,
-      endDate: sportingEvents.endDate,
-      venueName: sportingEvents.venueName,
-    })
-    .from(sportingEvents)
-    .where(and(
-      eq(sportingEvents.slug, slug),
-      inArray(sportingEvents.packStatus, ["built_hidden", "live"]),
-    ))
-    .limit(1);
+  const [event] = await withReadDbRetry(
+    () =>
+      db
+        .select({
+          name: sportingEvents.name,
+          editorialOverview: sportingEvents.editorialOverview,
+          heroImageUrl: sportingEvents.heroImageUrl,
+          startDate: sportingEvents.startDate,
+          endDate: sportingEvents.endDate,
+          venueName: sportingEvents.venueName,
+        })
+        .from(sportingEvents)
+        .where(and(
+          eq(sportingEvents.slug, slug),
+          inArray(sportingEvents.packStatus, ["built_hidden", "live"]),
+        ))
+        .limit(1),
+    { operation: "eventPack.generateMetadata" },
+  );
 
   if (!event) return { title: "Event Pack" };
 
@@ -373,14 +378,18 @@ export default async function EventPackPage({
   // round-trips the same way, rather than colliding with F1's value.
   const fromCockpitSuffix = from === "cockpit" || from === "tennis-cockpit" ? `?from=${from}` : "";
 
-  const [event] = await db
-    .select()
-    .from(sportingEvents)
-    .where(and(
-      eq(sportingEvents.slug, slug),
-      inArray(sportingEvents.packStatus, ["built_hidden", "live"]),
-    ))
-    .limit(1);
+  const [event] = await withReadDbRetry(
+    () =>
+      db
+        .select()
+        .from(sportingEvents)
+        .where(and(
+          eq(sportingEvents.slug, slug),
+          inArray(sportingEvents.packStatus, ["built_hidden", "live"]),
+        ))
+        .limit(1),
+    { operation: "eventPack.event" },
+  );
 
   if (!event) notFound();
 
@@ -396,65 +405,77 @@ export default async function EventPackPage({
   }
 
   // Teaser cards — top 2 by packRank, fall back to unranked published experiences
-  const rankedTeasers = await db
-    .select({
-      id: experiences.id,
-      title: experiences.title,
-      subtitle: experiences.subtitle,
-      heroImageUrl: experiences.heroImageUrl,
-      experienceType: experiences.experienceType,
-      budgetTier: experiences.budgetTier,
-      neighborhood: experiences.neighborhood,
-      packRank: sportingEventExperiences.packRank,
-    })
-    .from(sportingEventExperiences)
-    .innerJoin(experiences, eq(experiences.id, sportingEventExperiences.experienceId))
-    .where(
-      and(
-        eq(sportingEventExperiences.sportingEventId, event.id),
-        eq(experiences.status, "published"),
-        isNotNull(sportingEventExperiences.packRank)
-      )
-    )
-    .orderBy(asc(sportingEventExperiences.packRank))
-    .limit(2);
+  const rankedTeasers = await withReadDbRetry(
+    () =>
+      db
+        .select({
+          id: experiences.id,
+          title: experiences.title,
+          subtitle: experiences.subtitle,
+          heroImageUrl: experiences.heroImageUrl,
+          experienceType: experiences.experienceType,
+          budgetTier: experiences.budgetTier,
+          neighborhood: experiences.neighborhood,
+          packRank: sportingEventExperiences.packRank,
+        })
+        .from(sportingEventExperiences)
+        .innerJoin(experiences, eq(experiences.id, sportingEventExperiences.experienceId))
+        .where(
+          and(
+            eq(sportingEventExperiences.sportingEventId, event.id),
+            eq(experiences.status, "published"),
+            isNotNull(sportingEventExperiences.packRank)
+          )
+        )
+        .orderBy(asc(sportingEventExperiences.packRank))
+        .limit(2),
+    { operation: "eventPack.rankedTeasers" },
+  );
 
   let teaserExps = rankedTeasers;
   if (teaserExps.length < 2) {
     const ranked_ids = teaserExps.map(e => e.id);
-    const fallback = await db
-      .select({
-        id: experiences.id,
-        title: experiences.title,
-        subtitle: experiences.subtitle,
-        heroImageUrl: experiences.heroImageUrl,
-        experienceType: experiences.experienceType,
-        budgetTier: experiences.budgetTier,
-        neighborhood: experiences.neighborhood,
-        packRank: sql<number | null>`null`,
-      })
-      .from(experiences)
-      .where(
-        and(
-          eq(experiences.sportingEventId, event.id),
-          eq(experiences.status, "published")
-        )
-      )
-      .limit(4);
+    const fallback = await withReadDbRetry(
+      () =>
+        db
+          .select({
+            id: experiences.id,
+            title: experiences.title,
+            subtitle: experiences.subtitle,
+            heroImageUrl: experiences.heroImageUrl,
+            experienceType: experiences.experienceType,
+            budgetTier: experiences.budgetTier,
+            neighborhood: experiences.neighborhood,
+            packRank: sql<number | null>`null`,
+          })
+          .from(experiences)
+          .where(
+            and(
+              eq(experiences.sportingEventId, event.id),
+              eq(experiences.status, "published")
+            )
+          )
+          .limit(4),
+      { operation: "eventPack.teaserFallback" },
+    );
     const extra = fallback.filter(e => !ranked_ids.includes(e.id));
     teaserExps = [...teaserExps, ...extra].slice(0, 2);
   }
 
   // Total published experience count
-  const [countRow] = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(experiences)
-    .where(
-      and(
-        eq(experiences.sportingEventId, event.id),
-        eq(experiences.status, "published")
-      )
-    );
+  const [countRow] = await withReadDbRetry(
+    () =>
+      db
+        .select({ count: sql<number>`count(*)` })
+        .from(experiences)
+        .where(
+          and(
+            eq(experiences.sportingEventId, event.id),
+            eq(experiences.status, "published")
+          )
+        ),
+    { operation: "eventPack.countRow" },
+  );
   const totalCount = Number(countRow.count);
 
   // Auth + purchase check
@@ -465,22 +486,27 @@ export default async function EventPackPage({
   }
 
   let hasPurchased = false;
-  if (user?.email) {
-    const [purchase] = await db
-      .select({ id: purchases.id })
-      .from(purchases)
-      .where(
-        and(
-          eq(purchases.email, user.email),
-          eq(purchases.sportingEventId, event.id),
-          eq(purchases.status, "active"),
-          // Evergreen-slug events reuse the same row across editions — a
-          // purchase for an earlier edition must not grant access to the
-          // current live edition. See project_evergreen_purchase_edition_gap.
-          eq(purchases.editionYear, event.editionYear)
-        )
-      )
-      .limit(1);
+  const userEmail = user?.email;
+  if (userEmail) {
+    const [purchase] = await withReadDbRetry(
+      () =>
+        db
+          .select({ id: purchases.id })
+          .from(purchases)
+          .where(
+            and(
+              eq(purchases.email, userEmail),
+              eq(purchases.sportingEventId, event.id),
+              eq(purchases.status, "active"),
+              // Evergreen-slug events reuse the same row across editions — a
+              // purchase for an earlier edition must not grant access to the
+              // current live edition. See project_evergreen_purchase_edition_gap.
+              eq(purchases.editionYear, event.editionYear)
+            )
+          )
+          .limit(1),
+      { operation: "eventPack.purchaseCheck" },
+    );
     hasPurchased = !!purchase;
   }
 
@@ -525,12 +551,16 @@ export default async function EventPackPage({
   }
 
   let archetype: string | null = null;
-  if (user?.email) {
-    const [profile] = await db
-      .select({ archetype: userProfiles.archetype })
-      .from(userProfiles)
-      .where(eq(userProfiles.email, user.email))
-      .limit(1);
+  if (userEmail) {
+    const [profile] = await withReadDbRetry(
+      () =>
+        db
+          .select({ archetype: userProfiles.archetype })
+          .from(userProfiles)
+          .where(eq(userProfiles.email, userEmail))
+          .limit(1),
+      { operation: "eventPack.archetypeProfile" },
+    );
     archetype = profile?.archetype ?? null;
   }
 

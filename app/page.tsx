@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { db } from "@/lib/db";
+import { withReadDbRetry } from "@/lib/db-retry";
 import { sportingEvents, sportingEventExperiences, experiences, circuitSeatingProfile } from "@/schema/database";
 import { eq, and, gte, asc, isNotNull, count, inArray } from "drizzle-orm";
 import Link from "next/link";
@@ -53,56 +54,72 @@ export default async function HomePage() {
   const featuredDestinations = await getDestinationsForHomepage();
 
   // Fetch featured events from DB by homepageSlot (set via /curator/events)
-  const featuredRows = await db
-    .select()
-    .from(sportingEvents)
-    .where(and(isNotNull(sportingEvents.homepageSlot), eq(sportingEvents.isHidden, false)))
-    .orderBy(asc(sportingEvents.homepageSlot));
+  const featuredRows = await withReadDbRetry(
+    () =>
+      db
+        .select()
+        .from(sportingEvents)
+        .where(and(isNotNull(sportingEvents.homepageSlot), eq(sportingEvents.isHidden, false)))
+        .orderBy(asc(sportingEvents.homepageSlot)),
+    { operation: "homepage.featuredRows" },
+  );
 
   const featuredSorted = featuredRows.slice(0, 4);
 
   // All upcoming events not in the featured set — for "On the calendar"
-  const allUpcoming = await db
-    .select()
-    .from(sportingEvents)
-    .where(and(
-      gte(sportingEvents.endDate, today),
-      inArray(sportingEvents.packStatus, ["built_hidden", "live"]),
-    ))
-    .orderBy(asc(sportingEvents.startDate));
+  const allUpcoming = await withReadDbRetry(
+    () =>
+      db
+        .select()
+        .from(sportingEvents)
+        .where(and(
+          gte(sportingEvents.endDate, today),
+          inArray(sportingEvents.packStatus, ["built_hidden", "live"]),
+        ))
+        .orderBy(asc(sportingEvents.startDate)),
+    { operation: "homepage.allUpcoming" },
+  );
 
   const calendarEvents = allUpcoming
     .filter((e) => e.startDate <= in365Days && !e.isHidden);
 
   // Experience counts per event for calendar cards
-  const expCounts = await db
-    .select({ eventId: sportingEventExperiences.sportingEventId, cnt: count() })
-    .from(sportingEventExperiences)
-    .innerJoin(experiences, and(
-      eq(experiences.id, sportingEventExperiences.experienceId),
-      eq(experiences.status, "published")
-    ))
-    .groupBy(sportingEventExperiences.sportingEventId);
+  const expCounts = await withReadDbRetry(
+    () =>
+      db
+        .select({ eventId: sportingEventExperiences.sportingEventId, cnt: count() })
+        .from(sportingEventExperiences)
+        .innerJoin(experiences, and(
+          eq(experiences.id, sportingEventExperiences.experienceId),
+          eq(experiences.status, "published")
+        ))
+        .groupBy(sportingEventExperiences.sportingEventId),
+    { operation: "homepage.expCounts" },
+  );
 
   const expCountMap = Object.fromEntries(expCounts.map((r) => [r.eventId, r.cnt]));
 
   // Top 3 experiences per calendar event for glimpse thumbnails
   const calendarEventIds = calendarEvents.map((e) => e.id);
   const glimpseRows = calendarEventIds.length > 0
-    ? await db
-        .select({
-          eventId: sportingEventExperiences.sportingEventId,
-          id: experiences.id,
-          title: experiences.title,
-          packRank: sportingEventExperiences.packRank,
-        })
-        .from(sportingEventExperiences)
-        .innerJoin(experiences, eq(experiences.id, sportingEventExperiences.experienceId))
-        .where(and(
-          eq(experiences.status, "published"),
-          isNotNull(sportingEventExperiences.packRank)
-        ))
-        .orderBy(asc(sportingEventExperiences.packRank))
+    ? await withReadDbRetry(
+        () =>
+          db
+            .select({
+              eventId: sportingEventExperiences.sportingEventId,
+              id: experiences.id,
+              title: experiences.title,
+              packRank: sportingEventExperiences.packRank,
+            })
+            .from(sportingEventExperiences)
+            .innerJoin(experiences, eq(experiences.id, sportingEventExperiences.experienceId))
+            .where(and(
+              eq(experiences.status, "published"),
+              isNotNull(sportingEventExperiences.packRank)
+            ))
+            .orderBy(asc(sportingEventExperiences.packRank)),
+        { operation: "homepage.glimpseRows" },
+      )
     : [];
 
   // Group by eventId, keep top 3 per event
@@ -118,10 +135,14 @@ export default async function HomePage() {
   // Which calendar events have Ticket Intelligence built (any seeded rows
   // in circuit_seating_profile) — gates F1's "Find your perfect seat" CTA.
   const tiRows = calendarEventIds.length > 0
-    ? await db
-        .selectDistinct({ eventId: circuitSeatingProfile.sportingEventId })
-        .from(circuitSeatingProfile)
-        .where(inArray(circuitSeatingProfile.sportingEventId, calendarEventIds))
+    ? await withReadDbRetry(
+        () =>
+          db
+            .selectDistinct({ eventId: circuitSeatingProfile.sportingEventId })
+            .from(circuitSeatingProfile)
+            .where(inArray(circuitSeatingProfile.sportingEventId, calendarEventIds)),
+        { operation: "homepage.tiRows" },
+      )
     : [];
   const tiEventIds = new Set(tiRows.map((r) => r.eventId));
 
