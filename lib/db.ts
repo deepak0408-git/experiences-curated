@@ -15,11 +15,18 @@ const pool =
   new Pool({
     connectionString: process.env.DATABASE_URL!,
     ssl: { rejectUnauthorized: false },
-    // max: 3 caps connections per serverless instance — without it each instance
-    // defaults higher, and enough concurrent instances exhaust Supabase's pooler
-    // (fixed at 200 client connections on the Micro compute tier).
-    max: 3,
-    idleTimeoutMillis: 5000,
+    // max: 1 matches Supabase's documented guidance (start at one connection per
+    // warm serverless instance, raise only with evidence of queueing) — max: 3
+    // multiplied potential concurrent connections across instances well beyond
+    // what this app's traffic needs, against a 200-client pooler cap.
+    max: 1,
+    // No idleTimeoutMillis: a short idle timeout forces frequent connection
+    // teardown/reopen, and each reopen is a fresh TCP/TLS/SCRAM handshake —
+    // more handshakes means more exposure to a Fluid Compute instance freezing
+    // mid-handshake (Supavisor logs this as a SCRAM final timeout /
+    // ECLIENTSOCKETCLOSED, seen recurring from 5-6 Nov). attachDatabasePool
+    // already releases idle clients before suspend, so this timer was redundant
+    // with it and actively increased handshake frequency instead.
     connectionTimeoutMillis: 10000,
   });
 
