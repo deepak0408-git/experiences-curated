@@ -52,6 +52,26 @@ export default function FullResult({
   result: ScoreResult;
   answers: QuizAnswers;
 }) {
+  // Defensive fallback — scoreTennisOptions() always re-tries without the
+  // Q7 date filter if it alone would zero out every option (see that
+  // file's 8 Nov 2026 incident comment), so `result.hero` should never
+  // actually be undefined here. This guards the render regardless, since
+  // this is the post-payment result page — a crash here is worse than a
+  // plain retry prompt.
+  if (!result.hero) {
+    return (
+      <div className="text-center py-16">
+        <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00] mb-4">
+          Something went wrong
+        </p>
+        <h1 className="text-2xl font-black text-white mb-4">
+          We couldn&apos;t match your answers to a ticket option.
+        </h1>
+        <RetakeLink eventSlug={eventSlug} />
+      </div>
+    );
+  }
+
   const isFrenchOpen = FRENCH_OPEN_EXPLANATION_SLUGS.has(eventSlug);
   const isWimbledon = WIMBLEDON_EXPLANATION_SLUGS.has(eventSlug);
   const isUsOpen = US_OPEN_EXPLANATION_SLUGS.has(eventSlug);

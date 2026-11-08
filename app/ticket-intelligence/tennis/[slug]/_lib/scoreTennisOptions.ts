@@ -462,7 +462,26 @@ function scoreOption(option: TicketOption, answers: QuizAnswers, eventSlug: Tenn
 // one tournament's rules.
 export function scoreTennisOptions(options: TicketOption[], answers: QuizAnswers, eventSlug: TennisEventSlug): ScoreResult {
   const tournamentWindow = tournamentWindowFor(options);
-  const eligible = options.filter((o) => passesHardFilters(o, answers, tournamentWindow));
+  let eligible = options.filter((o) => passesHardFilters(o, answers, tournamentWindow));
+
+  // Production incident, 8 Nov 2026: a French Open quiz submission with
+  // fromDate/toDate outside every option's real eligible window (e.g. a
+  // stale bookmarked URL, hand-edited query string, or a date typed
+  // directly into the <input type="date"> outside its min/max) made
+  // passesQ7Eligibility exclude all 87 options, leaving `eligible` empty
+  // and the caller's `hero` undefined — crashing TeaserResult.tsx/
+  // FullResult.tsx, which assume a hero always exists. The Q3
+  // reserved/Ground-Pass exclusion is a real business rule (never
+  // bypassed); the Q7 date filter is a soft preference that should never
+  // be allowed to zero out every option, so if it alone did, retry
+  // ignoring dates only — same options a flexible_tournament answer would
+  // see — rather than returning no result at all.
+  if (eligible.length === 0) {
+    eligible = options.filter(
+      (o) => !(o.arenaCode === "GP" && answers.q3 === "reserved")
+    );
+  }
+
   const excludedCount = options.length - eligible.length;
 
   const scored = eligible

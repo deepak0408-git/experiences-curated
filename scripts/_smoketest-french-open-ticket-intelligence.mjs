@@ -131,9 +131,17 @@ console.log("\n[Test 3] Q7 date eligibility uses French Open's real window");
   const answers = { q1: "lots_of_tennis", q2: "early", q3: "reserved", q4: "day", q5: "no_preference", q6: "balanced", q7: "fixed", fromDate: "2027-05-23", toDate: "2027-05-23" };
   const result = scoreTennisOptions(foOptions, answers, "french-open");
   check("fixed date 2027-05-23 (real FO opening day) finds a hero", !!result.hero);
+  // Production incident, 8 Nov 2026: an out-of-window date used to zero
+  // out every option (hero: undefined), crashing TeaserResult.tsx/
+  // FullResult.tsx. scoreTennisOptions() now fails safe — if the Q7 date
+  // filter alone would exclude everything, it retries without it (the
+  // Q3 reserved/Ground-Pass rule still applies) rather than returning no
+  // hero at all.
   const aoOnlyDateAnswers = { ...answers, fromDate: "2027-01-17", toDate: "2027-01-17" };
   const aoResult = scoreTennisOptions(foOptions, aoOnlyDateAnswers, "french-open");
-  check("AO's own date (2027-01-17, outside FO's window) excludes ALL French Open options", aoResult.hero === undefined, `hero: ${aoResult.hero?.option.optionNumber}`);
+  check("AO's own date (2027-01-17, outside FO's window) still finds a hero, fails safe", !!aoResult.hero, `hero: ${aoResult.hero?.option.optionNumber}`);
+  const groundPassIds = new Set([85, 86, 87]);
+  check("Q3=reserved still excludes Ground Pass even under the date fail-safe", !groundPassIds.has(aoResult.hero?.option.optionNumber));
 }
 
 // ── Test 4: Philippe-Chatrier stand display ─────────────────────────────

@@ -55,6 +55,32 @@ export default function TeaserResult({
   backLink: { href: string; label: string } | null;
 }) {
   const { hero } = result;
+
+  // Defensive fallback — scoreTennisOptions() always re-tries without the
+  // Q7 date filter if it alone would zero out every option (see that
+  // file's 8 Nov 2026 incident comment), so `hero` should never actually
+  // be undefined here. This guards the render regardless, since a crash
+  // this close to checkout is worse than a plain retry prompt.
+  if (!hero) {
+    return (
+      <div className="max-w-2xl mx-auto px-6 sm:px-8 py-16 text-center">
+        <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00] mb-4">
+          Something went wrong
+        </p>
+        <h1 className="text-2xl font-black text-white mb-4">
+          We couldn&apos;t match your answers to a ticket option.
+        </h1>
+        <button
+          type="button"
+          onClick={onEditAnswers}
+          className="text-sm font-semibold text-[#AAFF00] hover:text-[#BBFF33] underline transition-colors"
+        >
+          ← Edit my answers and try again
+        </button>
+      </div>
+    );
+  }
+
   const seating = seatingPresentation(hero.option);
   // P1 fix, 25 Oct 2026: same arenaCode==="GP" fix as ResultCard.tsx — see
   // that file's comment. sessionCode===null alone doesn't mean Ground
