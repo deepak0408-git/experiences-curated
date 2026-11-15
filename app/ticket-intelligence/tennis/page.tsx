@@ -5,7 +5,7 @@ import HomepageNav from "@/app/_components/HomepageNav";
 import { getAuthUser } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { sportingEvents } from "@/schema/database";
-import { eq } from "drizzle-orm";
+import { inArray } from "drizzle-orm";
 import { getProDetails } from "@/lib/pro";
 import { hasAnyActiveSeasonPass } from "../_lib/seasonPassAccess";
 import { hasTennisTicketIntelligence } from "./[slug]/_lib/getTennisOptionsData";
@@ -60,21 +60,30 @@ interface GrandSlamTile {
 }
 
 async function getGrandSlamTiles(): Promise<GrandSlamTile[]> {
+  // Sentry N+1 fix, 15 Nov 2026 — this previously ran one
+  // `WHERE slug = $1` query per Grand Slam slug in a sequential loop (4
+  // round trips + pool-connect overhead each, ~70ms apiece). The 4 slugs
+  // are a fixed, known set (see this file's header comment), so a single
+  // `WHERE slug IN (...)` batch query replaces all 4, then results are
+  // mapped back onto GRAND_SLAM_SLUGS to preserve the fixed tile order.
+  const events = await db
+    .select({
+      id: sportingEvents.id,
+      slug: sportingEvents.slug,
+      name: sportingEvents.name,
+      heroImageUrl: sportingEvents.heroImageUrl,
+      startDate: sportingEvents.startDate,
+      endDate: sportingEvents.endDate,
+      editionYear: sportingEvents.editionYear,
+    })
+    .from(sportingEvents)
+    .where(inArray(sportingEvents.slug, [...GRAND_SLAM_SLUGS]));
+
+  const eventBySlug = new Map(events.map((e) => [e.slug, e]));
+
   const tiles: GrandSlamTile[] = [];
   for (const slug of GRAND_SLAM_SLUGS) {
-    const [event] = await db
-      .select({
-        id: sportingEvents.id,
-        slug: sportingEvents.slug,
-        name: sportingEvents.name,
-        heroImageUrl: sportingEvents.heroImageUrl,
-        startDate: sportingEvents.startDate,
-        endDate: sportingEvents.endDate,
-        editionYear: sportingEvents.editionYear,
-      })
-      .from(sportingEvents)
-      .where(eq(sportingEvents.slug, slug))
-      .limit(1);
+    const event = eventBySlug.get(slug);
 
     // No sporting_events row at all for this slug yet — a minimal
     // placeholder tile (name only, no image/dates), never a crash or a
