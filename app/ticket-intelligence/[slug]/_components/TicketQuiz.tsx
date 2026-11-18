@@ -17,6 +17,7 @@ import { scoreSeats } from "../_lib/scoreSeats";
 import { resolveBackLink, appendFromParams } from "../_lib/resolveBackLink";
 import TeaserResult from "./TeaserResult";
 import TicketIntelligenceSidebar from "./TicketIntelligenceSidebar";
+import SeatingPrimer from "./SeatingPrimer";
 
 const Q1_OPTIONS: { value: Q1TrackAction; label: string }[] = [
   { value: "overtaking", label: "Overtaking and braking battles" },
@@ -293,6 +294,8 @@ export default function TicketQuiz({
           >
             {complete ? "See my match" : `Answer all ${steps.length} questions`}
           </button>
+
+          <SeatingPrimer eventName={eventName} seats={seats} />
         </div>
         <TicketIntelligenceSidebar
           eventSlug={slug}

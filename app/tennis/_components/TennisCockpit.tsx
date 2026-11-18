@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import CockpitMasthead from "./CockpitMasthead";
-import HowItWorks from "./HowItWorks";
 import GetStartedCards from "./GetStartedCards";
 import NextOnCalendar from "./NextOnCalendar";
 import PlanDeeperTiles from "./PlanDeeperTiles";
@@ -12,7 +10,9 @@ import type { CockpitEvent } from "../_lib/getCockpitEvents";
 // Client wrapper so Next on the Calendar and Get Started Card 3 can share
 // one event selector modal instance — a calendar card click opens the SAME
 // modal preselected to that event, not a second modal. Mirrors
-// app/formula-1/_components/FormulaOneCockpit.tsx.
+// app/formula-1/_components/FormulaOneCockpit.tsx, including the 18 Nov
+// 2026 SEO fix removing CockpitMasthead/HowItWorks from this client tree
+// — see that file's header comment for the full rationale.
 export default function TennisCockpit({
   allEvents,
   nextFour,
@@ -26,8 +26,6 @@ export default function TennisCockpit({
 
   return (
     <>
-      <CockpitMasthead />
-      <HowItWorks />
       <GetStartedCards events={allEvents} userEmail={userEmail} />
       <NextOnCalendar events={nextFour} onSelectEvent={setCalendarPreselect} />
       <PlanDeeperTiles />

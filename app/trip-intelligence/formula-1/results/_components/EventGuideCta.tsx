@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { notifyMe } from "@/app/planner/_lib/actions";
+import { phEvent } from "@/lib/posthog-events";
 
 // Ported from app/ticket-intelligence/[slug]/_components/TicketIntelligenceSidebar.tsx's
 // EventGuideCta exactly — same isBuilt/open/status state machine, same
@@ -15,13 +16,19 @@ export default function EventGuideCta({
   sport,
   isBuilt,
   userEmail,
+  sidebarPage,
 }: {
   eventSlug: string;
   eventId: string;
   sport: string;
   isBuilt: boolean;
   userEmail: string | null;
+  // Reused by both the F1 and tennis Trip Intelligence results sidebars —
+  // needed so sidebarCtaClicked can tell the two apart. Defaults to the
+  // original (F1) caller so the existing import site doesn't need updating.
+  sidebarPage?: "trip_intelligence_f1" | "trip_intelligence_tennis";
 }) {
+  const page = sidebarPage ?? "trip_intelligence_f1";
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState(userEmail ?? "");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
@@ -30,6 +37,7 @@ export default function EventGuideCta({
     return (
       <Link
         href={`/event-pack/${eventSlug}`}
+        onClick={() => phEvent.sidebarCtaClicked({ page, cta: "get_full_guide", slug: eventSlug })}
         className="flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 rounded-b-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">🎟</span>
@@ -69,6 +77,7 @@ export default function EventGuideCta({
       onSubmit={async (e) => {
         e.preventDefault();
         setStatus("loading");
+        phEvent.sidebarCtaClicked({ page, cta: "notify_me", slug: eventSlug });
         try {
           await notifyMe(
             email,

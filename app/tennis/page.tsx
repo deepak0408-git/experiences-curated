@@ -4,6 +4,8 @@ import HomepageNav from "@/app/_components/HomepageNav";
 import PostHogPageContext from "@/app/_components/PostHogPageContext";
 import { getAuthUser } from "@/lib/supabase/server";
 import { getCockpitTennisEvents, getNextFourTennisEvents } from "./_lib/getCockpitEvents";
+import CockpitMasthead from "./_components/CockpitMasthead";
+import HowItWorks from "./_components/HowItWorks";
 import TennisCockpit from "./_components/TennisCockpit";
 
 export const metadata: Metadata = {
@@ -29,6 +31,11 @@ export default async function TennisCockpitPage() {
     <main className="min-h-screen bg-[#0A0A0A]">
       <PostHogPageContext sport="tennis" />
       <HomepageNav email={user?.email ?? null} hideSecondaryLink hideMyTravels />
+      {/* Rendered directly here (not inside TennisCockpit's client tree)
+          so this page's h1/intro copy ships in the server HTML — see
+          TennisCockpit.tsx's header comment, 18 Nov 2026. */}
+      <CockpitMasthead />
+      <HowItWorks />
       <TennisCockpit allEvents={allEvents} nextFour={nextFour} userEmail={user?.email ?? null} />
     </main>
   );

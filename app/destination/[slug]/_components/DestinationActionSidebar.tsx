@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { phEvent } from "@/lib/posthog-events";
 
 // One sidebar per event, placed directly alongside its card in the same
 // row — founder-confirmed 1 Oct 2026 (e.g. London gets 3 rows: Wimbledon,
@@ -38,6 +41,7 @@ export default function DestinationActionSidebar({
       </p>
       <Link
         href={canPlanCosts ? `/price-radar/${eventSlug}` : "/planner"}
+        onClick={() => phEvent.sidebarCtaClicked({ page: "destination", cta: "budget_trip", slug: eventSlug })}
         className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">💰</span>
@@ -49,6 +53,7 @@ export default function DestinationActionSidebar({
 
       <Link
         href="/calendar"
+        onClick={() => phEvent.sidebarCtaClicked({ page: "destination", cta: "calendar", slug: eventSlug })}
         className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">📅</span>
@@ -61,6 +66,7 @@ export default function DestinationActionSidebar({
       {showTicketIntelligenceLink && (
         <Link
           href={`/ticket-intelligence/${eventSlug}`}
+          onClick={() => phEvent.sidebarCtaClicked({ page: "destination", cta: "ticket_intelligence", slug: eventSlug })}
           className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
@@ -74,6 +80,7 @@ export default function DestinationActionSidebar({
       {showTennisTicketIntelligenceLink && (
         <Link
           href={`/ticket-intelligence/tennis/${eventSlug}`}
+          onClick={() => phEvent.sidebarCtaClicked({ page: "destination", cta: "ticket_intelligence_tennis", slug: eventSlug })}
           className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
@@ -86,6 +93,7 @@ export default function DestinationActionSidebar({
 
       <Link
         href="/custom-itinerary"
+        onClick={() => phEvent.sidebarCtaClicked({ page: "destination", cta: "custom_itinerary", slug: eventSlug })}
         className="flex items-center gap-2.5 py-3 hover:opacity-80 transition-opacity"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">🧭</span>

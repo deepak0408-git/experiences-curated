@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { phEvent } from "@/lib/posthog-events";
 
 // Same map used across the site (homepage, calendar, event pack, etc.) —
 // the raw DB enum value should never be shown to visitors directly.
@@ -77,6 +80,12 @@ export default function SpokeActionSidebar({
   spokeId?: string;
   spokeLabel?: string;
 }) {
+  // Distinguishes Price Radar clicks from spoke-page clicks in the shared
+  // sidebarCtaClicked taxonomy — this component is reused on both (see file
+  // header comment), and heading is the only prop that already tells them
+  // apart (Price Radar passes "This Event", every spoke page keeps the
+  // default "This Guide").
+  const page = heading === "This Event" ? "price_radar" : "spoke";
   return (
     <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
       <p className="text-xs font-black tracking-widest uppercase text-white mb-3.5">
@@ -85,6 +94,7 @@ export default function SpokeActionSidebar({
 
       <Link
         href="/calendar"
+        onClick={() => phEvent.sidebarCtaClicked({ page, cta: "calendar", slug: eventSlug })}
         className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">📅</span>
@@ -105,6 +115,7 @@ export default function SpokeActionSidebar({
       {!hideBudgetRow && (
         <Link
           href={`/price-radar/${eventSlug}`}
+          onClick={() => phEvent.sidebarCtaClicked({ page, cta: "budget_trip", slug: eventSlug })}
           className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">💰</span>
@@ -122,6 +133,7 @@ export default function SpokeActionSidebar({
               ? `?from=${encodeURIComponent(`spoke:${spokeId}`)}${spokeLabel ? `&fromLabel=${encodeURIComponent(spokeLabel)}` : ""}`
               : ""
           }`}
+          onClick={() => phEvent.sidebarCtaClicked({ page, cta: "ticket_intelligence", slug: eventSlug })}
           className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
@@ -134,6 +146,7 @@ export default function SpokeActionSidebar({
 
       <Link
         href="/custom-itinerary"
+        onClick={() => phEvent.sidebarCtaClicked({ page, cta: "custom_itinerary", slug: eventSlug })}
         className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">🧭</span>
@@ -146,6 +159,7 @@ export default function SpokeActionSidebar({
       {showPlannerLink && (
         <Link
           href="/planner"
+          onClick={() => phEvent.sidebarCtaClicked({ page, cta: "compare_costs", slug: eventSlug })}
           className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">📊</span>
@@ -159,6 +173,7 @@ export default function SpokeActionSidebar({
       {sport && (
         <Link
           href={`/?sport=${sport}#on-the-calendar`}
+          onClick={() => phEvent.sidebarCtaClicked({ page, cta: "see_upcoming_events", slug: eventSlug })}
           className="flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🏆</span>
@@ -173,6 +188,7 @@ export default function SpokeActionSidebar({
 
       <Link
         href={`/event-pack/${eventSlug}`}
+        onClick={() => phEvent.sidebarCtaClicked({ page, cta: "get_full_guide", slug: eventSlug })}
         className="flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 rounded-b-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">🎟</span>

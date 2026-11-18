@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { notifyMe } from "@/app/planner/_lib/actions";
+import { phEvent } from "@/lib/posthog-events";
 
 // Same map used across the site (homepage, calendar, event pack, etc.) —
 // the raw DB enum value should never be shown to visitors directly.
@@ -74,6 +75,7 @@ function EventGuideCta({
     return (
       <Link
         href={`/event-pack/${eventSlug}`}
+        onClick={() => phEvent.sidebarCtaClicked({ page: "ticket_intelligence", cta: "get_full_guide", slug: eventSlug })}
         className="flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 rounded-b-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">🎟</span>
@@ -113,6 +115,7 @@ function EventGuideCta({
       onSubmit={async (e) => {
         e.preventDefault();
         setStatus("loading");
+        phEvent.sidebarCtaClicked({ page: "ticket_intelligence", cta: "notify_me", slug: eventSlug });
         try {
           await notifyMe(
             email,
@@ -187,6 +190,7 @@ export default function TicketIntelligenceSidebar({
         {showBudgetLink && (
           <Link
             href={`/price-radar/${eventSlug}`}
+            onClick={() => phEvent.sidebarCtaClicked({ page: "ticket_intelligence", cta: "budget_trip", slug: eventSlug })}
             className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
           >
             <span className="text-base flex-shrink-0 w-5 text-center">💰</span>
@@ -199,6 +203,7 @@ export default function TicketIntelligenceSidebar({
 
         <Link
           href="/calendar"
+          onClick={() => phEvent.sidebarCtaClicked({ page: "ticket_intelligence", cta: "calendar", slug: eventSlug })}
           className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">📅</span>
@@ -210,6 +215,7 @@ export default function TicketIntelligenceSidebar({
 
         <Link
           href="/custom-itinerary"
+          onClick={() => phEvent.sidebarCtaClicked({ page: "ticket_intelligence", cta: "custom_itinerary", slug: eventSlug })}
           className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🧭</span>
@@ -221,6 +227,7 @@ export default function TicketIntelligenceSidebar({
 
         <Link
           href={`/?sport=${sport}#on-the-calendar`}
+          onClick={() => phEvent.sidebarCtaClicked({ page: "ticket_intelligence", cta: "see_upcoming_events", slug: eventSlug })}
           className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🏆</span>
@@ -238,6 +245,7 @@ export default function TicketIntelligenceSidebar({
             Travel Planning Cockpit (/formula-1 or /tennis). */}
         <Link
           href="/formula-1"
+          onClick={() => phEvent.sidebarCtaClicked({ page: "ticket_intelligence", cta: "visit_cockpit", slug: eventSlug })}
           className="flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🗺️</span>
@@ -256,6 +264,7 @@ export default function TicketIntelligenceSidebar({
         </p>
         <Link
           href="/ticket-intelligence"
+          onClick={() => phEvent.sidebarCtaClicked({ page: "ticket_intelligence", cta: "explore_more_events", slug: eventSlug })}
           className="flex items-center gap-2.5 py-3 hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>

@@ -8,6 +8,7 @@ import { scoreTennisOptions, tournamentWindowFor, assertTennisEventSlug } from "
 import { ticketIntelligenceHeadlineEventName } from "../_lib/presentationMappings";
 import TeaserResult from "./TeaserResult";
 import TennisTicketIntelligenceSidebar from "./TennisTicketIntelligenceSidebar";
+import SeatingPrimer from "./SeatingPrimer";
 import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 
 // Approved final Q1-Q7 wording — Stage 2 Authorization, 20 Oct 2026. Do not
@@ -321,6 +322,8 @@ export default function TennisTicketQuiz({
           >
             {complete ? "See my match" : "Answer all 7 questions"}
           </button>
+
+          <SeatingPrimer eventName={eventName} options={options} />
         </div>
         <TennisTicketIntelligenceSidebar
           eventSlug={slug}

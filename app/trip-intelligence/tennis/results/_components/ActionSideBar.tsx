@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import EventGuideCta from "../../../formula-1/results/_components/EventGuideCta";
+import { phEvent } from "@/lib/posthog-events";
 
 // Adapted from app/trip-intelligence/formula-1/results/_components/ActionSideBar.tsx.
 // Reuses EventGuideCta as-is (generic, no F1-specific logic).
@@ -36,6 +39,7 @@ export default function ActionSideBar({
 
       <Link
         href="/planner"
+        onClick={() => phEvent.sidebarCtaClicked({ page: "trip_intelligence_tennis", cta: "budget_trip", slug: eventSlug })}
         className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">💰</span>
@@ -47,6 +51,7 @@ export default function ActionSideBar({
 
       <Link
         href="/calendar"
+        onClick={() => phEvent.sidebarCtaClicked({ page: "trip_intelligence_tennis", cta: "calendar", slug: eventSlug })}
         className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">📅</span>
@@ -58,6 +63,7 @@ export default function ActionSideBar({
 
       <Link
         href="/custom-itinerary"
+        onClick={() => phEvent.sidebarCtaClicked({ page: "trip_intelligence_tennis", cta: "custom_itinerary", slug: eventSlug })}
         className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">🧭</span>
@@ -69,6 +75,7 @@ export default function ActionSideBar({
 
       <Link
         href="/?sport=tennis#on-the-calendar"
+        onClick={() => phEvent.sidebarCtaClicked({ page: "trip_intelligence_tennis", cta: "see_upcoming_events", slug: eventSlug })}
         className={
           ticketIntelligenceSlug || showEventGuide
             ? "flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
@@ -85,6 +92,7 @@ export default function ActionSideBar({
       {ticketIntelligenceSlug && (
         <Link
           href={`/ticket-intelligence/tennis/${ticketIntelligenceSlug}`}
+          onClick={() => phEvent.sidebarCtaClicked({ page: "trip_intelligence_tennis", cta: "ticket_intelligence_tennis", slug: eventSlug })}
           className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
@@ -104,6 +112,7 @@ export default function ActionSideBar({
           this is the last item (co-leader case, showEventGuide=false). */}
       <Link
         href="/tennis"
+        onClick={() => phEvent.sidebarCtaClicked({ page: "trip_intelligence_tennis", cta: "visit_cockpit", slug: eventSlug })}
         className={
           showEventGuide
             ? "flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
@@ -118,7 +127,7 @@ export default function ActionSideBar({
       </Link>
 
       {showEventGuide && (
-        <EventGuideCta eventSlug={eventSlug} eventId={eventId} sport="tennis" isBuilt={isBuilt} userEmail={userEmail} />
+        <EventGuideCta eventSlug={eventSlug} eventId={eventId} sport="tennis" isBuilt={isBuilt} userEmail={userEmail} sidebarPage="trip_intelligence_tennis" />
       )}
     </div>
   );

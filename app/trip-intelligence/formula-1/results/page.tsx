@@ -10,9 +10,15 @@ import type { TripIntelligenceAnswers } from "../_lib/types";
 import ResultCard from "./_components/ResultCard";
 import ActionSideBar from "./_components/ActionSideBar";
 
+// noindex — this page's content is entirely personalized to whatever
+// answers are in the query string, never a stable page for any search
+// query. Added 18 Nov 2026 alongside the Trip Intelligence sitemap fix, so
+// the quiz entry page gets indexed while its personalized output doesn't
+// create thin/duplicate-content noise.
 export const metadata: Metadata = {
   title: "Your Grand Prix Match",
   description: "Your personalised Formula 1 Grand Prix recommendation, based on your Trip Intelligence answers.",
+  robots: { index: false, follow: true },
 };
 
 const ANSWER_KEYS: (keyof TripIntelligenceAnswers)[] = [

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { subscribeToNewsletter } from "@/app/newsletter/actions";
+import { phEvent } from "@/lib/posthog-events";
 
 // Same map used across the site (homepage, calendar, event pack, etc.) —
 // the raw DB enum value should never be shown to visitors directly.
@@ -95,6 +96,7 @@ export default function ArticleActionSidebar({
 
           <Link
             href="/calendar"
+            onClick={() => phEvent.sidebarCtaClicked({ page: "blog", cta: "calendar", slug: currentSlug })}
             className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
           >
             <span className="text-base flex-shrink-0 w-5 text-center">📅</span>
@@ -109,6 +111,7 @@ export default function ArticleActionSidebar({
               destination (href) changes based on canPlanCosts. */}
           <Link
             href={canPlanCosts && eventSlug ? `/price-radar/${eventSlug}` : "/planner"}
+            onClick={() => phEvent.sidebarCtaClicked({ page: "blog", cta: "budget_trip", slug: currentSlug })}
             className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
           >
             <span className="text-base flex-shrink-0 w-5 text-center">💰</span>
@@ -120,6 +123,7 @@ export default function ArticleActionSidebar({
 
           <Link
             href="/custom-itinerary"
+            onClick={() => phEvent.sidebarCtaClicked({ page: "blog", cta: "custom_itinerary", slug: currentSlug })}
             className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
           >
             <span className="text-base flex-shrink-0 w-5 text-center">🧭</span>
@@ -132,6 +136,7 @@ export default function ArticleActionSidebar({
           {sport && (
             <Link
               href={`/?sport=${sport}#on-the-calendar`}
+              onClick={() => phEvent.sidebarCtaClicked({ page: "blog", cta: "see_upcoming_events", slug: currentSlug })}
               className="flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
             >
               <span className="text-base flex-shrink-0 w-5 text-center">🏆</span>
@@ -147,6 +152,7 @@ export default function ArticleActionSidebar({
           {hasLivePack ? (
             <Link
               href={`/event-pack/${eventSlug}`}
+              onClick={() => phEvent.sidebarCtaClicked({ page: "blog", cta: "get_full_guide", slug: currentSlug })}
               className="flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 rounded-b-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors"
             >
               <span className="text-base flex-shrink-0 w-5 text-center">🎟</span>
@@ -156,7 +162,7 @@ export default function ArticleActionSidebar({
               </span>
             </Link>
           ) : (
-            <NotifyMeRow eventPackName={eventName ?? "event"} userEmail={userEmail} />
+            <NotifyMeRow eventPackName={eventName ?? "event"} userEmail={userEmail} currentSlug={currentSlug} />
           )}
         </div>
       )}
@@ -189,6 +195,7 @@ export default function ArticleActionSidebar({
           </p>
           <Link
             href={categoryHref}
+            onClick={() => phEvent.sidebarCtaClicked({ page: "blog", cta: "more_category", slug: currentSlug })}
             className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
           >
             <span className="text-base flex-shrink-0 w-5 text-center">📰</span>
@@ -199,6 +206,7 @@ export default function ArticleActionSidebar({
           </Link>
           <Link
             href="/blog"
+            onClick={() => phEvent.sidebarCtaClicked({ page: "blog", cta: "all_articles", slug: currentSlug })}
             className="flex items-center gap-2.5 py-3 hover:opacity-80 transition-opacity"
           >
             <span className="text-base flex-shrink-0 w-5 text-center">←</span>
@@ -213,7 +221,15 @@ export default function ArticleActionSidebar({
   );
 }
 
-function NotifyMeRow({ eventPackName, userEmail }: { eventPackName: string; userEmail: string | null }) {
+function NotifyMeRow({
+  eventPackName,
+  userEmail,
+  currentSlug,
+}: {
+  eventPackName: string;
+  userEmail: string | null;
+  currentSlug: string;
+}) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState(userEmail ?? "");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
@@ -248,6 +264,7 @@ function NotifyMeRow({ eventPackName, userEmail }: { eventPackName: string; user
       onSubmit={async (e) => {
         e.preventDefault();
         setStatus("loading");
+        phEvent.sidebarCtaClicked({ page: "blog", cta: "notify_me", slug: currentSlug });
         const result = await subscribeToNewsletter(email, "blog_article");
         setStatus(result.ok ? "done" : "error");
       }}

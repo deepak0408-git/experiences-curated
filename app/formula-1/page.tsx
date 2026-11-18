@@ -4,6 +4,8 @@ import HomepageNav from "@/app/_components/HomepageNav";
 import PostHogPageContext from "@/app/_components/PostHogPageContext";
 import { getAuthUser } from "@/lib/supabase/server";
 import { getCockpitF1Events, getNextFourF1Events } from "./_lib/getCockpitEvents";
+import CockpitMasthead from "./_components/CockpitMasthead";
+import HowItWorks from "./_components/HowItWorks";
 import FormulaOneCockpit from "./_components/FormulaOneCockpit";
 
 export const metadata: Metadata = {
@@ -29,6 +31,11 @@ export default async function FormulaOneCockpitPage() {
     <main className="min-h-screen bg-[#0A0A0A]">
       <PostHogPageContext sport="formula_one" />
       <HomepageNav email={user?.email ?? null} hideSecondaryLink hideMyTravels />
+      {/* Rendered directly here (not inside FormulaOneCockpit's client
+          tree) so this page's h1/intro copy ships in the server HTML —
+          see FormulaOneCockpit.tsx's header comment, 18 Nov 2026. */}
+      <CockpitMasthead />
+      <HowItWorks />
       <FormulaOneCockpit allEvents={allEvents} nextFour={nextFour} userEmail={user?.email ?? null} />
     </main>
   );

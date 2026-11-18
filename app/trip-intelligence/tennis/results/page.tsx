@@ -17,9 +17,12 @@ import ResultCard from "./_components/ResultCard";
 import ActionSideBar from "./_components/ActionSideBar";
 import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 
+// noindex — same reasoning as the F1 results page's identical comment:
+// entirely personalized output, never a stable page for any search query.
 export const metadata: Metadata = {
   title: "Your Grand Slam Match",
   description: "Your personalised Tennis Grand Slam recommendation, based on your Trip Intelligence answers.",
+  robots: { index: false, follow: true },
 };
 
 const ANSWER_KEYS: (keyof TripIntelligenceTennisAnswers)[] = [

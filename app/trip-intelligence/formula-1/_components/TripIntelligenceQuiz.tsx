@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import type { TripIntelligenceAnswers } from "../_lib/types";
 import { QUESTIONS } from "../_lib/questions";
 import QuestionBlock from "./QuestionBlock";
+import TripIntelligencePrimer from "./TripIntelligencePrimer";
 
 type PartialAnswers = Partial<TripIntelligenceAnswers>;
 
@@ -130,6 +131,8 @@ export default function TripIntelligenceQuiz() {
       >
         {complete ? "See my match" : `Answer all ${QUESTIONS.length} questions`}
       </button>
+
+      <TripIntelligencePrimer />
     </div>
   );
 }

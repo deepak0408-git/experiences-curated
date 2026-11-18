@@ -31,6 +31,25 @@ export const phEvent = {
   experienceViewed: (props: { experienceSlug: string; experienceTitle: string; eventSlug?: string; eventName?: string; sport?: string }) =>
     posthog.capture("experience_viewed", props),
 
+  // Shared "next step" sidebar click event — covers every one of the 8
+  // hand-rolled sidebar components across the site (Experience, Destination,
+  // Blog article, Hub-and-Spoke spoke pages + Price Radar, Ticket
+  // Intelligence F1 + tennis, Trip Intelligence results F1 + tennis). All 8
+  // follow the same "4-action model" (explicitly documented as copies of
+  // each other in their own code comments) but none fired a single click
+  // event — Issue 2 investigation, 18 Nov 2026. One shared event name,
+  // filterable by `page`/`cta` in PostHog, rather than 8 near-identical
+  // per-surface events. `slug` is whichever slug identifies the page the
+  // sidebar renders on (experience/destination/event/article slug) — not
+  // necessarily the link's destination. sport/eventSlug/eventName ride
+  // along as super-properties already registered by the page-level tracker
+  // components (ExperienceTracker, etc.) where present — not re-passed here.
+  sidebarCtaClicked: (props: {
+    page: "experience" | "destination" | "blog" | "spoke" | "price_radar" | "ticket_intelligence" | "ticket_intelligence_tennis" | "trip_intelligence_f1" | "trip_intelligence_tennis";
+    cta: string;
+    slug: string;
+  }) => posthog.capture("sidebar_cta_clicked", props),
+
   // F1 Travel Planning Cockpit — $pageview already fires from PostHogProvider
   // on every route including /formula-1, so these cover outbound engagement
   // only, not page visits themselves.

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { subscribeToNewsletter } from "@/app/newsletter/actions";
+import { phEvent } from "@/lib/posthog-events";
 
 // Same map used across the site (homepage, calendar, event pack, etc.) —
 // the raw DB enum value should never be shown to visitors directly.
@@ -99,6 +100,7 @@ export default function ExperienceActionSidebar({
 
       <Link
         href="/calendar"
+        onClick={() => phEvent.sidebarCtaClicked({ page: "experience", cta: "calendar", slug: experienceSlug })}
         className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">📅</span>
@@ -116,6 +118,7 @@ export default function ExperienceActionSidebar({
           instruction (same day) — only the destination changes. */}
       <Link
         href={canPlanCosts ? `/price-radar/${eventPackSlug}` : "/planner"}
+        onClick={() => phEvent.sidebarCtaClicked({ page: "experience", cta: "budget_trip", slug: experienceSlug })}
         className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">💰</span>
@@ -128,6 +131,7 @@ export default function ExperienceActionSidebar({
       {showTicketIntelligenceLink && (
         <Link
           href={`/ticket-intelligence/${eventPackSlug}?from=${encodeURIComponent(`experience:${experienceSlug}`)}`}
+          onClick={() => phEvent.sidebarCtaClicked({ page: "experience", cta: "ticket_intelligence", slug: experienceSlug })}
           className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
@@ -141,6 +145,7 @@ export default function ExperienceActionSidebar({
       {(exploreSport || eventPackSearchDestination) && (
         <Link
           href={`/search?${exploreSport ? `sport=${encodeURIComponent(exploreSport)}` : ""}${exploreSport && eventPackSearchDestination ? "&" : ""}${eventPackSearchDestination ? `destination=${encodeURIComponent(eventPackSearchDestination)}` : ""}`}
+          onClick={() => phEvent.sidebarCtaClicked({ page: "experience", cta: "explore_search", slug: experienceSlug })}
           className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🔎</span>
@@ -155,6 +160,7 @@ export default function ExperienceActionSidebar({
 
       <Link
         href="/custom-itinerary"
+        onClick={() => phEvent.sidebarCtaClicked({ page: "experience", cta: "custom_itinerary", slug: experienceSlug })}
         className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">🧭</span>
@@ -167,6 +173,7 @@ export default function ExperienceActionSidebar({
       {sport && (
         <Link
           href={`/?sport=${sport}#on-the-calendar`}
+          onClick={() => phEvent.sidebarCtaClicked({ page: "experience", cta: "see_upcoming_events", slug: experienceSlug })}
           className="flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🏆</span>
@@ -182,6 +189,7 @@ export default function ExperienceActionSidebar({
       {hasLivePack ? (
         <Link
           href={`/event-pack/${eventPackSlug}`}
+          onClick={() => phEvent.sidebarCtaClicked({ page: "experience", cta: "get_full_guide", slug: experienceSlug })}
           className="flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 rounded-b-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🎟</span>
@@ -191,13 +199,21 @@ export default function ExperienceActionSidebar({
           </span>
         </Link>
       ) : (
-        <NotifyMeRow eventPackName={eventPackName} userEmail={userEmail} />
+        <NotifyMeRow eventPackName={eventPackName} userEmail={userEmail} experienceSlug={experienceSlug} />
       )}
     </div>
   );
 }
 
-function NotifyMeRow({ eventPackName, userEmail }: { eventPackName: string; userEmail: string | null }) {
+function NotifyMeRow({
+  eventPackName,
+  userEmail,
+  experienceSlug,
+}: {
+  eventPackName: string;
+  userEmail: string | null;
+  experienceSlug: string;
+}) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState(userEmail ?? "");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
@@ -232,6 +248,7 @@ function NotifyMeRow({ eventPackName, userEmail }: { eventPackName: string; user
       onSubmit={async (e) => {
         e.preventDefault();
         setStatus("loading");
+        phEvent.sidebarCtaClicked({ page: "experience", cta: "notify_me", slug: experienceSlug });
         const result = await subscribeToNewsletter(email, "experience_page");
         setStatus(result.ok ? "done" : "error");
       }}

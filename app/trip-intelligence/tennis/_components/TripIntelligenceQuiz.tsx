@@ -7,6 +7,7 @@ import type { TripIntelligenceTennisAnswers } from "../_lib/types";
 import { QUESTIONS } from "../_lib/questions";
 import QuestionBlock from "./QuestionBlock";
 import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
+import TripIntelligencePrimer from "./TripIntelligencePrimer";
 
 type PartialAnswers = Partial<TripIntelligenceTennisAnswers>;
 
@@ -126,6 +127,8 @@ export default function TripIntelligenceQuiz() {
       >
         {complete ? "See my match" : `Answer all ${QUESTIONS.length} questions`}
       </button>
+
+      <TripIntelligencePrimer />
     </div>
   );
 }
