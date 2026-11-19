@@ -125,7 +125,11 @@ export default async function TicketIntelligencePage({
 
   return (
     <main className="min-h-screen bg-[#0A0A0A]">
-      <HomepageNav email={user?.email ?? null} hideSecondaryLink hideMyTravels />
+      <HomepageNav
+        email={user?.email ?? null}
+        secondaryLink={{ href: "/ticket-intelligence-methodology", label: "How This Works", mobileLabel: "How It Works" }}
+        hideMyTravels
+      />
       <Suspense>
         {/* key forces a real remount whenever this is reached via a fresh
             "retake" navigation vs. a normal first visit — React can

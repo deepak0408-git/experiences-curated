@@ -52,7 +52,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Ticket Guide alone, or the full Event Pack, to unlock real confirmed pricing for every tier, every grandstand and zone in detail, the single-day qualifying budget move, and our direct verdict on which tier to actually book for a first Las Vegas GP."
+      ctaCopy="Buy the Ticket Guide alone, or the full Event Guide, to unlock real confirmed pricing for every tier, every grandstand and zone in detail, the single-day qualifying budget move, and our direct verdict on which tier to actually book for a first Las Vegas GP."
     >
       {/* Free teaser — tier names only, no pricing/cards/schedule/verdict.
           Everything else gated behind isUnlocked (full pack or the Ticket

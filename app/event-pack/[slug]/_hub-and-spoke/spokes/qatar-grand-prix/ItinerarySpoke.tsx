@@ -47,7 +47,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the real confirmed session times, the day-by-day rhythm, and the full 5-day itinerary hour by hour — Thursday through the optional Monday trip — including exactly which morning gets the museum, which evening gets your one real dinner, and why unreserved seating changes the sequencing most guides miss."
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Guide, to unlock the real confirmed session times, the day-by-day rhythm, and the full 5-day itinerary hour by hour — Thursday through the optional Monday trip — including exactly which morning gets the museum, which evening gets your one real dinner, and why unreserved seating changes the sequencing most guides miss."
     >
       {/* Free teaser — bare day shape only, no session times/specific
           activities/hour-by-hour. Everything else gated behind isUnlocked

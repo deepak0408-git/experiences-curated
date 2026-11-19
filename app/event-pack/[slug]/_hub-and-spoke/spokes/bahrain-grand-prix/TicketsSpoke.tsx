@@ -97,7 +97,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Ticket Guide alone, or the full Event Pack, to unlock which stand we'd actually pick for a first Sepang weekend, real 3-day pricing for every tier, the block-by-block buying detail, and experience-level detail for every stand — not just which ticket types exist."
+      ctaCopy="Buy the Ticket Guide alone, or the full Event Guide, to unlock which stand we'd actually pick for a first Sepang weekend, real 3-day pricing for every tier, the block-by-block buying detail, and experience-level detail for every stand — not just which ticket types exist."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Sepang has four named ticket options, and they&apos;re built around genuinely different ideas of what&apos;s

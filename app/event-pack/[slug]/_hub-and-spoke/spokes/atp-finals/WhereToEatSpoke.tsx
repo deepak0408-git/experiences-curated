@@ -30,7 +30,7 @@ export default async function WhereToEatSpoke({ eventSlug }: { eventSlug: string
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The real restaurant names and food traditions are all free above. The Event Pack adds our actual verdict — which of the three Piedmontese restaurants to book for your specific trip length, and how to sequence a bicerin, an aperitivo, and a proper dinner across one genuinely good food day without overdoing it."
+      ctaCopy="The real restaurant names and food traditions are all free above. The Event Guide adds our actual verdict — which of the three Piedmontese restaurants to book for your specific trip length, and how to sequence a bicerin, an aperitivo, and a proper dinner across one genuinely good food day without overdoing it."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Turin is the birthplace of the Slow Food movement, and that shows up directly in the city's food identity —

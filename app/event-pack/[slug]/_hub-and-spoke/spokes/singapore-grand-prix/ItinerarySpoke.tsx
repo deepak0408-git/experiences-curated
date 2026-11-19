@@ -49,7 +49,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the full hour-by-hour itinerary for all four days — exact session times, which grandstand to be at when, the concert set to catch after, and the transit move to make next, so you're never guessing what to do between sessions."
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Guide, to unlock the full hour-by-hour itinerary for all four days — exact session times, which grandstand to be at when, the concert set to catch after, and the transit move to make next, so you're never guessing what to do between sessions."
     >
       {/* Free teaser — the weekend's basic 4-day shape only (day names, no
           specific activities/times/concert acts). Everything with real

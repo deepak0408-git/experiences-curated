@@ -43,7 +43,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Pack, to unlock every trackside and off-Strip pick in detail, the self-catered and value neighborhoods, which specific room category to request, and the exact booking window before track-view rooms sell out."
+      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Guide, to unlock every trackside and off-Strip pick in detail, the self-catered and value neighborhoods, which specific room category to request, and the exact booking window before track-view rooms sell out."
     >
       {/* Free teaser — area names only, no detail/cards/booking info/verdict.
           Everything else gated behind isUnlocked (full pack or the Where to

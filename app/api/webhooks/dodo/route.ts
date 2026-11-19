@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { db } from "@/lib/db";
 import { purchases, sportingEvents, proSubscriptions, users, customItineraryOrders, ticketIntelligenceSeasonPasses } from "@/schema/database";
+import { getPostHogClient } from "@/lib/posthog";
 
 const CUSTOM_ITINERARY_PRODUCT_ID = "pdt_0NmN6uswSvFETzX6GUQOU";
 // Ticket Intelligence Season Pass — US$25, covers every 2026 + 2027 F1
@@ -496,6 +497,35 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     console.error("[dodo webhook] failed to insert purchase:", err);
     return NextResponse.json({ error: "DB insert failed" }, { status: 500 });
+  }
+
+  // Issue 3 investigation, 19 Nov 2026 — fires server-side, from the
+  // actual authoritative moment of purchase, not dependent on the buyer's
+  // browser successfully loading a post-payment page. Previously, TI
+  // purchases produced ZERO completion signal of any kind: the site's only
+  // purchaseCompleted event fires from /event-pack/[slug]/welcome, the
+  // Event Guide's own post-payment page, which TI's checkout flow never
+  // visits (it redirects straight to /ticket-intelligence/[slug]/result).
+  // Keyed on email via identify() (not a true PostHog distinct_id — no
+  // client-side session id is threaded through checkout metadata yet,
+  // that's Issue 12/14's separate scope) so this at least merges into the
+  // same person profile a signed-in buyer's client-side events use.
+  if (productType === "ticket_intelligence") {
+    try {
+      // flushAt: 1 / flushInterval: 0 (lib/posthog.ts) means this capture
+      // sends immediately — no explicit flush/shutdown call needed, and
+      // none should be added: getPostHogClient() is a module-level
+      // singleton reused across requests in the same server instance, and
+      // shutting it down here would leave every later webhook call in
+      // that instance holding a dead client.
+      getPostHogClient().capture({
+        distinctId: email,
+        event: "ticket_intelligence_purchase_completed",
+        properties: { eventSlug: sportingEvent.slug, sport: sportingEvent.sport },
+      });
+    } catch (err) {
+      console.error("[dodo webhook] failed to capture ticket_intelligence_purchase_completed:", err);
+    }
   }
 
   try {

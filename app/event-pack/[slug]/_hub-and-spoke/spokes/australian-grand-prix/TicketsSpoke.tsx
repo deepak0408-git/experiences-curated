@@ -81,7 +81,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Ticket Guide alone, or the full Event Pack, to unlock the full grandstand-by-grandstand comparison — what each tier actually shows you, real seating and weather-cover detail, our direct verdict on Vettel vs. Brabham for a first Albert Park weekend, and where to actually buy."
+      ctaCopy="Buy the Ticket Guide alone, or the full Event Guide, to unlock the full grandstand-by-grandstand comparison — what each tier actually shows you, real seating and weather-cover detail, our direct verdict on Vettel vs. Brabham for a first Albert Park weekend, and where to actually buy."
     >
       {/* Free teaser — tier names only, no pricing/comparison/buy-links/verdict.
           Everything else gated behind isUnlocked (full pack or the Ticket

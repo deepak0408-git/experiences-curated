@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { QuizAnswers, ScoreResult } from "../_lib/types";
@@ -11,6 +11,19 @@ import TennisTicketIntelligenceSidebar from "./TennisTicketIntelligenceSidebar";
 import TennisSeasonPassCheckout from "./TennisSeasonPassCheckout";
 import FullResult from "../result/_components/FullResult";
 import { updateTicketIntelligenceAnswers } from "../actions";
+import { phEvent } from "@/lib/posthog-events";
+import SampleOutputModal from "./SampleOutputModal";
+
+// Issue 5 fix, 19 Nov 2026 — real founder-provided screenshot of their
+// own Australian Open 2027 result (same pattern as F1's TeaserResult.tsx
+// — genuine, unedited, no invented content).
+const SAMPLE_IMAGE = {
+  src: "/ticket-intelligence/sample-result-tennis.png",
+  alt: "A real, unlocked Ticket Intelligence result for the Australian Open — best match, two alternatives, arena seating maps, and buying guide",
+  width: 776,
+  height: 4193,
+  caption: "A real, unlocked result from an Australian Open 2027 purchase",
+};
 
 // Commercial wiring — 20 Oct 2026. Mirrors F1's TeaserResult.tsx structure
 // exactly (blurred partial reveal, sign-in-gated unlock, Season Pass
@@ -55,6 +68,49 @@ export default function TeaserResult({
   backLink: { href: string; label: string } | null;
 }) {
   const { hero } = result;
+  // Issue 5 fix, 19 Nov 2026 — "Here's what a sample output looks like"
+  // link below the blurred teaser box, opening SampleOutputModal. Same
+  // placement reasoning as F1's TeaserResult.tsx.
+  const [sampleOpen, setSampleOpen] = useState(false);
+
+  // Hooks moved above the `!hero` early return below, 19 Nov 2026 —
+  // pre-existing bug found while adding this file's new tracking effects:
+  // useRef/useEffect/useSearchParams were all declared AFTER that
+  // conditional return, violating React's rules of hooks (confirmed via
+  // `git stash` that this predates this session's changes). If `hero` is
+  // ever falsy on one render and truthy on the next, every hook below
+  // would be skipped then suddenly called, breaking React's hook-call-
+  // order guarantee. Genuinely unlikely in practice per the comment below
+  // (scoreTennisOptions always retries to avoid an undefined hero), but
+  // not guaranteed impossible, and the new effects added here would only
+  // have made the existing bug worse by adding two more instances of it.
+  //
+  // Also persists these fresh answers to purchases.ticketIntelligenceAnswers
+  // (fire-once via the ref guard) so the email-recovery path — the
+  // confirmation email links to /result with no query string, falling back
+  // to stored answers — always shows the LATEST retake.
+  const persistedRef = useRef(false);
+  useEffect(() => {
+    if (alreadyPurchased && !persistedRef.current) {
+      persistedRef.current = true;
+      updateTicketIntelligenceAnswers(eventId, answers).catch((err) =>
+        console.error("[tennis ticket-intelligence] failed to persist retake answers:", err)
+      );
+    }
+  }, [alreadyPurchased, eventId, answers]);
+
+  // Issue 3 investigation, 19 Nov 2026 — same pattern as F1's
+  // TeaserResult.tsx: only fires for a genuine unpurchased teaser view.
+  const teaserViewedFiredRef = useRef(false);
+  useEffect(() => {
+    if (!alreadyPurchased && !teaserViewedFiredRef.current) {
+      teaserViewedFiredRef.current = true;
+      phEvent.ticketIntelligenceTeaserViewed({ eventSlug, sport: "tennis" });
+    }
+  }, [alreadyPurchased, eventSlug]);
+
+  const searchParams = useSearchParams();
+  const nextUrl = `/ticket-intelligence/tennis/${eventSlug}?${searchParams.toString()}`;
 
   // Defensive fallback — scoreTennisOptions() always re-tries without the
   // Q7 date filter if it alone would zero out every option (see that
@@ -86,24 +142,6 @@ export default function TeaserResult({
   // that file's comment. sessionCode===null alone doesn't mean Ground
   // Pass; Wimbledon's 22 reserved-court options are also null there.
   const session = hero.option.arenaCode === "GP" ? null : sessionExplanation(hero.option.sessionCode) ?? wimbledonDaySessionExplanation();
-
-  // A buyer who already paid (e.g. via "Retake the quiz") never sees the
-  // paywall for a second teaser — fresh answers just render the same real,
-  // unblurred result immediately. Same pattern as F1's TeaserResult.tsx.
-  //
-  // Also persists these fresh answers to purchases.ticketIntelligenceAnswers
-  // (fire-once via the ref guard) so the email-recovery path — the
-  // confirmation email links to /result with no query string, falling back
-  // to stored answers — always shows the LATEST retake.
-  const persistedRef = useRef(false);
-  useEffect(() => {
-    if (alreadyPurchased && !persistedRef.current) {
-      persistedRef.current = true;
-      updateTicketIntelligenceAnswers(eventId, answers).catch((err) =>
-        console.error("[tennis ticket-intelligence] failed to persist retake answers:", err)
-      );
-    }
-  }, [alreadyPurchased, eventId, answers]);
 
   if (alreadyPurchased) {
     return (
@@ -140,9 +178,8 @@ export default function TeaserResult({
   // fully anonymous, same as F1. TennisTicketQuiz keeps the current URL
   // (answers + revealed=1) in sync via history.replaceState, so
   // /sign-in?next=<that URL> round-trips back to this exact teaser after
-  // the magic link.
-  const searchParams = useSearchParams();
-  const nextUrl = `/ticket-intelligence/tennis/${eventSlug}?${searchParams.toString()}`;
+  // the magic link. searchParams/nextUrl are now declared above (moved
+  // alongside the other hooks, see comment there) — only used here.
 
   return (
     <div className="max-w-2xl mx-auto px-6 sm:px-8 py-16">
@@ -192,6 +229,14 @@ export default function TeaserResult({
           </div>
         </div>
       </div>
+
+      <button
+        type="button"
+        onClick={() => setSampleOpen(true)}
+        className="text-xs font-semibold text-[#AAFF00] hover:text-[#BBFF33] underline mb-8 -mt-5 block transition-colors"
+      >
+        Here&apos;s what a sample output looks like →
+      </button>
 
       {signedInEmail ? (
         <>
@@ -256,6 +301,16 @@ export default function TeaserResult({
           </div>
         </>
       )}
+
+      <SampleOutputModal
+        open={sampleOpen}
+        onClose={() => setSampleOpen(false)}
+        imageSrc={SAMPLE_IMAGE.src}
+        imageAlt={SAMPLE_IMAGE.alt}
+        imageWidth={SAMPLE_IMAGE.width}
+        imageHeight={SAMPLE_IMAGE.height}
+        caption={SAMPLE_IMAGE.caption}
+      />
     </div>
   );
 }

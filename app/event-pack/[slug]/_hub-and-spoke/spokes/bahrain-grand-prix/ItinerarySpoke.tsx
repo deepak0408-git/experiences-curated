@@ -31,7 +31,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the full hour-by-hour itinerary — sequenced against real transit times and opening hours for everywhere it sends you, day by day from arrival to departure."
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Guide, to unlock the full hour-by-hour itinerary — sequenced against real transit times and opening hours for everywhere it sends you, day by day from arrival to departure."
     >
       {/* Free teaser — the weekend's basic 3+2 day shape only (day names,
           no specific activities/times). Everything with real planning

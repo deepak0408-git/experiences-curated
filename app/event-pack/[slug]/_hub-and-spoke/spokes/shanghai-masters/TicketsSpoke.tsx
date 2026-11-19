@@ -48,7 +48,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Ticket Guide alone, or the full Event Pack, to unlock real per-tier pricing, the day/night session and Court 17 detail, our curated seat-tier recommendation — including which stretch of the 14-day draw to book it for — and the Federer exhibition-day booking timing that actually matters."
+      ctaCopy="Buy the Ticket Guide alone, or the full Event Guide, to unlock real per-tier pricing, the day/night session and Court 17 detail, our curated seat-tier recommendation — including which stretch of the 14-day draw to book it for — and the Federer exhibition-day booking timing that actually matters."
     >
       {/* Free teaser — court names + what each gets you only, no pricing,
           no Court 17/session detail, no experience cards, no verdict.

@@ -767,6 +767,22 @@ export default function FullResult({
           </div>
         );
       })()}
+
+      {/* Issue 6 fix, 19 Nov 2026 — standing disclosure that E|C itself
+          isn't the ticket seller and isn't affiliated with F1 or its
+          official ticketing partners. The reseller section above already
+          implies this (routes to official sites / P1 Travel) but never
+          stated it outright — a buyer could reasonably read the Trustpilot/
+          "authorized partner" language right above as implying some
+          official status for E|C itself, which it doesn't have. */}
+      <p className="text-xs text-[#6A6A6A] mt-6 leading-6">
+        Experiences | Curated is an independent research and planning service. We don&apos;t sell tickets, process
+        ticket payments, or confirm live pricing or availability — and we&apos;re not affiliated with Formula 1 or
+        its official ticketing partners.{" "}
+        <Link href="/ticket-intelligence-methodology" className="text-[#AAFF00] hover:underline">
+          How Ticket Intelligence works →
+        </Link>
+      </p>
     </div>
   );
 }

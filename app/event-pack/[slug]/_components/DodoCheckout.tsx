@@ -83,6 +83,12 @@ const activeCheckoutRef: {
     eventSlug: string;
     eventName: string;
     priceTier: "early_bird" | "standard";
+    // Added 19 Nov 2026 (Issue 3 investigation) — without this, the
+    // checkoutOpened/checkoutRedirected events fired below carried no way
+    // to tell a Ticket Intelligence checkout apart from a regular Event
+    // Guide/mini-pack checkout in PostHog, even though the prop existed on
+    // the component already and was forwarded to the actual checkout API.
+    productType?: "tickets_guide" | "hotels_guide" | "itinerary_guide" | "ticket_intelligence";
     setLoading: (loading: boolean) => void;
   } | null;
 } = { current: null };
@@ -119,7 +125,7 @@ function ensureDodoInitialised() {
         activeNonPack?.setLoading(false);
         if (active) {
           import("@/lib/posthog-events").then(({ phEvent }) =>
-            phEvent.checkoutOpened({ eventSlug: active.eventSlug, eventName: active.eventName, priceTier: active.priceTier })
+            phEvent.checkoutOpened({ eventSlug: active.eventSlug, eventName: active.eventName, priceTier: active.priceTier, productType: active.productType })
           );
         }
       }
@@ -139,7 +145,7 @@ function ensureDodoInitialised() {
       if (event.event_type === "checkout.redirect") {
         if (active) {
           import("@/lib/posthog-events").then(({ phEvent }) =>
-            phEvent.checkoutRedirected({ eventSlug: active.eventSlug, priceTier: active.priceTier })
+            phEvent.checkoutRedirected({ eventSlug: active.eventSlug, priceTier: active.priceTier, productType: active.productType })
           );
           const { successUrl } = active;
           setTimeout(() => { window.location.href = successUrl; }, 2500);
@@ -181,7 +187,7 @@ export default function DodoCheckout({
   const handleInlineClick = () => {
     setLoading(true);
     import("@/lib/posthog-events").then(({ phEvent }) =>
-      phEvent.packCtaClicked({ eventSlug, eventName, priceTier, label })
+      phEvent.packCtaClicked({ eventSlug, eventName, priceTier, label, productType })
     );
     const params = new URLSearchParams({ productId, priceTier, successUrl, eventName });
     if (productType) params.set("productType", productType);
@@ -202,10 +208,11 @@ export default function DodoCheckout({
       eventSlug,
       eventName,
       priceTier,
+      productType,
       setLoading: (v) => setLoadingRef.current(v),
     };
     import("@/lib/posthog-events").then(({ phEvent }) =>
-      phEvent.packCtaClicked({ eventSlug, eventName, priceTier, label })
+      phEvent.packCtaClicked({ eventSlug, eventName, priceTier, label, productType })
     );
     try {
       const res = await fetch("/api/checkout/dodo", {

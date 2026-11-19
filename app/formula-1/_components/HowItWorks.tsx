@@ -1,4 +1,5 @@
 import { Search, CalendarDays, Ticket, MapPin, Flag } from "lucide-react";
+import YouTubeEmbed from "@/app/_components/YouTubeEmbed";
 
 const STEPS = [
   { Icon: Search, title: "Discover", desc: "Find the Grand Prix that fits you." },
@@ -33,6 +34,19 @@ export default function HowItWorks() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Video walkthrough — added 19 Nov 2026, same section as the
+            step-by-step explainer above rather than a new page section,
+            per founder direction. HowItWorks is a plain server component
+            (deliberately, for Issue 2's SEO fix) and YouTubeEmbed is too,
+            so this stays server-rendered. Label corrected same day —
+            the real video runs ~10 minutes, not 60 seconds. */}
+        <div className="mt-10 max-w-xl">
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">
+            Watch how it works
+          </p>
+          <YouTubeEmbed videoId="ZMuq2BXcq_U" title="F1 Travel Planning Cockpit — how it works" />
         </div>
       </div>
     </section>

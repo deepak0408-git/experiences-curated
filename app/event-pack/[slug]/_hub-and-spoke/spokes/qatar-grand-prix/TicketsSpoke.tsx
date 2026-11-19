@@ -94,7 +94,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Ticket Guide alone, or the full Event Pack, to unlock the full Main-vs-North comparison for a first Lusail weekend, the zone-and-row detail that changes what Main Grandstand actually shows you, real confirmed pricing for every tier, and which stand still has genuine availability now that GA is gone."
+      ctaCopy="Buy the Ticket Guide alone, or the full Event Guide, to unlock the full Main-vs-North comparison for a first Lusail weekend, the zone-and-row detail that changes what Main Grandstand actually shows you, real confirmed pricing for every tier, and which stand still has genuine availability now that GA is gone."
     >
       {/* Free teaser — tier names only, no pricing/cards/comparison/verdict.
           Everything else gated behind isUnlocked (full pack or the Ticket

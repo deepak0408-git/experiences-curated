@@ -20,15 +20,17 @@ const CARDS = [
     key: "exploring",
     image: "/tennis/get-started-exploring.jpg",
     title: "I'm exploring",
-    label: "Trip Intelligence · Free",
+    label: "Trip Intelligence",
     subtitle: "Find your matching tournament",
+    free: true,
   },
   {
     key: "budget",
     image: "/tennis/get-started-budget.jpg",
     title: "I have a budget",
-    label: "Trip Planner · Free",
+    label: "Trip Planner",
     subtitle: "Plan your trip budget",
+    free: true,
   },
   {
     key: "chosen-event",
@@ -36,6 +38,7 @@ const CARDS = [
     title: "I've chosen my tournament",
     label: "Ticket Intelligence & Event Guides",
     subtitle: "Find your ticket and plan your trip",
+    free: false,
   },
   {
     key: "planning",
@@ -43,6 +46,7 @@ const CARDS = [
     title: "I'm planning my trip",
     label: "Trip Board & Custom Itineraries",
     subtitle: "Build and share your itinerary",
+    free: false,
   },
 ] as const;
 
@@ -59,7 +63,7 @@ export default function GetStartedCards({
     <section className="bg-[#0A0A0A]">
       <div className="max-w-5xl mx-auto px-6 sm:px-8 py-14">
         <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-1">Get Started</p>
-        <h2 className="text-xl sm:text-2xl font-black text-white mb-8">Where are you in your tennis journey?</h2>
+        <h2 className="text-xl sm:text-2xl font-black text-white mb-8">Where are you in your tennis travel journey?</h2>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {CARDS.map((card) => {
@@ -75,6 +79,16 @@ export default function GetStartedCards({
                   />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                {/* FREE badge — same visual pattern as the Event Pack's
+                    free/paid spoke badges (HubPage.tsx), per founder
+                    direction 19 Nov 2026 (Issue 7). Only Trip Intelligence
+                    and Trip Planner are genuinely free; the other two cards
+                    route to paid products, so they get no badge at all. */}
+                {card.free && (
+                  <span className="absolute top-3 right-3 text-[9px] font-black tracking-widest uppercase rounded-sm px-2 py-0.5 border backdrop-blur-sm text-[#AAFF00] border-[#AAFF00]/50 bg-black/30">
+                    Free
+                  </span>
+                )}
                 <div className="relative p-3.5 flex flex-col justify-end h-full">
                   <p className="text-sm font-black text-white leading-tight mb-1">{card.title}</p>
                   <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-1">{card.label}</p>

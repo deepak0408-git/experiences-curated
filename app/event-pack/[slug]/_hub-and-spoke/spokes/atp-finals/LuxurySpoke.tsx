@@ -28,7 +28,7 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The real hospitality tiers, hotel picks, and off-circuit venues are all free above. The Event Pack adds the actual per-person pricing for all four tiers — Break, Smash, Ace, and ATP No. 1 Club — plus our verdict on which one is genuinely worth the price jump, and how to sequence a luxury day around the tournament's own session schedule."
+      ctaCopy="The real hospitality tiers, hotel picks, and off-circuit venues are all free above. The Event Guide adds the actual per-person pricing for all four tiers — Break, Smash, Ace, and ATP No. 1 Club — plus our verdict on which one is genuinely worth the price jump, and how to sequence a luxury day around the tournament's own session schedule."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Luxury at the ATP Finals is a stack of decisions, not one purchase — the hospitality ticket is only one part

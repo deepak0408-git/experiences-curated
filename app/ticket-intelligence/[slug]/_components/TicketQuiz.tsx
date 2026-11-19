@@ -18,6 +18,7 @@ import { resolveBackLink, appendFromParams } from "../_lib/resolveBackLink";
 import TeaserResult from "./TeaserResult";
 import TicketIntelligenceSidebar from "./TicketIntelligenceSidebar";
 import SeatingPrimer from "./SeatingPrimer";
+import { phEvent } from "@/lib/posthog-events";
 
 const Q1_OPTIONS: { value: Q1TrackAction; label: string }[] = [
   { value: "overtaking", label: "Overtaking and braking battles" },
@@ -123,6 +124,24 @@ export default function TicketQuiz({
   // the fan came from the Cockpit. Bug found live 17 Oct 2026.
   const fromParams = useRef(searchParams);
 
+  // Issue 3 investigation, 19 Nov 2026 — fires once per real mount, not on
+  // every render. A retake remounts this component (see page.tsx's `key`
+  // comment), so a genuine retake correctly fires this again as a new
+  // quiz_started; answering a question never does, since this effect's
+  // dependency array is empty.
+  useEffect(() => {
+    phEvent.ticketIntelligenceQuizStarted({ eventSlug: slug, sport: "formula_one" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Tracks which question keys have already fired a question_answered
+  // event — only the FIRST answer to each question counts as real funnel
+  // progression; changing an already-answered question (common, since all
+  // 6 stay visible/editable at once rather than stepping through them) is
+  // not a new step forward and would otherwise double-count.
+  const answeredKeysRef = useRef(new Set<string>());
+  const quizCompletedFiredRef = useRef(false);
+
   useEffect(() => {
     const params = new URLSearchParams();
     for (const key of ANSWER_KEYS) {
@@ -149,7 +168,23 @@ export default function TicketQuiz({
   const answeredCount = steps.filter((s) => answers[s.key] !== undefined).length;
   const complete = answeredCount === steps.length;
 
+  useEffect(() => {
+    if (complete && !quizCompletedFiredRef.current) {
+      quizCompletedFiredRef.current = true;
+      phEvent.ticketIntelligenceQuizCompleted({ eventSlug: slug, sport: "formula_one" });
+    }
+  }, [complete, slug]);
+
   const set = <K extends keyof QuizAnswers>(key: K, value: QuizAnswers[K]) => {
+    if (!answeredKeysRef.current.has(key)) {
+      answeredKeysRef.current.add(key);
+      phEvent.ticketIntelligenceQuestionAnswered({
+        eventSlug: slug,
+        sport: "formula_one",
+        questionKey: key,
+        questionNumber: answeredKeysRef.current.size,
+      });
+    }
     setAnswers((prev) => ({ ...prev, [key]: value }));
   };
 

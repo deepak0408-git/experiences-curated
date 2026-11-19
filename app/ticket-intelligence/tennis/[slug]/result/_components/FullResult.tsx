@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { QuizAnswers, ScoreResult } from "../../_lib/types";
 import { selectHeroExplanation, selectAlternativeExplanation } from "../../_lib/selectExplanation";
 import { heroRationale, alternativeRationale } from "../../_lib/recommendationRationale";
@@ -219,6 +220,21 @@ export default function FullResult({
           );
         })()}
       </div>
+
+      {/* Issue 6 fix, 19 Nov 2026 — standing disclosure that E|C itself
+          isn't the ticket seller and isn't affiliated with the tournaments
+          or their official ticketing partners. The reseller section above
+          was already written to never imply E|C sells tickets directly
+          (see that section's own header comment), but it never stated this
+          outright as a standing fact — same gap as F1's result page. */}
+      <p className="text-xs text-[#6A6A6A] mt-6 leading-6">
+        Experiences | Curated is an independent research and planning service. We don&apos;t sell tickets, process
+        ticket payments, or confirm live pricing or availability — and we&apos;re not affiliated with the ATP, the
+        WTA, any Grand Slam tournament, or their official ticketing partners.{" "}
+        <Link href="/ticket-intelligence-methodology" className="text-[#AAFF00] hover:underline">
+          How Ticket Intelligence works →
+        </Link>
+      </p>
     </div>
   );
 }

@@ -46,7 +46,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the full hour-by-hour itinerary from Thursday's arrival to Monday's day trip — exact session-window timings, two different real nights out, and the one out-of-city excursion that actually fits, not a generic race-weekend template."
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Guide, to unlock the full hour-by-hour itinerary from Thursday's arrival to Monday's day trip — exact session-window timings, two different real nights out, and the one out-of-city excursion that actually fits, not a generic race-weekend template."
     >
       {/* Free teaser — bare day shape only, no session times, no specific
           activities, no verdict on which day trip to pick. Everything else

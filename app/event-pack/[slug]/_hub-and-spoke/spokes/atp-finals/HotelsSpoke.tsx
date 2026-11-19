@@ -29,7 +29,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       heroImageUrl={heroImageUrl}
       heroImagePosition={spoke.heroImagePosition}
       isUnlocked={isUnlocked}
-      ctaCopy="The real neighborhoods and hotel names are all free above. The Event Pack adds our actual verdict — which specific area to book for a first ATP Finals trip, and how to weigh proximity to Porta Nuova station (useful for a Barolo day trip) against the historic squares' atmosphere."
+      ctaCopy="The real neighborhoods and hotel names are all free above. The Event Guide adds our actual verdict — which specific area to book for a first ATP Finals trip, and how to weigh proximity to Porta Nuova station (useful for a Barolo day trip) against the historic squares' atmosphere."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         No hotel in Turin is walking distance from Inalpi Arena — the arena sits in the Santa Rita district, reached

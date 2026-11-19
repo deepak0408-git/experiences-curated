@@ -69,7 +69,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Ticket Guide alone, or the full Event Pack, to unlock real 2026 pricing for every stand, the full side-by-side comparison, where to actually buy, and our verdict on which stand we'd pick for a first Singapore GP."
+      ctaCopy="Buy the Ticket Guide alone, or the full Event Guide, to unlock real 2026 pricing for every stand, the full side-by-side comparison, where to actually buy, and our verdict on which stand we'd pick for a first Singapore GP."
     >
       {/* Free teaser — stand names + what each shows only, no pricing, no
           buying detail, no verdict. Everything else in this spoke (real

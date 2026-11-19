@@ -45,7 +45,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Pack, to unlock the exact hotel we'd book — 2 minutes from Albert Park Lake — plus the full neighborhood deep-dive guide, direct booking links for it and two vetted hostels, the street-by-street call on St Kilda Road, and the one South Melbourne pocket that's genuinely walkable to Gate 1. This isn't a generic area guide — it's the specific names, links, and booking-timing detail a first-time visitor actually needs."
+      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Guide, to unlock the exact hotel we'd book — 2 minutes from Albert Park Lake — plus the full neighborhood deep-dive guide, direct booking links for it and two vetted hostels, the street-by-street call on St Kilda Road, and the one South Melbourne pocket that's genuinely walkable to Gate 1. This isn't a generic area guide — it's the specific names, links, and booking-timing detail a first-time visitor actually needs."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Albert Park sits about 5km south of Melbourne&apos;s CBD, in a different part of the city from the

@@ -42,7 +42,7 @@ export async function generateMetadata({
     { operation: "eventPack.generateMetadata" },
   );
 
-  if (!event) return { title: "Event Pack" };
+  if (!event) return { title: "Event Guide" };
 
   const start = new Date(event.startDate);
   const end = new Date(event.endDate);
@@ -50,16 +50,16 @@ export async function generateMetadata({
   const description = event.editorialOverview?.slice(0, 160) ?? `Curated experiences for ${event.name} — ${dateRange}${event.venueName ? ` at ${event.venueName}` : ""}.`;
 
   return {
-    title: `${event.name} Event Pack`,
+    title: `${event.name} Event Guide`,
     description,
     openGraph: {
-      title: `${event.name} Event Pack`,
+      title: `${event.name} Event Guide`,
       description,
       images: event.heroImageUrl ? [{ url: event.heroImageUrl }] : [],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${event.name} Event Pack`,
+      title: `${event.name} Event Guide`,
       description,
       images: event.heroImageUrl ? [event.heroImageUrl] : [],
     },

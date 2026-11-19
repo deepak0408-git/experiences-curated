@@ -80,7 +80,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Ticket Guide alone, or the full Event Pack, to unlock the real grandstand-by-grandstand comparison (including G, R, H, D, and B — not just the four tiers shown here), confirmed pricing for every tier, where to actually buy, and our direct verdict on M vs. A for a first Interlagos weekend."
+      ctaCopy="Buy the Ticket Guide alone, or the full Event Guide, to unlock the real grandstand-by-grandstand comparison (including G, R, H, D, and B — not just the four tiers shown here), confirmed pricing for every tier, where to actually buy, and our direct verdict on M vs. A for a first Interlagos weekend."
     >
       {/* Free teaser — tier names + what each shows only, no pricing, no
           seating/weather detail, no buying links, no verdict. Everything

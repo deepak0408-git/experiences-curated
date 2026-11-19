@@ -83,7 +83,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Ticket Guide alone, or the full Event Pack, to unlock real confirmed 4-day pricing for every tier, the full side-by-side comparison and grandstand map, the experience-level detail for each option, and our direct verdict on which grandstand we'd pick for a season-finale weekend."
+      ctaCopy="Buy the Ticket Guide alone, or the full Event Guide, to unlock real confirmed 4-day pricing for every tier, the full side-by-side comparison and grandstand map, the experience-level detail for each option, and our direct verdict on which grandstand we'd pick for a season-finale weekend."
     >
       {/* Free teaser — tier names only, no pricing/table/map/cards/verdict.
           Everything else gated behind isUnlocked (full pack or the Ticket

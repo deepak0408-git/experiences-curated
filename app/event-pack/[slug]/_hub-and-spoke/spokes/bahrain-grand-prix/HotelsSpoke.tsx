@@ -34,7 +34,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Pack, to unlock the per-hotel rating breakdown, the Airbnb neighbourhood guide, direct booking links and timing notes for every hotel, and which base we'd actually pick for your priorities."
+      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Guide, to unlock the per-hotel rating breakdown, the Airbnb neighbourhood guide, direct booking links and timing notes for every hotel, and which base we'd actually pick for your priorities."
     >
       {/* Free teaser — the two-way decision framed, no hotel-by-hotel detail,
           no cards, no Airbnb neighbourhood breakdown, no booking links.

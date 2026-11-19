@@ -31,7 +31,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the full hour-by-hour itinerary — sequenced against the real session schedule, the Día de Muertos parade route, and a genuine Teotihuacán day trip, not just a generic race-weekend template."
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Guide, to unlock the full hour-by-hour itinerary — sequenced against the real session schedule, the Día de Muertos parade route, and a genuine Teotihuacán day trip, not just a generic race-weekend template."
     >
       {/* Free teaser — bare day shape only, no specific activities, no
           parade-route detail, no Teotihuacán logistics. Everything else is

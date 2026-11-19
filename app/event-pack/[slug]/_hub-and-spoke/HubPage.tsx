@@ -184,7 +184,7 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
     { label: "Address — Nagpur", value: "VCA Stadium, Wardha Road, Jamtha, Nagpur, Maharashtra 441108", href: "https://maps.app.goo.gl/2yHQvYxgab4keopk6", linkLabel: "Open in Maps" },
     { label: "Address — Chennai", value: "MA Chidambaram Stadium, Victoria Hostel Road, Chepauk, Chennai, Tamil Nadu 600005", href: "https://maps.app.goo.gl/3KffWYfY6xLAYdf58", linkLabel: "Open in Maps" },
     { label: "Address — Ahmedabad", value: "Narendra Modi Stadium, Motera, Ahmedabad, Gujarat 380005", href: "https://maps.app.goo.gl/3JNBmPcFGqwAX8Eb7", linkLabel: "Open in Maps" },
-    { label: "Venues in this pack", value: "VCA Stadium, Jamtha (1st Test, Nagpur) · MA Chidambaram Stadium, Chepauk (2nd Test, Chennai) · Narendra Modi Stadium, Motera (5th Test, Ahmedabad)" },
+    { label: "Venues in this guide", value: "VCA Stadium, Jamtha (1st Test, Nagpur) · MA Chidambaram Stadium, Chepauk (2nd Test, Chennai) · Narendra Modi Stadium, Motera (5th Test, Ahmedabad)" },
     { label: "Gate times", value: "Play starts 9:30am IST at all three grounds. Gates typically open around 2 hours before the first ball — confirm exact timing via each ground's official channels closer to the match." },
     { label: "Visa", value: "Most nationalities need an e-Tourist visa (US$10-40 depending on duration) booked in advance online, entering via one of 33 designated airports. Check eligibility before booking flights.", href: "https://indianvisaonline.gov.in/evisa/tvoa.html", linkLabel: "Official e-Visa site" },
     { label: "What to bring", value: "Light, breathable clothing for Nagpur and Chennai's heat and humidity; a light jacket for Ahmedabad evenings in late February. Outside food, drinks, and large bags aren't permitted at any of the three grounds." },
@@ -669,7 +669,7 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
   // SpokeShell.tsx. Blank/unset FULLY_GATED_EVENTS → isFullyGated always
   // false → tile badges render exactly as before this change. Kept in sync
   // with SpokeShell's own copy of this check so a locked spoke never shows
-  // "Free" on the hub grid while its own page shows "Pack exclusive".
+  // "Free" on the hub grid while its own page shows "Guide exclusive".
   const fullyGatedEvents = (process.env.FULLY_GATED_EVENTS ?? "")
     .split(",")
     .map((s) => s.trim())
@@ -692,7 +692,7 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
   // trophy-2027) suppress this generic single-Address block entirely —
   // otherwise it would show a confusing 4th, combined-string Address row
   // alongside the 3 real per-venue ones. Added 9 Oct 2026, same reasoning
-  // as the "Venues in this pack" row already carrying multi-venue content
+  // as the "Venues in this guide" row already carrying multi-venue content
   // this generic block can't.
   const SUPPRESS_GENERIC_ADDRESS_ROW = new Set(["border-gavaskar-trophy-2027"]);
   if (event.venueName && event.venueAddress && !SUPPRESS_GENERIC_ADDRESS_ROW.has(slug)) {
@@ -786,7 +786,7 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
                 </p>
                 <p className="text-xs text-[#A3A3A3] mt-1">
                   That guide now shows {MINI_PACK_UNLOCK_DESCRIPTION_BY_PRODUCT_TYPE[justPurchasedProductType] ?? "our full curated picks and booking detail"}. Every other guide stays as it was —
-                  get the full Event Pack for everything at once.
+                  get the full Event Guide for everything at once.
                 </p>
               </>
             )}
@@ -858,9 +858,7 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
               <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 lg:sticky lg:top-6">
                 <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-2">Unlock the full guide</p>
                 <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-                  {isFullyGated
-                    ? "Buying the Event Pack unlocks our curated picks, tactical booking detail, and the full day-by-day itinerary across all of them."
-                    : "While most information for this event is free to read, buying the Event Pack unlocks our curated picks, tactical booking detail, and the full day-by-day itinerary across all of them."}
+                  Buying the Event Guide unlocks our curated picks, tactical booking detail, and the full day-by-day itinerary across all of them.
                 </p>
                 {pricing.freeAccessEnabled ? (
                   <>
@@ -1165,12 +1163,14 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
                         : isFullyGated
                         ? "text-amber-400 border-amber-400/50 bg-black/30"
                         : spoke.status === "teaser"
+                        ? "text-violet-400 border-violet-400/50 bg-black/30"
+                        : spoke.status === "public"
                         ? "text-[#AAFF00] border-[#AAFF00]/50 bg-black/30"
                         : "text-white/70 border-white/20 bg-black/30"
                     }`}
                   >
                     {/* Mini-packs pilot — STATUS_LABEL's "teaser" copy
-                        ("Free · Pack unlocks more") is now wrong for
+                        ("Free preview") is now wrong for
                         Tickets/Hotels/Itinerary: whole-spoke gating means
                         these 3 are no longer free at all (caught live by
                         the founder, 15 Sep 2026 — tile still read "Free"
@@ -1179,17 +1179,16 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
                         exists for this spoke; every other teaser/public
                         spoke keeps the original STATUS_LABEL copy.
 
-                        Amber instead of the usual green accent — the green
-                        text at 9px could blend into a busy hero image
-                        behind it (flagged by the founder, 15 Sep 2026).
-                        Amber is already this page's own "needs attention"
-                        color (see the Pre-trip brief live-state block
-                        below), reused here rather than introducing a new
-                        off-brand color like red. */}
+                        Amber for the fully-gated/mini-pack price states —
+                        this page's own "needs attention" color (see the
+                        Pre-trip brief live-state block below). Violet for
+                        the teaser state, distinct from both the green
+                        "Free" badge and the amber "Unlock for US$X" badge
+                        (founder-chosen 3-way color scheme, 19 Nov 2026). */}
                     {miniPackPricing && MINI_PACK_PRODUCT_TYPE_BY_SPOKE[spoke.id]
                       ? `Unlock for ${miniPackPricing[spoke.id as keyof typeof miniPackPricing].priceDisplay}`
                       : isFullyGated
-                      ? "Pack exclusive"
+                      ? "Guide exclusive"
                       : STATUS_LABEL[spoke.status]}
                   </span>
                 )}
@@ -1381,7 +1380,7 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
                     Take it offline
                   </h2>
                   <p className="text-sm text-[#A3A3A3] mb-6 leading-relaxed">
-                    Download the pack as a PDF — for the plane, inside the stadium, or anywhere without signal. Travel Brief is a quick-reference digest covering local travel logistics, weather and arrival information. Full Pack includes everything.
+                    Download the guide as a PDF — for the plane, inside the stadium, or anywhere without signal. Travel Brief is a quick-reference digest covering local travel logistics, weather and arrival information. Full Pack includes everything.
                   </p>
                   <HubPackDownload eventSlug={slug} />
                 </div>
@@ -1400,7 +1399,7 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
                 Ask the curator
               </h2>
               <p className="text-sm text-[#A3A3A3] mb-6 leading-relaxed">
-                Something not covered in the pack? Ask anything — a specific venue, a logistics question, what&apos;s actually worth it. A human reply within 48 hours.
+                Something not covered in the guide? Ask anything — a specific venue, a logistics question, what&apos;s actually worth it. A human reply within 48 hours.
               </p>
               <AskCuratorForm eventName={displayEventName} />
             </div>

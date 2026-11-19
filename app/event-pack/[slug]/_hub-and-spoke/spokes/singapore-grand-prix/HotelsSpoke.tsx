@@ -35,7 +35,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Pack, to unlock hotel ratings, our actual recommendation for your priorities — trackside, riverside, or value — plus the exact room category to request at each property and direct booking notes."
+      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Guide, to unlock hotel ratings, our actual recommendation for your priorities — trackside, riverside, or value — plus the exact room category to request at each property and direct booking notes."
     >
       {/* Free teaser — the three-way decision framed, no hotel cards, no
           ratings, no booking detail. Everything else in this spoke is gated

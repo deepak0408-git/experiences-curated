@@ -31,7 +31,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the full hour-by-hour itinerary — sequenced against real session times, the Yasalam concert schedule, and a genuine day trip, not just a generic race-weekend template."
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Guide, to unlock the full hour-by-hour itinerary — sequenced against real session times, the Yasalam concert schedule, and a genuine day trip, not just a generic race-weekend template."
     >
       {/* Free teaser — bare day shape only, no specific activities, no
           concert lineup, no day-trip detail. Everything else is gated

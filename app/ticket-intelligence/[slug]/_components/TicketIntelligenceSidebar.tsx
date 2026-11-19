@@ -246,7 +246,7 @@ export default function TicketIntelligenceSidebar({
         <Link
           href="/formula-1"
           onClick={() => phEvent.sidebarCtaClicked({ page: "ticket_intelligence", cta: "visit_cockpit", slug: eventSlug })}
-          className="flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+          className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🗺️</span>
           <span className="flex-1">
@@ -254,6 +254,29 @@ export default function TicketIntelligenceSidebar({
             <span className="block text-xs text-[#6A6A6A] mt-0.5">Discover, compare and plan F1 trips</span>
           </span>
         </Link>
+
+        {/* "Watch how Ticket Intelligence works" — added 19 Nov 2026, right
+            below Visit Travel Planning Cockpit per founder direction.
+            Opens the actual YouTube link directly (not an in-page embed) —
+            a sidebar row is a navigation link, same as every other row
+            here, not a place to embed a player. Plain <a>, not next/link's
+            Link, since this is a genuinely external URL opening in a new
+            tab — same convention as the reseller links in FullResult.tsx
+            (CLAUDE.md's Link-over-<a> rule is about internal paths and
+            bfcache, which doesn't apply to an external new-tab link). */}
+        <a
+          href="https://www.youtube.com/watch?v=ROsERYXtY2g"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => phEvent.sidebarCtaClicked({ page: "ticket_intelligence", cta: "watch_how_it_works", slug: eventSlug })}
+          className="flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+        >
+          <span className="text-base flex-shrink-0 w-5 text-center leading-none">🎬</span>
+          <span className="flex-1">
+            <span className="block text-sm font-bold text-[#A3A3A3]">Watch how this works</span>
+            <span className="block text-xs text-[#6A6A6A] mt-0.5">A short video walkthrough</span>
+          </span>
+        </a>
 
         <EventGuideCta eventSlug={eventSlug} eventId={eventId} sport={sport} isBuilt={isBuilt} userEmail={userEmail} />
       </div>

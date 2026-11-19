@@ -34,7 +34,7 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       heroImageUrl={heroImageUrl}
       heroImagePosition="center 65%"
       isUnlocked={isUnlocked}
-      ctaCopy="The real off-venue venues, transit pricing, and hotel picks are all free above. The Event Pack adds ATP House's real per-person price and features, our verdict on whether it's actually worth it over a Center Court ticket, and how to sequence a luxury day around your session."
+      ctaCopy="The real off-venue venues, transit pricing, and hotel picks are all free above. The Event Guide adds ATP House's real per-person price and features, our verdict on whether it's actually worth it over a Center Court ticket, and how to sequence a luxury day around your session."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         Luxury at the Shanghai Masters is a stack of decisions, not one purchase — the hospitality ticket is only one

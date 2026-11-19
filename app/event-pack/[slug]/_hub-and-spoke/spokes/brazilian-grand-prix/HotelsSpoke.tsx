@@ -43,7 +43,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Pack, to unlock our real hotel picks and ratings, our direct verdict on which specific stay to book if Hotel Emiliano is sold out, and our honest read on Airbnb and hostel options for race week — a gap most guides skip entirely."
+      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Guide, to unlock our real hotel picks and ratings, our direct verdict on which specific stay to book if Hotel Emiliano is sold out, and our honest read on Airbnb and hostel options for race week — a gap most guides skip entirely."
     >
       {/* Free teaser — neighborhood overview only, no specific hotel picks,
           ratings, or booking detail. Everything else is gated behind

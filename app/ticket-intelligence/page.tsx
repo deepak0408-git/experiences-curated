@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import HomepageNav from "@/app/_components/HomepageNav";
+import YouTubeEmbed from "@/app/_components/YouTubeEmbed";
 import { getAuthUser } from "@/lib/supabase/server";
 import { getTicketIntelligenceEvents } from "./[slug]/_lib/getSeatingData";
 import SeasonPassCheckout from "./_components/SeasonPassCheckout";
@@ -56,7 +57,10 @@ export default async function TicketIntelligenceHomePage() {
 
   return (
     <main className="min-h-screen bg-[#0A0A0A]">
-      <HomepageNav email={user?.email ?? null} />
+      <HomepageNav
+        email={user?.email ?? null}
+        secondaryLink={{ href: "/ticket-intelligence-methodology", label: "How This Works", mobileLabel: "How It Works" }}
+      />
       <div className="max-w-7xl mx-auto px-6 sm:px-8 py-16">
         <p className="text-sm font-black tracking-widest uppercase text-[#AAFF00] mb-4">
           Ticket Intelligence
@@ -174,6 +178,16 @@ export default async function TicketIntelligenceHomePage() {
                 </p>
               </>
             )}
+
+            {/* "Watch how this works" — small frame directly below the
+                CTA, inside the Season Pass box itself (not a separate grid
+                item, which previously pushed it to the bottom of the
+                page). Per founder direction 19 Nov 2026. */}
+            <div className="mt-5 pt-5 border-t border-[#2A2A2A] space-y-2">
+              <p className="text-xs font-black tracking-widest uppercase text-white">Watch how this works</p>
+              <p className="text-xs text-[#6A6A6A] -mt-1 mb-1">A short video walkthrough</p>
+              <YouTubeEmbed videoId="ROsERYXtY2g" title="How Ticket Intelligence works" />
+            </div>
           </div>
         </div>
       </div>

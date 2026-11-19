@@ -94,7 +94,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       heroImagePosition={spoke.heroImagePosition}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Ticket Guide alone, or the full Event Pack, to unlock real confirmed pricing for every tier, the full side-by-side comparison, where to actually buy, and our verdict on which grandstand we'd pick for a first Austin GP."
+      ctaCopy="Buy the Ticket Guide alone, or the full Event Guide, to unlock real confirmed pricing for every tier, the full side-by-side comparison, where to actually buy, and our verdict on which grandstand we'd pick for a first Austin GP."
     >
       {/* Free teaser — tier names + what each shows only, no pricing, no
           seating/weather detail, no buying links, no verdict. Everything

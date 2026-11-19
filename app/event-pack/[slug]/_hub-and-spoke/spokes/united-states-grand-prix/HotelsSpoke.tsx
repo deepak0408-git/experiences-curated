@@ -35,7 +35,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       heroImagePosition={spoke.heroImagePosition}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Pack, to unlock our real hotel picks and ratings, plus our single recommendation for your specific priorities and the booking-timing detail that matters most for a genuine F1-weekend demand spike across all of Austin."
+      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Guide, to unlock our real hotel picks and ratings, plus our single recommendation for your specific priorities and the booking-timing detail that matters most for a genuine F1-weekend demand spike across all of Austin."
     >
       {/* Free teaser — neighborhood overview only, no specific hotel picks,
           ratings, or booking detail. Everything else is gated behind

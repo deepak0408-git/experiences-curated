@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { QuizAnswers, ScoreResult } from "../_lib/types";
@@ -10,6 +10,8 @@ import TicketIntelligenceSidebar from "./TicketIntelligenceSidebar";
 import SeasonPassCheckout from "../../_components/SeasonPassCheckout";
 import LocalCurrencyHint from "@/app/event-pack/[slug]/_components/LocalCurrencyHint";
 import { updateTicketIntelligenceAnswers } from "../actions";
+import { phEvent } from "@/lib/posthog-events";
+import SampleOutputModal from "./SampleOutputModal";
 
 // Real Dodo product for Ticket Intelligence — confirmed by founder 25 Sep
 // 2026, repriced US$7 → US$10 same day (same product ID, repriced in the
@@ -74,6 +76,12 @@ export default function TeaserResult({
   const { top } = result;
   const seatTypeLabel = SEAT_TYPE_LABEL[top.seat.seatType] ?? top.seat.seatType;
   const tierLabel = top.seat.tier ? TIER_LABEL[top.seat.tier] : null;
+  // Issue 5 fix, 19 Nov 2026 — "Here's what a sample output looks like"
+  // link below the blurred teaser box, opening SampleOutputModal. Declared
+  // here, above the alreadyPurchased early return below, since that
+  // branch's own return never needs this modal (a retake-after-purchase
+  // skips the paywall entirely and goes straight to the real result).
+  const [sampleOpen, setSampleOpen] = useState(false);
 
   // A buyer who already paid (e.g. via "Retake the quiz") never sees the
   // paywall for a second teaser — fresh answers just render the same full,
@@ -95,6 +103,35 @@ export default function TeaserResult({
       );
     }
   }, [alreadyPurchased, eventId, answers]);
+
+  // Issue 3 investigation, 19 Nov 2026 — only fires for a genuine
+  // unpurchased teaser view (the actual paywall moment), not a retake's
+  // already-purchased re-render (that's a FullResult view, a different
+  // funnel stage, not a fresh "here's your match, pay to unlock" moment).
+  const teaserViewedFiredRef = useRef(false);
+  useEffect(() => {
+    if (!alreadyPurchased && !teaserViewedFiredRef.current) {
+      teaserViewedFiredRef.current = true;
+      phEvent.ticketIntelligenceTeaserViewed({ eventSlug, sport: "formula_one" });
+    }
+  }, [alreadyPurchased, eventSlug]);
+
+  // Sign-in is required only at this last step (per 25 Sep 2026 decision —
+  // the quiz itself stays fully anonymous). The Dodo purchase is verified
+  // server-side against getAuthUser() on the result page, same pattern as
+  // every other purchase flow — so an email is needed before checkout can
+  // open. TicketQuiz keeps the current URL (answers + revealed=1) in sync
+  // via history.replaceState, so /sign-in?next=<that URL> round-trips back
+  // to this exact teaser after the magic link.
+  //
+  // Moved above the alreadyPurchased early return below, 19 Nov 2026 —
+  // pre-existing rules-of-hooks bug found while wiring in this file's new
+  // sampleOpen state (confirmed via `git stash` that this predates this
+  // session, same bug independently found and fixed in the tennis
+  // counterpart earlier the same day): useSearchParams() was declared
+  // AFTER a conditional return, which React disallows unconditionally.
+  const searchParams = useSearchParams();
+  const nextUrl = `/ticket-intelligence/${eventSlug}?${searchParams.toString()}`;
 
   if (alreadyPurchased) {
     // Same grid pattern as result/page.tsx and the quiz question view —
@@ -139,15 +176,8 @@ export default function TeaserResult({
     );
   }
 
-  // Sign-in is required only at this last step (per 25 Sep 2026 decision —
-  // the quiz itself stays fully anonymous). The Dodo purchase is verified
-  // server-side against getAuthUser() on the result page, same pattern as
-  // every other purchase flow — so an email is needed before checkout can
-  // open. TicketQuiz keeps the current URL (answers + revealed=1) in sync
-  // via history.replaceState, so /sign-in?next=<that URL> round-trips back
-  // to this exact teaser after the magic link.
-  const searchParams = useSearchParams();
-  const nextUrl = `/ticket-intelligence/${eventSlug}?${searchParams.toString()}`;
+  // searchParams/nextUrl are now declared above (moved alongside the
+  // other hooks, see comment there) — only used here.
 
   return (
     <div className="max-w-2xl mx-auto px-6 sm:px-8 py-16">
@@ -200,6 +230,14 @@ export default function TeaserResult({
           </div>
         </div>
       </div>
+
+      <button
+        type="button"
+        onClick={() => setSampleOpen(true)}
+        className="text-xs font-semibold text-[#AAFF00] hover:text-[#BBFF33] underline mb-8 -mt-5 block transition-colors"
+      >
+        Here&apos;s what a sample output looks like →
+      </button>
 
       {signedInEmail ? (
         <>
@@ -283,6 +321,8 @@ export default function TeaserResult({
           </div>
         </>
       )}
+
+      <SampleOutputModal open={sampleOpen} onClose={() => setSampleOpen(false)} />
     </div>
   );
 }

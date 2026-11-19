@@ -45,7 +45,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Pack, to unlock our hotel recommendation, real 4-star pricing, the Golden Week booking-timing trap, and our verdict on which area to actually book for your trip."
+      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Guide, to unlock our hotel recommendation, real 4-star pricing, the Golden Week booking-timing trap, and our verdict on which area to actually book for your trip."
     >
       {/* Free teaser — the central-vs-near-venue tradeoff framed, no hotel
           card, no pricing, no Golden Week timing detail. Everything else in

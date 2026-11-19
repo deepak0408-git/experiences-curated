@@ -28,7 +28,7 @@ export default async function DayTripsSpoke({ eventSlug }: { eventSlug: string }
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="The real destinations and travel times are all free above. The Event Pack adds our actual verdict — which specific day of your trip to spend on Barolo given the tournament's own session schedule, and how to fit a day trip in without missing a session you actually want to see."
+      ctaCopy="The real destinations and travel times are all free above. The Event Guide adds our actual verdict — which specific day of your trip to spend on Barolo given the tournament's own session schedule, and how to fit a day trip in without missing a session you actually want to see."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         The ATP Finals' round-robin schedule means you're not tied to the arena every single day of your trip — the

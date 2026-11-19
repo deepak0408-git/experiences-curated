@@ -34,7 +34,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       heroImageUrl={heroImageUrl}
       heroImagePosition={spoke.heroImagePosition}
       isUnlocked={isUnlocked}
-      ctaCopy="The real prices and tier names are all free above. The Event Pack adds our actual verdict — which tier we'd pick for a first ATP Finals trip, which specific day of the round-robin group stage offers the best value, and the booking-timing detail that matters most given how the draw affects which players you'll actually see."
+      ctaCopy="The real prices and tier names are all free above. The Event Guide adds our actual verdict — which tier we'd pick for a first ATP Finals trip, which specific day of the round-robin group stage offers the best value, and the booking-timing detail that matters most given how the draw affects which players you'll actually see."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         The ATP Finals sells four real ticket tiers, from a Tribuna Galleria seat up to Premium Hospitality. Unlike

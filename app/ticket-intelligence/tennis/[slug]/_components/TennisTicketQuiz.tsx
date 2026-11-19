@@ -9,6 +9,7 @@ import { ticketIntelligenceHeadlineEventName } from "../_lib/presentationMapping
 import TeaserResult from "./TeaserResult";
 import TennisTicketIntelligenceSidebar from "./TennisTicketIntelligenceSidebar";
 import SeatingPrimer from "./SeatingPrimer";
+import { phEvent } from "@/lib/posthog-events";
 import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
 
 // Approved final Q1-Q7 wording — Stage 2 Authorization, 20 Oct 2026. Do not
@@ -130,7 +131,26 @@ export default function TennisTicketQuiz({
       ? { href: `/event-pack/${slug}`, label: `← Back to ${ticketIntelligenceHeadlineEventName(slug, eventName)} guide` }
       : null);
 
+  // Issue 3 investigation, 19 Nov 2026 — fires once per real mount, not on
+  // every render. Same pattern as F1's TicketQuiz.tsx.
+  useEffect(() => {
+    phEvent.ticketIntelligenceQuizStarted({ eventSlug: slug, sport: "tennis" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const answeredKeysRef = useRef(new Set<string>());
+  const quizCompletedFiredRef = useRef(false);
+
   const set = <K extends keyof QuizAnswers>(key: K, value: QuizAnswers[K]) => {
+    if (!answeredKeysRef.current.has(key)) {
+      answeredKeysRef.current.add(key);
+      phEvent.ticketIntelligenceQuestionAnswered({
+        eventSlug: slug,
+        sport: "tennis",
+        questionKey: key,
+        questionNumber: answeredKeysRef.current.size,
+      });
+    }
     setAnswers((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -158,6 +178,13 @@ export default function TennisTicketQuiz({
   const datesSatisfied =
     answers.q7 === "flexible_tournament" || (!!answers.fromDate && !!answers.toDate);
   const complete = answeredCount === ANSWER_KEYS.length && datesSatisfied;
+
+  useEffect(() => {
+    if (complete && !quizCompletedFiredRef.current) {
+      quizCompletedFiredRef.current = true;
+      phEvent.ticketIntelligenceQuizCompleted({ eventSlug: slug, sport: "tennis" });
+    }
+  }, [complete, slug]);
 
   if (revealed && complete) {
     const result = scoreTennisOptions(options, answers as QuizAnswers, assertTennisEventSlug(slug));

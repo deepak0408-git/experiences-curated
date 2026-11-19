@@ -155,7 +155,7 @@ export default async function SpokeShell({
         <div className="mb-2">
           {isUnlocked ? (
             <span className="inline-block text-[10px] font-black tracking-widest uppercase rounded-sm px-2 py-0.5 border backdrop-blur-sm bg-black/30 text-[#AAFF00] border-[#AAFF00]/50">
-              ✓ Unlocked — you own this pack
+              ✓ Unlocked — you own this guide
             </span>
           ) : (
             <StatusBadge status={status} isFullyGated={isFullyGated} miniPackPriceDisplay={miniPackOption && !miniPackOption.owned ? miniPackOption.priceDisplay : undefined} />
@@ -190,7 +190,7 @@ export default async function SpokeShell({
             {justPurchasedProductType === "full_pack" ? (
               <>
                 <p className="text-sm font-black text-[#AAFF00]">🎉 You&apos;re in — {eventName} is unlocked</p>
-                <p className="text-xs text-[#A3A3A3] mt-1">Every guide in this pack now shows our full curated picks and booking detail.</p>
+                <p className="text-xs text-[#A3A3A3] mt-1">Every section of the Event Guide now shows our full curated picks and booking detail.</p>
               </>
             ) : (
               <>
@@ -199,7 +199,7 @@ export default async function SpokeShell({
                 </p>
                 <p className="text-xs text-[#A3A3A3] mt-1">
                   This guide now shows {MINI_PACK_UNLOCK_DESCRIPTION_BY_PRODUCT_TYPE[justPurchasedProductType] ?? "our full curated picks and booking detail"}. Every other guide stays as it was —
-                  get the full Event Pack for everything at once.
+                  get the full Event Guide for everything at once.
                 </p>
               </>
             )}
@@ -255,17 +255,16 @@ export default async function SpokeShell({
                     someone who wants more than just this one guide. */}
                 <div className="mt-4 pt-4 border-t border-[#AAFF00]/20 flex items-center justify-between gap-3">
                   <p className="text-xs text-[#A3A3A3]">
-                    Or get every guide in the{" "}
                     {pricing ? (
                       <>
-                        Event Pack —{" "}
+                        Or get the full Event Guide —{" "}
                         <span className="text-white font-bold">
                           {pricing.priceDisplay}
                           <LocalCurrencyHint baseAmount={parseFloat(pricing.priceDisplay.replace(/[^0-9.]/g, ""))} baseCurrency={pricing.currency} />
                         </span>
                       </>
                     ) : (
-                      "Event Pack"
+                      "Or get the full Event Guide"
                     )}
                   </p>
                   {pricing?.dodoProductId ? (
@@ -296,7 +295,7 @@ export default async function SpokeShell({
                 <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-1">Get the full event guide</p>
                 <p className="text-xs italic text-[#6A6A6A] mb-2">All {spokes.length} planning guides</p>
                 <p className="text-sm text-[#A3A3A3] leading-6 mb-4">
-                  {(isFullyGated ? undefined : ctaCopy) ?? DEFAULT_CTA_COPY_BY_SPOKE[spokeId] ?? "The Event Pack adds our single curated recommendation and the tactical detail — booking lead times, contacts, and which option is actually worth it."}
+                  {(isFullyGated ? undefined : ctaCopy) ?? DEFAULT_CTA_COPY_BY_SPOKE[spokeId] ?? "The Event Guide adds our single curated recommendation and the tactical detail — booking lead times, contacts, and which option is actually worth it."}
                 </p>
                 {pricing?.freeAccessEnabled ? (
                   <>
@@ -404,8 +403,8 @@ export default async function SpokeShell({
 
 export const STATUS_LABEL: Record<SpokeStatus, string> = {
   public: "Free",
-  teaser: "Free · Pack unlocks more",
-  gated: "Pack exclusive",
+  teaser: "Free preview",
+  gated: "Guide exclusive",
 };
 
 // Full-gate pilot (Bahrain GP, 29 Sep 2026) — venue/city-agnostic CTA copy
@@ -426,18 +425,18 @@ export const STATUS_LABEL: Record<SpokeStatus, string> = {
 // names, or other event-specific facts here; that's what breaks the
 // zero-review guarantee (see feedback_bahrain_gp_full_gate memory).
 export const DEFAULT_CTA_COPY_BY_SPOKE: Record<string, string> = {
-  cost: "The Event Pack unlocks the full cost breakdown including flights, hotels, tickets, food and local transport. In addition, it provides our pick for hotel area and ticket tier for your budget, plus the booking-timing detail that matters most.",
-  tickets: "Buy the Ticket Guide alone, or the full Event Pack, to unlock which seat we'd actually pick, real pricing for every tier, and the buying detail that matters.",
-  hotels: "Buy the Where to Stay Guide alone, or the full Event Pack, to unlock the per-hotel breakdown, booking links, and which base we'd actually pick for your priorities.",
-  "getting-there": "The Event Pack unlocks our full transport breakdown — train, shuttle, and driving detail for getting to and from the venue.",
-  weather: "The Event Pack unlocks our real packing list and stand-specific advice for staying comfortable through the full event.",
-  "first-timer-guide": "The Event Pack unlocks our full first-timer orientation — what actually surprises visitors, and how to avoid the common mistakes.",
-  "where-to-eat": "The Event Pack unlocks our real picks for where to eat, which specific dishes to order and why, and the full guide to each venue.",
-  "day-trips": "The Event Pack unlocks our real day-trip picks, the detail on each one, which one we'd pick for your free day, and how to fit it around the event.",
-  itinerary: "Buy the Itinerary Guide alone, or the full Event Pack, to unlock the full hour-by-hour itinerary, sequenced against real transit times and opening hours.",
-  arrival: "The Event Pack unlocks our stand-by-stand arrival strategy, gate and queue timing, and which entrance to use.",
-  map: "The Event Pack unlocks our full venue breakdown — where the facilities actually are.",
-  luxury: "The Event Pack unlocks the full luxury breakdown — real contacts, prices, and the booking timeline for the best hospitality options.",
+  cost: "The Event Guide unlocks the full cost breakdown including flights, hotels, tickets, food and local transport. In addition, it provides our pick for hotel area and ticket tier for your budget, plus the booking-timing detail that matters most.",
+  tickets: "Buy the Ticket Guide alone, or the full Event Guide, to unlock which seat we'd actually pick, real pricing for every tier, and the buying detail that matters.",
+  hotels: "Buy the Where to Stay Guide alone, or the full Event Guide, to unlock the per-hotel breakdown, booking links, and which base we'd actually pick for your priorities.",
+  "getting-there": "The Event Guide unlocks our full transport breakdown — train, shuttle, and driving detail for getting to and from the venue.",
+  weather: "The Event Guide unlocks our real packing list and stand-specific advice for staying comfortable through the full event.",
+  "first-timer-guide": "The Event Guide unlocks our full first-timer orientation — what actually surprises visitors, and how to avoid the common mistakes.",
+  "where-to-eat": "The Event Guide unlocks our real picks for where to eat, which specific dishes to order and why, and the full guide to each venue.",
+  "day-trips": "The Event Guide unlocks our real day-trip picks, the detail on each one, which one we'd pick for your free day, and how to fit it around the event.",
+  itinerary: "Buy the Itinerary Guide alone, or the full Event Guide, to unlock the full hour-by-hour itinerary, sequenced against real transit times and opening hours.",
+  arrival: "The Event Guide unlocks our stand-by-stand arrival strategy, gate and queue timing, and which entrance to use.",
+  map: "The Event Guide unlocks our full venue breakdown — where the facilities actually are.",
+  luxury: "The Event Guide unlocks the full luxury breakdown — real contacts, prices, and the booking timeline for the best hospitality options.",
 };
 
 // Mini-packs pilot — product-type-keyed label for "you're in" banners, so
@@ -463,12 +462,12 @@ export const MINI_PACK_UNLOCK_DESCRIPTION_BY_PRODUCT_TYPE: Record<string, string
 
 // Mini-packs pilot — miniPackPriceDisplay is passed whenever this spoke has
 // its own mini-pack (Tickets/Hotels/Itinerary on the 3 piloted events).
-// STATUS_LABEL's "teaser" copy ("Free · Pack unlocks more") is wrong for
-// these — whole-spoke gating means they're no longer free at all — so this
-// shows the real "Unlock for US$X" price instead, same fix and same
-// amber-over-green reasoning as the hub grid tile badge (caught live by
-// the founder, 15 Sep 2026 — this top-of-page badge still said "Free"
-// after the hub tile version had already been fixed).
+// STATUS_LABEL's "teaser" copy ("Free preview") is wrong for these — whole-
+// spoke gating means they're no longer free at all — so this shows the real
+// "Unlock for US$X" price instead, same fix and same amber-over-green
+// reasoning as the hub grid tile badge (caught live by the founder, 15 Sep
+// 2026 — this top-of-page badge still said "Free" after the hub tile
+// version had already been fixed).
 function StatusBadge({ status, isFullyGated, miniPackPriceDisplay }: { status: SpokeStatus; isFullyGated?: boolean; miniPackPriceDisplay?: string }) {
   if (miniPackPriceDisplay) {
     return (
@@ -477,23 +476,26 @@ function StatusBadge({ status, isFullyGated, miniPackPriceDisplay }: { status: S
       </span>
     );
   }
-  // Full-gate pilot — a "Free" or "Free · Pack unlocks more" badge would be
-  // actively misleading once the body content itself is hidden behind the
-  // paywall, regardless of the spoke's underlying status. isFullyGated is
-  // only ever true for an event listed in FULLY_GATED_EVENTS (see SpokeShell
-  // above); every other event's badge is untouched.
+  // Full-gate pilot — a "Free" or "Free preview" badge would be actively
+  // misleading once the body content itself is hidden behind the paywall,
+  // regardless of the spoke's underlying status. isFullyGated is only ever
+  // true for an event listed in FULLY_GATED_EVENTS (see SpokeShell above);
+  // every other event's badge is untouched.
   if (isFullyGated) {
     return (
       <span className="inline-block text-[10px] font-black tracking-widest uppercase rounded-sm px-2 py-0.5 border backdrop-blur-sm bg-black/30 text-amber-400 border-amber-400/50">
-        Pack exclusive
+        Guide exclusive
       </span>
     );
   }
-  const isTeaser = status === "teaser";
   return (
     <span
       className={`inline-block text-[10px] font-black tracking-widest uppercase rounded-sm px-2 py-0.5 border backdrop-blur-sm bg-black/30 ${
-        isTeaser ? "text-[#AAFF00] border-[#AAFF00]/50" : "text-white/70 border-white/20"
+        status === "public"
+          ? "text-[#AAFF00] border-[#AAFF00]/50"
+          : status === "teaser"
+          ? "text-violet-400 border-violet-400/50"
+          : "text-white/70 border-white/20"
       }`}
     >
       {STATUS_LABEL[status]}

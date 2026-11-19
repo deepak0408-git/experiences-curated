@@ -46,7 +46,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the full day-by-day itinerary from Thursday's arrival to Sunday's race — how we'd actually sequence the Great Ocean Road and Yarra Valley around a Sprint weekend's compressed schedule, and the one combination that genuinely doesn't fit."
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Guide, to unlock the full day-by-day itinerary from Thursday's arrival to Sunday's race — how we'd actually sequence the Great Ocean Road and Yarra Valley around a Sprint weekend's compressed schedule, and the one combination that genuinely doesn't fit."
     >
       {/* Free teaser — bare day shape only, no specific activities/hour-by-hour.
           Everything else gated behind isUnlocked (full pack or the Itinerary

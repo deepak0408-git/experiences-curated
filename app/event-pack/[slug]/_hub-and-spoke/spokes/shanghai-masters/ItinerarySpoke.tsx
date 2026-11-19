@@ -48,7 +48,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the full hour-by-hour itinerary, the Federer/crowds/culture detail, and the day-trip and exhibition-day booking timing for whichever days you're actually there."
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Guide, to unlock the full hour-by-hour itinerary, the Federer/crowds/culture detail, and the day-trip and exhibition-day booking timing for whichever days you're actually there."
     >
       {/* Free teaser — the tournament's basic round structure only (dates,
           no day-by-day planning logic). Everything with real planning

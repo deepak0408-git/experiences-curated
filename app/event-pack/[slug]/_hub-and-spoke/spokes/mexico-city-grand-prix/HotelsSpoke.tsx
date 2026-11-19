@@ -36,7 +36,7 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Pack, to unlock our real hotel picks and ratings, plus our direct recommendation for your priorities here and the booking-timing detail that matters most given this year's Día de Muertos collision."
+      ctaCopy="Buy the Where to Stay Guide alone, or the full Event Guide, to unlock our real hotel picks and ratings, plus our direct recommendation for your priorities here and the booking-timing detail that matters most given this year's Día de Muertos collision."
     >
       {/* Free teaser — neighborhood overview only, no specific hotel picks,
           ratings, or booking detail. Everything else is gated behind

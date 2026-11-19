@@ -50,7 +50,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Itinerary Guide alone, or the full Event Pack, to unlock the real session-by-session rhythm, the circuit's own landmarks, and the actual hour-by-hour sequence we'd run around it — which landmark to catch on which night, when to eat, and the one combination of activities that genuinely doesn't fit in a single evening."
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Guide, to unlock the real session-by-session rhythm, the circuit's own landmarks, and the actual hour-by-hour sequence we'd run around it — which landmark to catch on which night, when to eat, and the one combination of activities that genuinely doesn't fit in a single evening."
     >
       {/* Free teaser — bare day shape only, no session times/specific
           activities/hour-by-hour. Everything else gated behind isUnlocked

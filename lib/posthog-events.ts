@@ -10,14 +10,21 @@ export const phEvent = {
     posthog.capture("sign_in_completed", { email, ...props });
   },
 
-  // Pack funnel
-  packCtaClicked: (props: { eventSlug: string; eventName: string; priceTier: string; label: string; sport?: string }) =>
+  // Pack funnel. productType added 19 Nov 2026 (Issue 3 investigation) —
+  // these 3 events are shared by every DodoCheckout caller (full pack,
+  // mini-packs, AND Ticket Intelligence), but never carried a field
+  // distinguishing which product the click/open/redirect was actually
+  // for — every TI checkout event was indistinguishable from a full-pack
+  // one in PostHog. Optional (not required) so every pre-existing
+  // full-pack call site (which never set this) keeps working unchanged —
+  // it was always implicitly "full_pack" and still is.
+  packCtaClicked: (props: { eventSlug: string; eventName: string; priceTier: string; label: string; sport?: string; productType?: string }) =>
     posthog.capture("pack_cta_clicked", props),
 
-  checkoutOpened: (props: { eventSlug: string; eventName?: string; priceTier: string; sport?: string }) =>
+  checkoutOpened: (props: { eventSlug: string; eventName?: string; priceTier: string; sport?: string; productType?: string }) =>
     posthog.capture("checkout_opened", props),
 
-  checkoutRedirected: (props: { eventSlug: string; priceTier: string; sport?: string }) =>
+  checkoutRedirected: (props: { eventSlug: string; priceTier: string; sport?: string; productType?: string }) =>
     posthog.capture("checkout_redirected", props),
 
   purchaseCompleted: (props: { eventSlug: string; sport?: string }) =>
@@ -79,4 +86,41 @@ export const phEvent = {
     posthog.capture("tennis_cockpit_calendar_card_clicked", props),
   tennisCockpitDeeperTileClicked: (props: { tile: "articles" | "experiences" | "destinations" }) =>
     posthog.capture("tennis_cockpit_deeper_tile_clicked", props),
+
+  // Ticket Intelligence funnel (F1 + tennis) — Issue 3 investigation, 19
+  // Nov 2026: the entire quiz → teaser → payment → result journey fired
+  // zero dedicated events, only the generic $pageview (itself fragmented
+  // by the quiz's self-rewriting URL — see ticketIntelligenceQuizStarted's
+  // comment). The shared checkout component's checkoutOpened/
+  // checkoutRedirected/packCtaClicked events also exist already, but never
+  // carried a productType, so a TI checkout click was indistinguishable
+  // from an Event Guide checkout click in PostHog — fixed by passing
+  // productType through from here on (see DodoCheckout.tsx). `sport`
+  // distinguishes the F1/tennis funnels without needing two separate event
+  // namespaces, since every event below is genuinely the same shape across
+  // both — unlike Cockpit, which has real per-sport UI differences.
+  ticketIntelligenceQuizStarted: (props: { eventSlug: string; sport: "formula_one" | "tennis" }) =>
+    posthog.capture("ticket_intelligence_quiz_started", props),
+
+  // Fired once per question on first answer (not on every change) — see
+  // call site for the "first answer only" guard. questionKey is the
+  // question's own key (e.g. "q1", "q1_trip_purpose") so progression can
+  // be read as a real funnel step, not just a count.
+  ticketIntelligenceQuestionAnswered: (props: {
+    eventSlug: string;
+    sport: "formula_one" | "tennis";
+    questionKey: string;
+    questionNumber: number;
+  }) => posthog.capture("ticket_intelligence_question_answered", props),
+
+  ticketIntelligenceQuizCompleted: (props: { eventSlug: string; sport: "formula_one" | "tennis" }) =>
+    posthog.capture("ticket_intelligence_quiz_completed", props),
+
+  // No dedicated "unlock clicked" event — the unlock button is a
+  // DodoCheckout instance, which already fires packCtaClicked with
+  // productType: "ticket_intelligence" (fixed the same day, see that
+  // event's comment above). A second, TI-specific event here would just
+  // duplicate that under a different name.
+  ticketIntelligenceTeaserViewed: (props: { eventSlug: string; sport: "formula_one" | "tennis" }) =>
+    posthog.capture("ticket_intelligence_teaser_viewed", props),
 };
