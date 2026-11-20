@@ -10,9 +10,10 @@ import { hasActiveSeasonPass, hasActiveAnnualProForEvent } from "../../_lib/seas
 import { scoreSeats } from "../_lib/scoreSeats";
 import { resolveBackLink } from "../_lib/resolveBackLink";
 import type { QuizAnswers } from "../_lib/types";
-import FullResult from "./_components/FullResult";
+import { FullResultTop, FullResultBottom } from "./_components/FullResult";
 import RetakeLink from "./_components/RetakeLink";
 import TicketIntelligenceSidebar from "../_components/TicketIntelligenceSidebar";
+import JourneyMap from "@/app/_components/JourneyMap";
 
 // Ticket Intelligence result page — verifies a real purchases row (product
 // type "ticket_intelligence") for the signed-in user + this event before
@@ -146,27 +147,54 @@ export default async function TicketIntelligenceResultPage({
               {backLink.label}
             </Link>
           </div>
+
+          <div className="mb-10">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Where You Are in the Journey</p>
+            <JourneyMap currentStage="find" variant="formula_one" />
+          </div>
+
           {/* Same grid pattern as SpokeShell.tsx — sidebar reuses the
               4-action model (RetakeLink, budget, calendar, get the guide)
               instead of the single bottom-of-page "Planning to travel?"
-              link the page had before. Founder direction, 27 Sep 2026. */}
-          <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-start">
-            <div className="max-w-2xl">
-              <FullResult
+              link the page had before. Founder direction, 27 Sep 2026.
+
+              Split into FullResultTop/FullResultBottom with explicit
+              `order` utilities, 21 Nov 2026 — below `lg` this grid
+              collapses to one column and DOM order becomes visual order,
+              which previously put the continuation message + sidebar
+              after the ENTIRE result (runner-up, 3rd option, circuit map,
+              reseller info) since FullResult rendered as one block. Now
+              the sidebar sits right after Best Match on mobile, matching
+              where it visually reads best, while `lg:` keeps the exact
+              same two-column layout as before (order utilities are inert
+              there — the grid's own column/row placement wins). */}
+          <div className="grid lg:grid-cols-[1fr_300px] lg:grid-rows-[auto_auto] gap-14 items-start">
+            <div className="order-1 lg:col-start-1 lg:row-start-1 max-w-2xl">
+              <FullResultTop
                 eventName={data.event.name}
                 eventSlug={slug}
                 result={scoreSeats(data.seats, answers)}
                 fallbackExperienceSlug={data.event.fallbackTicketExperienceSlug}
               />
             </div>
-            <TicketIntelligenceSidebar
-              eventSlug={slug}
-              eventId={event.id}
-              sport={event.sport}
-              isBuilt={isBuilt}
-              userEmail={user.email}
-              showBudgetLink={showBudgetLink}
-            />
+            <div className="order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2">
+              <TicketIntelligenceSidebar
+                eventSlug={slug}
+                eventId={event.id}
+                sport={event.sport}
+                isBuilt={isBuilt}
+                userEmail={user.email}
+                showBudgetLink={showBudgetLink}
+                showContinuationMessage
+              />
+            </div>
+            <div className="order-3 lg:col-start-1 lg:row-start-2 max-w-2xl">
+              <FullResultBottom
+                eventSlug={slug}
+                result={scoreSeats(data.seats, answers)}
+                fallbackExperienceSlug={data.event.fallbackTicketExperienceSlug}
+              />
+            </div>
           </div>
         </div>
       ) : (

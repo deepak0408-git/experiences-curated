@@ -38,7 +38,7 @@ export default function QuestionBlock<V extends string>({
                   : "text-left px-4 py-3 rounded-sm bg-[#141414] border border-[#2A2A2A] hover:border-[#AAFF00] transition-colors"
               }
             >
-              <span className={selected ? "block text-sm font-semibold text-black" : "block text-sm font-semibold text-white"}>
+              <span className={selected ? "block text-sm font-normal text-black" : "block text-sm font-normal text-white"}>
                 {opt.label}
               </span>
               <span className={selected ? "block text-xs mt-0.5 text-black/65" : "block text-xs mt-0.5 text-[#6A6A6A]"}>

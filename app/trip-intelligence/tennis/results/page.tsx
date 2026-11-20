@@ -16,6 +16,7 @@ import type { CandidateScore, TieGroup } from "../_lib/types";
 import ResultCard from "./_components/ResultCard";
 import ActionSideBar from "./_components/ActionSideBar";
 import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
+import JourneyMap from "@/app/_components/JourneyMap";
 
 // noindex — same reasoning as the F1 results page's identical comment:
 // entirely personalized output, never a stable page for any search query.
@@ -159,6 +160,11 @@ export default async function TripIntelligenceTennisResultsPage({
           ← Edit my answers
         </Link>
 
+        <div className="mt-8 mb-12">
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Where You Are in the Journey</p>
+          <JourneyMap currentStage="discover" variant="tennis" />
+        </div>
+
         {fourWayTie ? (
           <div className="mt-8">
             <div className="grid lg:grid-cols-[1fr_300px] gap-6 lg:gap-14 items-start">
@@ -269,6 +275,15 @@ export default async function TripIntelligenceTennisResultsPage({
               </div>
 
               <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
+                {!isCoLeaderTie && (
+                  <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] px-5 py-4 mb-5">
+                    <p className="text-sm font-black text-white mb-1.5">Your Grand Slam discovery is complete.</p>
+                    <p className="text-xs text-[#A3A3A3] leading-5">
+                      You&apos;ve found the Grand Slam that matches your travel preferences. Now take the next steps
+                      towards planning your trip.
+                    </p>
+                  </div>
+                )}
                 <ActionSideBar
                   eventSlug={displayInfoMap.get(hero.sportingEventId)?.slug ?? ""}
                   eventId={hero.sportingEventId}

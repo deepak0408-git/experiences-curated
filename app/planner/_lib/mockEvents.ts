@@ -34,6 +34,15 @@ export type MockEvent = {
   isHidden: boolean;
   lineItems: CostLineItem[];
   heroImageUrl: string | null;
+  // "Match Your Seats" CTA gate — same real existence/fail-closed check
+  // each sport's own Ticket Intelligence surface already uses (F1:
+  // circuit_seating_profile row-existence, tennis: hasTennisTicketIntelligence's
+  // fail-closed gate), resolved once here so the Planner results/compare
+  // screens never need a second, divergent check. Per the UX Journey Map
+  // spec (20 Nov 2026) — this CTA links to /ticket-intelligence/[slug] for
+  // F1 or /ticket-intelligence/tennis/[slug] for tennis, same slug as this
+  // event.
+  hasTicketIntelligence: boolean;
 };
 
 export function sumLineItems(lineItems: CostLineItem[], key: "low" | "high") {

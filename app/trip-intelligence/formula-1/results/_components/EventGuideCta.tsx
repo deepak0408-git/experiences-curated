@@ -17,6 +17,7 @@ export default function EventGuideCta({
   isBuilt,
   userEmail,
   sidebarPage,
+  variant = "bottom",
 }: {
   eventSlug: string;
   eventId: string;
@@ -27,23 +28,36 @@ export default function EventGuideCta({
   // needed so sidebarCtaClicked can tell the two apart. Defaults to the
   // original (F1) caller so the existing import site doesn't need updating.
   sidebarPage?: "trip_intelligence_f1" | "trip_intelligence_tennis";
+  // "bottom" (default): bleeds to the box's edges as the box's final,
+  // rounded-bottom item — the original layout. "list": a plain item among
+  // the box's secondary links (icon + two-line text, bottom border, no
+  // lime fill even when built), per the UX Journey Map spec (20 Nov 2026,
+  // corrected same day) — "Find your seat" is this screen's sole primary
+  // CTA, and Get the Event Guide sits first in the plain list below it.
+  variant?: "bottom" | "list";
 }) {
   const page = sidebarPage ?? "trip_intelligence_f1";
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState(userEmail ?? "");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
 
+  const isList = variant === "list";
+  const built = isList ? "flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity" : "flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 rounded-b-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors";
+  const done = isList ? "py-3 border-b border-[#2A2A2A]" : "py-4 px-5 -mx-5 -mb-5 mt-0";
+  const closed = isList ? "flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] w-full text-left hover:opacity-80 transition-opacity" : "flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 w-[calc(100%+2.5rem)] text-left hover:opacity-80 transition-opacity";
+  const formWrap = isList ? "flex items-center gap-2 py-3 border-b border-[#2A2A2A]" : "flex items-center gap-2 py-4 px-5 -mx-5 -mb-5 mt-0";
+
   if (isBuilt) {
     return (
       <Link
         href={`/event-pack/${eventSlug}`}
         onClick={() => phEvent.sidebarCtaClicked({ page, cta: "get_full_guide", slug: eventSlug })}
-        className="flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 rounded-b-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors"
+        className={built}
       >
         <span className="text-base flex-shrink-0 w-5 text-center">🎟</span>
         <span className="flex-1">
-          <span className="block text-sm font-black text-black">Get the event guide</span>
-          <span className="block text-xs text-black/65 mt-0.5">Trip costs, curated picks, booking detail</span>
+          <span className={isList ? "block text-sm font-bold text-[#A3A3A3]" : "block text-sm font-black text-black"}>Get the event guide</span>
+          <span className={isList ? "block text-xs text-[#6A6A6A] mt-0.5" : "block text-xs text-black/65 mt-0.5"}>Trip costs, curated picks, booking detail</span>
         </span>
       </Link>
     );
@@ -51,7 +65,7 @@ export default function EventGuideCta({
 
   if (status === "done") {
     return (
-      <div className="py-4 px-5 -mx-5 -mb-5 mt-0">
+      <div className={done}>
         <p className="text-xs text-[#AAFF00]">You&apos;re on the list.</p>
       </div>
     );
@@ -59,10 +73,7 @@ export default function EventGuideCta({
 
   if (!open) {
     return (
-      <button
-        onClick={() => setOpen(true)}
-        className="flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 w-[calc(100%+2.5rem)] text-left hover:opacity-80 transition-opacity"
-      >
+      <button onClick={() => setOpen(true)} className={closed}>
         <span className="text-base flex-shrink-0 w-5 text-center">🔔</span>
         <span className="flex-1">
           <span className="block text-sm font-bold text-[#A3A3A3]">Guide coming soon</span>
@@ -97,7 +108,7 @@ export default function EventGuideCta({
           setStatus("error");
         }
       }}
-      className="flex items-center gap-2 py-4 px-5 -mx-5 -mb-5 mt-0"
+      className={formWrap}
     >
       <input
         type="email"

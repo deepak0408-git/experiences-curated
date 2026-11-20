@@ -11,7 +11,13 @@ import { phEvent } from "@/lib/posthog-events";
 // link: shown only when ticketIntelligenceSlug is non-null (the caller
 // resolves this from GrandSlamDisplayInfo.hasTicketIntelligence, itself
 // sourced from hasTennisTicketIntelligence's fail-closed gate — never a
-// hardcoded per-event check), sits directly above the Event Guide CTA.
+// hardcoded per-event check).
+//
+// CTA hierarchy per the approved UX Journey Map spec (20 Nov 2026,
+// corrected same day): "Find your ticket" is this screen's single primary
+// action, lime-highlighted and standalone at the top of the box (when
+// shown). "Get the event guide" sits in the plain secondary list directly
+// below it, first among the rest — same pattern as F1's ActionSideBar.tsx.
 //
 // When there are 2+ co-leading winners, there's no single "best fit event"
 // to point the sidebar's event-guide CTA at — showEventGuide=false omits
@@ -36,6 +42,24 @@ export default function ActionSideBar({
   return (
     <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
       <p className="text-xs font-black tracking-widest uppercase text-white mb-3.5">Your Best Fit Event</p>
+
+      {ticketIntelligenceSlug && (
+        <Link
+          href={`/ticket-intelligence/tennis/${ticketIntelligenceSlug}`}
+          onClick={() => phEvent.sidebarCtaClicked({ page: "trip_intelligence_tennis", cta: "ticket_intelligence_tennis", slug: eventSlug })}
+          className="flex items-center gap-2.5 py-4 px-5 rounded-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors mb-4"
+        >
+          <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
+          <span className="flex-1">
+            <span className="block text-sm font-black text-black">Find your ticket</span>
+            <span className="block text-xs text-black/65 mt-0.5">Match the arena and ticket option</span>
+          </span>
+        </Link>
+      )}
+
+      {showEventGuide && (
+        <EventGuideCta eventSlug={eventSlug} eventId={eventId} sport="tennis" isBuilt={isBuilt} userEmail={userEmail} sidebarPage="trip_intelligence_tennis" variant="list" />
+      )}
 
       <Link
         href="/planner"
@@ -76,11 +100,7 @@ export default function ActionSideBar({
       <Link
         href="/?sport=tennis#on-the-calendar"
         onClick={() => phEvent.sidebarCtaClicked({ page: "trip_intelligence_tennis", cta: "see_upcoming_events", slug: eventSlug })}
-        className={
-          ticketIntelligenceSlug || showEventGuide
-            ? "flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
-            : "flex items-center gap-2.5 py-3 hover:opacity-80 transition-opacity"
-        }
+        className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">🏆</span>
         <span className="flex-1">
@@ -89,35 +109,13 @@ export default function ActionSideBar({
         </span>
       </Link>
 
-      {ticketIntelligenceSlug && (
-        <Link
-          href={`/ticket-intelligence/tennis/${ticketIntelligenceSlug}`}
-          onClick={() => phEvent.sidebarCtaClicked({ page: "trip_intelligence_tennis", cta: "ticket_intelligence_tennis", slug: eventSlug })}
-          className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
-        >
-          <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
-          <span className="flex-1">
-            <span className="block text-sm font-bold text-[#A3A3A3]">Find your ticket</span>
-            <span className="block text-xs text-[#6A6A6A] mt-0.5">Match the arena and ticket option</span>
-          </span>
-        </Link>
-      )}
-
-      {/* Second-to-last item, directly above the Event Guide CTA —
-          founder direction, 28 Oct 2026: every Trip/Ticket Intelligence
-          sidebar (F1 and tennis, both surfaces) links to its sport's own
-          Travel Planning Cockpit (/formula-1 or /tennis). Same
-          showEventGuide-conditional border/margin pattern as the
-          "Find your ticket" link above it — no trailing border/margin when
-          this is the last item (co-leader case, showEventGuide=false). */}
+      {/* Last item — founder direction, 28 Oct 2026: every Trip/Ticket
+          Intelligence sidebar (F1 and tennis, both surfaces) links to its
+          sport's own Travel Planning Cockpit (/formula-1 or /tennis). */}
       <Link
         href="/tennis"
         onClick={() => phEvent.sidebarCtaClicked({ page: "trip_intelligence_tennis", cta: "visit_cockpit", slug: eventSlug })}
-        className={
-          showEventGuide
-            ? "flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
-            : "flex items-center gap-2.5 py-3 hover:opacity-80 transition-opacity"
-        }
+        className="flex items-center gap-2.5 py-3 hover:opacity-80 transition-opacity"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">🗺️</span>
         <span className="flex-1">
@@ -125,10 +123,6 @@ export default function ActionSideBar({
           <span className="block text-xs text-[#6A6A6A] mt-0.5">Discover, compare and plan tennis trips</span>
         </span>
       </Link>
-
-      {showEventGuide && (
-        <EventGuideCta eventSlug={eventSlug} eventId={eventId} sport="tennis" isBuilt={isBuilt} userEmail={userEmail} sidebarPage="trip_intelligence_tennis" />
-      )}
     </div>
   );
 }

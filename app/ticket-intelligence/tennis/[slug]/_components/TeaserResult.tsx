@@ -9,10 +9,11 @@ import DodoCheckout from "@/app/event-pack/[slug]/_components/DodoCheckout";
 import LocalCurrencyHint from "@/app/event-pack/[slug]/_components/LocalCurrencyHint";
 import TennisTicketIntelligenceSidebar from "./TennisTicketIntelligenceSidebar";
 import TennisSeasonPassCheckout from "./TennisSeasonPassCheckout";
-import FullResult from "../result/_components/FullResult";
+import { FullResultTop, FullResultBottom } from "../result/_components/FullResult";
 import { updateTicketIntelligenceAnswers } from "../actions";
 import { phEvent } from "@/lib/posthog-events";
 import SampleOutputModal from "./SampleOutputModal";
+import JourneyMap from "@/app/_components/JourneyMap";
 
 // Issue 5 fix, 19 Nov 2026 — real founder-provided screenshot of their
 // own Australian Open 2027 result (same pattern as F1's TeaserResult.tsx
@@ -157,18 +158,33 @@ export default function TeaserResult({
             </Link>
           )}
         </div>
-        <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-start">
-          <div className="max-w-2xl">
-            <FullResult eventName={eventName} eventSlug={eventSlug} result={result} answers={answers} />
+
+        <div className="mb-10">
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Where You Are in the Journey</p>
+          <JourneyMap currentStage="find" variant="tennis" />
+        </div>
+
+        {/* Split into FullResultTop/FullResultBottom with explicit `order`
+            utilities, same reasoning and lg-preserving approach as F1's
+            TeaserResult.tsx (21 Nov 2026). */}
+        <div className="grid lg:grid-cols-[1fr_300px] lg:grid-rows-[auto_auto] gap-14 items-start">
+          <div className="order-1 lg:col-start-1 lg:row-start-1 max-w-2xl">
+            <FullResultTop eventName={eventName} eventSlug={eventSlug} result={result} answers={answers} />
           </div>
-          <TennisTicketIntelligenceSidebar
-            eventSlug={eventSlug}
-            eventId={eventId}
-            sport={eventSport}
-            isBuilt={eventIsBuilt}
-            userEmail={signedInEmail}
-            showBudgetLink={showBudgetLink}
-          />
+          <div className="order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2">
+            <TennisTicketIntelligenceSidebar
+              eventSlug={eventSlug}
+              eventId={eventId}
+              sport={eventSport}
+              isBuilt={eventIsBuilt}
+              userEmail={signedInEmail}
+              showBudgetLink={showBudgetLink}
+              showContinuationMessage
+            />
+          </div>
+          <div className="order-3 lg:col-start-1 lg:row-start-2 max-w-2xl">
+            <FullResultBottom eventName={eventName} eventSlug={eventSlug} result={result} answers={answers} />
+          </div>
         </div>
       </div>
     );

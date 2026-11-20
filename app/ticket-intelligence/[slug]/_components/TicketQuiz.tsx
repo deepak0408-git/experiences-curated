@@ -19,6 +19,7 @@ import TeaserResult from "./TeaserResult";
 import TicketIntelligenceSidebar from "./TicketIntelligenceSidebar";
 import SeatingPrimer from "./SeatingPrimer";
 import { phEvent } from "@/lib/posthog-events";
+import JourneyMap from "@/app/_components/JourneyMap";
 
 const Q1_OPTIONS: { value: Q1TrackAction; label: string }[] = [
   { value: "overtaking", label: "Overtaking and braking battles" },
@@ -256,11 +257,17 @@ export default function TicketQuiz({
           <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
             Which is the best grandstand seat at {eventName.replace(/\s*\d{4}$/, "").trim()}?
           </h1>
-          <p className="text-[#A3A3A3] text-base mb-4">
+          <p className="text-[#A3A3A3] text-base mb-8">
             {steps.length}{" "}
             quick questions. We&apos;ll match your answers against every real grandstand, lawn zone, and
             hospitality suite at this circuit — no fluff, just the seat that fits.
           </p>
+
+          <div className="mb-8">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Where You Are in the Journey</p>
+            <JourneyMap currentStage="find" variant="formula_one" />
+          </div>
+
           <p className="text-xs text-[#6A6A6A] mb-12">
             {answeredCount} of {steps.length} answered
           </p>
@@ -339,6 +346,7 @@ export default function TicketQuiz({
           isBuilt={eventIsBuilt}
           userEmail={signedInEmail}
           showBudgetLink={showBudgetLink}
+          guideCtaAtTop
         />
       </div>
     </div>

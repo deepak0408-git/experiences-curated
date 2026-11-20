@@ -42,7 +42,62 @@ const US_OPEN_EXPLANATION_SLUGS = new Set(["us-open"]);
 // Oct 2026) so the un-blurred content only ever renders where access has
 // actually been server-verified (this route), never client-side before
 // payment.
-export default function FullResult({
+
+// Explanation selection, factored out 21 Nov 2026 so FullResultTop (hero
+// card only) and FullResultBottom (alternatives + rest) can both call it
+// without duplicating the French Open/Wimbledon/US Open/AO branching.
+// Returns null when result.hero is missing (see that field's own comment
+// in the original FullResult) — both Top and Bottom render their own
+// "something went wrong" fallback in that case, same copy as before.
+function selectExplanations(eventSlug: string, answers: QuizAnswers, result: ScoreResult) {
+  if (!result.hero) return null;
+
+  const isFrenchOpen = FRENCH_OPEN_EXPLANATION_SLUGS.has(eventSlug);
+  const isWimbledon = WIMBLEDON_EXPLANATION_SLUGS.has(eventSlug);
+  const isUsOpen = US_OPEN_EXPLANATION_SLUGS.has(eventSlug);
+
+  // selectHeroExplanation/selectAlternativeExplanation (the catalogue-based
+  // S01-S14 selector) are still computed here for Australian Open — kept
+  // for regression compatibility and auditability, per founder direction
+  // 20 Oct 2026 — but their .text is no longer what's shown in the UI. AO's
+  // displayed rationale comes from recommendationRationale.ts instead,
+  // completely unchanged by this branch. French Open and Wimbledon have no
+  // equivalent audit-only catalogue call here — selectExplanation.ts's
+  // reconstructedLanguageCatalogue.json is Australian Open's own catalogue
+  // (option IDs 001-043) and has no French Open/Wimbledon entries; calling
+  // it with their option IDs would either collide with AO's or throw, so
+  // it is deliberately never called for either.
+  if (isFrenchOpen) {
+    const fo = selectFrenchOpenExplanations(answers, result.hero, result.alternative1, result.alternative2);
+    return { hero: fo.hero, alt1: fo.alternative1, alt2: fo.alternative2 };
+  }
+  if (isWimbledon) {
+    const wim = selectWimbledonExplanations(answers, result.hero, result.alternative1, result.alternative2);
+    return { hero: wim.hero, alt1: wim.alternative1, alt2: wim.alternative2 };
+  }
+  if (isUsOpen) {
+    const uso = selectUsOpenExplanations(answers, result.hero, result.alternative1, result.alternative2);
+    return { hero: uso.hero, alt1: uso.alternative1, alt2: uso.alternative2 };
+  }
+
+  selectHeroExplanation(result.hero);
+  if (result.alternative1) selectAlternativeExplanation(result.alternative1, result.hero);
+  if (result.alternative2) selectAlternativeExplanation(result.alternative2, result.hero);
+
+  return {
+    hero: heroRationale(answers, result.hero),
+    alt1: result.alternative1 ? alternativeRationale(result.hero, result.alternative1) : null,
+    alt2: result.alternative2 ? alternativeRationale(result.hero, result.alternative2) : null,
+  };
+}
+
+// Split into Top (h1 + retake + hero ResultCard only) / Bottom
+// (alternatives, "how chosen" note, arena maps, reseller info, disclosure)
+// — 21 Nov 2026, same reasoning as F1's FullResult.tsx split: lets
+// result/page.tsx and TeaserResult.tsx's alreadyPurchased branch put the
+// continuation message + sidebar right after the hero match on mobile,
+// without touching the lg two-column layout.
+export function FullResultTop({
   eventName,
   eventSlug,
   result,
@@ -73,46 +128,7 @@ export default function FullResult({
     );
   }
 
-  const isFrenchOpen = FRENCH_OPEN_EXPLANATION_SLUGS.has(eventSlug);
-  const isWimbledon = WIMBLEDON_EXPLANATION_SLUGS.has(eventSlug);
-  const isUsOpen = US_OPEN_EXPLANATION_SLUGS.has(eventSlug);
-
-  // selectHeroExplanation/selectAlternativeExplanation (the catalogue-based
-  // S01-S14 selector) are still computed here for Australian Open — kept
-  // for regression compatibility and auditability, per founder direction
-  // 20 Oct 2026 — but their .text is no longer what's shown in the UI. AO's
-  // displayed rationale comes from recommendationRationale.ts instead,
-  // completely unchanged by this branch. French Open and Wimbledon have no
-  // equivalent audit-only catalogue call here — selectExplanation.ts's
-  // reconstructedLanguageCatalogue.json is Australian Open's own catalogue
-  // (option IDs 001-043) and has no French Open/Wimbledon entries; calling
-  // it with their option IDs would either collide with AO's or throw, so
-  // it is deliberately never called for either.
-  let heroExplanation, alt1Explanation, alt2Explanation;
-  if (isFrenchOpen) {
-    const fo = selectFrenchOpenExplanations(answers, result.hero, result.alternative1, result.alternative2);
-    heroExplanation = fo.hero;
-    alt1Explanation = fo.alternative1;
-    alt2Explanation = fo.alternative2;
-  } else if (isWimbledon) {
-    const wim = selectWimbledonExplanations(answers, result.hero, result.alternative1, result.alternative2);
-    heroExplanation = wim.hero;
-    alt1Explanation = wim.alternative1;
-    alt2Explanation = wim.alternative2;
-  } else if (isUsOpen) {
-    const uso = selectUsOpenExplanations(answers, result.hero, result.alternative1, result.alternative2);
-    heroExplanation = uso.hero;
-    alt1Explanation = uso.alternative1;
-    alt2Explanation = uso.alternative2;
-  } else {
-    selectHeroExplanation(result.hero);
-    if (result.alternative1) selectAlternativeExplanation(result.alternative1, result.hero);
-    if (result.alternative2) selectAlternativeExplanation(result.alternative2, result.hero);
-
-    heroExplanation = heroRationale(answers, result.hero);
-    alt1Explanation = result.alternative1 ? alternativeRationale(result.hero, result.alternative1) : null;
-    alt2Explanation = result.alternative2 ? alternativeRationale(result.hero, result.alternative2) : null;
-  }
+  const explanations = selectExplanations(eventSlug, answers, result)!;
 
   return (
     <div>
@@ -125,33 +141,51 @@ export default function FullResult({
           Re-answering here never asks to pay again. */}
       <RetakeLink eventSlug={eventSlug} />
 
-      <div className="flex flex-col gap-6">
+      <ResultCard
+        label="BEST MATCH"
+        eventName={eventName}
+        scored={result.hero}
+        explanation={explanations.hero}
+        comparisonHeading="Why this suits you"
+      />
+    </div>
+  );
+}
+
+export function FullResultBottom({
+  eventName,
+  eventSlug,
+  result,
+  answers,
+}: {
+  eventName: string;
+  eventSlug: string;
+  result: ScoreResult;
+  answers: QuizAnswers;
+}) {
+  if (!result.hero) return null;
+  const { alt1, alt2 } = selectExplanations(eventSlug, answers, result)!;
+
+  return (
+    <div>
+      {result.alternative1 && alt1 && (
         <ResultCard
-          label="BEST MATCH"
+          label="ALTERNATIVE"
           eventName={eventName}
-          scored={result.hero}
-          explanation={heroExplanation}
-          comparisonHeading="Why this suits you"
+          scored={result.alternative1}
+          explanation={alt1}
+          comparisonHeading="Why consider this instead?"
         />
-        {result.alternative1 && alt1Explanation && (
-          <ResultCard
-            label="ALTERNATIVE"
-            eventName={eventName}
-            scored={result.alternative1}
-            explanation={alt1Explanation}
-            comparisonHeading="Why consider this instead?"
-          />
-        )}
-        {result.alternative2 && alt2Explanation && (
-          <ResultCard
-            label="ALTERNATIVE"
-            eventName={eventName}
-            scored={result.alternative2}
-            explanation={alt2Explanation}
-            comparisonHeading="Why consider this instead?"
-          />
-        )}
-      </div>
+      )}
+      {result.alternative2 && alt2 && (
+        <ResultCard
+          label="ALTERNATIVE"
+          eventName={eventName}
+          scored={result.alternative2}
+          explanation={alt2}
+          comparisonHeading="Why consider this instead?"
+        />
+      )}
 
       {/* "How these were chosen" note — same box pattern as Trip
           Intelligence's results page, founder-specified copy, 20 Oct
@@ -235,6 +269,29 @@ export default function FullResult({
           How Ticket Intelligence works →
         </Link>
       </p>
+    </div>
+  );
+}
+
+// Default export — unchanged combined render (FullResultTop +
+// FullResultBottom in sequence), used by any caller that doesn't need the
+// split. result/page.tsx and TeaserResult.tsx's alreadyPurchased branch use
+// the two named exports directly instead.
+export default function FullResult({
+  eventName,
+  eventSlug,
+  result,
+  answers,
+}: {
+  eventName: string;
+  eventSlug: string;
+  result: ScoreResult;
+  answers: QuizAnswers;
+}) {
+  return (
+    <div>
+      <FullResultTop eventName={eventName} eventSlug={eventSlug} result={result} answers={answers} />
+      <FullResultBottom eventName={eventName} eventSlug={eventSlug} result={result} answers={answers} />
     </div>
   );
 }

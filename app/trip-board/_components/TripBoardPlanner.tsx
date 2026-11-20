@@ -15,6 +15,7 @@ import NewBoardModal from "./NewBoardModal";
 import { renameBoard, deleteBoard } from "../actions";
 import MoveToBoard from "./MoveToBoard";
 import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
+import JourneyMap from "@/app/_components/JourneyMap";
 
 // Same map used on the homepage — the raw DB enum ("formula_one") was being
 // rendered directly with a naive capitalize, producing "Formula_one" (then
@@ -288,6 +289,25 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
           </div>
         </div>
 
+        {/* Journey Map, Prepare stage — per the UX Journey Map spec (20 Nov
+            2026). Cross-sport surface (a board can hold items from any
+            event), so variant="neutral". Placed once, above the board
+            switcher/content, so it works identically whether the board is
+            empty or populated. */}
+        <div className="mb-8">
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Where You Are in the Journey</p>
+          <JourneyMap currentStage="prepare" variant="neutral" />
+        </div>
+
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] px-5 py-4 mb-8">
+          <p className="text-sm font-black text-white mb-1.5">Your trip, organised your way.</p>
+          <p className="text-xs text-[#A3A3A3] leading-5">
+            Bring your chosen experiences together, organise your days and build an itinerary that helps you
+            make the most of your event experience.
+          </p>
+          <p className="text-xs text-[#A3A3A3] leading-5 mt-1.5">Your journey starts here.</p>
+        </div>
+
         {/* Board switcher — Pro with 2+ boards only */}
         {(showSwitcher || isPro) && (
           <div className="flex items-center gap-2 mb-8 pt-2">
@@ -322,9 +342,9 @@ export default function TripBoardPlanner({ initialItems, userId, userEmail, isPr
             {items.length === 0 && (
               <div className="py-12 text-center">
                 <p className="text-sm font-black text-white mb-1">Your Trip Board is empty</p>
-                <p className="text-xs text-[#6A6A6A] mb-8">Save experiences as you browse to build your itinerary.</p>
+                <p className="text-xs text-[#6A6A6A] mb-8">Save experiences from the event guide to build your itinerary.</p>
                 <div className="mt-2 pt-8 border-t border-[#2A2A2A] text-left">
-                  <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-4 text-center">Upcoming event packs</p>
+                  <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-4 text-center">Your Event Guides</p>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     {upcomingEvents.map((ev) => (
                       <Link key={ev.slug} href={`/event-pack/${ev.slug}`} className="group rounded-sm border border-[#2A2A2A] overflow-hidden hover:border-[#AAFF00] transition-colors">

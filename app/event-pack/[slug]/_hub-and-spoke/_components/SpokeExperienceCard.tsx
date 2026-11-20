@@ -118,6 +118,10 @@ export default function SpokeExperienceCard({
           <HowToBook howToBook={howToBook} isPro={isPro} eventSlug="" hideProCtas={hideProCtas} />
         )}
         <div className="mt-4 pt-3 border-t border-[#2A2A2A]">
+          {/* Short continuation nudge, per the UX Journey Map spec (20 Nov
+              2026) — founder direction: keep it brief, directly above the
+              existing Save to Trip Board action, once per card. */}
+          <p className="text-xs text-white mb-2">Next — organize, and build your trip itinerary.</p>
           <AddOneToBoard experienceId={experience.id} />
         </div>
       </div>

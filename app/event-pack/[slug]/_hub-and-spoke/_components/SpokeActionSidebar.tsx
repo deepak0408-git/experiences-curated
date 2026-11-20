@@ -92,6 +92,43 @@ export default function SpokeActionSidebar({
         {heading ?? "This Guide"}
       </p>
 
+      {/* Primary CTA, per the UX Journey Map spec (20 Nov 2026) — same
+          lime-filled top-of-sidebar treatment as Trip/Ticket Intelligence's
+          own "Find your seat" CTA. When this event has no Ticket
+          Intelligence, "Get the full guide" takes the primary slot instead
+          (and drops out of its usual bottom position below) — an event
+          with no real second product still needs one real primary CTA,
+          not an empty top-of-box gap. Founder direction, 21 Nov 2026. */}
+      {showTicketIntelligence ? (
+        <Link
+          href={`/ticket-intelligence/${eventSlug}${
+            spokeId
+              ? `?from=${encodeURIComponent(`spoke:${spokeId}`)}${spokeLabel ? `&fromLabel=${encodeURIComponent(spokeLabel)}` : ""}`
+              : ""
+          }`}
+          onClick={() => phEvent.sidebarCtaClicked({ page, cta: "ticket_intelligence", slug: eventSlug })}
+          className="flex items-center gap-2.5 py-4 px-5 mb-4 rounded-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors"
+        >
+          <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
+          <span className="flex-1">
+            <span className="block text-sm font-black text-black">Find your perfect seat</span>
+            <span className="block text-xs text-black/65 mt-0.5">Answer 6 questions, get matched to a seat</span>
+          </span>
+        </Link>
+      ) : (
+        <Link
+          href={`/event-pack/${eventSlug}`}
+          onClick={() => phEvent.sidebarCtaClicked({ page, cta: "get_full_guide", slug: eventSlug })}
+          className="flex items-center gap-2.5 py-4 px-5 mb-4 rounded-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors"
+        >
+          <span className="text-base flex-shrink-0 w-5 text-center">🎟</span>
+          <span className="flex-1">
+            <span className="block text-sm font-black text-black">{finalCtaLabel ?? "Get the full guide"}</span>
+            <span className="block text-xs text-black/65 mt-0.5">{finalCtaSubtext ?? "Every planning guide in one place"}</span>
+          </span>
+        </Link>
+      )}
+
       <Link
         href="/calendar"
         onClick={() => phEvent.sidebarCtaClicked({ page, cta: "calendar", slug: eventSlug })}
@@ -126,24 +163,6 @@ export default function SpokeActionSidebar({
         </Link>
       )}
 
-      {showTicketIntelligence && (
-        <Link
-          href={`/ticket-intelligence/${eventSlug}${
-            spokeId
-              ? `?from=${encodeURIComponent(`spoke:${spokeId}`)}${spokeLabel ? `&fromLabel=${encodeURIComponent(spokeLabel)}` : ""}`
-              : ""
-          }`}
-          onClick={() => phEvent.sidebarCtaClicked({ page, cta: "ticket_intelligence", slug: eventSlug })}
-          className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
-        >
-          <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
-          <span className="flex-1">
-            <span className="block text-sm font-bold text-[#A3A3A3]">Find your perfect seat</span>
-            <span className="block text-xs text-[#6A6A6A] mt-0.5">Answer 6 questions, get matched to a seat</span>
-          </span>
-        </Link>
-      )}
-
       <Link
         href="/custom-itinerary"
         onClick={() => phEvent.sidebarCtaClicked({ page, cta: "custom_itinerary", slug: eventSlug })}
@@ -174,7 +193,7 @@ export default function SpokeActionSidebar({
         <Link
           href={`/?sport=${sport}#on-the-calendar`}
           onClick={() => phEvent.sidebarCtaClicked({ page, cta: "see_upcoming_events", slug: eventSlug })}
-          className="flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+          className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
         >
           <span className="text-base flex-shrink-0 w-5 text-center">🏆</span>
           <span className="flex-1">
@@ -186,17 +205,19 @@ export default function SpokeActionSidebar({
         </Link>
       )}
 
-      <Link
-        href={`/event-pack/${eventSlug}`}
-        onClick={() => phEvent.sidebarCtaClicked({ page, cta: "get_full_guide", slug: eventSlug })}
-        className="flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 rounded-b-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors"
-      >
-        <span className="text-base flex-shrink-0 w-5 text-center">🎟</span>
-        <span className="flex-1">
-          <span className="block text-sm font-black text-black">{finalCtaLabel ?? "Get the full guide"}</span>
-          <span className="block text-xs text-black/65 mt-0.5">{finalCtaSubtext ?? "Every planning guide in one place"}</span>
-        </span>
-      </Link>
+      {showTicketIntelligence && (
+        <Link
+          href={`/event-pack/${eventSlug}`}
+          onClick={() => phEvent.sidebarCtaClicked({ page, cta: "get_full_guide", slug: eventSlug })}
+          className="flex items-center gap-2.5 py-3 hover:opacity-80 transition-opacity"
+        >
+          <span className="text-base flex-shrink-0 w-5 text-center">🎟</span>
+          <span className="flex-1">
+            <span className="block text-sm font-bold text-[#A3A3A3]">{finalCtaLabel ?? "Get the full guide"}</span>
+            <span className="block text-xs text-[#6A6A6A] mt-0.5">{finalCtaSubtext ?? "Every planning guide in one place"}</span>
+          </span>
+        </Link>
+      )}
     </div>
   );
 }

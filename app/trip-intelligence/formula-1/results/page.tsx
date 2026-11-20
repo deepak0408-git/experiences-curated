@@ -9,6 +9,7 @@ import { getAllGrandPrixCandidates, getGrandPrixDisplayInfo, getFanInsights } fr
 import type { TripIntelligenceAnswers } from "../_lib/types";
 import ResultCard from "./_components/ResultCard";
 import ActionSideBar from "./_components/ActionSideBar";
+import JourneyMap from "@/app/_components/JourneyMap";
 
 // noindex — this page's content is entirely personalized to whatever
 // answers are in the query string, never a stable page for any search
@@ -91,6 +92,11 @@ export default async function TripIntelligenceResultsPage({
           ← Edit my answers
         </Link>
 
+        <div className="mt-8 mb-12">
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Where You Are in the Journey</p>
+          <JourneyMap currentStage="discover" variant="formula_one" />
+        </div>
+
         <div className="mt-8">
           {/* Mobile (single column, no explicit grid placement needed):
               hero -> sidebar -> alternatives, by DOM order. lg:: explicit
@@ -116,6 +122,13 @@ export default async function TripIntelligenceResultsPage({
             </div>
 
             <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
+              <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] px-5 py-4 mb-5">
+                <p className="text-sm font-black text-white mb-1.5">Your Grand Prix discovery is complete.</p>
+                <p className="text-xs text-[#A3A3A3] leading-5">
+                  You&apos;ve found the Grand Prix that matches your travel preferences. Now take the next steps
+                  towards planning your race weekend.
+                </p>
+              </div>
               <ActionSideBar
                 eventSlug={heroDisplay?.slug ?? ""}
                 eventId={matchResponse.hero.sportingEventId}

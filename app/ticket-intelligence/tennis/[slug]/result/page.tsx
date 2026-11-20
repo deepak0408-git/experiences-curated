@@ -10,10 +10,11 @@ import { hasFullPlannerCostData } from "../../../[slug]/_lib/getSeatingData";
 import { hasActiveSeasonPass, hasActiveAnnualProForEvent } from "../../../_lib/seasonPassAccess";
 import { scoreTennisOptions, assertTennisEventSlug } from "../_lib/scoreTennisOptions";
 import type { QuizAnswers } from "../_lib/types";
-import FullResult from "./_components/FullResult";
+import { FullResultTop, FullResultBottom } from "./_components/FullResult";
 import RetakeLink from "./_components/RetakeLink";
 import TennisTicketIntelligenceSidebar from "../_components/TennisTicketIntelligenceSidebar";
 import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
+import JourneyMap from "@/app/_components/JourneyMap";
 
 // Tennis equivalent of app/ticket-intelligence/[slug]/result/page.tsx —
 // verifies a real purchases row (product type "ticket_intelligence") OR an
@@ -126,23 +127,44 @@ export default async function TennisTicketIntelligenceResultPage({
               </Link>
             )}
           </div>
-          <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-start">
-            <div className="max-w-2xl">
-              <FullResult
+
+          <div className="mb-10">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Where You Are in the Journey</p>
+            <JourneyMap currentStage="find" variant="tennis" />
+          </div>
+
+          {/* Split into FullResultTop/FullResultBottom with explicit
+              `order` utilities, same reasoning and lg-preserving approach
+              as F1's result/page.tsx (21 Nov 2026) — puts the continuation
+              message + sidebar right after the hero match on mobile. */}
+          <div className="grid lg:grid-cols-[1fr_300px] lg:grid-rows-[auto_auto] gap-14 items-start">
+            <div className="order-1 lg:col-start-1 lg:row-start-1 max-w-2xl">
+              <FullResultTop
                 eventName={event.name}
                 eventSlug={slug}
                 result={scoreTennisOptions(data.options, answers, assertTennisEventSlug(slug))}
                 answers={answers}
               />
             </div>
-            <TennisTicketIntelligenceSidebar
-              eventSlug={slug}
-              eventId={event.id}
-              sport={event.sport}
-              isBuilt={isBuilt}
-              userEmail={user.email}
-              showBudgetLink={showBudgetLink}
-            />
+            <div className="order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2">
+              <TennisTicketIntelligenceSidebar
+                eventSlug={slug}
+                eventId={event.id}
+                sport={event.sport}
+                isBuilt={isBuilt}
+                userEmail={user.email}
+                showBudgetLink={showBudgetLink}
+                showContinuationMessage
+              />
+            </div>
+            <div className="order-3 lg:col-start-1 lg:row-start-2 max-w-2xl">
+              <FullResultBottom
+                eventName={event.name}
+                eventSlug={slug}
+                result={scoreTennisOptions(data.options, answers, assertTennisEventSlug(slug))}
+                answers={answers}
+              />
+            </div>
           </div>
         </div>
       ) : (

@@ -148,6 +148,10 @@ async function getTeaserEventsUnsafe(
       isHidden: false,
       lineItems,
       heroImageUrl: event.heroImageUrl,
+      // Same reasoning as isHidden above — this teaser never renders a
+      // "Find your seat" CTA, so this is a fixed, honest default, not a
+      // real Ticket Intelligence lookup.
+      hasTicketIntelligence: false,
     });
   }
 

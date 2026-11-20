@@ -7,6 +7,7 @@ import type { TripIntelligenceAnswers } from "../_lib/types";
 import { QUESTIONS } from "../_lib/questions";
 import QuestionBlock from "./QuestionBlock";
 import TripIntelligencePrimer from "./TripIntelligencePrimer";
+import JourneyMap from "@/app/_components/JourneyMap";
 
 type PartialAnswers = Partial<TripIntelligenceAnswers>;
 
@@ -81,10 +82,16 @@ export default function TripIntelligenceQuiz() {
       <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
         Which Grand Prix best matches the experience you want?
       </h1>
-      <p className="text-[#A3A3A3] text-base mb-4">
+      <p className="text-[#A3A3A3] text-base mb-8">
         7 quick questions. We&apos;ll match your answers and show you which Grand Prix fits you the best —
         grounded with real trade-offs.
       </p>
+
+      <div className="mb-12">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Where You Are in the Journey</p>
+        <JourneyMap currentStage="discover" variant="formula_one" />
+      </div>
+
       <div className="flex items-center justify-between mb-12">
         <p className="text-xs font-semibold leading-none text-[#6A6A6A]">{answeredCount} of {QUESTIONS.length} answered</p>
         {answeredCount > 0 && (

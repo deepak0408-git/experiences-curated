@@ -667,7 +667,15 @@ function SeatCard({
   );
 }
 
-export default function FullResult({
+// Split into Top (h1 + retake + Best Match only) / Bottom (runner-up, 3rd,
+// circuit map, reseller info, disclosure) — 21 Nov 2026, so result/page.tsx
+// and TeaserResult.tsx's alreadyPurchased branch can interleave the
+// continuation message + sidebar right after Best Match on mobile (where
+// the grid collapses to one column and DOM order becomes visual order),
+// without changing anything about the lg two-column layout, where
+// <FullResult> below still renders as a single, unsplit block exactly as
+// before. FullResult itself is unchanged for any other caller.
+export function FullResultTop({
   eventName,
   eventSlug,
   result,
@@ -678,9 +686,7 @@ export default function FullResult({
   result: ScoreResult;
   fallbackExperienceSlug: string | null;
 }) {
-  const { top, runnerUp, thirdPlace } = result;
-  const circuitMap = CIRCUIT_MAP_BY_EVENT[eventSlug];
-
+  const { top } = result;
   return (
     <div>
       <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
@@ -694,6 +700,24 @@ export default function FullResult({
       <RetakeLink eventSlug={eventSlug} />
 
       <SeatCard scored={top} headline="Best match" fallbackExperienceSlug={fallbackExperienceSlug} />
+    </div>
+  );
+}
+
+export function FullResultBottom({
+  eventSlug,
+  result,
+  fallbackExperienceSlug,
+}: {
+  eventSlug: string;
+  result: ScoreResult;
+  fallbackExperienceSlug: string | null;
+}) {
+  const { runnerUp, thirdPlace } = result;
+  const circuitMap = CIRCUIT_MAP_BY_EVENT[eventSlug];
+
+  return (
+    <div>
       {runnerUp && (
         <SeatCard scored={runnerUp} headline="Runner-up" fallbackExperienceSlug={fallbackExperienceSlug} />
       )}
@@ -783,6 +807,29 @@ export default function FullResult({
           How Ticket Intelligence works →
         </Link>
       </p>
+    </div>
+  );
+}
+
+// Default export — unchanged combined render (FullResultTop +
+// FullResultBottom in sequence), used by every caller that doesn't need
+// the split. result/page.tsx and TeaserResult.tsx's alreadyPurchased
+// branch use the two named exports directly instead.
+export default function FullResult({
+  eventName,
+  eventSlug,
+  result,
+  fallbackExperienceSlug,
+}: {
+  eventName: string;
+  eventSlug: string;
+  result: ScoreResult;
+  fallbackExperienceSlug: string | null;
+}) {
+  return (
+    <div>
+      <FullResultTop eventName={eventName} eventSlug={eventSlug} result={result} fallbackExperienceSlug={fallbackExperienceSlug} />
+      <FullResultBottom eventSlug={eventSlug} result={result} fallbackExperienceSlug={fallbackExperienceSlug} />
     </div>
   );
 }

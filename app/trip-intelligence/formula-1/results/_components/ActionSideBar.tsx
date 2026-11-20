@@ -5,14 +5,21 @@ import EventGuideCta from "./EventGuideCta";
 import { phEvent } from "@/lib/posthog-events";
 
 // Mirrors app/ticket-intelligence/[slug]/_components/TicketIntelligenceSidebar.tsx's
-// "This Event" box exactly (title, item set, Event Guide CTA as the
-// highlighted bottom button) plus one additional item — "Find your seat",
-// linking to Ticket Intelligence for this race — per founder instruction
-// (10 Oct 2026): same sidebar items as Ticket Intelligence, with just the
-// one extra for Trip Intelligence's own context. The Event Guide CTA uses
-// the same real get-notified flow as Ticket Intelligence (EventGuideCta.tsx)
-// rather than static unclickable "coming soon" text — founder request, 10
-// Oct 2026.
+// "This Event" box (same remaining item set below the primary CTAs) plus
+// one additional item — "Find your seat", linking to Ticket Intelligence
+// for this race — per founder instruction (10 Oct 2026). The Event Guide
+// CTA uses the same real get-notified flow as Ticket Intelligence
+// (EventGuideCta.tsx) rather than static unclickable "coming soon" text —
+// founder request, 10 Oct 2026.
+//
+// CTA hierarchy per the approved UX Journey Map spec (20 Nov 2026,
+// corrected same day — a two-CTA lime-on-lime pair read poorly): "Find
+// your seat" is this screen's single primary action, lime-highlighted and
+// standalone at the top of the box. "Get the event guide" sits in the
+// plain secondary list directly below it, first among the rest. This is a
+// deliberate deviation from TicketIntelligenceSidebar.tsx's own layout
+// (Event Guide as sole highlighted bottom button), which is a different
+// screen and out of scope for this change.
 export default function ActionSideBar({
   eventSlug,
   eventId,
@@ -31,6 +38,22 @@ export default function ActionSideBar({
   return (
     <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
       <p className="text-xs font-black tracking-widest uppercase text-white mb-3.5">Your Best Fit Event</p>
+
+      {ticketIntelligenceSlug && (
+        <Link
+          href={`/ticket-intelligence/${ticketIntelligenceSlug}`}
+          onClick={() => phEvent.sidebarCtaClicked({ page: "trip_intelligence_f1", cta: "ticket_intelligence", slug: eventSlug })}
+          className="flex items-center gap-2.5 py-4 px-5 rounded-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors mb-4"
+        >
+          <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
+          <span className="flex-1">
+            <span className="block text-sm font-black text-black">Find your seat</span>
+            <span className="block text-xs text-black/65 mt-0.5">Match the right grandstand or zone</span>
+          </span>
+        </Link>
+      )}
+
+      <EventGuideCta eventSlug={eventSlug} eventId={eventId} sport={sport} isBuilt={isBuilt} userEmail={userEmail} sidebarPage="trip_intelligence_f1" variant="list" />
 
       <Link
         href="/planner"
@@ -80,28 +103,13 @@ export default function ActionSideBar({
         </span>
       </Link>
 
-      {ticketIntelligenceSlug && (
-        <Link
-          href={`/ticket-intelligence/${ticketIntelligenceSlug}`}
-          onClick={() => phEvent.sidebarCtaClicked({ page: "trip_intelligence_f1", cta: "ticket_intelligence", slug: eventSlug })}
-          className="flex items-center gap-2.5 py-3 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
-        >
-          <span className="text-base flex-shrink-0 w-5 text-center">🎯</span>
-          <span className="flex-1">
-            <span className="block text-sm font-bold text-[#A3A3A3]">Find your seat</span>
-            <span className="block text-xs text-[#6A6A6A] mt-0.5">Match the right grandstand or zone</span>
-          </span>
-        </Link>
-      )}
-
-      {/* Second-to-last item, directly above the Event Guide CTA —
-          founder direction, 28 Oct 2026: every Trip/Ticket Intelligence
-          sidebar (F1 and tennis, both surfaces) links to its sport's own
-          Travel Planning Cockpit (/formula-1 or /tennis). */}
+      {/* Last item — founder direction, 28 Oct 2026: every Trip/Ticket
+          Intelligence sidebar (F1 and tennis, both surfaces) links to its
+          sport's own Travel Planning Cockpit (/formula-1 or /tennis). */}
       <Link
         href="/formula-1"
         onClick={() => phEvent.sidebarCtaClicked({ page: "trip_intelligence_f1", cta: "visit_cockpit", slug: eventSlug })}
-        className="flex items-center gap-2.5 py-3 mb-4 border-b border-[#2A2A2A] hover:opacity-80 transition-opacity"
+        className="flex items-center gap-2.5 py-3 hover:opacity-80 transition-opacity"
       >
         <span className="text-base flex-shrink-0 w-5 text-center">🗺️</span>
         <span className="flex-1">
@@ -109,8 +117,6 @@ export default function ActionSideBar({
           <span className="block text-xs text-[#6A6A6A] mt-0.5">Discover, compare and plan F1 trips</span>
         </span>
       </Link>
-
-      <EventGuideCta eventSlug={eventSlug} eventId={eventId} sport={sport} isBuilt={isBuilt} userEmail={userEmail} sidebarPage="trip_intelligence_f1" />
     </div>
   );
 }

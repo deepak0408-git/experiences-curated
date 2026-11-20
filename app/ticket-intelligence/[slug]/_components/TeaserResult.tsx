@@ -5,13 +5,14 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { QuizAnswers, ScoreResult } from "../_lib/types";
 import DodoCheckout from "@/app/event-pack/[slug]/_components/DodoCheckout";
-import FullResult from "../result/_components/FullResult";
+import { FullResultTop, FullResultBottom } from "../result/_components/FullResult";
 import TicketIntelligenceSidebar from "./TicketIntelligenceSidebar";
 import SeasonPassCheckout from "../../_components/SeasonPassCheckout";
 import LocalCurrencyHint from "@/app/event-pack/[slug]/_components/LocalCurrencyHint";
 import { updateTicketIntelligenceAnswers } from "../actions";
 import { phEvent } from "@/lib/posthog-events";
 import SampleOutputModal from "./SampleOutputModal";
+import JourneyMap from "@/app/_components/JourneyMap";
 
 // Real Dodo product for Ticket Intelligence — confirmed by founder 25 Sep
 // 2026, repriced US$7 → US$10 same day (same product ID, repriced in the
@@ -154,23 +155,44 @@ export default function TeaserResult({
             {backLink.label}
           </Link>
         </div>
-        <div className="grid lg:grid-cols-[1fr_300px] gap-14 items-start">
-          <div className="max-w-2xl">
-            <FullResult
+
+        <div className="mb-10">
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Where You Are in the Journey</p>
+          <JourneyMap currentStage="find" variant="formula_one" />
+        </div>
+
+        {/* Split into FullResultTop/FullResultBottom with explicit `order`
+            utilities, same reasoning and lg-preserving approach as
+            result/page.tsx (21 Nov 2026) — puts the continuation message +
+            sidebar right after Best Match on mobile instead of after the
+            whole result. */}
+        <div className="grid lg:grid-cols-[1fr_300px] lg:grid-rows-[auto_auto] gap-14 items-start">
+          <div className="order-1 lg:col-start-1 lg:row-start-1 max-w-2xl">
+            <FullResultTop
               eventName={eventName}
               eventSlug={eventSlug}
               result={result}
               fallbackExperienceSlug={fallbackExperienceSlug}
             />
           </div>
-          <TicketIntelligenceSidebar
-            eventSlug={eventSlug}
-            eventId={eventId}
-            sport={eventSport}
-            isBuilt={eventIsBuilt}
-            userEmail={signedInEmail}
-            showBudgetLink={showBudgetLink}
-          />
+          <div className="order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2">
+            <TicketIntelligenceSidebar
+              eventSlug={eventSlug}
+              eventId={eventId}
+              sport={eventSport}
+              isBuilt={eventIsBuilt}
+              userEmail={signedInEmail}
+              showBudgetLink={showBudgetLink}
+              showContinuationMessage
+            />
+          </div>
+          <div className="order-3 lg:col-start-1 lg:row-start-2 max-w-2xl">
+            <FullResultBottom
+              eventSlug={eventSlug}
+              result={result}
+              fallbackExperienceSlug={fallbackExperienceSlug}
+            />
+          </div>
         </div>
       </div>
     );

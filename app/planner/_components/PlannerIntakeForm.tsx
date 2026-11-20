@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { OriginMarketGroup } from "../_lib/getOriginMarkets";
 import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
+import JourneyMap from "@/app/_components/JourneyMap";
 
 const SPORTS = [
   { value: "cricket", label: "Cricket" },
@@ -98,9 +99,14 @@ export default function PlannerIntakeForm({ originMarkets }: { originMarkets: Or
       <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
         Your next bucket-list sports trip starts here
       </h1>
-      <p className="text-[#A3A3A3] text-base mb-12">
+      <p className="text-[#A3A3A3] text-base mb-8">
         Wimbledon. Monza. The Ashes. Ryder Cup. Tell us your sport, budget, and timing — we&apos;ll help you plan it within your budget, no signup required.
       </p>
+
+      <div className="mb-12">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Where You Are in the Journey</p>
+        <JourneyMap currentStage="compare" variant="neutral" />
+      </div>
 
       {/* Sport(s) */}
       <div className="mb-10">

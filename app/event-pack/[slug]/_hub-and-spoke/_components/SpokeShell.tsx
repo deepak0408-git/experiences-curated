@@ -9,14 +9,15 @@ import LocalCurrencyHint from "../../_components/LocalCurrencyHint";
 import SpokeActionSidebar from "./SpokeActionSidebar";
 import { hasTicketIntelligence } from "../../../../ticket-intelligence/[slug]/_lib/getSeatingData";
 
-// Spokes where "Find the best seat" earns its place in the sidebar — the
-// fan is already thinking about cost/tickets/hospitality on these three,
-// unlike e.g. Where to Eat or Day Trips. Founder direction, 30 Sep 2026:
-// roll out to Cost/Tickets/Luxury only, every F1 event (sport-only gate,
-// same as the experience-page sidebar's showTicketIntelligenceLink — see
-// that file's comment for why this isn't per-experience/per-spoke content
-// filtered yet).
-const TICKET_INTELLIGENCE_SPOKE_IDS = new Set(["cost", "tickets", "luxury"]);
+// Was previously restricted to Cost/Tickets/Luxury only (founder direction,
+// 30 Sep 2026 — "the fan is already thinking about cost/tickets/hospitality
+// on these three, unlike e.g. Where to Eat or Day Trips"). Widened to every
+// spoke, 21 Nov 2026 — per the UX Journey Map spec, "Find your perfect
+// seat" is this sidebar's one real primary CTA whenever the event has
+// Ticket Intelligence, regardless of which spoke it's rendered on; showing
+// it only on 3 of 12 spokes left most of a pack's own sidebars defaulting
+// to "Get the full guide" as a fallback primary even on events where real
+// seat-matching exists.
 
 // Shared shell for every spoke page — slug-driven so it works for any
 // hub_and_spoke event, not just one. Structure copied from the pilot;
@@ -94,8 +95,7 @@ export default async function SpokeShell({
   const currentIdx = spokes.findIndex((s) => s.id === spokeId);
   const nextSpoke = currentIdx === -1 ? null : spokes[(currentIdx + 1) % spokes.length];
 
-  const showTicketIntelligence =
-    TICKET_INTELLIGENCE_SPOKE_IDS.has(spokeId) && (await hasTicketIntelligence(eventId));
+  const showTicketIntelligence = await hasTicketIntelligence(eventId);
 
   // Full-gate pilot (Bahrain GP, 29 Sep 2026) — env-var-driven so it can be
   // reverted with zero code change, just by clearing FULLY_GATED_EVENTS.

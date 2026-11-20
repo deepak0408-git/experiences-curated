@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import HomepageNav from "@/app/_components/HomepageNav";
 import PostHogPageContext from "@/app/_components/PostHogPageContext";
+import JourneyMap from "@/app/_components/JourneyMap";
 import { getSpokeData, getSpokesForEvent, getSpokeImage, getPurchaseStatus, isSpokeUnlocked, MINI_PACK_PRODUCT_TYPE_BY_SPOKE } from "./_lib/getSpokeData";
 import { getPackPricing } from "./_lib/packPricing";
 import { getMiniPackPricing } from "@/lib/packPricing";
@@ -792,6 +793,17 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
             )}
           </div>
         )}
+
+        {/* Journey Map, Plan stage — per the UX Journey Map spec (20 Nov
+            2026). Cross-sport surface (hub-and-spoke spans F1, tennis,
+            cricket, golf, etc.), so variant="neutral", same grouping as
+            Trip Planner/Trip Board. No generic "Prepare" commentary here —
+            spec is explicit the landing page gets the map only, not
+            continuation copy. */}
+        <div className="mb-8">
+          <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Where You Are in the Journey</p>
+          <JourneyMap currentStage="plan" variant="neutral" />
+        </div>
 
         {/* Favourite/Share row — per beta feedback 4 Aug 2026. Favouriting
             requires sign-in (same as saving an experience); a signed-out

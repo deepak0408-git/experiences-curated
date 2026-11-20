@@ -11,6 +11,7 @@ import TennisTicketIntelligenceSidebar from "./TennisTicketIntelligenceSidebar";
 import SeatingPrimer from "./SeatingPrimer";
 import { phEvent } from "@/lib/posthog-events";
 import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
+import JourneyMap from "@/app/_components/JourneyMap";
 
 // Approved final Q1-Q7 wording — Stage 2 Authorization, 20 Oct 2026. Do not
 // paraphrase, shorten, or reorder these without a separately-approved
@@ -245,10 +246,16 @@ export default function TennisTicketQuiz({
           <h1 className="text-3xl sm:text-4xl font-black text-white mb-3">
             Which {ticketIntelligenceHeadlineEventName(slug, eventName)} ticket fits you?
           </h1>
-          <p className="text-[#A3A3A3] text-base mb-4">
+          <p className="text-[#A3A3A3] text-base mb-8">
             7 quick questions. We&apos;ll match your answers against every real arena, stage, and seating option at
             this Grand Slam — no fluff, just the ticket that fits.
           </p>
+
+          <div className="mb-8">
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Where You Are in the Journey</p>
+            <JourneyMap currentStage="find" variant="tennis" />
+          </div>
+
           <p className="text-xs text-[#6A6A6A] mb-12">{answeredCount} of 7 answered</p>
 
           <QuestionBlock
@@ -359,6 +366,7 @@ export default function TennisTicketQuiz({
           isBuilt={isBuilt}
           userEmail={userEmail}
           showBudgetLink={showBudgetLink}
+          guideCtaAtTop
         />
       </div>
     </div>

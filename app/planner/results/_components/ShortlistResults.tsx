@@ -9,6 +9,7 @@ import TradeoffPanel from "./TradeoffPanel";
 import { SPORT_LABELS, TIME_WINDOW_LABELS, formatMoneyRange, rankEvents, type MockEvent } from "../../_lib/mockEvents";
 import { saveShortlist, notifyMe } from "../../_lib/actions";
 import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
+import JourneyMap from "@/app/_components/JourneyMap";
 
 // Interim per-event hero image focal-point override, keyed by slug — same
 // hardcoded-slug-check pattern already used for experiences (no
@@ -180,6 +181,22 @@ export default function ShortlistResults({
         How we estimate these costs
       </Link>
 
+      <div className="mb-10">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Where You Are in the Journey</p>
+        <JourneyMap currentStage="compare" variant="neutral" />
+      </div>
+
+      {matching.length > 0 && (
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] px-5 py-4 mb-8">
+          <p className="text-sm font-black text-white mb-1.5">Found an event that fits your plans?</p>
+          <p className="text-xs text-[#A3A3A3] leading-5 mb-2">
+            You&apos;ve explored the dates, costs and options. Now take a closer look at your chosen event and
+            discover the experiences that will make your trip memorable.
+          </p>
+          <p className="text-xs text-[#A3A3A3] leading-5">Your next steps start here.</p>
+        </div>
+      )}
+
       {matching.length === 0 && (
         <p className="text-[#A3A3A3] text-sm">
           Nothing matches yet — try a wider budget or a different time window.
@@ -217,11 +234,7 @@ export default function ShortlistResults({
                   <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00]">
                     {SPORT_LABELS[event.sport] ?? event.sport}
                   </p>
-                  {/* Badge stacks above the link/button on mobile instead of
-                      sharing a row — "Guide coming soon" + "Notify me when
-                      it's ready" together were too wide for a phone screen
-                      and wrapped badly mid-word. Fixed 26 Jul 2026. */}
-                  <div className="flex flex-col sm:flex-row sm:items-center items-end gap-1.5 sm:gap-3">
+                  <div className="flex items-center gap-1.5 sm:gap-3">
                     {index === 0 && (
                       <span className="px-2 py-0.5 rounded-sm text-[10px] font-black uppercase bg-[#AAFF00] text-black whitespace-nowrap">
                         Best fit
@@ -231,25 +244,6 @@ export default function ShortlistResults({
                       <span className="px-2 py-0.5 rounded-sm text-[10px] font-black uppercase bg-[#1A1A1A] border border-[#2A2A2A] text-[#AAFF00] whitespace-nowrap">
                         Guide coming soon
                       </span>
-                    )}
-                    {isBuilt ? (
-                      <Link
-                        href={`/event-pack/${event.slug}`}
-                        className="text-xs font-black text-[#AAFF00] hover:text-[#BBFF33] transition-colors whitespace-nowrap"
-                      >
-                        View full guide →
-                      </Link>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setNotifyEventId(event.id);
-                          setGateTrigger({ kind: "notified", eventName: event.name });
-                        }}
-                        className="text-xs font-black text-[#AAFF00] hover:text-[#BBFF33] transition-colors whitespace-nowrap cursor-pointer"
-                      >
-                        Notify me when it&apos;s ready →
-                      </button>
                     )}
                   </div>
                 </div>
@@ -335,35 +329,6 @@ export default function ShortlistResults({
                   ) : (
                     <span />
                   )}
-                  {matching.length > 1 && (() => {
-                    const tradeoffOpenHere = tradeoffSlug === event.slug;
-                    const compareDisabled =
-                      tradeoffOpenHere || (compareLimitReached && !compareSlugs.includes(event.slug));
-                    const disabledTitle = tradeoffOpenHere
-                      ? "Comparison unavailable while reviewing tradeoff options"
-                      : compareLimitReached && !compareSlugs.includes(event.slug)
-                        ? `Compare up to ${maxCompare} event${maxCompare === 1 ? "" : "s"}`
-                        : undefined;
-                    return (
-                      <label
-                        className={
-                          compareDisabled
-                            ? "flex items-center gap-2 text-xs text-[#6A6A6A] opacity-40 cursor-not-allowed"
-                            : "flex items-center gap-2 text-xs text-[#6A6A6A] cursor-pointer"
-                        }
-                        title={disabledTitle}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={compareSlugs.includes(event.slug)}
-                          disabled={compareDisabled}
-                          onChange={() => toggleCompare(event.slug)}
-                          className="accent-[#AAFF00] disabled:cursor-not-allowed"
-                        />
-                        Compare
-                      </label>
-                    );
-                  })()}
                 </div>
 
                 {tradeoffSlug === event.slug && (
@@ -403,6 +368,77 @@ export default function ShortlistResults({
                     onEmailSent={(email) => setLastUsedEmail(email)}
                   />
                 )}
+
+                {/* Primary CTA pair, per the UX Journey Map spec (20 Nov
+                    2026) — same button pattern as Trip Intelligence's
+                    ResultCard/AlternativeGuideCta ("Get the guide" lime-fill
+                    when built / outline "Get notified" otherwise, "Find
+                    your seat" lime-outline, shown only when this event's
+                    sport has real Ticket Intelligence data). Truly last row
+                    in the card, after breakdown/tradeoff-panel — founder
+                    direction, 20 Nov 2026 — sharing this row with the
+                    Compare checkbox. */}
+                <div className="mt-4 flex items-center justify-between gap-3 flex-wrap">
+                  <div className="flex flex-wrap items-center gap-3">
+                    {isBuilt ? (
+                      <Link
+                        href={`/event-pack/${event.slug}`}
+                        className="inline-flex items-center rounded-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors px-4 py-2.5"
+                      >
+                        <span className="text-sm font-black text-black">Get the guide</span>
+                      </Link>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setNotifyEventId(event.id);
+                          setGateTrigger({ kind: "notified", eventName: event.name });
+                        }}
+                        className="inline-flex items-center rounded-sm border border-[#2A2A2A] hover:border-[#AAFF00] transition-colors px-4 py-2.5"
+                      >
+                        <span className="text-sm font-bold text-[#A3A3A3]">Get notified when the guide is ready</span>
+                      </button>
+                    )}
+                    {event.hasTicketIntelligence && (
+                      <Link
+                        href={event.sport === "tennis" ? `/ticket-intelligence/tennis/${event.slug}` : `/ticket-intelligence/${event.slug}`}
+                        className="inline-flex items-center rounded-sm border border-[#AAFF00] text-[#AAFF00] hover:bg-[#AAFF00] hover:text-black transition-colors px-4 py-2.5"
+                      >
+                        <span className="text-sm font-black">Find your seat</span>
+                      </Link>
+                    )}
+                  </div>
+
+                  {matching.length > 1 && (() => {
+                    const tradeoffOpenHere = tradeoffSlug === event.slug;
+                    const compareDisabled =
+                      tradeoffOpenHere || (compareLimitReached && !compareSlugs.includes(event.slug));
+                    const disabledTitle = tradeoffOpenHere
+                      ? "Comparison unavailable while reviewing tradeoff options"
+                      : compareLimitReached && !compareSlugs.includes(event.slug)
+                        ? `Compare up to ${maxCompare} event${maxCompare === 1 ? "" : "s"}`
+                        : undefined;
+                    return (
+                      <label
+                        className={
+                          compareDisabled
+                            ? "flex items-center gap-2 text-xs text-[#6A6A6A] opacity-40 cursor-not-allowed"
+                            : "flex items-center gap-2 text-xs text-[#6A6A6A] cursor-pointer"
+                        }
+                        title={disabledTitle}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={compareSlugs.includes(event.slug)}
+                          disabled={compareDisabled}
+                          onChange={() => toggleCompare(event.slug)}
+                          className="accent-[#AAFF00] disabled:cursor-not-allowed"
+                        />
+                        Compare
+                      </label>
+                    );
+                  })()}
+                </div>
               </div>
             </div>
           );

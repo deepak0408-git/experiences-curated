@@ -60,23 +60,40 @@ function EventGuideCta({
   sport,
   isBuilt,
   userEmail,
+  variant = "bottom",
 }: {
   eventSlug: string;
   eventId: string;
   sport: string;
   isBuilt: boolean;
   userEmail: string | null;
+  // "bottom" (default): bleeds to the box's edges as its final, rounded-
+  // bottom item. "top": same lime-filled styling, but as a normal
+  // rounded-sm full-width button sitting under the "This Event" heading
+  // (no edge-bleed — bleeding to the top edge would overlap/clip against
+  // the heading text right above it, unlike the bottom case which has
+  // nothing below it) — per the UX Journey Map spec (20 Nov 2026): this
+  // screen's one real CTA moves to the top of "This Event" once the
+  // continuation message is showing above the box, rather than staying at
+  // the bottom.
+  variant?: "bottom" | "top";
 }) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState(userEmail ?? "");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
+
+  const isTop = variant === "top";
+  const built = isTop ? "flex items-center gap-2.5 py-4 px-5 mb-4 rounded-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors" : "flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 rounded-b-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors";
+  const done = isTop ? "py-2 mb-4" : "py-4 px-5 -mx-5 -mb-5 mt-0";
+  const closed = isTop ? "flex items-center gap-2.5 py-4 px-5 mb-4 rounded-sm border border-[#2A2A2A] w-full text-left hover:opacity-80 transition-opacity" : "flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 w-[calc(100%+2.5rem)] text-left hover:opacity-80 transition-opacity";
+  const formWrap = isTop ? "flex items-center gap-2 py-2 mb-4" : "flex items-center gap-2 py-4 px-5 -mx-5 -mb-5 mt-0";
 
   if (isBuilt) {
     return (
       <Link
         href={`/event-pack/${eventSlug}`}
         onClick={() => phEvent.sidebarCtaClicked({ page: "ticket_intelligence", cta: "get_full_guide", slug: eventSlug })}
-        className="flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 rounded-b-sm bg-[#AAFF00] hover:bg-[#BBFF33] transition-colors"
+        className={built}
       >
         <span className="text-base flex-shrink-0 w-5 text-center">🎟</span>
         <span className="flex-1">
@@ -89,7 +106,7 @@ function EventGuideCta({
 
   if (status === "done") {
     return (
-      <div className="py-4 px-5 -mx-5 -mb-5 mt-0">
+      <div className={done}>
         <p className="text-xs text-[#AAFF00]">You&apos;re on the list.</p>
       </div>
     );
@@ -97,10 +114,7 @@ function EventGuideCta({
 
   if (!open) {
     return (
-      <button
-        onClick={() => setOpen(true)}
-        className="flex items-center gap-2.5 py-4 px-5 -mx-5 -mb-5 mt-0 w-[calc(100%+2.5rem)] text-left hover:opacity-80 transition-opacity"
-      >
+      <button onClick={() => setOpen(true)} className={closed}>
         <span className="text-base flex-shrink-0 w-5 text-center">🔔</span>
         <span className="flex-1">
           <span className="block text-sm font-bold text-[#A3A3A3]">Guide coming soon</span>
@@ -135,7 +149,7 @@ function EventGuideCta({
           setStatus("error");
         }
       }}
-      className="flex items-center gap-2 py-4 px-5 -mx-5 -mb-5 mt-0"
+      className={formWrap}
     >
       <input
         type="email"
@@ -165,6 +179,8 @@ export default function TicketIntelligenceSidebar({
   isBuilt,
   userEmail,
   showBudgetLink,
+  showContinuationMessage = false,
+  guideCtaAtTop = false,
 }: {
   eventSlug: string;
   eventId: string;
@@ -179,13 +195,53 @@ export default function TicketIntelligenceSidebar({
   // event (Miami GP 2027: 4 ticket tiers, zero flights/hotels/bands) linked
   // straight to a page that renders but shows an essentially empty table.
   showBudgetLink: boolean;
+  // This sidebar renders on three screens (quiz entry, paywalled teaser,
+  // real result) — the UX Journey Map spec's "Found your seat match?"
+  // continuation message belongs only on the real recommendations/result
+  // page (result/page.tsx), never the quiz entry or the pre-purchase
+  // teaser, where no seat match has actually been revealed yet. Defaults
+  // off; only result/page.tsx and TeaserResult.tsx's alreadyPurchased
+  // branch pass true.
+  showContinuationMessage?: boolean;
+  // Independent from showContinuationMessage — moves "Get the event guide"
+  // to the first item in "This Event" (EventGuideCta's "top" variant)
+  // without the message card itself. Used on the quiz entry page
+  // (TicketQuiz.tsx), per founder direction 20 Nov 2026: same CTA
+  // placement as the real-result screens, even though no seat match has
+  // been revealed yet here, so there's no "Found your seat match?" copy to
+  // show. showContinuationMessage being true always implies this too.
+  guideCtaAtTop?: boolean;
 }) {
+  const showGuideCtaAtTop = showContinuationMessage || guideCtaAtTop;
   return (
     <div className="flex flex-col gap-5">
+      {/* Approved continuation message, per the UX Journey Map spec (20
+          Nov 2026) — own card above the "This Event" box. "Get the event
+          guide" is this screen's only real CTA (no second product to send
+          a fan to, unlike Trip Intelligence's two-CTA case) and moves to
+          the FIRST item inside the box (EventGuideCta's "top" variant)
+          once this message is showing, rather than staying at the bottom.
+          Real-result screen only — see showContinuationMessage's own
+          comment above. */}
+      {showContinuationMessage && (
+        <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] px-5 py-4">
+          <p className="text-sm font-black text-white mb-1.5">Found your seat match? Now plan the rest of your event.</p>
+          <p className="text-xs text-[#A3A3A3] leading-5">
+            You&apos;ve explored the ticket options and identified the seating experience that suits you. Now
+            discover more about your event — hotels, transit, dining, day trips and everything else you need
+            around the event dates.
+          </p>
+        </div>
+      )}
+
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">
         <p className="text-xs font-black tracking-widest uppercase text-white mb-3.5">
           This Event
         </p>
+
+        {showGuideCtaAtTop && (
+          <EventGuideCta eventSlug={eventSlug} eventId={eventId} sport={sport} isBuilt={isBuilt} userEmail={userEmail} variant="top" />
+        )}
 
         {showBudgetLink && (
           <Link
@@ -278,7 +334,9 @@ export default function TicketIntelligenceSidebar({
           </span>
         </a>
 
-        <EventGuideCta eventSlug={eventSlug} eventId={eventId} sport={sport} isBuilt={isBuilt} userEmail={userEmail} />
+        {!showGuideCtaAtTop && (
+          <EventGuideCta eventSlug={eventSlug} eventId={eventId} sport={sport} isBuilt={isBuilt} userEmail={userEmail} />
+        )}
       </div>
 
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5">

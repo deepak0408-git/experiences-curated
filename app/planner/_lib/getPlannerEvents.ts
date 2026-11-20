@@ -6,9 +6,11 @@ import {
   plannerTicketTierCost,
   plannerDestinationBands,
   plannerFlightCost,
+  circuitSeatingProfile,
 } from "@/schema/database";
 import { and, eq, gte, inArray } from "drizzle-orm";
 import { formatMoneyRange, type CostLineItem, type MockEvent } from "./mockEvents";
+import { hasTennisTicketIntelligence } from "@/app/ticket-intelligence/tennis/[slug]/_lib/getTennisOptionsData";
 
 // Real replacement for MOCK_EVENTS — assembles the same shape the UI already
 // expects (title, venue, dateRange, packStatus, 5 lineItems) from the real
@@ -68,7 +70,7 @@ async function getPlannerEventsUnsafe(tripLengthDays: number, originMarket: stri
   const eventIds = events.map((e) => e.id);
   const destinationIds = [...new Set(events.map((e) => e.destinationId).filter((id): id is string => id !== null))];
 
-  const [allHotelRows, allTicketRows, allBandRows, allFlightRows] = await Promise.all([
+  const [allHotelRows, allTicketRows, allBandRows, allFlightRows, f1SeatingRows] = await Promise.all([
     destinationIds.length > 0
       ? db.select().from(plannerHotelTierCost).where(inArray(plannerHotelTierCost.destinationId, destinationIds))
       : Promise.resolve([]),
@@ -81,7 +83,22 @@ async function getPlannerEventsUnsafe(tripLengthDays: number, originMarket: stri
     destinationIds.length > 0
       ? db.select().from(plannerFlightCost).where(inArray(plannerFlightCost.destinationId, destinationIds))
       : Promise.resolve([]),
+    // "Match Your Seats" CTA gate (F1 half) — same row-existence check as
+    // getGrandPrixData.ts's hasTicketIntelligence. Tennis's half uses
+    // hasTennisTicketIntelligence per-event below (its fail-closed gate
+    // can't be batched the same simple way).
+    eventIds.length > 0
+      ? db.select({ sportingEventId: circuitSeatingProfile.sportingEventId }).from(circuitSeatingProfile).where(inArray(circuitSeatingProfile.sportingEventId, eventIds))
+      : Promise.resolve([]),
   ]);
+  const f1HasSeatingData = new Set(f1SeatingRows.map((r) => r.sportingEventId));
+  const tennisTicketIntelligenceByEventId = new Map<string, boolean>(
+    await Promise.all(
+      events
+        .filter((e) => e.sport === "tennis")
+        .map(async (e): Promise<[string, boolean]> => [e.id, await hasTennisTicketIntelligence(e.id, e.editionYear)]),
+    ),
+  );
 
   const result: MockEvent[] = [];
 
@@ -199,6 +216,13 @@ async function getPlannerEventsUnsafe(tripLengthDays: number, originMarket: stri
       ? "Multiple venues"
       : event.destinationName ?? "";
 
+    const hasTicketIntelligence =
+      event.sport === "formula_one"
+        ? f1HasSeatingData.has(event.id)
+        : event.sport === "tennis"
+          ? (tennisTicketIntelligenceByEventId.get(event.id) ?? false)
+          : false;
+
     result.push({
       id: event.id,
       slug: event.slug,
@@ -212,6 +236,7 @@ async function getPlannerEventsUnsafe(tripLengthDays: number, originMarket: stri
       isHidden: event.isHidden,
       lineItems,
       heroImageUrl: event.heroImageUrl,
+      hasTicketIntelligence,
     });
   }
 

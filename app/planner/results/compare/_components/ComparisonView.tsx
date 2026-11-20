@@ -6,6 +6,15 @@ import { useSearchParams } from "next/navigation";
 import { SPORT_LABELS, TIME_WINDOW_LABELS, sumLineItems, formatMoneyRange, rankEvents, type MockEvent, type CostLineItem } from "../../../_lib/mockEvents";
 import { saveComparison } from "../../../_lib/actions";
 import { resolveCockpitBackLink } from "@/lib/cockpitBackLink";
+import JourneyMap from "@/app/_components/JourneyMap";
+
+// "Find your seat" link href — F1 vs tennis Ticket Intelligence live at
+// different path shapes (/ticket-intelligence/[slug] vs
+// /ticket-intelligence/tennis/[slug]), same distinction ShortlistResults.tsx
+// makes on Screen 2.
+function ticketIntelligenceHref(sport: string, slug: string): string {
+  return sport === "tennis" ? `/ticket-intelligence/tennis/${slug}` : `/ticket-intelligence/${slug}`;
+}
 
 // Mobile-only swipeable single-event view — the desktop table's horizontal
 // scroll defeats the point of "side by side" comparison on a phone (you
@@ -72,17 +81,25 @@ function MobileComparisonSwiper({
           ))}
           <div className="flex items-center justify-between border-t border-[#2A2A2A] pt-3">
             <span className="text-sm text-[#6A6A6A]">Guide status</span>
-            <span className="text-sm text-[#A3A3A3]">{row.isBuilt ? "Live pack" : "Guide coming soon"}</span>
+            <span className="text-sm text-[#A3A3A3]">{row.isBuilt ? "Live" : "Guide coming soon"}</span>
           </div>
         </div>
 
-        <div className="mt-5 pt-4 border-t border-[#2A2A2A]">
+        <div className="mt-5 pt-4 border-t border-[#2A2A2A] flex flex-wrap items-center gap-3">
           {row.isBuilt && (
             <Link
               href={`/event-pack/${row.slug}`}
               className="inline-block px-4 py-2 rounded-sm text-xs font-black bg-[#AAFF00] text-black hover:bg-[#BBFF33] transition-colors"
             >
-              View guide →
+              Get the guide
+            </Link>
+          )}
+          {row.hasTicketIntelligence && (
+            <Link
+              href={ticketIntelligenceHref(row.sport, row.slug)}
+              className="inline-block px-4 py-2 rounded-sm text-xs font-black border border-[#AAFF00] text-[#AAFF00] hover:bg-[#AAFF00] hover:text-black transition-colors"
+            >
+              Find your seat
             </Link>
           )}
         </div>
@@ -255,10 +272,26 @@ export default function ComparisonView({
           ← Back to shortlist
         </Link>
       </div>
-      <p className="text-[#A3A3A3] text-sm mb-10">
+      <p className="text-[#A3A3A3] text-sm mb-8">
         {sportSummary} · {budgetSummary} · {windowSummary}
         {intake.tripLengthDays ? ` · ${intake.tripLengthDays} day${intake.tripLengthDays === 1 ? "" : "s"}` : ""}
       </p>
+
+      <div className="mb-8">
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Where You Are in the Journey</p>
+        <JourneyMap currentStage="compare" variant="neutral" />
+      </div>
+
+      <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] px-5 py-4 mb-10">
+        <p className="text-sm font-black text-white mb-1.5">
+          Compared your options? Now bring your chosen event to life.
+        </p>
+        <p className="text-xs text-[#A3A3A3] leading-5 mb-2">
+          You&apos;ve explored the differences in dates, costs and travel options. Now discover the full event
+          experience and find the seats that are right for you.
+        </p>
+        <p className="text-xs text-[#A3A3A3] leading-5">Your next steps start here.</p>
+      </div>
 
       <MobileComparisonSwiper rows={rows} />
 
@@ -322,7 +355,7 @@ export default function ComparisonView({
               <td className="py-3 pr-4 text-[#6A6A6A]">Guide status</td>
               {rows.map((r) => (
                 <td key={r.slug} className="py-3 px-4 text-[#A3A3A3]">
-                  {r.isBuilt ? "Live pack" : "Guide coming soon"}
+                  {r.isBuilt ? "Live" : "Guide coming soon"}
                 </td>
               ))}
             </tr>
@@ -330,14 +363,24 @@ export default function ComparisonView({
               <td className="py-3 pr-4"></td>
               {rows.map((r) => (
                 <td key={r.slug} className="py-3 px-4">
-                  {r.isBuilt && (
-                    <Link
-                      href={`/event-pack/${r.slug}`}
-                      className="inline-block px-4 py-2 rounded-sm text-xs font-black bg-[#AAFF00] text-black hover:bg-[#BBFF33] transition-colors"
-                    >
-                      View guide →
-                    </Link>
-                  )}
+                  <div className="flex flex-wrap items-center gap-2">
+                    {r.isBuilt && (
+                      <Link
+                        href={`/event-pack/${r.slug}`}
+                        className="inline-block px-4 py-2 rounded-sm text-xs font-black bg-[#AAFF00] text-black hover:bg-[#BBFF33] transition-colors"
+                      >
+                        Get the guide
+                      </Link>
+                    )}
+                    {r.hasTicketIntelligence && (
+                      <Link
+                        href={ticketIntelligenceHref(r.sport, r.slug)}
+                        className="inline-block px-4 py-2 rounded-sm text-xs font-black border border-[#AAFF00] text-[#AAFF00] hover:bg-[#AAFF00] hover:text-black transition-colors"
+                      >
+                        Find your seat
+                      </Link>
+                    )}
+                  </div>
                 </td>
               ))}
             </tr>
