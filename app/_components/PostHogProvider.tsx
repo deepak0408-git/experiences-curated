@@ -35,7 +35,31 @@ function PostHogPageView() {
       let url = window.origin + pathname;
       const search = searchParams.toString();
       if (search) url += "?" + search;
-      ph.capture("$pageview", { $current_url: url });
+
+      // Issue 14 fix, 20 Nov 2026 — capture_pageview: false (above) disables
+      // PostHog's own autocapture, which is what normally extracts utm_*
+      // params into event + person properties. Without this, UTM tags were
+      // visible only as a substring of $current_url — never filterable in
+      // Insights/Web Analytics, and lost entirely the moment a visitor
+      // navigated to a second page.
+      //
+      // Only the flat utm_* event properties need setting here — confirmed
+      // live in PostHog (20 Nov 2026) that sending these alone is enough:
+      // PostHog's backend automatically derives the person-level
+      // $initial_campaign_params group (the real source behind Web
+      // Analytics' "Sources by UTM" panel) from these event properties on
+      // its own. Two earlier attempts to also hand-set a first-touch
+      // person property ourselves — first non-$-prefixed, then a manual
+      // $set_once of $initial_utm_source — were both unnecessary and the
+      // second one never actually took (confirmed null on the person
+      // profile), since PostHog already owns that derivation server-side.
+      const utmParams: Record<string, string> = {};
+      (["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"] as const).forEach((key) => {
+        const value = searchParams.get(key);
+        if (value) utmParams[key] = value;
+      });
+
+      ph.capture("$pageview", { $current_url: url, ...utmParams });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, ph]);
