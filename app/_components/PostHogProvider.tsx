@@ -5,6 +5,7 @@ import { PostHogProvider as PHProvider, usePostHog } from "posthog-js/react";
 import { useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { captureFirstTouchUtm } from "@/lib/attribution";
 
 function PostHogPageView() {
   const pathname = usePathname();
@@ -60,6 +61,13 @@ function PostHogPageView() {
       });
 
       ph.capture("$pageview", { $current_url: url, ...utmParams });
+
+      // Issue 12, 20 Nov 2026 — persists first-touch UTM to sessionStorage
+      // (lib/attribution.ts) so a purchase made later in this same browser
+      // tab session, possibly on a completely different page, can still
+      // attach the campaign that brought this visitor in. No-ops if
+      // already captured this session or if no utm_* params are present.
+      captureFirstTouchUtm();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, ph]);

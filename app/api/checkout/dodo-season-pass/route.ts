@@ -15,7 +15,7 @@ const client = new DodoPayments({
 export async function POST(request: NextRequest) {
   const { user } = await getAuthUser();
 
-  const { productId, successUrl } = await request.json();
+  const { productId, successUrl, posthogDistinctId, utmSource, utmMedium, utmCampaign } = await request.json();
 
   if (!productId) {
     return NextResponse.json({ error: "Missing productId" }, { status: 400 });
@@ -26,6 +26,14 @@ export async function POST(request: NextRequest) {
       product_cart: [{ product_id: productId, quantity: 1 }],
       ...(user?.email ? { customer: { email: user.email } } : {}),
       return_url: successUrl ?? `${process.env.NEXT_PUBLIC_SITE_URL}/ticket-intelligence`,
+      // Issue 12, 20 Nov 2026 — attribution pass-through, same pattern as
+      // /api/checkout/dodo.
+      metadata: {
+        ...(posthogDistinctId ? { posthog_distinct_id: posthogDistinctId } : {}),
+        ...(utmSource ? { utm_source: utmSource } : {}),
+        ...(utmMedium ? { utm_medium: utmMedium } : {}),
+        ...(utmCampaign ? { utm_campaign: utmCampaign } : {}),
+      },
     });
 
     return NextResponse.json({ checkout_url: (session as { checkout_url: string }).checkout_url });

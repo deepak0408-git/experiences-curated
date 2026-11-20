@@ -48,10 +48,19 @@ export default function DodoProCheckout({
     setLoading(true);
     const productId = cycle === "annual" ? annualProductId : monthlyProductId;
     try {
+      // Issue 12, 20 Nov 2026 — same attribution pass-through as
+      // DodoCheckout.tsx; see that file's comment.
+      const { getFirstTouchUtm } = await import("@/lib/attribution");
+      const posthogModule = await import("posthog-js");
+      const distinctId = posthogModule.default.get_distinct_id?.();
       const res = await fetch("/api/checkout/dodo-pro", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId }),
+        body: JSON.stringify({
+          productId,
+          ...(distinctId ? { posthogDistinctId: distinctId } : {}),
+          ...getFirstTouchUtm(),
+        }),
       });
       const { checkout_url, error } = await res.json();
       if (error || !checkout_url) {

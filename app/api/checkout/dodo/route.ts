@@ -8,8 +8,10 @@ const client = new DodoPayments({
 });
 
 export async function POST(request: NextRequest) {
-  const [{ user }, { productId, sportingEventId, priceTier, productType, successUrl, ticketIntelligenceAnswers }] =
-    await Promise.all([getAuthUser(), request.json()]);
+  const [
+    { user },
+    { productId, sportingEventId, priceTier, productType, successUrl, ticketIntelligenceAnswers, posthogDistinctId, utmSource, utmMedium, utmCampaign },
+  ] = await Promise.all([getAuthUser(), request.json()]);
 
   if (!productId || !sportingEventId) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -28,6 +30,12 @@ export async function POST(request: NextRequest) {
         ...(productType ? { product_type: productType } : {}),
         // Ticket Intelligence only — see DodoCheckout.tsx prop comment.
         ...(ticketIntelligenceAnswers ? { ticket_intelligence_answers: ticketIntelligenceAnswers } : {}),
+        // Issue 12, 20 Nov 2026 — attribution pass-through. Dodo metadata
+        // values must be strings; all 4 are already strings client-side.
+        ...(posthogDistinctId ? { posthog_distinct_id: posthogDistinctId } : {}),
+        ...(utmSource ? { utm_source: utmSource } : {}),
+        ...(utmMedium ? { utm_medium: utmMedium } : {}),
+        ...(utmCampaign ? { utm_campaign: utmCampaign } : {}),
       },
       return_url: successUrl,
     });

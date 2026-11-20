@@ -48,10 +48,20 @@ export default function SeasonPassCheckout({
       // synchronously with the click, same reasoning as DodoCheckout.tsx's
       // activeCheckoutRef claim.
       registerNonPackCheckout({ successUrl, setLoading: (v) => setLoadingRef.current(v) });
+      // Issue 12, 20 Nov 2026 — same attribution pass-through as
+      // DodoCheckout.tsx; see that file's comment.
+      const { getFirstTouchUtm } = await import("@/lib/attribution");
+      const posthogModule = await import("posthog-js");
+      const distinctId = posthogModule.default.get_distinct_id?.();
       const res = await fetch("/api/checkout/dodo-season-pass", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId: SEASON_PASS_PRODUCT_ID, successUrl }),
+        body: JSON.stringify({
+          productId: SEASON_PASS_PRODUCT_ID,
+          successUrl,
+          ...(distinctId ? { posthogDistinctId: distinctId } : {}),
+          ...getFirstTouchUtm(),
+        }),
       });
       const { checkout_url, error } = await res.json();
       if (error || !checkout_url) {

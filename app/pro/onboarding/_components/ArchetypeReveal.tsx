@@ -50,30 +50,30 @@ export default function ArchetypeReveal({ archetype }: Props) {
 
   return (
     <div className="max-w-xl mx-auto text-center">
-      <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-3">
+      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">
         Your traveller type
       </p>
-      <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-3">
+      <h1 className="text-2xl sm:text-3xl font-black text-white mb-3">
         {details.label}
       </h1>
-      <p className="text-base font-medium text-neutral-600 mb-5 italic">
+      <p className="text-base font-medium text-[#A3A3A3] mb-5 italic">
         &ldquo;{details.tagline}&rdquo;
       </p>
-      <p className="text-sm text-neutral-500 leading-7 mb-10">
+      <p className="text-sm text-[#A3A3A3] leading-7 mb-10">
         {details.description}
       </p>
 
-      <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 mb-5">
-        Upcoming event packs
+      <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-5">
+        Upcoming event guides
       </p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
         {EVENT_PACKS.map((pack) => (
           <Link
             key={pack.slug}
             href={`/event-pack/${pack.slug}`}
-            className="group text-left rounded-xl border border-neutral-200 overflow-hidden hover:border-neutral-400 transition-colors"
+            className="group text-left rounded-sm border border-[#2A2A2A] overflow-hidden hover:border-[#AAFF00] transition-colors"
           >
-            <div className="relative h-32 overflow-hidden bg-neutral-100">
+            <div className="relative h-32 overflow-hidden bg-[#141414]">
               <Image
                 src={pack.heroImageUrl}
                 alt={pack.name}
@@ -83,13 +83,13 @@ export default function ArchetypeReveal({ archetype }: Props) {
               />
             </div>
             <div className="p-4">
-              <p className="text-[10px] font-semibold tracking-widest uppercase text-neutral-400 mb-1">
+              <p className="text-[10px] font-black tracking-widest uppercase text-[#AAFF00] mb-1">
                 {pack.sport} · {pack.location}
               </p>
-              <p className="text-sm font-bold text-neutral-900 group-hover:text-neutral-600 transition-colors mb-1">
+              <p className="text-sm font-black text-white group-hover:text-[#AAFF00] transition-colors mb-1">
                 {pack.name}
               </p>
-              <p className="text-xs text-neutral-400">{pack.dates}</p>
+              <p className="text-xs text-[#6A6A6A]">{pack.dates}</p>
             </div>
           </Link>
         ))}

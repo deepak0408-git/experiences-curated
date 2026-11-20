@@ -723,6 +723,20 @@ export const purchases = pgTable("purchases", {
   // general-purpose metadata field — see feedback_no_unnecessary_new_fields
   // memory on why a new column needs a real, specific justification.
   ticketIntelligenceAnswers: jsonb("ticket_intelligence_answers"),
+  // Attribution, Issue 12 (20 Nov 2026) — captured client-side at whichever
+  // page the buyer's session first saw a utm_* param (persisted to
+  // sessionStorage there, since checkout usually happens on a different
+  // page than the one the campaign link landed on), threaded through Dodo's
+  // checkout metadata (same pass-through already used for sportingEventId
+  // etc.) and read back out by the webhook at insert time. All nullable —
+  // most purchases will have no UTM (direct/organic traffic never set
+  // these in the first place). posthogDistinctId is the same visitor's
+  // PostHog distinct_id, so a sale can be cross-referenced into PostHog's
+  // richer session/behavior data when the 3 flat columns aren't enough.
+  utmSource: varchar("utm_source", { length: 255 }),
+  utmMedium: varchar("utm_medium", { length: 255 }),
+  utmCampaign: varchar("utm_campaign", { length: 255 }),
+  posthogDistinctId: varchar("posthog_distinct_id", { length: 255 }),
   purchasedAt: timestamp("purchased_at").notNull().defaultNow(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 }, (t) => [
@@ -773,6 +787,13 @@ export const ticketIntelligenceSeasonPasses = pgTable("ticket_intelligence_seaso
   pricePaid: numeric("price_paid", { precision: 10, scale: 2 }).notNull(),
   currency: varchar("currency", { length: 3 }).notNull(),
   status: purchaseStatusEnum("status").notNull().default("active"),
+  // Attribution, Issue 12 (20 Nov 2026) — same shape and capture mechanism
+  // as purchases' own columns; see that table's comment for the full
+  // explanation of how these get populated.
+  utmSource: varchar("utm_source", { length: 255 }),
+  utmMedium: varchar("utm_medium", { length: 255 }),
+  utmCampaign: varchar("utm_campaign", { length: 255 }),
+  posthogDistinctId: varchar("posthog_distinct_id", { length: 255 }),
   purchasedAt: timestamp("purchased_at").notNull().defaultNow(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 }, (t) => [
@@ -823,6 +844,14 @@ export const proSubscriptions = pgTable("pro_subscriptions", {
   status: varchar("status", { length: 20 }).notNull().default("active"), // active | cancelled | past_due | paused
   currentPeriodEnd: timestamp("current_period_end"),
   cancelledAt: timestamp("cancelled_at"),
+  // Attribution, Issue 12 (20 Nov 2026) — populated from the subscription
+  // object's own metadata field, set at checkout time via Dodo's
+  // checkoutSessions.create() same as the one-time purchase flows. See
+  // purchases' own comment for the full capture mechanism.
+  utmSource: varchar("utm_source", { length: 255 }),
+  utmMedium: varchar("utm_medium", { length: 255 }),
+  utmCampaign: varchar("utm_campaign", { length: 255 }),
+  posthogDistinctId: varchar("posthog_distinct_id", { length: 255 }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 }, (t) => [

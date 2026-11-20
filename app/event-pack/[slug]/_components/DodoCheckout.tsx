@@ -215,6 +215,15 @@ export default function DodoCheckout({
       phEvent.packCtaClicked({ eventSlug, eventName, priceTier, label, productType })
     );
     try {
+      // Issue 12, 20 Nov 2026 — attribution: thread the visitor's real
+      // PostHog distinct_id and whatever UTM params this browser tab
+      // session first saw (lib/attribution.ts) through to the webhook via
+      // Dodo's checkout metadata, same pass-through already used for
+      // sportingEventId etc. Both best-effort — absent for direct/organic
+      // traffic, or if PostHog hasn't initialized yet.
+      const { getFirstTouchUtm } = await import("@/lib/attribution");
+      const posthogModule = await import("posthog-js");
+      const distinctId = posthogModule.default.get_distinct_id?.();
       const res = await fetch("/api/checkout/dodo", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -225,6 +234,8 @@ export default function DodoCheckout({
           productType,
           successUrl,
           ...(ticketIntelligenceAnswers ? { ticketIntelligenceAnswers } : {}),
+          ...(distinctId ? { posthogDistinctId: distinctId } : {}),
+          ...getFirstTouchUtm(),
         }),
       });
       const { checkout_url, error } = await res.json();

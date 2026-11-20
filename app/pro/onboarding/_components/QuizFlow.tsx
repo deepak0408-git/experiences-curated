@@ -49,19 +49,19 @@ export default function QuizFlow({ onComplete }: Props) {
       {/* Progress bar */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs text-neutral-400">{currentIndex + 1} of {totalQuestions}</span>
-          <span className="text-xs text-neutral-400">{Math.round(progress)}% complete</span>
+          <span className="text-xs text-[#6A6A6A]">{currentIndex + 1} of {totalQuestions}</span>
+          <span className="text-xs text-[#6A6A6A]">{Math.round(progress)}% complete</span>
         </div>
-        <div className="h-1 bg-neutral-100 rounded-full overflow-hidden">
+        <div className="h-1 bg-[#2A2A2A] rounded-full overflow-hidden">
           <div
-            className="h-full bg-neutral-900 rounded-full transition-all duration-300"
+            className="h-full bg-[#AAFF00] rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
       </div>
 
       {/* Question */}
-      <h2 className="text-lg font-semibold text-neutral-900 leading-snug mb-6">
+      <h2 className="text-lg font-black text-white leading-snug mb-6">
         {currentQuestion.question}
       </h2>
 
@@ -71,10 +71,10 @@ export default function QuizFlow({ onComplete }: Props) {
           <button
             key={option.id}
             onClick={() => handleSelect(option.id)}
-            className={`w-full text-left px-4 py-3.5 rounded-xl border text-sm transition-colors ${
+            className={`w-full text-left px-4 py-3.5 rounded-sm border text-sm transition-colors ${
               selectedAnswer === option.id
-                ? "border-neutral-900 bg-neutral-900 text-white"
-                : "border-neutral-200 bg-white text-neutral-700 hover:border-neutral-400"
+                ? "border-[#AAFF00] bg-[#AAFF00] text-black font-bold"
+                : "border-[#2A2A2A] bg-[#141414] text-[#A3A3A3] hover:border-[#AAFF00]/50"
             }`}
           >
             {option.label}
@@ -87,7 +87,7 @@ export default function QuizFlow({ onComplete }: Props) {
         {currentIndex > 0 && (
           <button
             onClick={handleBack}
-            className="px-4 py-2.5 rounded-full border border-neutral-200 text-sm text-neutral-500 hover:border-neutral-400 transition-colors"
+            className="px-4 py-2.5 rounded-sm border border-[#2A2A2A] text-sm text-[#6A6A6A] hover:border-[#AAFF00]/50 hover:text-[#AAFF00] transition-colors"
           >
             Back
           </button>
@@ -95,7 +95,7 @@ export default function QuizFlow({ onComplete }: Props) {
         <button
           onClick={handleNext}
           disabled={!selectedAnswer || submitting}
-          className="flex-1 px-6 py-2.5 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-700 transition-colors disabled:opacity-40"
+          className="flex-1 px-6 py-2.5 rounded-sm bg-[#AAFF00] text-black text-sm font-black hover:bg-[#BBFF33] transition-colors disabled:opacity-40"
         >
           {submitting ? "Saving…" : isLast ? "See my result" : "Next"}
         </button>

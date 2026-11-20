@@ -69,10 +69,23 @@ export default function InlineDodoCheckout({
 
     (async () => {
       try {
+        // Issue 12, 20 Nov 2026 — same attribution pass-through as
+        // DodoCheckout.tsx's overlay mode; see that file's comment.
+        const { getFirstTouchUtm } = await import("@/lib/attribution");
+        const posthogModule = await import("posthog-js");
+        const distinctId = posthogModule.default.get_distinct_id?.();
         const res = await fetch("/api/checkout/dodo", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ productId, sportingEventId, priceTier, productType, successUrl }),
+          body: JSON.stringify({
+            productId,
+            sportingEventId,
+            priceTier,
+            productType,
+            successUrl,
+            ...(distinctId ? { posthogDistinctId: distinctId } : {}),
+            ...getFirstTouchUtm(),
+          }),
         });
         const { checkout_url, error } = await res.json();
         if (error || !checkout_url) {

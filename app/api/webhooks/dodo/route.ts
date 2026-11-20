@@ -93,6 +93,15 @@ export async function POST(request: NextRequest) {
       payment_frequency_interval: string;
       next_billing_date: string;
       customer: { customer_id: string; email: string };
+      // Issue 12, 20 Nov 2026 — set at checkout time (see /api/checkout/
+      // dodo-pro), confirmed via dodopayments SDK types to survive onto the
+      // subscription object itself, not just one-time payments.
+      metadata?: {
+        posthog_distinct_id?: string;
+        utm_source?: string;
+        utm_medium?: string;
+        utm_campaign?: string;
+      };
     };
 
     const email = sub.customer?.email;
@@ -112,9 +121,18 @@ export async function POST(request: NextRequest) {
           billingCycle,
           status: sub.status ?? "active",
           currentPeriodEnd,
+          posthogDistinctId: sub.metadata?.posthog_distinct_id ?? null,
+          utmSource: sub.metadata?.utm_source ?? null,
+          utmMedium: sub.metadata?.utm_medium ?? null,
+          utmCampaign: sub.metadata?.utm_campaign ?? null,
         })
         .onConflictDoUpdate({
           target: proSubscriptions.paddleSubscriptionId,
+          // Deliberately NOT updating the attribution columns here — this
+          // fires on subscription.updated too (renewals, plan changes),
+          // and overwriting first-touch attribution on every such event
+          // would lose the real original source. Attribution is captured
+          // once, at insert time, same as purchases.
           set: {
             status: sub.status ?? "active",
             currentPeriodEnd,
@@ -173,6 +191,11 @@ export async function POST(request: NextRequest) {
       // in checkout metadata (Dodo metadata values are strings) so the
       // webhook can persist them to purchases.ticketIntelligenceAnswers.
       ticket_intelligence_answers?: string;
+      // Issue 12, 20 Nov 2026 — attribution pass-through from checkout.
+      posthog_distinct_id?: string;
+      utm_source?: string;
+      utm_medium?: string;
+      utm_campaign?: string;
     };
   };
 
@@ -330,6 +353,10 @@ export async function POST(request: NextRequest) {
           pricePaid: passPricePaid,
           currency: passCurrency,
           status: "active",
+          posthogDistinctId: payment.metadata?.posthog_distinct_id ?? null,
+          utmSource: payment.metadata?.utm_source ?? null,
+          utmMedium: payment.metadata?.utm_medium ?? null,
+          utmCampaign: payment.metadata?.utm_campaign ?? null,
         })
         .onConflictDoNothing()
         .returning({ id: ticketIntelligenceSeasonPasses.id });
@@ -486,6 +513,10 @@ export async function POST(request: NextRequest) {
         currency,
         status: "active",
         ticketIntelligenceAnswers,
+        posthogDistinctId: payment.metadata?.posthog_distinct_id ?? null,
+        utmSource: payment.metadata?.utm_source ?? null,
+        utmMedium: payment.metadata?.utm_medium ?? null,
+        utmCampaign: payment.metadata?.utm_campaign ?? null,
       })
       .onConflictDoNothing()
       .returning({ id: purchases.id });
