@@ -2,11 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import HomepageNav from "@/app/_components/HomepageNav";
-import { getSpokesForEvent, type SpokeStatus } from "../_lib/getSpokeData";
+import { getSpokesForEvent, getLiveEventEndDate, type SpokeStatus } from "../_lib/getSpokeData";
 import { getPackPricing } from "../_lib/packPricing";
 import DodoCheckout from "../../_components/DodoCheckout";
 import LocalCurrencyHint from "../../_components/LocalCurrencyHint";
 import SpokeActionSidebar from "./SpokeActionSidebar";
+import EventEndedBanner from "../../_components/EventEndedBanner";
 import { hasTicketIntelligence } from "../../../../ticket-intelligence/[slug]/_lib/getSeatingData";
 
 // Was previously restricted to Cost/Tickets/Luxury only (founder direction,
@@ -96,6 +97,17 @@ export default async function SpokeShell({
   const nextSpoke = currentIdx === -1 ? null : spokes[(currentIdx + 1) % spokes.length];
 
   const showTicketIntelligence = await hasTicketIntelligence(eventId);
+
+  // Past-event purchase gate — same end-of-day UTC compare as the classic
+  // pack and HubPage.tsx, via the same always-fresh getLiveEventEndDate
+  // helper (deliberately NOT part of getSpokeData's cached payload — see
+  // that function's own comment for why). Queried directly here (not
+  // passed as a prop) since every spoke page across every event (264
+  // files) calls SpokeShell, and threading a new prop through all of them
+  // would be its own large, error-prone change — a single extra
+  // endDate-only lookup per spoke page view is cheap by comparison.
+  const liveEndDate = await getLiveEventEndDate(eventId);
+  const isEventPast = !!liveEndDate && new Date() > new Date(`${liveEndDate}T23:59:59Z`);
 
   // Full-gate pilot (Bahrain GP, 29 Sep 2026) — env-var-driven so it can be
   // reverted with zero code change, just by clearing FULLY_GATED_EVENTS.
@@ -206,9 +218,11 @@ export default async function SpokeShell({
           </div>
         )}
 
+        {isEventPast && <EventEndedBanner hasAccess={isUnlocked} />}
+
         {(!isFullyGated || isUnlocked) && children}
 
-        {(status === "teaser" || isFullyGated) && !isUnlocked && (
+        {(status === "teaser" || isFullyGated) && !isUnlocked && !isEventPast && (
           <div className="mt-10 rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-6">
             {/* Mini-packs pilot — when this spoke has its own mini-pack
                 (Tickets/Hotels/Itinerary on the 3 piloted events) and the

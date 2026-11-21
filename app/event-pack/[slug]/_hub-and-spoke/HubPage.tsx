@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import HomepageNav from "@/app/_components/HomepageNav";
 import PostHogPageContext from "@/app/_components/PostHogPageContext";
 import JourneyMap from "@/app/_components/JourneyMap";
-import { getSpokeData, getSpokesForEvent, getSpokeImage, getPurchaseStatus, isSpokeUnlocked, MINI_PACK_PRODUCT_TYPE_BY_SPOKE } from "./_lib/getSpokeData";
+import { getSpokeData, getLiveEventEndDate, getSpokesForEvent, getSpokeImage, getPurchaseStatus, isSpokeUnlocked, MINI_PACK_PRODUCT_TYPE_BY_SPOKE } from "./_lib/getSpokeData";
 import { getPackPricing } from "./_lib/packPricing";
 import { getMiniPackPricing } from "@/lib/packPricing";
 
@@ -49,6 +49,7 @@ import RateGuideButton from "../_components/RateGuideButton";
 import AskCuratorForm from "../_components/AskCuratorForm";
 import HubPackDownload from "./_components/HubPackDownload";
 import EventTestimonial from "./_components/EventTestimonial";
+import EventEndedBanner from "../_components/EventEndedBanner";
 import { isEventPackSaved, getMyEventPackRating } from "../actions";
 import { getArticlesForEvent } from "@/lib/queries/blog";
 import { PDF_CONTENT_BY_EVENT } from "@/app/api/pack/pdf-hub/pdfContentRegistry";
@@ -655,6 +656,26 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
   } = await supabase.auth.getUser();
 
   const { hasPurchased, justPurchased, justPurchasedProductType, isPro, purchasedProductTypes } = await getPurchaseStatus(slug, event.id, event.isHidden);
+
+  // Past-event purchase gate — same end-of-day UTC compare as the classic
+  // pack (app/event-pack/[slug]/page.tsx), so a pack whose event already
+  // happened stops offering new purchases but stays readable for anyone who
+  // already bought it. endDate is a bare date string ("2026-07-12"), which
+  // JS parses as UTC midnight — comparing directly against `new Date()`
+  // would flip the pack to "past" for the entire final day.
+  //
+  // Deliberately NOT read from `event.endDate` above — that comes from
+  // getSpokeData()'s unstable_cache (1-hour revalidate, shared tag), and a
+  // stale cached endDate here means a pack for a real, live, rescheduled-
+  // or-rolled-over event could wrongly show "Event ended" and hide the
+  // purchase CTA for up to an hour — a silent revenue loss, not just a
+  // cosmetic staleness issue. The rest of getSpokeData()'s payload (pricing
+  // config, experience lists, etc.) is fine to stay cached; endDate is the
+  // one field whose staleness has direct purchase-gating consequences, so
+  // it gets its own tiny uncached lookup instead. Same reasoning + pattern
+  // as SpokeShell.tsx's own endDate query. Founder decision, 21 Nov 2026.
+  const liveEndDate = await getLiveEventEndDate(event.id);
+  const isEventPast = !!liveEndDate && new Date() > new Date(`${liveEndDate}T23:59:59Z`);
   const pricing = await getPackPricing(slug, event.packCurrency);
   // Mini-packs pilot — null for every event outside the 3 piloted slugs, so
   // the "OR JUST WHAT YOU NEED" block and per-spoke tile badges below both
@@ -794,6 +815,8 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
           </div>
         )}
 
+        {isEventPast && <EventEndedBanner hasAccess={hasPurchased} />}
+
         {/* Journey Map, Plan stage — per the UX Journey Map spec (20 Nov
             2026). Cross-sport surface (hub-and-spoke spans F1, tennis,
             cricket, golf, etc.), so variant="neutral", same grouping as
@@ -865,7 +888,7 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
               a real "Sign in for free access" CTA, not a no-button dead
               end. Label style matches Quick Reference/Pre-trip brief
               (font-semibold, not font-black) for visual consistency. */}
-          {!hasPurchased && pricing && (
+          {!hasPurchased && pricing && !isEventPast && (
             <aside className="mt-8 lg:mt-0">
               <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 lg:sticky lg:top-6">
                 <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-2">Unlock the full guide</p>
@@ -964,7 +987,7 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
             full-pack buyer's own account still showed 3 "Get the Guide"
             buttons for content they already owned. Matches the exact gate
             the full-pack box above already uses. */}
-        {miniPackPricing && !hasPurchased && (
+        {miniPackPricing && !hasPurchased && !isEventPast && (
           <div className="mt-10">
             <p className="text-xs font-semibold tracking-widest uppercase text-[#AAFF00] mb-4">Or just what you need</p>
             {/* Deliberately quieter than "Unlock the full guide" above —

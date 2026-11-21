@@ -68,6 +68,27 @@ export async function getSpokeData(slug: string) {
   };
 }
 
+// Deliberately NOT part of getSpokeDataCached above — endDate is the one
+// field in that cached payload whose staleness has direct purchase-gating
+// consequences (a stale "event ended" wrongly hides the purchase CTA for up
+// to an hour, a real revenue loss, not just cosmetic staleness), so it gets
+// its own tiny always-fresh query instead of riding along with the cached
+// blob. Same pattern as SpokeShell.tsx's own endDate lookup and
+// getPurchaseStatus's editionYear-only lookup below. Founder decision,
+// 21 Nov 2026 — see project_hub_and_spoke_event_ended_banner_fix memory.
+export async function getLiveEventEndDate(eventId: string) {
+  const [row] = await withReadDbRetry(
+    () =>
+      db
+        .select({ endDate: sportingEvents.endDate })
+        .from(sportingEvents)
+        .where(eq(sportingEvents.id, eventId))
+        .limit(1),
+    { operation: "getLiveEventEndDate" },
+  );
+  return row?.endDate ?? null;
+}
+
 async function getSpokeDataUncached(slug: string) {
   const [event] = await withReadDbRetry(
     () => db.select().from(sportingEvents).where(eq(sportingEvents.slug, slug)).limit(1),
