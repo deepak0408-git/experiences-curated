@@ -1,6 +1,16 @@
 import type { MetadataRoute } from "next";
 import { db } from "@/lib/db";
-import { experiences, destinations, sportingEvents, circuitSeatingProfile, tennisTicketIntelligenceOptions } from "@/schema/database";
+import {
+  experiences,
+  destinations,
+  sportingEvents,
+  circuitSeatingProfile,
+  tennisTicketIntelligenceOptions,
+  blogArticles,
+  plannerFlightCost,
+  plannerHotelTierCost,
+  plannerTicketTierCost,
+} from "@/schema/database";
 import { eq, inArray, sql } from "drizzle-orm";
 
 // Must be the canonical www host — the site 308-redirects the bare apex
@@ -13,7 +23,7 @@ import { eq, inArray, sql } from "drizzle-orm";
 const BASE = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.experiences-curated.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [publishedExps, allDestinations, allEvents, f1TiEvents, tennisTiEvents] = await Promise.all([
+  const [publishedExps, allDestinations, allEvents, f1TiEvents, tennisTiEvents, publishedBlog, priceRadarEvents] = await Promise.all([
     db
       .select({ slug: experiences.slug, updatedAt: experiences.updatedAt })
       .from(experiences)
@@ -43,6 +53,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .from(tennisTicketIntelligenceOptions)
       .innerJoin(sportingEvents, eq(tennisTicketIntelligenceOptions.sportingEventId, sportingEvents.id))
       .where(sql`${sportingEvents.isHidden} = false`),
+    // Blog — published articles. Previously absent from the sitemap entirely.
+    db
+      .select({ slug: blogArticles.slug, updatedAt: blogArticles.updatedAt })
+      .from(blogArticles)
+      .where(eq(blogArticles.status, "published")),
+    // Price Radar — free cost-index page, reachable at /price-radar/[slug]
+    // for any event with real flight + hotel (keyed by destinationId) +
+    // ticket (keyed by sportingEventId) cost data seeded — the page itself
+    // 404s via getSpokeData() otherwise. Not tied to packStatus/isHidden,
+    // so queried independently of allEvents above.
+    db
+      .selectDistinct({ slug: sportingEvents.slug, updatedAt: sportingEvents.updatedAt })
+      .from(plannerTicketTierCost)
+      .innerJoin(sportingEvents, eq(plannerTicketTierCost.sportingEventId, sportingEvents.id))
+      .innerJoin(plannerFlightCost, eq(plannerFlightCost.destinationId, sportingEvents.destinationId))
+      .innerJoin(plannerHotelTierCost, eq(plannerHotelTierCost.destinationId, sportingEvents.destinationId))
+      .where(sql`${sportingEvents.isHidden} = false`),
   ]);
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -66,6 +93,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // static priority on the site besides the homepage itself.
     { url: `${BASE}/formula-1`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${BASE}/tennis`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
+    // Pro + Planner — commercial/product pages previously missing entirely.
+    { url: `${BASE}/pro`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${BASE}/planner`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    // Ticket Intelligence index pages (distinct from the per-event
+    // /ticket-intelligence/[slug] pages already queried below).
+    { url: `${BASE}/ticket-intelligence`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
+    { url: `${BASE}/ticket-intelligence/tennis`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
+    // Blog index.
+    { url: `${BASE}/blog`, lastModified: new Date(), changeFrequency: "daily", priority: 0.6 },
+    // Sports Calendar — index + one page per covered sport.
+    { url: `${BASE}/calendar`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.6 },
+    { url: `${BASE}/calendar/formula-1`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.5 },
+    { url: `${BASE}/calendar/tennis`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.5 },
+    { url: `${BASE}/calendar/golf`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.5 },
+    { url: `${BASE}/calendar/cricket`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.5 },
+    // Standalone static pages.
+    { url: `${BASE}/help`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.3 },
+    { url: `${BASE}/gift`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.4 },
+    { url: `${BASE}/newsletter`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.3 },
+    { url: `${BASE}/custom-itinerary`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.4 },
+    { url: `${BASE}/planning-methodology`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.3 },
+    { url: `${BASE}/ticket-intelligence-methodology`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.3 },
   ];
 
   // Lowered from 0.9 (was equal to Event Guides) 18 Nov 2026 — Issue 2
@@ -111,5 +160,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   ];
 
-  return [...staticPages, ...eventPackPages, ...ticketIntelligencePages, ...destinationPages, ...experiencePages];
+  const blogPages: MetadataRoute.Sitemap = publishedBlog.map((b) => ({
+    url: `${BASE}/blog/${b.slug}`,
+    lastModified: b.updatedAt,
+    changeFrequency: "monthly",
+    priority: 0.5,
+  }));
+
+  const priceRadarPages: MetadataRoute.Sitemap = priceRadarEvents.map((e) => ({
+    url: `${BASE}/price-radar/${e.slug}`,
+    lastModified: e.updatedAt,
+    changeFrequency: "weekly",
+    priority: 0.6,
+  }));
+
+  return [
+    ...staticPages,
+    ...eventPackPages,
+    ...ticketIntelligencePages,
+    ...destinationPages,
+    ...experiencePages,
+    ...blogPages,
+    ...priceRadarPages,
+  ];
 }

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import HomepageNav from "@/app/_components/HomepageNav";
@@ -30,6 +31,12 @@ import JourneyMap from "@/app/_components/JourneyMap";
 // 2. purchases.ticketIntelligenceAnswers, stored by the webhook at
 //    purchase time — the recovery path for a buyer who closes the tab and
 //    returns later via their confirmation email (no query string).
+
+// Personalized, purchase-gated reveal — never a stable canonical page for
+// any search query. Same noindex pattern as trip-intelligence's /results.
+export const metadata: Metadata = {
+  robots: { index: false, follow: true },
+};
 
 const REQUIRED_ANSWER_KEYS: (keyof QuizAnswers)[] = ["q1", "q2", "q3", "q4", "q5", "q6", "q7"];
 
