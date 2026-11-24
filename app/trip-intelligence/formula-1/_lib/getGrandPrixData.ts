@@ -1,10 +1,8 @@
-import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
 import { tripIntelligenceGrandPrixProfiles, tripIntelligenceFanInsights, sportingEvents, circuitSeatingProfile } from "@/schema/database";
 import { eq, inArray } from "drizzle-orm";
 import { buildCandidates } from "./buildCandidates";
 import type { GrandPrixCandidate } from "./types";
-import { CACHE_TAGS } from "@/lib/cacheTags";
 
 // Uncached, unlike the other reads in this file — ratings get corrected
 // directly in the DB (scripts or manual edits) with no code path to call
@@ -39,12 +37,13 @@ function isEventGuideBuilt(packStatus: string, isHidden: boolean): boolean {
   return (packStatus === "live" || packStatus === "built_hidden") && !isHidden;
 }
 
-// unstable_cache serializes its return value through JSON internally, so a
-// Map survives as a plain object on the way back out (or worse — this is
-// what caused "displayInfoMap.get is not a function" at runtime, 10 Oct
-// 2026). Cached functions return plain arrays; callers build the Map.
-const getGrandPrixDisplayInfoCached = unstable_cache(
-  async (sportingEventIds: string[]): Promise<GrandPrixDisplayInfo[]> => {
+// Uncached 24 Nov 2026 — same reasoning as getAllGrandPrixCandidates above
+// and getSpokeData.ts's removal: the Supabase egress limit this was added
+// for is gone, and revalidateTag was proven unreliable in prod on the
+// identical pattern there. Returns a plain array; callers build the Map —
+// kept that way even uncached since a Map isn't a natural function return
+// shape to pass around.
+async function getGrandPrixDisplayInfoCached(sportingEventIds: string[]): Promise<GrandPrixDisplayInfo[]> {
     const events = await db
       .select({
         id: sportingEvents.id,
@@ -79,14 +78,7 @@ const getGrandPrixDisplayInfoCached = unstable_cache(
       isEventGuideBuilt: isEventGuideBuilt(e.packStatus, e.isHidden),
       hasTicketIntelligence: hasSeatingData.has(e.id),
     }));
-  },
-  ["trip-intelligence-display-info"],
-  // tags: tagged + wired to revalidateTag 24 Oct 2026, closing the same gap
-  // the "Uncached" comment above describes for getAllGrandPrixCandidates —
-  // this function has the identical staleness risk and wasn't fixed at the
-  // time (see feedback_unstable_cache_tags_and_revalidation memory).
-  { revalidate: 3600, tags: [CACHE_TAGS.TRIP_INTELLIGENCE_F1, CACHE_TAGS.TICKET_INTELLIGENCE_F1] },
-);
+}
 
 export async function getGrandPrixDisplayInfo(sportingEventIds: string[]): Promise<Map<string, GrandPrixDisplayInfo>> {
   const rows = await getGrandPrixDisplayInfoCached(sportingEventIds);
@@ -100,8 +92,8 @@ export interface FanInsightsData {
   insiderTip: string | null;
 }
 
-const getFanInsightsCached = unstable_cache(
-  async (sportingEventIds: string[]): Promise<Array<FanInsightsData & { sportingEventId: string }>> => {
+// Uncached 24 Nov 2026 — see getGrandPrixDisplayInfoCached above.
+async function getFanInsightsCached(sportingEventIds: string[]): Promise<Array<FanInsightsData & { sportingEventId: string }>> {
     const rows = await db
       .select()
       .from(tripIntelligenceFanInsights)
@@ -115,10 +107,7 @@ const getFanInsightsCached = unstable_cache(
         tradeOffs: r.tradeOffs,
         insiderTip: r.insiderTip,
       }));
-  },
-  ["trip-intelligence-fan-insights"],
-  { revalidate: 3600, tags: [CACHE_TAGS.TRIP_INTELLIGENCE_F1] },
-);
+}
 
 export async function getFanInsights(sportingEventIds: string[]): Promise<Map<string, FanInsightsData>> {
   const rows = await getFanInsightsCached(sportingEventIds);

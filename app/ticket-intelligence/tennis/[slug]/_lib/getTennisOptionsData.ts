@@ -6,25 +6,15 @@ import {
   tennisTicketIntelligenceEditionStatus,
 } from "@/schema/database";
 import { and, eq } from "drizzle-orm";
-import { unstable_cache } from "next/cache";
-import { CACHE_TAGS } from "@/lib/cacheTags";
 import type { TicketOption } from "./types";
 
 // Tennis Ticket Intelligence data fetch — self-contained from F1's
-// getSeatingData.ts (no shared import). Same 1-hour cache pattern as the
-// rest of this app's Ticket Intelligence/Trip Intelligence data readers.
-// tags: tagged + wired to revalidateTag 24 Oct 2026 (see
-// feedback_unstable_cache_tags_and_revalidation memory) — a curator
-// activating a new event's Ticket Intelligence no longer has to wait up to
-// an hour for this to catch up.
-const getTennisDataCached = unstable_cache(
-  async (slug: string) => getTennisDataUncached(slug),
-  ["tennis-ticket-intelligence-data"],
-  { revalidate: 3600, tags: [CACHE_TAGS.TENNIS_TICKET_INTELLIGENCE] }
-);
-
+// getSeatingData.ts (no shared import).
+// Uncached 24 Nov 2026 — same reasoning as getSpokeData.ts's removal: the
+// Supabase egress limit this was added for is gone, and revalidateTag was
+// proven unreliable in prod on the identical pattern there.
 export async function getTennisOptionsData(slug: string) {
-  return getTennisDataCached(slug);
+  return getTennisDataUncached(slug);
 }
 
 async function getTennisDataUncached(slug: string) {
@@ -127,8 +117,8 @@ async function getTennisDataUncached(slug: string) {
 // options are seeded and its edition is activated, same pattern as F1's
 // hasTicketIntelligence (circuit_seating_profile row-existence), just with
 // tennis's extra activation/ratification gate layered on top.
-const hasTennisTicketIntelligenceCached = unstable_cache(
-  async (eventId: string, editionYear: number) => {
+// Uncached 24 Nov 2026 — see getTennisOptionsData above.
+async function hasTennisTicketIntelligenceCached(eventId: string, editionYear: number) {
     const [editionStatus] = await withReadDbRetry(
       () =>
         db
@@ -158,10 +148,7 @@ const hasTennisTicketIntelligenceCached = unstable_cache(
     );
 
     return !!row;
-  },
-  ["tennis-ticket-intelligence-has-options"],
-  { revalidate: 3600, tags: [CACHE_TAGS.TENNIS_TICKET_INTELLIGENCE] }
-);
+}
 
 export async function hasTennisTicketIntelligence(eventId: string, editionYear: number): Promise<boolean> {
   return hasTennisTicketIntelligenceCached(eventId, editionYear);

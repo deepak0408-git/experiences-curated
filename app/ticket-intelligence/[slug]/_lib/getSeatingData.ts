@@ -2,27 +2,17 @@ import { db } from "@/lib/db";
 import { withReadDbRetry } from "@/lib/db-retry";
 import { sportingEvents, circuitSeatingProfile, plannerTicketTierCost, plannerHotelTierCost, plannerFlightCost, plannerDestinationBands, experiences, sportingEventExperiences } from "@/schema/database";
 import { and, eq, gte, ilike, inArray, or, sql } from "drizzle-orm";
-import { unstable_cache } from "next/cache";
-import { CACHE_TAGS } from "@/lib/cacheTags";
 import type { Seat } from "./types";
 
 // Ticket Intelligence data fetch — slug-driven, one event at a time (pilot:
 // brazilian-grand-prix). Joins circuit_seating_profile with its priced
 // tier band (nullable — some hospitality seats are ordinal-only, see
-// scripts/seed-brazilian-gp-circuit-seating.mjs). Cached per-slug, same
-// 1-hour revalidate pattern as getSpokeData.ts — this data changes only
-// when a curator re-runs the seed script, not per-request.
-// tags: tagged + wired to revalidateTag 24 Oct 2026 (see
-// feedback_unstable_cache_tags_and_revalidation memory) — same shared
-// coarse-tag tradeoff as getSpokeData.ts (unstable_cache can't tag per-slug).
-const getSeatingDataCached = unstable_cache(
-  async (slug: string) => getSeatingDataUncached(slug),
-  ["ticket-intelligence-seating-data"],
-  { revalidate: 3600, tags: [CACHE_TAGS.TICKET_INTELLIGENCE_F1] }
-);
-
+// scripts/seed-brazilian-gp-circuit-seating.mjs).
+// Uncached 24 Nov 2026 — same reasoning as getSpokeData.ts's removal: the
+// Supabase egress limit this was added for is gone, and revalidateTag was
+// proven unreliable in prod on the identical pattern there.
 export async function getSeatingData(slug: string) {
-  return getSeatingDataCached(slug);
+  return getSeatingDataUncached(slug);
 }
 
 async function getSeatingDataUncached(slug: string) {
@@ -181,23 +171,19 @@ async function getFallbackTicketExperienceSlug(sportingEventId: string): Promise
 // lookups don't scale past one pilot event, per
 // feedback_avoid_hardcoded_per_entity_tables memory). A new event lights up
 // automatically the moment its seed script runs, no code change/deploy
-// needed. Cached the same way and for the same reason as getSeatingData.
-const hasTicketIntelligenceCached = unstable_cache(
-  async (eventId: string) => {
-    const [row] = await withReadDbRetry(
-      () =>
-        db
-          .select({ id: circuitSeatingProfile.id })
-          .from(circuitSeatingProfile)
-          .where(eq(circuitSeatingProfile.sportingEventId, eventId))
-          .limit(1),
-      { operation: "hasTicketIntelligence" },
-    );
-    return !!row;
-  },
-  ["ticket-intelligence-has-seats"],
-  { revalidate: 3600, tags: [CACHE_TAGS.TICKET_INTELLIGENCE_F1] }
-);
+// needed. Uncached 24 Nov 2026 — see getSeatingData above.
+async function hasTicketIntelligenceCached(eventId: string) {
+  const [row] = await withReadDbRetry(
+    () =>
+      db
+        .select({ id: circuitSeatingProfile.id })
+        .from(circuitSeatingProfile)
+        .where(eq(circuitSeatingProfile.sportingEventId, eventId))
+        .limit(1),
+    { operation: "hasTicketIntelligence" },
+  );
+  return !!row;
+}
 
 // Real, row-existence check across ALL FIVE Season Planner cost categories
 // for this event's edition — flights, hotels, tickets, and destination
@@ -215,8 +201,8 @@ const hasTicketIntelligenceCached = unstable_cache(
 // live on Miami GP 2027's Ticket Intelligence result page. Calendar's own
 // canPlanCosts is intentionally NOT touched here — same gap, different
 // surface, left for a separate pass.
-const hasFullPlannerCostDataCached = unstable_cache(
-  async (eventId: string, destinationId: string | null, editionYear: number) => {
+// Uncached 24 Nov 2026 — see getSeatingData above.
+async function hasFullPlannerCostDataCached(eventId: string, destinationId: string | null, editionYear: number) {
     if (!destinationId) return false;
     const [tickets, hotels, flights, bands] = await Promise.all([
       withReadDbRetry(
@@ -257,10 +243,7 @@ const hasFullPlannerCostDataCached = unstable_cache(
       ),
     ]);
     return tickets.length > 0 && hotels.length > 0 && flights.length > 0 && bands.length > 0;
-  },
-  ["ticket-intelligence-has-full-planner-cost-data"],
-  { revalidate: 3600, tags: [CACHE_TAGS.TICKET_INTELLIGENCE_F1] }
-);
+}
 
 export async function hasFullPlannerCostData(
   eventId: string,
@@ -309,14 +292,9 @@ export interface TicketIntelligenceEventSummary {
 //    events, until their own ticket-intelligence-researcher pass is done)
 //    correctly does not appear here — never show a card that 404s or lands
 //    on an empty quiz.
-const getTicketIntelligenceEventsCached = unstable_cache(
-  async () => getTicketIntelligenceEventsUncached(),
-  ["ticket-intelligence-events-list"],
-  { revalidate: 3600, tags: [CACHE_TAGS.TICKET_INTELLIGENCE_F1] }
-);
-
+// Uncached 24 Nov 2026 — see getSeatingData above.
 export async function getTicketIntelligenceEvents(): Promise<TicketIntelligenceEventSummary[]> {
-  return getTicketIntelligenceEventsCached();
+  return getTicketIntelligenceEventsUncached();
 }
 
 async function getTicketIntelligenceEventsUncached(): Promise<TicketIntelligenceEventSummary[]> {

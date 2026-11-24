@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache";
 import { getExperienceBySlug, type ExperienceDetail } from "@/lib/queries/experiences";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -17,7 +16,6 @@ import ExperienceActionSidebar from "./_components/ExperienceActionSidebar";
 import { isRealAffiliateLink } from "../../event-pack/[slug]/_hub-and-spoke/_lib/getSpokeData";
 import { hasTicketIntelligence } from "../../ticket-intelligence/[slug]/_lib/getSeatingData";
 import { shortEventName, stripYear } from "@/lib/eventShortNames";
-import { CACHE_TAGS } from "@/lib/cacheTags";
 
 // Hub-and-spoke "back to spoke" link — maps an experience's slug prefix to
 // the spoke it's most at home in for a given event, per explicit curator
@@ -957,9 +955,14 @@ export default async function ExperiencePage({
   const { slug } = await params;
   const { from: fromEventSlug, fromDestination } = await searchParams;
 
-  // Cache experience content, ratings, and related for 1 hour — only auth runs per-request
-  const getExperienceData = unstable_cache(
-    async (s: string) => {
+  // Uncached 24 Nov 2026 — the Supabase egress limit this unstable_cache
+  // was added for is gone, and revalidateTag was proven unreliable in prod
+  // on getSpokeData.ts's identical pattern (served stale data through a
+  // revalidateTag call that returned 200 but never reached the running
+  // process — confirmed live on Singapore GP's rollover). Reads go straight
+  // to Postgres now; revisit with 'use cache'+cacheTag if egress becomes a
+  // real problem again. See app/event-pack/[slug]/_hub-and-spoke/_lib/getSpokeData.ts.
+  const getExperienceData = async (s: string) => {
       const exp = await getExperienceBySlug(s);
 
       const [ratingRow] = await withReadDbRetry(
@@ -1117,16 +1120,7 @@ export default async function ExperiencePage({
       );
 
       return { exp, ratingRow, eventPackSlug, eventPackName, eventPackFormat, eventPackSport, eventPackId, hasLivePack, eventPackDestinationName, eventPackTourCities, sharedEventCount, related };
-    },
-    ["experience-page"],
-    // tags: tagged + wired to revalidateTag 24 Oct 2026 — revalidatePath
-    // (called below by publishExperience/unpublishExperience/archiveExperience
-    // in ./actions.ts) is not a documented, reliable way to bust a manually
-    // created unstable_cache entry; revalidateTag is. Shared coarse tag,
-    // same tradeoff as getSpokeData.ts/getSeatingData.ts. See
-    // feedback_unstable_cache_tags_and_revalidation memory.
-    { revalidate: 3600, tags: [CACHE_TAGS.EXPERIENCE_PAGE] }
-  );
+  };
 
   const cached = await getExperienceData(slug);
   const { exp, ratingRow, related, sharedEventCount } = cached;
