@@ -929,7 +929,7 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
                     {pricing.isEarlyBird && pricing.earlyBirdDisplay !== pricing.standardDisplay && (
                       <p className="-mt-3 mb-4 text-xs text-[#6A6A6A]">
                         Rises to {pricing.standardDisplay} after{" "}
-                        {new Date(pricing.earlyBirdCutoff).toLocaleDateString("en-GB", { day: "numeric", month: "long" })}
+                        {new Date(pricing.earlyBirdCutoff).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
                       </p>
                     )}
                     {pricing.dodoProductId ? (

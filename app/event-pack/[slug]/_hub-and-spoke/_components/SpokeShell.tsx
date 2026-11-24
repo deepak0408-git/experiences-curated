@@ -324,7 +324,7 @@ export default async function SpokeShell({
                       {pricing.isEarlyBird && pricing.earlyBirdDisplay !== pricing.standardDisplay && (
                         <span className="block text-xs font-normal text-[#6A6A6A] mt-0.5">
                           Rises to {pricing.standardDisplay} after{" "}
-                          {new Date(pricing.earlyBirdCutoff).toLocaleDateString("en-GB", { day: "numeric", month: "long" })}
+                          {new Date(pricing.earlyBirdCutoff).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
                         </span>
                       )}
                     </p>
