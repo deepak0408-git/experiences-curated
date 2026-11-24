@@ -48,9 +48,9 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Mistake 2 — booking a hotel without accounting for Día de Muertos</p>
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-6">
         <p className="text-sm text-[#A3A3A3] leading-6">
-          2026 race weekend lands directly on the city&apos;s Día de Muertos Grand Parade weekend — one of the
+          Race weekend falls in the same window as the city&apos;s Día de Muertos Grand Parade most years — one of the
           biggest tourism draws in Mexico City&apos;s entire calendar, entirely independent of the race. Booking a
-          hotel on a normal race-weekend timeline, rather than the earlier window this specific overlap demands, is a
+          hotel on a normal race-weekend timeline, rather than the earlier window this overlap can demand, is a
           real risk of ending up with worse availability or a higher rate than expected.
         </p>
       </div>

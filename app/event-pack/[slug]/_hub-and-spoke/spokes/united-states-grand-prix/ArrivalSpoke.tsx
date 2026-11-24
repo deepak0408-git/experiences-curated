@@ -29,8 +29,8 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
       isUnlocked={isUnlocked}
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        COTA hasn&apos;t published exact 2026 gate-opening times as of this guide. Based on the pattern in recent
-        race weekends, expect gates to open roughly 9:00-10:00am each day of the 23-25 October weekend — confirm
+        COTA hasn&apos;t published exact 2027 gate-opening times as of this guide. Based on the pattern in recent
+        race weekends, expect gates to open roughly 9:00-10:00am each day of the 22-24 October weekend — confirm
         exact times via the official COTA app closer to race week. What&apos;s already reliable is the shuttle
         schedule and the ticket-delivery mechanics below.
       </p>
@@ -39,10 +39,11 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
         <p className="text-sm text-[#A3A3A3] leading-6">
           The Downtown shuttle picks up at Waterloo Park/Moody Amphitheater on Red River Street and drops off
-          right outside the Grand Plaza gates on COTA Boulevard — a 3-day pass runs US$172.03, a single day
-          US$68.31. The Northeast Austin shuttle runs from the Travis County Expo Center (enter via Gate 1 off
+          right outside the Grand Plaza gates on COTA Boulevard — 2026 pricing was a 3-day pass at US$172.03, a
+          single day US$68.31 (2027 pricing not yet released; confirm via the official shuttle site before buying).
+          The Northeast Austin shuttle runs from the Travis County Expo Center (enter via Gate 1 off
           Decker Lane, near US-290/183 and the 130 Tollway), with a free parking lot and air-conditioned buses —
-          a 3-day pass runs US$102.88, a single day US$45.26. Both routes run continuously starting 60 minutes
+          2026 pricing was a 3-day pass at US$102.88, a single day US$45.26. Both routes run continuously starting 60 minutes
           before gates open each day; the last inbound shuttle departs 2pm on Sunday and 6:30pm Friday/Saturday,
           with return service ending 60 minutes after the music ends on concert nights. Buy your pass ahead of
           time — these sell out, and this isn&apos;t a walk-up option on race morning.

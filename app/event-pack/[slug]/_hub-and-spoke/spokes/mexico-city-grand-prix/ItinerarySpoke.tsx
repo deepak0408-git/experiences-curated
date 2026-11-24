@@ -38,9 +38,10 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
           gated behind isUnlocked (full pack or the Itinerary Guide
           mini-pack). */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        Mexico City runs a standard 3-day Grand Prix weekend — Friday through Sunday — but 2026 carries a genuine
-        complication most other race weekends don&apos;t: the city&apos;s Día de Muertos Grand Parade falls directly
-        inside race weekend itself, so one day specifically needs real planning, not just a generic track-and-dinner
+        Mexico City runs a standard 3-day Grand Prix weekend — Friday through Sunday. In recent editions, the city&apos;s
+        Día de Muertos Grand Parade has fallen close to or directly inside race weekend, so it&apos;s worth checking
+        the current year&apos;s confirmed parade date (announced by the city government, typically in summer) once
+        it&apos;s out — if it overlaps, one day specifically needs real planning, not just a generic track-and-dinner
         template.
       </p>
 
@@ -58,7 +59,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
         <div className="flex flex-col gap-3 mb-8">
           <DayCard day="Thursday — Teotihuacán day trip" summary="An early start to beat the heat and crowds, back in the city by evening with time to spare" />
           <DayCard day="Friday — Practice, Zócalo & historic center" summary="Circuit sessions, then the Zócalo/Cathedral/Templo Mayor loop in the afternoon or evening" />
-          <DayCard day="Saturday — Practice, qualifying & the Día de Muertos parade" summary="Practice 3, qualifying, plus catching part of the parade — the one day this year that needs real sequencing" />
+          <DayCard day="Saturday — Practice, qualifying & possible parade overlap" summary="Practice 3, qualifying, plus catching part of the Día de Muertos parade if the current year's dates overlap — check before you plan this day" />
           <DayCard day="Sunday — Race day" summary="Arrival timing by grandstand, the race itself, the Foro Sol podium ceremony" />
           <DayCard day="Monday (optional) — More of the city" summary="If your trip extends a day further, Chapultepec, the Frida Kahlo Museum, or Xochimilco round out the sightseeing without competing with track sessions" />
         </div>
@@ -82,18 +83,18 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
           <ItineraryTable
             day="Friday — Practice day"
             rows={[
-              { time: "12:30 PM – 1:30 PM", location: "Your booked grandstand", activity: "Practice 1 — the lowest-pressure viewing of the weekend, worth using to test your seat's sightlines before qualifying and race day." },
-              { time: "4:00 PM – 5:00 PM", location: "Your booked grandstand", activity: "Practice 2 — the second and final practice session of the weekend." },
+              { time: "Afternoon", location: "Your booked grandstand", activity: "Practice 1 — the lowest-pressure viewing of the weekend, worth using to test your seat's sightlines before qualifying and race day. Exact 2027 session times not yet published; in 2026 this ran 12:30–1:30 PM." },
+              { time: "Afternoon", location: "Your booked grandstand", activity: "Practice 2 — the second and final practice session of the weekend. Exact 2027 session times not yet published; in 2026 this ran 4:00–5:00 PM." },
               { time: "Evening", location: "The Zócalo, Metropolitan Cathedral & Templo Mayor", activity: "A genuinely walkable half-day loop through the historic center — the cathedral is free, Templo Mayor's museum takes 60-90 minutes." },
             ]}
           />
 
           <ItineraryTable
-            day="Saturday — Practice, qualifying & the parade"
+            day="Saturday — Practice, qualifying & possible parade overlap"
             rows={[
-              { time: "11:30 AM – 12:30 PM", location: "Your booked grandstand", activity: "Practice 3 — the final tuning session before qualifying, on the same day this year." },
-              { time: "3:00 PM – 4:00 PM", location: "Your booked grandstand", activity: "Qualifying — sets Sunday's starting grid." },
-              { time: "Evening", location: "Along the parade route (Chapultepec to the Zócalo)", activity: "Head over after qualifying to catch part of the Día de Muertos Grand Parade — the stretch between the Angel of Independence and Alameda Central is repeatedly named as where the atmosphere peaks." },
+              { time: "Afternoon", location: "Your booked grandstand", activity: "Practice 3 — the final tuning session before qualifying. Exact 2027 session times not yet published; in 2026 this ran 11:30 AM–12:30 PM." },
+              { time: "Afternoon/Evening", location: "Your booked grandstand", activity: "Qualifying — sets Sunday's starting grid. Exact 2027 session times not yet published; in 2026 this ran 3:00–4:00 PM." },
+              { time: "Evening (if dates overlap)", location: "Along the parade route (Chapultepec to the Zócalo)", activity: "If the confirmed Día de Muertos Grand Parade date falls on this Saturday, head over after qualifying to catch part of it — the stretch between the Angel of Independence and Alameda Central is repeatedly named as where the atmosphere peaks. Confirm the current year's route and date first." },
             ]}
           />
 
@@ -101,7 +102,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
             day="Sunday — Race day"
             rows={[
               { time: "Several hours before gates", location: "Your booked grandstand or GA zone", activity: "Race day carries the heaviest Metro and foot traffic of the weekend, and several Metro stations close specifically on race day — head to Velódromo if your usual station is affected." },
-              { time: "2:00 PM", location: "Your booked grandstand", activity: "Lights out — the Grand Prix itself. Foro Sol grandstands specifically get the podium ceremony at ground level after the checkered flag." },
+              { time: "Afternoon", location: "Your booked grandstand", activity: "Lights out — the Grand Prix itself (exact 2027 start time not yet published; 2026 started at 2:00 PM). Foro Sol grandstands specifically get the podium ceremony at ground level after the checkered flag." },
               { time: "After the race", location: "Foro Sol / around the circuit", activity: "If you're in or near Foro Sol, stay for the podium ceremony — fans remain in their seats as the celebration happens right there, a genuine Mexico City signature no other race replicates." },
             ]}
           />
@@ -110,7 +111,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
             day="Monday (optional) — More of the city"
             rows={[
               { time: "Morning", location: "Chapultepec Park & the National Museum of Anthropology", activity: "A genuine half-day commitment in a green, less-touristed part of the city — worth the day if you didn't fit it in earlier in the weekend." },
-              { time: "Early afternoon", location: "Frida Kahlo Museum (Casa Azul), Coyoacán", activity: "Timed-entry, online-only tickets — book well ahead given the Día de Muertos overlap, ideally a month or more out, not the usual 2-4 week window." },
+              { time: "Early afternoon", location: "Frida Kahlo Museum (Casa Azul), Coyoacán", activity: "Timed-entry, online-only tickets — book well ahead regardless, and earlier still (a month or more out, not the usual 2-4 week window) if the current year's Día de Muertos dates overlap your trip." },
               { time: "Afternoon to evening", location: "Xochimilco & the Trajinera Canals", activity: "A genuine half-to-full-day commitment on its own — better suited to an extra day than squeezed alongside a track session, since rushing it defeats the point." },
             ]}
           />

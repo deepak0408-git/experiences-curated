@@ -40,8 +40,8 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         F1 Experiences sells two real hospitality tiers here, not just one: the Champions Club, positioned lower
         than full Paddock Club but still genuinely premium — a 3-day package with hospitality, a guided paddock tour,
-        and grid-walk access — and the official F1 Paddock Club and House 44 at F1 Paddock Club™, from
-        US$8,502 for the 3-day package. Both include real pit-lane proximity and hospitality service — the difference is suite position and depth
+        and grid-walk access — and the official F1 Paddock Club and House 44 at F1 Paddock Club™, which ran from
+        US$8,502 for the 3-day package in 2026 (2027 pricing not yet released). Both include real pit-lane proximity and hospitality service — the difference is suite position and depth
         of access, not one being a watered-down version of the other. Champions Club is sold directly through F1
         Experiences, not the official ticketing site — confirm current pricing there before booking.
       </p>

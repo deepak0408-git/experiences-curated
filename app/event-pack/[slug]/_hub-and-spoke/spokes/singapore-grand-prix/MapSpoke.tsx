@@ -126,8 +126,9 @@ export default async function MapSpoke({ eventSlug }: { eventSlug: string }) {
         />
       </div>
       <p className="text-xs text-[#6A6A6A] mb-8">
-        The current 2023+ track layout (unchanged for 2026) — Turns 16-19 were removed in 2023 to create the long
-        back straight down Raffles Avenue. Use it for orientation, not precise navigation.
+        The 2023-onward track layout — Turns 16-19 were removed in 2023 to create the long back straight down
+        Raffles Avenue. No further layout changes have been announced as of this writing; use it for orientation,
+        not precise navigation.
       </p>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">A few named grandstands, by zone</p>

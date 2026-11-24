@@ -70,11 +70,12 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">When to actually arrive, by session</p>
       <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-8">
         <p className="text-sm text-[#A3A3A3] leading-6">
-          2026 is a Sprint weekend — Friday: Practice 1, 4:30-5:30pm, then Sprint Qualifying, 8:30-9:14pm. Saturday:
-          the Sprint race, 5-6pm, then Qualifying, 9-10pm. Sunday: the Grand Prix itself, 8pm. Arrive 60-90 minutes
-          before whichever session you&apos;re there for — gates typically open a few hours ahead of the day&apos;s
-          first session, but exact 2026 gate-opening times aren&apos;t published yet, so build in the buffer rather
-          than cutting it close on an unconfirmed number.
+          2027 is a classic three-day weekend, not a Sprint round — Singapore isn&apos;t on F1&apos;s published list
+          of 2027 Sprint venues (confirmed against the official 2027 calendar announcement). Expect the standard
+          format: Free Practice 1 and 2 on Friday, Free Practice 3 and Qualifying on Saturday, the Grand Prix itself
+          on Sunday evening. Exact session times for 2027 haven&apos;t been published yet — check formula1.com&apos;s
+          session calendar once it&apos;s released, and arrive 60-90 minutes before whichever session you&apos;re
+          there for in the meantime, building in the buffer rather than cutting it close on an unconfirmed time.
         </p>
       </div>
 
@@ -147,8 +148,10 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
       </div>
 
       <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: official Singapore GP Circuit Park Map (singaporegp.sg, gate/zone/MRT data), formula1.com 2026
-        session calendar, singaporegp.sg prohibited items page (600ml bottle rule). Verified 3 Aug 2026.
+        Sources: official Singapore GP Circuit Park Map (singaporegp.sg, gate/zone/MRT data), F1&apos;s official 2027
+        calendar announcement (Sprint-venue list), singaporegp.sg prohibited items page (600ml bottle rule). Gate/
+        zone/MRT mapping and the 600ml rule verified 3 Aug 2026 and not expected to change; 2027 session times not
+        yet published as of this writing (24 Nov 2026).
       </p>
     </SpokeShell>
   );

@@ -73,12 +73,12 @@ export default async function HotelsSpoke({ eventSlug }: { eventSlug: string }) 
           )}
 
           <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8">
-            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Book early — this year specifically</p>
+            <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Book early — check the calendar overlap</p>
             <p className="text-sm text-[#A3A3A3] leading-6">
-              2026 race weekend (30 October–1 November) lands directly on top of Mexico City&apos;s Día de Muertos Grand
-              Parade weekend — one of the biggest tourism draws in the city&apos;s calendar, entirely independent of the
-              race. Hotel demand across all three neighborhoods will run higher than a typical Mexico City GP weekend.
-              Book earlier than you normally would for this trip.
+              Race weekend falls in the same late-October/early-November window as Mexico City&apos;s Día de Muertos Grand
+              Parade weekend most years — one of the biggest tourism draws in the city&apos;s calendar, entirely independent of the
+              race. When the two overlap, hotel demand across all three neighborhoods runs higher than a typical Mexico City GP weekend.
+              Check the current year&apos;s parade date once announced and book earlier than you normally would if it lands during race week.
             </p>
           </div>
         </>

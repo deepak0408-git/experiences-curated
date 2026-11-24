@@ -38,9 +38,9 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
           concert lineup, no day-trip detail. Everything else is gated
           behind isUnlocked (full pack or the Itinerary Guide mini-pack). */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        Austin runs a standard 3-day Grand Prix weekend for 2026 — Friday through Sunday, no sprint race — plus a
-        new, separately-ticketed fourth day built around F1 Academy track action. A full trip genuinely spans four
-        days if you add the Thursday preview, not the usual three.
+        Austin runs a standard 3-day Grand Prix weekend for 2027 — Friday through Sunday, no Sprint race — plus a
+        separately-ticketed fourth day built around F1 Academy track action, same format as 2026. A full trip
+        genuinely spans four days if you add the Thursday preview, not the usual three.
       </p>
 
       {!isUnlocked && (
@@ -55,10 +55,10 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
 
       {isUnlocked && (
         <div className="flex flex-col gap-3 mb-8">
-          <DayCard day="Thursday — Optional Grand PrixView Thursday" summary="F1 Academy track action and early Fan Zone access — a separate ticket from the main weekend, from $20" />
-          <DayCard day="Friday — Practice" summary="Circuit sessions in the afternoon, Maroon 5 headlines the Super Stage in the evening" />
-          <DayCard day="Saturday — Qualifying" summary="Qualifying session, then Post Malone headlines the biggest concert night of the weekend" />
-          <DayCard day="Sunday — Race" summary="Arrival timing by grandstand, the race itself, Alesso closes out the weekend" />
+          <DayCard day="Thursday — Optional Grand PrixView Thursday" summary="F1 Academy track action and early Fan Zone access — a separate ticket from the main weekend (2026 pricing started from $20; 2027 not yet released)" />
+          <DayCard day="Friday — Practice" summary="Circuit sessions in the afternoon, a Super Stage headline set in the evening (2027 line-up not yet announced)" />
+          <DayCard day="Saturday — Qualifying" summary="Qualifying session, then the weekend's biggest concert night at the Super Stage" />
+          <DayCard day="Sunday — Race" summary="Arrival timing by grandstand, the race itself, a closing set after the chequered flag" />
           <DayCard day="Optional extra day" summary="Texas Hill Country/Fredericksburg or San Antonio — either works well as a bookend day before or after the core weekend" />
         </div>
       )}
@@ -83,7 +83,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
             rows={[
               { time: "Morning", location: "Franklin Barbecue", activity: "If the line matters to you, this is the day to do it — Friday's queue is typically shorter than the weekend rush that follows." },
               { time: "Afternoon", location: "Your booked grandstand", activity: "Practice sessions (FP1 and FP2) — the lowest-pressure viewing of the weekend, worth using to test your seat's sightlines." },
-              { time: "Evening", location: "Germania Insurance Super Stage", activity: "Maroon 5 headlines tonight — included on every ticket tier, GA included." },
+              { time: "Evening", location: "Germania Insurance Super Stage", activity: "Friday's headline act hadn't been announced as of this writing — check circuitoftheamericas.com closer to race week. Included on every ticket tier, GA included." },
             ]}
           />
 
@@ -92,7 +92,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
             rows={[
               { time: "Morning", location: "Lady Bird Lake or Zilker Park", activity: "A daytime outdoor activity before the afternoon session — kayaking on the lake, or a swim at Barton Springs Pool." },
               { time: "Afternoon", location: "Your booked grandstand", activity: "Qualifying — shorter than the race, and it sets Sunday's grid." },
-              { time: "Evening", location: "Germania Insurance Super Stage", activity: "Post Malone headlines tonight — the single biggest concert draw of the weekend. Plan your exit route in advance." },
+              { time: "Evening", location: "Germania Insurance Super Stage", activity: "Saturday's headline act hadn't been announced as of this writing — historically the single biggest concert draw of the weekend. Plan your exit route in advance regardless of who's playing." },
             ]}
           />
 
@@ -101,7 +101,7 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
             rows={[
               { time: "Several hours before gates", location: "Your booked grandstand or GA zone", activity: "Race day carries the heaviest traffic and shuttle demand of the weekend — arrive well ahead of the session, not just before it." },
               { time: "Afternoon", location: "Your booked grandstand", activity: "The race itself." },
-              { time: "After the chequered flag", location: "Germania Insurance Super Stage", activity: "Alesso closes out the weekend. Expect the heaviest post-event traffic of the whole trip — build real slack into any same-day flight, and consider the 30-min-early or 45-min-late exit tactic from the Getting There guide." },
+              { time: "After the chequered flag", location: "Germania Insurance Super Stage", activity: "Sunday's closing act hadn't been announced as of this writing. Expect the heaviest post-event traffic of the whole trip regardless — build real slack into any same-day flight, and consider the 30-min-early or 45-min-late exit tactic from the Getting There guide." },
             ]}
           />
 

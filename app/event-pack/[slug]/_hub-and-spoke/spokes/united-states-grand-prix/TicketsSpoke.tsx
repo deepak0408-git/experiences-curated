@@ -145,7 +145,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
                 Official US GP tickets →
               </a>
               <a
-                href="https://www.p1travel.com/en-GB/series/formula-1-2026?organizers=grand-prix-usa"
+                href="https://www.p1travel.com/en-GB/organizer/grand-prix-usa"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors"
@@ -213,9 +213,10 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
           <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
             <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Real, published pricing</p>
             <p className="text-sm text-[#A3A3A3] leading-6">
-              Every price above is the real, published 2026 3-day (Friday-Sunday) rate from tickets.formula1.com — not
-              an estimate. A separate, cheaper Sunday race-day-only ticket also exists for each stand, starting from
-              roughly US$310 for General Admission, if you only want to attend race day itself.
+              Every price above is the real, published 2026 3-day (Friday-Sunday) rate from tickets.formula1.com,
+              shown as a reference point — 2027 pricing hadn&apos;t been released as of this writing. A separate,
+              cheaper Sunday race-day-only ticket also existed for each stand in 2026, starting from roughly US$310
+              for General Admission, if you only want to attend race day itself.
             </p>
           </div>
         </>

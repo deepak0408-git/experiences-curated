@@ -4,21 +4,22 @@ import SpokeShell from "../../_components/SpokeShell";
 
 const SPOKE_ID = "itinerary";
 
-// Standard 3-day FP1/FP2/FP3/Quali/Race format confirmed for 2026 (no
-// Sprint weekend at Interlagos this season, per project memory) — unlike
-// several other 2026 events on the calendar. Official session times (track
-// time, formula1.com/en/racing/2026/brazil) confirmed 12 Sep 2026: FP1
-// 12:30-13:30 and FP2 16:00-17:00 Fri 6 Nov; FP3 11:30-12:30 and Qualifying
-// 15:00-16:00 Sat 7 Nov; Race 14:00 Sun 8 Nov. Bookended with a Thursday
-// arrival day (GRU landing + one in-city half-day stop) and a Monday day
-// trip (São Roque / Santos & Guarujá / Campos do Jordão, all sourced from
-// DayTripsSpoke) so the full itinerary runs Thu-Mon, not just the 3 core
-// session days. Friday and Saturday evenings each bake in a real sightseeing
-// or nightlife stop alongside dinner, not dinner alone — Avenida Paulista's
-// street/architecture (not MASP's interior, which keeps normal museum
-// hours) plus Liberdade's Japantown streets on Friday, Bar Brahma's live
-// samba after dinner on Saturday — all sourced from DayTripsSpoke and
-// WhereToEatSpoke's existing experiences, not invented for this pass.
+// 2026 ran a standard 3-day FP1/FP2/FP3/Quali/Race format (no Sprint at
+// Interlagos that season). 2027 brings Sprint back to Interlagos, confirmed
+// against F1's official 2027 calendar announcement (16 Sep 2026) —
+// rollover-event-into-next-year skill §3/§4a, 24 Nov 2026. Exact 2027
+// session times not yet published; standard Sprint-weekend structure is
+// Friday FP1 + Sprint Qualifying, Saturday Sprint + Qualifying, Sunday
+// Race. Bookended with a Thursday arrival day (GRU landing + one in-city
+// half-day stop) and a Monday day trip (São Roque / Santos & Guarujá /
+// Campos do Jordão, all sourced from DayTripsSpoke) so the full itinerary
+// runs Thu-Mon, not just the 3 core session days. Friday and Saturday
+// evenings each bake in a real sightseeing or nightlife stop alongside
+// dinner, not dinner alone — Avenida Paulista's street/architecture (not
+// MASP's interior, which keeps normal museum hours) plus Liberdade's
+// Japantown streets on Friday, Bar Brahma's live samba after dinner on
+// Saturday — all sourced from DayTripsSpoke and WhereToEatSpoke's existing
+// experiences, not invented for this pass.
 export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string }) {
   const { event, linkedExperiences } = await getSpokeData(eventSlug);
   const spoke = getSpokesForEvent(eventSlug).find((s) => s.id === SPOKE_ID)!;
@@ -41,29 +42,30 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       justPurchasedProductType={justPurchasedProductType}
       eventName="São Paulo Grand Prix"
       status="teaser"
-      h1="A standard 3-day weekend — no Sprint format this year at Interlagos"
+      h1="Sprint returns to Interlagos for 2027 — a full weekend, hour by hour"
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Itinerary Guide alone, or the full Event Guide, to unlock the full hour-by-hour itinerary from Thursday's arrival to Monday's day trip — exact session-window timings, two different real nights out, and the one out-of-city excursion that actually fits, not a generic race-weekend template."
+      ctaCopy="Buy the Itinerary Guide alone, or the full Event Guide, to unlock the full hour-by-hour itinerary from Thursday's arrival to Monday's day trip — the Sprint-weekend session structure, two different real nights out, and the one out-of-city excursion that actually fits, not a generic race-weekend template."
     >
       {/* Free teaser — bare day shape only, no session times, no specific
           activities, no verdict on which day trip to pick. Everything else
           is gated behind isUnlocked (full pack or the Itinerary Guide
           mini-pack). */}
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        Interlagos runs the standard 3-day Formula 1 format for 2026 — Friday practice, Saturday practice and
-        qualifying, Sunday race — with no Sprint session this year. A Thursday arrival day and a Monday day trip
-        round the full trip out to five days, Thursday through Monday, with Tuesday left as a genuine travel day
-        home.
+        Interlagos returns to the Sprint calendar for 2027 after running a standard weekend in 2026 — confirmed
+        against F1's official 2027 calendar. Expect Friday Practice 1 and Sprint Qualifying, Saturday the Sprint
+        race and full Qualifying, Sunday the Grand Prix itself. A Thursday arrival day and a Monday day trip round
+        the full trip out to five days, Thursday through Monday, with Tuesday left as a genuine travel day home.
+        Exact 2027 session times hadn't been published as of this writing.
       </p>
 
       {!isUnlocked && (
         <div className="flex flex-col gap-3 mb-8">
           <DayCard day="Thursday" summary="Arrival" />
-          <DayCard day="Friday" summary="Practice" />
-          <DayCard day="Saturday" summary="Practice & qualifying" />
+          <DayCard day="Friday" summary="Practice & Sprint Qualifying" />
+          <DayCard day="Saturday" summary="Sprint & Qualifying" />
           <DayCard day="Sunday" summary="Race" />
           <DayCard day="Monday" summary="Day trip" />
         </div>
@@ -71,10 +73,10 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
 
       {isUnlocked && (
         <div className="flex flex-col gap-3 mb-8">
-          <DayCard day="Thursday — Arrival & first orientation" summary="Settle in, then Ibirapuera Park or Beco do Batman in the afternoon before an early night ahead of Friday practice" />
-          <DayCard day="Friday — Practice & first orientation" summary="FP1 12:30-13:30, FP2 16:00-17:00, then an evening walk down Avenida Paulista before dinner in Liberdade's Japantown streets" />
-          <DayCard day="Saturday — Qualifying & a real São Paulo night out" summary="FP3 11:30-12:30 and Qualifying 15:00-16:00 set Sunday's grid, then Figueira Rubaiyat or Maní for dinner, followed by live samba at Bar Brahma" />
-          <DayCard day="Sunday — Race day" summary="Gates from around 08:00, lights out at 14:00, then Vila Madalena for a night out" />
+          <DayCard day="Thursday — Arrival & first orientation" summary="Settle in, then Ibirapuera Park or Beco do Batman in the afternoon before an early night ahead of Friday's sessions" />
+          <DayCard day="Friday — Practice & Sprint Qualifying" summary="Practice 1 then Sprint Qualifying (exact 2027 times not yet published), then an evening walk down Avenida Paulista before dinner in Liberdade's Japantown streets" />
+          <DayCard day="Saturday — Sprint, Qualifying & a real São Paulo night out" summary="The Sprint race then Qualifying sets Sunday's grid, then Figueira Rubaiyat or Maní for dinner, followed by live samba at Bar Brahma" />
+          <DayCard day="Sunday — Race day" summary="Gates well before the race, the Grand Prix itself, then Vila Madalena for a night out" />
           <DayCard day="Monday — one real day trip" summary="São Roque, Santos & Guarujá, or Campos do Jordão — pick one, don't try to pair it with a session day" />
         </div>
       )}
@@ -95,20 +97,20 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
           />
 
           <ItineraryTable
-            day="Friday — Practice day"
+            day="Friday — Practice & Sprint Qualifying"
             rows={[
               { time: "Morning", location: "Metrô Line 9 to Autódromo", activity: "Buy your Bilhete Único at a quiet station the day before if you haven't already — race-morning ticket queues at Autódromo build fast." },
-              { time: "12:30-13:30", location: "Your booked grandstand", activity: "Practice 1 — the lowest-pressure viewing of the weekend, worth using to test your seat's sightlines and the walk time from your gate before qualifying and race day." },
-              { time: "16:00-17:00", location: "Your booked grandstand", activity: "Practice 2 — the longer gap before this session is the natural window for lunch and a slower midday break in the city rather than staying at the circuit all day." },
-              { time: "Evening", location: "Avenida Paulista, then Liberdade", activity: "Walk the avenue and MASP's exterior once FP2 wraps — the car-free closure and museum's own opening hours are both weekend/daytime-only, so this is the street and its architecture, not the pedestrian shutdown. Finish with dinner in Liberdade's Japantown streets — real neighborhood ramen shops, open evenings regardless of the weekend market." },
+              { time: "Afternoon", location: "Your booked grandstand", activity: "Practice 1 — the only practice session before Sprint Qualifying under the 2027 Sprint format, worth using to test your seat's sightlines. Exact 2027 session times not yet published." },
+              { time: "Afternoon/Evening", location: "Your booked grandstand", activity: "Sprint Qualifying — sets Saturday's Sprint grid. Exact 2027 session times not yet published." },
+              { time: "Evening", location: "Avenida Paulista, then Liberdade", activity: "Walk the avenue and MASP's exterior once the day's sessions wrap — the car-free closure and museum's own opening hours are both weekend/daytime-only, so this is the street and its architecture, not the pedestrian shutdown. Finish with dinner in Liberdade's Japantown streets — real neighborhood ramen shops, open evenings regardless of the weekend market." },
             ]}
           />
 
           <ItineraryTable
-            day="Saturday — Qualifying day"
+            day="Saturday — Sprint & Qualifying"
             rows={[
-              { time: "11:30-12:30", location: "Your booked grandstand", activity: "Practice 3 — the final tuning session before qualifying, and the last chance to check your grandstand's sightline before it matters most." },
-              { time: "15:00-16:00", location: "Your booked grandstand", activity: "Qualifying — sets Sunday's starting grid." },
+              { time: "Afternoon", location: "Your booked grandstand", activity: "The Sprint race — a shorter, standalone race with its own points, run separately from Sunday's Grand Prix. Exact 2027 session times not yet published." },
+              { time: "Afternoon/Evening", location: "Your booked grandstand", activity: "Qualifying — this is what sets Sunday's Grand Prix grid, not Friday's Sprint Qualifying. Exact 2027 session times not yet published." },
               { time: "Evening — dinner", location: "Figueira Rubaiyat or Maní", activity: "Book whichever splurge dinner you haven't already reserved — both fill up on weekend evenings, so this is the night to use the reservation you made weeks ahead." },
               { time: "Evening — after dinner", location: "Bar Brahma, downtown", activity: "Live samba downtown rather than just heading back to the hotel — a real, different night-out option to Sunday's Vila Madalena wander, and a better fit for a night that already started with a formal dinner." },
             ]}
@@ -117,8 +119,8 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
           <ItineraryTable
             day="Sunday — Race day"
             rows={[
-              { time: "08:00", location: "Interlagos gates", activity: "Gates open — arrive close to this time if your grandstand or sightline matters to you, since there's no re-entry once you're in and security lines build fast." },
-              { time: "14:00", location: "Your booked grandstand", activity: "Lights out — the Grand Prix itself. Interlagos' bowl-shaped layout puts fans in stands like A and M genuinely close to the on-track action." },
+              { time: "Several hours before gates close", location: "Interlagos gates", activity: "Gates typically open around 08:00 in recent editions (2027 confirmation pending) — arrive close to opening if your grandstand or sightline matters to you, since there's no re-entry once you're in and security lines build fast." },
+              { time: "Afternoon", location: "Your booked grandstand", activity: "Lights out — the Grand Prix itself. Interlagos' bowl-shaped layout puts fans in stands like A and M genuinely close to the on-track action. Exact 2027 start time not yet published." },
               { time: "Evening", location: "Vila Madalena", activity: "Bar-to-bar wandering to close out the trip — Mercearia São Pedro gets packed early on a night like this, so head over sooner rather than later." },
             ]}
           />

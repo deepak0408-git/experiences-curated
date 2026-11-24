@@ -169,15 +169,17 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-8">Booking Amber Lounge</p>
           <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-            The real tier ladder, low to high: Club Pass (individual entry, from S$850), Shared Deluxe Table (per
-            person, from S$1,250), Shared Silver Table (per person, from S$2,100), Deluxe Table (up to 6 guests,
-            from S$7,500), Silver Table (up to 8, from S$16,800), Gold Table (up to 8, from S$24,800), Platinum
-            Table (up to 10, from S$38,500), and Amber Suite (up to 10, from S$45,000 — the actual top tier, not a
-            &quot;Diamond Suite&quot;). Cocktail Table has already sold out for 2026 as of this writing, which is
-            the honest signal for how fast the lower tiers move — don&apos;t assume entry-level availability holds
-            until race week. Book via reservations@amberlounge.com or their WhatsApp concierge, which they say
-            responds within 2 hours; confirm your group size and preferred night when you reach out, since pricing
-            and availability are quoted per night, not as one flat rate across the whole week.
+            The real tier ladder from the most recent published pricing, low to high: Club Pass (individual entry,
+            from S$850), Shared Deluxe Table (per person, from S$1,250), Shared Silver Table (per person, from
+            S$2,100), Deluxe Table (up to 6 guests, from S$7,500), Silver Table (up to 8, from S$16,800), Gold Table
+            (up to 8, from S$24,800), Platinum Table (up to 10, from S$38,500), and Amber Suite (up to 10, from
+            S$45,000 — the actual top tier, not a &quot;Diamond Suite&quot;). 2027 pricing hadn&apos;t been published
+            as of this writing — treat these as a reference point for the rough ladder shape, not a quote, and
+            confirm current prices directly with Amber Lounge. Lower tiers have historically sold out well ahead of
+            race week in past editions, so don&apos;t assume entry-level availability holds until close to the date.
+            Book via reservations@amberlounge.com or their WhatsApp concierge, which they say responds within 2
+            hours; confirm your group size and preferred night when you reach out, since pricing and availability
+            are quoted per night, not as one flat rate across the whole week.
           </p>
 
           {paddockClub?.whatToAvoid && (
@@ -192,9 +194,9 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       <p className="text-xs text-[#6A6A6A] mt-8">
         Sources: singaporegp.sg official hospitality page (tier names and live availability), mysingaporedriver.com
         (chauffeur contact, pricing range, booking policy), sg.celavi.com (CÉ LA VI contact and reservation detail),
-        amberlounge.com (2026 tier names, pricing, contact), ritzcarlton.com (circuit-view room categories).
-        Hospitality availability, table pricing, and afterparty details verified 4 Aug 2026 — all shift fast in the
-        weeks before race week, reconfirm before booking.
+        amberlounge.com (tier names, contact). Hospitality availability, table pricing, and afterparty details last
+        verified 4 Aug 2026 against 2026 figures — reconfirm current 2027 pricing directly before booking; these
+        details shift fast in the weeks before race week even in a normal year.
       </p>
     </SpokeShell>
   );

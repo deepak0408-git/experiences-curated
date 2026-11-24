@@ -18,34 +18,35 @@ const SPOKE_ID = "tickets";
 // is sold as a single 3-day (Friday–Sunday) pass — no single-day option
 // exists for this event. There is no separate "Champions Club" tier for
 // Mexico City — only Paddock Club and House 44 at F1 Paddock Club™.
+const PRICE_PENDING = "2027 pricing not yet released";
 const TIERS = [
   {
     name: "General Admission (Grada 2A)",
     shows: "Open zones around the circuit — flexible, no assigned seat",
     seating: "General admission, unreserved, standing/lawn",
     exposure: "No cover — open zones",
-    priceBand: "3-day: ~US$231",
+    priceBand: `2026: 3-day ~US$231 — ${PRICE_PENDING}`,
   },
   {
     name: "Grandstand (Grandstands 15, 14, 5A)",
     shows: "Lower-tier reserved grandstands around the circuit",
     seating: "Reserved seat",
     exposure: "Mostly uncovered — check individual stand",
-    priceBand: "3-day: US$785–1,270",
+    priceBand: `2026: 3-day US$785–1,270 — ${PRICE_PENDING}`,
   },
   {
     name: "Main Grandstand & Premium Grandstands (10, 11)",
     shows: "The main straight and premium reserved sections — the best sightlines on the circuit",
     seating: "Reserved seat",
     exposure: "Main Grandstand partially covered; 10 and 11 mostly uncovered",
-    priceBand: "3-day: US$1,640–2,166",
+    priceBand: `2026: 3-day US$1,640–2,166 — ${PRICE_PENDING}`,
   },
   {
     name: "Paddock Club & House 44 at F1 Paddock Club™",
     shows: "Pit-lane hospitality, garage proximity, pit-lane walks",
     seating: "Hospitality tier — table seating, not a fixed grandstand view",
     exposure: "Fully covered",
-    priceBand: "3-day: Paddock Club from US$8,502 · House 44 from US$16,338",
+    priceBand: `2026: 3-day Paddock Club from US$8,502 · House 44 from US$16,338 — ${PRICE_PENDING}`,
   },
 ];
 
@@ -79,7 +80,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Ticket Guide alone, or the full Event Guide, to unlock real confirmed pricing for every tier, the full side-by-side comparison, where to actually buy, and our direct verdict on Main Grandstand vs. Foro Sol for a first Mexico City GP."
+      ctaCopy="Buy the Ticket Guide alone, or the full Event Guide, to unlock pricing for every tier (2026 figures shown as a reference while 2027 prices are still unpublished), the full side-by-side comparison, where to actually buy, and our direct verdict on Main Grandstand vs. Foro Sol for a first Mexico City GP."
     >
       {/* Free teaser — tier names + what each shows only, no pricing, no
           seating/weather detail, no buying links, no verdict. Everything
@@ -196,8 +197,9 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
           <div className="rounded-sm border border-[#2A2A2A] bg-[#141414] p-5 mb-4">
             <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">On pricing</p>
             <p className="text-sm text-[#A3A3A3] leading-6">
-              Grandstand and hospitality figures above are confirmed 2026 prices from the official ticketing site.
-              General Admission isn&apos;t listed there directly and is estimated from a third-party source instead —
+              Grandstand and hospitality figures above are confirmed 2026 prices from the official ticketing site,
+              shown as a reference point — 2027 pricing hadn&apos;t been released as of this writing.
+              General Admission isn&apos;t listed there directly and was estimated from a third-party source instead —
               treat it as a guide rather than an exact figure. Confirm exact current pricing on the official ticketing
               site before buying.
             </p>

@@ -102,7 +102,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
                 Official Las Vegas GP tickets →
               </a>
               <a
-                href="https://www.p1travel.com/en-GB/series/formula-1-2026?organizers=grand-prix-las-vegas"
+                href="https://www.p1travel.com/en-GB/organizer/grand-prix-las-vegas"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors"

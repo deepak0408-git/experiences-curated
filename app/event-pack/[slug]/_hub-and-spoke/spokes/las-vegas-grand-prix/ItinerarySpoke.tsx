@@ -73,16 +73,16 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
 
       {isUnlocked && (
         <div className="flex flex-col gap-3 mb-8">
-          <DayCard day="Wednesday 18 Nov — optional arrival day" summary="No sessions run yet, and the Strip hasn't started closing — the one genuinely free day of the trip. This is the day for sightseeing and a day trip, not Thursday or Friday, since both of those already run into a night session with real road closures beforehand." />
-          <DayCard day="Thursday 19 Nov" summary="Practice 1, 4:30-5:30pm PT. Practice 2, 8:00-9:00pm PT. Soft Strip closures begin 3pm, full closures 5pm. Lightest session-day crowds of the weekend — good for the free Boulevard fan activations and merchandise before Saturday's rush, but the afternoon is genuinely tight once you factor in closures." />
-          <DayCard day="Friday 20 Nov" summary="Practice 3, 4:30-5:30pm PT. Qualifying, 8:00-9:00pm PT. Qualifying is genuinely competitive — real intensity for roughly a quarter of race day's ticket price." />
-          <DayCard day="Saturday 21 Nov" summary="Race, 8:00pm PT start. Road closures begin earliest and hit hardest this day — treat the whole afternoon as arrival time, not just the hour before the session." />
+          <DayCard day="Wednesday 17 Nov — optional arrival day" summary="No sessions run yet, and the Strip hasn't started closing — the one genuinely free day of the trip. This is the day for sightseeing and a day trip, not Thursday or Friday, since both of those already run into a night session with real road closures beforehand." />
+          <DayCard day="Thursday 18 Nov" summary="Practice 1 and Practice 2 (exact 2027 times not yet published — 2026 ran 4:30-5:30pm and 8:00-9:00pm PT). Soft Strip closures typically begin mid-afternoon, full closures by early evening. Lightest session-day crowds of the weekend — good for the free Boulevard fan activations and merchandise before Saturday's rush, but the afternoon is genuinely tight once you factor in closures." />
+          <DayCard day="Friday 19 Nov" summary="Practice 3 and Qualifying (exact 2027 times not yet published — 2026 ran 4:30-5:30pm and 8:00-9:00pm PT). Qualifying is genuinely competitive — real intensity for roughly a quarter of race day's ticket price." />
+          <DayCard day="Saturday 20 Nov" summary="Race (exact 2027 start time not yet published — 2026 started 8:00pm PT). Road closures begin earliest and hit hardest this day — treat the whole afternoon as arrival time, not just the hour before the session." />
         </div>
       )}
 
       {isUnlocked && (
         <>
-          <p className="text-xs text-[#6A6A6A] mb-8">All times Pacific, per the official 2026 race schedule.</p>
+          <p className="text-xs text-[#6A6A6A] mb-8">All times Pacific. Specific times shown below are the 2026 schedule, as a reference point — exact 2027 session times hadn&apos;t been published as of this writing.</p>
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">The circuit&apos;s own landmarks</p>
           <div className="grid sm:grid-cols-2 gap-4 mb-8">
@@ -96,39 +96,39 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
             </p>
 
             <ItineraryTable
-              day="Wednesday 18 Nov — Arrival day"
+              day="Wednesday 17 Nov — Arrival day"
               rows={[
                 { time: "Morning", location: "Hoover Dam", activity: <>No sessions, no closures — the only day in the trip with genuine room for the longer of the two day trips. Roughly 45 minutes each way via US-93 South, plus touring time; back on the Strip well before evening. Full guide: {expLink(hooverDam, "Hoover Dam")}.</> },
                 { time: "Late afternoon", location: "The Strip", activity: <>Walk the Strip while it&apos;s still fully open — catch the Bellagio Fountains (every 30 minutes from 3pm, every 15 minutes from 8pm) and the Sphere&apos;s Exosphere display before Thursday&apos;s closures start reshaping how you move around. Full guide: {expLink(fountainsSphere, "Fountains and Sphere")}.</> },
-                { time: "Evening", location: "Bellagio or Caesars Palace", activity: <>The one genuinely unhurried sit-down-dinner window of the whole trip — no session to plan around, no closures to beat. Book Le Cirque or Restaurant Guy Savoy here rather than squeezing it into Friday&apos;s tighter 2.5-hour gap. Full guide: {expLink(bellagioCaesarsDining, "Bellagio & Caesars Dining")}.</> },
+                { time: "Evening", location: "Bellagio or Caesars Palace", activity: <>The one genuinely unhurried sit-down-dinner window of the whole trip — no session to plan around, no closures to beat. Book Le Cirque or Restaurant Guy Savoy here rather than squeezing it into Friday&apos;s tighter gap. Full guide: {expLink(bellagioCaesarsDining, "Bellagio & Caesars Dining")}.</> },
               ]}
             />
 
             <ItineraryTable
-              day="Thursday 19 Nov — Practice day"
+              day="Thursday 18 Nov — Practice day"
               rows={[
-                { time: "Early morning", location: "Red Rock Canyon", activity: <>The shorter of the two day trips — less than 30 minutes from the Strip. Do the 13-mile Scenic Drive (book the Recreation.gov timed-entry slot ahead if visiting between 8am-5pm) and be back on the Strip by early afternoon, well clear of the 3pm soft closures. Full guide: {expLink(redRock, "Red Rock Canyon")}.</> },
-                { time: "Early afternoon", location: "The Strip", activity: "Buy official F1 merchandise and catch the free Boulevard Fan Experience (historically 10am-6pm) before soft closures begin at 3pm — today has the lightest session-day crowds of the weekend." },
-                { time: "4:30-5:30pm", location: "Your booked zone", activity: "Practice 1." },
-                { time: "8:00-9:00pm", location: "Your booked zone", activity: "Practice 2." },
+                { time: "Early morning", location: "Red Rock Canyon", activity: <>The shorter of the two day trips — less than 30 minutes from the Strip. Do the 13-mile Scenic Drive (book the Recreation.gov timed-entry slot ahead if visiting between 8am-5pm) and be back on the Strip by early afternoon, well clear of the soft closures. Full guide: {expLink(redRock, "Red Rock Canyon")}.</> },
+                { time: "Early afternoon", location: "The Strip", activity: "Buy official F1 merchandise and catch the free Boulevard Fan Experience before soft closures begin — today has the lightest session-day crowds of the weekend." },
+                { time: "Afternoon", location: "Your booked zone", activity: "Practice 1 (exact 2027 time not yet published — 2026 ran 4:30-5:30pm PT)." },
+                { time: "Evening", location: "Your booked zone", activity: "Practice 2 (exact 2027 time not yet published — 2026 ran 8:00-9:00pm PT)." },
               ]}
             />
 
             <ItineraryTable
-              day="Friday 20 Nov — Qualifying day"
+              day="Friday 19 Nov — Qualifying day"
               rows={[
-                { time: "4:30-5:30pm", location: "Your booked zone", activity: "Practice 3." },
-                { time: "5:30-8:00pm", location: "Near your booked zone", activity: "A 2.5-hour gap before Qualifying — enough time to rest or grab a quick meal near your zone." },
-                { time: "8:00-9:00pm", location: "Your booked zone", activity: "Qualifying — genuine competitive intensity under the same night lights as the race, for roughly a quarter of race day's ticket price." },
+                { time: "Afternoon", location: "Your booked zone", activity: "Practice 3 (exact 2027 time not yet published — 2026 ran 4:30-5:30pm PT)." },
+                { time: "Gap before Qualifying", location: "Near your booked zone", activity: "In 2026 there was a roughly 2.5-hour gap before Qualifying — enough time to rest or grab a quick meal near your zone; confirm the 2027 gap once published." },
+                { time: "Evening", location: "Your booked zone", activity: "Qualifying (exact 2027 time not yet published — 2026 ran 8:00-9:00pm PT) — genuine competitive intensity under the same night lights as the race, for roughly a quarter of race day's ticket price." },
               ]}
             />
 
             <ItineraryTable
-              day="Saturday 21 Nov — Race day"
+              day="Saturday 20 Nov — Race day"
               rows={[
-                { time: "From 3pm", location: "En route to your zone", activity: "Soft closures begin — head to your zone rather than planning anything else for the afternoon." },
-                { time: "Before 8pm", location: "Sphere Exosphere / Strip", activity: <>The Sphere&apos;s Exosphere display runs roughly dusk to midnight nightly — visible from most East Harmon/Koval/T-Mobile zone approaches on the walk in. Full guide: {expLink(stripAtNight, "The Strip at Night")}.</> },
-                { time: "8:00pm", location: "Your booked zone", activity: "The Race." },
+                { time: "Mid-afternoon", location: "En route to your zone", activity: "Soft closures typically begin mid-afternoon — head to your zone rather than planning anything else for the afternoon." },
+                { time: "Before the race", location: "Sphere Exosphere / Strip", activity: <>The Sphere&apos;s Exosphere display runs roughly dusk to midnight nightly — visible from most East Harmon/Koval/T-Mobile zone approaches on the walk in. Full guide: {expLink(stripAtNight, "The Strip at Night")}.</> },
+                { time: "Evening", location: "Your booked zone", activity: "The Race (exact 2027 start time not yet published — 2026 started 8:00pm PT)." },
                 { time: "After the chequered flag", location: "Circa Resort & Casino, downtown", activity: <>If you want to keep the night going without another circuit ticket, Circa&apos;s free Stadium Swim watch-party infrastructure and sportsbook scene are built for exactly this. Full guide: {expLink(sportsbook, "Watching from a Sportsbook")}.</> },
               ]}
             />

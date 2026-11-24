@@ -143,7 +143,7 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
     { label: "Emergencies", value: "US-wide emergency number: 911. NYC non-emergency: 311. Nearest major hospital to the grounds: NewYork-Presbyterian Queens, 56-45 Main St, Flushing." },
   ],
   "singapore-grand-prix": [
-    { label: "Gates open", value: "F1 hasn't published exact 2026 gate-opening times yet. Based on the confirmed 2026 session schedule — Practice 1 Fri 4:30pm, Sprint Qualifying Fri 8:30pm, Sprint Sat 5pm, Qualifying Sat 9pm, Race Sun 8pm — expect gates to open roughly 2-3 hours before each day's first session. Confirm exact times closer to race week." },
+    { label: "Gates open", value: "F1 hasn't published exact 2027 gate-opening times or session schedule yet. 2027 is a classic three-day weekend, not Sprint format (Singapore isn't on F1's published 2027 Sprint-venue list) — expect gates to open roughly 2-3 hours before each day's first session, based on the pattern from recent race weekends. Confirm exact times closer to race week via the official F1 app." },
     { label: "Emergencies", value: "Police: 999. Fire/ambulance (SCDF): 995 — the same number covers both. Non-emergency ambulance: 1777. Nearest 24-hour A&E to the circuit: Raffles Hospital, 585 North Bridge Road, Singapore 188770." },
     { label: "Tourism Infoline", value: "Singapore Tourism Board visitor hotline (info, not emergency dispatch): 1800-736 2000 (Mon-Fri, 9am-6pm), or +65 6736 2000 from overseas." },
   ],
@@ -214,9 +214,9 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
   // cashless event confirmation) — gate times genuinely not yet published
   // for 2026, stated honestly per skill §2a-3.
   "las-vegas-grand-prix": [
-    { label: "Road closures", value: "Soft closures from 3pm, full closures from 5pm, each day Thu 19–Sat 21 Nov, lifting into the early hours the next morning. Walking or the Monorail (running 24/7 race week) is far more reliable than driving or rideshare once closures begin." },
+    { label: "Road closures", value: "Soft closures typically from 3pm, full closures from 5pm, each day Thu 18–Sat 20 Nov 2027 (exact 2027 timings not yet published), lifting into the early hours the next morning. Walking or the Monorail (running 24/7 race week) is far more reliable than driving or rideshare once closures begin." },
     { label: "Cashless event", value: "Every food, drink, and merchandise purchase on-site is card or mobile payment only — there's no cash fallback anywhere at the circuit." },
-    { label: "Session times", value: "Practice 1 Thu 19 Nov 4:30-5:30pm PT, Practice 2 Thu 8:00-9:00pm PT, Practice 3 Fri 20 Nov 4:30-5:30pm PT, Qualifying Fri 8:00-9:00pm PT, Race Sat 21 Nov 8:00pm PT. Specific gate-opening times aren't published separately — plan around beating the road closures above, well ahead of that day's first session." },
+    { label: "Session times", value: "Exact 2027 session times not yet published. 2026 ran Practice 1 Thu 4:30-5:30pm PT, Practice 2 Thu 8:00-9:00pm PT, Practice 3 Fri 4:30-5:30pm PT, Qualifying Fri 8:00-9:00pm PT, Race Sat 8:00pm PT. Specific gate-opening times aren't published separately — plan around beating the road closures above, well ahead of that day's first session." },
     { label: "Emergencies", value: "US-wide emergency number: 911. Closest 24-hour ER to the circuit: Elite Medical Center, 150 E Harmon Ave, Las Vegas, NV — right on the East Harmon Zone, tel (702) 546-0911." },
   ],
   // Real, sourced facts from experience research (twilight-race history,
@@ -245,8 +245,8 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
   // the standard post-race congestion window). Gate times genuinely not yet
   // published for 2026, stated honestly per skill §2a-3.
   "united-states-grand-prix": [
-    { label: "Four-day weekend", value: "New for 2026: Grand PrixView Thursday (22 Oct) adds a standalone fourth day — F1 Academy track action and early Fan Zone access, ticketed separately from the main Fri-Sun (23-25 Oct) race weekend." },
-    { label: "Gate times", value: "Not yet published for 2026 — gates have typically opened 9:00-10:00am each day of recent race weekends. Confirm exact times via circuitoftheamericas.com closer to the event." },
+    { label: "Four-day weekend", value: "Grand PrixView Thursday (introduced 2026) adds a standalone fourth day — F1 Academy track action and early Fan Zone access, ticketed separately from the main Fri-Sun (22-24 Oct 2027) race weekend." },
+    { label: "Gate times", value: "Not yet published for 2027 — gates have typically opened 9:00-10:00am each day of recent race weekends. Confirm exact times via circuitoftheamericas.com closer to the event." },
     { label: "Cashless venue", value: "COTA is entirely cashless — bring a card (Visa, Discover, Mastercard) for all food, drink, and merchandise on-site." },
     { label: "Emergencies", value: "US-wide emergency number: 911. Austin's own general non-emergency line: 311." },
   ],
@@ -255,8 +255,8 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
   // published for 2026, stated honestly per skill §2a-3.
   "mexico-city-grand-prix": [
     { label: "Altitude", value: "The circuit sits at over 2,200m above sea level, the highest venue on the F1 calendar — sun exposure is stronger than the temperature suggests, and some visitors feel short of breath for a day or two on arrival." },
-    { label: "Día de Muertos overlap", value: "2026 race weekend (30 Oct–1 Nov) collides directly with the city's Día de Muertos Grand Parade — one of the biggest tourism weekends of the year, independent of the race. Book hotels early." },
-    { label: "Gate times", value: "Not yet published for the 2026 race — expect gates 2-3 hours before each day's first session, based on the confirmed session schedule. Confirm exact times via mexico.gp closer to race week." },
+    { label: "Día de Muertos overlap", value: "Race weekend falls in the same late-October/early-November window as the city's Día de Muertos Grand Parade most years — one of the biggest tourism weekends of the year, often overlapping with the race itself. The parade's exact date for the current year is typically confirmed by the city in summer; book hotels early regardless, since the season drives demand either way." },
+    { label: "Gate times", value: "Check the current race weekend's published gate times before travelling — expect gates 2-3 hours before each day's first session, based on the pattern from recent race weekends. Confirm exact times via mexico.gp closer to race week." },
     { label: "Emergencies", value: "Mexico-wide emergency number: 911. Ángeles Verdes (roadside/traveler assistance, 24 hours): 078." },
   ],
   // Real, sourced facts from experience research (Interlagos has no General
@@ -266,7 +266,8 @@ export const QUICK_REFERENCE_BY_EVENT: Record<string, Array<{ label: string; val
   // honestly per skill §2a-3.
   "brazilian-grand-prix": [
     { label: "Grandstand-only", value: "Interlagos has no General Admission tier — every ticket is a reserved grandstand seat. See the Ticket Guide for the full grandstand-by-grandstand breakdown." },
-    { label: "Gate times", value: "Not yet published for the 2026 race — expect gates 2-3 hours before each day's first session, based on the confirmed session schedule. Confirm exact times via formula1.com closer to race week." },
+    { label: "Gate times", value: "Not yet published for the 2027 race — expect gates 2-3 hours before each day's first session, based on the pattern from recent race weekends. Confirm exact times via formula1.com closer to race week." },
+    { label: "Sprint format", value: "Interlagos returns to the Sprint calendar for 2027 after a classic weekend in 2026 — expect Friday Practice 1 and Sprint Qualifying, Saturday the Sprint race and Qualifying, Sunday the Grand Prix, confirmed against F1's official 2027 calendar." },
     { label: "Weather", value: "Late spring in São Paulo — variable, rain likely at some point across the weekend. Bring a light rain layer regardless of the forecast." },
     { label: "Emergencies", value: "Brazil-wide emergency numbers: 190 (police), 192 (ambulance/SAMU), 193 (fire). English-speaking operators aren't guaranteed — having your hotel call on your behalf is more reliable." },
   ],
@@ -395,7 +396,7 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
     // the night-race format) — not invented, matches the Bahrain GP
     // pattern of drawing The Brief from real underlying content.
     introText:
-      "Singapore is F1's only true night race, run entirely under floodlights through the streets of Marina Bay, and it's officially been classified F1's first-ever \"heat hazard\" event — the humidity here is a real, documented part of the challenge, not just race-weekend colour.\n\nIt's also the one Grand Prix built as much around the music as the racing. Ten stages run across the circuit park all weekend, headlined this year by Lana Del Rey's first-ever Singapore show, The Killers, and JJ Lin, so a full race day genuinely runs from afternoon sessions through to a late-night set under the same lights.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+      "Singapore is F1's only true night race, run entirely under floodlights through the streets of Marina Bay, and it's officially been classified F1's first-ever \"heat hazard\" event — the humidity here is a real, documented part of the challenge, not just race-weekend colour.\n\nIt's also the one Grand Prix built as much around the music as the racing. Ten stages have run across the circuit park most weekends recently, with a past bill including Lana Del Rey's first-ever Singapore show, The Killers, and JJ Lin — the current edition's line-up hadn't been announced as of this writing — so a full race day genuinely runs from afternoon sessions through to a late-night set under the same lights.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
   "atp-finals": {
     displayName: "Nitto ATP Finals",
@@ -552,7 +553,7 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
     venueLine: "Held at Circuit of the Americas — the only purpose-built F1 circuit in the United States, a 15-minute drive from downtown Austin.",
     heroFallbackImageSlug: "us-gp-main-grandstand",
     introText:
-      "Circuit of the Americas opened in 2012 as America's first purpose-built Formula 1 track in a generation, and 2026 adds a genuine first of its own: Grand PrixView Thursday, a new standalone fourth day of the race weekend built around F1 Academy track action and early Fan Zone access — on top of the usual Friday-Sunday structure. Austin didn't inherit this race from anywhere; it built the circuit specifically to bring F1 back to American soil, and the city has spent over a decade building an entire weekend's worth of culture around it.\n\nThis is also the one Grand Prix where the concerts are close to as big a draw as the racing. Maroon 5 headlines Friday night, Post Malone takes Saturday, and Alesso closes the whole weekend with a post-race set — every one included on the same race ticket, no separate purchase needed. And because COTA sits inside Austin itself rather than a satellite town, the whole city — Franklin Barbecue's line, South Congress, Sixth Street, Lady Bird Lake — is genuinely part of the trip, not a separate day-trip decision.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+      "Circuit of the Americas opened in 2012 as America's first purpose-built Formula 1 track in a generation, and since 2026 the weekend has included a genuine first of its own: Grand PrixView Thursday, a standalone fourth day of the race weekend built around F1 Academy track action and early Fan Zone access — on top of the usual Friday-Sunday structure. Austin didn't inherit this race from anywhere; it built the circuit specifically to bring F1 back to American soil, and the city has spent over a decade building an entire weekend's worth of culture around it.\n\nThis is also the one Grand Prix where the concerts are close to as big a draw as the racing — every headline set included on the same race ticket, no separate purchase needed (the 2027 line-up hadn't been announced as of this writing; 2026's bill was Maroon 5, Post Malone, and Alesso). And because COTA sits inside Austin itself rather than a satellite town, the whole city — Franklin Barbecue's line, South Congress, Sixth Street, Lady Bird Lake — is genuinely part of the trip, not a separate day-trip decision.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
   // Built from real sourced facts researched during experience seeding
   // (Foro Sol's baseball-stadium origin threaded through the circuit's
@@ -565,7 +566,7 @@ export const INTRO_BY_EVENT: Record<string, { displayName: string; venueLine: st
     venueLine: "Held at the Autódromo Hermanos Rodríguez — the highest-altitude circuit on the F1 calendar, where the final sector runs straight through a converted baseball stadium.",
     heroFallbackImageSlug: "foro-sol-mexico-city-gp-",
     introText:
-      "F1's return to Mexico in 2015 came with one strange new addition: a section of track diverted straight through Foro Sol, a baseball stadium built inside the circuit in the 1990s. Nobody else on the calendar races through a stadium built for another sport entirely, and the noise it produces — every seat filled, every session, not just the race — is why Mexico City is consistently named one of the loudest weekends in F1.\n\nThe circuit itself carries real weight beyond the spectacle. It's named after Ricardo and Pedro Rodríguez, Mexico's first F1 stars, both killed racing years apart — the track's own history is a genuine part of what makes race weekend here feel different. Add the highest altitude of any circuit on the calendar, and 2026's race weekend landing directly on top of the city's Día de Muertos Grand Parade — one of the biggest cultural weekends in Mexico, happening at the same time as the Grand Prix, not as a separate trip — and this is a genuinely unrepeatable version of an already distinctive race.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
+      "F1's return to Mexico in 2015 came with one strange new addition: a section of track diverted straight through Foro Sol, a baseball stadium built inside the circuit in the 1990s. Nobody else on the calendar races through a stadium built for another sport entirely, and the noise it produces — every seat filled, every session, not just the race — is why Mexico City is consistently named one of the loudest weekends in F1.\n\nThe circuit itself carries real weight beyond the spectacle. It's named after Ricardo and Pedro Rodríguez, Mexico's first F1 stars, both killed racing years apart — the track's own history is a genuine part of what makes race weekend here feel different. Add the highest altitude of any circuit on the calendar, and race weekend falling in the same late-October/early-November window as the city's Día de Muertos Grand Parade most years — one of the biggest cultural weekends in Mexico, often overlapping with the Grand Prix rather than needing a separate trip — and this is a genuinely distinctive race on its own terms.\n\nEverything you need to plan the trip: costs, tickets, where to stay, where to eat, and the detail that only matters once you're actually going.",
   },
   // Built from real sourced facts researched during experience seeding
   // (Interlagos' Senna history and the S do Senna corner, the circuit's
@@ -646,8 +647,21 @@ export default async function HubPage({ slug, from }: { slug: string; from?: str
   // edition), since hardcoding "Wimbledon 2027" here would just recreate
   // next year's version of the same staleness problem this field already
   // caused once. Non-evergreen events (no seasonYear) render unchanged.
+  //
+  // seasonYear still gates WHETHER a year is appended (only evergreen-slug
+  // events set it — appending editionYear unconditionally here would wrongly
+  // add a year suffix to every other INTRO_BY_EVENT entry, e.g. Bahrain GP,
+  // which has editionYear set but no seasonYear and should render with no
+  // year at all). But the VALUE appended must be event.editionYear, not
+  // event.seasonYear — found live, 24 Nov 2026, on Singapore GP's 2026->2027
+  // rollover: the rollover script correctly rolls editionYear forward every
+  // time, but seasonYear (semantically "the edition this row was seeded
+  // under" at the Wimbledon evergreen-slug migration) is a separate column
+  // the rollover process never touches, so this line kept appending the
+  // stale 2026 seasonYear to the hero h1 while every date-driven field
+  // elsewhere on the same page correctly showed 2027.
   const displayEventName = config?.displayName
-    ? event.seasonYear ? `${config.displayName} ${event.seasonYear}` : config.displayName
+    ? event.seasonYear ? `${config.displayName} ${event.editionYear}` : config.displayName
     : event.name;
 
   const supabase = await createClient();

@@ -13,12 +13,10 @@ import {
 } from "@/schema/database";
 import { eq, and } from "drizzle-orm";
 import { notFound } from "next/navigation";
-import { unstable_cache } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getProDetails } from "@/lib/pro";
 import { grantFreeAccess } from "../../actions";
 import { SPOKES_BY_EVENT } from "./spokeConfig";
-import { CACHE_TAGS } from "@/lib/cacheTags";
 
 const SEASONAL_BAND_BY_MONTH = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 
@@ -45,23 +43,22 @@ const SEASONAL_BAND_BY_MONTH = ["jan", "feb", "mar", "apr", "may", "jun", "jul",
 // every pack beats staying stale for up to an hour on the one that
 // changed), and far simpler than migrating this to the newer 'use cache' +
 // cacheTag API (which does support per-argument tags) just for this.
-const getSpokeDataCached = unstable_cache(
-  async (slug: string) => getSpokeDataUncached(slug),
-  ["hub-and-spoke-spoke-data"],
-  { revalidate: 3600, tags: [CACHE_TAGS.HUB_AND_SPOKE_SPOKE_DATA] }
-);
-
-// unstable_cache serializes its return value through JSON, so any real Date
-// object (costDataVerifiedAt) comes back out as a plain ISO string, not a
-// Date — every Cost spoke calls .toLocaleDateString() directly on this field
-// with no defensive wrapping, so this rehydration is required, not optional.
-// Bug found + fixed 19 Aug 2026, same day the cache was added, caught live on
-// the NZ-Australia Cost spoke ("costDataVerifiedAt.toLocaleDateString is not
-// a function") — same root cause would have broken all 6 live hub-and-spoke
-// events' Cost spokes (Wimbledon, ATP Finals, Bahrain GP, Singapore GP,
-// Shanghai Masters, NZ-Australia).
+// unstable_cache wrapping removed 24 Nov 2026 — it served stale event rows
+// (name/editionYear) through at least one Turbopack dev-mode revalidateTag
+// call that should have cleared it (confirmed live on Singapore GP's 2026->
+// 2027 rollover: the DB row was verified correct, revalidateTag("hub-and-
+// spoke-spoke-data", "max") returned 200, yet the rendered page kept
+// serving "Singapore Grand Prix 2026" in the h1/hero alt text while
+// getLiveEventEndDate()'s separate always-fresh query correctly showed the
+// new 2027 dates on the same render). Founder decision: reads here go
+// straight to Postgres every time rather than trust unstable_cache's
+// revalidation to actually reach a long-running dev/prod process. The
+// original 19 Aug 2026 comment motivating this cache (Supabase egress
+// across ~70 hub-and-spoke routes) is now moot — revisit with a more
+// reliable caching layer ('use cache' + cacheTag, or a shorter TTL with no
+// reliance on revalidateTag) if egress becomes a real problem again.
 export async function getSpokeData(slug: string) {
-  const data = await getSpokeDataCached(slug);
+  const data = await getSpokeDataUncached(slug);
   return {
     ...data,
     costDataVerifiedAt: data.costDataVerifiedAt ? new Date(data.costDataVerifiedAt) : null,

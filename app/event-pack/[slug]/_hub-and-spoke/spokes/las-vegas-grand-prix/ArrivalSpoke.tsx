@@ -101,7 +101,7 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
       </div>
 
       <p className="text-xs text-[#6A6A6A] mt-8">
-        Sources: formula1.com 2026 session calendar, f1lasvegasgp.com official A-Z Guide (road closures, gate/zone
+        Sources: formula1.com (2026 session calendar, used as a reference pending 2027 publication), f1lasvegasgp.com official A-Z Guide (road closures, gate/zone
         entrances), f1lasvegasgp.com and tickets.formula1.com grandstand pages (block/row sightline detail).
       </p>
     </SpokeShell>

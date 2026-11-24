@@ -42,7 +42,7 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       question={spoke.question}
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
-      ctaCopy="What's real is free above — the two real hospitality tiers and Jardins' luxury hotel scene. The pack adds F1's own Paddock Club and Champions Club products in full, plus the actual booking mechanics for a race that's already sold out its top tier."
+      ctaCopy="What's real is free above — the two real hospitality tiers and Jardins' luxury hotel scene. The pack adds F1's own Paddock Club and Champions Club products in full, plus the actual booking mechanics for a race whose top tier has historically sold out early."
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
         A luxury Interlagos weekend is a stack of decisions, not one purchase. Beyond the top hospitality tier, a
@@ -54,8 +54,8 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
         F1 Paddock Club sits directly above the team garages on the main straight, looking straight down at pit
         lane and the start-finish line — curated local menus, an open bar, a guided paddock tour, a daily pit lane
-        walk, and a scheduled appearance from an F1 insider. It&apos;s already sold out well ahead of the 2026
-        race. Champions Club sits one tier below and isn&apos;t a diluted version of it — gourmet canapés, a proper
+        walk, and a scheduled appearance from an F1 insider. It has historically sold out well ahead of race week.
+        Champions Club sits one tier below and isn&apos;t a diluted version of it — gourmet canapés, a proper
         lunch service, an open bar, and two things worth naming specifically: an exclusive Grid Walk paired with a
         Championship Trophy photo op on Friday or Saturday, plus a one-time guided Paddock tour led by an expert
         host. Below both sits Heineken Village — a genuinely different kind of premium, trading the pit-lane view
@@ -136,9 +136,9 @@ export default async function LuxurySpoke({ eventSlug }: { eventSlug: string }) 
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-3">Booking Paddock Club and Champions Club</p>
           <p className="text-sm text-[#A3A3A3] leading-7 mb-6">
-            F1 Paddock Club for Brazil 2026 was already showing sold out on F1 Experiences&apos; own site well
-            ahead of the race — if this tier matters to you, treat the on-sale window as the real deadline for
-            next year&apos;s edition rather than waiting to check closer to the date. Champions Club is the
+            F1 Paddock Club for Brazil has historically shown sold out on F1 Experiences&apos; own site well
+            ahead of the race — if this tier matters to you, treat the on-sale window as the real deadline for the
+            2027 edition rather than waiting to check closer to the date. Champions Club is the
             realistic fallback if Paddock Club is unavailable, sold directly through{" "}
             <a
               href="https://f1experiences.com"

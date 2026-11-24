@@ -15,25 +15,32 @@ const SPOKE_ID = "tickets";
 // names like "Twenty 3", "Torque @ Flyer") that doesn't match these 16
 // named stands. Flagged, not silently forced into a fake mapping — see
 // feedback_scope_assumptions_and_currency_sweep memory, 2 Aug 2026.
+//
+// Prices below are the real 2026 figures, kept as a reference point for
+// relative ordering and rough scale — 2027 pricing had not been published
+// by singaporegp.sg/tickets.formula1.com as of this writing (24 Nov 2026,
+// rollover-event-into-next-year skill §4a). priceBand strings say so
+// explicitly rather than presenting 2026 numbers as current.
+const PRICE_PENDING = "2027 pricing not yet released";
 const STANDS = [
-  { slug: "singapore-gp-turn1-grandstand", name: "Turn 1", shows: "Start-line braking from 290km/h into Turns 1-3", seating: "Reserved (A2-A9, book A3-A6 for real sightlines)", exposure: "Uncovered", price: 1698, priceBand: "S$1,698 (3-day)" },
-  { slug: "singapore-gp-stamford-grandstand", name: "Stamford", shows: "Turn 7 — bumpy braking zone, real overtaking history", seating: "Reserved (A1-A7)", exposure: "Uncovered", price: 608, priceBand: "S$608 (3-day) — cheapest grandstand" },
-  { slug: "singapore-gp-padang-grandstand", name: "Padang", shows: "Turn 9-10 straight — weak racing view, strong concert proximity", seating: "Reserved (A/B sections)", exposure: "Uncovered", price: 738, priceBand: "S$738 (3-day)" },
-  { slug: null, name: "Super Pit", shows: "Race start, lap-one jostling into Turns 1-3", seating: "Reserved", exposure: "Uncovered", price: 2498, priceBand: "S$2,498 (3-day) — priciest grandstand" },
-  { slug: null, name: "Pit", shows: "Race start straight — where most overtaking happens off the line", seating: "Reserved", exposure: "Uncovered", price: 1798, priceBand: "S$1,798 (3-day)" },
-  { slug: null, name: "Turn 2", shows: "Unrivalled view of all 20 cars into the first three corners off the line", seating: "Reserved", exposure: "Uncovered", price: 1798, priceBand: "S$1,798 (3-day)" },
-  { slug: null, name: "Pit Exit", shows: "Cars accelerating back onto the circuit after pit stops", seating: "Reserved", exposure: "Uncovered", price: 1698, priceBand: "S$1,698 (3-day)" },
-  { slug: null, name: "Raffles", shows: "Turn 5 area, near the Padang and Esplanade", seating: "Reserved", exposure: "Uncovered", price: 1208, priceBand: "S$1,208 (3-day)" },
-  { slug: null, name: "Bay", shows: "Turns 18-19 — one of the biggest stands on the F1 calendar (27,000 seats), cars diving through tight, wall-lined corners before the final straight", seating: "Reserved", exposure: "Uncovered", price: Infinity, priceBand: "Not separately listed on singaporegp.sg — may be sold under a different name (Marina Bay/Bayfront) in 2026, confirm before booking" },
-  { slug: null, name: "Marina Bay", shows: "Turns 18-19 from a different angle, Singapore Flyer lit up behind the track", seating: "Reserved", exposure: "Uncovered", price: 1798, priceBand: "S$1,798 (3-day)" },
-  { slug: null, name: "Bayfront", shows: "Turns 16-18 — braking out of a high-speed straight, run past the Flyer", seating: "Reserved", exposure: "Uncovered", price: 1428, priceBand: "S$1,428 (3-day)" },
-  { slug: null, name: "Promenade", shows: "Turns 16-18 — braking out of a high-speed straight, run past the Flyer", seating: "Reserved", exposure: "Uncovered", price: 1428, priceBand: "S$1,428 (3-day)" },
-  { slug: null, name: "Skyline", shows: "Turns 17-18, right before pit entry — where drivers are most likely to make a mistake under pressure", seating: "Reserved", exposure: "Uncovered", price: 1568, priceBand: "S$1,568 (3-day)" },
-  { slug: null, name: "Republic", shows: "Turn 5's kink into the first DRS zone — includes a free Singapore Flyer ride", seating: "Reserved", exposure: "Uncovered", price: 988, priceBand: "S$988 (3-day)" },
-  { slug: null, name: "Connaught", shows: "Turn 14 — a tight DRS-zone corner with genuine wheel-to-wheel racing", seating: "Reserved", exposure: "Uncovered", price: 738, priceBand: "S$738 (3-day)" },
-  { slug: null, name: "Empress", shows: "Turns 11-12 — peak braking across the Anderson Bridge", seating: "Reserved", exposure: "Uncovered", price: 738, priceBand: "S$738 (3-day)" },
-  { slug: null, name: "Zone 4 Walkabout", shows: "Standing room, roams Zone 4 viewing platforms — includes Padang Stage concerts", seating: "Standing", exposure: "Uncovered", price: 198, priceBand: "S$198–548" },
-  { slug: null, name: "Premier Walkabout", shows: "Standing room, roams all four zones", seating: "Standing", exposure: "Uncovered", price: 298, priceBand: "S$298–728" },
+  { slug: "singapore-gp-turn1-grandstand", name: "Turn 1", shows: "Start-line braking from 290km/h into Turns 1-3", seating: "Reserved (A2-A9, book A3-A6 for real sightlines)", exposure: "Uncovered", price: 1698, priceBand: `2026: S$1,698 (3-day) — ${PRICE_PENDING}` },
+  { slug: "singapore-gp-stamford-grandstand", name: "Stamford", shows: "Turn 7 — bumpy braking zone, real overtaking history", seating: "Reserved (A1-A7)", exposure: "Uncovered", price: 608, priceBand: `2026: S$608 (3-day), cheapest grandstand — ${PRICE_PENDING}` },
+  { slug: "singapore-gp-padang-grandstand", name: "Padang", shows: "Turn 9-10 straight — weak racing view, strong concert proximity", seating: "Reserved (A/B sections)", exposure: "Uncovered", price: 738, priceBand: `2026: S$738 (3-day) — ${PRICE_PENDING}` },
+  { slug: null, name: "Super Pit", shows: "Race start, lap-one jostling into Turns 1-3", seating: "Reserved", exposure: "Uncovered", price: 2498, priceBand: `2026: S$2,498 (3-day), priciest grandstand — ${PRICE_PENDING}` },
+  { slug: null, name: "Pit", shows: "Race start straight — where most overtaking happens off the line", seating: "Reserved", exposure: "Uncovered", price: 1798, priceBand: `2026: S$1,798 (3-day) — ${PRICE_PENDING}` },
+  { slug: null, name: "Turn 2", shows: "Unrivalled view of all 20 cars into the first three corners off the line", seating: "Reserved", exposure: "Uncovered", price: 1798, priceBand: `2026: S$1,798 (3-day) — ${PRICE_PENDING}` },
+  { slug: null, name: "Pit Exit", shows: "Cars accelerating back onto the circuit after pit stops", seating: "Reserved", exposure: "Uncovered", price: 1698, priceBand: `2026: S$1,698 (3-day) — ${PRICE_PENDING}` },
+  { slug: null, name: "Raffles", shows: "Turn 5 area, near the Padang and Esplanade", seating: "Reserved", exposure: "Uncovered", price: 1208, priceBand: `2026: S$1,208 (3-day) — ${PRICE_PENDING}` },
+  { slug: null, name: "Bay", shows: "Turns 18-19 — one of the biggest stands on the F1 calendar (27,000 seats), cars diving through tight, wall-lined corners before the final straight", seating: "Reserved", exposure: "Uncovered", price: Infinity, priceBand: "Not separately listed on singaporegp.sg in 2026 — may be sold under a different name (Marina Bay/Bayfront); confirm before booking" },
+  { slug: null, name: "Marina Bay", shows: "Turns 18-19 from a different angle, Singapore Flyer lit up behind the track", seating: "Reserved", exposure: "Uncovered", price: 1798, priceBand: `2026: S$1,798 (3-day) — ${PRICE_PENDING}` },
+  { slug: null, name: "Bayfront", shows: "Turns 16-18 — braking out of a high-speed straight, run past the Flyer", seating: "Reserved", exposure: "Uncovered", price: 1428, priceBand: `2026: S$1,428 (3-day) — ${PRICE_PENDING}` },
+  { slug: null, name: "Promenade", shows: "Turns 16-18 — braking out of a high-speed straight, run past the Flyer", seating: "Reserved", exposure: "Uncovered", price: 1428, priceBand: `2026: S$1,428 (3-day) — ${PRICE_PENDING}` },
+  { slug: null, name: "Skyline", shows: "Turns 17-18, right before pit entry — where drivers are most likely to make a mistake under pressure", seating: "Reserved", exposure: "Uncovered", price: 1568, priceBand: `2026: S$1,568 (3-day) — ${PRICE_PENDING}` },
+  { slug: null, name: "Republic", shows: "Turn 5's kink into the first DRS zone — includes a free Singapore Flyer ride", seating: "Reserved", exposure: "Uncovered", price: 988, priceBand: `2026: S$988 (3-day) — ${PRICE_PENDING}` },
+  { slug: null, name: "Connaught", shows: "Turn 14 — a tight DRS-zone corner with genuine wheel-to-wheel racing", seating: "Reserved", exposure: "Uncovered", price: 738, priceBand: `2026: S$738 (3-day) — ${PRICE_PENDING}` },
+  { slug: null, name: "Empress", shows: "Turns 11-12 — peak braking across the Anderson Bridge", seating: "Reserved", exposure: "Uncovered", price: 738, priceBand: `2026: S$738 (3-day) — ${PRICE_PENDING}` },
+  { slug: null, name: "Zone 4 Walkabout", shows: "Standing room, roams Zone 4 viewing platforms — includes Padang Stage concerts", seating: "Standing", exposure: "Uncovered", price: 198, priceBand: `2026: S$198–548 — ${PRICE_PENDING}` },
+  { slug: null, name: "Premier Walkabout", shows: "Standing room, roams all four zones", seating: "Standing", exposure: "Uncovered", price: 298, priceBand: `2026: S$298–728 — ${PRICE_PENDING}` },
 ].sort((a, b) => a.price - b.price);
 
 export default async function TicketsSpoke({ eventSlug }: { eventSlug: string }) {
@@ -69,7 +76,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
       heroImageUrl={heroImageUrl}
       isUnlocked={isUnlocked}
       miniPackOption={miniPackOption}
-      ctaCopy="Buy the Ticket Guide alone, or the full Event Guide, to unlock real 2026 pricing for every stand, the full side-by-side comparison, where to actually buy, and our verdict on which stand we'd pick for a first Singapore GP."
+      ctaCopy="Buy the Ticket Guide alone, or the full Event Guide, to unlock pricing for every stand (2026 figures shown as a reference while 2027 prices are still unpublished), the full side-by-side comparison, where to actually buy, and our verdict on which stand we'd pick for a first Singapore GP."
     >
       {/* Free teaser — stand names + what each shows only, no pricing, no
           buying detail, no verdict. Everything else in this spoke (real
@@ -127,7 +134,7 @@ export default async function TicketsSpoke({ eventSlug }: { eventSlug: string })
                 Official Singapore GP tickets →
               </a>
               <a
-                href="https://www.p1travel.com/en-GB/series/formula-1-2026?organizers=grand-prix-singapore"
+                href="https://www.p1travel.com/en-GB/organizer/grand-prix-singapore"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center px-4 py-2 rounded-sm border border-[#AAFF00] text-[#AAFF00] text-xs font-black hover:bg-[#AAFF00] hover:text-black transition-colors"

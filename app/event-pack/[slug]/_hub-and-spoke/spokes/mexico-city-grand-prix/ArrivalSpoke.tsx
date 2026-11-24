@@ -28,8 +28,8 @@ export default async function ArrivalSpoke({ eventSlug }: { eventSlug: string })
       isUnlocked={isUnlocked}
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        Exact 2026 gate-opening times haven&apos;t been published yet — expect roughly 2-3 hours before each
-        day&apos;s first session, based on the confirmed session schedule. Security here runs closer to an airport
+        Exact 2027 gate-opening times haven&apos;t been published yet — expect roughly 2-3 hours before each
+        day&apos;s first session, based on the pattern from recent race weekends. Security here runs closer to an airport
         checkpoint than a typical sporting-event bag check, and knowing the rules before you pack saves a real
         confiscation at the gate.
       </p>

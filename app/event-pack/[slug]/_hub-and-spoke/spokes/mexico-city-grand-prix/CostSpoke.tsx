@@ -204,7 +204,7 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
           </p>
 
           <div className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-4 mb-8">
-            <p className="text-sm font-bold text-white mb-1.5">Buy official, book early — this year specifically</p>
+            <p className="text-sm font-bold text-white mb-1.5">Buy official, book early</p>
             <p className="text-sm text-[#A3A3A3] leading-6">
               Buy only via the official F1 ticketing site first — this race has genuinely sold out within a single
               day of tickets going on sale in recent seasons. Paddock Club and House 44 at F1 Paddock Club™ (from{" "}

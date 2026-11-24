@@ -66,15 +66,15 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
           behind the paywall. Same fix as Bahrain GP's Itinerary spoke. */}
       {!isUnlocked && (
         <div className="flex flex-col gap-2 mb-8">
-          <p className="text-sm text-[#A3A3A3]">A Singapore GP weekend runs Thursday arrival through Sunday race day — a Sprint format with concerts every night.</p>
+          <p className="text-sm text-[#A3A3A3]">A Singapore GP weekend runs Thursday arrival through Sunday race day, with concerts most nights.</p>
           <p className="text-sm text-[#A3A3A3]">
             <span className="text-white font-bold">Thursday:</span>{" "}Arrival
           </p>
           <p className="text-sm text-[#A3A3A3]">
-            <span className="text-white font-bold">Friday:</span>{" "}Practice 1 &amp; Sprint Qualifying
+            <span className="text-white font-bold">Friday:</span>{" "}Practice
           </p>
           <p className="text-sm text-[#A3A3A3]">
-            <span className="text-white font-bold">Saturday:</span>{" "}Sprint Race &amp; Qualifying
+            <span className="text-white font-bold">Saturday:</span>{" "}Final Practice &amp; Qualifying
           </p>
           <p className="text-sm text-[#A3A3A3]">
             <span className="text-white font-bold">Sunday:</span>{" "}The Grand Prix Itself
@@ -85,23 +85,26 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
       {isUnlocked && (
         <div className="mt-2">
           <p className="text-sm text-[#A3A3A3] leading-7 mb-4">
-            2026 is a Sprint weekend, not the classic three-day format — there&apos;s no FP2 or FP3. Friday is Practice 1
-            and Sprint Qualifying, Saturday is the Sprint race and full Qualifying, Sunday is the Grand Prix itself.
-            Singapore adds a second rhythm on top of that: every evening ends with a headline concert on the Padang
-            Stage, so a full race day here genuinely runs from afternoon sessions through to a late-night set, all
-            under the same floodlights. This is F1&apos;s only true night race, run entirely after dark.
+            2027 is a classic three-day weekend — Singapore isn&apos;t on F1&apos;s published list of 2027 Sprint
+            venues (confirmed against the official 2027 calendar announcement, 16 Sep 2026), unlike its 2026 edition.
+            Expect Free Practice 1 and 2 on Friday, Free Practice 3 and Qualifying on Saturday, the Grand Prix itself
+            on Sunday. Singapore&apos;s second rhythm stays the same regardless of session format: evenings end with
+            a headline concert on the Padang Stage, so a full race day here genuinely runs from afternoon sessions
+            through to a late-night set, all under the same floodlights. This is F1&apos;s only true night race, run
+            entirely after dark.
           </p>
           <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
             The night format also means real daytime is available before each day&apos;s sessions start, worth using
             for Gardens by the Bay, Sentosa, or the Marina Bay waterfront walk rather than sitting in a hotel room
-            waiting for the evening.
+            waiting for the evening. Exact 2027 session times and the concert line-up hadn&apos;t been published as
+            of this writing — check formula1.com and singaporegp.sg&apos;s entertainment page closer to race week.
           </p>
 
           <div className="flex flex-col gap-3 mb-8">
             <DayCard day="Thursday — Arrival" summary="Land, settle in, and do the Marina Bay Waterfront Walk — Merlion Park to the Flyer doubles as real circuit-area orientation" />
-            <DayCard day="Friday — Practice 1 & Sprint Qualifying" summary="Gardens by the Bay in the daytime, Practice 1 (4:30-5:30pm) then Sprint Qualifying (8:30-9:14pm), JJ Lin and CORTIS on the Padang Stage after" />
-            <DayCard day="Saturday — Sprint & Qualifying" summary="Sentosa in the daytime, the Sprint race (5-6pm) then full Qualifying (9-10pm) sets Sunday's grid, The Killers and Zara Larsson close out the night" />
-            <DayCard day="Sunday — Race" summary="Arrival timing by grandstand, the Grand Prix itself at 8pm, Lana Del Rey's Singapore debut after the chequered flag" />
+            <DayCard day="Friday — Practice" summary="Gardens by the Bay in the daytime, Free Practice 1 and 2, a Padang Stage set after (2027 line-up not yet announced)" />
+            <DayCard day="Saturday — Final Practice & Qualifying" summary="Sentosa in the daytime, Free Practice 3 then Qualifying sets Sunday's grid, another headline set closes out the night" />
+            <DayCard day="Sunday — Race" summary="Arrival timing by grandstand, the Grand Prix itself under floodlights, the weekend's closing set after the chequered flag" />
           </div>
 
           <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-4 pt-10 border-t border-[#2A2A2A]">
@@ -117,35 +120,34 @@ export default async function ItinerarySpoke({ eventSlug }: { eventSlug: string 
           />
 
           <ItineraryTable
-            day="Friday — Practice 1 & Sprint Qualifying"
+            day="Friday — Practice"
             rows={[
               { time: "Morning", location: "Gardens by the Bay", activity: <>Outdoor gardens and Supertree Grove are free and open early. Do the OCBC Skyway before the day heats up — last admission is 8-8:30pm, so a morning visit avoids any risk of missing it. Full guide: {expLink(gardensByTheBay, "Gardens by the Bay")}.</> },
               { time: "Early afternoon", location: "Marina Bay Street Circuit", activity: "First circuit visit — find your grandstand, walk the concourse near it before race-day crowds arrive." },
-              { time: "4:30-5:30pm", location: "Your booked grandstand", activity: "Practice 1 — the only practice session all weekend, since 2026 is a Sprint format with no FP2/FP3. Worth using to test your seat's sightlines." },
-              { time: "8:30-9:14pm", location: "Your booked grandstand", activity: "Sprint Qualifying — sets Saturday's Sprint grid." },
-              { time: "Night", location: "Padang Stage", activity: <>JJ Lin and CORTIS headline Friday night — Zone 4 ticket required. {expLink(lauPaSat, "Lau Pa Sat's Satay Street")} (open till 3am) is the realistic post-set food stop. Full concert lineup: {expLink(padangStage, "Padang Stage")}.</> },
+              { time: "Afternoon/Evening", location: "Your booked grandstand", activity: "Free Practice 1 and Free Practice 2 — exact 2027 session times not yet published. Worth using FP1 especially to test your seat's sightlines." },
+              { time: "Night", location: "Padang Stage", activity: <>Friday's headline act hadn&apos;t been announced as of this writing — check singaporegp.sg's entertainment page closer to race week. {expLink(lauPaSat, "Lau Pa Sat's Satay Street")} (open till 3am) is the realistic post-set food stop if your zone allows it. Full details: {expLink(padangStage, "Padang Stage")}.</> },
             ]}
           />
 
           <ItineraryTable
-            day="Saturday — Sprint & Qualifying"
+            day="Saturday — Final Practice & Qualifying"
             rows={[
               { time: "Morning", location: "Sentosa Island", activity: <>10 minutes by MRT via HarbourFront. Take the cable car one direction for the harbour views, walk or Sentosa Express back. Full guide: {expLink(sentosa, "Sentosa Island")}.</> },
-              { time: "Early afternoon", location: "En route back to Marina Bay", activity: "Build in real transit buffer — don't cut it close against the Sprint." },
-              { time: "5-6pm", location: "Your booked grandstand", activity: "Sprint race — a shorter, standalone race with its own points, run entirely separately from Sunday's Grand Prix." },
-              { time: "9-10pm", location: "Your booked grandstand", activity: "Qualifying — this is what sets Sunday's Grand Prix grid, not Friday's Sprint Qualifying." },
-              { time: "Night", location: "Padang Stage", activity: <>Zara Larsson and The Killers headline Saturday. {expLink(bayfrontHawkers, "Makansutra Gluttons Bay")} (open till 3am Fri/Sat) is built for exactly this timing.</> },
+              { time: "Early afternoon", location: "En route back to Marina Bay", activity: "Build in real transit buffer before Qualifying." },
+              { time: "Afternoon", location: "Your booked grandstand", activity: "Free Practice 3 — the final practice session before Qualifying." },
+              { time: "Evening", location: "Your booked grandstand", activity: "Qualifying — sets Sunday's Grand Prix grid." },
+              { time: "Night", location: "Padang Stage", activity: <>Saturday's headline act hadn&apos;t been announced as of this writing. {expLink(bayfrontHawkers, "Makansutra Gluttons Bay")} (open till 3am Fri/Sat) is built for exactly this timing.</> },
             ]}
           />
 
           <ItineraryTable
             day="Sunday — Race day"
             rows={[
-              { time: "Late morning", location: "The Shoppes at Marina Bay Sands", activity: "The race isn't until 8pm, so there's real time for a late brunch and some shopping right by the circuit — The Shoppes opens 10am, with brunch spots like Yardbird and PS.Cafe (both open Sundays). It's a genuine, easy option given how much daytime this format leaves free." },
-              { time: "Before the race", location: "Zone 1 or Zone 4 F1 Village", activity: <>Arrive 60-90 minutes before the race to clear security and explore the {expLink(f1Village, "F1 Village")} before the rush — exact gate-opening times not yet published for 2026.</> },
-              { time: "8pm", location: "Your booked grandstand", activity: "The Grand Prix itself, under floodlights." },
-              { time: "After the chequered flag", location: "Padang Stage", activity: <>James Arthur and Lana Del Rey&apos;s first-ever Singapore show close the weekend, from 10:25pm. Full lineup: {expLink(padangStage, "Padang Stage")}.</> },
-              { time: "Late night", location: "Circuit exit routes", activity: "Expect exit crowds to take real time to clear. MRT service runs to 1am specifically for this weekend — plan your last connection." },
+              { time: "Late morning", location: "The Shoppes at Marina Bay Sands", activity: "The race runs under floodlights in the evening, so there's real time for a late brunch and some shopping right by the circuit — The Shoppes opens 10am, with brunch spots like Yardbird and PS.Cafe (both open Sundays). It's a genuine, easy option given how much daytime this format leaves free." },
+              { time: "Before the race", location: "Zone 1 or Zone 4 F1 Village", activity: <>Arrive 60-90 minutes before the race to clear security and explore the {expLink(f1Village, "F1 Village")} before the rush — exact gate-opening times not yet published for 2027.</> },
+              { time: "Evening", location: "Your booked grandstand", activity: "The Grand Prix itself, under floodlights." },
+              { time: "After the chequered flag", location: "Padang Stage", activity: <>The weekend's closing headline act hadn&apos;t been announced as of this writing. Full details: {expLink(padangStage, "Padang Stage")}.</> },
+              { time: "Late night", location: "Circuit exit routes", activity: "Expect exit crowds to take real time to clear. MRT service typically runs later specifically for this weekend — plan your last connection once the 2027 schedule is confirmed." },
             ]}
           />
         </div>

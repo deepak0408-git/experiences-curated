@@ -135,7 +135,7 @@ export default async function CostSpoke({ eventSlug }: { eventSlug: string }) {
       )}
 
       <div id="tickets" className="rounded-sm border border-[#AAFF00]/30 bg-[#AAFF00]/5 p-5 mb-8 scroll-mt-20">
-        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Ticket pricing — real 2026 tiers</p>
+        <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Ticket pricing — 2026 tiers, shown as a reference for 2027</p>
         {ticketLow != null && ticketHigh != null && (
           <p className="text-sm text-white font-bold mb-2">
             S${ticketLow.toLocaleString()}–S${ticketHigh.toLocaleString()} across walkabout, grandstand, and hospitality tiers.

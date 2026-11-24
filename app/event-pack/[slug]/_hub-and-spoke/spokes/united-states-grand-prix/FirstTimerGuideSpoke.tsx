@@ -29,11 +29,12 @@ export default async function FirstTimerGuideSpoke({ eventSlug }: { eventSlug: s
       isUnlocked={isUnlocked}
     >
       <p className="text-sm text-[#A3A3A3] leading-7 mb-8">
-        The 2026 US Grand Prix is a standard weekend, not a sprint weekend — Austin ran the sprint format for three
-        straight seasons but loses it for 2026. Friday brings two practice sessions (FP1 and FP2), Saturday brings
-        a third practice session (FP3) followed by qualifying, and Sunday is race day itself — the only session
-        where points are actually on the line. Here&apos;s what genuinely trips up a first-time visitor, drawn from
-        real detail rather than generic advice.
+        The 2027 US Grand Prix is a standard weekend, not a Sprint weekend — Austin isn&apos;t on F1&apos;s published
+        list of 2027 Sprint venues, continuing the standard format it returned to in 2026 after three straight
+        Sprint seasons. Friday brings two practice sessions (FP1 and FP2), Saturday brings a third practice session
+        (FP3) followed by qualifying, and Sunday is race day itself — the only session where points are actually on
+        the line. Here&apos;s what genuinely trips up a first-time visitor, drawn from real detail rather than
+        generic advice.
       </p>
 
       <p className="text-xs font-black tracking-widest uppercase text-[#AAFF00] mb-2">Mistake 1 — booking parking too late, or not at all</p>
