@@ -46,6 +46,7 @@ function isRetryableReadError(error: unknown, retryStatementTimeout: boolean): b
 
     if (RETRYABLE_CODES.has(code)) return true;
     if (message.includes("connection terminated unexpectedly")) return true;
+    if (message.includes("timeout exceeded when trying to connect")) return true;
     if (retryStatementTimeout && code === "57014" && message.includes("statement timeout")) return true;
 
     return false;
