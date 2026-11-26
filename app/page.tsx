@@ -29,6 +29,9 @@ export const metadata: Metadata = {
   title: "Experiences | Curated — Insider guides to the world's greatest sporting events",
   description:
     "Curated experiences for sports fans. Not aggregated — chosen. Hand-picked guides to Wimbledon, the US Open, and beyond.",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 function daysUntil(dateStr: string): number {

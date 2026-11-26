@@ -12,12 +12,15 @@ export const metadata: Metadata = {
   title: "Tennis Travel Planning Cockpit — Experiences | Curated",
   description:
     "One place to discover, compare and plan your complete tennis trip — Trip Intelligence, Trip Planner, Ticket Intelligence, Event Guides, Trip Board and Custom Itineraries, together.",
+  alternates: {
+    canonical: "/tennis",
+  },
 };
 
-// Behind a feature flag, default OFF in production — same pattern as the
-// existing SHOW_F1_COCKPIT flag (app/formula-1/page.tsx). Not enabled
-// publicly until explicit approval; set SHOW_TENNIS_COCKPIT=true in a
-// preview/staging environment to test.
+// Behind a feature flag — SHOW_TENNIS_COCKPIT=true in Vercel. Live in
+// production as of 26 Nov 2026 (confirmed via direct HTTP check + sitemap
+// inclusion). Same pattern as the existing SHOW_F1_COCKPIT flag
+// (app/formula-1/page.tsx).
 export default async function TennisCockpitPage() {
   if (process.env.SHOW_TENNIS_COCKPIT !== "true") {
     notFound();

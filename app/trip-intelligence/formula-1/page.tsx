@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "Which Grand Prix is best suited for you?",
   description:
     "Answer 7 questions and get matched to the Formula 1 Grand Prix that fits the experience you want — free, no signup.",
+  alternates: {
+    canonical: "/trip-intelligence/formula-1",
+  },
 };
 
 export default async function TripIntelligenceQuizPage() {

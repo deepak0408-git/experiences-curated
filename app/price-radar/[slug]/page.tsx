@@ -66,6 +66,9 @@ export async function generateMetadata({
   return {
     title,
     description,
+    alternates: {
+      canonical: `/price-radar/${slug}`,
+    },
     openGraph: {
       title,
       description,

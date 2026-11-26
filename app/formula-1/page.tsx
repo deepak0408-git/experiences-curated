@@ -12,12 +12,15 @@ export const metadata: Metadata = {
   title: "F1 Travel Planning Cockpit — Experiences | Curated",
   description:
     "One place to discover, compare and plan your complete Grand Prix trip — Trip Intelligence, Trip Planner, Ticket Intelligence, Event Guides, Trip Board and Custom Itineraries, together.",
+  alternates: {
+    canonical: "/formula-1",
+  },
 };
 
-// Behind a feature flag, default OFF in production — Approved Phase 2
-// Decision 5. Not enabled publicly until explicit approval; set
-// SHOW_F1_COCKPIT=true in a preview/staging environment to test. Same
-// pattern as the existing SHOW_PLANNER_TEASER flag (app/page.tsx).
+// Behind a feature flag — SHOW_F1_COCKPIT=true in Vercel. Live in
+// production as of 26 Nov 2026 (confirmed via direct HTTP check + sitemap
+// inclusion). Same pattern as the existing SHOW_PLANNER_TEASER flag
+// (app/page.tsx).
 export default async function FormulaOneCockpitPage() {
   if (process.env.SHOW_F1_COCKPIT !== "true") {
     notFound();

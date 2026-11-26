@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "Which Grand Slam is best suited for you?",
   description:
     "Answer 7 questions and get matched to the Tennis Grand Slam that fits the experience you want — free, no signup.",
+  alternates: {
+    canonical: "/trip-intelligence/tennis",
+  },
 };
 
 export default async function TripIntelligenceTennisQuizPage() {

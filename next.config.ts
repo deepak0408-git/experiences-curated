@@ -110,6 +110,21 @@ const nextConfig: NextConfig = {
         destination: "/event-pack/hungarian-grand-prix/:spoke",
         permanent: true,
       },
+      // us-open-2026 is the dead dated slug; us-open (evergreen) is the
+      // real live US Open pack. GSC was crawling /us-open-2026 and its
+      // spoke sub-paths (/tickets, /where-to-eat, /weather) with no
+      // redirect in place, landing them in "Crawled - currently not
+      // indexed". Confirmed live slug via direct DB query, 26 Nov 2026.
+      {
+        source: "/event-pack/us-open-2026",
+        destination: "/event-pack/us-open",
+        permanent: true,
+      },
+      {
+        source: "/event-pack/us-open-2026/:spoke",
+        destination: "/event-pack/us-open/:spoke",
+        permanent: true,
+      },
       // Trip Intelligence moved under a per-sport path (12 Oct 2026) ahead
       // of a planned tennis build — "Trip Intelligence" is the umbrella
       // product/patent name, sport is a path segment underneath it, not a

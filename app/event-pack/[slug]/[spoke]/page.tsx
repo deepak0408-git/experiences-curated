@@ -18,7 +18,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug, spoke } = await params;
   const title = SPOKE_METADATA[slug]?.[spoke];
-  return { title: title ?? "Event Guide" };
+  return {
+    title: title ?? "Event Guide",
+    alternates: {
+      canonical: `/event-pack/${slug}/${spoke}`,
+    },
+  };
 }
 
 export default async function SpokePage({

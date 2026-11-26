@@ -22,6 +22,9 @@ import { getProDetails } from "@/lib/pro";
 export const metadata: Metadata = {
   title: "Best F1 Grandstand Seats",
   description: "Answer 6 questions, get matched to the real grandstand, lawn zone, or hospitality suite that fits you.",
+  alternates: {
+    canonical: "/ticket-intelligence",
+  },
 };
 
 function formatDateRange(startDate: string, endDate: string) {

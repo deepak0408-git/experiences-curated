@@ -32,6 +32,14 @@ export async function generateMetadata({
   return {
     title,
     description,
+    // Canonical always points at the bare slug path, never the ?from=
+    // tracking param variants used by internal referral links (e.g.
+    // ?from=spoke:tickets&fromLabel=Ticket Guide) — those produced
+    // hundreds of distinct crawlable URLs for the same page, all landing
+    // in GSC's "Crawled - currently not indexed" bucket.
+    alternates: {
+      canonical: `/ticket-intelligence/${slug}`,
+    },
     openGraph: {
       title,
       description,

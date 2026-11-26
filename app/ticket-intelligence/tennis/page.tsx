@@ -35,6 +35,9 @@ const GRAND_SLAM_SLUGS = ["australian-open", "french-open", "wimbledon", "us-ope
 export const metadata: Metadata = {
   title: "Which is the best Grand Slam ticket?",
   description: "Answer 7 quick questions, get matched to the arena, stage, and seating that fits you at every Grand Slam.",
+  alternates: {
+    canonical: "/ticket-intelligence/tennis",
+  },
 };
 
 function formatDateRange(startDate: string, endDate: string) {

@@ -34,6 +34,13 @@ export async function generateMetadata({
   return {
     title: `Which ${data.event.name} Ticket Fits You?`,
     description: "Answer 7 quick questions, get matched to the arena, stage, and seating that fits your Grand Slam experience — US$10.",
+    // Canonical strips internal referral params (?from=spoke:…,
+    // ?from=experience:…, ?from=picker) that otherwise produce dozens of
+    // distinct crawlable URLs for the same page — same fix as the F1
+    // Ticket Intelligence page.
+    alternates: {
+      canonical: `/ticket-intelligence/tennis/${slug}`,
+    },
   };
 }
 

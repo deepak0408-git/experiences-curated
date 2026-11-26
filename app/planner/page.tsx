@@ -8,6 +8,9 @@ import { getOriginMarkets } from "./_lib/getOriginMarkets";
 export const metadata: Metadata = {
   title: "Plan Your Trip — Experiences | Curated",
   description: "Wimbledon, Monza, The Ashes, Ryder Cup and more — tell us your sport, budget, and timing, and we'll help you plan your next bucket-list sports trip within budget.",
+  alternates: {
+    canonical: "/planner",
+  },
 };
 
 export default async function PlannerPage() {
